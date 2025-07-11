@@ -1,0 +1,35 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+[application]
+
+config/name="VillageDefense"
+run/main_scene="uid://4w3ilq3htolk"
+config/features=PackedStringArray("4.4", "Forward Plus")
+config/icon="res://icon.svg"
+
+[autoload]
+
+GameState="*res://autoload/game_state.gd"
+MusicController="*res://scenes/controllers/music_controller.tscn"
+QuestDatabase="*res://autoload/quest_database.gd"
+MonsterLoader="*res://autoload/monster_loader.gd"
+
+[display]
+
+window/stretch/mode="viewport"
+
+[gui]
+
+timers/tooltip_delay_sec=0.25
+
+[rendering]
+
+textures/canvas_textures/default_texture_filter=0

@@ -1,0 +1,44 @@
+[gd_scene load_steps=3 format=3 uid="uid://bxmcs3dj7nfvs"]
+
+[ext_resource type="Script" uid="uid://pfl64t4dtsn8" path="res://scripts/ui/popups/options_popup.gd" id="1_rw7p8"]
+[ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://assets/button_themes/large/large_red_button.tres" id="2_6tprg"]
+
+[node name="OptionsPopup" type="PopupPanel"]
+size = Vector2i(276, 136)
+visible = true
+script = ExtResource("1_rw7p8")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 272.0
+offset_bottom = 132.0
+theme_override_constants/separation = 10
+
+[node name="Label" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "Game Options"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="VolumeLabel" type="Label" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Volume:"
+vertical_alignment = 1
+
+[node name="VolumeSlider" type="HSlider" parent="VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_vertical = 1
+
+[node name="CloseButton" type="Button" parent="VBoxContainer"]
+custom_minimum_size = Vector2(96, 32)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("2_6tprg")
+text = "Close"
+
+[connection signal="pressed" from="VBoxContainer/CloseButton" to="." method="_on_CloseButton_pressed"]

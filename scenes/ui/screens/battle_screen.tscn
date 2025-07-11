@@ -1,0 +1,141 @@
+[gd_scene load_steps=14 format=3 uid="uid://wy2cht7kkgmh"]
+
+[ext_resource type="Script" uid="uid://cqc6b58dnjxis" path="res://scripts/ui/screens/battle_screen.gd" id="1_ihhiw"]
+[ext_resource type="PackedScene" uid="uid://cypny3nmnikm7" path="res://scenes/ui/components/village_hp_bar.tscn" id="2_rb3hb"]
+[ext_resource type="PackedScene" uid="uid://ehxty8k3d2vu" path="res://scenes/ui/components/quest_progress_bar.tscn" id="3_ihhiw"]
+[ext_resource type="Theme" uid="uid://66dgdyq2o64x" path="res://assets/button_themes/specialty/pause_button.tres" id="4_hd4cu"]
+[ext_resource type="PackedScene" uid="uid://bjx12sxd6xqme" path="res://scenes/ui/components/hero_ui.tscn" id="5_fgwq0"]
+[ext_resource type="PackedScene" uid="uid://pxhpjm0rsnof" path="res://scenes/ui/components/monster_ui.tscn" id="6_q2vii"]
+[ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://assets/button_themes/large/large_red_button.tres" id="7_iw40k"]
+[ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://assets/button_themes/large/large_green_button.tres" id="8_qmdt6"]
+[ext_resource type="Theme" uid="uid://dqwm8agt87lsh" path="res://assets/button_themes/large/large_blue_button.tres" id="9_06vtu"]
+[ext_resource type="Theme" uid="uid://phfh7c5hwx1n" path="res://assets/button_themes/large/large_yellow_button.tres" id="10_c2ins"]
+[ext_resource type="Script" uid="uid://bgmcha5vrlqop" path="res://scripts/systems/battle_manager.gd" id="11_o00jr"]
+[ext_resource type="PackedScene" uid="uid://btej8vh3kxmxo" path="res://scenes/ui/popups/pause_popup.tscn" id="12_gw1kf"]
+[ext_resource type="PackedScene" uid="uid://i13p0dcm5xx0" path="res://scenes/ui/popups/battle_victory_popup.tscn" id="13_jn4pq"]
+
+[node name="BattleScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ihhiw")
+
+[node name="TopBar" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+offset_left = 5.0
+offset_top = 5.0
+offset_right = -5.0
+offset_bottom = 50.0
+size_flags_vertical = 0
+
+[node name="VillageHPBar" parent="TopBar" instance=ExtResource("2_rb3hb")]
+layout_mode = 2
+
+[node name="QuestProgressBar" parent="TopBar" instance=ExtResource("3_ihhiw")]
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_vertical = 0
+
+[node name="PauseButton" type="Button" parent="TopBar"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_vertical = 0
+theme = ExtResource("4_hd4cu")
+
+[node name="BattleField" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -6.0
+offset_top = 19.0
+offset_right = -16.0
+offset_bottom = -241.0
+
+[node name="HeroUI" parent="BattleField" instance=ExtResource("5_fgwq0")]
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 4
+
+[node name="MonsterUI" parent="BattleField" instance=ExtResource("6_q2vii")]
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 4
+
+[node name="ActionArea" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 5.0
+offset_top = -155.0
+offset_right = -5.0
+offset_bottom = -5.0
+
+[node name="LeftPanel" type="VBoxContainer" parent="ActionArea"]
+layout_mode = 2
+
+[node name="AbilityButton" type="Button" parent="ActionArea/LeftPanel"]
+custom_minimum_size = Vector2(96, 32)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("7_iw40k")
+toggle_mode = true
+text = "Use Ability"
+
+[node name="ItemButton" type="Button" parent="ActionArea/LeftPanel"]
+custom_minimum_size = Vector2(96, 32)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("8_qmdt6")
+text = "Use Item"
+
+[node name="RestButton" type="Button" parent="ActionArea/LeftPanel"]
+custom_minimum_size = Vector2(96, 32)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("9_06vtu")
+text = "Rest"
+
+[node name="FleeButton" type="Button" parent="ActionArea/LeftPanel"]
+custom_minimum_size = Vector2(96, 32)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("10_c2ins")
+text = "Flee"
+
+[node name="MiddlePanel" type="ScrollContainer" parent="ActionArea"]
+custom_minimum_size = Vector2(96, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="OptionList" type="VBoxContainer" parent="ActionArea/MiddlePanel"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="BattleLog" type="RichTextLabel" parent="ActionArea"]
+custom_minimum_size = Vector2(900, 0)
+layout_mode = 2
+size_flags_horizontal = 10
+scroll_following = true
+
+[node name="BattleManager" type="Node" parent="."]
+script = ExtResource("11_o00jr")
+
+[node name="PausePopup" parent="." instance=ExtResource("12_gw1kf")]
+visible = false
+
+[node name="BattleVictoryPopup" parent="." instance=ExtResource("13_jn4pq")]
+visible = false

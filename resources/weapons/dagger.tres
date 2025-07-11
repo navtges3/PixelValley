@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="Weapon" load_steps=5 format=3 uid="uid://ytx0xnb7ewpw"]
+
+[ext_resource type="Script" uid="uid://b2o7w8q10stxo" path="res://scripts/data/ability.gd" id="1_ycbmi"]
+[ext_resource type="Resource" uid="uid://btirpmgomdqf" path="res://resources/abilities/stab.tres" id="2_ycbmi"]
+[ext_resource type="Resource" uid="uid://bgw0ths3t8ddy" path="res://resources/abilities/backstab.tres" id="3_fjiph"]
+[ext_resource type="Script" uid="uid://dgykeyxn7fefw" path="res://scripts/data/weapon.gd" id="3_ycsd4"]
+
+[resource]
+script = ExtResource("3_ycsd4")
+name = "Dagger"
+rarity = "common"
+abilities = Array[ExtResource("1_ycbmi")]([ExtResource("2_ycbmi"), ExtResource("3_fjiph")])
+metadata/_custom_type_script = "uid://dgykeyxn7fefw"

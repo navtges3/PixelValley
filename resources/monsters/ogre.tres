@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="Monster" load_steps=2 format=3 uid="uid://bxig3cedsllcl"]
+
+[ext_resource type="Script" uid="uid://bd6ohffno5w7r" path="res://scripts/characters/monster.gd" id="1_frc05"]
+
+[resource]
+script = ExtResource("1_frc05")
+name = "Ogre"
+base_hp = 25
+base_attack = 6
+metadata/_custom_type_script = "uid://bd6ohffno5w7r"

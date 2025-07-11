@@ -1,0 +1,52 @@
+[gd_scene load_steps=4 format=3 uid="uid://pxhpjm0rsnof"]
+
+[ext_resource type="Texture2D" uid="uid://vdpvmy1cvfnu" path="res://assets/goblin.png" id="1_5jiu2"]
+[ext_resource type="Script" uid="uid://cbwqwryr8jmjh" path="res://scripts/ui/components/monster_ui.gd" id="1_r2qmi"]
+[ext_resource type="Theme" uid="uid://c1ucxbcu36trs" path="res://assets/progress_bars/health_bar.tres" id="2_smdef"]
+
+[node name="MonsterUI" type="HBoxContainer"]
+offset_right = 297.0
+offset_bottom = 104.0
+script = ExtResource("1_r2qmi")
+
+[node name="Visual" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Picture" type="TextureRect" parent="Visual"]
+custom_minimum_size = Vector2(256, 256)
+layout_mode = 2
+texture = ExtResource("1_5jiu2")
+
+[node name="HealthBar" type="ProgressBar" parent="Visual"]
+custom_minimum_size = Vector2(256, 24)
+layout_mode = 2
+theme = ExtResource("2_smdef")
+value = 75.0
+show_percentage = false
+
+[node name="HealthLabel" type="Label" parent="Visual/HealthBar"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -11.5
+offset_right = 20.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "75/100"
+
+[node name="Stats" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="NameLabel" type="Label" parent="Stats"]
+layout_mode = 2
+text = "Name"
+
+[node name="LevelLabel" type="Label" parent="Stats"]
+layout_mode = 2
+text = "Level: 1"

@@ -1,0 +1,95 @@
+[gd_scene load_steps=5 format=3 uid="uid://bjx12sxd6xqme"]
+
+[ext_resource type="Script" uid="uid://q77kndwotwb7" path="res://scripts/ui/components/hero_ui.gd" id="1_iitki"]
+[ext_resource type="Texture2D" uid="uid://c8hydb1a47nnk" path="res://assets/knight.png" id="1_vhqxb"]
+[ext_resource type="Theme" uid="uid://c1ucxbcu36trs" path="res://assets/progress_bars/health_bar.tres" id="2_kbbf2"]
+[ext_resource type="Theme" uid="uid://sgmp1sjkesbm" path="res://assets/progress_bars/energy_bar.tres" id="4_hcc88"]
+
+[node name="HeroUI" type="HBoxContainer"]
+offset_right = 297.0
+offset_bottom = 104.0
+script = ExtResource("1_iitki")
+
+[node name="Visuals" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Picture" type="TextureRect" parent="Visuals"]
+custom_minimum_size = Vector2(256, 256)
+layout_mode = 2
+texture = ExtResource("1_vhqxb")
+
+[node name="Bars" type="VBoxContainer" parent="Visuals"]
+layout_mode = 2
+
+[node name="HealthBar" type="ProgressBar" parent="Visuals/Bars"]
+custom_minimum_size = Vector2(256, 24)
+layout_mode = 2
+theme = ExtResource("2_kbbf2")
+value = 75.0
+show_percentage = false
+
+[node name="HealthLabel" type="Label" parent="Visuals/Bars/HealthBar"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -26.0
+offset_top = -11.5
+offset_right = 26.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "75/100"
+
+[node name="EnergyBar" type="ProgressBar" parent="Visuals/Bars"]
+custom_minimum_size = Vector2(256, 24)
+layout_mode = 2
+theme = ExtResource("4_hcc88")
+value = 25.0
+show_percentage = false
+
+[node name="EnergyLabel" type="Label" parent="Visuals/Bars/EnergyBar"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -26.0
+offset_top = -11.5
+offset_right = 26.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "25/100"
+
+[node name="Stats" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="NameLabel" type="Label" parent="Stats"]
+layout_mode = 2
+text = "Name"
+
+[node name="ClassLabel" type="Label" parent="Stats"]
+layout_mode = 2
+text = "Class"
+
+[node name="WeaponLabel" type="Label" parent="Stats"]
+layout_mode = 2
+text = "Weapon"
+
+[node name="LevelLabel" type="Label" parent="Stats"]
+layout_mode = 2
+text = "Level: 1"
+
+[node name="XPLabel" type="Label" parent="Stats"]
+layout_mode = 2
+text = "Xp: 0"
+
+[node name="ActiveEffectsLabel" type="Label" parent="Stats"]
+layout_mode = 2
+text = "Active Effects:"

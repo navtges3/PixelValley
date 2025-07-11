@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="Monster" load_steps=2 format=3 uid="uid://dm48acoifufc0"]
+
+[ext_resource type="Script" uid="uid://bd6ohffno5w7r" path="res://scripts/characters/monster.gd" id="1_a5h8a"]
+
+[resource]
+script = ExtResource("1_a5h8a")
+name = "Goblin"
+base_hp = 10
+base_attack = 3
+metadata/_custom_type_script = "uid://bd6ohffno5w7r"

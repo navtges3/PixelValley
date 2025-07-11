@@ -1,0 +1,18 @@
+# Godot
+.import/
+export.cfg
+export_presets.cfg
+*.tmp
+*.translation
+*.import
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Godot version control metadata
+.godot/
+
+# Optional: If you're using temporary save files or builds
+*.exe
+*.pck

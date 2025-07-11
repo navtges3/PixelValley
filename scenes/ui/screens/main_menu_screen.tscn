@@ -1,0 +1,81 @@
+[gd_scene load_steps=8 format=3 uid="uid://4w3ilq3htolk"]
+
+[ext_resource type="Script" uid="uid://dys5afffxgfu0" path="res://scripts/ui/screens/main_menu_screen.gd" id="1_4vbu3"]
+[ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://assets/button_themes/large/large_green_button.tres" id="2_pfh6i"]
+[ext_resource type="Theme" uid="uid://dqwm8agt87lsh" path="res://assets/button_themes/large/large_blue_button.tres" id="3_7hl0s"]
+[ext_resource type="Theme" uid="uid://phfh7c5hwx1n" path="res://assets/button_themes/large/large_yellow_button.tres" id="4_3cs86"]
+[ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://assets/button_themes/large/large_red_button.tres" id="5_bd2wy"]
+[ext_resource type="PackedScene" uid="uid://bxmcs3dj7nfvs" path="res://scenes/ui/popups/options_popup.tscn" id="6_pqlu1"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_l72w3"]
+font_size = 32
+
+[node name="MainMenuScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 120.0
+offset_top = 80.0
+offset_right = 1032.0
+offset_bottom = 568.0
+script = ExtResource("1_4vbu3")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 120
+theme_override_constants/margin_top = 80
+theme_override_constants/margin_right = 120
+theme_override_constants/margin_bottom = 80
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 5
+alignment = 1
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+text = "Welcome to Village Defense"
+label_settings = SubResource("LabelSettings_l72w3")
+horizontal_alignment = 1
+
+[node name="New Game" type="Button" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(96, 32)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "Start a new game!"
+theme = ExtResource("2_pfh6i")
+text = "New Game"
+
+[node name="Load Game" type="Button" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(96, 32)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("3_7hl0s")
+text = "Load Game
+"
+
+[node name="Options" type="Button" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(96, 32)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("4_3cs86")
+text = "Options"
+
+[node name="Exit Game" type="Button" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(96, 32)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("5_bd2wy")
+text = "Exit Game"
+
+[node name="OptionsPopup" parent="." instance=ExtResource("6_pqlu1")]
+visible = false

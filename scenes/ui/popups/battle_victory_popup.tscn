@@ -1,0 +1,38 @@
+[gd_scene load_steps=4 format=3 uid="uid://i13p0dcm5xx0"]
+
+[ext_resource type="Script" uid="uid://bva6rvsdfvro1" path="res://scripts/ui/popups/battle_victory_popup.gd" id="1_b4ntk"]
+[ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://assets/button_themes/large/large_green_button.tres" id="2_6pkpi"]
+[ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://assets/button_themes/large/large_red_button.tres" id="4_hlvmy"]
+
+[node name="BattleVictoryPopup" type="Window"]
+size = Vector2i(200, 100)
+wrap_controls = true
+borderless = true
+popup_window = true
+script = ExtResource("1_b4ntk")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 200.0
+offset_bottom = 96.0
+
+[node name="Label" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "Continue Fighting?"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="RetreatButton" type="Button" parent="VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(96, 32)
+layout_mode = 2
+theme = ExtResource("4_hlvmy")
+text = "Retreat"
+
+[node name="ContinueButton" type="Button" parent="VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(96, 32)
+layout_mode = 2
+theme = ExtResource("2_6pkpi")
+text = "Continue"

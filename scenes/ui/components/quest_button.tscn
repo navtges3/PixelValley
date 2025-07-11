@@ -1,0 +1,64 @@
+[gd_scene load_steps=4 format=3 uid="uid://b1lo3melqrof5"]
+
+[ext_resource type="Theme" uid="uid://c8c0de0nb2jpw" path="res://assets/quest_buttons/quest_theme.tres" id="1_rw38i"]
+[ext_resource type="Script" uid="uid://drqjhcxw8bady" path="res://scripts/ui/components/quest_button.gd" id="2_t2kcf"]
+[ext_resource type="Theme" uid="uid://dt061liomdmcl" path="res://assets/quest_buttons/selected_theme.tres" id="3_csax7"]
+
+[node name="QuestButton" type="Button"]
+custom_minimum_size = Vector2(700, 100)
+offset_right = 700.0
+offset_bottom = 100.0
+theme = ExtResource("1_rw38i")
+script = ExtResource("2_t2kcf")
+default_theme = ExtResource("1_rw38i")
+selected_theme = ExtResource("3_csax7")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 5
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(190, 90)
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Title" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Title"
+
+[node name="Reward" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 1, 0, 1)
+text = "Reward"
+
+[node name="Penalty" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0, 0, 1)
+text = "Penalty"
+
+[node name="Description" type="Label" parent="MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(350, 90)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Description"
+autowrap_mode = 2
+
+[node name="Monsters" type="Label" parent="MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(125, 0)
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_vertical = 1
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Monsters"

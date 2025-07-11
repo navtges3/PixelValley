@@ -1,0 +1,11 @@
+{
+	"editor.tabSize": 4,
+	"editor.insertSpaces": true,
+	"files.associations": {
+		"*.gd": "gdscript"
+	},
+    "godotTools.editorPath.godot4": "c:\\Users\\navtg\\Godot_v4.4.1-stable_win64.exe\\Godot_v4.4.1-stable_win64.exe",
+    "[gdscript]": {
+		"editor.defaultFormatter": "geequlim.godot-tools"
+    },
+}

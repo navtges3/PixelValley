@@ -1,0 +1,76 @@
+[gd_scene load_steps=5 format=3 uid="uid://drfo358w28805"]
+
+[ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://assets/button_themes/large/large_green_button.tres" id="1_cxbtw"]
+[ext_resource type="Script" uid="uid://cx6f1gwrmrobb" path="res://scripts/ui/popups/save_slot_popup.gd" id="1_fws76"]
+[ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://assets/button_themes/large/large_red_button.tres" id="2_fws76"]
+[ext_resource type="Theme" uid="uid://cft0f4juvuxpt" path="res://assets/button_themes/specialty/delete_button.tres" id="3_125ci"]
+
+[node name="SaveGamePopup" type="Window"]
+size = Vector2i(132, 179)
+wrap_controls = true
+exclusive = true
+borderless = true
+script = ExtResource("1_fws76")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Label" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "Save Game"
+horizontal_alignment = 1
+
+[node name="GridContainer" type="GridContainer" parent="VBoxContainer"]
+layout_mode = 2
+columns = 2
+
+[node name="SaveSlotButton1" type="Button" parent="VBoxContainer/GridContainer"]
+custom_minimum_size = Vector2(96, 32)
+layout_mode = 2
+theme = ExtResource("1_cxbtw")
+text = "Save Slot 1"
+
+[node name="DeleteSlotButton1" type="Button" parent="VBoxContainer/GridContainer"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+size_flags_horizontal = 0
+theme = ExtResource("3_125ci")
+text = "
+"
+
+[node name="SaveSlotButton2" type="Button" parent="VBoxContainer/GridContainer"]
+custom_minimum_size = Vector2(96, 32)
+layout_mode = 2
+theme = ExtResource("1_cxbtw")
+text = "Save Slot 2"
+
+[node name="DeleteSlotButton2" type="Button" parent="VBoxContainer/GridContainer"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+size_flags_horizontal = 0
+theme = ExtResource("3_125ci")
+text = "
+"
+
+[node name="SaveSlotButton3" type="Button" parent="VBoxContainer/GridContainer"]
+custom_minimum_size = Vector2(96, 32)
+layout_mode = 2
+theme = ExtResource("1_cxbtw")
+text = "Save Slot 3"
+
+[node name="DeleteSlotButton3" type="Button" parent="VBoxContainer/GridContainer"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+size_flags_horizontal = 0
+theme = ExtResource("3_125ci")
+text = "
+"
+
+[node name="BackButton" type="Button" parent="VBoxContainer/GridContainer"]
+custom_minimum_size = Vector2(96, 32)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+theme = ExtResource("2_fws76")
+text = "Back"
