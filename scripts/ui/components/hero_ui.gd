@@ -17,9 +17,9 @@ var hero: HeroInstance = null
 
 func set_hero_info(hero_ref: HeroInstance):
 	hero = hero_ref
-	update()
+	refresh()
 
-func update() -> void:
+func refresh() -> void:
 	name_label.text = hero.hero_name
 	class_label.text = hero.hero_class.hero_class_name
 	picture.texture = hero.hero_class.portrait
