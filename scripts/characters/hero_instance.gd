@@ -142,11 +142,6 @@ func take_damage(amount: int) -> void:
 func heal(amount: int) -> void:
 	self.current_hp = min(self.current_hp + amount, self.max_hp)
 
-func get_hp_percentage() -> float:
-	if self.max_hp == 0:
-		return 0.0
-	return float(self.current_hp) / float(self.max_hp)
-
 func is_alive() -> bool:
 	return self.current_hp > 0
 

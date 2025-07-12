@@ -17,25 +17,18 @@ var hero: HeroInstance = null
 
 func set_hero_info(hero_ref: HeroInstance):
 	hero = hero_ref
-	name_label.text = hero.hero_name
-	class_label.text = hero.hero_class.hero_class_name
-	weapon_label.text = hero.weapon.name
-	level_label.text = "Level: " + str(hero.level)
-	experience_label.text = "XP: " + str(hero.experience)
-	picture.texture = hero.hero_class.portrait
 	update()
 
 func update() -> void:
+	name_label.text = hero.hero_name
+	class_label.text = hero.hero_class.hero_class_name
+	picture.texture = hero.hero_class.portrait
+	weapon_label.text = hero.weapon.name
+	level_label.text = "Level: " + str(hero.level)
+	experience_label.text = "XP: " + str(hero.experience)
 	update_health_bar()
 	update_energy_bar()
-	experience_label.text = "XP: " + str(hero.experience)
-	var active_effects_text = "Active Effects: "
-	if hero.active_effects.size() == 0:
-		active_effects_text += "None"
-	else:
-		for effect in hero.active_effects:
-			active_effects_text += "\n%s (Strength: %s, Duration: %s)" % [str(effect.effect), str(effect.strength), str(effect.duration)]
-	active_effects_label.text = active_effects_text
+	update_active_effects()
 
 func update_health_bar():
 	var value = hero.current_hp
@@ -50,3 +43,12 @@ func update_energy_bar():
 	energy_bar.max_value = max_value
 	energy_bar.value = value
 	energy_label.text = "%d / %d" % [value, max_value]
+
+func update_active_effects():
+	var active_effects_text = "Active Effects: "
+	if hero.active_effects.size() == 0:
+		active_effects_text += "None"
+	else:
+		for effect in hero.active_effects:
+			active_effects_text += "\n%s (Strength: %s, Duration: %s)" % [str(effect.effect), str(effect.strength), str(effect.duration)]
+	active_effects_label.text = active_effects_text

@@ -4,7 +4,7 @@ class_name AttackAbility
 @export var accuracy: float
 @export var damage: int
 
-func apply_attack(target: Resource, attack_modifier: int = 0) -> bool:
+func apply_attack(target: RefCounted, attack_modifier: int = 0) -> bool:
 	if not use():
 		print("%s is still on cooldown." % self.name)
 		return false

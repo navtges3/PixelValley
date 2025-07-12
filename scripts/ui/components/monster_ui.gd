@@ -11,11 +11,14 @@ var monster: Monster
 
 func set_monster_info(monster_ref: Monster):
 	monster = monster_ref
-	name_label.text = monster.name
-	level_label = "Level: " + str(monster.level)
 	update()
 
 func update() -> void:
+	name_label.text = monster.name
+	level_label.text = "Level: " + str(monster.level)
+	update_health_bar()
+
+func update_health_bar():
 	var value = monster.current_hp
 	var max_value = monster.max_hp
 	health_bar.max_value = max_value
