@@ -26,8 +26,10 @@ var monster: Monster
 var current_quest: Quest
 
 func _ready() -> void:
+	hero = GameState.hero
+	current_quest = GameState.current_quest
+
 	victory_popup.continue_button.pressed.connect(_on_victory_popup_continue_pressed)
-	# Connect buttons
 	pause_button.pressed.connect(_on_pause_button_pressed)
 	ability_button.toggled.connect(_on_ability_button_toggled)
 	rest_button.pressed.connect(_on_rest_button_pressed)
@@ -39,20 +41,29 @@ func _ready() -> void:
 	battle_manager.monster_turn.connect(_on_monster_turn)
 	battle_manager.quest_completed.connect(_on_quest_completed)
 	battle_manager.hero_defeated.connect(_on_hero_defeated)
-	start_battle()
+	battle_manager.battle_log_updated.connect(_on_battle_log_updated)
+	battle_manager.hero_updated.connect(_on_hero_updated)
+	battle_manager.monster_updated.connect(_on_monster_updated)
 
-func start_battle():
-	hero = GameState.hero
-	current_quest = GameState.current_quest
-	monster = MonsterLoader.get_monster(current_quest.get_monster(), hero.level)
-	# Set combatant information
-	hero_ui.set_hero_info(hero)
+	battle_manager.start_battle(hero, current_quest)
+
+func _on_battle_log_updated(msg: String) -> void:
+	$ActionArea/BattleLog.append_text(msg + "\n")
+
+func _on_hero_updated(hero_ref: HeroInstance) -> void:
+	hero_ui.set_hero_info(hero_ref)
+
+func _on_monster_updated(monster_ref: Monster) -> void:
+	monster_ui.set_monster_info(monster_ref)
+
+func _on_new_monster(monster_ref: Monster) -> void:
+	monster = monster_ref
 	monster_ui.set_monster_info(monster)
 
-	var battle_log = $ActionArea/BattleLog
-
-	# Start the battle
-	battle_manager.start_battle(hero, monster_ui, current_quest, battle_log)
+func _on_monster_slain(monster_name: String) -> void:
+	print("%s was slain!" % monster_name)
+	quest_bar.update_bar()
+	victory_popup.popup_centered()
 
 func _on_ability_button_toggled(button_pressed: bool):
 	if button_pressed:
@@ -95,25 +106,13 @@ func _on_victory_popup_continue_pressed() -> void:
 	battle_manager.get_new_monster()
 	battle_manager.start_player_turn()
 
-func _on_monster_slain(monster_name: String) -> void:
-	print("%s was slain!" % monster_name)
-	quest_bar.update_bar()
-	victory_popup.popup_centered()
-
-func _on_new_monster(monster_ref: Monster) -> void:
-	monster_ui.set_monster_info(monster_ref)
-
 func _on_player_turn():
-	hero_ui.update()
-	monster_ui.update()
 	ability_button.disabled = not hero.can_use_abilities()
 	item_button.disabled = true
 	rest_button.disabled = false
 	flee_button.disabled = false
 
 func _on_monster_turn():
-	hero_ui.update()
-	monster_ui.update()
 	ability_button.disabled = true
 	item_button.disabled = true
 	rest_button.disabled = true
