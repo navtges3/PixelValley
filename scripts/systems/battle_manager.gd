@@ -34,28 +34,12 @@ func player_ability_selected(ability_name: String) -> void:
 	if state != BattleState.PLAYER_TURN:
 		return
 	# Find the ability by name
-	var ability = hero.get_ability_by_name(ability_name)
-	if ability and hero.can_use_ability(ability_name):
-		emit_signal("battle_log_updated", "Hero uses %s!" % ability_name)
-
-		if ability is AttackAbility:
-			var old_hp = monster.current_hp
-			if ability.apply_attack(monster, hero.attack_modifier):
-				hero.use_energy(ability.energy_cost)
-				var damage = old_hp - monster.current_hp
-				emit_signal("battle_log_updated", "%s took %d damage" % [monster.name, damage])
-				emit_signal("monster_updated", monster)
-				emit_signal("hero_updated", hero)
-			end_player_turn()
-
-		elif ability is UtilityAbility:
-			if ability.apply_utility(hero):
-				hero.use_energy(ability.energy_cost)
-				emit_signal("battle_log_updated", "%s applied %s to self." % [hero.hero_name, ability.utility_effect])
-				emit_signal("hero_updated", hero)
-			end_player_turn()
-	else:
-		emit_signal("battle_log_updated", "You can't use %s." % ability_name)
+	var result := hero.use_ability(ability_name, monster)
+	emit_signal("battle_log_updated", result.message)
+	if result.success:
+		emit_signal("monster_updated", monster)
+		emit_signal("hero_updated", hero)
+		end_player_turn()
 
 func rest() -> void:
 	if state != BattleState.PLAYER_TURN:
