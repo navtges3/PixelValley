@@ -87,7 +87,6 @@ func create_ability_button(ability: Ability) -> Button:
 
 func _on_ability_button_toggled(button_pressed: bool):
 	if button_pressed:
-		print("toggled")
 		ability_option_list.visible = true
 		# Clear prefious buttons
 		for child in ability_option_list.get_children():
@@ -97,7 +96,6 @@ func _on_ability_button_toggled(button_pressed: bool):
 			var btn = create_ability_button(ability)
 			ability_option_list.add_child(btn)
 	else:
-		print("not toggled")
 		ability_option_list.visible = false
 
 func _on_ability_selected(ability_name):
@@ -110,14 +108,7 @@ func _on_rest_button_pressed() -> void:
 
 func _on_flee_button_pressed() -> void:
 	current_quest.fail_quest()
-	_quest_finished()
-
-func _on_victory_popup_continue_pressed() -> void:
-	battle_manager.get_new_monster()
-	battle_manager.start_player_turn()
-
-func _on_victory_popup_retreat_pressed() -> void:
-	ScreenManager.go_to_screen("village")
+	ScreenManager.go_to_screen("quest_finished")
 
 func _on_player_turn():
 	ability_button.disabled = not hero.can_use_abilities()
@@ -133,14 +124,18 @@ func _on_monster_turn():
 
 func _on_quest_completed():
 	print("Quest completed!")
-	_quest_finished()
+	ScreenManager.go_to_screen("quest_finished")
 
 func _on_hero_defeated():
 	print("Hero defeated!")
 	ScreenManager.go_to_screen("defeat")
 
-func _quest_finished():
-	ScreenManager.go_to_screen("quest_finished")
+func _on_victory_popup_continue_pressed() -> void:
+	battle_manager.get_new_monster()
+	battle_manager.start_player_turn()
+
+func _on_victory_popup_retreat_pressed() -> void:
+	ScreenManager.go_to_screen("village")
 
 func _on_pause_button_pressed() -> void:
 	pause_popup.popup_centered()
