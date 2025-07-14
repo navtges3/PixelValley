@@ -21,3 +21,6 @@ func update_cooldown() -> void:
 	if self.current_cooldown > 0:
 		print(" - Ability %s is on cooldown for %d turns." % [self.name, self.current_cooldown])
 		self.current_cooldown -= 1
+
+func get_tooltip() -> String:
+	return "Energy cost: %d\nCooldown: %d" % [self.energy_cost, self.cooldown]

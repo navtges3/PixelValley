@@ -79,7 +79,7 @@ func create_ability_button(ability: Ability) -> Button:
 		button_text += " cd: " + str(ability.current_cooldown)
 		button.disabled = true
 	else:
-		button.tooltip_text = "Energy: %d\nCooldown: %d turns" % [ability.energy_cost, ability.cooldown]
+		button.tooltip_text = ability.get_tooltip()
 	button.text = button_text
 	button.custom_minimum_size = Vector2(96, 32)
 	button.pressed.connect(_on_ability_selected.bind(ability.name))
