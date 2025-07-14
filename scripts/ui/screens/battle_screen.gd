@@ -66,6 +66,25 @@ func _on_monster_slain(monster_name: String) -> void:
 	quest_bar.update_bar()
 	victory_popup.popup_centered()
 
+func create_ability_button(ability: Ability) -> Button:
+	var button := Button.new()
+	if ability is AttackAbility:
+		button.theme = preload("res://assets/button_themes/large/large_red_button.tres")
+	elif ability is UtilityAbility:
+		button.theme = preload("res://assets/button_themes/large/large_green_button.tres")
+	else:
+		button.theme = preload("res://assets/button_themes/large/large_gray_button.tres")
+	var button_text = ability.name
+	if not ability.is_ready():
+		button_text += " cd: " + str(ability.current_cooldown)
+		button.disabled = true
+	else:
+		button.tooltip_text = "Energy: %d\nCooldown: %d turns" % [ability.energy_cost, ability.cooldown]
+	button.text = button_text
+	button.custom_minimum_size = Vector2(96, 32)
+	button.pressed.connect(_on_ability_selected.bind(ability.name))
+	return button
+
 func _on_ability_button_toggled(button_pressed: bool):
 	if button_pressed:
 		print("toggled")
@@ -75,17 +94,7 @@ func _on_ability_button_toggled(button_pressed: bool):
 			child.queue_free()
 		# Add a new button for each ability
 		for ability: Ability in hero.weapon.abilities:
-			var action_text: String = ability.name
-			var btn = Button.new()
-			if not ability.is_ready():
-				action_text += " cd: " + str(ability.current_cooldown)
-				btn.disabled = true
-			else:
-				btn.tooltip_text = "Energy: %d\nCooldown: %d turns" % [ability.energy_cost, ability.cooldown]
-			btn.text = action_text
-			btn.theme = preload("res://assets/button_themes/large/large_red_button.tres")
-			btn.custom_minimum_size = Vector2(96, 32)
-			btn.pressed.connect(_on_ability_selected.bind(action_text))
+			var btn = create_ability_button(ability)
 			ability_option_list.add_child(btn)
 	else:
 		print("not toggled")
