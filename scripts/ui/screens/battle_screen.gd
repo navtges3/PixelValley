@@ -117,7 +117,7 @@ func _on_victory_popup_continue_pressed() -> void:
 	battle_manager.start_player_turn()
 
 func _on_victory_popup_retreat_pressed() -> void:
-	call_deferred("_to_village_screen")
+	ScreenManager.go_to_screen("village")
 
 func _on_player_turn():
 	ability_button.disabled = not hero.can_use_abilities()
@@ -137,19 +137,10 @@ func _on_quest_completed():
 
 func _on_hero_defeated():
 	print("Hero defeated!")
-	call_deferred("_to_defeat_screen")
+	ScreenManager.go_to_screen("defeat")
 
 func _quest_finished():
-	call_deferred("_to_quest_finished_screen")
-
-func _to_village_screen():
-	get_tree().change_scene_to_file("res://scenes/ui/screens/village_screen.tscn")
-
-func _to_defeat_screen():
-	get_tree().change_scene_to_file("res://scenes/ui/screens/defeat_screen.tscn")
-
-func _to_quest_finished_screen():
-	get_tree().change_scene_to_file("res://scenes/ui/screens/quest_finished_screen.tscn")
+	ScreenManager.go_to_screen("quest_finished")
 
 func _on_pause_button_pressed() -> void:
 	pause_popup.popup_centered()
