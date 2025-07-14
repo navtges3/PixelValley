@@ -1,6 +1,7 @@
 extends Window
 
 signal continue_pressed
+signal retreat_pressed
 
 @onready var retreat_button = $VBoxContainer/HBoxContainer/RetreatButton
 @onready var continue_button = $VBoxContainer/HBoxContainer/ContinueButton
@@ -16,4 +17,5 @@ func _on_continue_button_pressed() -> void:
 	emit_signal("continue_pressed")
 
 func _on_retreat_button_pressed() -> void:
-	get_tree().change_scene_to_file("res://scenes/ui/screens/village_screen.tscn")
+	hide()
+	emit_signal("retreat_pressed")

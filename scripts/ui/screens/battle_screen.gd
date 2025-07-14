@@ -29,7 +29,8 @@ func _ready() -> void:
 	hero = GameState.hero
 	current_quest = GameState.current_quest
 
-	victory_popup.continue_button.pressed.connect(_on_victory_popup_continue_pressed)
+	victory_popup.continue_pressed.connect(_on_victory_popup_continue_pressed)
+	victory_popup.retreat_pressed.connect(_on_victory_popup_retreat_pressed)
 	pause_button.pressed.connect(_on_pause_button_pressed)
 	ability_button.toggled.connect(_on_ability_button_toggled)
 	rest_button.pressed.connect(_on_rest_button_pressed)
@@ -106,6 +107,9 @@ func _on_victory_popup_continue_pressed() -> void:
 	battle_manager.get_new_monster()
 	battle_manager.start_player_turn()
 
+func _on_victory_popup_retreat_pressed() -> void:
+	call_deferred("_to_village_screen")
+
 func _on_player_turn():
 	ability_button.disabled = not hero.can_use_abilities()
 	item_button.disabled = true
@@ -124,9 +128,18 @@ func _on_quest_completed():
 
 func _on_hero_defeated():
 	print("Hero defeated!")
-	get_tree().change_scene_to_file("res://scenes/ui/screens/defeat_screen.tscn")
+	call_deferred("_to_defeat_screen")
 
 func _quest_finished():
+	call_deferred("_to_quest_finished_screen")
+
+func _to_village_screen():
+	get_tree().change_scene_to_file("res://scenes/ui/screens/village_screen.tscn")
+
+func _to_defeat_screen():
+	get_tree().change_scene_to_file("res://scenes/ui/screens/defeat_screen.tscn")
+
+func _to_quest_finished_screen():
 	get_tree().change_scene_to_file("res://scenes/ui/screens/quest_finished_screen.tscn")
 
 func _on_pause_button_pressed() -> void:
