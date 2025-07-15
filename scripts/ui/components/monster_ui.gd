@@ -14,6 +14,7 @@ func set_monster_info(monster_ref: Monster):
 	refresh()
 
 func refresh() -> void:
+	picture.texture = monster.portrait
 	name_label.text = monster.name
 	level_label.text = "Level: " + str(monster.level)
 	update_health_bar()
