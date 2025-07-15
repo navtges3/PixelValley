@@ -25,7 +25,7 @@ func _ready() -> void:
 	new_quest_button.pressed.connect(_on_new_quest_button_pressed)
 
 func _on_village_button_pressed() -> void:
-	get_tree().change_scene_to_file("res://scenes/ui/screens/village_screen.tscn")
+	ScreenManager.go_to_screen("village")
 
 func _on_new_quest_button_pressed() -> void:
-	get_tree().change_scene_to_file("res://scenes/ui/screens/quest_screen.tscn")
+	ScreenManager.go_to_screen("quest")

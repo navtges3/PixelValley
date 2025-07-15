@@ -18,10 +18,10 @@ func _ready() -> void:
 	exit_button.pressed.connect(_on_exit_button_pressed)
 
 func _on_new_game_button_pressed():
-	get_tree().change_scene_to_file("res://scenes/ui/screens/new_game_screen.tscn")
+	ScreenManager.go_to_screen("new_game")
 
 func _on_load_game_button_pressed():
-	get_tree().change_scene_to_file("res://scenes/ui/screens/load_game_screen.tscn")
+	ScreenManager.go_to_screen("load_game")
 
 func _on_options_button_pressed():
 	options_popup.popup_centered()

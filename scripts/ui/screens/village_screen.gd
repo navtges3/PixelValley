@@ -19,7 +19,7 @@ func _on_pause_pressed():
 	pause_popup.popup_centered()
 
 func _on_quests_pressed():
-	get_tree().change_scene_to_file("res://scenes/ui/screens/quest_screen.tscn")
+	ScreenManager.go_to_screen("quest")
 
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_cancel") and not pause_popup.is_visible():

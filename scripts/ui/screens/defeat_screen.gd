@@ -13,4 +13,4 @@ func _ready() -> void:
 	main_menu_button.pressed.connect(_on_main_menu_button_pressed)
 
 func _on_main_menu_button_pressed() -> void:
-	get_tree().change_scene_to_file("res://scenes/ui/screens/main_menu_screen.tscn")
+	ScreenManager.go_to_screen("main_menu")

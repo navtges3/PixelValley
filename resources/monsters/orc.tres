@@ -1,5 +1,6 @@
-[gd_resource type="Resource" script_class="Monster" load_steps=2 format=3 uid="uid://yrw5qgu7qwe0"]
+[gd_resource type="Resource" script_class="Monster" load_steps=3 format=3 uid="uid://yrw5qgu7qwe0"]
 
+[ext_resource type="Texture2D" uid="uid://ced3cfcakcx6o" path="res://assets/orc.png" id="1_0ed2k"]
 [ext_resource type="Script" uid="uid://bd6ohffno5w7r" path="res://scripts/characters/monster.gd" id="1_wfseu"]
 
 [resource]
@@ -7,4 +8,5 @@ script = ExtResource("1_wfseu")
 name = "Orc"
 base_hp = 18
 base_attack = 4
+portrait = ExtResource("1_0ed2k")
 metadata/_custom_type_script = "uid://bd6ohffno5w7r"

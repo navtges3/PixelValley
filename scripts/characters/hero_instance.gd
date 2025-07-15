@@ -73,16 +73,48 @@ func update_cooldown() -> void:
 	if self.weapon:
 		self.weapon.update_cooldown()
 
-func use_ability(ability_name: String, target: Monster) -> bool:
+func use_ability(ability_name: String, target: Monster) -> Dictionary:
 	for ability in self.weapon.abilities:
-		if ability.name == ability_name and self.current_nrg >= ability.energy_cost:
-			if ability.use():
-				target.take_damage(ability.damage)
-				self.current_nrg -= ability.energy_cost
-				return true
+		if ability.name == ability_name:
+			if not ability.is_ready():
+				return {
+					"success": false,
+					"message": "Ability '%s' is on cooldown." % ability.name
+				}
+			if ability.energy_cost > self.current_nrg:
+				return {
+					"success": false,
+					"message": "Not enough energy to use '%s'." % ability.name
+				}
+			# Ability is ready to use
+			if ability is AttackAbility:
+				var damage_dealt = ability.apply_attack(target, self.attack_modifier)
+				self.use_energy(ability.energy_cost)
+				return {
+					"success": true,
+					"message": "Used %s on %s, dealing %d damage." % [ability.name, target.name, damage_dealt]
+				}
+			elif ability is UtilityAbility:
+				if ability.apply_utility(self):
+					self.use_energy(ability.energy_cost)
+					return {
+						"success": true,
+						"message": "Used %s on self, applying %s effect for %d turns." % [ability.name, ability.utility_effect, ability.duration]
+					}
+				else:
+					return {
+						"success": false,
+						"message": "Utility ability failed to apply."
+					}
 			else:
-				push_error("Ability '%s' is not ready to use." % ability_name)
-	return false
+				return {
+					"success": false,
+					"message": "Unknown ability type."
+				}
+	return {
+		"success": false,
+		"message": "Ability '%s' not found." % ability_name
+	}
 
 func get_ability_by_name(ability_name: String) -> Ability:
 	for ability in self.weapon.abilities:
@@ -141,11 +173,6 @@ func take_damage(amount: int) -> void:
 
 func heal(amount: int) -> void:
 	self.current_hp = min(self.current_hp + amount, self.max_hp)
-
-func get_hp_percentage() -> float:
-	if self.max_hp == 0:
-		return 0.0
-	return float(self.current_hp) / float(self.max_hp)
 
 func is_alive() -> bool:
 	return self.current_hp > 0
