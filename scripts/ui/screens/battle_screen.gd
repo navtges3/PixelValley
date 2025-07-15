@@ -36,8 +36,6 @@ func _ready() -> void:
 	rest_button.pressed.connect(_on_rest_button_pressed)
 	flee_button.pressed.connect(_on_flee_button_pressed)
 
-	battle_manager.monster_slain.connect(_on_monster_slain)
-	battle_manager.new_monster.connect(_on_new_monster)
 	battle_manager.player_turn.connect(_on_player_turn)
 	battle_manager.monster_turn.connect(_on_monster_turn)
 	battle_manager.quest_completed.connect(_on_quest_completed)
@@ -45,6 +43,8 @@ func _ready() -> void:
 	battle_manager.battle_log_updated.connect(_on_battle_log_updated)
 	battle_manager.hero_updated.connect(_on_hero_updated)
 	battle_manager.monster_updated.connect(_on_monster_updated)
+	battle_manager.new_monster.connect(_on_new_monster)
+	battle_manager.monster_slain.connect(_on_monster_slain)
 
 	battle_manager.start_battle(hero, current_quest)
 
