@@ -55,7 +55,7 @@ func _on_class_selected(selected_class: HeroClass) -> void:
 	check_create_button_state()
 
 func _on_back_button_pressed() -> void:
-	get_tree().change_scene_to_file("res://scenes/ui/screens/main_menu_screen.tscn")
+	ScreenManager.go_to_screen("main_menu")
 
 func _on_create_button_pressed() -> void:
 	var hero_inst = HeroInstance.create_new(hero_name.text, hero_class_selected)
@@ -63,10 +63,7 @@ func _on_create_button_pressed() -> void:
 	save_game_popup.popup_centered()
 
 func _on_game_saved(_slot: int):
-	call_deferred("_to_village_screen")
-
-func _to_village_screen():
-	get_tree().change_scene_to_file("res://scenes/ui/screens/village_screen.tscn")
+	ScreenManager.go_to_screen("village")
 
 func _on_line_edit_text_changed(_new_text):
 	check_create_button_state()

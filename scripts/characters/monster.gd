@@ -1,10 +1,11 @@
-extends Resource
+extends RefCounted
 
 class_name Monster
 
 @export var name: String
 @export var base_hp: int
 @export var base_attack: int
+@export var portrait: Texture2D = null
 var level := 1
 var max_hp: int
 var current_hp: int
@@ -24,11 +25,6 @@ func heal(amount: int) -> void:
 
 func get_attack_damage() -> int:
 	return int(base_attack * level)
-
-func get_hp_percentage() -> float:
-	if max_hp == 0:
-		return 0.0
-	return float(current_hp) / float(max_hp)
 
 func is_alive() -> bool:
 	return current_hp > 0

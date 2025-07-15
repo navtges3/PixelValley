@@ -26,57 +26,76 @@ var monster: Monster
 var current_quest: Quest
 
 func _ready() -> void:
-	victory_popup.continue_button.pressed.connect(_on_victory_popup_continue_pressed)
-	# Connect buttons
+	hero = GameState.hero
+	current_quest = GameState.current_quest
+
+	victory_popup.continue_pressed.connect(_on_victory_popup_continue_pressed)
+	victory_popup.retreat_pressed.connect(_on_victory_popup_retreat_pressed)
 	pause_button.pressed.connect(_on_pause_button_pressed)
 	ability_button.toggled.connect(_on_ability_button_toggled)
 	rest_button.pressed.connect(_on_rest_button_pressed)
 	flee_button.pressed.connect(_on_flee_button_pressed)
 
-	battle_manager.monster_slain.connect(_on_monster_slain)
-	battle_manager.new_monster.connect(_on_new_monster)
 	battle_manager.player_turn.connect(_on_player_turn)
 	battle_manager.monster_turn.connect(_on_monster_turn)
 	battle_manager.quest_completed.connect(_on_quest_completed)
 	battle_manager.hero_defeated.connect(_on_hero_defeated)
-	start_battle()
+	battle_manager.battle_log_updated.connect(_on_battle_log_updated)
+	battle_manager.hero_updated.connect(_on_hero_updated)
+	battle_manager.monster_updated.connect(_on_monster_updated)
+	battle_manager.new_monster.connect(_on_new_monster)
+	battle_manager.monster_slain.connect(_on_monster_slain)
 
-func start_battle():
-	hero = GameState.hero
-	current_quest = GameState.current_quest
-	monster = MonsterLoader.get_monster(current_quest.get_monster(), hero.level)
-	# Set combatant information
-	hero_ui.set_hero_info(hero)
+	battle_manager.start_battle(hero, current_quest)
+
+func _on_battle_log_updated(msg: String) -> void:
+	$ActionArea/BattleLog.append_text(msg + "\n")
+
+func _on_hero_updated(hero_ref: HeroInstance) -> void:
+	hero_ui.set_hero_info(hero_ref)
+
+func _on_monster_updated(monster_ref: Monster) -> void:
+	monster_ui.set_monster_info(monster_ref)
+
+func _on_new_monster(monster_ref: Monster) -> void:
+	monster = monster_ref
 	monster_ui.set_monster_info(monster)
 
-	var battle_log = $ActionArea/BattleLog
+func _on_monster_slain(monster_name: String) -> void:
+	print("%s was slain!" % monster_name)
+	quest_bar.update_bar()
+	victory_popup.popup_centered()
 
-	# Start the battle
-	battle_manager.start_battle(hero, monster_ui, current_quest, battle_log)
+func create_ability_button(ability: Ability) -> Button:
+	var button := Button.new()
+	if ability is AttackAbility:
+		button.theme = preload("res://assets/button_themes/large/large_red_button.tres")
+	elif ability is UtilityAbility:
+		button.theme = preload("res://assets/button_themes/large/large_green_button.tres")
+	else:
+		button.theme = preload("res://assets/button_themes/large/large_gray_button.tres")
+	var button_text = ability.name
+	if not ability.is_ready():
+		button_text += " cd: " + str(ability.current_cooldown)
+		button.disabled = true
+	else:
+		button.tooltip_text = ability.get_tooltip()
+	button.text = button_text
+	button.custom_minimum_size = Vector2(96, 32)
+	button.pressed.connect(_on_ability_selected.bind(ability.name))
+	return button
 
 func _on_ability_button_toggled(button_pressed: bool):
 	if button_pressed:
-		print("toggled")
 		ability_option_list.visible = true
 		# Clear prefious buttons
 		for child in ability_option_list.get_children():
 			child.queue_free()
 		# Add a new button for each ability
 		for ability: Ability in hero.weapon.abilities:
-			var action_text: String = ability.name
-			var btn = Button.new()
-			if not ability.is_ready():
-				action_text += " cd: " + str(ability.current_cooldown)
-				btn.disabled = true
-			else:
-				btn.tooltip_text = "Energy: %d\nCooldown: %d turns" % [ability.energy_cost, ability.cooldown]
-			btn.text = action_text
-			btn.theme = preload("res://assets/button_themes/large/large_red_button.tres")
-			btn.custom_minimum_size = Vector2(96, 32)
-			btn.pressed.connect(_on_ability_selected.bind(action_text))
+			var btn = create_ability_button(ability)
 			ability_option_list.add_child(btn)
 	else:
-		print("not toggled")
 		ability_option_list.visible = false
 
 func _on_ability_selected(ability_name):
@@ -89,31 +108,15 @@ func _on_rest_button_pressed() -> void:
 
 func _on_flee_button_pressed() -> void:
 	current_quest.fail_quest()
-	_quest_finished()
-
-func _on_victory_popup_continue_pressed() -> void:
-	battle_manager.get_new_monster()
-	battle_manager.start_player_turn()
-
-func _on_monster_slain(monster_name: String) -> void:
-	print("%s was slain!" % monster_name)
-	quest_bar.update_bar()
-	victory_popup.popup_centered()
-
-func _on_new_monster(monster_ref: Monster) -> void:
-	monster_ui.set_monster_info(monster_ref)
+	ScreenManager.go_to_screen("quest_finished")
 
 func _on_player_turn():
-	hero_ui.update()
-	monster_ui.update()
 	ability_button.disabled = not hero.can_use_abilities()
 	item_button.disabled = true
 	rest_button.disabled = false
 	flee_button.disabled = false
 
 func _on_monster_turn():
-	hero_ui.update()
-	monster_ui.update()
 	ability_button.disabled = true
 	item_button.disabled = true
 	rest_button.disabled = true
@@ -121,14 +124,18 @@ func _on_monster_turn():
 
 func _on_quest_completed():
 	print("Quest completed!")
-	_quest_finished()
+	ScreenManager.go_to_screen("quest_finished")
 
 func _on_hero_defeated():
 	print("Hero defeated!")
-	get_tree().change_scene_to_file("res://scenes/ui/screens/defeat_screen.tscn")
+	ScreenManager.go_to_screen("defeat")
 
-func _quest_finished():
-	get_tree().change_scene_to_file("res://scenes/ui/screens/quest_finished_screen.tscn")
+func _on_victory_popup_continue_pressed() -> void:
+	battle_manager.get_new_monster()
+	battle_manager.start_player_turn()
+
+func _on_victory_popup_retreat_pressed() -> void:
+	ScreenManager.go_to_screen("village")
 
 func _on_pause_button_pressed() -> void:
 	pause_popup.popup_centered()

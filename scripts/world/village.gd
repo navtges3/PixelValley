@@ -22,7 +22,9 @@ func get_save_data() -> Dictionary:
 		"current_hp": current_hp
 	}
 
-func load_from_data(data: Dictionary) -> void:
-	self.name = data.get("name", "Lexiton")
-	self.max_hp = data.get("max_hp", 100)
-	self.current_hp = data.get("current_hp", 100)
+static func create_from_data(data: Dictionary) -> Village:
+	var village := Village.new()
+	village.name = data.get("name", "Lexiton")
+	village.max_hp = data.get("max_hp", 100)
+	village.current_hp = data.get("current_hp", 100)
+	return village

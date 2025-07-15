@@ -23,10 +23,7 @@ func _on_options_pressed():
 func _on_exit_pressed():
 	GameState.save_game()
 	get_tree().paused = false
-	call_deferred("_go_to_main_menu")
-
-func _go_to_main_menu():
-	get_tree().change_scene_to_file("res://scenes/ui/screens/main_menu_screen.tscn")
+	ScreenManager.go_to_screen("main_menu")
 
 func _on_pause_popup_about_to_popup():
 	get_tree().paused = true

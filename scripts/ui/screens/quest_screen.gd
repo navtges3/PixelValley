@@ -72,13 +72,13 @@ func _on_failed_toggled(button_pressed: bool):
 			load_quests(current_tab)
 
 func _on_back_pressed():
-	get_tree().change_scene_to_file("res://scenes/ui/screens/village_screen.tscn")
+	ScreenManager.go_to_screen("village")
 
 func _on_start_pressed():
 	if selected_quest:
 		var quest = selected_quest.get_quest()
 		GameState.current_quest = quest
-		get_tree().change_scene_to_file("res://scenes/ui/screens/battle_screen.tscn")
+		ScreenManager.go_to_screen("battle")
 
 func _on_pause_pressed():
 	pause_popup.popup_centered()

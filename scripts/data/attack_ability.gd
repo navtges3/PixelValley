@@ -4,14 +4,18 @@ class_name AttackAbility
 @export var accuracy: float
 @export var damage: int
 
-func apply_attack(target: Resource, attack_modifier: int = 0) -> bool:
+func apply_attack(target: RefCounted, attack_modifier: int = 0) -> int:
 	if not use():
 		print("%s is still on cooldown." % self.name)
-		return false
+		return -1
 
 	if randf() > self.accuracy:
 		print("%s missed the attack on %s." % [self.name, target.name])
-		return false
+		return 0
 
-	target.take_damage(self.damage + attack_modifier)
-	return true
+	var damage_dealt = self.damage + attack_modifier
+	target.take_damage(damage_dealt)
+	return damage_dealt
+
+func get_tooltip() -> String:
+	return "Damage: %d\nAccuracy: %.2f\nEnergy Cost: %d\nCooldown: %d" % [self.damage, self.accuracy, self.energy_cost, self.cooldown]

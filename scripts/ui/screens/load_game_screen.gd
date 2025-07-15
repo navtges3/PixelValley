@@ -43,12 +43,11 @@ func update_slots():
 
 func _on_slot_pressed(slot: int) -> void:
 	GameState.load_game(slot)
-	get_tree().change_scene_to_file("res://scenes/ui/screens/village_screen.tscn")
+	ScreenManager.go_to_screen("village")
 
 func _on_delete_pressed(slot: int) -> void:
 	GameState.delete_save(slot)
 	update_slots()
 
 func _on_back_button_pressed() -> void:
-	get_tree().change_scene_to_file("res://scenes/ui/screens/main_menu_screen.tscn")
-
+	ScreenManager.go_to_screen("main_menu")
