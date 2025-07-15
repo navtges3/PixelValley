@@ -5,6 +5,7 @@ class_name Monster
 @export var name: String
 @export var base_hp: int
 @export var base_attack: int
+@export var portrait: Texture2D = null
 var level := 1
 var max_hp: int
 var current_hp: int
