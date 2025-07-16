@@ -9,7 +9,7 @@ extends Control
 func _ready() -> void:
 	options_popup.hide()
 	new_game_button.pressed.connect(_on_new_game_button_pressed)
-	if GameState.has_any_save():
+	if SaveManager.has_any_save():
 		load_game_button.disabled = false
 		load_game_button.pressed.connect(_on_load_game_button_pressed)
 	else:

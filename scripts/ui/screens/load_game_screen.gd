@@ -28,14 +28,14 @@ func _ready() -> void:
 	back_button.pressed.connect(_on_back_button_pressed)
 
 func update_slots():
-	var available_slots = GameState.get_available_save_slots(3)
+	var available_slots = SaveManager.get_existing_save_slots(SaveManager.MAX_SLOTS)
 
 	for i in range(save_buttons.size()):
 		var slot_num = i + 1
 		var button = save_buttons[i]
 
 		if slot_num in available_slots:
-			button.text = "Load Slot %d" % slot_num
+			button.text = SaveManager.load_save_slot(slot_num)
 			button.disabled = false
 		else:
 			button.text = "Empty Slot %d" % slot_num
@@ -46,7 +46,7 @@ func _on_slot_pressed(slot: int) -> void:
 	ScreenManager.go_to_screen("village")
 
 func _on_delete_pressed(slot: int) -> void:
-	GameState.delete_save(slot)
+	SaveManager.delete_save(slot)
 	update_slots()
 
 func _on_back_button_pressed() -> void:

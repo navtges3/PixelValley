@@ -33,12 +33,3 @@ func load_game(slot: int) -> void:
 	if not hero or not village:
 		push_error("Failed to load game data. Invalid hero or village.")
 	save_slot = slot
-
-func delete_save(slot: int) -> void:
-	SaveManager.delete_save(slot)
-
-func has_any_save(max_slots: int = 3) -> bool:
-	return SaveManager.has_any_save(max_slots)
-
-func get_available_save_slots(max_slots: int = 3) -> Array:
-	return SaveManager.get_existing_save_slots(max_slots)
