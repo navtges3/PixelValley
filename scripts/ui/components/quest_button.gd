@@ -23,7 +23,7 @@ func set_data(q: Quest):
 
 	var penalty_text = ""
 	for penalty_name in self.quest.penalty.keys():
-		penalty_text += "%s: -%s\n" % [penalty_name, self.quest.penalty[penalty_name]]
+		penalty_text += "%s: -%d\n" % [penalty_name, self.quest.penalty[penalty_name]]
 	$MarginContainer/HBoxContainer/VBoxContainer/Penalty.text = penalty_text.strip_edges()
 
 func get_quest() -> Quest:
