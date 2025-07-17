@@ -1,12 +1,11 @@
-[gd_resource type="Resource" script_class="UtilityAbility" load_steps=2 format=3 uid="uid://cyjan8uoi3whx"]
+[gd_resource type="Resource" script_class="UtilityAbility" load_steps=3 format=3 uid="uid://cyjan8uoi3whx"]
 
 [ext_resource type="Script" uid="uid://be3du183tjgh8" path="res://scripts/data/utility_ability.gd" id="1_jh7du"]
+[ext_resource type="Resource" uid="uid://b4e4pu435hdgp" path="res://resources/effects/minor_heal.tres" id="1_o3ftf"]
 
 [resource]
 script = ExtResource("1_jh7du")
-utility_effect = "heal"
-strength = 5
-duration = 3
+effect = ExtResource("1_o3ftf")
 name = "Bandage"
 energy_cost = 3
 cooldown = 5

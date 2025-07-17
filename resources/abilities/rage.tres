@@ -1,12 +1,11 @@
-[gd_resource type="Resource" script_class="UtilityAbility" load_steps=2 format=3 uid="uid://b6t4wtwttgy71"]
+[gd_resource type="Resource" script_class="UtilityAbility" load_steps=3 format=3 uid="uid://b6t4wtwttgy71"]
 
 [ext_resource type="Script" uid="uid://be3du183tjgh8" path="res://scripts/data/utility_ability.gd" id="1_bmtfg"]
+[ext_resource type="Resource" uid="uid://c5yq2abijh0st" path="res://resources/effects/minor_dmg_buff.tres" id="1_x0aa5"]
 
 [resource]
 script = ExtResource("1_bmtfg")
-utility_effect = "buff_attack"
-strength = 5
-duration = 3
+effect = ExtResource("1_x0aa5")
 name = "Rage"
 energy_cost = 3
 cooldown = 5

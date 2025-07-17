@@ -8,7 +8,7 @@ func apply_utility(target: RefCounted) -> bool:
 		print("%s is still on cooldown." % self.name)
 		return false
 
-	target.apply_effect(effect.type, effect.strength, effect.duration)
+	target.apply_effect(effect)
 	return true
 
 func get_tooltip() -> String:

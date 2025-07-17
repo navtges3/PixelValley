@@ -11,7 +11,7 @@ var current_nrg: int = 0
 var level: int = 1
 var experience: int = 0
 var weapon: Weapon = null
-var active_effects: Array = []
+var active_effects: Array[Effect] = []
 var attack_modifier: int = 0
 
 static func create_new(hero_name_in: String, hero_class_in: HeroClass) -> HeroInstance:
@@ -99,7 +99,7 @@ func use_ability(ability_name: String, target: Monster) -> Dictionary:
 					self.use_energy(ability.energy_cost)
 					return {
 						"success": true,
-						"message": "Used %s on self, applying %s effect for %d turns." % [ability.name, ability.utility_effect, ability.duration]
+						"message": "Used %s on self, applying %s effect for %d turns." % [ability.name, ability.effect.type_to_string(), ability.effect.duration]
 					}
 				else:
 					return {
@@ -135,34 +135,30 @@ func can_use_abilities() -> bool:
 			return true
 	return false
 
-func apply_effect(effect: String, strength: int, duration: int) -> void:
-	if duration <= 0:
+func apply_effect(effect: Effect) -> void:
+	if effect.duration <= 0:
 		return
 
-	active_effects.append({
-		"effect": effect,
-		"strength": strength,
-		"duration": duration
-	})
+	active_effects.append(effect)
 
-	print("Applied effect '%s' with strength %d for %d turns." % [effect, strength, duration])
+	print("Applied effect '%s' with strength %d for %d turns." % [effect.type_to_string(), effect.strength, effect.duration])
 
 func process_active_effects() -> void:
 	self.attack_modifier = 0  # Reset attack modifier each turn
 	for i in active_effects.size():
 		var effect = active_effects[i]
-		print("Processing effect '%s' with strength %d, duration %d" % [effect.effect, effect.strength, effect.duration])
-		match effect.effect:
-			"heal":
+		print("Processing effect '%s' with strength %d, duration %d" % [effect.type_to_string(), effect.strength, effect.duration])
+		match effect.type:
+			Effect.EffectType.HEAL:
 				print("Healing effect applied.")
 				self.heal(effect.strength)
-			"buff_attack":
+			Effect.EffectType.BUFF_ATTACK:
 				print("Attack buff applied.")
 				self.attack_modifier += effect.strength
 		effect.duration -= 1
 		if effect.duration <= 0:
 			active_effects.remove_at(i)
-			print("Effect '%s' has expired." % effect.effect)
+			print("Effect '%s' has expired." % effect.type_to_string())
 
 func rest() -> void:
 	self.heal(int(self.max_hp * 0.5))

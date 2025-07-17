@@ -50,7 +50,7 @@ func update_active_effects():
 		active_effects_text += "None"
 	else:
 		for effect in hero.active_effects:
-			active_effects_text += "\n%s %d" % [str(effect.effect), effect.strength]
+			active_effects_text += "\n%s %d" % [effect.type_to_string(), effect.strength]
 			if effect.duration > 1:
 				active_effects_text += ", %d turns" % effect.duration
 			else:
