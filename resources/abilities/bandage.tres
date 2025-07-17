@@ -6,7 +6,7 @@
 script = ExtResource("1_jh7du")
 utility_effect = "heal"
 strength = 5
-duration = 2
+duration = 3
 name = "Bandage"
 energy_cost = 3
 cooldown = 5
