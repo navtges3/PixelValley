@@ -25,6 +25,8 @@ static func create_new(hero_name_in: String, hero_class_in: HeroClass) -> HeroIn
 	hero_instance.max_nrg = hero_class_in.base_max_nrg
 	hero_instance.current_nrg = hero_instance.max_nrg
 	hero_instance.weapon = hero_class_in.base_weapon
+	for potion in hero_class_in.base_potion_belt:
+		hero_instance.add_potion(potion)
 	return hero_instance
 
 static func create_from_data(data: Dictionary) -> HeroInstance:
