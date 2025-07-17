@@ -18,7 +18,7 @@ func set_data(q: Quest):
 
 	var obj_text = ""
 	for enemy in self.quest.monsters.keys():
-		obj_text += "%s %s/%s\n" % [enemy, self.quest.monsters[enemy]["slain"], self.quest.monsters[enemy]["objective"]]
+		obj_text += "%s %d/%d\n" % [enemy, self.quest.monsters[enemy]["slain"], self.quest.monsters[enemy]["objective"]]
 	$MarginContainer/HBoxContainer/Monsters.text = obj_text.strip_edges()
 
 	var penalty_text = ""
