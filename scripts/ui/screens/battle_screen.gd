@@ -71,6 +71,7 @@ func _on_monster_slain(monster_name: String) -> void:
 
 func _on_ability_button_toggled(button_pressed: bool):
 	if button_pressed:
+		item_button.button_pressed = false
 		option_list.visible = true
 		for child in option_list.get_children():
 			child.queue_free()
@@ -82,6 +83,7 @@ func _on_ability_button_toggled(button_pressed: bool):
 
 func _on_item_button_toggled(button_pressed: bool):
 	if button_pressed:
+		ability_button.button_pressed = false
 		option_list.visible = true
 		for child in option_list.get_children():
 			child.queue_free()
