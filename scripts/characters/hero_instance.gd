@@ -55,6 +55,11 @@ static func create_from_data(data: Dictionary) -> HeroInstance:
 			return null
 	else:
 		hero_instance.weapon = null
+	var belt_data = data.get("potion_belt", null)
+	if belt_data:
+		hero_instance.potion_belt = PotionBelt.create_from_data(belt_data)
+	else:
+		hero_instance.potion_belt = PotionBelt.new()
 	return hero_instance
 
 func get_save_data() -> Dictionary:
@@ -68,6 +73,7 @@ func get_save_data() -> Dictionary:
 		"level": self.level,
 		"experience": self.experience,
 		"weapon": self.weapon.resource_path if self.weapon else "",
+		"potion_belt": self.potion_belt.get_save_data(),
 	}
 
 func update_cooldown() -> void:

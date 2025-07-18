@@ -29,3 +29,18 @@ func has_potions() -> bool:
 		if slot.count > 0:
 			return true
 	return false
+
+func get_save_data() -> Dictionary:
+	var potion_data_array: Array = []
+	for slot in potions:
+		potion_data_array.append(slot.get_save_data())
+	return {
+		"potions": potion_data_array
+	}
+
+static func create_from_data(data: Dictionary) -> PotionBelt:
+	var belt = PotionBelt.new()
+	var saved_potions: Array = data.get("potions", [])
+	for slot_data in saved_potions:
+		belt.potions.append(PotionStack.create_from_data(slot_data))
+	return belt
