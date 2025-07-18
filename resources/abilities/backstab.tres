@@ -6,7 +6,7 @@
 script = ExtResource("1_aa6tt")
 accuracy = 0.9
 damage = 8
-name = "Stab"
+name = "Backstab"
 energy_cost = 2
 cooldown = 3
 metadata/_custom_type_script = "uid://bmecp5v7jxnvq"
