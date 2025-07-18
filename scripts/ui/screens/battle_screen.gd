@@ -49,6 +49,7 @@ func _ready() -> void:
 	battle_manager.new_monster.connect(_on_new_monster)
 	battle_manager.monster_slain.connect(_on_monster_slain)
 
+	empty_option_list()
 	battle_manager.start_battle(hero, current_quest)
 
 func _on_battle_log_updated(msg: String) -> void:
@@ -73,8 +74,7 @@ func _on_ability_button_toggled(button_pressed: bool):
 	if button_pressed:
 		item_button.button_pressed = false
 		option_list.visible = true
-		for child in option_list.get_children():
-			child.queue_free()
+		empty_option_list()
 		for ability: Ability in hero.weapon.abilities:
 			var btn = create_ability_button(ability)
 			option_list.add_child(btn)
@@ -85,8 +85,7 @@ func _on_item_button_toggled(button_pressed: bool):
 	if button_pressed:
 		ability_button.button_pressed = false
 		option_list.visible = true
-		for child in option_list.get_children():
-			child.queue_free()
+		empty_option_list()
 		for potion: Potion in hero.potion_belt.get_potions():
 			var btn = create_potion_button(potion)
 			option_list.add_child(btn)
@@ -146,6 +145,10 @@ func _on_pause_button_pressed() -> void:
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_cancel") and not pause_popup.is_visible():
 		_on_pause_button_pressed()
+
+func empty_option_list() -> void:
+	for child in option_list.get_children():
+			child.queue_free()
 
 func create_ability_button(ability: Ability) -> Button:
 	var button := ActionButtonScene.instantiate()
