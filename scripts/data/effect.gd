@@ -1,7 +1,7 @@
 extends Resource
 class_name Effect
 
-enum EffectType { HEAL, BUFF_ATTACK }
+enum EffectType { HEAL, ENERGY, BUFF_ATTACK }
 
 @export var type: EffectType
 @export var strength: int = 0
@@ -11,6 +11,8 @@ func type_to_string() -> String:
 	match type:
 		Effect.EffectType.HEAL:
 			return "Heal"
+		Effect.EffectType.ENERGY:
+			return "Energy"
 		Effect.EffectType.BUFF_ATTACK:
 			return "Buff Attack"
 	return "Unknown"
@@ -25,6 +27,8 @@ func get_button_theme() -> Theme:
 	match type:
 		Effect.EffectType.HEAL:
 			return preload("res://assets/button_themes/large/large_green_button.tres")
+		Effect.EffectType.ENERGY:
+			return preload("res://assets/button_themes/large/large_blue_button.tres")
 		Effect.EffectType.BUFF_ATTACK:
 			return preload("res://assets/button_themes/large/large_red_button.tres")
 	return preload("res://assets/button_themes/large/large_gray_button.tres")

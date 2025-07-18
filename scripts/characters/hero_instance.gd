@@ -162,20 +162,21 @@ func use_potion(potion: Potion) -> Dictionary:
 func apply_effect(effect: Effect) -> void:
 	if effect.duration <= 0:
 		return
-
 	active_effects.append(effect)
-
 	print("Applied effect '%s' with strength %d for %d turns." % [effect.type_to_string(), effect.strength, effect.duration])
 
 func process_active_effects() -> void:
 	self.attack_modifier = 0  # Reset attack modifier each turn
-	for i in active_effects.size():
+	for i in range(active_effects.size() - 1, -1, -1):
 		var effect = active_effects[i]
 		print("Processing effect '%s' with strength %d, duration %d" % [effect.type_to_string(), effect.strength, effect.duration])
 		match effect.type:
 			Effect.EffectType.HEAL:
 				print("Healing effect applied.")
 				self.heal(effect.strength)
+			Effect.EffectType.ENERGY:
+				print("Energy effect applied.")
+				self.recover_energy(effect.strength)
 			Effect.EffectType.BUFF_ATTACK:
 				print("Attack buff applied.")
 				self.attack_modifier += effect.strength
