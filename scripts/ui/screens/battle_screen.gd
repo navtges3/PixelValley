@@ -15,11 +15,13 @@ extends Control
 
 # Action Area
 @onready var ability_button = $ActionArea/LeftPanel/AbilityButton
-@onready var item_button = $ActionArea/LeftPanel/ItemButton
+@onready var item_button = $ActionArea/LeftPanel/ItemButton #TODO Make this button pop out a list of potions in the heroes potion belt if pressed and the hero has potions
 @onready var rest_button = $ActionArea/LeftPanel/RestButton
 @onready var flee_button = $ActionArea/LeftPanel/FleeButton
 
-@onready var ability_option_list = $ActionArea/MiddlePanel/OptionList
+@onready var option_list = $ActionArea/MiddlePanel/OptionList
+
+var ActionButtonScene := preload("res://scenes/ui/components/action_button.tscn")
 
 var hero: HeroInstance
 var monster: Monster
@@ -33,6 +35,7 @@ func _ready() -> void:
 	victory_popup.retreat_pressed.connect(_on_victory_popup_retreat_pressed)
 	pause_button.pressed.connect(_on_pause_button_pressed)
 	ability_button.toggled.connect(_on_ability_button_toggled)
+	item_button.toggled.connect(_on_item_button_toggled)
 	rest_button.pressed.connect(_on_rest_button_pressed)
 	flee_button.pressed.connect(_on_flee_button_pressed)
 
@@ -66,42 +69,40 @@ func _on_monster_slain(monster_name: String) -> void:
 	quest_bar.update_bar()
 	victory_popup.popup_centered()
 
-func create_ability_button(ability: Ability) -> Button:
-	var button := Button.new()
-	if ability is AttackAbility:
-		button.theme = preload("res://assets/button_themes/large/large_red_button.tres")
-	elif ability is UtilityAbility:
-		button.theme = preload("res://assets/button_themes/large/large_green_button.tres")
-	else:
-		button.theme = preload("res://assets/button_themes/large/large_gray_button.tres")
-	var button_text = ability.name
-	if not ability.is_ready():
-		button_text += " cd: " + str(ability.current_cooldown)
-		button.disabled = true
-	else:
-		button.tooltip_text = ability.get_tooltip()
-	button.text = button_text
-	button.custom_minimum_size = Vector2(96, 32)
-	button.pressed.connect(_on_ability_selected.bind(ability.name))
-	return button
-
 func _on_ability_button_toggled(button_pressed: bool):
 	if button_pressed:
-		ability_option_list.visible = true
-		# Clear prefious buttons
-		for child in ability_option_list.get_children():
+		option_list.visible = true
+		for child in option_list.get_children():
 			child.queue_free()
-		# Add a new button for each ability
 		for ability: Ability in hero.weapon.abilities:
 			var btn = create_ability_button(ability)
-			ability_option_list.add_child(btn)
+			option_list.add_child(btn)
 	else:
-		ability_option_list.visible = false
+		option_list.visible = false
 
-func _on_ability_selected(ability_name):
-	print("Ability selected:", ability_name)
-	battle_manager.player_ability_selected(ability_name)
-	ability_button.button_pressed = false
+func _on_item_button_toggled(button_pressed: bool):
+	if button_pressed:
+		option_list.visible = true
+		for child in option_list.get_children():
+			child.queue_free()
+		for potion: Potion in hero.potion_belt.get_potions():
+			var btn = create_potion_button(potion)
+			option_list.add_child(btn)
+	else:
+		option_list.visible = false
+
+func _on_action_button_pressed(action_data: Dictionary):
+	if action_data.has("type"):
+		if action_data.type == "ability":
+			var ability_name = action_data.ability.name
+			print("Ability selected: ", ability_name)
+			battle_manager.player_ability_selected(ability_name)
+			ability_button.button_pressed = false
+		elif action_data.type == "potion":
+			var potion = action_data.potion
+			print("Potion selected: ", potion)
+			battle_manager.player_potion_selected(potion)
+			item_button.button_pressed = false
 
 func _on_rest_button_pressed() -> void:
 	battle_manager.rest()
@@ -112,7 +113,7 @@ func _on_flee_button_pressed() -> void:
 
 func _on_player_turn():
 	ability_button.disabled = not hero.can_use_abilities()
-	item_button.disabled = true
+	item_button.disabled = not hero.potion_belt.has_potions()
 	rest_button.disabled = false
 	flee_button.disabled = false
 
@@ -143,3 +144,38 @@ func _on_pause_button_pressed() -> void:
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_cancel") and not pause_popup.is_visible():
 		_on_pause_button_pressed()
+
+func create_ability_button(ability: Ability) -> Button:
+	var button := ActionButtonScene.instantiate()
+	# Set the button theme
+	if ability is AttackAbility:
+		button.theme = preload("res://assets/button_themes/large/large_red_button.tres")
+	elif ability is UtilityAbility:
+		button.theme = preload("res://assets/button_themes/large/large_green_button.tres")
+	else:
+		button.theme = preload("res://assets/button_themes/large/large_gray_button.tres")
+	# Set the button text
+	var button_text = ability.name
+	if ability.is_ready():
+		button.tooltip_text = ability.get_tooltip()
+	else:
+		button_text += " cd: " + str(ability.current_cooldown)
+		button.disabled = true
+	button.custom_minimum_size = Vector2(96, 32)
+	button.setup({
+		"type": "ability",
+		"ability": ability
+	}, button_text)
+	button.connect("action_pressed", Callable(self, "_on_action_button_pressed"))
+	return button
+
+func create_potion_button(potion: Potion) -> Button:
+	var button := ActionButtonScene.instantiate()
+	button.theme = potion.effect.get_button_theme()
+	button.setup({
+		"type": "potion",
+		"potion": potion
+	}, potion.name)
+	button.connect("action_pressed", Callable(self, "_on_action_button_pressed"))
+	return button
+

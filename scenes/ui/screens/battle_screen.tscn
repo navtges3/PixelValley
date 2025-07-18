@@ -97,6 +97,7 @@ layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme = ExtResource("8_qmdt6")
+toggle_mode = true
 text = "Use Item"
 
 [node name="RestButton" type="Button" parent="ActionArea/LeftPanel"]

@@ -41,6 +41,15 @@ func player_ability_selected(ability_name: String) -> void:
 		emit_signal("hero_updated", hero)
 		end_player_turn()
 
+func player_potion_selected(potion: Potion) -> void:
+	if state != BattleState.PLAYER_TURN:
+		return
+	var result := hero.use_potion(potion)
+	emit_signal("battle_log_updated", result.message)
+	if result.success:
+		emit_signal("hero_updated", hero)
+		end_player_turn()
+
 func rest() -> void:
 	if state != BattleState.PLAYER_TURN:
 		return

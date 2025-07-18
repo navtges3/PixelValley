@@ -16,3 +16,16 @@ func add_potion(potion: Potion, amount: int = 1) -> void:
 			slot.count += amount
 			return
 	potions.append(PotionStack.new(potion, amount))
+
+func get_potions() -> Array[Potion]:
+	var arr: Array[Potion] = []
+	for slot in potions:
+		if slot.count > 0:
+			arr.append(slot.potion)
+	return arr
+
+func has_potions() -> bool:
+	for slot in potions:
+		if slot.count > 0:
+			return true
+	return false

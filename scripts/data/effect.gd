@@ -20,3 +20,11 @@ func get_tooltip() -> String:
 		return "%s %d, %d turns" % [self.type_to_string(), strength, duration]
 	else:
 		return "%s %d, %d turn" % [self.type_to_string(), strength, duration]
+
+func get_button_theme() -> Theme:
+	match type:
+		Effect.EffectType.HEAL:
+			return preload("res://assets/button_themes/large/large_green_button.tres")
+		Effect.EffectType.BUFF_ATTACK:
+			return preload("res://assets/button_themes/large/large_red_button.tres")
+	return preload("res://assets/button_themes/large/large_gray_button.tres")
