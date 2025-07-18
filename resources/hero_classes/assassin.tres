@@ -1,10 +1,22 @@
-[gd_resource type="Resource" script_class="HeroClass" load_steps=6 format=3 uid="uid://cu34b5ss4uxqx"]
+[gd_resource type="Resource" script_class="HeroClass" load_steps=9 format=3 uid="uid://cu34b5ss4uxqx"]
 
 [ext_resource type="Resource" uid="uid://ytx0xnb7ewpw" path="res://resources/weapons/dagger.tres" id="1_6tudf"]
-[ext_resource type="Script" uid="uid://dvmhh34nbwxaq" path="res://scripts/data/potion.gd" id="1_gnp75"]
+[ext_resource type="Script" uid="uid://biov58ed5u2cl" path="res://scripts/data/potion_stack.gd" id="1_ssn0r"]
 [ext_resource type="Script" uid="uid://dxuvbmp4rxuu3" path="res://scripts/characters/hero_class.gd" id="2_6tudf"]
 [ext_resource type="Resource" uid="uid://cyiqwotfm3gq6" path="res://resources/potions/minor_health_potion.tres" id="2_ssn0r"]
+[ext_resource type="Script" uid="uid://dtq5qv68u8xff" path="res://scripts/data/potion_belt.gd" id="3_gvwys"]
 [ext_resource type="Texture2D" uid="uid://onvyq0o8uo1i" path="res://assets/assassin.png" id="4_gvwys"]
+
+[sub_resource type="Resource" id="Resource_ilyst"]
+script = ExtResource("1_ssn0r")
+potion = ExtResource("2_ssn0r")
+count = 3
+metadata/_custom_type_script = "uid://biov58ed5u2cl"
+
+[sub_resource type="Resource" id="Resource_huemw"]
+script = ExtResource("3_gvwys")
+potions = Array[ExtResource("1_ssn0r")]([SubResource("Resource_ilyst")])
+metadata/_custom_type_script = "uid://dtq5qv68u8xff"
 
 [resource]
 script = ExtResource("2_6tudf")
@@ -12,6 +24,6 @@ hero_class_name = "Assassin"
 base_max_hp = 25
 base_max_nrg = 10
 base_weapon = ExtResource("1_6tudf")
-base_potion_belt = Array[ExtResource("1_gnp75")]([ExtResource("2_ssn0r")])
+base_potion_belt = SubResource("Resource_huemw")
 portrait = ExtResource("4_gvwys")
 metadata/_custom_type_script = "uid://dxuvbmp4rxuu3"
