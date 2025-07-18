@@ -1,12 +1,18 @@
-[gd_resource type="Resource" script_class="UtilityAbility" load_steps=2 format=3 uid="uid://cyjan8uoi3whx"]
+[gd_resource type="Resource" script_class="UtilityAbility" load_steps=4 format=3 uid="uid://cyjan8uoi3whx"]
 
 [ext_resource type="Script" uid="uid://be3du183tjgh8" path="res://scripts/data/utility_ability.gd" id="1_jh7du"]
+[ext_resource type="Script" uid="uid://c5deti4sb2k2j" path="res://scripts/data/effect.gd" id="1_o3ftf"]
+
+[sub_resource type="Resource" id="Resource_v8nxg"]
+script = ExtResource("1_o3ftf")
+type = 0
+strength = 5
+duration = 3
+metadata/_custom_type_script = "uid://c5deti4sb2k2j"
 
 [resource]
 script = ExtResource("1_jh7du")
-utility_effect = "heal"
-strength = 5
-duration = 2
+effect = SubResource("Resource_v8nxg")
 name = "Bandage"
 energy_cost = 3
 cooldown = 5

@@ -30,7 +30,7 @@ func _ready() -> void:
 	back_button.pressed.connect(_on_back_button_pressed)
 
 func update_slots():
-	var available_slots = GameState.get_available_save_slots(3)
+	var available_slots = SaveManager.get_existing_save_slots(SaveManager.MAX_SLOTS)
 
 	for i in range(save_buttons.size()):
 		var slot_num = i + 1
@@ -49,7 +49,7 @@ func _on_save_pressed(slot: int) -> void:
 	emit_signal("game_saved", slot)
 
 func _on_delete_pressed(slot: int) -> void:
-	GameState.delete_save(slot)
+	SaveManager.delete_save(slot)
 	update_slots()
 
 func _on_back_button_pressed() -> void:
