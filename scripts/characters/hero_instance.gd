@@ -87,20 +87,25 @@ func use_ability(ability_name: String, target: Monster) -> Dictionary:
 			if not ability.is_ready():
 				return {
 					"success": false,
-					"message": "Ability '%s' is on cooldown." % ability.name
+					"message": "%s is on cooldown." % ability.name
 				}
 			if ability.energy_cost > self.current_nrg:
 				return {
 					"success": false,
-					"message": "Not enough energy to use '%s'." % ability.name
+					"message": "Not enough energy to use %s." % ability.name
 				}
 			# Ability is ready to use
 			if ability is AttackAbility:
 				var damage_dealt = ability.apply_attack(target, self.attack_modifier)
 				self.use_energy(ability.energy_cost)
+				var message := "Used %s on %s, " % [ability.name, target.name]
+				if damage_dealt > 0:
+					message += "dealing %d damage." %  damage_dealt
+				else:
+					message += "%s missed!" % ability.name
 				return {
 					"success": true,
-					"message": "Used %s on %s, dealing %d damage." % [ability.name, target.name, damage_dealt]
+					"message": message
 				}
 			elif ability is UtilityAbility:
 				if ability.apply_utility(self):

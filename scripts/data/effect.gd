@@ -12,7 +12,7 @@ func type_to_string() -> String:
 		Effect.EffectType.HEAL:
 			return "Heal"
 		Effect.EffectType.ENERGY:
-			return "Energy"
+			return "Recover Energy"
 		Effect.EffectType.BUFF_ATTACK:
 			return "Buff Attack"
 	return "Unknown"

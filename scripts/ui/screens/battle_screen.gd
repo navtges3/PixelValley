@@ -177,6 +177,7 @@ func create_ability_button(ability: Ability) -> Button:
 func create_potion_button(potion: Potion) -> Button:
 	var button := ActionButtonScene.instantiate()
 	button.theme = potion.effect.get_button_theme()
+	button.tooltip_text = potion.effect.get_tooltip()
 	button.setup({
 		"type": "potion",
 		"potion": potion
