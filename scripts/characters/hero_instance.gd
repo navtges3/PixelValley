@@ -11,7 +11,7 @@ var current_nrg: int = 0
 var level: int = 1
 var experience: int = 0
 var weapon: Weapon = null
-var potion_belt: Array[Dictionary] = [] # Each dictionary: { "potion": Potion, "count": int }
+var potion_belt: Array[PotionStack] = []
 var active_effects: Array[Effect] = []
 var attack_modifier: int = 0
 
@@ -139,19 +139,17 @@ func can_use_abilities() -> bool:
 	return false
 
 func add_potion(potion: Potion) -> void:
-	for entry in potion_belt:
-		if entry["potion"] == potion:
-			entry["count"] += 1
+	for stack in potion_belt:
+		if stack.potion == potion:
+			stack.count += 1
 			return
-	potion_belt.append({"potion": potion, "count": 1})
+	potion_belt.append(PotionStack.new(potion))
 
 func use_potion(potion_name: String) -> Dictionary:
-	for i in potion_belt.size():
-		if potion_belt[i]["potion"].name == potion_name:
-			apply_effect(potion_belt[i]["potion"].effect)
-			potion_belt[i]["count"] -= 1
-			if potion_belt[i]["count"] == 0:
-				potion_belt.remove_at(i)
+	for stack in potion_belt:
+		if stack.potion.name == potion_name and stack.count > 0:
+			apply_effect(stack.potion.effect)
+			stack.count -= 1
 			return {
 				"success": true,
 				"message": "%s drank a %s" % [self.hero_name, potion_name]
