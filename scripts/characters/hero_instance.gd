@@ -11,7 +11,7 @@ var current_nrg: int = 0
 var level: int = 1
 var experience: int = 0
 var weapon: Weapon = null
-var potion_belt: Array[PotionStack] = []
+var potion_belt: PotionBelt
 var active_effects: Array[Effect] = []
 var attack_modifier: int = 0
 
@@ -25,8 +25,8 @@ static func create_new(hero_name_in: String, hero_class_in: HeroClass) -> HeroIn
 	hero_instance.max_nrg = hero_class_in.base_max_nrg
 	hero_instance.current_nrg = hero_instance.max_nrg
 	hero_instance.weapon = hero_class_in.base_weapon
-	for potion in hero_class_in.base_potion_belt:
-		hero_instance.add_potion(potion)
+	for potion_stack in hero_class_in.base_potion_belt.potions:
+		hero_instance.potion_belt.add_potion(potion_stack.potion, potion_stack.count)
 	return hero_instance
 
 static func create_from_data(data: Dictionary) -> HeroInstance:
@@ -138,25 +138,20 @@ func can_use_abilities() -> bool:
 			return true
 	return false
 
-func add_potion(potion: Potion) -> void:
-	for stack in potion_belt:
-		if stack.potion == potion:
-			stack.count += 1
-			return
-	potion_belt.append(PotionStack.new(potion))
+func add_potion(potion: Potion, amount: int = 1) -> void:
+	potion_belt.add_potion(potion, amount)
 
-func use_potion(potion_name: String) -> Dictionary:
-	for stack in potion_belt:
-		if stack.potion.name == potion_name and stack.count > 0:
-			apply_effect(stack.potion.effect)
-			stack.count -= 1
-			return {
-				"success": true,
-				"message": "%s drank a %s" % [self.hero_name, potion_name]
-			}
+func use_potion(potion: Potion) -> Dictionary:
+	var effect = potion_belt.use_potion(potion)
+	if effect:
+		apply_effect(effect)
+		return {
+			"success": true,
+			"message": "%s drank a %s" % [self.hero_name, potion.name]
+		}
 	return {
 		"success": false,
-		"message": "%s does not have a %s" % [self.hero_name, potion_name]
+		"message": "%s does not have a %s" % [self.hero_name, potion.name]
 	}
 
 func apply_effect(effect: Effect) -> void:
