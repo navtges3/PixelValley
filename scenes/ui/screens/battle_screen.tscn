@@ -97,6 +97,7 @@ layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme = ExtResource("8_qmdt6")
+toggle_mode = true
 text = "Use Item"
 
 [node name="RestButton" type="Button" parent="ActionArea/LeftPanel"]
@@ -117,19 +118,20 @@ theme = ExtResource("10_c2ins")
 text = "Flee"
 
 [node name="MiddlePanel" type="ScrollContainer" parent="ActionArea"]
-custom_minimum_size = Vector2(96, 0)
 layout_mode = 2
-size_flags_horizontal = 3
+horizontal_scroll_mode = 0
 
 [node name="OptionList" type="VBoxContainer" parent="ActionArea/MiddlePanel"]
 layout_mode = 2
-size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="BattleLog" type="RichTextLabel" parent="ActionArea"]
-custom_minimum_size = Vector2(900, 0)
+[node name="Button" type="Button" parent="ActionArea/MiddlePanel/OptionList"]
 layout_mode = 2
-size_flags_horizontal = 10
+text = "This is an Ability"
+
+[node name="BattleLog" type="RichTextLabel" parent="ActionArea"]
+layout_mode = 2
+size_flags_horizontal = 3
 scroll_following = true
 
 [node name="BattleManager" type="Node" parent="."]

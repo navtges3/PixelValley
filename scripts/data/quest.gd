@@ -27,7 +27,7 @@ func init_quest(t, d, m, r, p) -> Quest:
 func slay_monster(monster_name: String) -> bool:
 	if monster_name in monsters:
 		monsters_slain += 1
-		monsters[monster_name]["slain"] += 1
+		monsters[monster_name].slain += 1
 	if monsters_slain >= total_monsters:
 		completed = true
 	return completed
@@ -36,7 +36,7 @@ func get_monster() -> String:
 	var candidates := []
 	for monster_name in monsters.keys():
 		var data = monsters[monster_name]
-		if data["slain"] < data["objective"]:
+		if data.slain < data.objective:
 			candidates.append(monster_name)
 	if candidates.size() == 0:
 		return ""

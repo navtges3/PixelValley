@@ -11,7 +11,8 @@ var current_nrg: int = 0
 var level: int = 1
 var experience: int = 0
 var weapon: Weapon = null
-var active_effects: Array = []
+var potion_belt: PotionBelt
+var active_effects: Array[Effect] = []
 var attack_modifier: int = 0
 
 static func create_new(hero_name_in: String, hero_class_in: HeroClass) -> HeroInstance:
@@ -24,6 +25,7 @@ static func create_new(hero_name_in: String, hero_class_in: HeroClass) -> HeroIn
 	hero_instance.max_nrg = hero_class_in.base_max_nrg
 	hero_instance.current_nrg = hero_instance.max_nrg
 	hero_instance.weapon = hero_class_in.base_weapon
+	hero_instance.potion_belt = hero_class_in.base_potion_belt
 	return hero_instance
 
 static func create_from_data(data: Dictionary) -> HeroInstance:
@@ -53,6 +55,11 @@ static func create_from_data(data: Dictionary) -> HeroInstance:
 			return null
 	else:
 		hero_instance.weapon = null
+	var belt_data = data.get("potion_belt", null)
+	if belt_data:
+		hero_instance.potion_belt = PotionBelt.create_from_data(belt_data)
+	else:
+		hero_instance.potion_belt = PotionBelt.new()
 	return hero_instance
 
 func get_save_data() -> Dictionary:
@@ -66,6 +73,7 @@ func get_save_data() -> Dictionary:
 		"level": self.level,
 		"experience": self.experience,
 		"weapon": self.weapon.resource_path if self.weapon else "",
+		"potion_belt": self.potion_belt.get_save_data(),
 	}
 
 func update_cooldown() -> void:
@@ -99,7 +107,7 @@ func use_ability(ability_name: String, target: Monster) -> Dictionary:
 					self.use_energy(ability.energy_cost)
 					return {
 						"success": true,
-						"message": "Used %s on self, applying %s effect for %d turns." % [ability.name, ability.utility_effect, ability.duration]
+						"message": "Used %s on self, applying %s effect for %d turns." % [ability.name, ability.effect.type_to_string(), ability.effect.duration]
 					}
 				else:
 					return {
@@ -135,34 +143,47 @@ func can_use_abilities() -> bool:
 			return true
 	return false
 
-func apply_effect(effect: String, strength: int, duration: int) -> void:
-	if duration <= 0:
+func add_potion(potion: Potion, amount: int = 1) -> void:
+	potion_belt.add_potion(potion, amount)
+
+func use_potion(potion: Potion) -> Dictionary:
+	var effect = potion_belt.use_potion(potion)
+	if effect:
+		apply_effect(effect)
+		return {
+			"success": true,
+			"message": "%s drank a %s" % [self.hero_name, potion.name]
+		}
+	return {
+		"success": false,
+		"message": "%s does not have a %s" % [self.hero_name, potion.name]
+	}
+
+func apply_effect(effect: Effect) -> void:
+	if effect.duration <= 0:
 		return
-
-	active_effects.append({
-		"effect": effect,
-		"strength": strength,
-		"duration": duration
-	})
-
-	print("Applied effect '%s' with strength %d for %d turns." % [effect, strength, duration])
+	active_effects.append(effect)
+	print("Applied effect '%s' with strength %d for %d turns." % [effect.type_to_string(), effect.strength, effect.duration])
 
 func process_active_effects() -> void:
 	self.attack_modifier = 0  # Reset attack modifier each turn
-	for i in active_effects.size():
+	for i in range(active_effects.size() - 1, -1, -1):
 		var effect = active_effects[i]
-		print("Processing effect '%s' with strength %d, duration %d" % [effect.effect, effect.strength, effect.duration])
-		match effect.effect:
-			"heal":
+		print("Processing effect '%s' with strength %d, duration %d" % [effect.type_to_string(), effect.strength, effect.duration])
+		match effect.type:
+			Effect.EffectType.HEAL:
 				print("Healing effect applied.")
 				self.heal(effect.strength)
-			"buff_attack":
+			Effect.EffectType.ENERGY:
+				print("Energy effect applied.")
+				self.recover_energy(effect.strength)
+			Effect.EffectType.BUFF_ATTACK:
 				print("Attack buff applied.")
 				self.attack_modifier += effect.strength
 		effect.duration -= 1
 		if effect.duration <= 0:
 			active_effects.remove_at(i)
-			print("Effect '%s' has expired." % effect.effect)
+			print("Effect '%s' has expired." % effect.type_to_string())
 
 func rest() -> void:
 	self.heal(int(self.max_hp * 0.5))

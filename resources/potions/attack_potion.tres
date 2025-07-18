@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="Potion" load_steps=4 format=3 uid="uid://cfwejpwyn8due"]
+
+[ext_resource type="Script" uid="uid://c5deti4sb2k2j" path="res://scripts/data/effect.gd" id="1_3kt23"]
+[ext_resource type="Script" uid="uid://dvmhh34nbwxaq" path="res://scripts/data/potion.gd" id="1_axoag"]
+
+[sub_resource type="Resource" id="Resource_rpg1r"]
+script = ExtResource("1_3kt23")
+type = 2
+strength = 5
+duration = 3
+metadata/_custom_type_script = "uid://c5deti4sb2k2j"
+
+[resource]
+script = ExtResource("1_axoag")
+name = "Attack Potion"
+effect = SubResource("Resource_rpg1r")
+metadata/_custom_type_script = "uid://dvmhh34nbwxaq"

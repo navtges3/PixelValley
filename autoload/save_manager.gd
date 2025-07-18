@@ -2,6 +2,7 @@ extends Node
 class_name SaveManager
 
 const SAVE_DIR := "user://saves"
+const MAX_SLOTS := 3
 
 static func save_game(data: Dictionary, slot: int = 1) -> void:
 	var save_path = get_save_path(slot)
@@ -26,6 +27,24 @@ static func load_game(slot: int) -> Dictionary:
 		return {}
 	return data
 
+static func load_save_slot(slot: int) -> String:
+	var save_path = get_save_path(slot)
+	if FileAccess.file_exists(save_path):
+		var file = FileAccess.open(save_path, FileAccess.READ)
+		var content = file.get_as_text()
+		file.close()
+		var data = JSON.parse_string(content)
+		var hero_data = data.get("hero", {})
+		if not hero_data:
+			push_error("No Hero found in save file.")
+			return "Error"
+		var hero_name = hero_data.get("hero_name", "Unknown")
+		var hero_level = hero_data.get("level", 1)
+
+		return "%s - Lvl: %d" % [hero_name, hero_level]
+	else:
+		return "Empty Slot"
+
 static func delete_save(slot: int) -> void:
 	var save_path = get_save_path(slot)
 	if FileAccess.file_exists(save_path):
@@ -35,16 +54,16 @@ static func delete_save(slot: int) -> void:
 		else:
 			print("SaveManager: Save slot %d deleted successfully." % slot)
 
-static func get_existing_save_slots(max_slots: int = 3) -> Array:
+static func get_existing_save_slots(num_slots: int = SaveManager.MAX_SLOTS) -> Array:
 	var available_slots := []
-	for slot in range(1, max_slots + 1):
+	for slot in range(1, num_slots + 1):
 		var save_path = get_save_path(slot)
 		if FileAccess.file_exists(save_path):
 			available_slots.append(slot)
 	return available_slots
 
-static func has_any_save(max_slots: int = 3) -> bool:
-	return not get_existing_save_slots(max_slots).is_empty()
+static func has_any_save(num_slots: int = SaveManager.MAX_SLOTS) -> bool:
+	return not get_existing_save_slots(num_slots).is_empty()
 
 static func get_save_path(slot: int) -> String:
 	var saves_dir = ProjectSettings.globalize_path(SAVE_DIR)
