@@ -14,6 +14,8 @@ var weapon: Weapon = null
 var potion_belt: PotionBelt
 var active_effects: Array[Effect] = []
 var attack_modifier: int = 0
+var block_modifier: int = 0
+var dodge_modifier: int = 0
 
 static func create_new(hero_name_in: String, hero_class_in: HeroClass) -> HeroInstance:
 	print("Creating new HeroInstance with name: %s and class: %s" % [hero_name_in, hero_class_in.hero_class_name])
@@ -172,6 +174,8 @@ func apply_effect(effect: Effect) -> void:
 
 func process_active_effects() -> void:
 	self.attack_modifier = 0  # Reset attack modifier each turn
+	self.block_modifier = 0
+	self.dodge_modifier = 0
 	for i in range(active_effects.size() - 1, -1, -1):
 		var effect = active_effects[i]
 		print("Processing effect '%s' with strength %d, duration %d" % [effect.type_to_string(), effect.strength, effect.duration])
@@ -185,6 +189,12 @@ func process_active_effects() -> void:
 			Effect.EffectType.BUFF_ATTACK:
 				print("Attack buff applied.")
 				self.attack_modifier += effect.strength
+			Effect.EffectType.BUFF_BLOCK:
+				print("Block buff applied.")
+				self.block_modifier += effect.strength
+			Effect.EffectType.BUFF_DODGE:
+				print("Dodge buff applied.")
+				self.dodge_modifier += effect.strength
 		effect.duration -= 1
 		if effect.duration <= 0:
 			active_effects.remove_at(i)
