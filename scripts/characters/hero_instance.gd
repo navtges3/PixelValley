@@ -17,67 +17,6 @@ var attack_modifier: int = 0
 var block_modifier: int = 0
 var dodge_modifier: int = 0
 
-static func create_new(hero_name_in: String, hero_class_in: HeroClass) -> HeroInstance:
-	print("Creating new HeroInstance with name: %s and class: %s" % [hero_name_in, hero_class_in.hero_class_name])
-	var hero_instance = HeroInstance.new()
-	hero_instance.hero_name = hero_name_in
-	hero_instance.hero_class = hero_class_in
-	hero_instance.max_hp = hero_class_in.base_max_hp
-	hero_instance.current_hp = hero_instance.max_hp
-	hero_instance.max_nrg = hero_class_in.base_max_nrg
-	hero_instance.current_nrg = hero_instance.max_nrg
-	hero_instance.weapon = hero_class_in.base_weapon
-	hero_instance.potion_belt = hero_class_in.base_potion_belt
-	return hero_instance
-
-static func create_from_data(data: Dictionary) -> HeroInstance:
-	print("Creating HeroInstance from data: %s" % data)
-	var hero_instance = HeroInstance.new()
-	hero_instance.hero_name = data.get("hero_name", "Princess Lex")
-	var hero_class_path = data.get("hero_class_path", "")
-	if hero_class_path:
-		hero_instance.hero_class = load(hero_class_path) as HeroClass
-		if not hero_instance.hero_class:
-			push_error("Hero class path is invalid or missing.")
-			return null
-	else:
-		push_error("Hero class path is missing.")
-		return null
-	hero_instance.max_hp = data.get("max_hp", 25)
-	hero_instance.current_hp = data.get("current_hp", hero_instance.max_hp)
-	hero_instance.max_nrg = data.get("max_nrg", 10)
-	hero_instance.current_nrg = data.get("current_nrg", hero_instance.max_nrg)
-	hero_instance.level = data.get("level", 1)
-	hero_instance.experience = data.get("experience", 0)
-	var weapon_path = data.get("weapon", "")
-	if weapon_path:
-		hero_instance.weapon = load(weapon_path) as Weapon
-		if not hero_instance.weapon:
-			push_error("Weapon path is invalid or missing.")
-			return null
-	else:
-		hero_instance.weapon = null
-	var belt_data = data.get("potion_belt", null)
-	if belt_data:
-		hero_instance.potion_belt = PotionBelt.create_from_data(belt_data)
-	else:
-		hero_instance.potion_belt = PotionBelt.new()
-	return hero_instance
-
-func get_save_data() -> Dictionary:
-	return {
-		"hero_name": self.hero_name,
-		"hero_class_path": self.hero_class.resource_path if hero_class else "",
-		"max_hp": self.max_hp,
-		"current_hp": self.current_hp,
-		"max_nrg": self.max_nrg,
-		"current_nrg": self.current_nrg,
-		"level": self.level,
-		"experience": self.experience,
-		"weapon": self.weapon.resource_path if self.weapon else "",
-		"potion_belt": self.potion_belt.get_save_data(),
-	}
-
 func update_cooldown() -> void:
 	process_active_effects()
 	if self.weapon:
@@ -87,15 +26,9 @@ func use_ability(ability_name: String, target: Monster) -> Dictionary:
 	for ability in self.weapon.abilities:
 		if ability.name == ability_name:
 			if not ability.is_ready():
-				return {
-					"success": false,
-					"message": "%s is on cooldown." % ability.name
-				}
+				return {"success": false, "message": "%s is on cooldown." % ability.name}
 			if ability.energy_cost > self.current_nrg:
-				return {
-					"success": false,
-					"message": "Not enough energy to use %s." % ability.name
-				}
+				return {"success": false, "message": "Not enough energy to use %s." % ability.name}
 			# Ability is ready to use
 			if ability is AttackAbility:
 				var damage_dealt = ability.apply_attack(target, self.attack_modifier)
@@ -105,31 +38,16 @@ func use_ability(ability_name: String, target: Monster) -> Dictionary:
 					message += "dealing %d damage." %  damage_dealt
 				else:
 					message += "%s missed!" % ability.name
-				return {
-					"success": true,
-					"message": message
-				}
+				return {"success": true, "message": message}
 			elif ability is UtilityAbility:
 				if ability.apply_utility(self):
 					self.use_energy(ability.energy_cost)
-					return {
-						"success": true,
-						"message": "Used %s on self, applying %s effect for %d turns." % [ability.name, ability.effect.type_to_string(), ability.effect.duration]
-					}
+					return {"success": true, "message": "Used %s on self, applying %s effect for %d turns." % [ability.name, ability.effect.type_to_string(), ability.effect.duration]}
 				else:
-					return {
-						"success": false,
-						"message": "Utility ability failed to apply."
-					}
+					return {"success": false, "message": "Utility ability failed to apply."}
 			else:
-				return {
-					"success": false,
-					"message": "Unknown ability type."
-				}
-	return {
-		"success": false,
-		"message": "Ability '%s' not found." % ability_name
-	}
+				return {"success": false, "message": "Unknown ability type."}
+	return {"success": false, "message": "Ability '%s' not found." % ability_name}
 
 func get_ability_by_name(ability_name: String) -> Ability:
 	for ability in self.weapon.abilities:
@@ -157,14 +75,8 @@ func use_potion(potion: Potion) -> Dictionary:
 	var effect = potion_belt.use_potion(potion)
 	if effect:
 		apply_effect(effect)
-		return {
-			"success": true,
-			"message": "%s drank a %s" % [self.hero_name, potion.name]
-		}
-	return {
-		"success": false,
-		"message": "%s does not have a %s" % [self.hero_name, potion.name]
-	}
+		return {"success": true, "message": "%s drank a %s" % [self.hero_name, potion.name]}
+	return {"success": false, "message": "%s does not have a %s" % [self.hero_name, potion.name]}
 
 func apply_effect(effect: Effect) -> void:
 	if effect.duration <= 0:
@@ -238,3 +150,63 @@ func level_up() -> void:
 	self.level += 1
 	self.max_hp += 5
 	self.max_nrg += 2
+
+func get_save_data() -> Dictionary:
+	return {
+		"hero_name": self.hero_name,
+		"hero_class_path": self.hero_class.resource_path if hero_class else "",
+		"max_hp": self.max_hp,
+		"current_hp": self.current_hp,
+		"max_nrg": self.max_nrg,
+		"current_nrg": self.current_nrg,
+		"level": self.level,
+		"experience": self.experience,
+		"weapon": self.weapon.resource_path if self.weapon else "",
+		"potion_belt": self.potion_belt.get_save_data(),
+	}
+
+static func create_from_data(data: Dictionary) -> HeroInstance:
+	var hero_instance = HeroInstance.new()
+	hero_instance.hero_name = data.get("hero_name", "Princess Lex")
+	var hero_class_path = data.get("hero_class_path", "")
+	if hero_class_path:
+		hero_instance.hero_class = load(hero_class_path) as HeroClass
+		if not hero_instance.hero_class:
+			push_error("Hero class path is invalid or missing.")
+			return null
+	else:
+		push_error("Hero class path is missing.")
+		return null
+	hero_instance.max_hp = data.get("max_hp", 25)
+	hero_instance.current_hp = data.get("current_hp", hero_instance.max_hp)
+	hero_instance.max_nrg = data.get("max_nrg", 10)
+	hero_instance.current_nrg = data.get("current_nrg", hero_instance.max_nrg)
+	hero_instance.level = data.get("level", 1)
+	hero_instance.experience = data.get("experience", 0)
+	var weapon_path = data.get("weapon", "")
+	if weapon_path:
+		hero_instance.weapon = load(weapon_path) as Weapon
+		if not hero_instance.weapon:
+			push_error("Weapon path is invalid or missing.")
+			return null
+	else:
+		hero_instance.weapon = null
+	var belt_data = data.get("potion_belt", null)
+	if belt_data:
+		hero_instance.potion_belt = PotionBelt.create_from_data(belt_data)
+	else:
+		hero_instance.potion_belt = PotionBelt.new()
+	return hero_instance
+
+static func create_new(hero_name_in: String, hero_class_in: HeroClass) -> HeroInstance:
+	print("Creating new HeroInstance with name: %s and class: %s" % [hero_name_in, hero_class_in.hero_class_name])
+	var hero_instance = HeroInstance.new()
+	hero_instance.hero_name = hero_name_in
+	hero_instance.hero_class = hero_class_in
+	hero_instance.max_hp = hero_class_in.base_max_hp
+	hero_instance.current_hp = hero_instance.max_hp
+	hero_instance.max_nrg = hero_class_in.base_max_nrg
+	hero_instance.current_nrg = hero_instance.max_nrg
+	hero_instance.weapon = hero_class_in.base_weapon
+	hero_instance.potion_belt = hero_class_in.base_potion_belt
+	return hero_instance
