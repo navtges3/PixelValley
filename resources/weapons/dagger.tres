@@ -7,7 +7,9 @@
 
 [resource]
 script = ExtResource("3_ycsd4")
-name = "Dagger"
 rarity = "common"
 abilities = Array[ExtResource("1_ycbmi")]([ExtResource("2_ycbmi"), ExtResource("3_fjiph")])
+name = "Dagger"
+description = ""
+value = 0
 metadata/_custom_type_script = "uid://dgykeyxn7fefw"

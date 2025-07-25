@@ -12,6 +12,8 @@ metadata/_custom_type_script = "uid://c5deti4sb2k2j"
 
 [resource]
 script = ExtResource("2_pg3eu")
-name = "Regeneration Potion"
 effect = SubResource("Resource_qvebx")
+name = "Regeneration Potion"
+description = ""
+value = 0
 metadata/_custom_type_script = "uid://dvmhh34nbwxaq"
