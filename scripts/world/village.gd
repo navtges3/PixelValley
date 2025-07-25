@@ -2,9 +2,10 @@ extends Resource
 
 class_name Village
 
-@export var name := "Lexiton"
-@export var max_hp := 100
-@export var current_hp := 100
+@export var name: String
+@export var max_hp: int
+@export var current_hp: int
+@export var shop: Shop
 
 func take_damage(amount: int) -> void:
 	current_hp = max(current_hp - amount, 0)
@@ -19,7 +20,8 @@ func get_save_data() -> Dictionary:
 	return {
 		"name": name,
 		"max_hp": max_hp,
-		"current_hp": current_hp
+		"current_hp": current_hp,
+		"shop": shop.get_save_data()
 	}
 
 static func create_from_data(data: Dictionary) -> Village:
@@ -27,4 +29,5 @@ static func create_from_data(data: Dictionary) -> Village:
 	village.name = data.get("name", "Lexiton")
 	village.max_hp = data.get("max_hp", 100)
 	village.current_hp = data.get("current_hp", 100)
+	village.shop = Shop.create_from_data(data.get("shop"))
 	return village
