@@ -47,7 +47,7 @@ func update_energy_bar():
 func update_active_effects():
 	var active_effects_text = "Active Effects: "
 	if hero.active_effects.size() == 0:
-		active_effects_text += "None"
+		active_effects_text += "\n  None"
 	else:
 		for effect in hero.active_effects:
 			active_effects_text += "\n%s %d" % [effect.type_to_string(), effect.strength]
