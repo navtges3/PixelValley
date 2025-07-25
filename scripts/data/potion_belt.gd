@@ -1,7 +1,7 @@
 extends Resource
 class_name PotionBelt
 
-@export var potions: Array[PotionStack] = []
+@export var potions: Array[ItemStack] = []
 
 func use_potion(potion: Potion) -> Effect:
 	for slot in potions:
@@ -15,7 +15,7 @@ func add_potion(potion: Potion, amount: int = 1) -> void:
 		if slot.potion == potion:
 			slot.count += amount
 			return
-	potions.append(PotionStack.new(potion, amount))
+	potions.append(ItemStack.new(potion, amount))
 
 func get_potions() -> Array[Potion]:
 	var arr: Array[Potion] = []
@@ -42,5 +42,5 @@ static func create_from_data(data: Dictionary) -> PotionBelt:
 	var belt = PotionBelt.new()
 	var saved_potions: Array = data.get("potions", [])
 	for slot_data in saved_potions:
-		belt.potions.append(PotionStack.create_from_data(slot_data))
+		belt.potions.append(ItemStack.create_from_data(slot_data))
 	return belt
