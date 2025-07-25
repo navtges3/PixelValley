@@ -1,0 +1,71 @@
+[gd_scene load_steps=3 format=3 uid="uid://bpgflj1ophwwt"]
+
+[ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://assets/button_themes/large/large_green_button.tres" id="1_6epuk"]
+[ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://assets/button_themes/large/large_red_button.tres" id="2_ec12o"]
+
+[node name="ShopScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 50
+alignment = 1
+
+[node name="ScrollContainer" type="ScrollContainer" parent="HBoxContainer"]
+layout_mode = 2
+horizontal_scroll_mode = 0
+
+[node name="ItemList" type="VBoxContainer" parent="HBoxContainer/ScrollContainer"]
+layout_mode = 2
+
+[node name="Button" type="Button" parent="HBoxContainer/ScrollContainer/ItemList"]
+layout_mode = 2
+text = "Health Potion"
+
+[node name="Button2" type="Button" parent="HBoxContainer/ScrollContainer/ItemList"]
+layout_mode = 2
+text = "Potion of Strength"
+
+[node name="DetailPanel" type="VBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
+
+[node name="ItemNameLabel" type="Label" parent="HBoxContainer/DetailPanel"]
+layout_mode = 2
+text = "Item Name"
+
+[node name="ItemDescriptionLabel" type="Label" parent="HBoxContainer/DetailPanel"]
+layout_mode = 2
+text = "Item Descripton: This item has a powerful effect that will help the hero defeat more monsters"
+autowrap_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/DetailPanel"]
+layout_mode = 2
+
+[node name="ItemCostLabel" type="Label" parent="HBoxContainer/DetailPanel/HBoxContainer"]
+layout_mode = 2
+text = "Item Gold"
+
+[node name="SpinBox" type="SpinBox" parent="HBoxContainer/DetailPanel/HBoxContainer"]
+layout_mode = 2
+min_value = 1.0
+value = 1.0
+
+[node name="PurchaseButton" type="Button" parent="HBoxContainer/DetailPanel"]
+layout_mode = 2
+theme = ExtResource("1_6epuk")
+text = "Purchase"
+
+[node name="ExitButton" type="Button" parent="HBoxContainer/DetailPanel"]
+layout_mode = 2
+theme = ExtResource("2_ec12o")
+text = "Exit Shop"
