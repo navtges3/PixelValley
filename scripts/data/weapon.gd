@@ -1,8 +1,7 @@
-extends Resource
+extends Item
 
 class_name Weapon
 
-@export var name: String
 @export var rarity: String
 @export var abilities: Array[Ability] = []
 
