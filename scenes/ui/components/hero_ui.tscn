@@ -92,4 +92,5 @@ text = "Xp: 0"
 
 [node name="ActiveEffectsLabel" type="Label" parent="Stats"]
 layout_mode = 2
-text = "Active Effects:"
+text = "Active Effects:
+  None"
