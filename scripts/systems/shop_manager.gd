@@ -5,11 +5,14 @@ var hero: HeroInstance
 var shop: Shop
 var item_stack_selected: ItemStack
 
+signal selected_changed()
+
 func start_shop(hero_ref: HeroInstance, shop_ref: Shop) -> void:
 	hero = hero_ref
 	shop = shop_ref
 	if not shop.inventory.is_empty():
 		item_stack_selected = shop.inventory[0]
+		emit_signal("selected_changed")
 
 func can_buy_selected() -> bool:
 	if hero.gold > item_stack_selected.item.value:
@@ -29,3 +32,4 @@ func buy_item(amount: int = 1) -> void:
 			shop.inventory.remove_at(index)
 			if not shop.inventory.is_empty():
 				item_stack_selected = shop.inventory[0]
+				emit_signal("selected_changed")
