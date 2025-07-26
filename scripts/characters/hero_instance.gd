@@ -10,6 +10,7 @@ var max_nrg: int = 10
 var current_nrg: int = 0
 var level: int = 1
 var experience: int = 0
+var gold: int = 0
 var weapon: Weapon = null
 var potion_belt: PotionBelt
 var active_effects: Array[Effect] = []
