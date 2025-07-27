@@ -29,5 +29,5 @@ static func create_from_data(data: Dictionary) -> Village:
 	village.name = data.get("name", "Lexiton")
 	village.max_hp = data.get("max_hp", 100)
 	village.current_hp = data.get("current_hp", 100)
-	village.shop = Shop.create_from_data(data.get("shop"))
+	village.shop = Shop.create_from_data(data.get("shop", {}))
 	return village

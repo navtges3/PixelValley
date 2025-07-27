@@ -10,7 +10,7 @@ func has_inventory() -> bool:
 func add_item(item: Item, count: int = 1) -> void:
 	for item_stack: ItemStack in inventory:
 		if item == item_stack.item:
-			item_stack.count += 1
+			item_stack.count += count
 			return
 	var new_item := ItemStack.new(item, count)
 	inventory.append(new_item)
