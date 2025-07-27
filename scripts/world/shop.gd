@@ -26,6 +26,7 @@ func get_save_data() -> Dictionary:
 
 static func create_from_data(data: Dictionary) -> Shop:
 	var shop = Shop.new()
+	shop.name = data.get("name", "Default Shop")
 	var saved_inventory: Array = data.get("inventory", [])
 	for item_stack in saved_inventory:
 		shop.inventory.append(ItemStack.create_from_data(item_stack))

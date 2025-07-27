@@ -4,6 +4,7 @@ extends Control
 
 @onready var item_list = $HBoxContainer/ScrollContainer/ItemList
 
+@onready var shop_name_label = $ShopNameLabel
 # Detail Panel
 @onready var item_name_label = $HBoxContainer/DetailPanel/ItemNameLabel
 @onready var item_description_label = $HBoxContainer/DetailPanel/ItemDescriptionLabel
@@ -29,6 +30,7 @@ func _ready() -> void:
 	purchase_button.pressed.connect(_on_purchase_button_pressed)
 	quantity_spin_box.value_changed.connect(_on_quantity_changed)
 
+	shop_name_label.text = shop.name
 	shop_manager.hero_updated.connect(_on_hero_updated)
 	shop_manager.start_shop(hero, shop)
 	_update_item_list()
