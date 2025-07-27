@@ -37,6 +37,7 @@ script = ExtResource("2_6tudf")
 hero_class_name = "Assassin"
 base_max_hp = 25
 base_max_nrg = 10
+base_gold = 25
 base_weapon = ExtResource("1_6tudf")
 base_potion_belt = SubResource("Resource_huemw")
 portrait = ExtResource("4_gvwys")
