@@ -25,7 +25,7 @@ func buy_item(amount: int = 1) -> void:
 		item_stack_selected.count -= amount
 		hero.gold -= item_stack_selected.item.value * amount
 		if item_stack_selected.item is Potion:
-			hero.add_potion(item_stack_selected.item, amount)
+			hero.add_potion(item_stack_selected.item.duplicate(true), amount)
 		elif item_stack_selected.item is Weapon:
 			shop.add_item(hero.weapon)
 			hero.weapon = item_stack_selected.item

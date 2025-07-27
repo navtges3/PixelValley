@@ -15,7 +15,7 @@ func use_potion(potion: Potion) -> Effect:
 
 func add_potion(potion: Potion, amount: int = 1) -> void:
 	for slot in potions:
-		if slot.item == potion:
+		if slot.item.name == potion.name:
 			slot.count += amount
 			return
 	potions.append(ItemStack.new(potion, amount))
