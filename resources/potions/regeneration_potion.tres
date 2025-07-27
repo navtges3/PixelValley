@@ -12,6 +12,8 @@ metadata/_custom_type_script = "uid://c5deti4sb2k2j"
 
 [resource]
 script = ExtResource("2_pg3eu")
-name = "Regeneration Potion"
 effect = SubResource("Resource_qvebx")
+name = "Regeneration Potion"
+description = "A thick, emerald tonic that pulses with life.Slowly restores Health over several turns. The healing flows gently, like a forest stream—ideal for those who plan to outlast the storm rather than outrun it."
+value = 10
 metadata/_custom_type_script = "uid://dvmhh34nbwxaq"

@@ -12,6 +12,8 @@ metadata/_custom_type_script = "uid://c5deti4sb2k2j"
 
 [resource]
 script = ExtResource("1_axoag")
-name = "Attack Potion"
 effect = SubResource("Resource_rpg1r")
+name = "Attack Potion"
+description = "A bubbling concoction that burns going down and burns even more coming out.Temporarily increases the user's attack power, allowing them to deal greater damage for 3 turns. Popular among hot-headed adventurers and berserkers with no regard for moderation."
+value = 15
 metadata/_custom_type_script = "uid://dvmhh34nbwxaq"

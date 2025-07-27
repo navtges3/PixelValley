@@ -9,7 +9,7 @@ var save_slot: int = 1
 
 func start_new_game(hero_inst: HeroInstance) -> void:
 	hero = hero_inst
-	village = Village.new()
+	village = preload("res://resources/villlages/default_village.tres").duplicate()
 	QuestDatabase.new_game()
 
 func save_game(slot: int = save_slot) -> void:

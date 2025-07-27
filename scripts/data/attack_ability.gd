@@ -18,4 +18,4 @@ func apply_attack(target: RefCounted, attack_modifier: int = 0) -> int:
 	return damage_dealt
 
 func get_tooltip() -> String:
-	return "Damage: %d\nAccuracy: %.2f\nEnergy Cost: %d\nCooldown: %d" % [self.damage, self.accuracy, self.energy_cost, self.cooldown]
+	return "Damage: %d\nAccuracy: %d%%\nEnergy Cost: %d\nCooldown: %d" % [self.damage, int(self.accuracy * 100), self.energy_cost, self.cooldown]
