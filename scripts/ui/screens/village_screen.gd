@@ -11,9 +11,12 @@ func _ready() -> void:
 	pause_button.pressed.connect(_on_pause_button_pressed)
 	quests_button.pressed.connect(_on_quests_button_pressed)
 	shop_button.pressed.connect(_on_shop_button_pressed)
-
 	if GameState.hero:
 		hero_ui.set_hero_info(GameState.hero)
+	if GameState.village.shop.has_inventory():
+		shop_button.disabled = false
+	else:
+		shop_button.disabled = true
 
 func _on_pause_button_pressed():
 	pause_popup.popup_centered()
