@@ -101,7 +101,7 @@ func _on_action_button_pressed(action_data: Dictionary):
 			ability_button.button_pressed = false
 		elif action_data.type == "potion":
 			var potion = action_data.potion
-			print("Potion selected: ", potion)
+			print("Potion selected: ", potion.name)
 			battle_manager.player_potion_selected(potion)
 			item_button.button_pressed = false
 

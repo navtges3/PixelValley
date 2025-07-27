@@ -44,6 +44,14 @@ func _update_item_list() -> void:
 
 func _on_hero_updated(hero_ref: HeroInstance) -> void:
 	hero_ui.set_hero_info(hero_ref)
+	var inventory_text = "Hero Inventory: "
+	if hero_ref.potion_belt.has_potions():
+		inventory_text += "\n  Potions:"
+		for potion_stack in hero_ref.potion_belt.potions:
+			inventory_text += "\n - %s x%d" % [potion_stack.item.name, potion_stack.count]
+	else:
+		inventory_text += "\n  None"
+	inventory_label.text = inventory_text
 
 func _on_item_selected(item_stack: ItemStack) -> void:
 	item_name_label.text = item_stack.item.name
