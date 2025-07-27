@@ -26,18 +26,19 @@ func _ready() -> void:
 	shop = GameState.village.shop
 
 	exit_button.pressed.connect(_on_exit_button_pressed)
+	purchase_button.pressed.connect(_on_purchase_button_pressed)
+	quantity_spin_box.value_changed.connect(_on_quantity_changed)
 
+	shop_manager.hero_updated.connect(_on_hero_updated)
 	shop_manager.start_shop(hero, shop)
 	_update_item_list()
-	_on_item_selected(shop_manager.item_stack_selected)
-
-	quantity_spin_box.value_changed.connect(_on_quantity_changed)
 
 func _update_item_list() -> void:
 	empty_item_list()
 	for item_stack in shop.inventory:
 		var button = create_item_button(item_stack)
 		item_list.add_child(button)
+	_on_item_selected(shop_manager.item_stack_selected)
 
 func _on_hero_updated(hero_ref: HeroInstance) -> void:
 	hero_ui.set_hero_info(hero_ref)
@@ -63,6 +64,13 @@ func _update_purchase_button() -> void:
 		purchase_button.disabled = total_cost > hero.gold
 	else:
 		purchase_button.disabled = true
+
+func _on_purchase_button_pressed() -> void:
+	if not shop_manager.item_stack_selected or not shop_manager.item_stack_selected.item:
+		return
+
+	shop_manager.buy_item(int(quantity_spin_box.value))
+	_update_item_list()
 
 func _on_exit_button_pressed() -> void:
 	ScreenManager.go_to_screen("village")

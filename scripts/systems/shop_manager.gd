@@ -5,19 +5,23 @@ var hero: HeroInstance
 var shop: Shop
 var item_stack_selected: ItemStack
 
+signal hero_updated(hero_ref: HeroInstance)
+
 func start_shop(hero_ref: HeroInstance, shop_ref: Shop) -> void:
 	hero = hero_ref
 	shop = shop_ref
 	if not shop.inventory.is_empty():
 		item_stack_selected = shop.inventory[0]
+	emit_signal("hero_updated", hero)
 
 func can_buy_selected() -> bool:
-	if hero.gold > item_stack_selected.item.value:
+	if hero.gold >= item_stack_selected.item.value:
 		return true
 	return false
 
 func buy_item(amount: int = 1) -> void:
 	if can_buy_selected():
+		print("Buying item: ", item_stack_selected.item.name, " x", amount)
 		item_stack_selected.count -= amount
 		hero.gold -= item_stack_selected.item.value * amount
 		if item_stack_selected.item is Potion:
@@ -29,3 +33,4 @@ func buy_item(amount: int = 1) -> void:
 			shop.inventory.remove_at(index)
 			if not shop.inventory.is_empty():
 				item_stack_selected = shop.inventory[0]
+		emit_signal("hero_updated", hero)

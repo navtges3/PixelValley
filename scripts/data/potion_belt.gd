@@ -5,14 +5,14 @@ class_name PotionBelt
 
 func use_potion(potion: Potion) -> Effect:
 	for slot in potions:
-		if slot.potion == potion and slot.count > 0:
+		if slot.item == potion and slot.count > 0:
 			slot.count -= 1
-			return slot.potion.effect
+			return slot.item.effect
 	return null
 
 func add_potion(potion: Potion, amount: int = 1) -> void:
 	for slot in potions:
-		if slot.potion == potion:
+		if slot.item == potion:
 			slot.count += amount
 			return
 	potions.append(ItemStack.new(potion, amount))
@@ -21,7 +21,7 @@ func get_potions() -> Array[Potion]:
 	var arr: Array[Potion] = []
 	for slot in potions:
 		if slot.count > 0:
-			arr.append(slot.potion)
+			arr.append(slot.item)
 	return arr
 
 func has_potions() -> bool:
