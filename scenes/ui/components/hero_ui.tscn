@@ -90,6 +90,10 @@ text = "Level: 1"
 layout_mode = 2
 text = "Xp: 0"
 
+[node name="GoldLabel" type="Label" parent="Stats"]
+layout_mode = 2
+text = "Gold: 0"
+
 [node name="ActiveEffectsLabel" type="Label" parent="Stats"]
 layout_mode = 2
 text = "Active Effects:

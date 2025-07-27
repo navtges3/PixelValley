@@ -162,6 +162,7 @@ func get_save_data() -> Dictionary:
 		"current_nrg": self.current_nrg,
 		"level": self.level,
 		"experience": self.experience,
+		"gold": self.gold,
 		"weapon": self.weapon.resource_path if self.weapon else "",
 		"potion_belt": self.potion_belt.get_save_data(),
 	}
@@ -184,6 +185,7 @@ static func create_from_data(data: Dictionary) -> HeroInstance:
 	hero_instance.current_nrg = data.get("current_nrg", hero_instance.max_nrg)
 	hero_instance.level = data.get("level", 1)
 	hero_instance.experience = data.get("experience", 0)
+	hero_instance.gold = data.get("gold", 0)
 	var weapon_path = data.get("weapon", "")
 	if weapon_path:
 		hero_instance.weapon = load(weapon_path) as Weapon
@@ -210,4 +212,5 @@ static func create_new(hero_name_in: String, hero_class_in: HeroClass) -> HeroIn
 	hero_instance.current_nrg = hero_instance.max_nrg
 	hero_instance.weapon = hero_class_in.base_weapon
 	hero_instance.potion_belt = hero_class_in.base_potion_belt
+	hero_instance.gold = hero_class_in.base_gold
 	return hero_instance
