@@ -16,6 +16,8 @@ extends Control
 @onready var hero_ui = $HBoxContainer/VBoxContainer/HeroUI
 @onready var inventory_label = $HBoxContainer/VBoxContainer/InventoryLabel
 
+var ItemButton := preload("res://scenes/ui/components/item_button.tscn")
+
 var hero: HeroInstance
 var shop: Shop
 
@@ -26,9 +28,44 @@ func _ready() -> void:
 	exit_button.pressed.connect(_on_exit_button_pressed)
 
 	shop_manager.start_shop(hero, shop)
+	_update_item_list()
+
+func _update_item_list() -> void:
+	empty_item_list()
+	for item_stack in shop.inventory:
+		var button = create_item_button(item_stack)
+		item_list.add_child(button)
 
 func _on_hero_updated(hero_ref: HeroInstance) -> void:
 	hero_ui.set_hero_info(hero_ref)
 
+func _on_item_selected(item_stack: ItemStack) -> void:
+	item_name_label.text = item_stack.item.name
+	item_description_label.text = item_stack.item.description
+	item_cost_label.text = str(item_stack.item.value)
+	shop_manager.item_stack_selected = item_stack
+
+	quantity_spin_box.value = 1
+	quantity_spin_box.max_value = item_stack.count if item_stack.item else 1
+
 func _on_exit_button_pressed() -> void:
 	ScreenManager.go_to_screen("village")
+
+func empty_item_list() -> void:
+	for child in item_list.get_children():
+		child.queue_free()
+
+func create_item_button(item_stack: ItemStack) -> Button:
+	var button := ItemButton.instantiate()
+	button.text = item_stack.item.name
+	if item_stack.item is Weapon:
+		button.theme = preload("res://assets/button_themes/large/large_red_button.tres")
+	elif item_stack.item is Potion:
+		button.theme = item_stack.item.effect.get_button_theme()
+	else:
+		button.theme = preload("res://assets/button_themes/large/large_gray_button.tres")
+	button.custom_minimum_size = Vector2(96, 32)
+	button.item_stack = item_stack
+	button.tooltip_text = item_stack.item.get_tooltip()
+	button.connect("item_pressed", Callable(self, "_on_item_selected"))
+	return button
