@@ -4,10 +4,13 @@ class_name PotionBelt
 @export var potions: Array[ItemStack] = []
 
 func use_potion(potion: Potion) -> Effect:
-	for slot in potions:
-		if slot.item == potion and slot.count > 0:
-			slot.count -= 1
-			return slot.item.effect
+	for i in range(potions.size() -1, -1, -1):
+		if potions[i].item == potion:
+			potions[i].count -= 1
+			if potions[i].count <= 0:
+				print("Removing empty potion slot for %s" % potion.name)
+				potions.remove_at(i)
+			return potion.effect
 	return null
 
 func add_potion(potion: Potion, amount: int = 1) -> void:

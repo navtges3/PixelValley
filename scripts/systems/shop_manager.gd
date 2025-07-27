@@ -25,12 +25,9 @@ func buy_item(amount: int = 1) -> void:
 		item_stack_selected.count -= amount
 		hero.gold -= item_stack_selected.item.value * amount
 		if item_stack_selected.item is Potion:
-			if "add_potion" in hero and hero.add_potion.get_argument_count() == 2:
-				hero.add_potion(item_stack_selected.item, amount)
-			else:
-				for i in range(amount):
-					hero.add_potion(item_stack_selected.item)
+			hero.add_potion(item_stack_selected.item, amount)
 		elif item_stack_selected.item is Weapon:
+			shop.add_item(hero.weapon)
 			hero.weapon = item_stack_selected.item
 		if item_stack_selected.count < 1:
 			var index = shop.inventory.find(item_stack_selected)
