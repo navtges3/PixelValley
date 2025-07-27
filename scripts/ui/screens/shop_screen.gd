@@ -29,6 +29,9 @@ func _ready() -> void:
 
 	shop_manager.start_shop(hero, shop)
 	_update_item_list()
+	_on_item_selected(shop_manager.item_stack_selected)
+
+	quantity_spin_box.value_changed.connect(_on_quantity_changed)
 
 func _update_item_list() -> void:
 	empty_item_list()
@@ -47,6 +50,19 @@ func _on_item_selected(item_stack: ItemStack) -> void:
 
 	quantity_spin_box.value = 1
 	quantity_spin_box.max_value = item_stack.count if item_stack.item else 1
+
+	_update_purchase_button()
+
+func _on_quantity_changed(_value: float) -> void:
+	_update_purchase_button()
+
+func _update_purchase_button() -> void:
+	var selected_stack = shop_manager.item_stack_selected
+	if selected_stack and selected_stack.item:
+		var total_cost = int(selected_stack.item.value) * int(quantity_spin_box.value)
+		purchase_button.disabled = total_cost > hero.gold
+	else:
+		purchase_button.disabled = true
 
 func _on_exit_button_pressed() -> void:
 	ScreenManager.go_to_screen("village")
