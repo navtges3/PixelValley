@@ -7,7 +7,9 @@
 
 [resource]
 script = ExtResource("2_3qhfb")
-name = "Short Sword"
 rarity = "common"
 abilities = Array[ExtResource("1_5fpd2")]([ExtResource("2_b1wea"), ExtResource("3_b1wea")])
+name = "Short Sword"
+description = "A balanced blade designed for speed and precision.Reliable and versatile, this weapon is a favorite among scouts, duelists, and heroes who know that a quick strike can end a fight before it begins."
+value = 25
 metadata/_custom_type_script = "uid://dgykeyxn7fefw"

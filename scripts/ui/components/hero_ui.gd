@@ -11,6 +11,7 @@ class_name HeroUI
 @onready var weapon_label = $Stats/WeaponLabel
 @onready var level_label = $Stats/LevelLabel
 @onready var experience_label = $Stats/XPLabel
+@onready var gold_label = $Stats/GoldLabel
 @onready var active_effects_label = $Stats/ActiveEffectsLabel
 
 var hero: HeroInstance = null
@@ -26,6 +27,7 @@ func refresh() -> void:
 	weapon_label.text = hero.weapon.name
 	level_label.text = "Level: " + str(hero.level)
 	experience_label.text = "XP: " + str(hero.experience)
+	gold_label.text = "Gold: " + str(hero.gold)
 	update_health_bar()
 	update_energy_bar()
 	update_active_effects()
@@ -47,7 +49,7 @@ func update_energy_bar():
 func update_active_effects():
 	var active_effects_text = "Active Effects: "
 	if hero.active_effects.size() == 0:
-		active_effects_text += "None"
+		active_effects_text += "\n  None"
 	else:
 		for effect in hero.active_effects:
 			active_effects_text += "\n%s %d" % [effect.type_to_string(), effect.strength]

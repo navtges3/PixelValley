@@ -15,7 +15,7 @@ extends Control
 
 # Action Area
 @onready var ability_button = $ActionArea/LeftPanel/AbilityButton
-@onready var item_button = $ActionArea/LeftPanel/ItemButton #TODO Make this button pop out a list of potions in the heroes potion belt if pressed and the hero has potions
+@onready var item_button = $ActionArea/LeftPanel/ItemButton
 @onready var rest_button = $ActionArea/LeftPanel/RestButton
 @onready var flee_button = $ActionArea/LeftPanel/FleeButton
 
@@ -177,6 +177,7 @@ func create_ability_button(ability: Ability) -> Button:
 func create_potion_button(potion: Potion) -> Button:
 	var button := ActionButtonScene.instantiate()
 	button.theme = potion.effect.get_button_theme()
+	button.tooltip_text = potion.effect.get_tooltip()
 	button.setup({
 		"type": "potion",
 		"potion": potion

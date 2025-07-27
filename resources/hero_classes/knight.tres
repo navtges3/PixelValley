@@ -1,28 +1,35 @@
-[gd_resource type="Resource" script_class="HeroClass" load_steps=11 format=3 uid="uid://ccb4kvnsmpuk7"]
+[gd_resource type="Resource" script_class="HeroClass" load_steps=13 format=3 uid="uid://ccb4kvnsmpuk7"]
 
 [ext_resource type="Resource" uid="uid://vx4vhsuwjxcf" path="res://resources/weapons/short_sword.tres" id="1_0y8sy"]
-[ext_resource type="Script" uid="uid://biov58ed5u2cl" path="res://scripts/data/potion_stack.gd" id="1_2gnqf"]
+[ext_resource type="Script" uid="uid://d0mdck5mlsm03" path="res://scripts/data/item_stack.gd" id="1_add1d"]
 [ext_resource type="Script" uid="uid://dxuvbmp4rxuu3" path="res://scripts/characters/hero_class.gd" id="2_0y8sy"]
 [ext_resource type="Resource" uid="uid://cyiqwotfm3gq6" path="res://resources/potions/regeneration_potion.tres" id="2_2gnqf"]
+[ext_resource type="Resource" uid="uid://cfwejpwyn8due" path="res://resources/potions/attack_potion.tres" id="3_0dmux"]
 [ext_resource type="Script" uid="uid://dtq5qv68u8xff" path="res://scripts/data/potion_belt.gd" id="3_47vq7"]
 [ext_resource type="Resource" uid="uid://4gl0mwbttg8d" path="res://resources/potions/energy_potion.tres" id="3_add1d"]
 [ext_resource type="Texture2D" uid="uid://c8hydb1a47nnk" path="res://assets/knight.png" id="4_47vq7"]
 
-[sub_resource type="Resource" id="Resource_add1d"]
-script = ExtResource("1_2gnqf")
-potion = ExtResource("2_2gnqf")
-count = 2
-metadata/_custom_type_script = "uid://biov58ed5u2cl"
-
 [sub_resource type="Resource" id="Resource_uu7oq"]
-script = ExtResource("1_2gnqf")
-potion = ExtResource("3_add1d")
+script = ExtResource("1_add1d")
+item = ExtResource("2_2gnqf")
 count = 2
-metadata/_custom_type_script = "uid://biov58ed5u2cl"
+metadata/_custom_type_script = "uid://d0mdck5mlsm03"
+
+[sub_resource type="Resource" id="Resource_ykvxi"]
+script = ExtResource("1_add1d")
+item = ExtResource("3_0dmux")
+count = 1
+metadata/_custom_type_script = "uid://d0mdck5mlsm03"
+
+[sub_resource type="Resource" id="Resource_0io0g"]
+script = ExtResource("1_add1d")
+item = ExtResource("3_add1d")
+count = 1
+metadata/_custom_type_script = "uid://d0mdck5mlsm03"
 
 [sub_resource type="Resource" id="Resource_0dmux"]
 script = ExtResource("3_47vq7")
-potions = Array[ExtResource("1_2gnqf")]([SubResource("Resource_add1d"), SubResource("Resource_uu7oq")])
+potions = Array[ExtResource("1_add1d")]([SubResource("Resource_uu7oq"), SubResource("Resource_ykvxi"), SubResource("Resource_0io0g")])
 metadata/_custom_type_script = "uid://dtq5qv68u8xff"
 
 [resource]

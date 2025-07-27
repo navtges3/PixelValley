@@ -7,7 +7,9 @@
 
 [resource]
 script = ExtResource("3_ycsd4")
-name = "Dagger"
 rarity = "common"
 abilities = Array[ExtResource("1_ycbmi")]([ExtResource("2_ycbmi"), ExtResource("3_fjiph")])
+name = "Dagger"
+description = "A small blade with a wicked edge and a quiet purpose.Perfect for swift strikes, critical hits, and getting in (or out) of trouble. Favored by rogues, assassins, and anyone who prefers precision over power."
+value = 25
 metadata/_custom_type_script = "uid://dgykeyxn7fefw"
