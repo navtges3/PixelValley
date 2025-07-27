@@ -8,5 +8,6 @@ script = ExtResource("1_a5h8a")
 name = "Goblin"
 base_hp = 10
 base_attack = 3
+base_gold = 5
 portrait = ExtResource("1_dekqg")
 metadata/_custom_type_script = "uid://bd6ohffno5w7r"
