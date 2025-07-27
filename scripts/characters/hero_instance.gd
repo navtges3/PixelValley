@@ -75,7 +75,7 @@ func add_potion(potion: Potion, amount: int = 1) -> void:
 func use_potion(potion: Potion) -> Dictionary:
 	var effect = potion_belt.use_potion(potion)
 	if effect:
-		apply_effect(effect)
+		apply_effect(effect.duplicate())
 		return {"success": true, "message": "%s drank a %s" % [self.hero_name, potion.name]}
 	return {"success": false, "message": "%s does not have a %s" % [self.hero_name, potion.name]}
 
