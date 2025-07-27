@@ -5,6 +5,7 @@ class_name Monster
 @export var name: String
 @export var base_hp: int
 @export var base_attack: int
+@export var base_gold: int
 @export var portrait: Texture2D = null
 var level := 1
 var max_hp: int
@@ -28,6 +29,9 @@ func get_attack_damage() -> int:
 
 func is_alive() -> bool:
 	return current_hp > 0
+
+func get_gold_reward() -> int:
+	return int(base_gold * level)
 
 func calculate_experience() -> int:
 	var health_weight := 0.5

@@ -73,6 +73,7 @@ func end_player_turn() -> void:
 	else:
 		var experience = monster.calculate_experience()
 		emit_signal("battle_log_updated", "You defeated %s! You gain %d experience." % [monster.name, experience])
+		hero.gold += monster.get_gold_reward()
 		hero.gain_experience(experience)
 		emit_signal("hero_updated", hero)
 
