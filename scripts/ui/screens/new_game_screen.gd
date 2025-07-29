@@ -16,6 +16,7 @@ const PREVIEW_SCENE = preload("res://scenes/ui/components/hero_class_preview.tsc
 const HERO_CLASS_FILES = [
 	"res://resources/hero_classes/knight.tres",
 	"res://resources/hero_classes/assassin.tres",
+	"res://resources/hero_classes/princess.tres",
 ]
 
 var hero_class_selected: HeroClass = null
