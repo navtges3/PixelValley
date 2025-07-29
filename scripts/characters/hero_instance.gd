@@ -118,7 +118,8 @@ func rest() -> void:
 	self.recover_energy(self.max_nrg)
 
 func take_damage(amount: int) -> void:
-	self.current_hp = max(self.current_hp - amount, 0)
+	var damage = max(amount - self.block_modifier, 0)
+	self.current_hp = max(self.current_hp - damage, 0)
 
 func heal(amount: int) -> void:
 	self.current_hp = min(self.current_hp + amount, self.max_hp)
