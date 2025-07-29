@@ -211,6 +211,6 @@ static func create_new(hero_name_in: String, hero_class_in: HeroClass) -> HeroIn
 	hero_instance.max_nrg = hero_class_in.base_max_nrg
 	hero_instance.current_nrg = hero_instance.max_nrg
 	hero_instance.weapon = hero_class_in.base_weapon
-	hero_instance.potion_belt = hero_class_in.base_potion_belt
+	hero_instance.potion_belt = hero_class_in.base_potion_belt.duplicate(true)
 	hero_instance.gold = hero_class_in.base_gold
 	return hero_instance
