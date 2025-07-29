@@ -1,0 +1,42 @@
+[gd_resource type="Resource" script_class="HeroClass" load_steps=12 format=3 uid="uid://4ipfpa8kj63"]
+
+[ext_resource type="Script" uid="uid://dxuvbmp4rxuu3" path="res://scripts/characters/hero_class.gd" id="1_0h55t"]
+[ext_resource type="Script" uid="uid://d0mdck5mlsm03" path="res://scripts/data/item_stack.gd" id="1_w866l"]
+[ext_resource type="Resource" uid="uid://cyiqwotfm3gq6" path="res://resources/potions/regeneration_potion.tres" id="2_syf7y"]
+[ext_resource type="Resource" uid="uid://4gl0mwbttg8d" path="res://resources/potions/energy_potion.tres" id="3_ijwxi"]
+[ext_resource type="Resource" uid="uid://cfwejpwyn8due" path="res://resources/potions/attack_potion.tres" id="4_j1dq3"]
+[ext_resource type="Script" uid="uid://dtq5qv68u8xff" path="res://scripts/data/potion_belt.gd" id="5_dc3vk"]
+[ext_resource type="Texture2D" uid="uid://crvpafnprgkcq" path="res://assets/Princess.png" id="6_4uvyj"]
+
+[sub_resource type="Resource" id="Resource_lj73d"]
+script = ExtResource("1_w866l")
+item = ExtResource("2_syf7y")
+count = 5
+metadata/_custom_type_script = "uid://d0mdck5mlsm03"
+
+[sub_resource type="Resource" id="Resource_u0xo4"]
+script = ExtResource("1_w866l")
+item = ExtResource("3_ijwxi")
+count = 3
+metadata/_custom_type_script = "uid://d0mdck5mlsm03"
+
+[sub_resource type="Resource" id="Resource_lmuwl"]
+script = ExtResource("1_w866l")
+item = ExtResource("4_j1dq3")
+count = 3
+metadata/_custom_type_script = "uid://d0mdck5mlsm03"
+
+[sub_resource type="Resource" id="Resource_mucpw"]
+script = ExtResource("5_dc3vk")
+potions = Array[ExtResource("1_w866l")]([SubResource("Resource_lj73d"), SubResource("Resource_u0xo4"), SubResource("Resource_lmuwl")])
+metadata/_custom_type_script = "uid://dtq5qv68u8xff"
+
+[resource]
+script = ExtResource("1_0h55t")
+hero_class_name = "Princess"
+base_max_hp = 25
+base_max_nrg = 15
+base_gold = 100
+base_potion_belt = SubResource("Resource_mucpw")
+portrait = ExtResource("6_4uvyj")
+metadata/_custom_type_script = "uid://dxuvbmp4rxuu3"
