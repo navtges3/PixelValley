@@ -2,6 +2,8 @@ extends RefCounted
 
 class_name HeroInstance
 
+const LEVEL_UP_MULT: int = 25
+
 var hero_name: String = "Princess Lex"
 var hero_class: HeroClass = null
 var max_hp: int = 25
@@ -144,14 +146,16 @@ func get_energy_percentage() -> float:
 
 func gain_experience(amount: int) -> void:
 	self.experience += amount
-	if self.experience >= self.level * 100:
-		self.experience -= self.level * 100
+	if self.experience >= self.level * LEVEL_UP_MULT:
+		self.experience -= self.level * LEVEL_UP_MULT
 		level_up()
 
 func level_up() -> void:
 	self.level += 1
 	self.max_hp += 5
+	self.current_hp = self.max_hp
 	self.max_nrg += 2
+	self.current_nrg = self.max_nrg
 
 func get_save_data() -> Dictionary:
 	return {
