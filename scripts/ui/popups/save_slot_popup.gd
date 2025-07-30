@@ -37,7 +37,7 @@ func update_slots():
 		var button = save_buttons[i]
 
 		if slot_num in available_slots:
-			button.text = "Save Slot %d" % slot_num
+			button.text = SaveManager.load_save_slot(slot_num)
 			button.theme = preload("res://assets/button_themes/large/large_green_button.tres")
 		else:
 			button.text = "Empty Slot %d" % slot_num
