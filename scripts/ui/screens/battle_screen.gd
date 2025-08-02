@@ -109,8 +109,7 @@ func _on_rest_button_pressed() -> void:
 	battle_manager.rest()
 
 func _on_flee_button_pressed() -> void:
-	current_quest.fail_quest()
-	ScreenManager.go_to_screen("quest_finished")
+	ScreenManager.go_to_screen("village")
 
 func _on_player_turn():
 	ability_button.disabled = not hero.can_use_abilities()
@@ -184,4 +183,3 @@ func create_potion_button(potion: Potion) -> Button:
 	}, potion.name)
 	button.connect("action_pressed", Callable(self, "_on_action_button_pressed"))
 	return button
-

@@ -20,7 +20,6 @@ config/icon="res://icon.svg"
 GameState="*res://autoload/game_state.gd"
 MusicController="*res://scenes/controllers/music_controller.tscn"
 ScreenManager="*res://autoload/screen_manager.gd"
-QuestDatabase="*res://autoload/quest_database.gd"
 MonsterLoader="*res://autoload/monster_loader.gd"
 
 [display]

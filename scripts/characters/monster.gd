@@ -1,5 +1,4 @@
-extends RefCounted
-
+extends Resource
 class_name Monster
 
 @export var name: String

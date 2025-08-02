@@ -83,14 +83,16 @@ func end_player_turn() -> void:
 			emit_signal("monster_slain", monster.name)
 
 func get_new_monster() -> void:
-	var new_monster_name = current_quest.get_monster()
-	if new_monster_name == "":
+	var quest_monster = current_quest.get_monster()
+	if quest_monster:
+		monster = quest_monster.duplicate(true)
+		monster.set_level(hero.level)
+		emit_signal("new_monster", monster)
+		emit_signal("battle_log_updated", "A new monster appears: %s!" % quest_monster.name)
+		emit_signal("monster_updated", monster)
+	else:
 		emit_signal("battle_log_updated", "No more monsters to fight!")
 		end_battle(true)
-	else:
-		monster = MonsterLoader.get_monster(new_monster_name, hero.level)
-		emit_signal("new_monster", monster)
-		emit_signal("battle_log_updated", "A new monster appears: %s!" % new_monster_name)
 
 func enemy_turn() -> void:
 	emit_signal("battle_log_updated", "Enemy turn...")

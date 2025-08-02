@@ -5,18 +5,19 @@ const SAVE_DIR := "user://saves"
 var hero: HeroInstance = null
 var village: Village = null
 var current_quest: Quest = null
+var quest_manager: QuestManager = null
 var save_slot: int = 1
 
 func start_new_game(hero_inst: HeroInstance) -> void:
 	hero = hero_inst
 	village = preload("res://resources/villlages/default_village.tres").duplicate()
-	QuestDatabase.new_game()
+	quest_manager = preload("res://resources/quests/start_quest_manager.tres").duplicate()
 
 func save_game(slot: int = save_slot) -> void:
 	var data: Dictionary = {
 		"hero": hero.get_save_data(),
 		"village": village.get_save_data(),
-		"quests": QuestDatabase.get_save_data(),
+		"quests": quest_manager.get_save_data(),
 	}
 
 	SaveManager.save_game(data, slot)
@@ -29,7 +30,7 @@ func load_game(slot: int) -> void:
 
 	hero = HeroInstance.create_from_data(data.get("hero", {}))
 	village = Village.create_from_data(data.get("village", {}))
-	QuestDatabase.load_from_data(data.get("quests", {}))
+	quest_manager = QuestManager.create_from_data(data.get("quests", {}))
 	if not hero or not village:
 		push_error("Failed to load game data. Invalid hero or village.")
 	save_slot = slot
