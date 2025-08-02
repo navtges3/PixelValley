@@ -3,7 +3,6 @@ extends Control
 @onready var quest_list_vbox = $MarginContainer/VBoxContainer/QuestScrollContainer/QuestListVBox
 @onready var available_button = $MarginContainer/VBoxContainer/QuestTabs/AvaiableButton
 @onready var complete_button = $MarginContainer/VBoxContainer/QuestTabs/CompleteButton
-@onready var failed_button = $ MarginContainer/VBoxContainer/QuestTabs/FailedButton
 
 @onready var start_button = $MarginContainer/VBoxContainer/BottomControls/StartButton
 @onready var back_button = $MarginContainer/VBoxContainer/BottomControls/BackButton
@@ -19,7 +18,6 @@ func _ready() -> void:
 	start_button.disabled = true
 	available_button.toggled.connect(_on_available_toggled)
 	complete_button.toggled.connect(_on_complete_toggled)
-	failed_button.toggled.connect(_on_failed_toggled)
 	back_button.pressed.connect(_on_back_pressed)
 	start_button.pressed.connect(_on_start_pressed)
 	pause_button.pressed.connect(_on_pause_pressed)
@@ -31,11 +29,11 @@ func clear_quest_list():
 
 func load_quests(type: String):
 	clear_quest_list()
-	var quests = QuestDatabase.get_quests_by_type(type)
+	var quests = GameState.quest_manager.active_quests if type == "available" else GameState.quest_manager.completed_quests
 	for quest in quests:
 		var quest_button = preload("res://scenes/ui/components/quest_button.tscn").instantiate()
-		quest_button.set_data(quest)
 		quest_button.connect("quest_selected", _on_quest_selected)
+		quest_button.set_data(quest)
 		quest_list_vbox.add_child(quest_button)
 
 func _on_quest_selected(selected_button: QuestButton):
@@ -52,7 +50,6 @@ func _on_available_toggled(button_pressed: bool):
 		if current_tab != "available":
 			current_tab = "available"
 			complete_button.button_pressed = false
-			failed_button.button_pressed = false
 			load_quests(current_tab)
 
 func _on_complete_toggled(button_pressed: bool):
@@ -60,15 +57,6 @@ func _on_complete_toggled(button_pressed: bool):
 		if current_tab != "complete":
 			current_tab = "complete"
 			available_button.button_pressed = false
-			failed_button.button_pressed = false
-			load_quests(current_tab)
-
-func _on_failed_toggled(button_pressed: bool):
-	if button_pressed:
-		if current_tab != "failed":
-			current_tab = "failed"
-			available_button.button_pressed = false
-			complete_button.button_pressed = false
 			load_quests(current_tab)
 
 func _on_back_pressed():
