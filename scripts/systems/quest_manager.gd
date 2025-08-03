@@ -4,8 +4,6 @@ class_name QuestManager
 @export var active_quests: Array[Quest] = []
 @export var completed_quests: Array[Quest] = []
 
-signal quest_completed(quest: Quest)
-
 func add_quest(quest: Quest) -> void:
 	if quest not in active_quests:
 		active_quests.append(quest)
@@ -15,7 +13,6 @@ func _on_quest_completed(quest: Quest) -> void:
 	if quest in active_quests:
 		active_quests.erase(quest)
 		completed_quests.append(quest)
-		emit_signal("quest_completed", quest)
 
 func get_save_data() -> Dictionary:
 	return {

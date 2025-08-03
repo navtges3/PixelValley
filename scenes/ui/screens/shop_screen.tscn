@@ -45,12 +45,21 @@ alignment = 1
 layout_mode = 2
 horizontal_scroll_mode = 0
 
-[node name="ItemList" type="VBoxContainer" parent="HBoxContainer/ScrollContainer"]
+[node name="ItemList" type="GridContainer" parent="HBoxContainer/ScrollContainer"]
 layout_mode = 2
+columns = 2
+
+[node name="Label" type="Label" parent="HBoxContainer/ScrollContainer/ItemList"]
+layout_mode = 2
+text = "1x"
 
 [node name="Button" type="Button" parent="HBoxContainer/ScrollContainer/ItemList"]
 layout_mode = 2
 text = "Health Potion"
+
+[node name="Label2" type="Label" parent="HBoxContainer/ScrollContainer/ItemList"]
+layout_mode = 2
+text = "2x"
 
 [node name="Button2" type="Button" parent="HBoxContainer/ScrollContainer/ItemList"]
 layout_mode = 2

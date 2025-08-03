@@ -1,6 +1,8 @@
 extends Node
 
 const SAVE_DIR := "user://saves"
+const START_QUEST_MANAGER = preload("res://resources/quests/start_quest_manager.tres")
+const DEFAULT_VILLAGE = preload("res://resources/villlages/default_village.tres")
 
 var hero: HeroInstance = null
 var village: Village = null
@@ -10,8 +12,8 @@ var save_slot: int = 1
 
 func start_new_game(hero_inst: HeroInstance) -> void:
 	hero = hero_inst
-	village = preload("res://resources/villlages/default_village.tres").duplicate()
-	quest_manager = preload("res://resources/quests/start_quest_manager.tres").duplicate()
+	village = DEFAULT_VILLAGE.duplicate()
+	quest_manager = START_QUEST_MANAGER.duplicate()
 
 func save_game(slot: int = save_slot) -> void:
 	var data: Dictionary = {

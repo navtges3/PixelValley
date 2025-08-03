@@ -1,8 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://buhj5rcuj0qb6"]
+[gd_scene load_steps=3 format=3 uid="uid://buhj5rcuj0qb6"]
 
 [ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://assets/button_themes/large/large_green_button.tres" id="1_63ps6"]
 [ext_resource type="Script" uid="uid://cq5j2hsueg7cl" path="res://scripts/ui/screens/quest_finished_screen.gd" id="1_weiil"]
-[ext_resource type="Theme" uid="uid://dqwm8agt87lsh" path="res://assets/button_themes/large/large_blue_button.tres" id="2_weiil"]
 
 [node name="QuestFinishedScreen" type="Control"]
 layout_mode = 3
@@ -37,22 +36,14 @@ layout_mode = 2
 text = "Quest Status"
 horizontal_alignment = 1
 
-[node name="ResultLabel" type="Label" parent="VBoxContainer"]
+[node name="RewardLabel" type="Label" parent="VBoxContainer"]
 layout_mode = 2
-text = "Quest Result"
+text = "Quest Reward"
 horizontal_alignment = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
-layout_mode = 2
-
-[node name="VillageButton" type="Button" parent="VBoxContainer/HBoxContainer"]
-custom_minimum_size = Vector2(96, 32)
+[node name="CollectRewardButton" type="Button" parent="VBoxContainer"]
 layout_mode = 2
 theme = ExtResource("1_63ps6")
-text = "To Village"
+text = "Collect Reward"
 
-[node name="NewQuestButton" type="Button" parent="VBoxContainer/HBoxContainer"]
-custom_minimum_size = Vector2(96, 32)
-layout_mode = 2
-theme = ExtResource("2_weiil")
-text = "New Quest"
+[connection signal="pressed" from="VBoxContainer/CollectRewardButton" to="." method="_on_collect_reward_button_pressed"]

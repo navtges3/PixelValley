@@ -13,9 +13,7 @@ func slay_monster(monster_name: String) -> bool:
 	for objective in monster_objectives:
 		if objective.monster.name == monster_name:
 			objective.current_amount += 1
-			if objective.current_amount >= objective.target_amount:
-				complete_quest()
-	return completed
+	return is_complete()
 
 func get_monster() -> Monster:
 	var candidates := []
@@ -43,6 +41,11 @@ func complete_quest() -> void:
 	emit_signal("quest_completed", self)
 
 func is_complete() -> bool:
+	for objective in monster_objectives:
+		if objective.current_amount < objective.target_amount:
+			return false
+	completed = true
+	emit_signal("quest_completed", self)
 	return completed
 
 func get_save_data() -> Dictionary:
