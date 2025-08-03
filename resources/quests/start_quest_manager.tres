@@ -1,12 +1,12 @@
-[gd_resource type="Resource" script_class="QuestManager" load_steps=5 format=3 uid="uid://booqieebsyoip"]
+[gd_resource type="Resource" script_class="QuestManager" load_steps=5 format=3 uid="uid://bg2f74d3fw0f1"]
 
 [ext_resource type="Script" uid="uid://xhl8p6y5w5e6" path="res://scripts/quest/quest.gd" id="1_oyrsu"]
 [ext_resource type="Resource" uid="uid://cne8vqkq32bqx" path="res://resources/quests/quest_1.tres" id="2_f5le3"]
-[ext_resource type="Script" uid="uid://d35yc4tve4ym6" path="res://autoload/quest_manager.gd" id="2_porfm"]
+[ext_resource type="Script" uid="uid://ksepemgq8fc3" path="res://scripts/systems/quest_manager.gd" id="2_oyrsu"]
 [ext_resource type="Resource" uid="uid://cr1abqodbmr5q" path="res://resources/quests/quest_2.tres" id="3_8v7ow"]
 
 [resource]
-script = ExtResource("2_porfm")
+script = ExtResource("2_oyrsu")
 active_quests = Array[ExtResource("1_oyrsu")]([ExtResource("2_f5le3"), ExtResource("3_8v7ow")])
 completed_quests = Array[ExtResource("1_oyrsu")]([])
-metadata/_custom_type_script = "uid://d35yc4tve4ym6"
+metadata/_custom_type_script = "uid://ksepemgq8fc3"
