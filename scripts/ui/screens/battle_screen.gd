@@ -125,7 +125,10 @@ func _on_monster_turn():
 
 func _on_quest_completed():
 	print("Quest completed!")
-	ScreenManager.go_to_screen("quest_finished")
+	if GameState.quest_manager.active_quests.is_empty():
+		ScreenManager.go_to_screen("victory")
+	else:
+		ScreenManager.go_to_screen("quest_finished")
 
 func _on_hero_defeated():
 	print("Hero defeated!")
