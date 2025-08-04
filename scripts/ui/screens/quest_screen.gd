@@ -10,7 +10,7 @@ extends Control
 @onready var pause_button = $MarginContainer/VBoxContainer/QuestTabs/PauseButton
 @onready var pause_popup = $PausePopup
 
-var selected_quest = null
+var selected_quest:Button = null
 var current_tab = "available"
 
 func _ready() -> void:
@@ -37,13 +37,17 @@ func load_quests(type: String):
 		quest_list_vbox.add_child(quest_button)
 
 func _on_quest_selected(selected_button: QuestButton):
-	var quest = selected_button.get_quest()
-	if not quest.is_complete():
+	var can_start := false
+	
+	if selected_quest == selected_button:
+		selected_quest = null
+	elif not selected_button.quest.is_complete():
+		if selected_quest:
+			selected_quest.button_pressed = false
 		selected_quest = selected_button
-		start_button.disabled = false
-		for child in quest_list_vbox.get_children():
-			if child is QuestButton:
-				child.set_selected(child == selected_quest)
+		can_start = true
+	
+	start_button.disabled = not can_start
 
 func _on_available_toggled(button_pressed: bool):
 	if button_pressed:
@@ -57,6 +61,10 @@ func _on_complete_toggled(button_pressed: bool):
 		if current_tab != "complete":
 			current_tab = "complete"
 			available_button.button_pressed = false
+			if selected_quest:
+				selected_quest.button_pressed = false
+				selected_quest = null
+			start_button.disabled = true
 			load_quests(current_tab)
 
 func _on_back_pressed():
