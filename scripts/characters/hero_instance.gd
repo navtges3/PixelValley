@@ -2,6 +2,8 @@ extends RefCounted
 
 class_name HeroInstance
 
+const LEVEL_UP_MULT: int = 25
+
 var hero_name: String = "Princess Lex"
 var hero_class: HeroClass = null
 var max_hp: int = 25
@@ -75,7 +77,7 @@ func add_potion(potion: Potion, amount: int = 1) -> void:
 func use_potion(potion: Potion) -> Dictionary:
 	var effect = potion_belt.use_potion(potion)
 	if effect:
-		apply_effect(effect)
+		apply_effect(effect.duplicate())
 		return {"success": true, "message": "%s drank a %s" % [self.hero_name, potion.name]}
 	return {"success": false, "message": "%s does not have a %s" % [self.hero_name, potion.name]}
 
@@ -118,7 +120,8 @@ func rest() -> void:
 	self.recover_energy(self.max_nrg)
 
 func take_damage(amount: int) -> void:
-	self.current_hp = max(self.current_hp - amount, 0)
+	var damage = max(amount - self.block_modifier, 0)
+	self.current_hp = max(self.current_hp - damage, 0)
 
 func heal(amount: int) -> void:
 	self.current_hp = min(self.current_hp + amount, self.max_hp)
@@ -143,14 +146,16 @@ func get_energy_percentage() -> float:
 
 func gain_experience(amount: int) -> void:
 	self.experience += amount
-	if self.experience >= self.level * 100:
-		self.experience -= self.level * 100
+	if self.experience >= self.level * LEVEL_UP_MULT:
+		self.experience -= self.level * LEVEL_UP_MULT
 		level_up()
 
 func level_up() -> void:
 	self.level += 1
 	self.max_hp += 5
+	self.current_hp = self.max_hp
 	self.max_nrg += 2
+	self.current_nrg = self.max_nrg
 
 func get_save_data() -> Dictionary:
 	return {
@@ -211,6 +216,6 @@ static func create_new(hero_name_in: String, hero_class_in: HeroClass) -> HeroIn
 	hero_instance.max_nrg = hero_class_in.base_max_nrg
 	hero_instance.current_nrg = hero_instance.max_nrg
 	hero_instance.weapon = hero_class_in.base_weapon
-	hero_instance.potion_belt = hero_class_in.base_potion_belt
+	hero_instance.potion_belt = hero_class_in.base_potion_belt.duplicate(true)
 	hero_instance.gold = hero_class_in.base_gold
 	return hero_instance

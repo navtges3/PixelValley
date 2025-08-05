@@ -1,31 +1,32 @@
 extends Control
 
-@onready var village_button = $VBoxContainer/HBoxContainer/VillageButton
-@onready var new_quest_button = $VBoxContainer/HBoxContainer/NewQuestButton
-
-@onready var title_label = $VBoxContainer/TitleLabel
-@onready var status_label = $VBoxContainer/StatusLabel
-@onready var result_label = $VBoxContainer/ResultLabel
+@onready var title_label: Label = $VBoxContainer/TitleLabel
+@onready var status_label: Label = $VBoxContainer/StatusLabel
+@onready var reward_label: Label = $VBoxContainer/RewardLabel
+@onready var collect_reward_button: Button = $VBoxContainer/CollectRewardButton
 
 func _ready() -> void:
 	var current_quest = GameState.current_quest
 	title_label.text = current_quest.title
 
-	if current_quest.failed:
-		status_label.text = "Failed"
-		var penalty_text = ""
-		for penalty in current_quest.penalty:
-			penalty_text += penalty + "\n"
-		result_label.text = penalty_text.strip_edges()
-	else:
-		status_label.text = "Completed"
-		result_label.text = current_quest.reward
+	status_label.text = "Completed"
+	var reward_text = ""
+	for reward in current_quest.reward:
+		reward_text += reward.get_description() + "\n"
+	reward_label.text = reward_text.strip_edges()
 
-	village_button.pressed.connect(_on_village_button_pressed)
-	new_quest_button.pressed.connect(_on_new_quest_button_pressed)
-
-func _on_village_button_pressed() -> void:
+func _on_collect_reward_button_pressed() -> void:
+	collect_rewards()
 	ScreenManager.go_to_screen("village")
 
-func _on_new_quest_button_pressed() -> void:
-	ScreenManager.go_to_screen("quest")
+func collect_rewards() -> void:
+	var hero = GameState.hero
+	var village = GameState.village
+	for reward:QuestReward in GameState.current_quest.reward:
+		match reward.target:
+			QuestReward.RewardTarget.PLAYER:
+				print("Adding %d %s to hero's inventory" % [reward.amount, reward.item.name])
+				hero.add_potion(reward.item, reward.amount)
+			QuestReward.RewardTarget.SHOP:
+				print("Adding %d %s to shop's inventory" % [reward.amount, reward.item.name])
+				village.shop.add_item(reward.item, reward.amount)

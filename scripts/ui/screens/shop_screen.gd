@@ -38,12 +38,24 @@ func _ready() -> void:
 func _update_item_list() -> void:
 	empty_item_list()
 	for item_stack in shop.inventory:
+		var label = Label.new()
+		label.text = "%dx" % item_stack.count
+		label.custom_minimum_size = Vector2(32, 32)
+		item_list.add_child(label)
 		var button = create_item_button(item_stack)
 		item_list.add_child(button)
 	_on_item_selected(shop_manager.item_stack_selected)
 
 func _on_hero_updated(hero_ref: HeroInstance) -> void:
 	hero_ui.set_hero_info(hero_ref)
+	var inventory_text = "Hero Inventory: "
+	if hero_ref.potion_belt.has_potions():
+		inventory_text += "\n  Potions:"
+		for potion_stack in hero_ref.potion_belt.potions:
+			inventory_text += "\n - %s x%d" % [potion_stack.item.name, potion_stack.count]
+	else:
+		inventory_text += "\n  None"
+	inventory_label.text = inventory_text
 
 func _on_item_selected(item_stack: ItemStack) -> void:
 	item_name_label.text = item_stack.item.name
@@ -52,7 +64,7 @@ func _on_item_selected(item_stack: ItemStack) -> void:
 	shop_manager.item_stack_selected = item_stack
 
 	quantity_spin_box.value = 1
-	quantity_spin_box.max_value = item_stack.count if item_stack.item else 1
+	quantity_spin_box.max_value = item_stack.count if item_stack and item_stack.item else 1
 
 	_update_purchase_button()
 

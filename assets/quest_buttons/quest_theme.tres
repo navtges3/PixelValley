@@ -1,6 +1,6 @@
-[gd_resource type="Theme" load_steps=8 format=4 uid="uid://c8c0de0nb2jpw"]
+[gd_resource type="Theme" load_steps=9 format=4 uid="uid://c8c0de0nb2jpw"]
 
-[ext_resource type="Texture2D" uid="uid://choej3m2jd0xh" path="res://assets/quest_buttons/quest_sheet.png" id="1_cviqi"]
+[ext_resource type="Texture2D" uid="uid://doqs0o1w5qmcl" path="res://assets/quest_buttons/quest_button.png" id="1_cviqi"]
 
 [sub_resource type="Image" id="Image_3utsd"]
 data = {
@@ -919,29 +919,37 @@ cache/0/16/0/glyphs/402653253/size = Vector2(10, 14)
 cache/0/16/0/glyphs/402653253/uv_rect = Rect2(13, 149, 10, 14)
 cache/0/16/0/glyphs/402653253/texture_idx = 0
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_lbl2b"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_b30gm"]
 texture = ExtResource("1_cviqi")
-texture_margin_left = 4.0
-texture_margin_top = 2.0
-texture_margin_right = 2.0
-texture_margin_bottom = 4.0
-region_rect = Rect2(5, 215, 700, 100)
+texture_margin_left = 13.0
+texture_margin_top = 35.0
+texture_margin_right = 13.0
+texture_margin_bottom = 13.0
+region_rect = Rect2(2112, 0.0394859, 704.004, 93.982)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_lh5at"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_nl72c"]
 texture = ExtResource("1_cviqi")
-texture_margin_left = 4.0
-texture_margin_top = 2.0
-texture_margin_right = 2.0
-texture_margin_bottom = 4.0
-region_rect = Rect2(710, 5, 700, 100)
+texture_margin_left = 13.0
+texture_margin_top = 35.0
+texture_margin_right = 13.0
+texture_margin_bottom = 13.0
+region_rect = Rect2(704, 0, 704, 94)
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_0cxy6"]
 texture = ExtResource("1_cviqi")
-texture_margin_left = 4.0
-texture_margin_top = 2.0
-texture_margin_right = 2.0
-texture_margin_bottom = 4.0
-region_rect = Rect2(5, 5, 700, 100)
+texture_margin_left = 13.0
+texture_margin_top = 35.0
+texture_margin_right = 13.0
+texture_margin_bottom = 13.0
+region_rect = Rect2(0, 0, 704, 94)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_lh5at"]
+texture = ExtResource("1_cviqi")
+texture_margin_left = 13.0
+texture_margin_top = 35.0
+texture_margin_right = 13.0
+texture_margin_bottom = 13.0
+region_rect = Rect2(1408, 0, 704, 94)
 
 [sub_resource type="GDScript" id="GDScript_4scfg"]
 
@@ -965,9 +973,9 @@ Button/constants/icon_max_width = 0
 Button/constants/outline_size = 0
 Button/font_sizes/font_size = 16
 Button/fonts/font = SubResource("FontFile_n6ikf")
-Button/styles/disabled = SubResource("StyleBoxTexture_lbl2b")
+Button/styles/disabled = SubResource("StyleBoxTexture_b30gm")
 Button/styles/focus = null
-Button/styles/hover = SubResource("StyleBoxTexture_lh5at")
+Button/styles/hover = SubResource("StyleBoxTexture_nl72c")
 Button/styles/normal = SubResource("StyleBoxTexture_0cxy6")
 Button/styles/pressed = SubResource("StyleBoxTexture_lh5at")
 script = SubResource("GDScript_4scfg")

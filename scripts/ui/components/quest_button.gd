@@ -1,43 +1,30 @@
 extends Button
 class_name QuestButton
 
-signal quest_selected(quest_data)
+const Y_OFFSET := 16
 
-@export var default_theme: Theme
-@export var selected_theme: Theme
+signal quest_selected(quest_data)
 
 var quest: Quest
 var selected := false
 
 func set_data(q: Quest):
-	self.quest = q
+	quest = q
+	$VBoxContainer/TitleLabel.text = q.title
+	$VBoxContainer/HBoxContainer/DescriptionLabel.text = q.description
 
-	$MarginContainer/HBoxContainer/VBoxContainer/Title.text = self.quest.title
-	$MarginContainer/HBoxContainer/VBoxContainer/Reward.text = self.quest.reward
-	$MarginContainer/HBoxContainer/Description.text = self.quest.description
+	var monster_text := ""
+	for objective in q.monster_objectives:
+		monster_text += "%s: %d/%d\n" % [objective.monster.name, objective.current_amount, objective.target_amount]
+	$VBoxContainer/HBoxContainer/MonstersLabel.text = monster_text.strip_edges()
 
-	var obj_text = ""
-	for enemy in self.quest.monsters.keys():
-		obj_text += "%s %d/%d\n" % [enemy, self.quest.monsters[enemy].slain, self.quest.monsters[enemy].objective]
-	$MarginContainer/HBoxContainer/Monsters.text = obj_text.strip_edges()
-
-	var penalty_text = ""
-	for penalty_name in self.quest.penalty.keys():
-		penalty_text += "%s: -%d\n" % [penalty_name, self.quest.penalty[penalty_name]]
-	$MarginContainer/HBoxContainer/VBoxContainer/Penalty.text = penalty_text.strip_edges()
+	call_deferred("_update_size")
 
 func get_quest() -> Quest:
 	return self.quest
 
+func _update_size():
+	custom_minimum_size.y = $VBoxContainer.get_combined_minimum_size().y + Y_OFFSET
+
 func _pressed() -> void:
 	emit_signal("quest_selected", self)
-
-func set_selected(value: bool) -> void:
-	selected = value
-	var style = StyleBoxFlat.new()
-	if selected:
-		self.theme = selected_theme
-	else:
-		self.theme = default_theme
-
-	self.add_theme_stylebox_override("MarginContainer", style)
