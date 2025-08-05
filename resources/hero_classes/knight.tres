@@ -37,6 +37,7 @@ script = ExtResource("2_0y8sy")
 hero_class_name = "Knight"
 base_max_hp = 25
 base_max_nrg = 10
+base_gold = 25
 base_weapon = ExtResource("1_0y8sy")
 base_potion_belt = SubResource("Resource_0dmux")
 portrait = ExtResource("4_47vq7")

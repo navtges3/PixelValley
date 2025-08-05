@@ -101,7 +101,7 @@ func _on_action_button_pressed(action_data: Dictionary):
 			ability_button.button_pressed = false
 		elif action_data.type == "potion":
 			var potion = action_data.potion
-			print("Potion selected: ", potion)
+			print("Potion selected: ", potion.name)
 			battle_manager.player_potion_selected(potion)
 			item_button.button_pressed = false
 
@@ -109,8 +109,7 @@ func _on_rest_button_pressed() -> void:
 	battle_manager.rest()
 
 func _on_flee_button_pressed() -> void:
-	current_quest.fail_quest()
-	ScreenManager.go_to_screen("quest_finished")
+	ScreenManager.go_to_screen("village")
 
 func _on_player_turn():
 	ability_button.disabled = not hero.can_use_abilities()
@@ -126,7 +125,10 @@ func _on_monster_turn():
 
 func _on_quest_completed():
 	print("Quest completed!")
-	ScreenManager.go_to_screen("quest_finished")
+	if GameState.quest_manager.active_quests.is_empty():
+		ScreenManager.go_to_screen("victory")
+	else:
+		ScreenManager.go_to_screen("quest_finished")
 
 func _on_hero_defeated():
 	print("Hero defeated!")
@@ -184,4 +186,3 @@ func create_potion_button(potion: Potion) -> Button:
 	}, potion.name)
 	button.connect("action_pressed", Callable(self, "_on_action_button_pressed"))
 	return button
-

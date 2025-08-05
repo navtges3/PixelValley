@@ -1,0 +1,37 @@
+[gd_resource type="Resource" script_class="Quest" load_steps=10 format=3 uid="uid://c8j8erbjaehtc"]
+
+[ext_resource type="Script" uid="uid://bhsjswm1wnll8" path="res://scripts/quest/monster_requirement.gd" id="1_6xpk3"]
+[ext_resource type="Script" uid="uid://xekqra2mjp3l" path="res://scripts/quest/quest_reward.gd" id="2_72prn"]
+[ext_resource type="Resource" uid="uid://dm48acoifufc0" path="res://resources/monsters/goblin.tres" id="2_rrv6s"]
+[ext_resource type="Script" uid="uid://xhl8p6y5w5e6" path="res://scripts/quest/quest.gd" id="3_is1pp"]
+[ext_resource type="Resource" uid="uid://ytx0xnb7ewpw" path="res://resources/weapons/dagger.tres" id="4_1vfqp"]
+[ext_resource type="Resource" uid="uid://cyiqwotfm3gq6" path="res://resources/potions/regeneration_potion.tres" id="5_wbht7"]
+
+[sub_resource type="Resource" id="Resource_s4rlp"]
+script = ExtResource("1_6xpk3")
+monster = ExtResource("2_rrv6s")
+target_amount = 5
+current_amount = 0
+metadata/_custom_type_script = "uid://bhsjswm1wnll8"
+
+[sub_resource type="Resource" id="Resource_1c7po"]
+script = ExtResource("2_72prn")
+item = ExtResource("4_1vfqp")
+amount = 3
+target = 1
+metadata/_custom_type_script = "uid://xekqra2mjp3l"
+
+[sub_resource type="Resource" id="Resource_4ew2c"]
+script = ExtResource("2_72prn")
+item = ExtResource("5_wbht7")
+amount = 2
+target = 0
+metadata/_custom_type_script = "uid://xekqra2mjp3l"
+
+[resource]
+script = ExtResource("3_is1pp")
+title = "Goblin Scouts"
+description = "You stumble across a small band of goblins. They appear to be a scouting party sent ahead of a larger band of monsters!"
+monster_objectives = Array[ExtResource("1_6xpk3")]([SubResource("Resource_s4rlp")])
+reward = Array[ExtResource("2_72prn")]([SubResource("Resource_1c7po"), SubResource("Resource_4ew2c")])
+metadata/_custom_type_script = "uid://xhl8p6y5w5e6"

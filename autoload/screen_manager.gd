@@ -11,6 +11,7 @@ const SCENE_PATHS := {
 	"quest": "res://scenes/ui/screens/quest_screen.tscn",
 	"quest_finished": "res://scenes/ui/screens/quest_finished_screen.tscn",
 	"defeat": "res://scenes/ui/screens/defeat_screen.tscn",
+	"victory": "res://scenes/ui/screens/victory_screen.tscn",
 }
 
 func go_to_screen(screen_name: String) -> void:

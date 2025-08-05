@@ -73,6 +73,7 @@ func end_player_turn() -> void:
 	else:
 		var experience = monster.calculate_experience()
 		emit_signal("battle_log_updated", "You defeated %s! You gain %d experience." % [monster.name, experience])
+		hero.gold += monster.gold
 		hero.gain_experience(experience)
 		emit_signal("hero_updated", hero)
 
@@ -82,18 +83,19 @@ func end_player_turn() -> void:
 			emit_signal("monster_slain", monster.name)
 
 func get_new_monster() -> void:
-	var new_monster_name = current_quest.get_monster()
-	if new_monster_name == "":
+	var quest_monster = current_quest.get_monster()
+	if quest_monster:
+		monster = quest_monster.duplicate(true)
+		emit_signal("new_monster", monster)
+		emit_signal("battle_log_updated", "A new monster appears: %s!" % quest_monster.name)
+		emit_signal("monster_updated", monster)
+	else:
 		emit_signal("battle_log_updated", "No more monsters to fight!")
 		end_battle(true)
-	else:
-		monster = MonsterLoader.get_monster(new_monster_name, hero.level)
-		emit_signal("new_monster", monster)
-		emit_signal("battle_log_updated", "A new monster appears: %s!" % new_monster_name)
 
 func enemy_turn() -> void:
 	emit_signal("battle_log_updated", "Enemy turn...")
-	var damage = monster.get_attack_damage()
+	var damage = monster.attack
 	hero.take_damage(damage)
 	emit_signal("battle_log_updated", "%s took %d damage" % [hero.hero_name, damage])
 	emit_signal("hero_updated", hero)
