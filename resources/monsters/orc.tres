@@ -6,8 +6,9 @@
 [resource]
 script = ExtResource("1_wfseu")
 name = "Orc"
-base_hp = 18
-base_attack = 4
-base_gold = 10
+max_hp = 18
+current_hp = 18
+attack = 5
+gold = 20
 portrait = ExtResource("1_0ed2k")
 metadata/_custom_type_script = "uid://bd6ohffno5w7r"
