@@ -64,7 +64,7 @@ func _on_item_selected(item_stack: ItemStack) -> void:
 	shop_manager.item_stack_selected = item_stack
 
 	quantity_spin_box.value = 1
-	quantity_spin_box.max_value = item_stack.count if item_stack else 1
+	quantity_spin_box.max_value = item_stack.count if item_stack and item_stack.item else 1
 
 	_update_purchase_button()
 

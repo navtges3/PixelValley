@@ -17,7 +17,7 @@ func set_data(q: Quest):
 	for objective in q.monster_objectives:
 		monster_text += "%s: %d/%d\n" % [objective.monster.name, objective.current_amount, objective.target_amount]
 	$VBoxContainer/HBoxContainer/MonstersLabel.text = monster_text.strip_edges()
-	
+
 	call_deferred("_update_size")
 
 func get_quest() -> Quest:
@@ -28,8 +28,3 @@ func _update_size():
 
 func _pressed() -> void:
 	emit_signal("quest_selected", self)
-
-func set_selected(value: bool) -> void:
-	selected = value
-	var style = StyleBoxFlat.new()
-	self.add_theme_stylebox_override("MarginContainer", style)
