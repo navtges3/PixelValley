@@ -1,11 +1,10 @@
-extends HBoxContainer
+extends VBoxContainer
 class_name MonsterUI
 
-@onready var picture = $Visual/Picture
-@onready var health_bar = $Visual/HealthBar
-@onready var health_label = $Visual/HealthBar/HealthLabel
-@onready var name_label = $Stats/NameLabel
-@onready var level_label = $Stats/LevelLabel
+@onready var picture: TextureRect = $Picture
+@onready var health_bar: ProgressBar = $HealthBar
+@onready var health_label: Label = $HealthBar/HealthLabel
+@onready var name_label: Label = $NameLabel
 
 var monster: Monster
 
@@ -16,7 +15,6 @@ func set_monster_info(monster_ref: Monster):
 func refresh() -> void:
 	picture.texture = monster.portrait
 	name_label.text = monster.name
-	level_label.text = "Level: " + str(monster.level)
 	update_health_bar()
 
 func update_health_bar():
