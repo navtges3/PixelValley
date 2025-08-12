@@ -3,12 +3,12 @@ class_name UtilityAbility
 
 @export var effect: Effect
 
-func apply_utility(target: RefCounted) -> bool:
-	if not use():
+func apply_utility(caster: Combatant) -> bool:
+	if not use(caster):
 		print("%s is still on cooldown." % self.name)
 		return false
 
-	target.apply_effect(effect.duplicate())
+	caster.apply_effect(effect.duplicate())
 	return true
 
 func get_tooltip() -> String:
