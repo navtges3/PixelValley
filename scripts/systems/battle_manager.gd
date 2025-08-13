@@ -2,7 +2,7 @@ extends Node
 
 enum BattleState { PLAYER_TURN, MONSTER_TURN, RESOLVING, VICTORY, DEFEAT }
 
-var hero: HeroInstance
+var hero: Hero
 var monster: Monster
 var current_quest: Quest
 
@@ -16,9 +16,9 @@ signal quest_completed()
 signal hero_defeated()
 signal battle_log_updated(msg: String)
 signal monster_updated(monster_ref: Monster)
-signal hero_updated(hero_ref: HeroInstance)
+signal hero_updated(hero_ref: Hero)
 
-func start_battle(hero_ref: HeroInstance, current_quest_ref: Quest) -> void:
+func start_battle(hero_ref: Hero, current_quest_ref: Quest) -> void:
 	hero = hero_ref
 	current_quest = current_quest_ref
 	emit_signal("hero_updated", hero)

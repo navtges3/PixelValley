@@ -12,14 +12,15 @@ extends Control
 
 @onready var save_game_popup = $SaveGamePopup
 
-const PREVIEW_SCENE = preload("res://scenes/ui/components/hero_class_preview.tscn")
-const HERO_CLASS_FILES = [
-	"res://resources/hero_classes/knight.tres",
-	"res://resources/hero_classes/assassin.tres",
-	"res://resources/hero_classes/princess.tres",
+const PREVIEW_SCENE = preload("res://scenes/ui/components/hero_preview.tscn")
+
+const HERO_DEFAULTS = [
+	"res://resources/heroes/knight.tres",
+	"res://resources/heroes/assassin.tres",
+	"res://resources/heroes/princess.tres",
 ]
 
-var hero_class_selected: HeroClass = null
+var hero_selected: Hero = null
 
 func _ready() -> void:
 	# Connect functions to button press
@@ -33,34 +34,35 @@ func _ready() -> void:
 	hero_class.text = ""
 	hero_name.text = ""
 	# Load hero class previews
-	load_class_previews()
+	load_hero_previews()
 
-func load_class_previews() -> void:
-	for path in HERO_CLASS_FILES:
-		var class_preview = load(path) as HeroClass
-		if class_preview:
+func load_hero_previews() -> void:
+	for path in HERO_DEFAULTS:
+		var hero_preview = load(path) as Hero
+		if hero_preview:
 			var preview = PREVIEW_SCENE.instantiate()
-			preview.set_hero_class(class_preview)
+			preview.set_hero_class(hero_preview)
 			preview.class_selected.connect(_on_class_selected)
 			class_selector.add_child(preview)
 
-func _on_class_selected(selected_class: HeroClass) -> void:
-	if hero_class_selected == selected_class:
-		hero_class_selected = null
+func _on_class_selected(selected_class: Hero) -> void:
+	if hero_selected == selected_class:
+		hero_selected = null
 		hero_class.text = ""
 		print("Deselected class")
 	else:
-		hero_class_selected = selected_class
-		hero_class.text = selected_class.hero_class_name
-		print("Selected class: ", hero_class_selected.hero_class_name)
+		hero_selected = selected_class
+		hero_class.text = selected_class.hero_class
+		print("Selected class: ", hero_selected.hero_class)
 	check_create_button_state()
 
 func _on_back_button_pressed() -> void:
 	ScreenManager.go_to_screen("main_menu")
 
 func _on_create_button_pressed() -> void:
-	var hero_inst = HeroInstance.create_new(hero_name.text, hero_class_selected)
-	GameState.start_new_game(hero_inst)
+	var new_hero = hero_selected.duplicate()
+	new_hero.name = hero_name.text
+	GameState.start_new_game(new_hero)
 	save_game_popup.popup_centered()
 
 func _on_game_saved(_slot: int):
