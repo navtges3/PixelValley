@@ -4,8 +4,8 @@
 
 [resource]
 script = ExtResource("1_00e6u")
-accuracy = 1.0
 damage = 100
+attack_type = 1
 name = "Blow Kiss"
 energy_cost = 5
 cooldown = 5

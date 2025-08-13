@@ -12,6 +12,37 @@ class_name Combatant
 @export var defense_modifier: int = 0
 @export var resistance_modifier: int = 0
 
+func is_alive() -> bool:
+	return self.current_hp > 0
+
+func rest() -> void:
+	self.heal(int(self.stat_block.max_hp * 0.5))
+	self.recover_energy(self.stat_block.max_nrg)
+
+func take_damage(amount: int, type: AttackAbility.AttackType) -> void:
+	var damage = amount
+	match type:
+		AttackAbility.AttackType.PHYSICAL:
+			var modifier = self.stat_block.defense + self.defense_modifier
+			damage = max(damage - modifier, 0)
+		AttackAbility.AttackType.MAGICAL:
+			var modifier = self.stat_block.resistance + self.resistance_modifier
+			damage = max(damage - modifier, 0)
+	self.current_hp = max(self.current_hp - damage, 0)
+
+func heal(amount: int) -> void:
+	self.current_hp = min(self.current_hp + amount, self.stat_block.max_hp)
+
+func use_energy(amount: int) -> bool:
+	if self.current_nrg >= amount:
+		self.current_nrg -= amount
+		return true
+	else:
+		return false
+
+func recover_energy(amount: int) -> void:
+	self.current_nrg = min(self.current_nrg + amount, self.stat_block.max_nrg)
+
 func apply_effect(effect: Effect) -> void:
 	if effect.duration <= 0:
 		return
@@ -47,34 +78,3 @@ func process_active_effects() -> void:
 		if effect.duration <= 0:
 			active_effects.remove_at(i)
 			print("Effect '%s' has expired." % effect.type_to_string())
-
-func is_alive() -> bool:
-	return self.current_hp > 0
-
-func rest() -> void:
-	self.heal(int(self.stat_block.max_hp * 0.5))
-	self.recover_energy(self.stat_block.max_nrg)
-
-func take_damage(amount: int, type: AttackAbility.AttackType) -> void:
-	var damage = amount
-	match type:
-		AttackAbility.AttackType.PHYSICAL:
-			var modifier = self.stat_block.defense + self.defense_modifier
-			damage = max(damage - modifier, 0)
-		AttackAbility.AttackType.MAGICAL:
-			var modifier = self.stat_block.resistance + self.resistance_modifier
-			damage = max(damage - modifier, 0)
-	self.current_hp = max(self.current_hp - damage, 0)
-
-func heal(amount: int) -> void:
-	self.current_hp = min(self.current_hp + amount, self.stat_block.max_hp)
-
-func use_energy(amount: int) -> bool:
-	if self.current_nrg >= amount:
-		self.current_nrg -= amount
-		return true
-	else:
-		return false
-
-func recover_energy(amount: int) -> void:
-	self.current_nrg = min(self.current_nrg + amount, self.stat_block.max_nrg)
