@@ -1,13 +1,13 @@
 extends Node
 class_name ShopManager
 
-var hero: HeroInstance
+var hero: Hero
 var shop: Shop
 var item_stack_selected: ItemStack
 
-signal hero_updated(hero_ref: HeroInstance)
+signal hero_updated(hero_ref: Hero)
 
-func start_shop(hero_ref: HeroInstance, shop_ref: Shop) -> void:
+func start_shop(hero_ref: Hero, shop_ref: Shop) -> void:
 	hero = hero_ref
 	shop = shop_ref
 	if not shop.inventory.is_empty():

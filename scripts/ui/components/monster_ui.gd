@@ -19,7 +19,7 @@ func refresh() -> void:
 
 func update_health_bar():
 	var value = monster.current_hp
-	var max_value = monster.max_hp
+	var max_value = monster.stat_block.max_hp
 	health_bar.max_value = max_value
 	health_bar.value = value
 	health_label.text = "%d / %d" % [value, max_value]

@@ -14,16 +14,16 @@ class_name HeroUI
 @onready var gold_label = $Stats/GoldLabel
 @onready var active_effects_label = $Stats/ActiveEffectsLabel
 
-var hero: HeroInstance = null
+var hero: Hero = null
 
-func set_hero_info(hero_ref: HeroInstance):
+func set_hero_info(hero_ref: Hero) -> void:
 	hero = hero_ref
 	refresh()
 
 func refresh() -> void:
-	name_label.text = hero.hero_name
-	class_label.text = hero.hero_class.hero_class_name
-	picture.texture = hero.hero_class.portrait
+	name_label.text = hero.name
+	class_label.text = hero.hero_class
+	picture.texture = hero.portrait
 	weapon_label.text = hero.weapon.name
 	level_label.text = "Level: " + str(hero.level)
 	experience_label.text = "XP: " + str(hero.experience)
