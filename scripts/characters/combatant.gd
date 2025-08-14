@@ -19,7 +19,7 @@ func rest() -> void:
 	self.heal(int(self.stat_block.max_hp * 0.5))
 	self.recover_energy(self.stat_block.max_nrg)
 
-func take_damage(amount: int, type: AttackAbility.AttackType) -> void:
+func take_damage(amount: int, type: AttackAbility.AttackType) -> String:
 	var damage = amount
 	match type:
 		AttackAbility.AttackType.PHYSICAL:
@@ -29,6 +29,10 @@ func take_damage(amount: int, type: AttackAbility.AttackType) -> void:
 			var modifier = self.stat_block.resistance + self.resistance_modifier
 			damage = max(damage - modifier, 0)
 	self.current_hp = max(self.current_hp - damage, 0)
+	if damage <= 0:
+		return "%s blocked the attack!" % self.name
+	else:
+		return "%s took %d damage." % [self.name, damage]
 
 func heal(amount: int) -> void:
 	self.current_hp = min(self.current_hp + amount, self.stat_block.max_hp)
@@ -58,10 +62,10 @@ func process_active_effects() -> void:
 		match effect.type:
 			Effect.EffectType.HEAL:
 				print("Healing effect applied.")
-				self.stat_block.current_hp = min(self.stat_block.current_hp + effect.strength, self.stat_block.max_hp)
+				self.current_hp = min(self.current_hp + effect.strength, self.stat_block.max_hp)
 			Effect.EffectType.ENERGY:
 				print("Energy effect applied.")
-				self.stat_block.current_nrg = min(self.stat_block.current_nrg + effect.strength, self.stat_block.max_nrg)
+				self.current_nrg = min(self.current_nrg + effect.strength, self.stat_block.max_nrg)
 			Effect.EffectType.BUFF_ATTACK:
 				print("Attack buff applied.")
 				self.attack_modifier += effect.strength

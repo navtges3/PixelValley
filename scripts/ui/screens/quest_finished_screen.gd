@@ -26,7 +26,7 @@ func collect_rewards() -> void:
 		match reward.target:
 			QuestReward.RewardTarget.PLAYER:
 				print("Adding %d %s to hero's inventory" % [reward.amount, reward.item.name])
-				hero.add_potion(reward.item, reward.amount)
+				hero.inventory.add_potion(reward.item, reward.amount)
 			QuestReward.RewardTarget.SHOP:
 				print("Adding %d %s to shop's inventory" % [reward.amount, reward.item.name])
 				village.shop.add_item(reward.item, reward.amount)

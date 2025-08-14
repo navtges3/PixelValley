@@ -9,8 +9,17 @@ func has_inventory() -> bool:
 
 func add_item(item: Item, count: int = 1) -> void:
 	for item_stack: ItemStack in inventory:
-		if item.id == item_stack.item.id:
+		if item == item_stack.item:
 			item_stack.count += count
 			return
 	var new_item := ItemStack.new(item, count)
 	inventory.append(new_item)
+
+func remove_item(item: Item, count: int = 1) -> void:
+	for item_stack: ItemStack in inventory:
+		if item == item_stack.item:
+			item_stack.count -= count
+			if item_stack.count <= 0:
+				inventory.erase(item_stack)
+			return
+	print("Item %s not found in shop inventory." % item.name)

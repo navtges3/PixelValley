@@ -1,7 +1,6 @@
-[gd_scene load_steps=8 format=3 uid="uid://blhwqbfk6j0u7"]
+[gd_scene load_steps=7 format=3 uid="uid://blhwqbfk6j0u7"]
 
 [ext_resource type="Script" uid="uid://cmd8ja1dvnkcv" path="res://scripts/ui/screens/village_screen.gd" id="1_dtw0c"]
-[ext_resource type="PackedScene" uid="uid://cypny3nmnikm7" path="res://scenes/ui/components/village_hp_bar.tscn" id="2_m0hxj"]
 [ext_resource type="Theme" uid="uid://66dgdyq2o64x" path="res://assets/button_themes/specialty/pause_button.tres" id="3_o0vxf"]
 [ext_resource type="PackedScene" uid="uid://bjx12sxd6xqme" path="res://scenes/ui/components/hero_ui.tscn" id="4_nqqh3"]
 [ext_resource type="Theme" uid="uid://dqwm8agt87lsh" path="res://assets/button_themes/large/large_blue_button.tres" id="5_yofci"]
@@ -27,9 +26,6 @@ theme_override_constants/margin_left = 5
 theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 5
 theme_override_constants/margin_bottom = 5
-
-[node name="VillageHPBar" parent="CanvasLayer/UIRoot" instance=ExtResource("2_m0hxj")]
-layout_mode = 2
 
 [node name="Pause" type="Button" parent="CanvasLayer/UIRoot"]
 custom_minimum_size = Vector2(32, 32)

@@ -24,24 +24,24 @@ func refresh() -> void:
 	name_label.text = hero.name
 	class_label.text = hero.hero_class
 	picture.texture = hero.portrait
-	weapon_label.text = hero.weapon.name
+	weapon_label.text = hero.inventory.weapon.name
 	level_label.text = "Level: " + str(hero.level)
 	experience_label.text = "XP: " + str(hero.experience)
-	gold_label.text = "Gold: " + str(hero.gold)
+	gold_label.text = "Gold: " + str(hero.inventory.gold)
 	update_health_bar()
 	update_energy_bar()
 	update_active_effects()
 
 func update_health_bar():
 	var value = hero.current_hp
-	var max_value = hero.max_hp
+	var max_value = hero.stat_block.max_hp
 	health_bar.max_value = max_value
 	health_bar.value = value
 	health_label.text = "%d / %d" % [value, max_value]
 
 func update_energy_bar():
 	var value = hero.current_nrg
-	var max_value = hero.max_nrg
+	var max_value = hero.stat_block.max_nrg
 	energy_bar.max_value = max_value
 	energy_bar.value = value
 	energy_label.text = "%d / %d" % [value, max_value]
