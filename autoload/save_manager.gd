@@ -163,7 +163,7 @@ static func _get_shop_data(shop: Shop) -> Dictionary:
 	}
 	for item_stack in shop.inventory:
 		shop_data.inventory.append({
-			item_stack = item_stack.item.resource_path,
+			item = item_stack.item.resource_path,
 			count = item_stack.count
 		})
 	return shop_data
