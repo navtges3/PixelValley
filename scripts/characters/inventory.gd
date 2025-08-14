@@ -1,6 +1,7 @@
 extends Resource
 class_name Inventory
 
+@export var gold: int = 0
 @export var weapon: Weapon
 @export var potions: Array[ItemStack]
 
