@@ -161,7 +161,10 @@ func create_ability_button(ability: Ability) -> Button:
 		button.theme = preload("res://assets/button_themes/large/large_gray_button.tres")
 	# Set the button text
 	var button_text = ability.name
-	if ability.is_ready():
+	if ability.energy_cost > hero.current_nrg:
+		button_text += " [low nrg]"
+		button.disabled = true
+	elif ability.is_ready():
 		button.tooltip_text = ability.get_tooltip()
 	else:
 		button_text += " cd: " + str(ability.current_cooldown)
