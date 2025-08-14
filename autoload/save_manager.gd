@@ -17,6 +17,7 @@ static func save_game() -> void:
 	var data = {
 		hero = _get_hero_data(GameState.hero),
 		village = _get_village_data(GameState.village),
+		quests = GameState.quest_manager.get_save_data()
 	}
 	var save_path = get_save_path()
 	var file = FileAccess.open(save_path, FileAccess.WRITE)
@@ -39,6 +40,7 @@ static func load_game() -> void:
 		return
 	GameState.hero = _load_hero_data(data.get("hero", {}))
 	GameState.village = _load_village(data.get("village", {}))
+	GameState.quest_manager = QuestManager.load_from_data(data.get("quests", {}))
 	return
 
 static func _get_hero_data(hero: Hero) -> Dictionary:
