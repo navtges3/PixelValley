@@ -4,8 +4,6 @@ extends Control
 
 # Top Bar
 @onready var quest_bar = $TopBar/QuestProgressBar
-@onready var pause_button = $TopBar/PauseButton
-@onready var pause_popup = $PausePopup
 @onready var victory_popup = $BattleVictoryPopup
 
 # Battle Field
@@ -33,7 +31,6 @@ func _ready() -> void:
 
 	victory_popup.continue_pressed.connect(_on_victory_popup_continue_pressed)
 	victory_popup.retreat_pressed.connect(_on_victory_popup_retreat_pressed)
-	pause_button.pressed.connect(_on_pause_button_pressed)
 	ability_button.toggled.connect(_on_ability_button_toggled)
 	item_button.toggled.connect(_on_item_button_toggled)
 	rest_button.pressed.connect(_on_rest_button_pressed)
@@ -128,13 +125,6 @@ func _on_victory_popup_continue_pressed() -> void:
 
 func _on_victory_popup_retreat_pressed() -> void:
 	ScreenManager.go_to_screen("village")
-
-func _on_pause_button_pressed() -> void:
-	pause_popup.popup_centered()
-
-func _input(event: InputEvent) -> void:
-	if event.is_action_pressed("ui_cancel") and not pause_popup.is_visible():
-		_on_pause_button_pressed()
 
 func _on_ability_button_pressed(ability: Ability) -> void:
 	print("Ability pressed: ", ability.name)

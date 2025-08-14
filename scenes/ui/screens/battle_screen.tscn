@@ -1,8 +1,7 @@
-[gd_scene load_steps=13 format=3 uid="uid://wy2cht7kkgmh"]
+[gd_scene load_steps=11 format=3 uid="uid://wy2cht7kkgmh"]
 
 [ext_resource type="Script" uid="uid://cqc6b58dnjxis" path="res://scripts/ui/screens/battle_screen.gd" id="1_ihhiw"]
 [ext_resource type="PackedScene" uid="uid://ehxty8k3d2vu" path="res://scenes/ui/components/quest_progress_bar.tscn" id="3_ihhiw"]
-[ext_resource type="Theme" uid="uid://66dgdyq2o64x" path="res://assets/button_themes/specialty/pause_button.tres" id="4_hd4cu"]
 [ext_resource type="PackedScene" uid="uid://bjx12sxd6xqme" path="res://scenes/ui/components/hero_ui.tscn" id="5_fgwq0"]
 [ext_resource type="PackedScene" uid="uid://pxhpjm0rsnof" path="res://scenes/ui/components/monster_ui.tscn" id="6_q2vii"]
 [ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://assets/button_themes/large/large_red_button.tres" id="7_iw40k"]
@@ -10,7 +9,6 @@
 [ext_resource type="Theme" uid="uid://dqwm8agt87lsh" path="res://assets/button_themes/large/large_blue_button.tres" id="9_06vtu"]
 [ext_resource type="Theme" uid="uid://phfh7c5hwx1n" path="res://assets/button_themes/large/large_yellow_button.tres" id="10_c2ins"]
 [ext_resource type="Script" uid="uid://bgmcha5vrlqop" path="res://scripts/systems/battle_manager.gd" id="11_o00jr"]
-[ext_resource type="PackedScene" uid="uid://btej8vh3kxmxo" path="res://scenes/ui/popups/pause_popup.tscn" id="12_gw1kf"]
 [ext_resource type="PackedScene" uid="uid://i13p0dcm5xx0" path="res://scenes/ui/popups/battle_victory_popup.tscn" id="13_jn4pq"]
 
 [node name="BattleScreen" type="Control"]
@@ -34,15 +32,8 @@ size_flags_vertical = 0
 
 [node name="QuestProgressBar" parent="TopBar" instance=ExtResource("3_ihhiw")]
 layout_mode = 2
-size_flags_horizontal = 10
+size_flags_horizontal = 6
 size_flags_vertical = 0
-
-[node name="PauseButton" type="Button" parent="TopBar"]
-custom_minimum_size = Vector2(32, 32)
-layout_mode = 2
-size_flags_horizontal = 10
-size_flags_vertical = 0
-theme = ExtResource("4_hd4cu")
 
 [node name="BattleField" type="HBoxContainer" parent="."]
 layout_mode = 1
@@ -132,9 +123,6 @@ scroll_following = true
 
 [node name="BattleManager" type="Node" parent="."]
 script = ExtResource("11_o00jr")
-
-[node name="PausePopup" parent="." instance=ExtResource("12_gw1kf")]
-visible = false
 
 [node name="BattleVictoryPopup" parent="." instance=ExtResource("13_jn4pq")]
 visible = false
