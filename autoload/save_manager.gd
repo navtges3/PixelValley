@@ -38,7 +38,7 @@ static func load_game() -> void:
 		push_error("SaveManager: Invalid save data format in slot")
 		return
 	GameState.hero = _load_hero_data(data.get("hero", {}))
-	GameState.village = _load_village_data(data.get("village", {}))
+	GameState.village = _load_village(data.get("village", {}))
 	return
 
 static func _get_hero_data(hero: Hero) -> Dictionary:
@@ -47,14 +47,30 @@ static func _get_hero_data(hero: Hero) -> Dictionary:
 		portrait = hero.portrait.resource_path,
 		current_hp = hero.current_hp,
 		current_nrg = hero.current_nrg,
-		active_effects = _get_active_effects_data(hero),
-		stat_block = _get_stat_block_data(hero.stat_block),
 		hero_class = hero.hero_class,
 		level = hero.level,
 		experience = hero.experience,
+		active_effects = _get_active_effects_data(hero),
+		stat_block = _get_stat_block_data(hero.stat_block),
 		inventory = _get_inventory_data(hero.inventory)
 	}
 	return hero_data
+
+static func _load_hero_data(data: Dictionary) -> Hero:
+	var hero = Hero.new()
+	hero.name = data.get("hero_name", "Unnamed Hero")
+	var portrait_path = data.get("portrait", "")
+	if portrait_path != "":
+		hero.portrait = load(portrait_path)
+	hero.current_hp = data.get("current_hp", 0)
+	hero.current_nrg = data.get("current_nrg", 0)
+	hero.hero_class = data.get("hero_class", "Warrior")
+	hero.level = data.get("level", 1)
+	hero.experience = data.get("experience", 0)
+	hero.stat_block = _load_stat_block(data.get("stat_block", {}))
+	hero.active_effects = _load_active_effects(data.get("active_effects", []))
+	hero.inventory = _load_inventory(data.get("inventory", {}))
+	return hero
 
 static func _get_active_effects_data(combatant: Combatant) -> Array:
 	var effects_data = []
@@ -66,6 +82,16 @@ static func _get_active_effects_data(combatant: Combatant) -> Array:
 		})
 	return effects_data
 
+static func _load_active_effects(data: Array) -> Array[Effect]:
+	var effects: Array[Effect] = []
+	for effect_data in data:
+		var effect = Effect.new()
+		effect.type = effect_data.get("type", Effect.EffectType.HEAL)
+		effect.strength = effect_data.get("strength", 0)
+		effect.duration = effect_data.get("duration", 0)
+		effects.append(effect)
+	return effects
+
 static func _get_stat_block_data(stat_block: StatBlock) -> Dictionary:
 	var stat_block_data = {
 		max_hp = stat_block.max_hp,
@@ -76,6 +102,16 @@ static func _get_stat_block_data(stat_block: StatBlock) -> Dictionary:
 		resistance = stat_block.resistance
 	}
 	return stat_block_data
+
+static func _load_stat_block(data: Dictionary) -> StatBlock:
+	var stat_block = StatBlock.new()
+	stat_block.max_hp = data.get("max_hp", 10)
+	stat_block.max_nrg = data.get("max_nrg", 5)
+	stat_block.attack = data.get("attack", 1)
+	stat_block.magic = data.get("magic", 1)
+	stat_block.defense = data.get("defense", 1)
+	stat_block.resistance = data.get("resistance", 1)
+	return stat_block
 
 static func _get_inventory_data(inventory: Inventory) -> Dictionary:
 	var inventory_data = {
@@ -90,48 +126,21 @@ static func _get_inventory_data(inventory: Inventory) -> Dictionary:
 		})
 	return inventory_data
 
-static func _load_hero_data(data: Dictionary) -> Hero:
-	var hero = Hero.new()
-	hero.name = data.get("hero_name", "Unnamed Hero")
-	var portrait_path = data.get("portrait", "")
-	if portrait_path != "":
-		hero.portrait = load(portrait_path)
-	hero.current_hp = data.get("current_hp", 0)
-	hero.current_nrg = data.get("current_nrg", 0)
-	hero.stat_block = StatBlock.new()
-	var stat_data = data.get("stat_block", {})
-	hero.stat_block.max_hp = stat_data.get("max_hp", 10)
-	hero.stat_block.max_nrg = stat_data.get("max_nrg", 5)
-	hero.stat_block.attack = stat_data.get("attack", 1)
-	hero.stat_block.magic = stat_data.get("magic", 1)
-	hero.stat_block.defense = stat_data.get("defense", 1)
-	hero.stat_block.resistance = stat_data.get("resistance", 1)
-	hero.active_effects = []
-	for effect_data in data.get("active_effects", []):
-		var effect = Effect.new()
-		effect.type = effect_data.get("type", Effect.EffectType.HEAL)
-		effect.strength = effect_data.get("strength", 0)
-		effect.duration = effect_data.get("duration", 0)
-		hero.active_effects.append(effect)
-	hero.hero_class = data.get("hero_class", "Warrior")
-	hero.level = data.get("level", 1)
-	hero.experience = data.get("experience", 0)
-	hero.inventory = Inventory.new()
-	var inventory_data = data.get("inventory", {})
-	hero.inventory.gold = inventory_data.get("gold", 0)
-	var weapon_path = inventory_data.get("weapon", "")
+static func _load_inventory(data: Dictionary) -> Inventory:
+	var inventory = Inventory.new()
+	inventory.gold = data.get("gold", 0)
+	var weapon_path = data.get("weapon", "")
 	if weapon_path != "":
-		hero.inventory.weapon = load(weapon_path)
-	hero.inventory.potions = []
-	for potion_data in inventory_data.get("potions", []):
+		inventory.weapon = load(weapon_path)
+	for potion_data in data.get("potions", []):
 		var potion_path = potion_data.get("potion", "")
 		var count = potion_data.get("count", 1)
 		if potion_path != "":
 			var potion_item = load(potion_path)
 			if potion_item is Potion:
 				var item_stack = ItemStack.new(potion_item, count)
-				hero.inventory.potions.append(item_stack)
-	return hero
+				inventory.potions.append(item_stack)
+	return inventory
 
 static func _get_village_data(village: Village) -> Dictionary:
 	var village_data = {
@@ -140,11 +149,11 @@ static func _get_village_data(village: Village) -> Dictionary:
 	}
 	return village_data
 
-static func _load_village_data(data: Dictionary) -> Village:
+static func _load_village(data: Dictionary) -> Village:
 	var village = Village.new()
 	village.name = data.get("name", "Lexiton")
 	var shop_data = data.get("shop", {})
-	village.shop = _load_shop_data(shop_data)
+	village.shop = _load_shop(shop_data)
 	return village
 
 static func _get_shop_data(shop: Shop) -> Dictionary:
@@ -159,10 +168,9 @@ static func _get_shop_data(shop: Shop) -> Dictionary:
 		})
 	return shop_data
 
-static func _load_shop_data(data: Dictionary) -> Shop:
+static func _load_shop(data: Dictionary) -> Shop:
 	var shop = Shop.new()
 	shop.name = data.get("name", "Default Shop")
-	shop.inventory = []
 	for item_data in data.get("inventory", []):
 		var item = load(item_data.get("item", ""))
 		var count = item_data.get("count", 1)

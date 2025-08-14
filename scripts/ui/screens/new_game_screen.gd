@@ -10,8 +10,6 @@ extends Control
 @onready var back_button = $VBoxContainer/ButtonContainer/Back
 @onready var create_button = $VBoxContainer/ButtonContainer/Create
 
-@onready var save_game_popup = $SaveGamePopup
-
 const PREVIEW_SCENE = preload("res://scenes/ui/components/hero_preview.tscn")
 
 const HERO_DEFAULTS = [
@@ -28,7 +26,6 @@ func _ready() -> void:
 	create_button.pressed.connect(_on_create_button_pressed)
 	# Connect function to check when text is changed
 	hero_name.text_changed.connect(_on_line_edit_text_changed)
-	save_game_popup.game_saved.connect(_on_game_saved)
 	# Set default states for create button and text fields
 	create_button.disabled = true
 	hero_class.text = ""
@@ -63,9 +60,6 @@ func _on_create_button_pressed() -> void:
 	var new_hero = hero_selected.duplicate()
 	new_hero.name = hero_name.text
 	GameState.start_new_game(new_hero)
-	save_game_popup.popup_centered()
-
-func _on_game_saved(_slot: int):
 	ScreenManager.go_to_screen("village")
 
 func _on_line_edit_text_changed(_new_text):

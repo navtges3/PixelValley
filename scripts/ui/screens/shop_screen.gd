@@ -19,7 +19,7 @@ extends Control
 
 var ItemButton := preload("res://scenes/ui/components/item_button.tscn")
 
-var hero: HeroInstance
+var hero: Hero
 var shop: Shop
 
 func _ready() -> void:
@@ -46,12 +46,12 @@ func _update_item_list() -> void:
 		item_list.add_child(button)
 	_on_item_selected(shop_manager.item_stack_selected)
 
-func _on_hero_updated(hero_ref: HeroInstance) -> void:
+func _on_hero_updated(hero_ref: Hero) -> void:
 	hero_ui.set_hero_info(hero_ref)
 	var inventory_text = "Hero Inventory: "
-	if hero_ref.potion_belt.has_potions():
+	if hero_ref.inventory.potions.size():
 		inventory_text += "\n  Potions:"
-		for potion_stack in hero_ref.potion_belt.potions:
+		for potion_stack in hero_ref.inventory.potions:
 			inventory_text += "\n - %s x%d" % [potion_stack.item.name, potion_stack.count]
 	else:
 		inventory_text += "\n  None"
@@ -75,7 +75,7 @@ func _update_purchase_button() -> void:
 	var selected_stack = shop_manager.item_stack_selected
 	if selected_stack and selected_stack.item:
 		var total_cost = int(selected_stack.item.value) * int(quantity_spin_box.value)
-		purchase_button.disabled = total_cost > hero.gold
+		purchase_button.disabled = total_cost > hero.inventory.gold
 	else:
 		purchase_button.disabled = true
 

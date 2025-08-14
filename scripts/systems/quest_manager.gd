@@ -20,7 +20,7 @@ func get_save_data() -> Dictionary:
 		"completed_quests": completed_quests.map(func(q: Quest): return q.get_save_data()),
 	}
 
-static func create_from_data(data: Dictionary) -> QuestManager:
+static func load_from_data(data: Dictionary) -> QuestManager:
 	var manager := QuestManager.new()
 	for obj_data in data.get("active_quests", []):
 		var quest = Quest.load_from_data(obj_data)

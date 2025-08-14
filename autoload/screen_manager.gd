@@ -4,7 +4,6 @@ var current_screen: Node = null
 const SCENE_PATHS := {
 	"main_menu": "res://scenes/ui/screens/main_menu_screen.tscn",
 	"new_game": "res://scenes/ui/screens/new_game_screen.tscn",
-	"load_game": "res://scenes/ui/screens/load_game_screen.tscn",
 	"village": "res://scenes/ui/screens/village_screen.tscn",
 	"shop": "res://scenes/ui/screens/shop_screen.tscn",
 	"battle": "res://scenes/ui/screens/battle_screen.tscn",
