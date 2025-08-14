@@ -47,35 +47,48 @@ static func _get_hero_data(hero: Hero) -> Dictionary:
 		portrait = hero.portrait.resource_path,
 		current_hp = hero.current_hp,
 		current_nrg = hero.current_nrg,
-		active_effects = [],
-		stat_block = {
-			max_hp = hero.stat_block.max_hp,
-			max_nrg = hero.stat_block.max_nrg,
-			attack = hero.stat_block.attack,
-			magic = hero.stat_block.magic,
-			defense = hero.stat_block.defense,
-			resistance = hero.stat_block.resistance
-		},
+		active_effects = _get_active_effects_data(hero),
+		stat_block = _get_stat_block_data(hero.stat_block),
 		hero_class = hero.hero_class,
 		level = hero.level,
 		experience = hero.experience,
-		inventory = {
-			weapon = hero.inventory.weapon.resource_path,
-			potions = []
-		}
+		inventory = _get_inventory_data(hero.inventory)
 	}
-	for effect in hero.active_effects:
-		hero_data.active_effects.append({
+	return hero_data
+
+static func _get_active_effects_data(combatant: Combatant) -> Array:
+	var effects_data = []
+	for effect in combatant.active_effects:
+		effects_data.append({
 			type = effect.type,
 			strength = effect.strength,
 			duration = effect.duration
 		})
-	for item_stack in hero.inventory.potions:
-		hero_data.inventory.potions.append({
+	return effects_data
+
+static func _get_stat_block_data(stat_block: StatBlock) -> Dictionary:
+	var stat_block_data = {
+		max_hp = stat_block.max_hp,
+		max_nrg = stat_block.max_nrg,
+		attack = stat_block.attack,
+		magic = stat_block.magic,
+		defense = stat_block.defense,
+		resistance = stat_block.resistance
+	}
+	return stat_block_data
+
+static func _get_inventory_data(inventory: Inventory) -> Dictionary:
+	var inventory_data = {
+		gold = inventory.gold,
+		weapon = inventory.weapon.resource_path,
+		potions = []
+	}
+	for item_stack in inventory.potions:
+		inventory_data.potions.append({
 			potion = item_stack.item.resource_path,
 			count = item_stack.count
 		})
-	return hero_data
+	return inventory_data
 
 static func _load_hero_data(data: Dictionary) -> Hero:
 	var hero = Hero.new()
@@ -105,6 +118,7 @@ static func _load_hero_data(data: Dictionary) -> Hero:
 	hero.experience = data.get("experience", 0)
 	hero.inventory = Inventory.new()
 	var inventory_data = data.get("inventory", {})
+	hero.inventory.gold = inventory_data.get("gold", 0)
 	var weapon_path = inventory_data.get("weapon", "")
 	if weapon_path != "":
 		hero.inventory.weapon = load(weapon_path)
