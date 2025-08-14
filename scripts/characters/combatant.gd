@@ -3,10 +3,10 @@ class_name Combatant
 
 @export var name: String
 @export var portrait: Texture2D
-@export var stat_block: StatBlock
-@export var active_effects: Array[Effect] = []
 @export var current_hp: int = 0
 @export var current_nrg: int = 0
+@export var active_effects: Array[Effect] = []
+@export var stat_block: StatBlock
 @export var attack_modifier: int = 0
 @export var magic_modifier: int = 0
 @export var defense_modifier: int = 0
