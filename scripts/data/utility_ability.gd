@@ -8,11 +8,10 @@ func apply_utility(caster: Combatant) -> String:
 		print("%s is still on cooldown." % self.name)
 		return "%s is still on cooldown." % self.name
 
-	
-	var output := "%s used %s!"
+
+	var output := "%s used %s!" % [caster.name, self.name]
 	for effect in effects:
-		caster.apply_effect(effect.duplicate())
-		output += " Applying %d %s for %d turns." % [effect.strength, effect.type_to_string(), effect.duration]
+		output += " " + caster.apply_effect(effect.duplicate())
 	return output
 
 func get_tooltip() -> String:
