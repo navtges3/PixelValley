@@ -1,15 +1,17 @@
-[gd_resource type="Resource" script_class="Weapon" load_steps=5 format=3 uid="uid://ytx0xnb7ewpw"]
+[gd_resource type="Resource" script_class="Weapon" load_steps=6 format=3 uid="uid://ytx0xnb7ewpw"]
 
 [ext_resource type="Script" uid="uid://b2o7w8q10stxo" path="res://scripts/data/ability.gd" id="1_ycbmi"]
-[ext_resource type="Resource" uid="uid://btirpmgomdqf" path="res://resources/abilities/stab.tres" id="2_ycbmi"]
-[ext_resource type="Resource" uid="uid://bgw0ths3t8ddy" path="res://resources/abilities/backstab.tres" id="3_fjiph"]
+[ext_resource type="Resource" uid="uid://btirpmgomdqf" path="res://resources/abilities/attacks/stab.tres" id="2_ycsd4"]
+[ext_resource type="Resource" uid="uid://bgw0ths3t8ddy" path="res://resources/abilities/attacks/backstab.tres" id="3_syt7i"]
 [ext_resource type="Script" uid="uid://dgykeyxn7fefw" path="res://scripts/data/weapon.gd" id="3_ycsd4"]
+[ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://assets/button_themes/large/large_red_button.tres" id="5_prkku"]
 
 [resource]
 script = ExtResource("3_ycsd4")
 rarity = "common"
-abilities = Array[ExtResource("1_ycbmi")]([ExtResource("2_ycbmi"), ExtResource("3_fjiph")])
+abilities = Array[ExtResource("1_ycbmi")]([ExtResource("2_ycsd4"), ExtResource("3_syt7i")])
 name = "Dagger"
 description = "A small blade with a wicked edge and a quiet purpose.Perfect for swift strikes, critical hits, and getting in (or out) of trouble. Favored by rogues, assassins, and anyone who prefers precision over power."
+theme = ExtResource("5_prkku")
 value = 25
 metadata/_custom_type_script = "uid://dgykeyxn7fefw"

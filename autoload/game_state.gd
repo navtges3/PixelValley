@@ -14,4 +14,5 @@ func start_new_game(hero_inst: Hero) -> void:
 	hero = hero_inst
 	village = DEFAULT_VILLAGE.duplicate()
 	quest_manager = START_QUEST_MANAGER.duplicate()
+	quest_manager.connect_quests()
 	SaveManager.save_game()

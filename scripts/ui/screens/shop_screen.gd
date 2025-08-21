@@ -96,12 +96,7 @@ func empty_item_list() -> void:
 func create_item_button(item_stack: ItemStack) -> Button:
 	var button := ItemButton.instantiate()
 	button.text = item_stack.item.name
-	if item_stack.item is Weapon:
-		button.theme = preload("res://assets/button_themes/large/large_red_button.tres")
-	elif item_stack.item is Potion:
-		button.theme = item_stack.item.effect.get_button_theme()
-	else:
-		button.theme = preload("res://assets/button_themes/large/large_gray_button.tres")
+	button.theme = item_stack.item.theme
 	button.custom_minimum_size = Vector2(96, 32)
 	button.item_stack = item_stack
 	button.tooltip_text = item_stack.item.get_tooltip()

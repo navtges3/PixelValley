@@ -4,6 +4,10 @@ class_name QuestManager
 @export var active_quests: Array[Quest] = []
 @export var completed_quests: Array[Quest] = []
 
+func connect_quests() -> void:
+	for quest in active_quests:
+		quest.quest_completed.connect(Callable(self, "_on_quest_completed"))
+
 func add_quest(quest: Quest) -> void:
 	if quest not in active_quests:
 		active_quests.append(quest)

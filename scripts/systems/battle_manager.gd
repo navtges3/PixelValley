@@ -59,6 +59,8 @@ func player_item_selected(item_stack: ItemStack) -> void:
 func rest() -> void:
 	if state != BattleState.PLAYER_TURN:
 		return
+	if hero.rest_cooldown > 0:
+		return
 	hero.rest()
 	emit_signal("battle_log_updated", "You take a rest recovering health and energy.")
 	emit_signal("hero_updated", hero)
