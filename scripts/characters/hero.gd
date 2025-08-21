@@ -25,9 +25,10 @@ func use_item(item_stack: ItemStack) -> String:
 	if item_stack.item is Potion:
 		var potion := item_stack.item as Potion
 		var effects := inventory.use_potion(potion)
+		var output := "%s drank %s." % [self.name, potion.name]
 		for effect in effects:
-			self.apply_effect(effect.duplicate())
-		return "%s drank %s." % [self.name, potion.name]
+			output += " " + self.apply_effect(effect.duplicate())
+		return output
 	return "%s can't use this item." % self.name
 
 func update_cooldown() -> void:

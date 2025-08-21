@@ -52,10 +52,11 @@ func use_energy(amount: int) -> bool:
 func recover_energy(amount: int) -> void:
 	self.current_nrg = min(self.current_nrg + amount, self.stat_block.max_nrg)
 
-func apply_effect(effect: Effect) -> void:
+func apply_effect(effect: Effect) -> String:
 	if effect.duration <= 0:
-		return
+		return "Effect has expired."
 	active_effects.append(effect)
+	return "%s applied." % effect.get_tooltip()
 
 func process_active_effects() -> void:
 	self.attack_modifier = 0
