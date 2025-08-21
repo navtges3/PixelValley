@@ -24,10 +24,6 @@ script = ExtResource("1_ihhiw")
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
-offset_left = 5.0
-offset_top = 5.0
-offset_right = -5.0
-offset_bottom = 50.0
 size_flags_vertical = 0
 
 [node name="QuestProgressBar" parent="TopBar" instance=ExtResource("3_ihhiw")]
@@ -40,9 +36,7 @@ layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -6.0
-offset_top = 19.0
-offset_right = -16.0
+offset_top = 33.0
 offset_bottom = -241.0
 
 [node name="HeroUI" parent="BattleField" instance=ExtResource("5_fgwq0")]
@@ -117,8 +111,9 @@ layout_mode = 2
 text = "This is an Ability"
 
 [node name="BattleLog" type="RichTextLabel" parent="ActionArea"]
+custom_minimum_size = Vector2(576, 0)
 layout_mode = 2
-size_flags_horizontal = 3
+size_flags_horizontal = 10
 scroll_following = true
 
 [node name="BattleManager" type="Node" parent="."]

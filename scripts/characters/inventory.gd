@@ -5,7 +5,7 @@ class_name Inventory
 @export var weapon: Weapon
 @export var potions: Array[ItemStack]
 
-func use_potion(potion: Potion) -> Effect:
+func use_potion(potion: Potion) -> Array[Effect]:
 	for i in range(potions.size()):
 		if potions[i].item == potion:
 			var item_stack = potions[i]
@@ -13,8 +13,8 @@ func use_potion(potion: Potion) -> Effect:
 			if item_stack.count <= 0:
 				print("Removing empty potion slot for %s" % potion.name)
 			potions.remove_at(i)
-		return potion.effect
-	return null
+		return potion.effects
+	return []
 
 func add_potion(potion: Potion, amount: int = 1) -> void:
 	for i in range(potions.size()):

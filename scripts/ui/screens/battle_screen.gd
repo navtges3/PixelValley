@@ -99,7 +99,12 @@ func _on_flee_button_pressed() -> void:
 func _on_player_turn():
 	ability_button.disabled = false
 	item_button.disabled = false if hero.inventory.potions.size() > 0 else true
-	rest_button.disabled = false
+	if hero.rest_cooldown > 0:
+		rest_button.disabled = true
+		rest_button.text = "Rest CD: %d" % hero.rest_cooldown
+	else:
+		rest_button.disabled = false
+		rest_button.text = "Rest"
 	flee_button.disabled = false
 
 func _on_monster_turn():
@@ -167,8 +172,8 @@ func create_ability_button(ability: Ability) -> Button:
 
 func create_item_button(item_stack: ItemStack) -> Button:
 	var button := ItemButton.instantiate()
-	button.theme = item_stack.item.effect.get_button_theme()
-	button.tooltip_text = item_stack.item.effect.get_tooltip()
+	button.theme = item_stack.item.theme
+	button.tooltip_text = item_stack.item.get_tooltip()
 	button.item_stack = item_stack
 	button.text = item_stack.item.name
 	button.connect("item_pressed", Callable(self, "_on_item_button_pressed"))

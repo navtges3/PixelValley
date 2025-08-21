@@ -1,6 +1,8 @@
 extends Resource
 class_name Combatant
 
+const REST_CD := 5
+
 @export var name: String
 @export var portrait: Texture2D
 @export var current_hp: int = 0
@@ -11,13 +13,16 @@ class_name Combatant
 @export var magic_modifier: int = 0
 @export var defense_modifier: int = 0
 @export var resistance_modifier: int = 0
+@export var rest_cooldown: int = 0
 
 func is_alive() -> bool:
 	return self.current_hp > 0
 
 func rest() -> void:
-	self.heal(int(self.stat_block.max_hp * 0.5))
-	self.recover_energy(self.stat_block.max_nrg)
+	if rest_cooldown <= 0:
+		self.heal(int(self.stat_block.max_hp * 0.5))
+		self.recover_energy(self.stat_block.max_nrg)
+		rest_cooldown = REST_CD
 
 func take_damage(amount: int, type: AttackAbility.AttackType) -> String:
 	var damage = amount
