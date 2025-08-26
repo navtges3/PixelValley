@@ -6,13 +6,18 @@ class_name HeroUI
 @onready var health_label = $Visuals/Bars/HealthBar/HealthLabel
 @onready var energy_bar = $Visuals/Bars/EnergyBar
 @onready var energy_label = $Visuals/Bars/EnergyBar/EnergyLabel
-@onready var name_label = $Stats/NameLabel
-@onready var class_label = $Stats/ClassLabel
-@onready var weapon_label = $Stats/WeaponLabel
-@onready var level_label = $Stats/LevelLabel
-@onready var experience_label = $Stats/XPLabel
-@onready var gold_label = $Stats/GoldLabel
-@onready var active_effects_label = $Stats/ActiveEffectsLabel
+@onready var name_label = $HeroInfo/NameLabel
+@onready var class_label = $HeroInfo/ClassLabel
+@onready var level_label = $HeroInfo/GridContainer/LevelLabel
+@onready var experience_label = $HeroInfo/GridContainer/XPLabel
+@onready var attack_label: Label = $HeroInfo/GridContainer/AttackLabel
+@onready var magic_label: Label = $HeroInfo/GridContainer/MagicLabel
+@onready var defense_label: Label = $HeroInfo/GridContainer/DefenseLabel
+@onready var resistance_label: Label = $HeroInfo/GridContainer/ResistanceLabel
+
+@onready var gold_label = $HeroInfo/GoldLabel
+@onready var weapon_label = $HeroInfo/WeaponLabel
+@onready var active_effects_label = $HeroInfo/ActiveEffectsLabel
 
 var hero: Hero = null
 
@@ -22,12 +27,16 @@ func set_hero_info(hero_ref: Hero) -> void:
 
 func refresh() -> void:
 	name_label.text = hero.name
-	class_label.text = hero.hero_class
+	class_label.text = "Class: " + hero.hero_class
 	picture.texture = hero.portrait
-	weapon_label.text = hero.inventory.weapon.name
 	level_label.text = "Level: " + str(hero.level)
 	experience_label.text = "XP: " + str(hero.experience)
+	attack_label.text = "Atk: " + str(hero.stat_block.attack)
+	magic_label.text = "Mag: " + str(hero.stat_block.magic)
+	defense_label.text = "Def: " + str(hero.stat_block.defense)
+	resistance_label.text = "Res: " + str(hero.stat_block.resistance)
 	gold_label.text = "Gold: " + str(hero.inventory.gold)
+	weapon_label.text = hero.inventory.weapon.name
 	update_health_bar()
 	update_energy_bar()
 	update_active_effects()
