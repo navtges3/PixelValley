@@ -4,7 +4,7 @@
 [ext_resource type="Resource" uid="uid://cts0marmwurnj" path="res://resources/abilities/attacks/smash.tres" id="2_tlcs8"]
 [ext_resource type="Resource" uid="uid://b6t4wtwttgy71" path="res://resources/abilities/utility/rage.tres" id="3_g74qi"]
 [ext_resource type="Script" uid="uid://dgykeyxn7fefw" path="res://scripts/data/weapon.gd" id="3_tlcs8"]
-[ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://assets/button_themes/large/large_red_button.tres" id="5_81n1p"]
+[ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://assets/button_themes/regular/red_button.tres" id="5_81n1p"]
 
 [resource]
 script = ExtResource("3_tlcs8")
