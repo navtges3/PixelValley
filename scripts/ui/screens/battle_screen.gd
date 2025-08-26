@@ -147,26 +147,10 @@ func empty_option_list() -> void:
 
 func create_ability_button(ability: Ability) -> Button:
 	var button := AbilityButton.instantiate()
-	# Set the button theme
-	if ability is AttackAbility:
-		button.theme = preload("res://assets/button_themes/regular/red_button.tres")
-	elif ability is UtilityAbility:
-		button.theme = preload("res://assets/button_themes/regular/green_button.tres")
-	else:
-		button.theme = preload("res://assets/button_themes/regular/gray_button.tres")
-	# Set the button text
-	var button_text = ability.name
-	if ability.energy_cost > hero.current_nrg:
-		button_text += " [low nrg]"
-		button.disabled = true
-	elif ability.is_ready():
-		button.tooltip_text = ability.get_tooltip()
-	else:
-		button_text += " cd: " + str(ability.current_cooldown)
-		button.disabled = true
-	button.custom_minimum_size = Vector2(96, 32)
 	button.ability = ability
-	button.text = button_text
+	if ability.energy_cost > hero.current_nrg:
+		button.text += " [low nrg]"
+		button.disabled = true
 	button.connect("ability_pressed", Callable(self, "_on_ability_button_pressed"))
 	return button
 
