@@ -172,9 +172,6 @@ func create_ability_button(ability: Ability) -> Button:
 
 func create_item_button(item_stack: ItemStack) -> Button:
 	var button := ItemButton.instantiate()
-	button.theme = item_stack.item.theme
-	button.tooltip_text = item_stack.item.get_tooltip()
 	button.item_stack = item_stack
-	button.text = item_stack.item.name
 	button.connect("item_pressed", Callable(self, "_on_item_button_pressed"))
 	return button

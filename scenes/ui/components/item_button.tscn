@@ -1,8 +1,12 @@
-[gd_scene load_steps=2 format=3 uid="uid://nrrccqmmu1lg"]
+[gd_scene load_steps=3 format=3 uid="uid://nrrccqmmu1lg"]
 
+[ext_resource type="Theme" uid="uid://e6xnt81pte22" path="res://assets/button_themes/large/large_gray_button.tres" id="1_chsbs"]
 [ext_resource type="Script" uid="uid://c6bgeqmgmnkeu" path="res://scripts/ui/components/item_button.gd" id="1_nc8b1"]
 
 [node name="ItemButton" type="Button"]
+custom_minimum_size = Vector2(96, 32)
 offset_right = 8.0
 offset_bottom = 8.0
+theme = ExtResource("1_chsbs")
+text = "1x Item Name"
 script = ExtResource("1_nc8b1")
