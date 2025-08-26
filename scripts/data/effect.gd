@@ -32,15 +32,15 @@ func get_tooltip() -> String:
 func get_button_theme() -> Theme:
 	match type:
 		Effect.EffectType.HEAL:
-			return preload("res://assets/button_themes/large/large_green_button.tres")
+			return preload("res://assets/button_themes/regular/green_button.tres")
 		Effect.EffectType.ENERGY:
-			return preload("res://assets/button_themes/large/large_yellow_button.tres")
+			return preload("res://assets/button_themes/regular/yellow_button.tres")
 		Effect.EffectType.BUFF_ATTACK:
-			return preload("res://assets/button_themes/large/large_red_button.tres")
+			return preload("res://assets/button_themes/regular/red_button.tres")
 		Effect.EffectType.BUFF_MAGIC:
-			return preload("res://assets/button_themes/large/large_red_button.tres")
+			return preload("res://assets/button_themes/regular/red_button.tres")
 		Effect.EffectType.BUFF_DEFENSE:
-			return preload("res://assets/button_themes/large/large_blue_button.tres")
+			return preload("res://assets/button_themes/regular/blue_button.tres")
 		Effect.EffectType.BUFF_RESISTANCE:
-			return preload("res://assets/button_themes/large/large_blue_button.tres")
-	return preload("res://assets/button_themes/large/large_gray_button.tres")
+			return preload("res://assets/button_themes/regular/blue_button.tres")
+	return preload("res://assets/button_themes/regular/gray_button.tres")

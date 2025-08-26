@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://h1h8xay50qh0"]
 
 [ext_resource type="Script" uid="uid://4ufo4amitqna" path="res://scripts/ui/screens/victory_screen.gd" id="1_vdwas"]
-[ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://assets/button_themes/large/large_red_button.tres" id="2_3vk2n"]
+[ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://assets/button_themes/regular/red_button.tres" id="2_3vk2n"]
 
 [node name="VictoryScreen" type="Control"]
 layout_mode = 3

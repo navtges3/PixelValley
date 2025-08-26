@@ -1,8 +1,8 @@
 [gd_scene load_steps=4 format=3 uid="uid://i13p0dcm5xx0"]
 
 [ext_resource type="Script" uid="uid://bva6rvsdfvro1" path="res://scripts/ui/popups/battle_victory_popup.gd" id="1_b4ntk"]
-[ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://assets/button_themes/large/large_green_button.tres" id="2_6pkpi"]
-[ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://assets/button_themes/large/large_red_button.tres" id="4_hlvmy"]
+[ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://assets/button_themes/regular/green_button.tres" id="2_6pkpi"]
+[ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://assets/button_themes/regular/red_button.tres" id="4_hlvmy"]
 
 [node name="BattleVictoryPopup" type="Window"]
 size = Vector2i(200, 100)

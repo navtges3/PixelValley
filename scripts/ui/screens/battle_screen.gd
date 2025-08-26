@@ -149,11 +149,11 @@ func create_ability_button(ability: Ability) -> Button:
 	var button := AbilityButton.instantiate()
 	# Set the button theme
 	if ability is AttackAbility:
-		button.theme = preload("res://assets/button_themes/large/large_red_button.tres")
+		button.theme = preload("res://assets/button_themes/regular/red_button.tres")
 	elif ability is UtilityAbility:
-		button.theme = preload("res://assets/button_themes/large/large_green_button.tres")
+		button.theme = preload("res://assets/button_themes/regular/green_button.tres")
 	else:
-		button.theme = preload("res://assets/button_themes/large/large_gray_button.tres")
+		button.theme = preload("res://assets/button_themes/regular/gray_button.tres")
 	# Set the button text
 	var button_text = ability.name
 	if ability.energy_cost > hero.current_nrg:

@@ -5,7 +5,7 @@
 [ext_resource type="Resource" uid="uid://rta07nbfq41r" path="res://resources/abilities/attacks/bop.tres" id="2_5xaxx"]
 [ext_resource type="Resource" uid="uid://c6inogv0mdcde" path="res://resources/abilities/attacks/blow_kiss.tres" id="3_vp0sc"]
 [ext_resource type="Resource" uid="uid://ddf1hp01cjw33" path="res://resources/abilities/utility/bubble.tres" id="4_buh7l"]
-[ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://assets/button_themes/large/large_red_button.tres" id="6_vp0sc"]
+[ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://assets/button_themes/regular/red_button.tres" id="6_vp0sc"]
 
 [resource]
 script = ExtResource("2_1llc6")

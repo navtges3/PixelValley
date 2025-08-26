@@ -5,7 +5,7 @@
 [ext_resource type="Resource" uid="uid://cerp4tex8mnij" path="res://resources/abilities/attacks/skullbreaker.tres" id="2_uhbxi"]
 [ext_resource type="Resource" uid="uid://dqplx7fmrg1oj" path="res://resources/abilities/attacks/earthshatter.tres" id="3_04j5r"]
 [ext_resource type="Resource" uid="uid://b7h57xu80jbs8" path="res://resources/abilities/utility/ogres_might.tres" id="4_wei62"]
-[ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://assets/button_themes/large/large_red_button.tres" id="6_04j5r"]
+[ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://assets/button_themes/regular/red_button.tres" id="6_04j5r"]
 
 [resource]
 script = ExtResource("2_2ej7f")
