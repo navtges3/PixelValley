@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="AttackAbility" load_steps=2 format=3 uid="uid://cerp4tex8mnij"]
+
+[ext_resource type="Script" uid="uid://bmecp5v7jxnvq" path="res://scripts/data/attack_ability.gd" id="1_fgi5r"]
+
+[resource]
+script = ExtResource("1_fgi5r")
+damage = 15
+attack_type = 0
+name = "Skullbreaker"
+energy_cost = 3
+cooldown = 2
+metadata/_custom_type_script = "uid://bmecp5v7jxnvq"

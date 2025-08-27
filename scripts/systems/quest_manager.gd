@@ -4,6 +4,10 @@ class_name QuestManager
 @export var active_quests: Array[Quest] = []
 @export var completed_quests: Array[Quest] = []
 
+func connect_quests() -> void:
+	for quest in active_quests:
+		quest.quest_completed.connect(Callable(self, "_on_quest_completed"))
+
 func add_quest(quest: Quest) -> void:
 	if quest not in active_quests:
 		active_quests.append(quest)
@@ -20,7 +24,7 @@ func get_save_data() -> Dictionary:
 		"completed_quests": completed_quests.map(func(q: Quest): return q.get_save_data()),
 	}
 
-static func create_from_data(data: Dictionary) -> QuestManager:
+static func load_from_data(data: Dictionary) -> QuestManager:
 	var manager := QuestManager.new()
 	for obj_data in data.get("active_quests", []):
 		var quest = Quest.load_from_data(obj_data)

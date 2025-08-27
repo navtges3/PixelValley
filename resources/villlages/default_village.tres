@@ -41,7 +41,5 @@ metadata/_custom_type_script = "uid://fafwxg2j84k6"
 [resource]
 script = ExtResource("1_lfw73")
 name = "Lexiton"
-max_hp = 100
-current_hp = 100
 shop = SubResource("Resource_dr5x7")
 metadata/_custom_type_script = "uid://rq03ukhf4lx3"

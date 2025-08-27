@@ -67,34 +67,63 @@ grow_vertical = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "25/100"
 
-[node name="Stats" type="VBoxContainer" parent="."]
+[node name="HeroInfo" type="VBoxContainer" parent="."]
 layout_mode = 2
 
-[node name="NameLabel" type="Label" parent="Stats"]
+[node name="NameLabel" type="Label" parent="HeroInfo"]
 layout_mode = 2
 text = "Name"
 
-[node name="ClassLabel" type="Label" parent="Stats"]
+[node name="ClassLabel" type="Label" parent="HeroInfo"]
 layout_mode = 2
 text = "Class"
 
-[node name="WeaponLabel" type="Label" parent="Stats"]
+[node name="GridContainer" type="GridContainer" parent="HeroInfo"]
 layout_mode = 2
-text = "Weapon"
+theme_override_constants/h_separation = 10
+columns = 2
 
-[node name="LevelLabel" type="Label" parent="Stats"]
+[node name="LevelLabel" type="Label" parent="HeroInfo/GridContainer"]
 layout_mode = 2
 text = "Level: 1"
 
-[node name="XPLabel" type="Label" parent="Stats"]
+[node name="XPLabel" type="Label" parent="HeroInfo/GridContainer"]
 layout_mode = 2
 text = "Xp: 0"
 
-[node name="GoldLabel" type="Label" parent="Stats"]
+[node name="AttackLabel" type="Label" parent="HeroInfo/GridContainer"]
+layout_mode = 2
+tooltip_text = "Attack increases physical damage."
+mouse_filter = 0
+text = "Atk: 1"
+
+[node name="MagicLabel" type="Label" parent="HeroInfo/GridContainer"]
+layout_mode = 2
+tooltip_text = "Magic increases magic damage."
+mouse_filter = 0
+text = "Mag: 1"
+
+[node name="DefenseLabel" type="Label" parent="HeroInfo/GridContainer"]
+layout_mode = 2
+tooltip_text = "Defense increases physical protection."
+mouse_filter = 0
+text = "Def: 1"
+
+[node name="ResistanceLabel" type="Label" parent="HeroInfo/GridContainer"]
+layout_mode = 2
+tooltip_text = "Resistance increases magic protection."
+mouse_filter = 0
+text = "Res: 1"
+
+[node name="GoldLabel" type="Label" parent="HeroInfo"]
 layout_mode = 2
 text = "Gold: 0"
 
-[node name="ActiveEffectsLabel" type="Label" parent="Stats"]
+[node name="WeaponLabel" type="Label" parent="HeroInfo"]
+layout_mode = 2
+text = "Weapon"
+
+[node name="ActiveEffectsLabel" type="Label" parent="HeroInfo"]
 layout_mode = 2
 text = "Active Effects:
   None"

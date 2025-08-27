@@ -1,5 +1,4 @@
 extends Resource
-
 class_name Ability
 
 @export var name: String
@@ -10,9 +9,10 @@ var current_cooldown: int
 func is_ready() -> bool:
 	return current_cooldown <= 0
 
-func use() -> bool:
-	if is_ready():
+func use(caster: Combatant) -> bool:
+	if is_ready() and caster.current_nrg >= self.energy_cost:
 		self.current_cooldown = self.cooldown
+		caster.current_nrg -= self.energy_cost
 		return true
 	else:
 		return false
