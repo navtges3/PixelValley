@@ -9,7 +9,7 @@ func has_inventory() -> bool:
 
 func add_item(item: Item, count: int = 1) -> void:
 	for item_stack: ItemStack in inventory:
-		if item == item_stack.item:
+		if item.get_instance_id() == item_stack.item.get_instance_id():
 			item_stack.count += count
 			return
 	var new_item := ItemStack.new(item, count)
@@ -17,7 +17,7 @@ func add_item(item: Item, count: int = 1) -> void:
 
 func remove_item(item: Item, count: int = 1) -> void:
 	for item_stack: ItemStack in inventory:
-		if item == item_stack.item:
+		if item.get_instance_id() == item_stack.item.get_instance_id():
 			item_stack.count -= count
 			if item_stack.count <= 0:
 				inventory.erase(item_stack)
