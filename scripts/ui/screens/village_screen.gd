@@ -12,7 +12,7 @@ func _ready() -> void:
 	quests_button.pressed.connect(_on_quests_button_pressed)
 	shop_button.pressed.connect(_on_shop_button_pressed)
 	if GameState.hero:
-		hero_ui.set_hero_info(GameState.hero)
+		hero_ui.hero = GameState.hero
 	if GameState.village.shop.has_inventory():
 		shop_button.disabled = false
 	else:

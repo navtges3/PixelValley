@@ -53,7 +53,10 @@ func _on_battle_log_updated(msg: String) -> void:
 	$ActionArea/BattleLog.append_text(msg + "\n")
 
 func _on_hero_updated(hero_ref: Hero) -> void:
-	hero_ui.set_hero_info(hero_ref)
+	if hero_ui.hero:
+		hero_ui.refresh()
+	else:
+		hero_ui.hero = hero_ref
 
 func _on_monster_updated(monster_ref: Monster) -> void:
 	monster_ui.set_monster_info(monster_ref)
