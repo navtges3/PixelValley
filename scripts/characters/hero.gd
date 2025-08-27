@@ -23,9 +23,8 @@ func level_up() -> void:
 
 func use_item(item_stack: ItemStack) -> String:
 	if item_stack.item is Potion:
-		var potion := item_stack.item as Potion
-		var effects := inventory.use_potion(potion)
-		var output := "%s drank %s." % [self.name, potion.name]
+		var effects := inventory.use_potion(item_stack)
+		var output := "%s drank %s." % [self.name, item_stack.item.name]
 		for effect in effects:
 			output += " " + self.apply_effect(effect.duplicate())
 		return output
