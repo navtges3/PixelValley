@@ -15,7 +15,7 @@ func use_potion(potion_stack: ItemStack) -> Array[Effect]:
 
 func add_potion(potion: Potion, amount: int = 1) -> void:
 	for i in range(potions.size()):
-		if potions[i].item == potion:
+		if potions[i].item.name == potion.name:
 			potions[i].count += amount
 			return
 	potions.append(ItemStack.new(potion, amount))
