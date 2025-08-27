@@ -148,9 +148,7 @@ func empty_option_list() -> void:
 func create_ability_button(ability: Ability) -> Button:
 	var button := AbilityButton.instantiate()
 	button.ability = ability
-	if ability.energy_cost > hero.current_nrg:
-		button.text += " [low nrg]"
-		button.disabled = true
+	button.user_energy = hero.current_nrg
 	button.connect("ability_pressed", Callable(self, "_on_ability_button_pressed"))
 	return button
 
