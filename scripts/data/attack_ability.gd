@@ -1,21 +1,37 @@
 extends Ability
 class_name AttackAbility
 
-@export var accuracy: float
+enum AttackType { PHYSICAL, MAGICAL }
+
 @export var damage: int
+@export var attack_type: AttackType
 
-func apply_attack(target: RefCounted, attack_modifier: int = 0) -> int:
-	if not use():
+func attack_type_to_string() -> String:
+	match attack_type:
+		AttackType.PHYSICAL:
+			return "Physical"
+		AttackType.MAGICAL:
+			return "Magical"
+	return "Unknown"
+
+func apply_attack(caster: Combatant, target: Combatant) -> String:
+	if not use(caster):
 		print("%s is still on cooldown." % self.name)
-		return -1
+		return "%s is still on cooldown." % self.name
 
-	if randf() > self.accuracy:
-		print("%s missed the attack on %s." % [self.name, target.name])
-		return 0
-
-	var damage_dealt = self.damage + attack_modifier
-	target.take_damage(damage_dealt)
-	return damage_dealt
+	var damage_dealt = self.damage
+	if self.attack_type == AttackType.PHYSICAL:
+		var modifier = caster.attack_modifier + caster.stat_block.attack
+		damage_dealt += modifier
+	elif self.attack_type == AttackType.MAGICAL:
+		var modifier = caster.magic_modifier + caster.stat_block.magic
+		damage_dealt += modifier
+	else:
+		print("Unknown attack type for %s." % self.name)
+		return "Unknown attack type."
+	var output = "%s used %s for %d damage!\n" % [caster.name, self.name, damage_dealt]
+	output += target.take_damage(damage_dealt, self.attack_type)
+	return output
 
 func get_tooltip() -> String:
-	return "Damage: %d\nAccuracy: %d%%\nEnergy Cost: %d\nCooldown: %d" % [self.damage, int(self.accuracy * 100), self.energy_cost, self.cooldown]
+	return "Damage: %d\nType: %s\nEnergy Cost: %d\nCooldown: %d" % [self.damage, attack_type_to_string(), self.energy_cost, self.cooldown]

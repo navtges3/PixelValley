@@ -9,25 +9,17 @@ func has_inventory() -> bool:
 
 func add_item(item: Item, count: int = 1) -> void:
 	for item_stack: ItemStack in inventory:
-		if item.id == item_stack.item.id:
+		if item.get_instance_id() == item_stack.item.get_instance_id():
 			item_stack.count += count
 			return
 	var new_item := ItemStack.new(item, count)
 	inventory.append(new_item)
 
-func get_save_data() -> Dictionary:
-	var inventory_data_array: Array = []
-	for item_stack in inventory:
-		inventory_data_array.append(item_stack.get_save_data())
-	return {
-		"name": name,
-		"inventory": inventory_data_array,
-	}
-
-static func create_from_data(data: Dictionary) -> Shop:
-	var shop = Shop.new()
-	shop.name = data.get("name", "Default Shop")
-	var saved_inventory: Array = data.get("inventory", [])
-	for item_stack in saved_inventory:
-		shop.inventory.append(ItemStack.create_from_data(item_stack))
-	return shop
+func remove_item(item: Item, count: int = 1) -> void:
+	for item_stack: ItemStack in inventory:
+		if item.get_instance_id() == item_stack.item.get_instance_id():
+			item_stack.count -= count
+			if item_stack.count <= 0:
+				inventory.erase(item_stack)
+			return
+	print("Item %s not found in shop inventory." % item.name)

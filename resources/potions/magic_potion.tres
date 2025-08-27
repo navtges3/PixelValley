@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="Potion" load_steps=5 format=3 uid="uid://bwrkv1dmrco38"]
+
+[ext_resource type="Script" uid="uid://c5deti4sb2k2j" path="res://scripts/data/effect.gd" id="1_a3qlk"]
+[ext_resource type="Script" uid="uid://dvmhh34nbwxaq" path="res://scripts/data/potion.gd" id="2_a1x5s"]
+[ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://assets/button_themes/regular/red_button.tres" id="3_a1x5s"]
+
+[sub_resource type="Resource" id="Resource_a3qlk"]
+script = ExtResource("1_a3qlk")
+type = 3
+strength = 5
+duration = 3
+metadata/_custom_type_script = "uid://c5deti4sb2k2j"
+
+[resource]
+script = ExtResource("2_a1x5s")
+effects = Array[ExtResource("1_a3qlk")]([SubResource("Resource_a3qlk")])
+name = "Magic Potion"
+description = "A bubbling concoction that burns going down and burns even more coming out.Temporarily increases the user's attack power, allowing them to deal greater damage for 3 turns. Popular among hot-headed adventurers and berserkers with no regard for moderation."
+theme = ExtResource("3_a1x5s")
+value = 15
+metadata/_custom_type_script = "uid://dvmhh34nbwxaq"

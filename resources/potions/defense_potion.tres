@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="Potion" load_steps=5 format=3 uid="uid://u70yyjyvfpwq"]
+
+[ext_resource type="Script" uid="uid://c5deti4sb2k2j" path="res://scripts/data/effect.gd" id="1_iisjq"]
+[ext_resource type="Script" uid="uid://dvmhh34nbwxaq" path="res://scripts/data/potion.gd" id="2_vtp7y"]
+[ext_resource type="Theme" uid="uid://dqwm8agt87lsh" path="res://assets/button_themes/regular/blue_button.tres" id="3_vtp7y"]
+
+[sub_resource type="Resource" id="Resource_iisjq"]
+script = ExtResource("1_iisjq")
+type = 4
+strength = 5
+duration = 3
+metadata/_custom_type_script = "uid://c5deti4sb2k2j"
+
+[resource]
+script = ExtResource("2_vtp7y")
+effects = Array[ExtResource("1_iisjq")]([SubResource("Resource_iisjq")])
+name = "Defense Potion"
+description = "A bubbling concoction that burns going down and burns even more coming out.Temporarily increases the user's attack power, allowing them to deal greater damage for 3 turns. Popular among hot-headed adventurers and berserkers with no regard for moderation."
+theme = ExtResource("3_vtp7y")
+value = 20
+metadata/_custom_type_script = "uid://dvmhh34nbwxaq"

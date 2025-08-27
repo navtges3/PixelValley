@@ -19,7 +19,7 @@ extends Control
 
 var ItemButton := preload("res://scenes/ui/components/item_button.tscn")
 
-var hero: HeroInstance
+var hero: Hero
 var shop: Shop
 
 func _ready() -> void:
@@ -44,20 +44,20 @@ func _update_item_list() -> void:
 		item_list.add_child(label)
 		var button = create_item_button(item_stack)
 		item_list.add_child(button)
-	_on_item_selected(shop_manager.item_stack_selected)
+	_on_item_pressed(shop_manager.item_stack_selected)
 
-func _on_hero_updated(hero_ref: HeroInstance) -> void:
+func _on_hero_updated(hero_ref: Hero) -> void:
 	hero_ui.set_hero_info(hero_ref)
 	var inventory_text = "Hero Inventory: "
-	if hero_ref.potion_belt.has_potions():
+	if hero_ref.inventory.potions.size():
 		inventory_text += "\n  Potions:"
-		for potion_stack in hero_ref.potion_belt.potions:
+		for potion_stack in hero_ref.inventory.potions:
 			inventory_text += "\n - %s x%d" % [potion_stack.item.name, potion_stack.count]
 	else:
 		inventory_text += "\n  None"
 	inventory_label.text = inventory_text
 
-func _on_item_selected(item_stack: ItemStack) -> void:
+func _on_item_pressed(item_stack: ItemStack) -> void:
 	item_name_label.text = item_stack.item.name
 	item_description_label.text = item_stack.item.description
 	item_cost_label.text = str(item_stack.item.value)
@@ -75,7 +75,7 @@ func _update_purchase_button() -> void:
 	var selected_stack = shop_manager.item_stack_selected
 	if selected_stack and selected_stack.item:
 		var total_cost = int(selected_stack.item.value) * int(quantity_spin_box.value)
-		purchase_button.disabled = total_cost > hero.gold
+		purchase_button.disabled = total_cost > hero.inventory.gold
 	else:
 		purchase_button.disabled = true
 
@@ -95,15 +95,6 @@ func empty_item_list() -> void:
 
 func create_item_button(item_stack: ItemStack) -> Button:
 	var button := ItemButton.instantiate()
-	button.text = item_stack.item.name
-	if item_stack.item is Weapon:
-		button.theme = preload("res://assets/button_themes/large/large_red_button.tres")
-	elif item_stack.item is Potion:
-		button.theme = item_stack.item.effect.get_button_theme()
-	else:
-		button.theme = preload("res://assets/button_themes/large/large_gray_button.tres")
-	button.custom_minimum_size = Vector2(96, 32)
 	button.item_stack = item_stack
-	button.tooltip_text = item_stack.item.get_tooltip()
-	button.connect("item_pressed", Callable(self, "_on_item_selected"))
+	button.connect("item_pressed", Callable(self, "_on_item_pressed"))
 	return button

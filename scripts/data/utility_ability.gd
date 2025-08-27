@@ -1,15 +1,21 @@
 extends Ability
 class_name UtilityAbility
 
-@export var effect: Effect
+@export var effects: Array[Effect]
 
-func apply_utility(target: RefCounted) -> bool:
-	if not use():
+func apply_utility(caster: Combatant) -> String:
+	if not use(caster):
 		print("%s is still on cooldown." % self.name)
-		return false
+		return "%s is still on cooldown." % self.name
 
-	target.apply_effect(effect.duplicate())
-	return true
+
+	var output := "%s used %s!" % [caster.name, self.name]
+	for effect in effects:
+		output += " " + caster.apply_effect(effect.duplicate())
+	return output
 
 func get_tooltip() -> String:
-	return "Effect: %s\nEnergy Cost: %d\nCooldown: %d" % [self.effect.get_tooltip(), self.energy_cost, self.cooldown]
+	var output := "Energy Cost: %d\nCooldown: %d\n" % [self.energy_cost, self.cooldown]
+	for effect in effects:
+		output += "Effect: %s\n" %  effect.get_tooltip()
+	return output

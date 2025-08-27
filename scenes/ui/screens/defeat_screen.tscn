@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://1us8fnr127fy"]
 
-[ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://assets/button_themes/large/large_red_button.tres" id="1_46ypu"]
+[ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://assets/button_themes/regular/red_button.tres" id="1_46ypu"]
 [ext_resource type="Script" uid="uid://b3c7qyyj0sswm" path="res://scripts/ui/screens/defeat_screen.gd" id="1_qevk7"]
 
 [node name="DefeatScreen" type="Control"]

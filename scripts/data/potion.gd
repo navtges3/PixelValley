@@ -1,7 +1,10 @@
 extends Item
 class_name Potion
 
-@export var effect: Effect
+@export var effects: Array[Effect]
 
 func get_tooltip() -> String:
-	return "%s\n%s" % [name, effect.get_tooltip()]
+	var tip = "%s\n" % name
+	for effect in effects:
+		tip += "%s\n" % effect.get_tooltip()
+	return tip
