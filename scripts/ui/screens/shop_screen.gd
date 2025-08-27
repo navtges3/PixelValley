@@ -44,7 +44,7 @@ func _update_item_list() -> void:
 		item_list.add_child(label)
 		var button = create_item_button(item_stack)
 		item_list.add_child(button)
-	_on_item_selected(shop_manager.item_stack_selected)
+	_on_item_pressed(shop_manager.item_stack_selected)
 
 func _on_hero_updated(hero_ref: Hero) -> void:
 	hero_ui.set_hero_info(hero_ref)
@@ -57,7 +57,7 @@ func _on_hero_updated(hero_ref: Hero) -> void:
 		inventory_text += "\n  None"
 	inventory_label.text = inventory_text
 
-func _on_item_selected(item_stack: ItemStack) -> void:
+func _on_item_pressed(item_stack: ItemStack) -> void:
 	item_name_label.text = item_stack.item.name
 	item_description_label.text = item_stack.item.description
 	item_cost_label.text = str(item_stack.item.value)
@@ -96,5 +96,5 @@ func empty_item_list() -> void:
 func create_item_button(item_stack: ItemStack) -> Button:
 	var button := ItemButton.instantiate()
 	button.item_stack = item_stack
-	button.connect("item_pressed", Callable(self, "_on_item_selected"))
+	button.connect("item_pressed", Callable(self, "_on_item_pressed"))
 	return button

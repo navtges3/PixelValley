@@ -98,7 +98,7 @@ func _on_flee_button_pressed() -> void:
 
 func _on_player_turn():
 	ability_button.disabled = false
-	item_button.disabled = false if hero.inventory.potions.size() > 0 else true
+	item_button.disabled = hero.inventory.potions.is_empty()
 	if hero.rest_cooldown > 0:
 		rest_button.disabled = true
 		rest_button.text = "Rest CD: %d" % hero.rest_cooldown
