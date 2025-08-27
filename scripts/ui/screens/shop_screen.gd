@@ -44,7 +44,8 @@ func _update_item_list() -> void:
 		item_list.add_child(label)
 		var button = create_item_button(item_stack)
 		item_list.add_child(button)
-	_on_item_pressed(shop_manager.item_stack_selected)
+	if shop_manager.item_stack_selected:
+		_on_item_pressed(shop_manager.item_stack_selected)
 
 func _on_hero_updated(hero_ref: Hero) -> void:
 	if hero_ui.hero:
