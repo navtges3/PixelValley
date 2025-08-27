@@ -5,16 +5,17 @@ const Y_OFFSET := 16
 
 signal quest_selected(quest_data)
 
-var quest: Quest
 var selected := false
+@export var quest: Quest:
+	set(value):
+		quest = value
+		_update_quest()
 
-func set_data(q: Quest):
-	quest = q
-	$VBoxContainer/TitleLabel.text = q.title
-	$VBoxContainer/HBoxContainer/DescriptionLabel.text = q.description
-
+func _update_quest() -> void:
+	$VBoxContainer/TitleLabel.text = quest.title
+	$VBoxContainer/HBoxContainer/DescriptionLabel.text = quest.description
 	var monster_text := ""
-	for objective in q.monster_objectives:
+	for objective in quest.monster_objectives:
 		monster_text += "%s: %d/%d\n" % [objective.monster.name, objective.current_amount, objective.target_amount]
 	$VBoxContainer/HBoxContainer/MonstersLabel.text = monster_text.strip_edges()
 

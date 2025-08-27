@@ -32,22 +32,19 @@ func load_quests(type: String):
 	var quests = GameState.quest_manager.active_quests if type == "available" else GameState.quest_manager.completed_quests
 	for quest in quests:
 		var quest_button = preload("res://scenes/ui/components/quest_button.tscn").instantiate()
+		quest_button.quest = quest
 		quest_button.connect("quest_selected", _on_quest_selected)
-		quest_button.set_data(quest)
 		quest_list_vbox.add_child(quest_button)
 
 func _on_quest_selected(selected_button: QuestButton):
-	var can_start := false
-	
 	if selected_quest == selected_button:
 		selected_quest = null
+		start_button.disabled = true
 	elif not selected_button.quest.is_complete():
 		if selected_quest:
 			selected_quest.button_pressed = false
 		selected_quest = selected_button
-		can_start = true
-	
-	start_button.disabled = not can_start
+		start_button.disabled = false
 
 func _on_available_toggled(button_pressed: bool):
 	if button_pressed:
