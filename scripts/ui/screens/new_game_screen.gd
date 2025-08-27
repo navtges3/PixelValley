@@ -1,12 +1,10 @@
 extends Control
 
-# Reference to your label node
 @onready var hero_class = $VBoxContainer/HBoxContainer/HeroInfoContainer/HeroClassLabel
 @onready var hero_name = $VBoxContainer/HBoxContainer/HeroInfoContainer/HeroName
 
 @onready var class_selector = $VBoxContainer/ClassSelector
 
-# Buttons
 @onready var back_button = $VBoxContainer/ButtonContainer/Back
 @onready var create_button = $VBoxContainer/ButtonContainer/Create
 
@@ -21,16 +19,13 @@ const HERO_DEFAULTS = [
 var hero_selected: Hero = null
 
 func _ready() -> void:
-	# Connect functions to button press
 	back_button.pressed.connect(_on_back_button_pressed)
 	create_button.pressed.connect(_on_create_button_pressed)
-	# Connect function to check when text is changed
 	hero_name.text_changed.connect(_on_line_edit_text_changed)
-	# Set default states for create button and text fields
+
 	create_button.disabled = true
 	hero_class.text = ""
 	hero_name.text = ""
-	# Load hero class previews
 	load_hero_previews()
 
 func load_hero_previews() -> void:
@@ -38,7 +33,7 @@ func load_hero_previews() -> void:
 		var hero_preview = load(path) as Hero
 		if hero_preview:
 			var preview = PREVIEW_SCENE.instantiate()
-			preview.set_hero_class(hero_preview)
+			preview.hero = hero_preview
 			preview.class_selected.connect(_on_class_selected)
 			class_selector.add_child(preview)
 
