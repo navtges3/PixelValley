@@ -4,8 +4,9 @@
 
 [resource]
 script = ExtResource("1_xq1ib")
-accuracy = 0.8
-damage = 7
+min_damage = 3
+max_damage = 7
+attack_type = 0
 name = "Bop"
 energy_cost = 1
 cooldown = 1
