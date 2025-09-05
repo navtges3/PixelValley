@@ -1,7 +1,8 @@
-[gd_resource type="Resource" script_class="Monster" load_steps=6 format=3 uid="uid://dm48acoifufc0"]
+[gd_resource type="Resource" script_class="Monster" load_steps=7 format=3 uid="uid://dm48acoifufc0"]
 
 [ext_resource type="Script" uid="uid://bd6ohffno5w7r" path="res://scripts/characters/monster.gd" id="1_a5h8a"]
 [ext_resource type="Texture2D" uid="uid://vdpvmy1cvfnu" path="res://assets/goblin.png" id="1_dekqg"]
+[ext_resource type="Resource" uid="uid://btirpmgomdqf" path="res://resources/abilities/attacks/stab.tres" id="1_ejpcc"]
 [ext_resource type="Script" uid="uid://c5deti4sb2k2j" path="res://scripts/data/effect.gd" id="1_ywgox"]
 [ext_resource type="Script" uid="uid://hxleldka7y06" path="res://scripts/characters/stat_block.gd" id="4_ejpcc"]
 
@@ -17,8 +18,8 @@ metadata/_custom_type_script = "uid://hxleldka7y06"
 
 [resource]
 script = ExtResource("1_a5h8a")
-attack = 3
 gold = 10
+attack = ExtResource("1_ejpcc")
 name = "Goblin"
 portrait = ExtResource("1_dekqg")
 current_hp = 10
