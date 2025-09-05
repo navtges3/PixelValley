@@ -1,7 +1,8 @@
-[gd_resource type="Resource" script_class="Monster" load_steps=6 format=3 uid="uid://bxig3cedsllcl"]
+[gd_resource type="Resource" script_class="Monster" load_steps=7 format=3 uid="uid://bxig3cedsllcl"]
 
 [ext_resource type="Script" uid="uid://bd6ohffno5w7r" path="res://scripts/characters/monster.gd" id="1_frc05"]
 [ext_resource type="Script" uid="uid://c5deti4sb2k2j" path="res://scripts/data/effect.gd" id="1_nqds1"]
+[ext_resource type="Resource" uid="uid://cts0marmwurnj" path="res://resources/abilities/attacks/smash.tres" id="1_rcnog"]
 [ext_resource type="Texture2D" uid="uid://bxc2p8w8wawwk" path="res://assets/ogre.png" id="1_x6w26"]
 [ext_resource type="Script" uid="uid://hxleldka7y06" path="res://scripts/characters/stat_block.gd" id="4_rcnog"]
 
@@ -17,8 +18,8 @@ metadata/_custom_type_script = "uid://hxleldka7y06"
 
 [resource]
 script = ExtResource("1_frc05")
-attack = 10
 gold = 50
+attack = ExtResource("1_rcnog")
 name = "Ogre"
 portrait = ExtResource("1_x6w26")
 current_hp = 30
