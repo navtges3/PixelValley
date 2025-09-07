@@ -55,7 +55,9 @@ metadata/_custom_type_script = "uid://xekqra2mjp3l"
 [resource]
 script = ExtResource("6_smr6x")
 title = "Orc Warband"
+id = 4
 description = "A hoard of Orcs is marching on the village! You must stop them!"
 monster_objectives = Array[ExtResource("1_ilb8g")]([SubResource("Resource_s4rlp"), SubResource("Resource_8h3vm")])
 reward = Array[ExtResource("3_2xns0")]([SubResource("Resource_1c7po"), SubResource("Resource_4ew2c"), SubResource("Resource_xxeue"), SubResource("Resource_j4ntu")])
+next_quests = Array[int]([5])
 metadata/_custom_type_script = "uid://xhl8p6y5w5e6"

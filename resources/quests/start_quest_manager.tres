@@ -10,6 +10,7 @@
 
 [resource]
 script = ExtResource("2_oyrsu")
-active_quests = Array[ExtResource("1_oyrsu")]([ExtResource("2_f5le3"), ExtResource("3_8v7ow"), ExtResource("4_3qv0u"), ExtResource("5_24le4"), ExtResource("6_24le4")])
+locked_quests = Array[ExtResource("1_oyrsu")]([ExtResource("3_8v7ow"), ExtResource("4_3qv0u"), ExtResource("5_24le4"), ExtResource("6_24le4")])
+available_quests = Array[ExtResource("1_oyrsu")]([ExtResource("2_f5le3")])
 completed_quests = Array[ExtResource("1_oyrsu")]([])
 metadata/_custom_type_script = "uid://ksepemgq8fc3"

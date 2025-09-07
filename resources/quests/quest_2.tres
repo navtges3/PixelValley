@@ -39,7 +39,9 @@ metadata/_custom_type_script = "uid://xekqra2mjp3l"
 [resource]
 script = ExtResource("5_0104a")
 title = "Goblin Camp"
+id = 2
 description = "You follow the path made by the goblins to find a small clearing. Around a campfire you see the goblins you chased reporting back to a large Orc."
 monster_objectives = Array[ExtResource("1_nt4ml")]([SubResource("Resource_fhtom"), SubResource("Resource_pfqdj")])
 reward = Array[ExtResource("3_6f6sq")]([SubResource("Resource_4j3xx"), SubResource("Resource_d36ea")])
+next_quests = Array[int]([4])
 metadata/_custom_type_script = "uid://xhl8p6y5w5e6"

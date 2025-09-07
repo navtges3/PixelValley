@@ -30,7 +30,9 @@ metadata/_custom_type_script = "uid://xekqra2mjp3l"
 [resource]
 script = ExtResource("5_oknas")
 title = "A walk through the woods"
+id = 1
 description = "As you walk down the road in the woods you hear a rustling of leaves around the upcoming bend. You are quickly ambushed by a gang of Goblins"
 monster_objectives = Array[ExtResource("1_gm6gv")]([SubResource("Resource_fhtom")])
 reward = Array[ExtResource("3_ac10j")]([SubResource("Resource_4j3xx"), SubResource("Resource_x65sf")])
+next_quests = Array[int]([2, 3])
 metadata/_custom_type_script = "uid://xhl8p6y5w5e6"
