@@ -31,7 +31,9 @@ metadata/_custom_type_script = "uid://xekqra2mjp3l"
 [resource]
 script = ExtResource("3_is1pp")
 title = "Goblin Scouts"
+id = 3
 description = "You stumble across a small band of goblins. They appear to be a scouting party sent ahead of a larger band of monsters!"
 monster_objectives = Array[ExtResource("1_6xpk3")]([SubResource("Resource_s4rlp")])
 reward = Array[ExtResource("2_72prn")]([SubResource("Resource_1c7po"), SubResource("Resource_4ew2c")])
+next_quests = Array[int]([])
 metadata/_custom_type_script = "uid://xhl8p6y5w5e6"

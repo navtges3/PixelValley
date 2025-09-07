@@ -55,7 +55,9 @@ metadata/_custom_type_script = "uid://xekqra2mjp3l"
 [resource]
 script = ExtResource("9_xpbrd")
 title = "Ogre's Lair"
+id = 5
 description = "Deep in the shadowed foothills lies a cavern reeking of smoke and blood—the dwelling place of a brutish ogre who has terrorized nearby villages. Travelers whisper of bones piled high at the entrance and the thunder of its footsteps echoing through the valley at night. The locals beg for relief, offering what meager treasures they can spare to any hero brave enough to venture inside."
 monster_objectives = Array[ExtResource("1_sp1ti")]([SubResource("Resource_s4rlp"), SubResource("Resource_8h3vm")])
 reward = Array[ExtResource("4_n4lo1")]([SubResource("Resource_cruci"), SubResource("Resource_63plp"), SubResource("Resource_sp1ti"), SubResource("Resource_6arpb")])
+next_quests = Array[int]([])
 metadata/_custom_type_script = "uid://xhl8p6y5w5e6"
