@@ -4,7 +4,8 @@
 
 [resource]
 script = ExtResource("1_cn322")
-damage = 20
+min_damage = 7
+max_damage = 15
 attack_type = 0
 name = "Earthshatter"
 energy_cost = 8

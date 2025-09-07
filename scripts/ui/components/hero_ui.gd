@@ -19,13 +19,18 @@ class_name HeroUI
 @onready var weapon_label = $HeroInfo/WeaponLabel
 @onready var active_effects_label = $HeroInfo/ActiveEffectsLabel
 
-var hero: Hero = null
-
-func set_hero_info(hero_ref: Hero) -> void:
-	hero = hero_ref
-	refresh()
+@export var hero: Hero:
+	set(value):
+		hero = value
+		refresh()
 
 func refresh() -> void:
+	_update_text()
+	_update_health_bar()
+	_update_energy_bar()
+	_update_active_effects()
+
+func _update_text() -> void:
 	name_label.text = hero.name
 	class_label.text = "Class: " + hero.hero_class
 	picture.texture = hero.portrait
@@ -37,25 +42,22 @@ func refresh() -> void:
 	resistance_label.text = "Res: " + str(hero.stat_block.resistance)
 	gold_label.text = "Gold: " + str(hero.inventory.gold)
 	weapon_label.text = hero.inventory.weapon.name
-	update_health_bar()
-	update_energy_bar()
-	update_active_effects()
 
-func update_health_bar():
+func _update_health_bar():
 	var value = hero.current_hp
 	var max_value = hero.stat_block.max_hp
 	health_bar.max_value = max_value
 	health_bar.value = value
 	health_label.text = "%d / %d" % [value, max_value]
 
-func update_energy_bar():
+func _update_energy_bar():
 	var value = hero.current_nrg
 	var max_value = hero.stat_block.max_nrg
 	energy_bar.max_value = max_value
 	energy_bar.value = value
 	energy_label.text = "%d / %d" % [value, max_value]
 
-func update_active_effects():
+func _update_active_effects():
 	var active_effects_text = "Active Effects: "
 	if hero.active_effects.size() == 0:
 		active_effects_text += "\n  None"

@@ -4,8 +4,9 @@
 
 [resource]
 script = ExtResource("1_jfnps")
-accuracy = 0.6
-damage = 5
+min_damage = 4
+max_damage = 8
+attack_type = 0
 name = "Smash"
 energy_cost = 1
 cooldown = 1

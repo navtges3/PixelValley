@@ -3,7 +3,8 @@ class_name AttackAbility
 
 enum AttackType { PHYSICAL, MAGICAL }
 
-@export var damage: int
+@export var min_damage: int
+@export var max_damage: int
 @export var attack_type: AttackType
 
 func attack_type_to_string() -> String:
@@ -19,7 +20,7 @@ func apply_attack(caster: Combatant, target: Combatant) -> String:
 		print("%s is still on cooldown." % self.name)
 		return "%s is still on cooldown." % self.name
 
-	var damage_dealt = self.damage
+	var damage_dealt = randi_range(min_damage, max_damage)
 	if self.attack_type == AttackType.PHYSICAL:
 		var modifier = caster.attack_modifier + caster.stat_block.attack
 		damage_dealt += modifier
@@ -34,4 +35,4 @@ func apply_attack(caster: Combatant, target: Combatant) -> String:
 	return output
 
 func get_tooltip() -> String:
-	return "Damage: %d\nType: %s\nEnergy Cost: %d\nCooldown: %d" % [self.damage, attack_type_to_string(), self.energy_cost, self.cooldown]
+	return "Damage: %d-%d\nType: %s\nEnergy Cost: %d\nCooldown: %d" % [min_damage, max_damage, attack_type_to_string(), self.energy_cost, self.cooldown]

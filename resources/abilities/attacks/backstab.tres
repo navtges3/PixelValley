@@ -4,8 +4,9 @@
 
 [resource]
 script = ExtResource("1_aa6tt")
-accuracy = 0.9
-damage = 8
+min_damage = 2
+max_damage = 12
+attack_type = 0
 name = "Backstab"
 energy_cost = 2
 cooldown = 3
