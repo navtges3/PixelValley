@@ -19,6 +19,6 @@ func update_cooldown() -> void:
 
 func calculate_experience() -> int:
 	var health_exp := int(stat_block.max_hp * HEALTH_WEIGHT)
-	var damage_avg := (attack.max_damage + attack.min_damage) / 2
+	var damage_avg := float(attack.max_damage + attack.min_damage) / 2
 	var attack_exp := int(damage_avg * ATTACK_WEIGHT)
 	return (health_exp + attack_exp)
