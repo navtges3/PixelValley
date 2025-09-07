@@ -29,7 +29,7 @@ func clear_quest_list():
 
 func load_quests(type: String):
 	clear_quest_list()
-	var quests = GameState.quest_manager.active_quests if type == "available" else GameState.quest_manager.completed_quests
+	var quests = GameState.quest_manager.available_quests if type == "available" else GameState.quest_manager.completed_quests
 	for quest in quests:
 		var quest_button = preload("res://scenes/ui/components/quest_button.tscn").instantiate()
 		quest_button.quest = quest

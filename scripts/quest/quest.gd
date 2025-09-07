@@ -2,9 +2,11 @@ class_name Quest
 extends Resource
 
 @export var title: String
+@export var id: int
 @export var description: String
-@export var monster_objectives: Array[MonsterRequirement] = []
-@export var reward: Array[QuestReward] = []
+@export var monster_objectives: Array[MonsterRequirement]
+@export var reward: Array[QuestReward]
+@export var next_quests: Array[int]
 var completed: bool = false
 
 signal quest_completed
