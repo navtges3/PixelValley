@@ -9,7 +9,7 @@
 [sub_resource type="Resource" id="Resource_0xu8l"]
 script = ExtResource("4_rcnog")
 max_hp = 30
-max_nrg = 0
+max_nrg = 10
 attack = 1
 magic = 1
 defense = 1
@@ -23,7 +23,7 @@ attack = ExtResource("1_rcnog")
 name = "Ogre"
 portrait = ExtResource("1_x6w26")
 current_hp = 30
-current_nrg = 0
+current_nrg = 10
 active_effects = Array[ExtResource("1_nqds1")]([])
 stat_block = SubResource("Resource_0xu8l")
 attack_modifier = 0
