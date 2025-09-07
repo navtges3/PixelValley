@@ -105,7 +105,7 @@ func enemy_turn() -> void:
 	emit_signal("battle_log_updated", "Enemy turn...")
 	if monster.needs_rest():
 		monster.rest()
-		emit_signal("battle_log_update", "%s rests recovering health and energy." % monster.name)
+		emit_signal("battle_log_updated", "%s rests recovering health and energy." % monster.name)
 	else:
 		var output = monster.attack.apply_attack(monster, hero)
 		emit_signal("battle_log_updated", output)
