@@ -1,14 +1,15 @@
-[gd_resource type="Resource" script_class="Monster" load_steps=6 format=3 uid="uid://yrw5qgu7qwe0"]
+[gd_resource type="Resource" script_class="Monster" load_steps=7 format=3 uid="uid://yrw5qgu7qwe0"]
 
 [ext_resource type="Texture2D" uid="uid://ced3cfcakcx6o" path="res://assets/orc.png" id="1_0ed2k"]
 [ext_resource type="Script" uid="uid://c5deti4sb2k2j" path="res://scripts/data/effect.gd" id="1_t2l3x"]
 [ext_resource type="Script" uid="uid://bd6ohffno5w7r" path="res://scripts/characters/monster.gd" id="1_wfseu"]
+[ext_resource type="Resource" uid="uid://clhvv4p6c7xgi" path="res://resources/abilities/attacks/slash.tres" id="1_xu4t2"]
 [ext_resource type="Script" uid="uid://hxleldka7y06" path="res://scripts/characters/stat_block.gd" id="4_xu4t2"]
 
 [sub_resource type="Resource" id="Resource_ryf8n"]
 script = ExtResource("4_xu4t2")
 max_hp = 18
-max_nrg = 0
+max_nrg = 10
 attack = 1
 magic = 1
 defense = 1
@@ -17,12 +18,12 @@ metadata/_custom_type_script = "uid://hxleldka7y06"
 
 [resource]
 script = ExtResource("1_wfseu")
-attack = 5
 gold = 20
+attack = ExtResource("1_xu4t2")
 name = "Orc"
 portrait = ExtResource("1_0ed2k")
 current_hp = 18
-current_nrg = 0
+current_nrg = 10
 active_effects = Array[ExtResource("1_t2l3x")]([])
 stat_block = SubResource("Resource_ryf8n")
 attack_modifier = 0

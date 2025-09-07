@@ -6,7 +6,7 @@ signal ability_pressed(ability: Ability)
 	set(value):
 		ability = value
 		_refresh()
-		
+
 @export var user_energy: int:
 	set(value):
 		user_energy = value
@@ -27,13 +27,13 @@ func _refresh() -> void:
 func _update_text() -> void:
 	if ability:
 		text = ability.name
-		if !ability.is_ready():
+		if not ability.is_ready():
 			text += " cd:" + str(ability.current_cooldown)
 		elif ability.energy_cost > user_energy:
 			text += " (No Energy)"
 	else:
 		text = ""
-		
+
 func _update_tooltip() -> void:
 	if ability:
 		if ability.is_ready():
@@ -53,9 +53,9 @@ func _update_theme() -> void:
 			theme = preload("res://assets/button_themes/regular/gray_button.tres")
 	else:
 		theme = preload("res://assets/button_themes/regular/gray_button.tres")
-		
+
 func _update_disabled() -> void:
 	if ability and user_energy:
-		disabled = !ability.is_ready() or ability.energy_cost > user_energy
+		disabled = not ability.is_ready() or ability.energy_cost > user_energy
 	else:
 		disabled = true

@@ -4,7 +4,8 @@
 
 [resource]
 script = ExtResource("1_fgi5r")
-damage = 15
+min_damage = 5
+max_damage = 10
 attack_type = 0
 name = "Skullbreaker"
 energy_cost = 3

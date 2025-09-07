@@ -4,8 +4,9 @@
 
 [resource]
 script = ExtResource("1_paa1w")
-accuracy = 0.75
-damage = 4
+min_damage = 3
+max_damage = 5
+attack_type = 0
 name = "Stab"
 energy_cost = 1
 cooldown = 1

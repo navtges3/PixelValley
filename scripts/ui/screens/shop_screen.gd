@@ -44,10 +44,14 @@ func _update_item_list() -> void:
 		item_list.add_child(label)
 		var button = create_item_button(item_stack)
 		item_list.add_child(button)
-	_on_item_pressed(shop_manager.item_stack_selected)
+	if shop_manager.item_stack_selected:
+		_on_item_pressed(shop_manager.item_stack_selected)
 
 func _on_hero_updated(hero_ref: Hero) -> void:
-	hero_ui.set_hero_info(hero_ref)
+	if hero_ui.hero:
+		hero_ui.refresh()
+	else:
+		hero_ui.hero = hero_ref
 	var inventory_text = "Hero Inventory: "
 	if hero_ref.inventory.potions.size():
 		inventory_text += "\n  Potions:"

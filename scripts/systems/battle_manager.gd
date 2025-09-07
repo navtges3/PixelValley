@@ -69,7 +69,6 @@ func rest() -> void:
 func end_player_turn() -> void:
 	if state != BattleState.PLAYER_TURN:
 		return
-
 	hero.update_cooldown()
 	hero.process_active_effects()
 	emit_signal("hero_updated", hero)
@@ -104,12 +103,19 @@ func get_new_monster() -> void:
 
 func enemy_turn() -> void:
 	emit_signal("battle_log_updated", "Enemy turn...")
-	var damage = monster.attack
-	var output = hero.take_damage(damage, AttackAbility.AttackType.PHYSICAL)
-	emit_signal("battle_log_updated", "The %s attacks for %d damage!" % [monster.name, damage])
-	emit_signal("battle_log_updated", output)
-	emit_signal("hero_updated", hero)
+	if monster.needs_rest():
+		monster.rest()
+		emit_signal("battle_log_updated", "%s rests recovering health and energy." % monster.name)
+	else:
+		var output = monster.attack.apply_attack(monster, hero)
+		emit_signal("battle_log_updated", output)
+		emit_signal("hero_updated", hero)
+	end_enemy_turn()
 
+func end_enemy_turn() -> void:
+	monster.update_cooldown()
+	monster.process_active_effects()
+	emit_signal("monster_updated", monster)
 	if hero.is_alive():
 		start_player_turn()
 	else:

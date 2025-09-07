@@ -941,7 +941,7 @@ texture_margin_left = 4.0
 texture_margin_top = 4.0
 texture_margin_right = 4.0
 texture_margin_bottom = 8.0
-region_rect = Rect2(448, 112, 96, 32)
+region_rect = Rect2(336, 0, 96, 32)
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_xi7vc"]
 texture = ExtResource("1_1ra4d")
