@@ -22,7 +22,8 @@ func _on_quest_completed(quest: Quest) -> void:
 		available_quests.erase(quest)
 		completed_quests.append(quest)
 		if not quest.next_quests.is_empty():
-			for locked_quest in locked_quests:
+			# Iterate over a copy to avoid skipping elements when erasing
+			for locked_quest in locked_quests.duplicate():
 				if quest.next_quests.has(locked_quest.id):
 					locked_quests.erase(locked_quest)
 					add_available_quest(locked_quest)
