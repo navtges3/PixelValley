@@ -118,7 +118,7 @@ func _on_monster_turn():
 
 func _on_quest_completed():
 	print("Quest completed!")
-	if GameState.quest_manager.available_quests.is_empty():
+	if current_quest.id == GameState.quest_manager.LAST_QUEST_ID:
 		ScreenManager.go_to_screen("victory")
 	else:
 		ScreenManager.go_to_screen("quest_finished")
