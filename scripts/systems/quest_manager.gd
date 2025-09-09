@@ -1,6 +1,8 @@
 extends Resource
 class_name QuestManager
 
+const LAST_QUEST_ID := 15
+
 @export var locked_quests: Array[Quest] = []
 @export var available_quests: Array[Quest] = []
 @export var completed_quests: Array[Quest] = []
