@@ -5,6 +5,9 @@ extends Control
 @onready var reward_label: Label = $VBoxContainer/RewardLabel
 @onready var collect_reward_button: Button = $VBoxContainer/CollectRewardButton
 
+const GOLD_ITEM = preload("res://resources/items/gold.tres")
+const EXPERIENCE_ITEM = preload("res://resources/items/experience.tres")
+
 func _ready() -> void:
 	var current_quest = GameState.current_quest
 	title_label.text = current_quest.title
@@ -25,8 +28,17 @@ func collect_rewards() -> void:
 	for reward:QuestReward in GameState.current_quest.reward:
 		match reward.target:
 			QuestReward.RewardTarget.PLAYER:
-				print("Adding %d %s to hero's inventory" % [reward.amount, reward.item.name])
-				hero.inventory.add_potion(reward.item, reward.amount)
+				if reward.item is Potion:
+					print("Adding %d %s to hero's inventory" % [reward.amount, reward.item.name])
+					hero.inventory.add_potion(reward.item, reward.amount)
+				elif reward.item == GOLD_ITEM:
+					print("Adding %d gold to hero's inventory" % reward.amount)
+					hero.inventory.gold += reward.amount
+				elif reward.item == EXPERIENCE_ITEM:
+					print("Adding %d experience to hero" % reward.amount)
+					hero.gain_experience(reward.amount)
+				else:
+					print("Unknown item type")
 			QuestReward.RewardTarget.SHOP:
 				print("Adding %d %s to shop's inventory" % [reward.amount, reward.item.name])
 				village.shop.add_item(reward.item, reward.amount)
