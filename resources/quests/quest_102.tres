@@ -1,0 +1,39 @@
+[gd_resource type="Resource" script_class="Quest" load_steps=10 format=3 uid="uid://cnn0y6dfeq7r"]
+
+[ext_resource type="Script" uid="uid://bhsjswm1wnll8" path="res://scripts/quest/monster_requirement.gd" id="1_knbjh"]
+[ext_resource type="Resource" uid="uid://yrw5qgu7qwe0" path="res://resources/monsters/orc.tres" id="2_knbjh"]
+[ext_resource type="Script" uid="uid://xekqra2mjp3l" path="res://scripts/quest/quest_reward.gd" id="3_rukrk"]
+[ext_resource type="Resource" uid="uid://c4ew36sfl85ym" path="res://resources/items/expereince.tres" id="4_fp7k5"]
+[ext_resource type="Resource" uid="uid://bjglrp2dbax4l" path="res://resources/items/gold.tres" id="5_83gxx"]
+[ext_resource type="Script" uid="uid://xhl8p6y5w5e6" path="res://scripts/quest/quest.gd" id="6_eu4ty"]
+
+[sub_resource type="Resource" id="Resource_668k3"]
+script = ExtResource("1_knbjh")
+monster = ExtResource("2_knbjh")
+target_amount = 6
+current_amount = 0
+metadata/_custom_type_script = "uid://bhsjswm1wnll8"
+
+[sub_resource type="Resource" id="Resource_sp1ti"]
+script = ExtResource("3_rukrk")
+item = ExtResource("4_fp7k5")
+amount = 300
+target = 0
+metadata/_custom_type_script = "uid://xekqra2mjp3l"
+
+[sub_resource type="Resource" id="Resource_tj5w2"]
+script = ExtResource("3_rukrk")
+item = ExtResource("5_83gxx")
+amount = 80
+target = 0
+metadata/_custom_type_script = "uid://xekqra2mjp3l"
+
+[resource]
+script = ExtResource("6_eu4ty")
+title = "Merchant's Revenge"
+id = 102
+description = "A rescued merchant hires you to destroy an orc camp in revenge."
+monster_objectives = Array[ExtResource("1_knbjh")]([SubResource("Resource_668k3")])
+reward = Array[ExtResource("3_rukrk")]([SubResource("Resource_sp1ti"), SubResource("Resource_tj5w2")])
+next_quests = Array[int]([8])
+metadata/_custom_type_script = "uid://xhl8p6y5w5e6"

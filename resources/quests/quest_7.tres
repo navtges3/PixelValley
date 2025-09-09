@@ -1,0 +1,47 @@
+[gd_resource type="Resource" script_class="Quest" load_steps=12 format=3 uid="uid://c8x1gsy5ji3k2"]
+
+[ext_resource type="Script" uid="uid://bhsjswm1wnll8" path="res://scripts/quest/monster_requirement.gd" id="1_na1a4"]
+[ext_resource type="Resource" uid="uid://dm48acoifufc0" path="res://resources/monsters/goblin.tres" id="2_ebh6q"]
+[ext_resource type="Resource" uid="uid://yrw5qgu7qwe0" path="res://resources/monsters/orc.tres" id="3_bgmwu"]
+[ext_resource type="Script" uid="uid://xekqra2mjp3l" path="res://scripts/quest/quest_reward.gd" id="3_gy40x"]
+[ext_resource type="Resource" uid="uid://c4ew36sfl85ym" path="res://resources/items/expereince.tres" id="4_bgmwu"]
+[ext_resource type="Script" uid="uid://xhl8p6y5w5e6" path="res://scripts/quest/quest.gd" id="6_68l85"]
+[ext_resource type="Resource" uid="uid://bjglrp2dbax4l" path="res://resources/items/gold.tres" id="6_nklp5"]
+
+[sub_resource type="Resource" id="Resource_8h3vm"]
+script = ExtResource("1_na1a4")
+monster = ExtResource("2_ebh6q")
+target_amount = 6
+current_amount = 0
+metadata/_custom_type_script = "uid://bhsjswm1wnll8"
+
+[sub_resource type="Resource" id="Resource_68l85"]
+script = ExtResource("1_na1a4")
+monster = ExtResource("3_bgmwu")
+target_amount = 4
+current_amount = 0
+metadata/_custom_type_script = "uid://bhsjswm1wnll8"
+
+[sub_resource type="Resource" id="Resource_sp1ti"]
+script = ExtResource("3_gy40x")
+item = ExtResource("4_bgmwu")
+amount = 250
+target = 0
+metadata/_custom_type_script = "uid://xekqra2mjp3l"
+
+[sub_resource type="Resource" id="Resource_6arpb"]
+script = ExtResource("3_gy40x")
+item = ExtResource("6_nklp5")
+amount = 60
+target = 0
+metadata/_custom_type_script = "uid://xekqra2mjp3l"
+
+[resource]
+script = ExtResource("6_68l85")
+title = "Captive Caravan"
+id = 7
+description = "Merchants were taken by goblin-orc raiders. Rescue them."
+monster_objectives = Array[ExtResource("1_na1a4")]([SubResource("Resource_8h3vm"), SubResource("Resource_68l85")])
+reward = Array[ExtResource("3_gy40x")]([SubResource("Resource_sp1ti"), SubResource("Resource_6arpb")])
+next_quests = Array[int]([8, 102])
+metadata/_custom_type_script = "uid://xhl8p6y5w5e6"

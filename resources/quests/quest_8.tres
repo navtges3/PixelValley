@@ -1,0 +1,31 @@
+[gd_resource type="Resource" script_class="Quest" load_steps=8 format=3 uid="uid://5cxoduk38hp0"]
+
+[ext_resource type="Script" uid="uid://bhsjswm1wnll8" path="res://scripts/quest/monster_requirement.gd" id="1_hrtie"]
+[ext_resource type="Resource" uid="uid://yrw5qgu7qwe0" path="res://resources/monsters/orc.tres" id="3_kpfh3"]
+[ext_resource type="Script" uid="uid://xekqra2mjp3l" path="res://scripts/quest/quest_reward.gd" id="4_75oh8"]
+[ext_resource type="Resource" uid="uid://c4ew36sfl85ym" path="res://resources/items/expereince.tres" id="5_u4kxv"]
+[ext_resource type="Script" uid="uid://xhl8p6y5w5e6" path="res://scripts/quest/quest.gd" id="7_52usu"]
+
+[sub_resource type="Resource" id="Resource_68l85"]
+script = ExtResource("1_hrtie")
+monster = ExtResource("3_kpfh3")
+target_amount = 1
+current_amount = 0
+metadata/_custom_type_script = "uid://bhsjswm1wnll8"
+
+[sub_resource type="Resource" id="Resource_sp1ti"]
+script = ExtResource("4_75oh8")
+item = ExtResource("5_u4kxv")
+amount = 400
+target = 0
+metadata/_custom_type_script = "uid://xekqra2mjp3l"
+
+[resource]
+script = ExtResource("7_52usu")
+title = "The Orc Chieftain"
+id = 8
+description = "Defeat the orc chieftain before he unites the clans."
+monster_objectives = Array[ExtResource("1_hrtie")]([SubResource("Resource_68l85")])
+reward = Array[ExtResource("4_75oh8")]([SubResource("Resource_sp1ti")])
+next_quests = Array[int]([9])
+metadata/_custom_type_script = "uid://xhl8p6y5w5e6"

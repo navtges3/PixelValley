@@ -1,0 +1,47 @@
+[gd_resource type="Resource" script_class="Quest" load_steps=12 format=3 uid="uid://cwjcl1sqesfn"]
+
+[ext_resource type="Script" uid="uid://bhsjswm1wnll8" path="res://scripts/quest/monster_requirement.gd" id="1_vwm1u"]
+[ext_resource type="Resource" uid="uid://dm48acoifufc0" path="res://resources/monsters/goblin.tres" id="2_jhy7i"]
+[ext_resource type="Script" uid="uid://xekqra2mjp3l" path="res://scripts/quest/quest_reward.gd" id="3_clch7"]
+[ext_resource type="Resource" uid="uid://yrw5qgu7qwe0" path="res://resources/monsters/orc.tres" id="3_kjtkr"]
+[ext_resource type="Resource" uid="uid://c4ew36sfl85ym" path="res://resources/items/expereince.tres" id="4_pc8o7"]
+[ext_resource type="Script" uid="uid://xhl8p6y5w5e6" path="res://scripts/quest/quest.gd" id="5_o3q5a"]
+[ext_resource type="Resource" uid="uid://bjglrp2dbax4l" path="res://resources/items/gold.tres" id="6_kjtkr"]
+
+[sub_resource type="Resource" id="Resource_668k3"]
+script = ExtResource("1_vwm1u")
+monster = ExtResource("2_jhy7i")
+target_amount = 5
+current_amount = 0
+metadata/_custom_type_script = "uid://bhsjswm1wnll8"
+
+[sub_resource type="Resource" id="Resource_igw86"]
+script = ExtResource("1_vwm1u")
+monster = ExtResource("3_kjtkr")
+target_amount = 5
+current_amount = 0
+metadata/_custom_type_script = "uid://bhsjswm1wnll8"
+
+[sub_resource type="Resource" id="Resource_sp1ti"]
+script = ExtResource("3_clch7")
+item = ExtResource("4_pc8o7")
+amount = 500
+target = 0
+metadata/_custom_type_script = "uid://xekqra2mjp3l"
+
+[sub_resource type="Resource" id="Resource_tj5w2"]
+script = ExtResource("3_clch7")
+item = ExtResource("6_kjtkr")
+amount = 120
+target = 0
+metadata/_custom_type_script = "uid://xekqra2mjp3l"
+
+[resource]
+script = ExtResource("5_o3q5a")
+title = "Shattered Alliance"
+id = 12
+description = "With their leader slain, the monsters scatter. Hunt their lieutenants."
+monster_objectives = Array[ExtResource("1_vwm1u")]([SubResource("Resource_668k3"), SubResource("Resource_igw86")])
+reward = Array[ExtResource("3_clch7")]([SubResource("Resource_sp1ti"), SubResource("Resource_tj5w2")])
+next_quests = Array[int]([13])
+metadata/_custom_type_script = "uid://xhl8p6y5w5e6"
