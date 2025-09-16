@@ -4,7 +4,7 @@
 [ext_resource type="Resource" uid="uid://bxig3cedsllcl" path="res://resources/monsters/ogre.tres" id="2_4wg3f"]
 [ext_resource type="Resource" uid="uid://yrw5qgu7qwe0" path="res://resources/monsters/orc.tres" id="2_51uxk"]
 [ext_resource type="Script" uid="uid://xekqra2mjp3l" path="res://scripts/quest/quest_reward.gd" id="3_51uxk"]
-[ext_resource type="Resource" uid="uid://c4ew36sfl85ym" path="res://resources/items/expereince.tres" id="4_668k3"]
+[ext_resource type="Resource" uid="uid://c4ew36sfl85ym" path="res://resources/items/experience.tres" id="4_668k3"]
 [ext_resource type="Resource" uid="uid://3s3rxn0iei3l" path="res://resources/weapons/warhammer.tres" id="6_4wg3f"]
 [ext_resource type="Script" uid="uid://xhl8p6y5w5e6" path="res://scripts/quest/quest.gd" id="6_l1doq"]
 
