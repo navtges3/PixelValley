@@ -4,7 +4,7 @@
 [ext_resource type="Resource" uid="uid://dm48acoifufc0" path="res://resources/monsters/goblin.tres" id="2_jhy7i"]
 [ext_resource type="Script" uid="uid://xekqra2mjp3l" path="res://scripts/quest/quest_reward.gd" id="3_clch7"]
 [ext_resource type="Resource" uid="uid://yrw5qgu7qwe0" path="res://resources/monsters/orc.tres" id="3_kjtkr"]
-[ext_resource type="Resource" uid="uid://c4ew36sfl85ym" path="res://resources/items/expereince.tres" id="4_pc8o7"]
+[ext_resource type="Resource" uid="uid://c4ew36sfl85ym" path="res://resources/items/experience.tres" id="4_pc8o7"]
 [ext_resource type="Script" uid="uid://xhl8p6y5w5e6" path="res://scripts/quest/quest.gd" id="5_o3q5a"]
 [ext_resource type="Resource" uid="uid://bjglrp2dbax4l" path="res://resources/items/gold.tres" id="6_kjtkr"]
 

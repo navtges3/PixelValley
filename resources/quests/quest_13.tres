@@ -4,7 +4,7 @@
 [ext_resource type="Resource" uid="uid://dm48acoifufc0" path="res://resources/monsters/goblin.tres" id="2_0qvi2"]
 [ext_resource type="Resource" uid="uid://yrw5qgu7qwe0" path="res://resources/monsters/orc.tres" id="3_d4brh"]
 [ext_resource type="Script" uid="uid://xekqra2mjp3l" path="res://scripts/quest/quest_reward.gd" id="4_ep7ac"]
-[ext_resource type="Resource" uid="uid://c4ew36sfl85ym" path="res://resources/items/expereince.tres" id="5_g210r"]
+[ext_resource type="Resource" uid="uid://c4ew36sfl85ym" path="res://resources/items/experience.tres" id="5_g210r"]
 [ext_resource type="Resource" uid="uid://mv5ykhn56sjs" path="res://resources/potions/greater_healing_potion.tres" id="6_7ng8y"]
 [ext_resource type="Script" uid="uid://xhl8p6y5w5e6" path="res://scripts/quest/quest.gd" id="7_fxi4v"]
 
