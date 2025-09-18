@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="ConditionalAbility" load_steps=5 format=3 uid="uid://c0ryhpbr7by6d"]
+
+[ext_resource type="Resource" uid="uid://bujd268rocmr1" path="res://resources/abilities/attacks/poison_strike.tres" id="1_c5gax"]
+[ext_resource type="Script" uid="uid://cnso83bg7vodw" path="res://scripts/data/condition.gd" id="2_27ik6"]
+[ext_resource type="Script" uid="uid://dxnu3vjlxl2pn" path="res://scripts/data/conditional_ability.gd" id="3_0d5nn"]
+
+[sub_resource type="Resource" id="Resource_uoo8s"]
+script = ExtResource("2_27ik6")
+description = "Generic condition"
+condition_type = 2
+condition_subject = 1
+value = 0.5
+metadata/_custom_type_script = "uid://cnso83bg7vodw"
+
+[resource]
+script = ExtResource("3_0d5nn")
+ability = ExtResource("1_c5gax")
+condition = SubResource("Resource_uoo8s")
+metadata/_custom_type_script = "uid://dxnu3vjlxl2pn"
