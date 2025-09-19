@@ -10,7 +10,7 @@ const ATTACK_WEIGHT := 0.75
 
 func choose_ability(target: Combatant) -> Ability:
 	for conditional in conditional_abilities:
-		if conditional.is_ready(self, target) and current_nrg >= conditional.ability.energy_cost:
+		if conditional.is_ready(self, target) and stat_block.current_nrg >= conditional.ability.energy_cost:
 			return conditional.ability
 	return basic_attack
 
