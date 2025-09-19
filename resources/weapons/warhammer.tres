@@ -1,13 +1,16 @@
-[gd_resource type="Resource" script_class="Weapon" load_steps=4 format=3 uid="uid://3s3rxn0iei3l"]
+[gd_resource type="Resource" script_class="Weapon" load_steps=7 format=3 uid="uid://3s3rxn0iei3l"]
 
 [ext_resource type="Script" uid="uid://b2o7w8q10stxo" path="res://scripts/data/ability.gd" id="1_j220r"]
+[ext_resource type="Resource" uid="uid://cts0marmwurnj" path="res://resources/abilities/attacks/smash.tres" id="2_g74qi"]
+[ext_resource type="Resource" uid="uid://dxax53vq7bmis" path="res://resources/abilities/attacks/execute.tres" id="3_81n1p"]
 [ext_resource type="Script" uid="uid://dgykeyxn7fefw" path="res://scripts/data/weapon.gd" id="3_tlcs8"]
+[ext_resource type="Resource" uid="uid://csvjvb2ajko6k" path="res://resources/abilities/utility/war_cry.tres" id="4_5mcet"]
 [ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://assets/button_themes/regular/red_button.tres" id="5_81n1p"]
 
 [resource]
 script = ExtResource("3_tlcs8")
 rarity = "rare"
-abilities = Array[ExtResource("1_j220r")]([])
+abilities = Array[ExtResource("1_j220r")]([ExtResource("2_g74qi"), ExtResource("3_81n1p"), ExtResource("4_5mcet")])
 name = "Warhammer"
 description = "A massive, two-handed weapon built for breaking bones and shattering armor.This brutal hammer delivers crushing blows that ignore finesse in favor of raw, overwhelming force. Favored by warriors who believe the best defense is a crater where their enemy used to stand."
 theme = ExtResource("5_81n1p")

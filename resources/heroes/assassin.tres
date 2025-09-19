@@ -8,7 +8,7 @@
 [ext_resource type="Resource" uid="uid://cfwejpwyn8due" path="res://resources/potions/attack_potion.tres" id="3_d62i1"]
 [ext_resource type="Script" uid="uid://hxleldka7y06" path="res://scripts/characters/stat_block.gd" id="3_qjpei"]
 [ext_resource type="Script" uid="uid://4rm24oomjap7" path="res://scripts/characters/inventory.gd" id="4_3jpf1"]
-[ext_resource type="Resource" uid="uid://ytx0xnb7ewpw" path="res://resources/weapons/dagger.tres" id="5_m81c2"]
+[ext_resource type="Resource" uid="uid://ytx0xnb7ewpw" path="res://resources/weapons/twin_daggers.tres" id="6_k5puk"]
 
 [sub_resource type="Resource" id="Resource_myjxf"]
 script = ExtResource("1_cwdy8")
@@ -25,20 +25,20 @@ metadata/_custom_type_script = "uid://d0mdck5mlsm03"
 [sub_resource type="Resource" id="Resource_0t77m"]
 script = ExtResource("4_3jpf1")
 gold = 50
-weapon = ExtResource("5_m81c2")
+weapon = ExtResource("6_k5puk")
 potions = Array[ExtResource("1_cwdy8")]([SubResource("Resource_myjxf"), SubResource("Resource_8bnnm")])
 metadata/_custom_type_script = "uid://4rm24oomjap7"
 
 [sub_resource type="Resource" id="Resource_3wgu5"]
 script = ExtResource("3_qjpei")
-current_hp = 20
-current_nrg = 10
-max_hp = 20
-max_nrg = 10
-attack = 3
-magic = 1
-defense = 2
-resistance = 1
+current_hp = 80
+current_nrg = 60
+max_hp = 80
+max_nrg = 60
+attack = 12
+magic = 4
+defense = 4
+resistance = 3
 metadata/_custom_type_script = "uid://hxleldka7y06"
 
 [resource]

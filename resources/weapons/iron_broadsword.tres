@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="Weapon" load_steps=6 format=3 uid="uid://vx4vhsuwjxcf"]
+
+[ext_resource type="Script" uid="uid://b2o7w8q10stxo" path="res://scripts/data/ability.gd" id="1_5fpd2"]
+[ext_resource type="Script" uid="uid://dgykeyxn7fefw" path="res://scripts/data/weapon.gd" id="2_3qhfb"]
+[ext_resource type="Resource" uid="uid://clhvv4p6c7xgi" path="res://resources/abilities/attacks/slash.tres" id="2_n2386"]
+[ext_resource type="Resource" uid="uid://dekslwgoyhikl" path="res://resources/abilities/attacks/shield_bash.tres" id="3_atlpc"]
+[ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://assets/button_themes/regular/red_button.tres" id="5_d3e5i"]
+
+[resource]
+script = ExtResource("2_3qhfb")
+rarity = "common"
+abilities = Array[ExtResource("1_5fpd2")]([ExtResource("2_n2386"), ExtResource("3_atlpc")])
+name = "Iron Broadsword"
+description = ""
+theme = ExtResource("5_d3e5i")
+value = 0
+metadata/_custom_type_script = "uid://dgykeyxn7fefw"
