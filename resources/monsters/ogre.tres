@@ -1,32 +1,46 @@
-[gd_resource type="Resource" script_class="Monster" load_steps=9 format=3 uid="uid://bxig3cedsllcl"]
+[gd_resource type="Resource" script_class="Monster" load_steps=12 format=3 uid="uid://bxig3cedsllcl"]
 
 [ext_resource type="Script" uid="uid://bd6ohffno5w7r" path="res://scripts/characters/monster.gd" id="1_frc05"]
 [ext_resource type="Script" uid="uid://c5deti4sb2k2j" path="res://scripts/data/effect.gd" id="1_nqds1"]
 [ext_resource type="Resource" uid="uid://cts0marmwurnj" path="res://resources/abilities/attacks/smash.tres" id="1_rcnog"]
 [ext_resource type="Texture2D" uid="uid://bxc2p8w8wawwk" path="res://assets/ogre.png" id="1_x6w26"]
 [ext_resource type="Script" uid="uid://dxnu3vjlxl2pn" path="res://scripts/data/conditional_ability.gd" id="2_rcnog"]
-[ext_resource type="Resource" uid="uid://b33nkh3guaflr" path="res://resources/abilities/conditional/c_stomp.tres" id="4_lhfyo"]
+[ext_resource type="Resource" uid="uid://dl170qfxslmkg" path="res://resources/abilities/utility/crushing_rage.tres" id="4_pi0wg"]
 [ext_resource type="Script" uid="uid://hxleldka7y06" path="res://scripts/characters/stat_block.gd" id="4_rcnog"]
+[ext_resource type="Script" uid="uid://cnso83bg7vodw" path="res://scripts/data/condition.gd" id="5_7bc23"]
+
+[sub_resource type="Resource" id="Resource_a8dng"]
+script = ExtResource("5_7bc23")
+condition_type = 1
+condition_subject = 0
+value = 0.4
+metadata/_custom_type_script = "uid://cnso83bg7vodw"
+
+[sub_resource type="Resource" id="Resource_s8n6s"]
+script = ExtResource("2_rcnog")
+ability = ExtResource("4_pi0wg")
+condition = SubResource("Resource_a8dng")
+metadata/_custom_type_script = "uid://dxnu3vjlxl2pn"
 
 [sub_resource type="Resource" id="Resource_0xu8l"]
 script = ExtResource("4_rcnog")
-max_hp = 30
-max_nrg = 10
-attack = 1
-magic = 1
-defense = 1
-resistance = 1
+max_hp = 200
+max_nrg = 40
+attack = 27
+magic = 5
+defense = 13
+resistance = 10
 metadata/_custom_type_script = "uid://hxleldka7y06"
 
 [resource]
 script = ExtResource("1_frc05")
 gold = 50
 basic_attack = ExtResource("1_rcnog")
-conditional_abilities = Array[ExtResource("2_rcnog")]([ExtResource("4_lhfyo")])
+conditional_abilities = Array[ExtResource("2_rcnog")]([SubResource("Resource_s8n6s")])
 name = "Ogre"
 portrait = ExtResource("1_x6w26")
-current_hp = 30
-current_nrg = 10
+current_hp = 200
+current_nrg = 40
 active_effects = Array[ExtResource("1_nqds1")]([])
 stat_block = SubResource("Resource_0xu8l")
 attack_modifier = 0

@@ -4,8 +4,8 @@
 
 [resource]
 script = ExtResource("1_bo7ia")
-min_damage = 3
-max_damage = 5
+min_damage = 8
+max_damage = 15
 attack_type = 0
 name = "Slash"
 energy_cost = 0

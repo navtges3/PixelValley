@@ -4,8 +4,8 @@
 
 [resource]
 script = ExtResource("1_jfnps")
-min_damage = 4
-max_damage = 8
+min_damage = 12
+max_damage = 24
 attack_type = 0
 name = "Smash"
 energy_cost = 0

@@ -14,18 +14,18 @@ func check(caster: Combatant, target: Combatant = null) -> bool:
 			return true
 		ConditionType.HEALTH_BELOW:
 			if target and condition_subject == ConditionsSubject.TARGET:
-				return target.current_hp < (target.stat_block.max_hp * value)
-			return caster.current_hp < (caster.stat_block.max_hp * value)
+				return target.stat_block.current_hp < (target.stat_block.max_hp * value)
+			return caster.stat_block.current_hp < (caster.stat_block.max_hp * value)
 		ConditionType.HEALTH_ABOVE:
 			if target and condition_subject == ConditionsSubject.TARGET:
-				return target.current_hp >= (target.stat_block.max_hp * value)
-			return caster.current_hp >= (caster.stat_block.max_hp * value)
+				return target.stat_block.current_hp >= (target.stat_block.max_hp * value)
+			return caster.stat_block.current_hp >= (caster.stat_block.max_hp * value)
 		ConditionType.ENERGY_BELOW:
 			if target and condition_subject == ConditionsSubject.TARGET:
-				return target.current_nrg < (target.stat_block.max_nrg * value)
-			return caster.current_nrg < (caster.stat_block.max_nrg * value)
+				return target.stat_block.current_nrg < (target.stat_block.max_nrg * value)
+			return caster.stat_block.current_nrg < (caster.stat_block.max_nrg * value)
 		ConditionType.ENERGY_ABOVE:
 			if target and condition_subject == ConditionsSubject.TARGET:
-				return target.current_nrg >= (target.stat_block.max_nrg * value)
-			return caster.current_nrg >= (caster.stat_block.max_nrg * value)
+				return target.stat_block.current_nrg >= (target.stat_block.max_nrg * value)
+			return caster.stat_block.current_nrg >= (caster.stat_block.max_nrg * value)
 	return false

@@ -1,41 +1,13 @@
-[gd_resource type="Resource" script_class="Village" load_steps=13 format=3 uid="uid://f2sd72cs3ago"]
+[gd_resource type="Resource" script_class="Village" load_steps=5 format=3 uid="uid://f2sd72cs3ago"]
 
 [ext_resource type="Script" uid="uid://rq03ukhf4lx3" path="res://scripts/world/village.gd" id="1_lfw73"]
 [ext_resource type="Script" uid="uid://d0mdck5mlsm03" path="res://scripts/data/item_stack.gd" id="2_jaxnw"]
-[ext_resource type="Resource" uid="uid://cyiqwotfm3gq6" path="res://resources/potions/regeneration_potion.tres" id="3_kgflo"]
 [ext_resource type="Script" uid="uid://fafwxg2j84k6" path="res://scripts/world/shop.gd" id="3_x4ac3"]
-[ext_resource type="Resource" uid="uid://cfwejpwyn8due" path="res://resources/potions/attack_potion.tres" id="4_4a73g"]
-[ext_resource type="Resource" uid="uid://4gl0mwbttg8d" path="res://resources/potions/energy_potion.tres" id="5_1rgf8"]
-[ext_resource type="Resource" uid="uid://3s3rxn0iei3l" path="res://resources/weapons/warhammer.tres" id="6_7dxoq"]
-
-[sub_resource type="Resource" id="Resource_qybmw"]
-script = ExtResource("2_jaxnw")
-item = ExtResource("3_kgflo")
-count = 15
-metadata/_custom_type_script = "uid://d0mdck5mlsm03"
-
-[sub_resource type="Resource" id="Resource_qxqy8"]
-script = ExtResource("2_jaxnw")
-item = ExtResource("4_4a73g")
-count = 5
-metadata/_custom_type_script = "uid://d0mdck5mlsm03"
-
-[sub_resource type="Resource" id="Resource_oynn8"]
-script = ExtResource("2_jaxnw")
-item = ExtResource("5_1rgf8")
-count = 5
-metadata/_custom_type_script = "uid://d0mdck5mlsm03"
-
-[sub_resource type="Resource" id="Resource_yw8qv"]
-script = ExtResource("2_jaxnw")
-item = ExtResource("6_7dxoq")
-count = 1
-metadata/_custom_type_script = "uid://d0mdck5mlsm03"
 
 [sub_resource type="Resource" id="Resource_dr5x7"]
 script = ExtResource("3_x4ac3")
 name = "Lucky's Stop"
-inventory = Array[ExtResource("2_jaxnw")]([SubResource("Resource_qybmw"), SubResource("Resource_qxqy8"), SubResource("Resource_oynn8"), SubResource("Resource_yw8qv")])
+inventory = Array[ExtResource("2_jaxnw")]([])
 metadata/_custom_type_script = "uid://fafwxg2j84k6"
 
 [resource]
