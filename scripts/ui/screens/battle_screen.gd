@@ -50,7 +50,7 @@ func _ready() -> void:
 	battle_manager.start_battle(hero, current_quest)
 
 func _on_battle_log_updated(msg: String) -> void:
-	$ActionArea/BattleLog.append_text(msg + "\n")
+	$ActionArea/BattleLog.append_text(msg)
 
 func _on_hero_updated(hero_ref: Hero) -> void:
 	if hero_ui.hero:

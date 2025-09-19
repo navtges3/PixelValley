@@ -27,23 +27,16 @@ func start_battle(hero_ref: Hero, current_quest_ref: Quest) -> void:
 
 func start_player_turn() -> void:
 	state = BattleState.PLAYER_TURN
-	emit_signal("battle_log_updated", "Your turn!")
+	emit_signal("battle_log_updated", "Your turn!\n")
 	emit_signal("player_turn")
 
 func player_ability_selected(ability: Ability) -> void:
 	if state != BattleState.PLAYER_TURN:
 		return
 	# Find the ability by name
-	var output
-	if ability is AttackAbility:
-		output = ability.apply_attack(hero, monster)
-		emit_signal("battle_log_updated", output)
-	elif ability is UtilityAbility:
-		output = ability.apply_utility(hero)
-		emit_signal("battle_log_updated", output)
-	else:
-		output = ability.use(hero)
+	var output = ability.use(hero, monster)
 	if output:
+		emit_signal("battle_log_updated", output)
 		emit_signal("monster_updated", monster)
 		emit_signal("hero_updated", hero)
 		end_player_turn()
@@ -62,7 +55,7 @@ func rest() -> void:
 	if hero.rest_cooldown > 0:
 		return
 	hero.rest()
-	emit_signal("battle_log_updated", "You take a rest recovering health and energy.")
+	emit_signal("battle_log_updated", "You take a rest recovering health and energy.\n")
 	emit_signal("hero_updated", hero)
 	end_player_turn()
 
@@ -80,7 +73,7 @@ func end_player_turn() -> void:
 		enemy_turn()
 	else:
 		var experience = monster.calculate_experience()
-		emit_signal("battle_log_updated", "You defeated %s! You gain %d experience." % [monster.name, experience])
+		emit_signal("battle_log_updated", "You defeated %s! You gain %d experience.\n" % [monster.name, experience])
 		hero.inventory.gold += monster.gold
 		hero.gain_experience(experience)
 		emit_signal("hero_updated", hero)
@@ -95,20 +88,16 @@ func get_new_monster() -> void:
 	if quest_monster:
 		monster = quest_monster.duplicate(true)
 		emit_signal("new_monster", monster)
-		emit_signal("battle_log_updated", "A new monster appears: %s!" % quest_monster.name)
+		emit_signal("battle_log_updated", "A new monster appears: %s!\n" % quest_monster.name)
 		emit_signal("monster_updated", monster)
 	else:
-		emit_signal("battle_log_updated", "No more monsters to fight!")
+		emit_signal("battle_log_updated", "No more monsters to fight!\n")
 		end_battle(true)
 
 func enemy_turn() -> void:
-	emit_signal("battle_log_updated", "Enemy turn...")
-	var output = ""
+	emit_signal("battle_log_updated", "Enemy turn...\n")
 	var monster_ability = monster.choose_ability(hero)
-	if monster_ability is AttackAbility:
-		output = monster_ability.apply_attack(monster, hero)
-	elif monster_ability is UtilityAbility:
-		output = monster_ability.apply_utility(monster)
+	var output = monster_ability.use(monster, hero)
 	emit_signal("battle_log_updated", output)
 	emit_signal("hero_updated", hero)
 	end_enemy_turn()
@@ -124,10 +113,10 @@ func end_enemy_turn() -> void:
 
 func end_battle(player_won: bool) -> void:
 	state = BattleState.VICTORY if player_won else BattleState.DEFEAT
-	emit_signal("battle_log_updated", "You win!" if player_won else "You lose!")
+	emit_signal("battle_log_updated", "You win!\n" if player_won else "You lose!\n")
 	if player_won and current_quest.is_complete():
 		# skip victory popup if quest is complete
-		emit_signal("battle_log_updated", "Quest completed: %s" % current_quest.title)
+		emit_signal("battle_log_updated", "Quest completed: %s\n" % current_quest.title)
 		emit_signal("quest_completed")
 	elif not player_won:
 		emit_signal("hero_defeated")
