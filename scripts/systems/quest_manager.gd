@@ -28,9 +28,6 @@ const LAST_QUEST_ID := 15
 @export var available_quests: Array[Quest] = []
 @export var completed_quests: Array[Quest] = []
 
-func _init() -> void:
-	connect_quests()
-
 func _on_quest_completed(quest: Quest) -> void:
 	if quest in available_quests:
 		available_quests.erase(quest)
@@ -38,15 +35,6 @@ func _on_quest_completed(quest: Quest) -> void:
 		for next_id in quest.next_quests:
 			unlock_quest_by_id(next_id)
 		SaveManager.save_game()
-
-func connect_quests() -> void:
-	for quest in available_quests:
-		quest.quest_completed.connect(Callable(self, "_on_quest_completed"))
-
-func add_available_quest(quest: Quest) -> void:
-	if quest not in available_quests and quest not in completed_quests:
-		available_quests.append(quest)
-		quest.quest_completed.connect(Callable(self, "_on_quest_completed"))
 
 func new_game() -> void:
 	locked_quests = []
@@ -65,6 +53,11 @@ func unlock_quest_by_id(quest_id: int) -> void:
 			add_available_quest(locked_quest)
 			return
 
+func add_available_quest(quest: Quest) -> void:
+	if quest not in available_quests and quest not in completed_quests:
+		available_quests.append(quest)
+		quest.quest_completed.connect(Callable(self, "_on_quest_completed"))
+
 func get_save_data() -> Dictionary:
 	return {
 		"locked_quests": locked_quests.map(func(q: Quest): return q.get_save_data()),
@@ -82,9 +75,9 @@ static func load_from_data(data: Dictionary) -> QuestManager:
 		manager.locked_quests.append(quest)
 	for available_data in data.get("available_quests", []):
 		var quest = Quest.load_from_data(available_data)
+		quest.quest_completed.connect(Callable(manager, "_on_quest_completed"))
 		manager.available_quests.append(quest)
 	for completed_data in data.get("completed_quests", []):
 		var quest = Quest.load_from_data(completed_data)
 		manager.completed_quests.append(quest)
-	manager.connect_quests()
 	return manager
