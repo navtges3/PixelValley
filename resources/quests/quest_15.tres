@@ -35,5 +35,5 @@ id = 15
 description = "Defeat the Ogre King and end the raids once and for all."
 monster_objectives = Array[ExtResource("1_kwqi7")]([SubResource("Resource_668k3")])
 reward = Array[ExtResource("3_wx6oq")]([SubResource("Resource_sp1ti"), SubResource("Resource_tj5w2")])
-next_quests = Array[int]([15])
+next_quests = Array[int]([])
 metadata/_custom_type_script = "uid://xhl8p6y5w5e6"

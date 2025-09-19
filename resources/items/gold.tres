@@ -5,7 +5,7 @@
 
 [resource]
 script = ExtResource("1_hfngv")
-name = ""
+name = "Gold"
 description = ""
 theme = ExtResource("2_dyt3x")
 value = 0
