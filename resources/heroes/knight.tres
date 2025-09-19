@@ -8,7 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://c8hydb1a47nnk" path="res://assets/knight.png" id="3_5j7dh"]
 [ext_resource type="Resource" uid="uid://4gl0mwbttg8d" path="res://resources/potions/energy_potion.tres" id="3_w4hxg"]
 [ext_resource type="Script" uid="uid://hxleldka7y06" path="res://scripts/characters/stat_block.gd" id="5_j6mr1"]
-[ext_resource type="Resource" uid="uid://vx4vhsuwjxcf" path="res://resources/weapons/short_sword.tres" id="5_wwsut"]
+[ext_resource type="Resource" uid="uid://vx4vhsuwjxcf" path="res://resources/weapons/iron_broadsword.tres" id="5_wwsut"]
 
 [sub_resource type="Resource" id="Resource_nsv5r"]
 script = ExtResource("1_3wev5")
@@ -31,14 +31,14 @@ metadata/_custom_type_script = "uid://4rm24oomjap7"
 
 [sub_resource type="Resource" id="Resource_wwsut"]
 script = ExtResource("5_j6mr1")
-current_hp = 125
-current_nrg = 10
-max_hp = 125
-max_nrg = 10
-attack = 2
-magic = 1
-defense = 3
-resistance = 2
+current_hp = 120
+current_nrg = 40
+max_hp = 120
+max_nrg = 40
+attack = 10
+magic = 2
+defense = 8
+resistance = 4
 metadata/_custom_type_script = "uid://hxleldka7y06"
 
 [resource]

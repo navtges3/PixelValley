@@ -7,7 +7,7 @@
 [sub_resource type="Resource" id="Resource_ccqrf"]
 script = ExtResource("1_q3rd1")
 type = 0
-strength = 50
+strength = 100
 duration = 1
 metadata/_custom_type_script = "uid://c5deti4sb2k2j"
 

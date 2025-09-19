@@ -38,6 +38,8 @@ metadata/_custom_type_script = "uid://dxnu3vjlxl2pn"
 
 [sub_resource type="Resource" id="Resource_0xu8l"]
 script = ExtResource("8_kbsnj")
+current_hp = 300
+current_nrg = 80
 max_hp = 300
 max_nrg = 80
 attack = 35
@@ -53,8 +55,6 @@ basic_attack = ExtResource("2_cd3ku")
 conditional_abilities = Array[ExtResource("3_afcsi")]([SubResource("Resource_co4bm"), SubResource("Resource_kbsnj")])
 name = "Ogre Warlord"
 portrait = ExtResource("6_co4bm")
-current_hp = 300
-current_nrg = 80
 active_effects = Array[ExtResource("1_b6dpx")]([])
 stat_block = SubResource("Resource_0xu8l")
 attack_modifier = 0

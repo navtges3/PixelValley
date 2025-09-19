@@ -38,6 +38,8 @@ metadata/_custom_type_script = "uid://dxnu3vjlxl2pn"
 
 [sub_resource type="Resource" id="Resource_0xu8l"]
 script = ExtResource("8_m4btp")
+current_hp = 500
+current_nrg = 120
 max_hp = 500
 max_nrg = 120
 attack = 45
@@ -53,8 +55,6 @@ basic_attack = ExtResource("2_vnhbq")
 conditional_abilities = Array[ExtResource("3_4sqe0")]([SubResource("Resource_caabp"), SubResource("Resource_m4btp")])
 name = "Ogre King"
 portrait = ExtResource("6_caabp")
-current_hp = 500
-current_nrg = 120
 active_effects = Array[ExtResource("1_gd0n0")]([])
 stat_block = SubResource("Resource_0xu8l")
 attack_modifier = 0

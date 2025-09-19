@@ -38,6 +38,8 @@ metadata/_custom_type_script = "uid://dxnu3vjlxl2pn"
 
 [sub_resource type="Resource" id="Resource_ryf8n"]
 script = ExtResource("8_5o45j")
+current_hp = 180
+current_nrg = 60
 max_hp = 180
 max_nrg = 60
 attack = 25
@@ -53,8 +55,6 @@ basic_attack = ExtResource("2_wo7k3")
 conditional_abilities = Array[ExtResource("3_y5377")]([SubResource("Resource_sap3r"), SubResource("Resource_7hvvo")])
 name = "Orc Cheiftain"
 portrait = ExtResource("6_3vdcj")
-current_hp = 180
-current_nrg = 60
 active_effects = Array[ExtResource("1_jqj14")]([])
 stat_block = SubResource("Resource_ryf8n")
 attack_modifier = 0
