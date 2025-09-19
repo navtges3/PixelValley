@@ -1,0 +1,65 @@
+[gd_resource type="Resource" script_class="Monster" load_steps=15 format=3 uid="uid://defc2ss743h1d"]
+
+[ext_resource type="Script" uid="uid://c5deti4sb2k2j" path="res://scripts/data/effect.gd" id="1_jqj14"]
+[ext_resource type="Resource" uid="uid://tpknc5avafvw" path="res://resources/abilities/attacks/cleave.tres" id="2_wo7k3"]
+[ext_resource type="Script" uid="uid://dxnu3vjlxl2pn" path="res://scripts/data/conditional_ability.gd" id="3_y5377"]
+[ext_resource type="Resource" uid="uid://csvjvb2ajko6k" path="res://resources/abilities/utility/war_cry.tres" id="4_mpmry"]
+[ext_resource type="Script" uid="uid://cnso83bg7vodw" path="res://scripts/data/condition.gd" id="5_7hvvo"]
+[ext_resource type="Texture2D" uid="uid://ced3cfcakcx6o" path="res://assets/orc.png" id="6_3vdcj"]
+[ext_resource type="Resource" uid="uid://dxax53vq7bmis" path="res://resources/abilities/attacks/execute.tres" id="6_y5377"]
+[ext_resource type="Script" uid="uid://bd6ohffno5w7r" path="res://scripts/characters/monster.gd" id="7_sap3r"]
+[ext_resource type="Script" uid="uid://hxleldka7y06" path="res://scripts/characters/stat_block.gd" id="8_5o45j"]
+
+[sub_resource type="Resource" id="Resource_3vdcj"]
+script = ExtResource("5_7hvvo")
+condition_type = 1
+condition_subject = 1
+value = 0.3
+metadata/_custom_type_script = "uid://cnso83bg7vodw"
+
+[sub_resource type="Resource" id="Resource_sap3r"]
+script = ExtResource("3_y5377")
+ability = ExtResource("6_y5377")
+condition = SubResource("Resource_3vdcj")
+metadata/_custom_type_script = "uid://dxnu3vjlxl2pn"
+
+[sub_resource type="Resource" id="Resource_7fsos"]
+script = ExtResource("5_7hvvo")
+condition_type = 1
+condition_subject = 0
+value = 0.5
+metadata/_custom_type_script = "uid://cnso83bg7vodw"
+
+[sub_resource type="Resource" id="Resource_7hvvo"]
+script = ExtResource("3_y5377")
+ability = ExtResource("4_mpmry")
+condition = SubResource("Resource_7fsos")
+metadata/_custom_type_script = "uid://dxnu3vjlxl2pn"
+
+[sub_resource type="Resource" id="Resource_ryf8n"]
+script = ExtResource("8_5o45j")
+current_hp = 180
+current_nrg = 60
+max_hp = 180
+max_nrg = 60
+attack = 25
+magic = 5
+defense = 12
+resistance = 8
+metadata/_custom_type_script = "uid://hxleldka7y06"
+
+[resource]
+script = ExtResource("7_sap3r")
+gold = 20
+basic_attack = ExtResource("2_wo7k3")
+conditional_abilities = Array[ExtResource("3_y5377")]([SubResource("Resource_sap3r"), SubResource("Resource_7hvvo")])
+name = "Orc Cheiftain"
+portrait = ExtResource("6_3vdcj")
+active_effects = Array[ExtResource("1_jqj14")]([])
+stat_block = SubResource("Resource_ryf8n")
+attack_modifier = 0
+magic_modifier = 0
+defense_modifier = 0
+resistance_modifier = 0
+rest_cooldown = 0
+metadata/_custom_type_script = "uid://bd6ohffno5w7r"

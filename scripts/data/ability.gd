@@ -10,9 +10,9 @@ func is_ready() -> bool:
 	return current_cooldown <= 0
 
 func use(caster: Combatant) -> bool:
-	if is_ready() and caster.current_nrg >= self.energy_cost:
-		self.current_cooldown = self.cooldown
-		caster.current_nrg -= self.energy_cost
+	if is_ready() and caster.stat_block.current_nrg >= self.energy_cost:
+		self.current_cooldown = self.cooldown + 1
+		caster.stat_block.current_nrg -= self.energy_cost
 		return true
 	else:
 		return false

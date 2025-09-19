@@ -47,8 +47,6 @@ static func _get_hero_data(hero: Hero) -> Dictionary:
 	var hero_data = {
 		hero_name = hero.name,
 		portrait = hero.portrait.resource_path,
-		current_hp = hero.current_hp,
-		current_nrg = hero.current_nrg,
 		hero_class = hero.hero_class,
 		level = hero.level,
 		experience = hero.experience,
@@ -64,8 +62,6 @@ static func _load_hero_data(data: Dictionary) -> Hero:
 	var portrait_path = data.get("portrait", "")
 	if portrait_path != "":
 		hero.portrait = load(portrait_path)
-	hero.current_hp = data.get("current_hp", 0)
-	hero.current_nrg = data.get("current_nrg", 0)
 	hero.hero_class = data.get("hero_class", "Warrior")
 	hero.level = data.get("level", 1)
 	hero.experience = data.get("experience", 0)
@@ -96,6 +92,8 @@ static func _load_active_effects(data: Array) -> Array[Effect]:
 
 static func _get_stat_block_data(stat_block: StatBlock) -> Dictionary:
 	var stat_block_data = {
+		current_hp = stat_block.current_hp,
+		current_nrg = stat_block.current_nrg,
 		max_hp = stat_block.max_hp,
 		max_nrg = stat_block.max_nrg,
 		attack = stat_block.attack,
@@ -107,6 +105,8 @@ static func _get_stat_block_data(stat_block: StatBlock) -> Dictionary:
 
 static func _load_stat_block(data: Dictionary) -> StatBlock:
 	var stat_block = StatBlock.new()
+	stat_block.current_hp = data.get("current_hp", 10)
+	stat_block.current_nrg = data.get("current_nrg", 5)
 	stat_block.max_hp = data.get("max_hp", 10)
 	stat_block.max_nrg = data.get("max_nrg", 5)
 	stat_block.attack = data.get("attack", 1)

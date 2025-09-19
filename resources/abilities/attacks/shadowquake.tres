@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="AttackAbility" load_steps=2 format=3 uid="uid://tclup8eshfsf"]
+
+[ext_resource type="Script" uid="uid://bmecp5v7jxnvq" path="res://scripts/data/attack_ability.gd" id="1_v8ee8"]
+
+[resource]
+script = ExtResource("1_v8ee8")
+min_damage = 40
+max_damage = 65
+attack_type = 1
+name = "Shadowquake"
+energy_cost = 35
+cooldown = 5
+metadata/_custom_type_script = "uid://bmecp5v7jxnvq"

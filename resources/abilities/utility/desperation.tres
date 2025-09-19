@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="UtilityAbility" load_steps=4 format=3 uid="uid://bq4y65kqmiicm"]
+
+[ext_resource type="Script" uid="uid://c5deti4sb2k2j" path="res://scripts/data/effect.gd" id="1_wtfg1"]
+[ext_resource type="Script" uid="uid://be3du183tjgh8" path="res://scripts/data/utility_ability.gd" id="2_p1hww"]
+
+[sub_resource type="Resource" id="Resource_wtfg1"]
+script = ExtResource("1_wtfg1")
+type = 2
+strength = 2
+duration = 1
+metadata/_custom_type_script = "uid://c5deti4sb2k2j"
+
+[resource]
+script = ExtResource("2_p1hww")
+effects = Array[ExtResource("1_wtfg1")]([SubResource("Resource_wtfg1")])
+name = "Desperation"
+energy_cost = 5
+cooldown = 3
+metadata/_custom_type_script = "uid://be3du183tjgh8"

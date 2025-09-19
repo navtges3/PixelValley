@@ -44,14 +44,14 @@ func _update_text() -> void:
 	weapon_label.text = hero.inventory.weapon.name
 
 func _update_health_bar():
-	var value = hero.current_hp
+	var value = hero.stat_block.current_hp
 	var max_value = hero.stat_block.max_hp
 	health_bar.max_value = max_value
 	health_bar.value = value
 	health_label.text = "%d / %d" % [value, max_value]
 
 func _update_energy_bar():
-	var value = hero.current_nrg
+	var value = hero.stat_block.current_nrg
 	var max_value = hero.stat_block.max_nrg
 	energy_bar.max_value = max_value
 	energy_bar.value = value

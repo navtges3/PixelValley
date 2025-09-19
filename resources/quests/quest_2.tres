@@ -1,47 +1,39 @@
-[gd_resource type="Resource" script_class="Quest" load_steps=12 format=3 uid="uid://cr1abqodbmr5q"]
+[gd_resource type="Resource" script_class="Quest" load_steps=10 format=3 uid="uid://cr1abqodbmr5q"]
 
 [ext_resource type="Script" uid="uid://bhsjswm1wnll8" path="res://scripts/quest/monster_requirement.gd" id="1_nt4ml"]
 [ext_resource type="Resource" uid="uid://dm48acoifufc0" path="res://resources/monsters/goblin.tres" id="2_fablu"]
 [ext_resource type="Script" uid="uid://xekqra2mjp3l" path="res://scripts/quest/quest_reward.gd" id="3_6f6sq"]
-[ext_resource type="Resource" uid="uid://yrw5qgu7qwe0" path="res://resources/monsters/orc.tres" id="3_6wbxw"]
+[ext_resource type="Resource" uid="uid://c4ew36sfl85ym" path="res://resources/items/experience.tres" id="4_fablu"]
 [ext_resource type="Script" uid="uid://xhl8p6y5w5e6" path="res://scripts/quest/quest.gd" id="5_0104a"]
-[ext_resource type="Resource" uid="uid://3s3rxn0iei3l" path="res://resources/weapons/warhammer.tres" id="5_lo25k"]
-[ext_resource type="Resource" uid="uid://cfwejpwyn8due" path="res://resources/potions/attack_potion.tres" id="7_tr0qk"]
+[ext_resource type="Resource" uid="uid://e282ko0xakwg" path="res://resources/potions/lesser_healing_potion.tres" id="5_fablu"]
 
 [sub_resource type="Resource" id="Resource_fhtom"]
 script = ExtResource("1_nt4ml")
 monster = ExtResource("2_fablu")
-target_amount = 2
+target_amount = 10
 current_amount = 0
 metadata/_custom_type_script = "uid://bhsjswm1wnll8"
 
-[sub_resource type="Resource" id="Resource_pfqdj"]
-script = ExtResource("1_nt4ml")
-monster = ExtResource("3_6wbxw")
-target_amount = 1
-current_amount = 0
-metadata/_custom_type_script = "uid://bhsjswm1wnll8"
-
-[sub_resource type="Resource" id="Resource_4j3xx"]
+[sub_resource type="Resource" id="Resource_6wbxw"]
 script = ExtResource("3_6f6sq")
-item = ExtResource("5_lo25k")
-amount = 1
-target = 1
+item = ExtResource("4_fablu")
+amount = 75
+target = 0
 metadata/_custom_type_script = "uid://xekqra2mjp3l"
 
-[sub_resource type="Resource" id="Resource_d36ea"]
+[sub_resource type="Resource" id="Resource_0104a"]
 script = ExtResource("3_6f6sq")
-item = ExtResource("7_tr0qk")
-amount = 2
+item = ExtResource("5_fablu")
+amount = 1
 target = 0
 metadata/_custom_type_script = "uid://xekqra2mjp3l"
 
 [resource]
 script = ExtResource("5_0104a")
-title = "Goblin Camp"
+title = "Clearing the Woods"
 id = 2
-description = "You follow the path made by the goblins to find a small clearing. Around a campfire you see the goblins you chased reporting back to a large Orc."
-monster_objectives = Array[ExtResource("1_nt4ml")]([SubResource("Resource_fhtom"), SubResource("Resource_pfqdj")])
-reward = Array[ExtResource("3_6f6sq")]([SubResource("Resource_4j3xx"), SubResource("Resource_d36ea")])
-next_quests = Array[int]([4])
+description = "The goblins regroup deeper in the woods. Hunt them down."
+monster_objectives = Array[ExtResource("1_nt4ml")]([SubResource("Resource_fhtom")])
+reward = Array[ExtResource("3_6f6sq")]([SubResource("Resource_6wbxw"), SubResource("Resource_0104a")])
+next_quests = Array[int]([3])
 metadata/_custom_type_script = "uid://xhl8p6y5w5e6"
