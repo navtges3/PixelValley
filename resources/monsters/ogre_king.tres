@@ -1,12 +1,12 @@
 [gd_resource type="Resource" script_class="Monster" load_steps=15 format=3 uid="uid://dcwvon7sw5nst"]
 
 [ext_resource type="Script" uid="uid://c5deti4sb2k2j" path="res://scripts/data/effect.gd" id="1_gd0n0"]
-[ext_resource type="Resource" uid="uid://ckls5o57wr0wn" path="res://resources/abilities/attacks/kings_smash.tres" id="2_vnhbq"]
+[ext_resource type="Resource" uid="uid://butpfi06boe3d" path="res://resources/abilities/kings_smash.tres" id="2_vnhbq"]
 [ext_resource type="Script" uid="uid://dxnu3vjlxl2pn" path="res://scripts/data/conditional_ability.gd" id="3_4sqe0"]
-[ext_resource type="Resource" uid="uid://cw1kg72s2h70k" path="res://resources/abilities/utility/dark_regeneration.tres" id="4_4sqe0"]
+[ext_resource type="Resource" uid="uid://ctce7oq3s4kox" path="res://resources/abilities/dark_regeneration.tres" id="4_vnhbq"]
 [ext_resource type="Script" uid="uid://cnso83bg7vodw" path="res://scripts/data/condition.gd" id="5_eyhfi"]
 [ext_resource type="Texture2D" uid="uid://bxc2p8w8wawwk" path="res://assets/ogre.png" id="6_caabp"]
-[ext_resource type="Resource" uid="uid://tclup8eshfsf" path="res://resources/abilities/attacks/shadowquake.tres" id="6_e68dg"]
+[ext_resource type="Resource" uid="uid://dwx4iywd6wl6h" path="res://resources/abilities/shadowquake.tres" id="6_vnhbq"]
 [ext_resource type="Script" uid="uid://bd6ohffno5w7r" path="res://scripts/characters/monster.gd" id="7_q3pdi"]
 [ext_resource type="Script" uid="uid://hxleldka7y06" path="res://scripts/characters/stat_block.gd" id="8_m4btp"]
 
@@ -19,7 +19,7 @@ metadata/_custom_type_script = "uid://cnso83bg7vodw"
 
 [sub_resource type="Resource" id="Resource_caabp"]
 script = ExtResource("3_4sqe0")
-ability = ExtResource("4_4sqe0")
+ability = ExtResource("4_vnhbq")
 condition = SubResource("Resource_eyhfi")
 metadata/_custom_type_script = "uid://dxnu3vjlxl2pn"
 
@@ -32,7 +32,7 @@ metadata/_custom_type_script = "uid://cnso83bg7vodw"
 
 [sub_resource type="Resource" id="Resource_m4btp"]
 script = ExtResource("3_4sqe0")
-ability = ExtResource("6_e68dg")
+ability = ExtResource("6_vnhbq")
 condition = SubResource("Resource_q3pdi")
 metadata/_custom_type_script = "uid://dxnu3vjlxl2pn"
 

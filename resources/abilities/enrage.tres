@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="Ability" load_steps=6 format=3 uid="uid://cnpsmwryevais"]
+
+[ext_resource type="Script" uid="uid://b2o7w8q10stxo" path="res://scripts/data/ability.gd" id="1_cud23"]
+[ext_resource type="Script" uid="uid://bvuw0uyc36uxx" path="res://scripts/data/utility.gd" id="2_lb5hf"]
+[ext_resource type="Script" uid="uid://c5deti4sb2k2j" path="res://scripts/data/effect.gd" id="3_msbar"]
+
+[sub_resource type="Resource" id="Resource_fmdst"]
+script = ExtResource("3_msbar")
+type = 2
+strength = 12
+duration = 3
+metadata/_custom_type_script = "uid://c5deti4sb2k2j"
+
+[sub_resource type="Resource" id="Resource_wcv0o"]
+script = ExtResource("2_lb5hf")
+effects = Array[ExtResource("3_msbar")]([SubResource("Resource_fmdst")])
+subject = 0
+metadata/_custom_type_script = "uid://bvuw0uyc36uxx"
+
+[resource]
+script = ExtResource("1_cud23")
+name = "Enrage"
+energy_cost = 30
+cooldown = 5
+utilities = Array[ExtResource("2_lb5hf")]([SubResource("Resource_wcv0o")])
+metadata/_custom_type_script = "uid://b2o7w8q10stxo"

@@ -22,20 +22,20 @@ func rest() -> void:
 		self.recover_energy(self.stat_block.max_nrg)
 		rest_cooldown = REST_CD
 
-func take_damage(amount: int, type: AttackAbility.AttackType) -> String:
+func take_damage(amount: int, type: Attack.AttackType) -> String:
 	var damage = amount
 	match type:
-		AttackAbility.AttackType.PHYSICAL:
+		Attack.AttackType.PHYSICAL:
 			var modifier = self.stat_block.defense + self.defense_modifier
 			damage = max(damage - modifier, 0)
-		AttackAbility.AttackType.MAGICAL:
+		Attack.AttackType.MAGICAL:
 			var modifier = self.stat_block.resistance + self.resistance_modifier
 			damage = max(damage - modifier, 0)
 	self.stat_block.current_hp = max(self.stat_block.current_hp - damage, 0)
 	if damage <= 0:
-		return "%s blocked the attack!" % self.name
+		return "%s blocked the attack!\n" % self.name
 	else:
-		return "%s took %d damage." % [self.name, damage]
+		return "%s took %d damage.\n" % [self.name, damage]
 
 func heal(amount: int) -> void:
 	self.stat_block.current_hp = min(self.stat_block.current_hp + amount, self.stat_block.max_hp)
@@ -52,9 +52,9 @@ func recover_energy(amount: int) -> void:
 
 func apply_effect(effect: Effect) -> String:
 	if effect.duration <= 0:
-		return "Effect has expired."
+		return "Effect has expired.\n"
 	active_effects.append(effect)
-	return "%s applied." % effect.get_tooltip()
+	return "%s applied.\n" % effect.get_tooltip()
 
 func process_active_effects() -> void:
 	self.attack_modifier = 0
