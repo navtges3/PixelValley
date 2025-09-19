@@ -18,7 +18,7 @@ func refresh() -> void:
 	update_health_bar()
 
 func update_health_bar():
-	var value = monster.current_hp
+	var value = monster.stat_block.current_hp
 	var max_value = monster.stat_block.max_hp
 	health_bar.max_value = max_value
 	health_bar.value = value

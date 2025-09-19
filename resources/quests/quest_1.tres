@@ -1,38 +1,39 @@
-[gd_resource type="Resource" script_class="Quest" load_steps=9 format=3 uid="uid://cne8vqkq32bqx"]
+[gd_resource type="Resource" script_class="Quest" load_steps=10 format=3 uid="uid://cne8vqkq32bqx"]
 
 [ext_resource type="Script" uid="uid://bhsjswm1wnll8" path="res://scripts/quest/monster_requirement.gd" id="1_gm6gv"]
 [ext_resource type="Resource" uid="uid://dm48acoifufc0" path="res://resources/monsters/goblin.tres" id="2_yok1s"]
 [ext_resource type="Script" uid="uid://xekqra2mjp3l" path="res://scripts/quest/quest_reward.gd" id="3_ac10j"]
-[ext_resource type="Resource" uid="uid://cyiqwotfm3gq6" path="res://resources/potions/regeneration_potion.tres" id="4_10kci"]
+[ext_resource type="Resource" uid="uid://c4ew36sfl85ym" path="res://resources/items/experience.tres" id="4_yok1s"]
+[ext_resource type="Resource" uid="uid://bjglrp2dbax4l" path="res://resources/items/gold.tres" id="5_ac10j"]
 [ext_resource type="Script" uid="uid://xhl8p6y5w5e6" path="res://scripts/quest/quest.gd" id="5_oknas"]
 
 [sub_resource type="Resource" id="Resource_fhtom"]
 script = ExtResource("1_gm6gv")
 monster = ExtResource("2_yok1s")
-target_amount = 3
+target_amount = 5
 current_amount = 0
 metadata/_custom_type_script = "uid://bhsjswm1wnll8"
 
-[sub_resource type="Resource" id="Resource_4j3xx"]
+[sub_resource type="Resource" id="Resource_10kci"]
 script = ExtResource("3_ac10j")
-item = ExtResource("4_10kci")
-amount = 5
-target = 1
+item = ExtResource("4_yok1s")
+amount = 50
+target = 0
 metadata/_custom_type_script = "uid://xekqra2mjp3l"
 
-[sub_resource type="Resource" id="Resource_x65sf"]
+[sub_resource type="Resource" id="Resource_mwjs7"]
 script = ExtResource("3_ac10j")
-item = ExtResource("4_10kci")
-amount = 3
+item = ExtResource("5_ac10j")
+amount = 20
 target = 0
 metadata/_custom_type_script = "uid://xekqra2mjp3l"
 
 [resource]
 script = ExtResource("5_oknas")
-title = "A walk through the woods"
+title = "Goblin Trouble"
 id = 1
-description = "As you walk down the road in the woods you hear a rustling of leaves around the upcoming bend. You are quickly ambushed by a gang of Goblins"
+description = "The village reports goblins raiding the grain stores. Drive them away."
 monster_objectives = Array[ExtResource("1_gm6gv")]([SubResource("Resource_fhtom")])
-reward = Array[ExtResource("3_ac10j")]([SubResource("Resource_4j3xx"), SubResource("Resource_x65sf")])
-next_quests = Array[int]([2, 3])
+reward = Array[ExtResource("3_ac10j")]([SubResource("Resource_10kci"), SubResource("Resource_mwjs7")])
+next_quests = Array[int]([2])
 metadata/_custom_type_script = "uid://xhl8p6y5w5e6"

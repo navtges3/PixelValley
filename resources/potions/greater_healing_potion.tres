@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="Potion" load_steps=5 format=3 uid="uid://mv5ykhn56sjs"]
+
+[ext_resource type="Script" uid="uid://c5deti4sb2k2j" path="res://scripts/data/effect.gd" id="1_q3rd1"]
+[ext_resource type="Script" uid="uid://dvmhh34nbwxaq" path="res://scripts/data/potion.gd" id="2_pdrnr"]
+[ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://assets/button_themes/regular/green_button.tres" id="3_6w2jl"]
+
+[sub_resource type="Resource" id="Resource_ccqrf"]
+script = ExtResource("1_q3rd1")
+type = 0
+strength = 100
+duration = 1
+metadata/_custom_type_script = "uid://c5deti4sb2k2j"
+
+[resource]
+script = ExtResource("2_pdrnr")
+effects = Array[ExtResource("1_q3rd1")]([SubResource("Resource_ccqrf")])
+name = "Potion of Greater Healing"
+description = ""
+theme = ExtResource("3_6w2jl")
+value = 100
+metadata/_custom_type_script = "uid://dvmhh34nbwxaq"

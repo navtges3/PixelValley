@@ -103,13 +103,14 @@ func get_new_monster() -> void:
 
 func enemy_turn() -> void:
 	emit_signal("battle_log_updated", "Enemy turn...")
-	if monster.needs_rest():
-		monster.rest()
-		emit_signal("battle_log_updated", "%s rests recovering health and energy." % monster.name)
-	else:
-		var output = monster.attack.apply_attack(monster, hero)
-		emit_signal("battle_log_updated", output)
-		emit_signal("hero_updated", hero)
+	var output = ""
+	var monster_ability = monster.choose_ability(hero)
+	if monster_ability is AttackAbility:
+		output = monster_ability.apply_attack(monster, hero)
+	elif monster_ability is UtilityAbility:
+		output = monster_ability.apply_utility(monster)
+	emit_signal("battle_log_updated", output)
+	emit_signal("hero_updated", hero)
 	end_enemy_turn()
 
 func end_enemy_turn() -> void:

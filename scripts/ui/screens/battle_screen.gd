@@ -118,7 +118,7 @@ func _on_monster_turn():
 
 func _on_quest_completed():
 	print("Quest completed!")
-	if GameState.quest_manager.available_quests.is_empty():
+	if current_quest.id == GameState.quest_manager.LAST_QUEST_ID:
 		ScreenManager.go_to_screen("victory")
 	else:
 		ScreenManager.go_to_screen("quest_finished")
@@ -151,7 +151,7 @@ func empty_option_list() -> void:
 func create_ability_button(ability: Ability) -> Button:
 	var button := AbilityButton.instantiate()
 	button.ability = ability
-	button.user_energy = hero.current_nrg
+	button.user_energy = hero.stat_block.current_nrg
 	button.connect("ability_pressed", Callable(self, "_on_ability_button_pressed"))
 	return button
 
