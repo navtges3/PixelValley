@@ -38,7 +38,7 @@ func take_damage(amount: int, type: AttackAbility.AttackType) -> String:
 		return "%s took %d damage." % [self.name, damage]
 
 func heal(amount: int) -> void:
-	self.stat_block.current_hp = min(self.stat_block.stat_block.current_hp + amount, self.stat_block.max_hp)
+	self.stat_block.current_hp = min(self.stat_block.current_hp + amount, self.stat_block.max_hp)
 
 func use_energy(amount: int) -> bool:
 	if self.stat_block.current_nrg >= amount:
