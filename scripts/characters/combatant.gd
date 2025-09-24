@@ -63,26 +63,27 @@ func process_active_effects() -> void:
 	self.resistance_modifier = 0
 	for i in range(active_effects.size() -1, -1, -1):
 		var effect = active_effects[i]
-		match effect.type:
-			Effect.EffectType.HEAL:
-				print("Healing effect applied.")
-				self.stat_block.current_hp = min(self.stat_block.current_hp + effect.strength, self.stat_block.max_hp)
-			Effect.EffectType.ENERGY:
-				print("Energy effect applied.")
-				self.stat_block.current_nrg = min(self.stat_block.current_nrg + effect.strength, self.stat_block.max_nrg)
-			Effect.EffectType.BUFF_ATTACK:
-				print("Attack buff applied.")
-				self.attack_modifier += effect.strength
-			Effect.EffectType.BUFF_MAGIC:
-				print("Magic buff applied.")
-				self.magic_modifier += effect.strength
-			Effect.EffectType.BUFF_DEFENSE:
-				print("Defense buff applied.")
-				self.defense_modifier += effect.strength
-			Effect.EffectType.BUFF_RESISTANCE:
-				print("Resistance buff applied.")
-				self.resistance_modifier += effect.strength
+		_update_effect(effect)
 		effect.duration -= 1
 		if effect.duration <= 0:
 			active_effects.remove_at(i)
 			print("Effect '%s' has expired." % effect.type_to_string())
+
+func _update_effect(effect: Effect) -> void:
+	match effect.type:
+		Effect.EffectType.ATTACK_UP:
+			self.attack_modifier += effect.magnitude
+		Effect.EffectType.MAGIC_UP:
+			self.magic_modifier += effect.magnitude
+		Effect.EffectType.DEFENSE_UP:
+			self.defense_modifier += effect.magnitude
+		Effect.EffectType.RESISTANCE_UP:
+			self.resistance_modifier += effect.magnitude
+		Effect.EffectType.ATTACK_DOWN:
+			self.attack_modifier -= effect.magnitude
+		Effect.EffectType.MAGIC_DOWN:
+			self.magic_modifier -= effect.magnitude
+		Effect.EffectType.DEFENSE_DOWN:
+			self.defense_modifier -= effect.magnitude
+		Effect.EffectType.RESISTANCE_DOWN:
+			self.resistance_modifier -= effect.magnitude
