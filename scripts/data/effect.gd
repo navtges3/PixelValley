@@ -1,7 +1,7 @@
 extends Resource
 class_name Effect
 
-enum EffectType { HEAL, ENERGY, BUFF_ATTACK, BUFF_MAGIC, BUFF_DEFENSE, BUFF_RESISTANCE}
+enum EffectType { HEAL, ENERGY, BUFF_ATTACK, BUFF_MAGIC, BUFF_DEFENSE, BUFF_RESISTANCE, DEBUFF_ATTACK, DEBUFF_MAGIC, DEBUFF_DEFENSE, DEBUFF_RESISTANCE }
 
 @export var type: EffectType
 @export var strength: int = 0
