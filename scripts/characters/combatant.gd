@@ -13,6 +13,14 @@ const REST_CD := 5
 @export var resistance_modifier: int = 0
 @export var rest_cooldown: int = 0
 
+func get_colored_name() -> String:
+	if self is Hero:
+		return "[color=green]" + self.name + "[/color]"
+	elif self is Monster:
+		return "[color=red]" + self.name + "[/color]"
+	else:
+		return self.name
+
 func is_alive() -> bool:
 	return stat_block.current_hp > 0
 
@@ -33,9 +41,9 @@ func take_damage(amount: int, type: Attack.AttackType) -> String:
 			damage = max(damage - modifier, 0)
 	self.stat_block.current_hp = max(self.stat_block.current_hp - damage, 0)
 	if damage <= 0:
-		return "%s blocked the attack!\n" % self.name
+		return "%s blocked the attack!\n" % self.get_colored_name()
 	else:
-		return "%s took %d damage.\n" % [self.name, damage]
+		return "%s took %d damage.\n" % [self.get_colored_name(), damage]
 
 func heal(amount: int) -> void:
 	self.stat_block.current_hp = min(self.stat_block.current_hp + amount, self.stat_block.max_hp)
@@ -71,19 +79,19 @@ func process_active_effects() -> void:
 
 func _update_effect(effect: Effect) -> void:
 	match effect.type:
-		Effect.EffectType.ATTACK_UP:
-			self.attack_modifier += effect.magnitude
-		Effect.EffectType.MAGIC_UP:
-			self.magic_modifier += effect.magnitude
-		Effect.EffectType.DEFENSE_UP:
-			self.defense_modifier += effect.magnitude
-		Effect.EffectType.RESISTANCE_UP:
-			self.resistance_modifier += effect.magnitude
-		Effect.EffectType.ATTACK_DOWN:
-			self.attack_modifier -= effect.magnitude
-		Effect.EffectType.MAGIC_DOWN:
-			self.magic_modifier -= effect.magnitude
-		Effect.EffectType.DEFENSE_DOWN:
-			self.defense_modifier -= effect.magnitude
-		Effect.EffectType.RESISTANCE_DOWN:
-			self.resistance_modifier -= effect.magnitude
+		Effect.EffectType.BUFF_ATTACK:
+			self.attack_modifier += effect.strength
+		Effect.EffectType.BUFF_MAGIC:
+			self.magic_modifier += effect.strength
+		Effect.EffectType.BUFF_DEFENSE:
+			self.defense_modifier += effect.strength
+		Effect.EffectType.BUFF_RESISTANCE:
+			self.resistance_modifier += effect.strength
+		Effect.EffectType.DEBUFF_ATTACK:
+			self.attack_modifier -= effect.strength
+		Effect.EffectType.DEBUFF_MAGIC:
+			self.magic_modifier -= effect.strength
+		Effect.EffectType.DEBUFF_DEFENSE:
+			self.defense_modifier -= effect.strength
+		Effect.EffectType.DEBUFF_RESISTANCE:
+			self.resistance_modifier -= effect.strength

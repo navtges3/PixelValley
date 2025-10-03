@@ -27,7 +27,7 @@ func start_battle(hero_ref: Hero, current_quest_ref: Quest) -> void:
 
 func start_player_turn() -> void:
 	state = BattleState.PLAYER_TURN
-	emit_signal("battle_log_updated", "Your turn!\n")
+	emit_signal("battle_log_updated", "%s's turn!\n" % hero.get_colored_name())
 	emit_signal("player_turn")
 
 func player_ability_selected(ability: Ability) -> void:
@@ -55,7 +55,7 @@ func rest() -> void:
 	if hero.rest_cooldown > 0:
 		return
 	hero.rest()
-	emit_signal("battle_log_updated", "You take a rest recovering health and energy.\n")
+	emit_signal("battle_log_updated", "%s takes a rest recovering health and energy.\n" % hero.get_colored_name())
 	emit_signal("hero_updated", hero)
 	end_player_turn()
 
@@ -73,7 +73,8 @@ func end_player_turn() -> void:
 		enemy_turn()
 	else:
 		var experience = monster.calculate_experience()
-		emit_signal("battle_log_updated", "You defeated %s! You gain %d experience.\n" % [monster.name, experience])
+		emit_signal("battle_log_updated", "%s defeated %s!\n" % [hero.get_colored_name(), monster.get_colored_name()])
+		emit_signal("battle_log_updated", "%s gains %d experience and %d gold.\n" % [hero.get_colored_name(), experience, monster.gold])
 		hero.inventory.gold += monster.gold
 		hero.gain_experience(experience)
 		emit_signal("hero_updated", hero)
@@ -113,7 +114,7 @@ func end_enemy_turn() -> void:
 
 func end_battle(player_won: bool) -> void:
 	state = BattleState.VICTORY if player_won else BattleState.DEFEAT
-	emit_signal("battle_log_updated", "You win!\n" if player_won else "You lose!\n")
+	emit_signal("battle_log_updated", "%s wins!\n" % hero.get_colored_name() if player_won else "%s loses!\n" % hero.get_colored_name())
 	if player_won and current_quest.is_complete():
 		# skip victory popup if quest is complete
 		emit_signal("battle_log_updated", "Quest completed: %s\n" % current_quest.title)
