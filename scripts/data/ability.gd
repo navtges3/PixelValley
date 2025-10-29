@@ -12,7 +12,7 @@ func is_ready() -> bool:
 	return current_cooldown <= 0
 
 func use(caster: Combatant, target: Combatant) -> String:
-	var output = "%s used %s!\n" % [caster.name, self.name]
+	var output = "%s used %s!\n" % [caster.get_colored_name(), self.name]
 	if is_ready() and caster.stat_block.current_nrg >= self.energy_cost:
 		if attack != null:
 			output += attack.apply_attack(caster, target)
