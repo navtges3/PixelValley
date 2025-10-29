@@ -3,9 +3,9 @@
 [ext_resource type="Texture2D" uid="uid://ced3cfcakcx6o" path="res://assets/orc.png" id="1_0ed2k"]
 [ext_resource type="Script" uid="uid://c5deti4sb2k2j" path="res://scripts/data/effect.gd" id="1_t2l3x"]
 [ext_resource type="Script" uid="uid://bd6ohffno5w7r" path="res://scripts/characters/monster.gd" id="1_wfseu"]
-[ext_resource type="Resource" uid="uid://clhvv4p6c7xgi" path="res://resources/abilities/attacks/slash.tres" id="1_xu4t2"]
+[ext_resource type="Resource" uid="uid://5gj0qi86ux23" path="res://resources/abilities/slash.tres" id="2_1gfu0"]
 [ext_resource type="Script" uid="uid://dxnu3vjlxl2pn" path="res://scripts/data/conditional_ability.gd" id="2_xu4t2"]
-[ext_resource type="Resource" uid="uid://lhp216dchi70" path="res://resources/abilities/utility/battle_roar.tres" id="4_1gfu0"]
+[ext_resource type="Resource" uid="uid://cjhlewne3o5t4" path="res://resources/abilities/battle_roar.tres" id="4_tfctq"]
 [ext_resource type="Script" uid="uid://hxleldka7y06" path="res://scripts/characters/stat_block.gd" id="4_xu4t2"]
 [ext_resource type="Script" uid="uid://cnso83bg7vodw" path="res://scripts/data/condition.gd" id="5_tfctq"]
 
@@ -18,31 +18,31 @@ metadata/_custom_type_script = "uid://cnso83bg7vodw"
 
 [sub_resource type="Resource" id="Resource_63lsj"]
 script = ExtResource("2_xu4t2")
-ability = ExtResource("4_1gfu0")
+ability = ExtResource("4_tfctq")
 condition = SubResource("Resource_1rq5t")
 metadata/_custom_type_script = "uid://dxnu3vjlxl2pn"
 
-[sub_resource type="Resource" id="Resource_ryf8n"]
+[sub_resource type="Resource" id="Resource_1gfu0"]
 script = ExtResource("4_xu4t2")
-current_hp = 120
-current_nrg = 30
-max_hp = 120
-max_nrg = 30
-attack = 17
-magic = 3
-defense = 7
-resistance = 6
+current_hp = 30
+current_nrg = 10
+max_hp = 30
+max_nrg = 10
+attack = 6
+magic = 0
+defense = 3
+resistance = 1
 metadata/_custom_type_script = "uid://hxleldka7y06"
 
 [resource]
 script = ExtResource("1_wfseu")
-gold = 20
-basic_attack = ExtResource("1_xu4t2")
+gold = 12
+basic_attack = ExtResource("2_1gfu0")
 conditional_abilities = Array[ExtResource("2_xu4t2")]([SubResource("Resource_63lsj")])
 name = "Orc"
 portrait = ExtResource("1_0ed2k")
 active_effects = Array[ExtResource("1_t2l3x")]([])
-stat_block = SubResource("Resource_ryf8n")
+stat_block = SubResource("Resource_1gfu0")
 attack_modifier = 0
 magic_modifier = 0
 defense_modifier = 0

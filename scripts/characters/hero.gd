@@ -24,11 +24,11 @@ func level_up() -> void:
 func use_item(item_stack: ItemStack) -> String:
 	if item_stack.item is Potion:
 		var effects := inventory.use_potion(item_stack)
-		var output := "%s drank %s." % [self.name, item_stack.item.name]
+		var output := "%s drank %s.\n" % [self.get_colored_name(), item_stack.item.name]
 		for effect in effects:
 			output += " " + self.apply_effect(effect.duplicate())
 		return output
-	return "%s can't use this item." % self.name
+	return "%s can't use this item.\n" % self.get_colored_name()
 
 func update_cooldown() -> void:
 	if self.rest_cooldown > 0:

@@ -2,9 +2,9 @@
 
 [ext_resource type="Script" uid="uid://b2o7w8q10stxo" path="res://scripts/data/ability.gd" id="1_d0s14"]
 [ext_resource type="Script" uid="uid://dgykeyxn7fefw" path="res://scripts/data/weapon.gd" id="2_80lcv"]
-[ext_resource type="Resource" uid="uid://ccm442i4njc2f" path="res://resources/abilities/attacks/magic_bolt.tres" id="2_kyn8k"]
+[ext_resource type="Resource" uid="uid://c4swar2v4ekyg" path="res://resources/abilities/magic_bolt.tres" id="2_kyn8k"]
 [ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://assets/button_themes/regular/red_button.tres" id="3_kyn8k"]
-[ext_resource type="Resource" uid="uid://cqskkv6s17pwg" path="res://resources/abilities/utility/healing_light.tres" id="3_rgjqt"]
+[ext_resource type="Resource" uid="uid://c815l0ks56vfs" path="res://resources/abilities/healing_light.tres" id="3_rgjqt"]
 
 [resource]
 script = ExtResource("2_80lcv")

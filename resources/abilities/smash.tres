@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="Ability" load_steps=5 format=3 uid="uid://waytpolwnsyp"]
+
+[ext_resource type="Script" uid="uid://bo48scp6lbwrb" path="res://scripts/data/attack.gd" id="1_4nslq"]
+[ext_resource type="Script" uid="uid://b2o7w8q10stxo" path="res://scripts/data/ability.gd" id="2_f3kvj"]
+[ext_resource type="Script" uid="uid://bvuw0uyc36uxx" path="res://scripts/data/utility.gd" id="3_tolqd"]
+
+[sub_resource type="Resource" id="Resource_1qfmq"]
+script = ExtResource("1_4nslq")
+min_damage = 12
+max_damage = 25
+attack_type = 0
+metadata/_custom_type_script = "uid://bo48scp6lbwrb"
+
+[resource]
+script = ExtResource("2_f3kvj")
+name = "Smash"
+energy_cost = 0
+cooldown = 0
+attack = SubResource("Resource_1qfmq")
+utilities = Array[ExtResource("3_tolqd")]([])
+metadata/_custom_type_script = "uid://b2o7w8q10stxo"
