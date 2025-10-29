@@ -21,6 +21,14 @@ func type_to_string() -> String:
 			return "Buff Defense"
 		Effect.EffectType.BUFF_RESISTANCE:
 			return "Buff Resistance"
+		Effect.EffectType.DEBUFF_ATTACK:
+			return "Debuff Attack"
+		Effect.EffectType.DEBUFF_MAGIC:
+			return "Debuff Magic"
+		Effect.EffectType.DEBUFF_DEFENSE:
+			return "Debuff Defense"
+		Effect.EffectType.DEBUFF_RESISTANCE:
+			return "Debuff Resistance"
 	return "Unknown"
 
 func get_tooltip() -> String:
