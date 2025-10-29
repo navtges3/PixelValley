@@ -31,7 +31,7 @@ max_nrg = 15
 attack = 9
 magic = 0
 defense = 5
-resistance = 0
+resistance = 2
 metadata/_custom_type_script = "uid://hxleldka7y06"
 
 [resource]
