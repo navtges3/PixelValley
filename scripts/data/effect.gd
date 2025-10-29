@@ -1,7 +1,7 @@
 extends Resource
 class_name Effect
 
-enum EffectType { HEAL, ENERGY, BUFF_ATTACK, BUFF_MAGIC, BUFF_DEFENSE, BUFF_RESISTANCE}
+enum EffectType { HEAL, ENERGY, BUFF_ATTACK, BUFF_MAGIC, BUFF_DEFENSE, BUFF_RESISTANCE, DEBUFF_ATTACK, DEBUFF_MAGIC, DEBUFF_DEFENSE, DEBUFF_RESISTANCE }
 
 @export var type: EffectType
 @export var strength: int = 0
@@ -21,6 +21,14 @@ func type_to_string() -> String:
 			return "Buff Defense"
 		Effect.EffectType.BUFF_RESISTANCE:
 			return "Buff Resistance"
+		Effect.EffectType.DEBUFF_ATTACK:
+			return "Debuff Attack"
+		Effect.EffectType.DEBUFF_MAGIC:
+			return "Debuff Magic"
+		Effect.EffectType.DEBUFF_DEFENSE:
+			return "Debuff Defense"
+		Effect.EffectType.DEBUFF_RESISTANCE:
+			return "Debuff Resistance"
 	return "Unknown"
 
 func get_tooltip() -> String:

@@ -1,9 +1,9 @@
 [gd_resource type="Resource" script_class="Weapon" load_steps=6 format=3 uid="uid://ytx0xnb7ewpw"]
 
 [ext_resource type="Script" uid="uid://b2o7w8q10stxo" path="res://scripts/data/ability.gd" id="1_3a0ve"]
-[ext_resource type="Resource" uid="uid://btirpmgomdqf" path="res://resources/abilities/attacks/stab.tres" id="2_pejta"]
+[ext_resource type="Resource" uid="uid://nav1377jn0pa" path="res://resources/abilities/stab.tres" id="2_pejta"]
 [ext_resource type="Script" uid="uid://dgykeyxn7fefw" path="res://scripts/data/weapon.gd" id="2_rxi10"]
-[ext_resource type="Resource" uid="uid://d1vlewpmm1qmp" path="res://resources/abilities/attacks/gamble_strike.tres" id="3_j3hca"]
+[ext_resource type="Resource" uid="uid://dtob64ilpn1sc" path="res://resources/abilities/gabling_strike.tres" id="3_j3hca"]
 [ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://assets/button_themes/regular/red_button.tres" id="3_pejta"]
 
 [resource]

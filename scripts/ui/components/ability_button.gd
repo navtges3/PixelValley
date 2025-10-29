@@ -45,12 +45,10 @@ func _update_tooltip() -> void:
 
 func _update_theme() -> void:
 	if ability:
-		if ability is AttackAbility:
+		if ability.attack != null:
 			theme = preload("res://assets/button_themes/regular/red_button.tres")
-		elif ability is UtilityAbility:
-			theme = preload("res://assets/button_themes/regular/green_button.tres")
 		else:
-			theme = preload("res://assets/button_themes/regular/gray_button.tres")
+			theme = preload("res://assets/button_themes/regular/green_button.tres")
 	else:
 		theme = preload("res://assets/button_themes/regular/gray_button.tres")
 

@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="Ability" load_steps=5 format=3 uid="uid://5301qdbddvxa"]
+
+[ext_resource type="Script" uid="uid://bo48scp6lbwrb" path="res://scripts/data/attack.gd" id="1_2q6rq"]
+[ext_resource type="Script" uid="uid://b2o7w8q10stxo" path="res://scripts/data/ability.gd" id="2_gv2e4"]
+[ext_resource type="Script" uid="uid://bvuw0uyc36uxx" path="res://scripts/data/utility.gd" id="3_xcwrt"]
+
+[sub_resource type="Resource" id="Resource_1qfmq"]
+script = ExtResource("1_2q6rq")
+min_damage = 20
+max_damage = 35
+attack_type = 0
+metadata/_custom_type_script = "uid://bo48scp6lbwrb"
+
+[resource]
+script = ExtResource("2_gv2e4")
+name = "Crushing Blow"
+energy_cost = 0
+cooldown = 0
+attack = SubResource("Resource_1qfmq")
+utilities = Array[ExtResource("3_xcwrt")]([])
+metadata/_custom_type_script = "uid://b2o7w8q10stxo"

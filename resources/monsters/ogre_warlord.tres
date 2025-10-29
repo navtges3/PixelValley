@@ -1,11 +1,11 @@
 [gd_resource type="Resource" script_class="Monster" load_steps=15 format=3 uid="uid://bhvavuaqg4vna"]
 
 [ext_resource type="Script" uid="uid://c5deti4sb2k2j" path="res://scripts/data/effect.gd" id="1_b6dpx"]
-[ext_resource type="Resource" uid="uid://d0387qa8jy8qc" path="res://resources/abilities/attacks/crushing_blow.tres" id="2_cd3ku"]
+[ext_resource type="Resource" uid="uid://5301qdbddvxa" path="res://resources/abilities/crushing_blow.tres" id="2_cd3ku"]
 [ext_resource type="Script" uid="uid://dxnu3vjlxl2pn" path="res://scripts/data/conditional_ability.gd" id="3_afcsi"]
-[ext_resource type="Resource" uid="uid://ctlw5f5rusf32" path="res://resources/abilities/utility/enrage.tres" id="4_afcsi"]
+[ext_resource type="Resource" uid="uid://cnpsmwryevais" path="res://resources/abilities/enrage.tres" id="4_cd3ku"]
 [ext_resource type="Script" uid="uid://cnso83bg7vodw" path="res://scripts/data/condition.gd" id="5_sff3n"]
-[ext_resource type="Resource" uid="uid://ckuudaw4041lq" path="res://resources/abilities/attacks/stunning_smash.tres" id="6_6x0ir"]
+[ext_resource type="Resource" uid="uid://o8qau08p6lod" path="res://resources/abilities/stunning_strike.tres" id="6_afcsi"]
 [ext_resource type="Texture2D" uid="uid://bxc2p8w8wawwk" path="res://assets/ogre.png" id="6_co4bm"]
 [ext_resource type="Script" uid="uid://bd6ohffno5w7r" path="res://scripts/characters/monster.gd" id="7_3bved"]
 [ext_resource type="Script" uid="uid://hxleldka7y06" path="res://scripts/characters/stat_block.gd" id="8_kbsnj"]
@@ -19,7 +19,7 @@ metadata/_custom_type_script = "uid://cnso83bg7vodw"
 
 [sub_resource type="Resource" id="Resource_co4bm"]
 script = ExtResource("3_afcsi")
-ability = ExtResource("4_afcsi")
+ability = ExtResource("4_cd3ku")
 condition = SubResource("Resource_sff3n")
 metadata/_custom_type_script = "uid://dxnu3vjlxl2pn"
 
@@ -32,7 +32,7 @@ metadata/_custom_type_script = "uid://cnso83bg7vodw"
 
 [sub_resource type="Resource" id="Resource_kbsnj"]
 script = ExtResource("3_afcsi")
-ability = ExtResource("6_6x0ir")
+ability = ExtResource("6_afcsi")
 condition = SubResource("Resource_3bved")
 metadata/_custom_type_script = "uid://dxnu3vjlxl2pn"
 

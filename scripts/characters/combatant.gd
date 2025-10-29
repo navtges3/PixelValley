@@ -13,6 +13,14 @@ const REST_CD := 5
 @export var resistance_modifier: int = 0
 @export var rest_cooldown: int = 0
 
+func get_colored_name() -> String:
+	if self is Hero:
+		return "[color=green]" + self.name + "[/color]"
+	elif self is Monster:
+		return "[color=red]" + self.name + "[/color]"
+	else:
+		return self.name
+
 func is_alive() -> bool:
 	return stat_block.current_hp > 0
 
@@ -22,20 +30,20 @@ func rest() -> void:
 		self.recover_energy(self.stat_block.max_nrg)
 		rest_cooldown = REST_CD
 
-func take_damage(amount: int, type: AttackAbility.AttackType) -> String:
+func take_damage(amount: int, type: Attack.AttackType) -> String:
 	var damage = amount
 	match type:
-		AttackAbility.AttackType.PHYSICAL:
+		Attack.AttackType.PHYSICAL:
 			var modifier = self.stat_block.defense + self.defense_modifier
 			damage = max(damage - modifier, 0)
-		AttackAbility.AttackType.MAGICAL:
+		Attack.AttackType.MAGICAL:
 			var modifier = self.stat_block.resistance + self.resistance_modifier
 			damage = max(damage - modifier, 0)
 	self.stat_block.current_hp = max(self.stat_block.current_hp - damage, 0)
 	if damage <= 0:
-		return "%s blocked the attack!" % self.name
+		return "%s blocked the attack!\n" % self.get_colored_name()
 	else:
-		return "%s took %d damage." % [self.name, damage]
+		return "%s took %d damage.\n" % [self.get_colored_name(), damage]
 
 func heal(amount: int) -> void:
 	self.stat_block.current_hp = min(self.stat_block.current_hp + amount, self.stat_block.max_hp)
@@ -52,9 +60,9 @@ func recover_energy(amount: int) -> void:
 
 func apply_effect(effect: Effect) -> String:
 	if effect.duration <= 0:
-		return "Effect has expired."
+		return "Effect has expired.\n"
 	active_effects.append(effect)
-	return "%s applied." % effect.get_tooltip()
+	return "%s applied.\n" % effect.get_tooltip()
 
 func process_active_effects() -> void:
 	self.attack_modifier = 0
@@ -63,26 +71,31 @@ func process_active_effects() -> void:
 	self.resistance_modifier = 0
 	for i in range(active_effects.size() -1, -1, -1):
 		var effect = active_effects[i]
-		match effect.type:
-			Effect.EffectType.HEAL:
-				print("Healing effect applied.")
-				self.stat_block.current_hp = min(self.stat_block.current_hp + effect.strength, self.stat_block.max_hp)
-			Effect.EffectType.ENERGY:
-				print("Energy effect applied.")
-				self.stat_block.current_nrg = min(self.stat_block.current_nrg + effect.strength, self.stat_block.max_nrg)
-			Effect.EffectType.BUFF_ATTACK:
-				print("Attack buff applied.")
-				self.attack_modifier += effect.strength
-			Effect.EffectType.BUFF_MAGIC:
-				print("Magic buff applied.")
-				self.magic_modifier += effect.strength
-			Effect.EffectType.BUFF_DEFENSE:
-				print("Defense buff applied.")
-				self.defense_modifier += effect.strength
-			Effect.EffectType.BUFF_RESISTANCE:
-				print("Resistance buff applied.")
-				self.resistance_modifier += effect.strength
+		_update_effect(effect)
 		effect.duration -= 1
 		if effect.duration <= 0:
 			active_effects.remove_at(i)
 			print("Effect '%s' has expired." % effect.type_to_string())
+
+func _update_effect(effect: Effect) -> void:
+	match effect.type:
+		Effect.EffectType.HEAL:
+			self.heal(effect.strength)
+		Effect.EffectType.ENERGY:
+			self.recover_energy(effect.strength)
+		Effect.EffectType.BUFF_ATTACK:
+			self.attack_modifier += effect.strength
+		Effect.EffectType.BUFF_MAGIC:
+			self.magic_modifier += effect.strength
+		Effect.EffectType.BUFF_DEFENSE:
+			self.defense_modifier += effect.strength
+		Effect.EffectType.BUFF_RESISTANCE:
+			self.resistance_modifier += effect.strength
+		Effect.EffectType.DEBUFF_ATTACK:
+			self.attack_modifier -= effect.strength
+		Effect.EffectType.DEBUFF_MAGIC:
+			self.magic_modifier -= effect.strength
+		Effect.EffectType.DEBUFF_DEFENSE:
+			self.defense_modifier -= effect.strength
+		Effect.EffectType.DEBUFF_RESISTANCE:
+			self.resistance_modifier -= effect.strength

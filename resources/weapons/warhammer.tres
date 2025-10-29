@@ -1,10 +1,10 @@
 [gd_resource type="Resource" script_class="Weapon" load_steps=7 format=3 uid="uid://3s3rxn0iei3l"]
 
 [ext_resource type="Script" uid="uid://b2o7w8q10stxo" path="res://scripts/data/ability.gd" id="1_j220r"]
-[ext_resource type="Resource" uid="uid://cts0marmwurnj" path="res://resources/abilities/attacks/smash.tres" id="2_g74qi"]
-[ext_resource type="Resource" uid="uid://dxax53vq7bmis" path="res://resources/abilities/attacks/execute.tres" id="3_81n1p"]
+[ext_resource type="Resource" uid="uid://waytpolwnsyp" path="res://resources/abilities/smash.tres" id="2_g74qi"]
+[ext_resource type="Resource" uid="uid://crgnqxkfk1fo7" path="res://resources/abilities/execute.tres" id="3_81n1p"]
 [ext_resource type="Script" uid="uid://dgykeyxn7fefw" path="res://scripts/data/weapon.gd" id="3_tlcs8"]
-[ext_resource type="Resource" uid="uid://csvjvb2ajko6k" path="res://resources/abilities/utility/war_cry.tres" id="4_5mcet"]
+[ext_resource type="Resource" uid="uid://cst727hpy86fv" path="res://resources/abilities/war_cry.tres" id="4_5mcet"]
 [ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://assets/button_themes/regular/red_button.tres" id="5_81n1p"]
 
 [resource]
