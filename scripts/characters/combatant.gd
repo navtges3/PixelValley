@@ -79,6 +79,10 @@ func process_active_effects() -> void:
 
 func _update_effect(effect: Effect) -> void:
 	match effect.type:
+		Effect.EffectType.HEAL:
+			self.heal(effect.strength)
+		Effect.EffectType.ENERGY:
+			self.recover_energy(effect.strength)
 		Effect.EffectType.BUFF_ATTACK:
 			self.attack_modifier += effect.strength
 		Effect.EffectType.BUFF_MAGIC:
