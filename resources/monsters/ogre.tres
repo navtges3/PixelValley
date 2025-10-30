@@ -24,14 +24,14 @@ metadata/_custom_type_script = "uid://dxnu3vjlxl2pn"
 
 [sub_resource type="Resource" id="Resource_pi0wg"]
 script = ExtResource("4_rcnog")
-current_hp = 50
-current_nrg = 15
-max_hp = 50
-max_nrg = 15
+current_hp = 100
+current_nrg = 40
+max_hp = 100
+max_nrg = 40
 attack = 9
 magic = 0
 defense = 5
-resistance = 0
+resistance = 2
 metadata/_custom_type_script = "uid://hxleldka7y06"
 
 [resource]
