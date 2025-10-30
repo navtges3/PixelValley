@@ -25,9 +25,9 @@ metadata/_custom_type_script = "uid://dxnu3vjlxl2pn"
 [sub_resource type="Resource" id="Resource_1gfu0"]
 script = ExtResource("4_xu4t2")
 current_hp = 75
-current_nrg = 10
+current_nrg = 24
 max_hp = 75
-max_nrg = 10
+max_nrg = 24
 attack = 6
 magic = 0
 defense = 3
