@@ -11,6 +11,25 @@ class_name StatBlock
 @export var defense := 0	# modifies physical defense
 @export var resistance := 0	# Modifies magical defense
 
-func _init():
-	current_hp = max_hp
-	current_nrg = max_nrg
+func get_stat(stat: String) -> int:
+	match stat:
+		"attack":
+			return attack
+		"magic":
+			return magic
+		"defense":
+			return defense
+		"resistance":
+			return resistance
+	return -1
+
+func set_stat(stat: String, value: int) -> void:
+	match stat:
+		"attack":
+			attack = value
+		"magic":
+			magic = value
+		"defense":
+			defense = value
+		"resistance":
+			resistance = value

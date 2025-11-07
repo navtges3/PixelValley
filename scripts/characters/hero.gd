@@ -6,6 +6,7 @@ const LEVEL_UP_MULT := 25
 @export var hero_class: String
 @export var level := 1
 @export var experience := 0
+@export var skill_points := 0
 @export var inventory: Inventory
 
 func gain_experience(amount: int) -> void:
@@ -20,6 +21,10 @@ func level_up() -> void:
 	stat_block.current_hp = stat_block.max_hp
 	stat_block.max_nrg += 2
 	stat_block.current_nrg = stat_block.max_nrg
+	if level % 5 == 0:
+		skill_points += 5
+	else:
+		skill_points += 2
 
 func use_item(item_stack: ItemStack) -> String:
 	if item_stack.item is Potion:
