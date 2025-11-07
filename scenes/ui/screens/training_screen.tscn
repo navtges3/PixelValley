@@ -1,19 +1,19 @@
 [gd_scene load_steps=6 format=3 uid="uid://cupb66b88ue3i"]
 
-[ext_resource type="Script" uid="uid://wg1idljk7tbo" path="res://scripts/ui/screens/quest_screen.gd" id="1_qxsf3"]
+[ext_resource type="Script" uid="uid://5witl1w8vjwd" path="res://scripts/ui/screens/training_screen.gd" id="1_na7g7"]
 [ext_resource type="Theme" uid="uid://bqmax31b7iqan" path="res://assets/button_themes/specialty/minus_button.tres" id="2_w8u6p"]
 [ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://assets/button_themes/regular/green_button.tres" id="3_l55pj"]
 [ext_resource type="Theme" uid="uid://dx6nuheoualbl" path="res://assets/button_themes/specialty/plus_button.tres" id="3_v1rkp"]
 [ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://assets/button_themes/regular/red_button.tres" id="5_2fton"]
 
-[node name="QuestScreen" type="Control"]
+[node name="TrainingScreen" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_qxsf3")
+script = ExtResource("1_na7g7")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1
