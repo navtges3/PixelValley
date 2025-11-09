@@ -1,22 +1,27 @@
-[gd_scene load_steps=7 format=3 uid="uid://blhwqbfk6j0u7"]
+[gd_scene load_steps=8 format=3 uid="uid://blhwqbfk6j0u7"]
 
 [ext_resource type="Script" uid="uid://cmd8ja1dvnkcv" path="res://scripts/ui/screens/village_screen.gd" id="1_dtw0c"]
 [ext_resource type="Theme" uid="uid://66dgdyq2o64x" path="res://assets/button_themes/specialty/pause_button.tres" id="3_o0vxf"]
 [ext_resource type="PackedScene" uid="uid://bjx12sxd6xqme" path="res://scenes/ui/components/hero_ui.tscn" id="4_nqqh3"]
 [ext_resource type="Theme" uid="uid://dqwm8agt87lsh" path="res://assets/button_themes/regular/blue_button.tres" id="5_yofci"]
 [ext_resource type="Theme" uid="uid://phfh7c5hwx1n" path="res://assets/button_themes/regular/yellow_button.tres" id="6_6cp2h"]
+[ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://assets/button_themes/regular/red_button.tres" id="6_dtw0c"]
 [ext_resource type="PackedScene" uid="uid://btej8vh3kxmxo" path="res://scenes/ui/popups/pause_popup.tscn" id="7_csxqu"]
 
 [node name="VillageScreen" type="Control"]
 layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 script = ExtResource("1_dtw0c")
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[node name="PausePopup" parent="." instance=ExtResource("7_csxqu")]
+visible = false
 
-[node name="UIRoot" type="MarginContainer" parent="CanvasLayer"]
+[node name="UIRoot" type="MarginContainer" parent="."]
+layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -27,35 +32,39 @@ theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 5
 theme_override_constants/margin_bottom = 5
 
-[node name="Pause" type="Button" parent="CanvasLayer/UIRoot"]
+[node name="PauseButton" type="Button" parent="UIRoot"]
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 0
 theme = ExtResource("3_o0vxf")
 
-[node name="HeroUI" parent="CanvasLayer/UIRoot" instance=ExtResource("4_nqqh3")]
+[node name="HeroUI" parent="UIRoot" instance=ExtResource("4_nqqh3")]
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 8
 
-[node name="VillageActions" type="VBoxContainer" parent="CanvasLayer/UIRoot"]
+[node name="VillageActions" type="VBoxContainer" parent="UIRoot"]
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 8
 theme_override_constants/separation = 10
 
-[node name="Quests" type="Button" parent="CanvasLayer/UIRoot/VillageActions"]
+[node name="QuestsButton" type="Button" parent="UIRoot/VillageActions"]
 custom_minimum_size = Vector2(96, 32)
 layout_mode = 2
 theme = ExtResource("5_yofci")
 text = "Quests"
 
-[node name="Shop" type="Button" parent="CanvasLayer/UIRoot/VillageActions"]
+[node name="ShopButton" type="Button" parent="UIRoot/VillageActions"]
 custom_minimum_size = Vector2(96, 32)
 layout_mode = 2
 theme = ExtResource("6_6cp2h")
 text = "Shop"
 
-[node name="PausePopup" parent="." instance=ExtResource("7_csxqu")]
-visible = false
+[node name="TrainingButton" type="Button" parent="UIRoot/VillageActions"]
+custom_minimum_size = Vector2(96, 32)
+layout_mode = 2
+theme = ExtResource("6_dtw0c")
+text = "Training
+"

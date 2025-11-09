@@ -1,0 +1,160 @@
+[gd_scene load_steps=6 format=3 uid="uid://cupb66b88ue3i"]
+
+[ext_resource type="Script" uid="uid://5witl1w8vjwd" path="res://scripts/ui/screens/training_screen.gd" id="1_na7g7"]
+[ext_resource type="Theme" uid="uid://bqmax31b7iqan" path="res://assets/button_themes/specialty/minus_button.tres" id="2_w8u6p"]
+[ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://assets/button_themes/regular/green_button.tres" id="3_l55pj"]
+[ext_resource type="Theme" uid="uid://dx6nuheoualbl" path="res://assets/button_themes/specialty/plus_button.tres" id="3_v1rkp"]
+[ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://assets/button_themes/regular/red_button.tres" id="5_2fton"]
+
+[node name="TrainingScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_na7g7")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 32
+theme_override_constants/margin_top = 32
+theme_override_constants/margin_right = 32
+theme_override_constants/margin_bottom = 32
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 12
+alignment = 1
+
+[node name="TitleLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Training Grounds"
+horizontal_alignment = 1
+
+[node name="SkillPointsLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Unspent Skill Points: X"
+horizontal_alignment = 1
+
+[node name="AttackBox" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+alignment = 1
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/AttackBox"]
+layout_mode = 2
+size_flags_horizontal = 2
+text = "Attack: 10 (+0)"
+
+[node name="Minus" type="Button" parent="MarginContainer/VBoxContainer/AttackBox"]
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("2_w8u6p")
+
+[node name="Plus" type="Button" parent="MarginContainer/VBoxContainer/AttackBox"]
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("3_v1rkp")
+
+[node name="MagicBox" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+alignment = 1
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/MagicBox"]
+layout_mode = 2
+size_flags_horizontal = 2
+text = "Magic: 10 (+0)"
+
+[node name="Minus" type="Button" parent="MarginContainer/VBoxContainer/MagicBox"]
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("2_w8u6p")
+
+[node name="Plus" type="Button" parent="MarginContainer/VBoxContainer/MagicBox"]
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("3_v1rkp")
+
+[node name="DefenseBox" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+alignment = 1
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/DefenseBox"]
+layout_mode = 2
+size_flags_horizontal = 2
+text = "Defense: 10 (+0)"
+
+[node name="Minus" type="Button" parent="MarginContainer/VBoxContainer/DefenseBox"]
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("2_w8u6p")
+
+[node name="Plus" type="Button" parent="MarginContainer/VBoxContainer/DefenseBox"]
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("3_v1rkp")
+
+[node name="ResistanceBox" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+alignment = 1
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ResistanceBox"]
+layout_mode = 2
+size_flags_horizontal = 2
+text = "Resistance: 10 (+0)"
+
+[node name="Minus" type="Button" parent="MarginContainer/VBoxContainer/ResistanceBox"]
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("2_w8u6p")
+
+[node name="Plus" type="Button" parent="MarginContainer/VBoxContainer/ResistanceBox"]
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("3_v1rkp")
+
+[node name="NavigationBox" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="BackButton" type="Button" parent="MarginContainer/VBoxContainer/NavigationBox"]
+custom_minimum_size = Vector2(96, 32)
+layout_mode = 2
+theme = ExtResource("5_2fton")
+text = "Back"
+
+[node name="ConfirmButton" type="Button" parent="MarginContainer/VBoxContainer/NavigationBox"]
+custom_minimum_size = Vector2(96, 32)
+layout_mode = 2
+size_flags_horizontal = 10
+theme = ExtResource("3_l55pj")
+text = "Confirm"

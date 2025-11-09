@@ -6,6 +6,7 @@ const SCENE_PATHS := {
 	"new_game": "res://scenes/ui/screens/new_game_screen.tscn",
 	"village": "res://scenes/ui/screens/village_screen.tscn",
 	"shop": "res://scenes/ui/screens/shop_screen.tscn",
+	"training": "res://scenes/ui/screens/training_screen.tscn",
 	"battle": "res://scenes/ui/screens/battle_screen.tscn",
 	"quest": "res://scenes/ui/screens/quest_screen.tscn",
 	"quest_finished": "res://scenes/ui/screens/quest_finished_screen.tscn",

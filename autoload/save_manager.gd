@@ -50,6 +50,7 @@ static func _get_hero_data(hero: Hero) -> Dictionary:
 		hero_class = hero.hero_class,
 		level = hero.level,
 		experience = hero.experience,
+		skill_points = hero.skill_points,
 		active_effects = _get_active_effects_data(hero),
 		stat_block = _get_stat_block_data(hero.stat_block),
 		inventory = _get_inventory_data(hero.inventory)
@@ -65,6 +66,7 @@ static func _load_hero_data(data: Dictionary) -> Hero:
 	hero.hero_class = data.get("hero_class", "Warrior")
 	hero.level = data.get("level", 1)
 	hero.experience = data.get("experience", 0)
+	hero.skill_points = data.get("skill_points", 0)
 	hero.stat_block = _load_stat_block(data.get("stat_block", {}))
 	hero.active_effects = _load_active_effects(data.get("active_effects", []))
 	hero.inventory = _load_inventory(data.get("inventory", {}))
