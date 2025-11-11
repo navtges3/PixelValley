@@ -6,8 +6,8 @@
 [ext_resource type="Resource" uid="uid://cyiqwotfm3gq6" path="res://resources/potions/regeneration_potion.tres" id="2_r86n4"]
 [ext_resource type="Resource" uid="uid://4gl0mwbttg8d" path="res://resources/potions/energy_potion.tres" id="4_f5ok2"]
 [ext_resource type="Script" uid="uid://4rm24oomjap7" path="res://scripts/characters/inventory.gd" id="5_i72c6"]
-[ext_resource type="Resource" uid="uid://kepf0e6nt435" path="res://resources/weapons/royal_scepter.tres" id="6_wf6f0"]
 [ext_resource type="Texture2D" uid="uid://crvpafnprgkcq" path="res://assets/Princess.png" id="7_6ulj1"]
+[ext_resource type="Script" uid="uid://dgykeyxn7fefw" path="res://scripts/data/weapon.gd" id="7_r86n4"]
 [ext_resource type="Script" uid="uid://hxleldka7y06" path="res://scripts/characters/stat_block.gd" id="9_m6u1q"]
 
 [sub_resource type="Resource" id="Resource_2mwf8"]
@@ -25,7 +25,6 @@ metadata/_custom_type_script = "uid://d0mdck5mlsm03"
 [sub_resource type="Resource" id="Resource_od506"]
 script = ExtResource("5_i72c6")
 gold = 50
-weapon = ExtResource("6_wf6f0")
 potions = Array[ExtResource("1_kacum")]([SubResource("Resource_2mwf8"), SubResource("Resource_xylvd")])
 metadata/_custom_type_script = "uid://4rm24oomjap7"
 
@@ -44,16 +43,7 @@ metadata/_custom_type_script = "uid://hxleldka7y06"
 [resource]
 script = ExtResource("1_1p74l")
 hero_class = "Princess"
-level = 1
-experience = 0
 inventory = SubResource("Resource_od506")
-name = ""
 portrait = ExtResource("7_6ulj1")
-active_effects = Array[ExtResource("1_r86n4")]([])
 stat_block = SubResource("Resource_qej26")
-attack_modifier = 0
-magic_modifier = 0
-defense_modifier = 0
-resistance_modifier = 0
-rest_cooldown = 0
 metadata/_custom_type_script = "uid://b1x8jfufxk3xv"
