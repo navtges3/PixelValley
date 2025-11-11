@@ -14,8 +14,5 @@ metadata/_custom_type_script = "uid://bo48scp6lbwrb"
 [resource]
 script = ExtResource("2_emyws")
 name = "Magic Bolt"
-energy_cost = 0
-cooldown = 0
 attack = SubResource("Resource_1qfmq")
-utilities = Array[ExtResource("3_61amg")]([])
 metadata/_custom_type_script = "uid://b2o7w8q10stxo"
