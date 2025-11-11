@@ -12,7 +12,6 @@
 [sub_resource type="Resource" id="Resource_a8dng"]
 script = ExtResource("5_7bc23")
 condition_type = 1
-condition_subject = 0
 value = 0.4
 metadata/_custom_type_script = "uid://cnso83bg7vodw"
 
@@ -29,7 +28,6 @@ current_nrg = 40
 max_hp = 100
 max_nrg = 40
 attack = 9
-magic = 0
 defense = 5
 resistance = 2
 metadata/_custom_type_script = "uid://hxleldka7y06"
@@ -41,11 +39,5 @@ basic_attack = ExtResource("2_pi0wg")
 conditional_abilities = Array[ExtResource("2_rcnog")]([SubResource("Resource_s8n6s")])
 name = "Ogre"
 portrait = ExtResource("1_x6w26")
-active_effects = Array[ExtResource("1_nqds1")]([])
 stat_block = SubResource("Resource_pi0wg")
-attack_modifier = 0
-magic_modifier = 0
-defense_modifier = 0
-resistance_modifier = 0
-rest_cooldown = 0
 metadata/_custom_type_script = "uid://bd6ohffno5w7r"

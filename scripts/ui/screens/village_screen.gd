@@ -4,6 +4,7 @@ extends Control
 @onready var pause_popup: Window = $PausePopup
 @onready var quests_button: Button = $UIRoot/VillageActions/QuestsButton
 @onready var shop_button: Button = $UIRoot/VillageActions/ShopButton
+@onready var armory_button: Button = $UIRoot/VillageActions/ArmoryButton
 @onready var training_button: Button = $UIRoot/VillageActions/TrainingButton
 @onready var hero_ui: HeroUI = $UIRoot/HeroUI
 
@@ -12,6 +13,7 @@ func _ready() -> void:
 	pause_button.pressed.connect(_on_pause_button_pressed)
 	quests_button.pressed.connect(_on_quests_button_pressed)
 	shop_button.pressed.connect(_on_shop_button_pressed)
+	armory_button.pressed.connect(_on_armory_button_pressed)
 	training_button.pressed.connect(_on_training_button_pressed)
 	if GameState.hero:
 		hero_ui.hero = GameState.hero
@@ -28,6 +30,9 @@ func _on_quests_button_pressed():
 
 func _on_shop_button_pressed():
 	ScreenManager.go_to_screen("shop")
+
+func _on_armory_button_pressed():
+	ScreenManager.go_to_screen("armory")
 
 func _on_training_button_pressed():
 	ScreenManager.go_to_screen("training")

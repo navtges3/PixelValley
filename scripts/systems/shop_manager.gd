@@ -26,7 +26,6 @@ func buy_item(amount: int = 1) -> void:
 		if item_stack_selected.item is Potion:
 			hero.inventory.add_potion(item_stack_selected.item.duplicate(true), amount)
 		elif item_stack_selected.item is Weapon:
-			shop.add_item(hero.inventory.weapon)
-			hero.inventory.weapon = item_stack_selected.item
+			hero.inventory.add_weapon_to_stash(item_stack_selected.item)
 		shop.remove_item(item_stack_selected.item, amount)
 		emit_signal("hero_updated", hero)

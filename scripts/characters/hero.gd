@@ -38,6 +38,6 @@ func use_item(item_stack: ItemStack) -> String:
 func update_cooldown() -> void:
 	if self.rest_cooldown > 0:
 		self.rest_cooldown -= 1
-	for ability in inventory.weapon.abilities:
+	for ability in inventory.equipped_weapon.abilities:
 		if ability.current_cooldown > 0:
 			ability.current_cooldown -= 1
