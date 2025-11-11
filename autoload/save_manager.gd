@@ -121,8 +121,11 @@ static func _get_inventory_data(inventory: Inventory) -> Dictionary:
 	var inventory_data = {
 		gold = inventory.gold,
 		equipped_weapon = inventory.equipped_weapon.resource_path,
+		weapon_stash = [],
 		potions = []
 	}
+	for weapon in inventory.weapon_stash:
+		inventory_data.weapon_stash.append(weapon.resource_path)
 	for item_stack in inventory.potions:
 		inventory_data.potions.append({
 			potion = item_stack.item.resource_path,
@@ -136,14 +139,17 @@ static func _load_inventory(data: Dictionary) -> Inventory:
 	var weapon_path = data.get("equipped_weapon", "")
 	if weapon_path != "":
 		inventory.equipped_weapon = load(weapon_path)
+	for stash_weapon_path in data.get("weapon_stash", []):
+		var stash_weapon = load(stash_weapon_path)
+		if stash_weapon is Weapon:
+			inventory.add_weapon_to_stash(stash_weapon)
 	for potion_data in data.get("potions", []):
 		var potion_path = potion_data.get("potion", "")
 		var count = potion_data.get("count", 1)
 		if potion_path != "":
 			var potion_item = load(potion_path)
 			if potion_item is Potion:
-				var item_stack = ItemStack.new(potion_item, count)
-				inventory.potions.append(item_stack)
+				inventory.add_potion(potion_item, count)
 	return inventory
 
 static func _get_village_data(village: Village) -> Dictionary:

@@ -3,6 +3,7 @@ class_name Inventory
 
 @export var gold: int = 0
 @export var equipped_weapon: Weapon
+@export var weapon_stash: Array[Weapon]
 @export var potions: Array[ItemStack]
 
 func use_potion(potion_stack: ItemStack) -> Array[Effect]:
@@ -19,3 +20,15 @@ func add_potion(potion: Potion, amount: int = 1) -> void:
 			potions[i].count += amount
 			return
 	potions.append(ItemStack.new(potion, amount))
+
+func equip_weapon(weapon: Weapon) -> void:
+	if equipped_weapon:
+		weapon_stash.append(equipped_weapon)
+	equipped_weapon = weapon
+	weapon_stash.erase(weapon)
+
+func add_weapon_to_stash(weapon: Weapon) -> void:
+	weapon_stash.append(weapon)
+
+func remove_weapon_from_stash(weapon: Weapon) -> void:
+	weapon_stash.erase(weapon)
