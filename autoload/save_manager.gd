@@ -120,7 +120,7 @@ static func _load_stat_block(data: Dictionary) -> StatBlock:
 static func _get_inventory_data(inventory: Inventory) -> Dictionary:
 	var inventory_data = {
 		gold = inventory.gold,
-		weapon = inventory.weapon.resource_path,
+		equipped_weapon = inventory.equipped_weapon.resource_path,
 		potions = []
 	}
 	for item_stack in inventory.potions:
@@ -133,9 +133,9 @@ static func _get_inventory_data(inventory: Inventory) -> Dictionary:
 static func _load_inventory(data: Dictionary) -> Inventory:
 	var inventory = Inventory.new()
 	inventory.gold = data.get("gold", 0)
-	var weapon_path = data.get("weapon", "")
+	var weapon_path = data.get("equipped_weapon", "")
 	if weapon_path != "":
-		inventory.weapon = load(weapon_path)
+		inventory.equipped_weapon = load(weapon_path)
 	for potion_data in data.get("potions", []):
 		var potion_path = potion_data.get("potion", "")
 		var count = potion_data.get("count", 1)

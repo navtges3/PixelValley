@@ -75,7 +75,7 @@ func _on_ability_button_toggled(button_pressed: bool):
 		item_button.button_pressed = false
 		option_list.visible = true
 		empty_option_list()
-		for ability: Ability in hero.inventory.weapon.abilities:
+		for ability: Ability in hero.inventory.equipped_weapon.abilities:
 			var btn = create_ability_button(ability)
 			option_list.add_child(btn)
 	else:
