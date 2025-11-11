@@ -8,14 +8,10 @@
 script = ExtResource("1_4nslq")
 min_damage = 12
 max_damage = 25
-attack_type = 0
 metadata/_custom_type_script = "uid://bo48scp6lbwrb"
 
 [resource]
 script = ExtResource("2_f3kvj")
 name = "Smash"
-energy_cost = 0
-cooldown = 0
 attack = SubResource("Resource_1qfmq")
-utilities = Array[ExtResource("3_tolqd")]([])
 metadata/_custom_type_script = "uid://b2o7w8q10stxo"

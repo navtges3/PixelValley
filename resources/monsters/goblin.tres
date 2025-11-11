@@ -12,7 +12,6 @@
 [sub_resource type="Resource" id="Resource_nb4d4"]
 script = ExtResource("5_bfhdm")
 condition_type = 1
-condition_subject = 0
 value = 0.25
 metadata/_custom_type_script = "uid://cnso83bg7vodw"
 
@@ -29,9 +28,7 @@ current_nrg = 5
 max_hp = 50
 max_nrg = 5
 attack = 3
-magic = 0
 defense = 1
-resistance = 0
 metadata/_custom_type_script = "uid://hxleldka7y06"
 
 [resource]
@@ -41,11 +38,5 @@ basic_attack = ExtResource("2_hcon4")
 conditional_abilities = Array[ExtResource("3_xq86m")]([SubResource("Resource_sgp6s")])
 name = "Goblin"
 portrait = ExtResource("1_dekqg")
-active_effects = Array[ExtResource("1_ywgox")]([])
 stat_block = SubResource("Resource_hcon4")
-attack_modifier = 0
-magic_modifier = 0
-defense_modifier = 0
-resistance_modifier = 0
-rest_cooldown = 0
 metadata/_custom_type_script = "uid://bd6ohffno5w7r"

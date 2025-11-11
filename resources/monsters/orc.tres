@@ -12,7 +12,6 @@
 [sub_resource type="Resource" id="Resource_1rq5t"]
 script = ExtResource("5_tfctq")
 condition_type = 1
-condition_subject = 0
 value = 0.5
 metadata/_custom_type_script = "uid://cnso83bg7vodw"
 
@@ -29,7 +28,6 @@ current_nrg = 24
 max_hp = 75
 max_nrg = 24
 attack = 6
-magic = 0
 defense = 3
 resistance = 1
 metadata/_custom_type_script = "uid://hxleldka7y06"
@@ -41,11 +39,5 @@ basic_attack = ExtResource("2_1gfu0")
 conditional_abilities = Array[ExtResource("2_xu4t2")]([SubResource("Resource_63lsj")])
 name = "Orc"
 portrait = ExtResource("1_0ed2k")
-active_effects = Array[ExtResource("1_t2l3x")]([])
 stat_block = SubResource("Resource_1gfu0")
-attack_modifier = 0
-magic_modifier = 0
-defense_modifier = 0
-resistance_modifier = 0
-rest_cooldown = 0
 metadata/_custom_type_script = "uid://bd6ohffno5w7r"

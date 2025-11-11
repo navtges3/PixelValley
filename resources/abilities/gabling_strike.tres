@@ -8,7 +8,6 @@
 script = ExtResource("1_wmvnw")
 min_damage = 3
 max_damage = 20
-attack_type = 0
 metadata/_custom_type_script = "uid://bo48scp6lbwrb"
 
 [resource]
@@ -17,5 +16,4 @@ name = "Gambling Strike"
 energy_cost = 20
 cooldown = 3
 attack = SubResource("Resource_1qfmq")
-utilities = Array[ExtResource("3_1cno6")]([])
 metadata/_custom_type_script = "uid://b2o7w8q10stxo"
