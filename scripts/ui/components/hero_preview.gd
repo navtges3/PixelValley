@@ -21,4 +21,4 @@ func _update_preview() -> void:
 		return
 	$VBoxContainer/ClassNameLabel.text = hero.hero_class
 	$VBoxContainer/Portrait.texture = hero.portrait
-	$VBoxContainer/WeaponLabel.text = hero.inventory.weapon.name
+	$VBoxContainer/WeaponLabel.text = hero.inventory.equipped_weapon.name

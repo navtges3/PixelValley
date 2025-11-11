@@ -31,6 +31,9 @@ func collect_rewards() -> void:
 				if reward.item is Potion:
 					print("Adding %d %s to hero's inventory" % [reward.amount, reward.item.name])
 					hero.inventory.add_potion(reward.item, reward.amount)
+				elif reward.item is Weapon:
+					print("Adding %d %s to hero's weapon stash" % [reward.amount, reward.item.name])
+					hero.inventory.add_weapon_to_stash(reward.item)
 				elif reward.item == GOLD_ITEM:
 					print("Adding %d gold to hero's inventory" % reward.amount)
 					hero.inventory.gold += reward.amount

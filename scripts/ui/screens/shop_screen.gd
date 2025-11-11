@@ -38,10 +38,6 @@ func _ready() -> void:
 func _update_item_list() -> void:
 	empty_item_list()
 	for item_stack in shop.inventory:
-		var label = Label.new()
-		label.text = "%dx" % item_stack.count
-		label.custom_minimum_size = Vector2(32, 32)
-		item_list.add_child(label)
 		var button = create_item_button(item_stack)
 		item_list.add_child(button)
 	if shop_manager.item_stack_selected:

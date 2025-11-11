@@ -1,0 +1,65 @@
+[gd_scene load_steps=4 format=3 uid="uid://dpb1ryciamtoc"]
+
+[ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://assets/button_themes/regular/red_button.tres" id="1_dtw34"]
+[ext_resource type="Script" uid="uid://slps15qde4l3" path="res://scripts/ui/screens/armory_screen.gd" id="1_opibq"]
+[ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://assets/button_themes/regular/green_button.tres" id="1_tqoty"]
+
+[node name="ArmoryScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_opibq")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -220.0
+offset_top = 100.0
+offset_right = 220.0
+offset_bottom = 167.0
+grow_horizontal = 2
+alignment = 1
+
+[node name="LeftPanel" type="VBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HBoxContainer/LeftPanel"]
+layout_mode = 2
+text = "Weapons"
+horizontal_alignment = 1
+
+[node name="ItemList" type="VBoxContainer" parent="HBoxContainer/LeftPanel"]
+layout_mode = 2
+
+[node name="Buttons" type="HBoxContainer" parent="HBoxContainer/LeftPanel"]
+layout_mode = 2
+alignment = 1
+
+[node name="BackButton" type="Button" parent="HBoxContainer/LeftPanel/Buttons"]
+custom_minimum_size = Vector2(96, 32)
+layout_mode = 2
+theme = ExtResource("1_dtw34")
+text = "Back"
+
+[node name="EquipButton" type="Button" parent="HBoxContainer/LeftPanel/Buttons"]
+custom_minimum_size = Vector2(96, 32)
+layout_mode = 2
+theme = ExtResource("1_tqoty")
+text = "Equip"
+
+[node name="RightPanel" type="VBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HBoxContainer/RightPanel"]
+layout_mode = 2
+text = "Abilities"
+horizontal_alignment = 1
+
+[node name="AbilityContainer" type="VBoxContainer" parent="HBoxContainer/RightPanel"]
+custom_minimum_size = Vector2(240, 0)
+layout_mode = 2

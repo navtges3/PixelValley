@@ -41,7 +41,7 @@ func _update_text() -> void:
 	defense_label.text = "Def: " + str(hero.stat_block.defense)
 	resistance_label.text = "Res: " + str(hero.stat_block.resistance)
 	gold_label.text = "Gold: " + str(hero.inventory.gold)
-	weapon_label.text = hero.inventory.weapon.name
+	weapon_label.text = hero.inventory.equipped_weapon.name
 
 func _update_health_bar():
 	var value = hero.stat_block.current_hp

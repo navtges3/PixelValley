@@ -6,7 +6,6 @@ signal item_pressed(item_stack: ItemStack)
 	set(value):
 		item_stack = value
 		_update_text()
-		_update_tooltip()
 		_update_theme()
 
 func _ready() -> void:
@@ -17,15 +16,12 @@ func _on_button_pressed() -> void:
 
 func _update_text() -> void:
 	if item_stack:
-		text = "%dx %s" % [item_stack.count, item_stack.item.name]
+		if item_stack.count > 1:
+			text = "%dx %s" % [item_stack.count, item_stack.item.name]
+		else:
+			text = item_stack.item.name
 	else:
 		text = ""
-
-func _update_tooltip() -> void:
-	if item_stack:
-		tooltip_text = item_stack.item.get_tooltip()
-	else:
-		tooltip_text = ""
 
 func _update_theme() -> void:
 	if item_stack:

@@ -1,14 +1,15 @@
-[gd_resource type="Resource" script_class="Hero" load_steps=14 format=3 uid="uid://dx2kyn4g35jcw"]
+[gd_resource type="Resource" script_class="Hero" load_steps=15 format=3 uid="uid://dx2kyn4g35jcw"]
 
 [ext_resource type="Script" uid="uid://d0mdck5mlsm03" path="res://scripts/data/item_stack.gd" id="1_3wev5"]
 [ext_resource type="Script" uid="uid://b1x8jfufxk3xv" path="res://scripts/characters/hero.gd" id="1_1744r"]
 [ext_resource type="Script" uid="uid://c5deti4sb2k2j" path="res://scripts/data/effect.gd" id="1_w4hxg"]
 [ext_resource type="Script" uid="uid://4rm24oomjap7" path="res://scripts/characters/inventory.gd" id="2_21lts"]
 [ext_resource type="Resource" uid="uid://cyiqwotfm3gq6" path="res://resources/potions/regeneration_potion.tres" id="2_j6mr1"]
+[ext_resource type="Resource" uid="uid://vx4vhsuwjxcf" path="res://resources/weapons/iron_broadsword.tres" id="2_wwsut"]
 [ext_resource type="Texture2D" uid="uid://c8hydb1a47nnk" path="res://assets/knight.png" id="3_5j7dh"]
 [ext_resource type="Resource" uid="uid://4gl0mwbttg8d" path="res://resources/potions/energy_potion.tres" id="3_w4hxg"]
 [ext_resource type="Script" uid="uid://hxleldka7y06" path="res://scripts/characters/stat_block.gd" id="5_j6mr1"]
-[ext_resource type="Resource" uid="uid://vx4vhsuwjxcf" path="res://resources/weapons/iron_broadsword.tres" id="5_wwsut"]
+[ext_resource type="Script" uid="uid://dgykeyxn7fefw" path="res://scripts/data/weapon.gd" id="7_wwsut"]
 
 [sub_resource type="Resource" id="Resource_nsv5r"]
 script = ExtResource("1_3wev5")
@@ -25,7 +26,7 @@ metadata/_custom_type_script = "uid://d0mdck5mlsm03"
 [sub_resource type="Resource" id="Resource_w4hxg"]
 script = ExtResource("2_21lts")
 gold = 50
-weapon = ExtResource("5_wwsut")
+equipped_weapon = ExtResource("2_wwsut")
 potions = Array[ExtResource("1_3wev5")]([SubResource("Resource_nsv5r"), SubResource("Resource_msovw")])
 metadata/_custom_type_script = "uid://4rm24oomjap7"
 
@@ -44,16 +45,7 @@ metadata/_custom_type_script = "uid://hxleldka7y06"
 [resource]
 script = ExtResource("1_1744r")
 hero_class = "Knight"
-level = 1
-experience = 0
 inventory = SubResource("Resource_w4hxg")
-name = ""
 portrait = ExtResource("3_5j7dh")
-active_effects = Array[ExtResource("1_w4hxg")]([])
 stat_block = SubResource("Resource_wwsut")
-attack_modifier = 0
-magic_modifier = 0
-defense_modifier = 0
-resistance_modifier = 0
-rest_cooldown = 0
 metadata/_custom_type_script = "uid://b1x8jfufxk3xv"
