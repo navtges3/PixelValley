@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="Weapon" load_steps=4 format=3 uid="uid://fh8y53exbcrc"]
+
+[ext_resource type="Script" uid="uid://b2o7w8q10stxo" path="res://scripts/data/ability.gd" id="1_gh8lm"]
+[ext_resource type="Script" uid="uid://dgykeyxn7fefw" path="res://scripts/data/weapon.gd" id="2_lyghm"]
+[ext_resource type="Theme" uid="uid://e6xnt81pte22" path="res://assets/button_themes/regular/gray_button.tres" id="3_1ey0i"]
+
+[resource]
+script = ExtResource("2_lyghm")
+rarity = 2
+name = "Valor's End"
+description = "The blade of an ancient champion."
+metadata/_custom_type_script = "uid://dgykeyxn7fefw"

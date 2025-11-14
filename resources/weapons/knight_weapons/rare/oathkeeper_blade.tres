@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="Weapon" load_steps=4 format=3 uid="uid://b2d7ymc2y24vg"]
+
+[ext_resource type="Script" uid="uid://b2o7w8q10stxo" path="res://scripts/data/ability.gd" id="1_3rcbk"]
+[ext_resource type="Script" uid="uid://dgykeyxn7fefw" path="res://scripts/data/weapon.gd" id="2_tm8k0"]
+[ext_resource type="Theme" uid="uid://e6xnt81pte22" path="res://assets/button_themes/regular/gray_button.tres" id="3_1t2xg"]
+
+[resource]
+script = ExtResource("2_tm8k0")
+rarity = 1
+name = "Oathkeeper Blade"
+description = "An enchanted sword, the symbol of a loyal knight."
+metadata/_custom_type_script = "uid://dgykeyxn7fefw"
