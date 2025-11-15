@@ -7,5 +7,5 @@
 [resource]
 script = ExtResource("2_oulmc")
 name = "Soldier's Spear"
-description = "A standard-issue spear with good reach."
+description = "A straight ash pole tipped with polished steel, used by every footsoldier."
 metadata/_custom_type_script = "uid://dgykeyxn7fefw"

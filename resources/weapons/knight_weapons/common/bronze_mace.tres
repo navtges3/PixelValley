@@ -7,5 +7,5 @@
 [resource]
 script = ExtResource("2_o86ub")
 name = "Bronze Mace"
-description = "A simple blunt weapon that can crush armor."
+description = "A dull bronze head mounted on a rough wooden haft, simple but dependable."
 metadata/_custom_type_script = "uid://dgykeyxn7fefw"

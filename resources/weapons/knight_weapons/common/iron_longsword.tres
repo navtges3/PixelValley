@@ -7,5 +7,5 @@
 [resource]
 script = ExtResource("2_n45jd")
 name = "Iron Longsword"
-description = "Reliable and balanced blade forged for training knights."
+description = "A sturdy, timeworn blade bearing the training nicks of countless recruits."
 metadata/_custom_type_script = "uid://dgykeyxn7fefw"
