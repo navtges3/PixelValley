@@ -7,5 +7,5 @@
 [resource]
 script = ExtResource("2_qu4rv")
 name = "Wooden Shieldblade"
-description = "A short sword paired with a small shield; boosts defense slightly."
+description = "A short sword paired with a small wooden shield etched with faded heraldry."
 metadata/_custom_type_script = "uid://dgykeyxn7fefw"
