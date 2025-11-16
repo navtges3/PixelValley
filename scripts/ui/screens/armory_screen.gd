@@ -3,6 +3,9 @@ extends Control
 @onready var item_list: VBoxContainer = $HBoxContainer/LeftPanel/ItemList
 @onready var back_button: Button = $HBoxContainer/LeftPanel/Buttons/BackButton
 @onready var equip_button: Button = $HBoxContainer/LeftPanel/Buttons/EquipButton
+
+@onready var name_label: Label = $HBoxContainer/RightPanel/NameLabel
+@onready var description_label: Label = $HBoxContainer/RightPanel/DescriptionLabel
 @onready var ability_container: VBoxContainer = $HBoxContainer/RightPanel/AbilityContainer
 
 var ItemButton := preload("res://scenes/ui/components/item_button.tscn")
@@ -25,15 +28,17 @@ func _update_weapon_list() -> void:
 	for weapon in hero.inventory.weapon_stash:
 		var button = create_item_button(weapon)
 		item_list.add_child(button)
-	_update_ability_list()
+	_update_right_panel()
 	_update_equip_button()
 
 func _on_item_pressed(item_stack: ItemStack) -> void:
 	selected_weapon = item_stack.item as Weapon
-	_update_ability_list()
+	_update_right_panel()
 	_update_equip_button()
 
-func _update_ability_list() -> void:
+func _update_right_panel() -> void:
+	name_label.text = selected_weapon.name
+	description_label.text = selected_weapon.description
 	empty_ability_list()
 	for ability in selected_weapon.abilities:
 		var label = Label.new()
