@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="Weapon" load_steps=4 format=3 uid="uid://be6r3b10lm8ln"]
+
+[ext_resource type="Script" uid="uid://b2o7w8q10stxo" path="res://scripts/data/ability.gd" id="1_pu502"]
+[ext_resource type="Script" uid="uid://dgykeyxn7fefw" path="res://scripts/data/weapon.gd" id="2_tngcl"]
+[ext_resource type="Theme" uid="uid://e6xnt81pte22" path="res://assets/button_themes/regular/gray_button.tres" id="3_joynn"]
+
+[resource]
+script = ExtResource("2_tngcl")
+name = "Enchanted Fan"
+description = "A delicate silk fan embroidered with wind‑spiral sigils."
+metadata/_custom_type_script = "uid://dgykeyxn7fefw"
