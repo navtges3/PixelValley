@@ -14,7 +14,6 @@ metadata/_custom_type_script = "uid://c5deti4sb2k2j"
 [sub_resource type="Resource" id="Resource_wcv0o"]
 script = ExtResource("2_lb5hf")
 effects = Array[ExtResource("3_msbar")]([SubResource("Resource_fmdst")])
-subject = 0
 metadata/_custom_type_script = "uid://bvuw0uyc36uxx"
 
 [resource]
