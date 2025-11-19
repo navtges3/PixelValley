@@ -68,29 +68,29 @@ static func _load_hero_data(data: Dictionary) -> Hero:
 	hero.experience = data.get("experience", 0)
 	hero.skill_points = data.get("skill_points", 0)
 	hero.stat_block = _load_stat_block(data.get("stat_block", {}))
-	hero.active_effects = _load_active_effects(data.get("active_effects", []))
+	_load_active_effects(data.get("active_effects", []), hero)
 	hero.inventory = _load_inventory(data.get("inventory", {}))
 	return hero
 
 static func _get_active_effects_data(combatant: Combatant) -> Array:
 	var effects_data = []
-	for effect in combatant.active_effects:
+	for ae in combatant.active_effects:
 		effects_data.append({
-			type = effect.type,
-			strength = effect.strength,
-			duration = effect.duration
+			type = ae.type,
+			strength = ae.strength,
+			duration = ae.duration,
+			remaining_turns = ae.remaining_turns
 		})
 	return effects_data
 
-static func _load_active_effects(data: Array) -> Array[Effect]:
-	var effects: Array[Effect] = []
+static func _load_active_effects(data: Array, combatant: Combatant) -> void:
 	for effect_data in data:
 		var effect = Effect.new()
 		effect.type = effect_data.get("type", Effect.EffectType.HEAL)
 		effect.strength = effect_data.get("strength", 0)
 		effect.duration = effect_data.get("duration", 0)
-		effects.append(effect)
-	return effects
+		var remaining_turns = effect_data.get("remaining_turns", 0)
+		combatant.apply_effect(effect, null, remaining_turns)
 
 static func _get_stat_block_data(stat_block: StatBlock) -> Dictionary:
 	var stat_block_data = {
