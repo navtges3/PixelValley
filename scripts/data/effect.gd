@@ -31,11 +31,16 @@ func type_to_string() -> String:
 			return "Debuff Resistance"
 	return "Unknown"
 
+func is_buff() -> bool:
+	return type in [Effect.EffectType.BUFF_ATTACK, Effect.EffectType.BUFF_MAGIC, Effect.EffectType.BUFF_DEFENSE, Effect.EffectType.BUFF_RESISTANCE]
+
+func is_debuff() -> bool:
+	return type in [Effect.EffectType.DEBUFF_ATTACK, Effect.EffectType.DEBUFF_MAGIC, Effect.EffectType.DEBUFF_DEFENSE, Effect.EffectType.DEBUFF_RESISTANCE]
+
 func get_tooltip() -> String:
-	if duration > 1:
-		return "%s %d, %d turns" % [self.type_to_string(), strength, duration]
-	else:
-		return "%s %d, %d turn" % [self.type_to_string(), strength, duration]
+	var name = type_to_string()
+	var turn_text = "turn" if duration == 1 else "turns"
+	return "%s +%d (%d %s)" % [name, strength, duration, turn_text]
 
 func get_button_theme() -> Theme:
 	match type:

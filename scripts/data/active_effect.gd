@@ -64,3 +64,8 @@ func on_expire():
 			target.stat_block.resistance -= effect.strength
 		Effect.EffectType.DEBUFF_RESISTANCE:
 			target.stat_block.resistance += effect.strength
+
+func get_tooltip() -> String:
+	var name = effect.type_to_string()
+	var turn_text = "turn" if remaining_turns == 1 else "turns"
+	return "%s +%d (%d %s)" % [name, effect.strength, remaining_turns, turn_text]
