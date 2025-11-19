@@ -60,12 +60,8 @@ func _update_energy_bar():
 func _update_active_effects():
 	var active_effects_text = "Active Effects: "
 	if hero.active_effects.size() == 0:
-		active_effects_text += "\n  None"
+		active_effects_text += "\n -None"
 	else:
 		for ae in hero.active_effects:
-			active_effects_text += "\n%s %d" % [ae.effect.type_to_string(), ae.effect.strength]
-			if ae.effect.duration > 1:
-				active_effects_text += ", %d turns" % ae.effect.duration
-			else:
-				active_effects_text += ", %d turn" % ae.effect.duration
+			active_effects_text += "\n -%s" % ae.get_tooltip()
 	active_effects_label.text = active_effects_text
