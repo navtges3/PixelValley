@@ -18,11 +18,9 @@ func attack_type_to_string() -> String:
 func apply_attack(caster: Combatant, target: Combatant) -> String:
 	var damage_dealt = randi_range(min_damage, max_damage)
 	if self.attack_type == AttackType.PHYSICAL:
-		var modifier = caster.attack_modifier + caster.stat_block.attack
-		damage_dealt += modifier
+		damage_dealt += caster.stat_block.attack
 	elif self.attack_type == AttackType.MAGICAL:
-		var modifier = caster.magic_modifier + caster.stat_block.magic
-		damage_dealt += modifier
+		damage_dealt += caster.stat_block.magic
 	else:
 		print("Unknown attack type for %s." % self.name)
 		return "Unknown attack type."
