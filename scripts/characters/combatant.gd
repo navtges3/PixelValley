@@ -10,12 +10,7 @@ const REST_CD := 5
 @export var rest_cooldown: int = 0
 
 func get_colored_name() -> String:
-	if self is Hero:
-		return "[color=green]" + self.name + "[/color]"
-	elif self is Monster:
-		return "[color=red]" + self.name + "[/color]"
-	else:
-		return self.name
+	return self.name
 
 func is_alive() -> bool:
 	return stat_block.current_hp > 0
