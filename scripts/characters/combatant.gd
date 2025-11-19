@@ -22,12 +22,7 @@ func rest() -> void:
 		rest_cooldown = REST_CD
 
 func take_damage(amount: int, type: Attack.AttackType) -> String:
-	var damage = amount
-	match type:
-		Attack.AttackType.PHYSICAL:
-			damage = max(damage - self.stat_block.defense, 0)
-		Attack.AttackType.MAGICAL:
-			damage = max(damage - self.stat_block.resistance, 0)
+	var damage = _calculate_damage(amount, type)
 	self.stat_block.current_hp = max(self.stat_block.current_hp - damage, 0)
 	if damage <= 0:
 		return "%s blocked the attack!\n" % self.get_colored_name()
@@ -62,3 +57,12 @@ func process_active_effects() -> void:
 	for ae in active_effects.duplicate():
 		if ae.remaining_turns <= 0:
 			active_effects.erase(ae)
+
+func _calculate_damage(amount: int, type: Attack.AttackType) -> int:
+	var damage = amount
+	match type:
+		Attack.AttackType.PHYSICAL:
+			damage = max(damage - self.stat_block.defense, 0)
+		Attack.AttackType.MAGICAL:
+			damage = max(damage - self.stat_block.resistance, 0)
+	return damage
