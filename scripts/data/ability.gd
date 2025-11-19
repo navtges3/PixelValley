@@ -30,4 +30,10 @@ func update_cooldown() -> void:
 		self.current_cooldown -= 1
 
 func get_tooltip() -> String:
-	return "Energy cost: %d\nCooldown: %d" % [self.energy_cost, self.cooldown]
+	var attack_tooltip = ""
+	var utility_tooltip = ""
+	if attack != null:
+		attack_tooltip = attack.get_tooltip() + "\n"
+	for utility in utilities:
+		utility_tooltip += utility.get_tooltip()
+	return "%s%sEnergy cost: %d\nCooldown: %d" % [attack_tooltip, utility_tooltip, self.energy_cost, self.cooldown]
