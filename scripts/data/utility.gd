@@ -11,9 +11,9 @@ func apply_utility(caster: Combatant, target: Combatant) -> String:
 	for effect in effects:
 		match subject:
 			UtilitySubject.CASTER:
-				output += caster.apply_effect(effect.duplicate()) + "\n"
+				output += caster.apply_effect(effect.duplicate())
 			UtilitySubject.TARGET:
-				output += target.apply_effect(effect.duplicate()) + "\n"
+				output += target.apply_effect(effect.duplicate())
 	return output
 
 func get_tooltip() -> String:

@@ -76,9 +76,9 @@ static func _get_active_effects_data(combatant: Combatant) -> Array:
 	var effects_data = []
 	for ae in combatant.active_effects:
 		effects_data.append({
-			type = ae.type,
-			strength = ae.strength,
-			duration = ae.duration,
+			type = ae.effect.type,
+			strength = ae.effect.strength,
+			duration = ae.effect.duration,
 			remaining_turns = ae.remaining_turns
 		})
 	return effects_data

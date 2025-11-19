@@ -9,6 +9,9 @@ const LEVEL_UP_MULT := 25
 @export var skill_points := 0
 @export var inventory: Inventory
 
+func get_colored_name() -> String:
+	return "[color=green]" + self.name + "[/color]"
+
 func gain_experience(amount: int) -> void:
 	experience += amount
 	if experience >= level * LEVEL_UP_MULT:
