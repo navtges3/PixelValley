@@ -9,4 +9,5 @@ script = ExtResource("2_tjfxa")
 rarity = 2
 name = "Aegisbreaker"
 description = "A heroic greatsword carried by a fallen champion whose spirit lingers within."
+value = 1200
 metadata/_custom_type_script = "uid://dgykeyxn7fefw"

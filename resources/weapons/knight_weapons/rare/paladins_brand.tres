@@ -9,4 +9,5 @@ script = ExtResource("2_32hw8")
 rarity = 1
 name = "Paladin’s Brand"
 description = "A gleaming blade wreathed in faint holy radiance said to comfort allies."
+value = 350
 metadata/_custom_type_script = "uid://dgykeyxn7fefw"

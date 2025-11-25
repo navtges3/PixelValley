@@ -9,4 +9,5 @@ script = ExtResource("2_55eud")
 rarity = 1
 name = "Knight Commander’s Halberd"
 description = "An ornate polearm engraved with honors of past battlefield victories."
+value = 375
 metadata/_custom_type_script = "uid://dgykeyxn7fefw"
