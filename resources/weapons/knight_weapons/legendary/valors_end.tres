@@ -9,4 +9,5 @@ script = ExtResource("2_lyghm")
 rarity = 2
 name = "Valor's End"
 description = "The blade of an ancient champion."
+value = 1400
 metadata/_custom_type_script = "uid://dgykeyxn7fefw"

@@ -9,4 +9,5 @@ script = ExtResource("2_tm8k0")
 rarity = 1
 name = "Oathkeeper Blade"
 description = "A ceremonial sword that glows softly whenever its wielder stands firm."
+value = 400
 metadata/_custom_type_script = "uid://dgykeyxn7fefw"
