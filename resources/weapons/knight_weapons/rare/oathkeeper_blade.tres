@@ -2,12 +2,13 @@
 
 [ext_resource type="Script" uid="uid://b2o7w8q10stxo" path="res://scripts/data/ability.gd" id="1_3rcbk"]
 [ext_resource type="Script" uid="uid://dgykeyxn7fefw" path="res://scripts/data/weapon.gd" id="2_tm8k0"]
-[ext_resource type="Theme" uid="uid://e6xnt81pte22" path="res://assets/button_themes/regular/gray_button.tres" id="3_1t2xg"]
+[ext_resource type="Theme" uid="uid://dqwm8agt87lsh" path="res://assets/button_themes/regular/blue_button.tres" id="3_l7r31"]
 
 [resource]
 script = ExtResource("2_tm8k0")
 rarity = 1
 name = "Oathkeeper Blade"
 description = "A ceremonial sword that glows softly whenever its wielder stands firm."
+theme = ExtResource("3_l7r31")
 value = 400
 metadata/_custom_type_script = "uid://dgykeyxn7fefw"
