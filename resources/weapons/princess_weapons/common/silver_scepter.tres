@@ -1,11 +1,44 @@
-[gd_resource type="Resource" script_class="Weapon" load_steps=4 format=3 uid="uid://2xnjln6p48rw"]
+[gd_resource type="Resource" script_class="Weapon" load_steps=10 format=3 uid="uid://2xnjln6p48rw"]
 
 [ext_resource type="Script" uid="uid://b2o7w8q10stxo" path="res://scripts/data/ability.gd" id="1_8oaf2"]
 [ext_resource type="Script" uid="uid://dgykeyxn7fefw" path="res://scripts/data/weapon.gd" id="2_5im0a"]
-[ext_resource type="Theme" uid="uid://e6xnt81pte22" path="res://assets/button_themes/regular/gray_button.tres" id="3_8djcv"]
+[ext_resource type="Script" uid="uid://bo48scp6lbwrb" path="res://scripts/data/attack.gd" id="2_8djcv"]
+[ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://assets/button_themes/regular/green_button.tres" id="3_8oaf2"]
+[ext_resource type="Script" uid="uid://bvuw0uyc36uxx" path="res://scripts/data/utility.gd" id="3_wp8tx"]
+
+[sub_resource type="Resource" id="Resource_il6a2"]
+script = ExtResource("2_8djcv")
+min_damage = 8
+max_damage = 12
+attack_type = 1
+metadata/_custom_type_script = "uid://bo48scp6lbwrb"
+
+[sub_resource type="Resource" id="Resource_u3gri"]
+script = ExtResource("1_8oaf2")
+name = "Royal Beam"
+attack = SubResource("Resource_il6a2")
+metadata/_custom_type_script = "uid://b2o7w8q10stxo"
+
+[sub_resource type="Resource" id="Resource_8djcv"]
+script = ExtResource("2_8djcv")
+min_damage = 12
+max_damage = 16
+attack_type = 1
+metadata/_custom_type_script = "uid://bo48scp6lbwrb"
+
+[sub_resource type="Resource" id="Resource_m0u44"]
+script = ExtResource("1_8oaf2")
+name = "Sovereign Grace"
+energy_cost = 5
+cooldown = 3
+attack = SubResource("Resource_8djcv")
+metadata/_custom_type_script = "uid://b2o7w8q10stxo"
 
 [resource]
 script = ExtResource("2_5im0a")
+abilities = Array[ExtResource("1_8oaf2")]([SubResource("Resource_u3gri"), SubResource("Resource_m0u44")])
 name = "Silver Scepter"
 description = "A polished scepter adorned with small gemstones favored by young nobles."
+theme = ExtResource("3_8oaf2")
+value = 115
 metadata/_custom_type_script = "uid://dgykeyxn7fefw"

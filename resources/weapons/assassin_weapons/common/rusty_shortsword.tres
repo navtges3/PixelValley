@@ -1,11 +1,42 @@
-[gd_resource type="Resource" script_class="Weapon" load_steps=4 format=3 uid="uid://cd7r4b62aqqdt"]
+[gd_resource type="Resource" script_class="Weapon" load_steps=10 format=3 uid="uid://cd7r4b62aqqdt"]
 
 [ext_resource type="Script" uid="uid://b2o7w8q10stxo" path="res://scripts/data/ability.gd" id="1_t4dvg"]
+[ext_resource type="Script" uid="uid://bo48scp6lbwrb" path="res://scripts/data/attack.gd" id="2_6p0la"]
 [ext_resource type="Script" uid="uid://dgykeyxn7fefw" path="res://scripts/data/weapon.gd" id="2_a7fep"]
-[ext_resource type="Theme" uid="uid://e6xnt81pte22" path="res://assets/button_themes/regular/gray_button.tres" id="3_vvias"]
+[ext_resource type="Script" uid="uid://bvuw0uyc36uxx" path="res://scripts/data/utility.gd" id="2_vvias"]
+[ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://assets/button_themes/regular/green_button.tres" id="4_6p0la"]
+
+[sub_resource type="Resource" id="Resource_yjfna"]
+script = ExtResource("2_6p0la")
+min_damage = 5
+max_damage = 8
+metadata/_custom_type_script = "uid://bo48scp6lbwrb"
+
+[sub_resource type="Resource" id="Resource_5u2n6"]
+script = ExtResource("1_t4dvg")
+name = "Ragged Slash"
+attack = SubResource("Resource_yjfna")
+metadata/_custom_type_script = "uid://b2o7w8q10stxo"
+
+[sub_resource type="Resource" id="Resource_ofr0u"]
+script = ExtResource("2_6p0la")
+min_damage = 10
+max_damage = 15
+metadata/_custom_type_script = "uid://bo48scp6lbwrb"
+
+[sub_resource type="Resource" id="Resource_0cotu"]
+script = ExtResource("1_t4dvg")
+name = "Opportunist Cut"
+energy_cost = 4
+cooldown = 2
+attack = SubResource("Resource_ofr0u")
+metadata/_custom_type_script = "uid://b2o7w8q10stxo"
 
 [resource]
 script = ExtResource("2_a7fep")
+abilities = Array[ExtResource("1_t4dvg")]([SubResource("Resource_5u2n6"), SubResource("Resource_0cotu")])
 name = "Rusty Shortsword"
 description = "A battered short blade showing the scars of rough back‑alley jobs."
+theme = ExtResource("4_6p0la")
+value = 45
 metadata/_custom_type_script = "uid://dgykeyxn7fefw"
