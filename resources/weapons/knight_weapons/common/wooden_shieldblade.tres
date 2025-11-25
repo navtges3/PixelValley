@@ -1,12 +1,23 @@
-[gd_resource type="Resource" script_class="Weapon" load_steps=13 format=3 uid="uid://br6hwj0vp2ykl"]
+[gd_resource type="Resource" script_class="Weapon" load_steps=14 format=3 uid="uid://br6hwj0vp2ykl"]
 
 [ext_resource type="Script" uid="uid://b2o7w8q10stxo" path="res://scripts/data/ability.gd" id="1_hlufx"]
 [ext_resource type="Script" uid="uid://dgykeyxn7fefw" path="res://scripts/data/weapon.gd" id="2_qu4rv"]
-[ext_resource type="Resource" uid="uid://5gj0qi86ux23" path="res://resources/abilities/slash.tres" id="2_tbjy0"]
 [ext_resource type="Script" uid="uid://bo48scp6lbwrb" path="res://scripts/data/attack.gd" id="3_wl6y2"]
 [ext_resource type="Script" uid="uid://bvuw0uyc36uxx" path="res://scripts/data/utility.gd" id="4_3pinp"]
 [ext_resource type="Script" uid="uid://c5deti4sb2k2j" path="res://scripts/data/effect.gd" id="5_8t3c1"]
 [ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://assets/button_themes/regular/green_button.tres" id="7_wl6y2"]
+
+[sub_resource type="Resource" id="Resource_mdp5g"]
+script = ExtResource("3_wl6y2")
+min_damage = 6
+max_damage = 10
+metadata/_custom_type_script = "uid://bo48scp6lbwrb"
+
+[sub_resource type="Resource" id="Resource_wl6y2"]
+script = ExtResource("1_hlufx")
+name = "Shielded Slash"
+attack = SubResource("Resource_mdp5g")
+metadata/_custom_type_script = "uid://b2o7w8q10stxo"
 
 [sub_resource type="Resource" id="Resource_vwtgm"]
 script = ExtResource("3_wl6y2")
@@ -44,7 +55,7 @@ metadata/_custom_type_script = "uid://b2o7w8q10stxo"
 
 [resource]
 script = ExtResource("2_qu4rv")
-abilities = Array[ExtResource("1_hlufx")]([ExtResource("2_tbjy0"), SubResource("Resource_pl52e")])
+abilities = Array[ExtResource("1_hlufx")]([SubResource("Resource_wl6y2"), SubResource("Resource_pl52e")])
 name = "Wooden Shieldblade"
 description = "A short sword paired with a small wooden shield etched with faded heraldry."
 theme = ExtResource("7_wl6y2")

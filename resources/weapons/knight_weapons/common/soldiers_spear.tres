@@ -9,8 +9,8 @@
 
 [sub_resource type="Resource" id="Resource_qku5v"]
 script = ExtResource("2_8vja4")
-min_damage = 8
-max_damage = 14
+min_damage = 9
+max_damage = 11
 metadata/_custom_type_script = "uid://bo48scp6lbwrb"
 
 [sub_resource type="Resource" id="Resource_8vja4"]
@@ -21,8 +21,8 @@ metadata/_custom_type_script = "uid://b2o7w8q10stxo"
 
 [sub_resource type="Resource" id="Resource_k2woj"]
 script = ExtResource("2_8vja4")
-min_damage = 10
-max_damage = 15
+min_damage = 12
+max_damage = 16
 metadata/_custom_type_script = "uid://bo48scp6lbwrb"
 
 [sub_resource type="Resource" id="Resource_vqwmt"]
@@ -40,7 +40,7 @@ metadata/_custom_type_script = "uid://bvuw0uyc36uxx"
 [sub_resource type="Resource" id="Resource_a1m3a"]
 script = ExtResource("1_u42vx")
 name = "Spearwall Jab"
-energy_cost = 5
+energy_cost = 4
 cooldown = 3
 attack = SubResource("Resource_k2woj")
 utilities = Array[ExtResource("2_v6upd")]([SubResource("Resource_4i7jx")])
