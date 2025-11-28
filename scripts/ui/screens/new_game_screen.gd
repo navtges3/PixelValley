@@ -44,8 +44,8 @@ func _on_class_selected(selected_class: Hero) -> void:
 		print("Deselected class")
 	else:
 		hero_selected = selected_class
-		hero_class.text = selected_class.hero_class
-		print("Selected class: ", hero_selected.hero_class)
+		hero_class.text = selected_class.get_class_name()
+		print("Selected class: ", hero_selected.get_class_name())
 	check_create_button_state()
 
 func _on_back_button_pressed() -> void:

@@ -1,9 +1,15 @@
 extends Combatant
 class_name Hero
 
+enum HeroClass {
+	ASSASSIN,
+	KNIGHT,
+	PRINCESS
+}
+
 const LEVEL_UP_MULT := 25
 
-@export var hero_class: String
+@export var hero_class: HeroClass
 @export var level := 1
 @export var experience := 0
 @export var skill_points := 0
@@ -11,6 +17,17 @@ const LEVEL_UP_MULT := 25
 
 func get_colored_name() -> String:
 	return "[color=green]" + self.name + "[/color]"
+
+func get_class_name() -> String:
+	match hero_class:
+		HeroClass.ASSASSIN:
+			return "Assassin"
+		HeroClass.KNIGHT:
+			return "Knight"
+		HeroClass.PRINCESS:
+			return "Princess"
+		_:
+			return "Unknown"
 
 func gain_experience(amount: int) -> void:
 	experience += amount

@@ -63,7 +63,7 @@ static func _load_hero_data(data: Dictionary) -> Hero:
 	var portrait_path = data.get("portrait", "")
 	if portrait_path != "":
 		hero.portrait = load(portrait_path)
-	hero.hero_class = data.get("hero_class", "Warrior")
+	hero.hero_class = data.get("hero_class", Hero.HeroClass.KNIGHT)
 	hero.level = data.get("level", 1)
 	hero.experience = data.get("experience", 0)
 	hero.skill_points = data.get("skill_points", 0)
