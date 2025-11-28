@@ -11,4 +11,4 @@ func _ready() -> void:
 	main_menu_button.pressed.connect(_on_main_menu_button_pressed)
 
 func _on_main_menu_button_pressed() -> void:
-	ScreenManager.go_to_screen("main_menu")
+	ScreenManager.go_to_screen(ScreenManager.ScreenName.MAIN_MENU)

@@ -23,7 +23,7 @@ func _on_options_pressed():
 func _on_exit_pressed():
 	SaveManager.save_game()
 	get_tree().paused = false
-	ScreenManager.go_to_screen("main_menu")
+	ScreenManager.go_to_screen(ScreenManager.ScreenName.MAIN_MENU)
 
 func _on_pause_popup_about_to_popup():
 	get_tree().paused = true

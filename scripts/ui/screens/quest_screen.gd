@@ -65,13 +65,13 @@ func _on_complete_toggled(button_pressed: bool):
 			load_quests(current_tab)
 
 func _on_back_pressed():
-	ScreenManager.go_to_screen("village")
+	ScreenManager.go_to_screen(ScreenManager.ScreenName.VILLAGE)
 
 func _on_start_pressed():
 	if selected_quest:
 		var quest = selected_quest.get_quest()
 		GameState.current_quest = quest
-		ScreenManager.go_to_screen("battle")
+		ScreenManager.go_to_screen(ScreenManager.ScreenName.BATTLE)
 
 func _on_pause_pressed():
 	pause_popup.popup_centered()

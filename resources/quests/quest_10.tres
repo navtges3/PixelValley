@@ -4,7 +4,6 @@
 [ext_resource type="Resource" uid="uid://bxig3cedsllcl" path="res://resources/monsters/ogre.tres" id="2_4wg3f"]
 [ext_resource type="Resource" uid="uid://yrw5qgu7qwe0" path="res://resources/monsters/orc.tres" id="2_51uxk"]
 [ext_resource type="Script" uid="uid://xekqra2mjp3l" path="res://scripts/quest/quest_reward.gd" id="3_51uxk"]
-[ext_resource type="Resource" uid="uid://c4ew36sfl85ym" path="res://resources/items/experience.tres" id="4_668k3"]
 [ext_resource type="Script" uid="uid://xhl8p6y5w5e6" path="res://scripts/quest/quest.gd" id="6_l1doq"]
 
 [sub_resource type="Resource" id="Resource_68l85"]
@@ -21,8 +20,13 @@ metadata/_custom_type_script = "uid://bhsjswm1wnll8"
 
 [sub_resource type="Resource" id="Resource_sp1ti"]
 script = ExtResource("3_51uxk")
-item = ExtResource("4_668k3")
+reward_type = 2
 amount = 600
+metadata/_custom_type_script = "uid://xekqra2mjp3l"
+
+[sub_resource type="Resource" id="Resource_dwfj8"]
+script = ExtResource("3_51uxk")
+reward_type = 3
 metadata/_custom_type_script = "uid://xekqra2mjp3l"
 
 [resource]
@@ -31,6 +35,6 @@ title = "Fortress Siege"
 id = 10
 description = "The enemy has fortified an old keep. Break their defenses."
 monster_objectives = Array[ExtResource("1_fi5yr")]([SubResource("Resource_68l85"), SubResource("Resource_668k3")])
-reward = Array[ExtResource("3_51uxk")]([SubResource("Resource_sp1ti")])
+reward = Array[ExtResource("3_51uxk")]([SubResource("Resource_sp1ti"), SubResource("Resource_dwfj8")])
 next_quests = Array[int]([11])
 metadata/_custom_type_script = "uid://xhl8p6y5w5e6"
