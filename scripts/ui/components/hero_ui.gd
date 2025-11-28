@@ -32,7 +32,7 @@ func refresh() -> void:
 
 func _update_text() -> void:
 	name_label.text = hero.name
-	class_label.text = "Class: " + hero.hero_class
+	class_label.text = "Class: " + hero.get_class_name()
 	picture.texture = hero.portrait
 	level_label.text = "Level: " + str(hero.level)
 	experience_label.text = "XP: " + str(hero.experience)

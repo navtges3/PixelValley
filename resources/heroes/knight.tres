@@ -44,7 +44,7 @@ metadata/_custom_type_script = "uid://hxleldka7y06"
 
 [resource]
 script = ExtResource("1_1744r")
-hero_class = "Knight"
+hero_class = 1
 inventory = SubResource("Resource_w4hxg")
 portrait = ExtResource("3_5j7dh")
 stat_block = SubResource("Resource_wwsut")
