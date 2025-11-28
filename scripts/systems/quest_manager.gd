@@ -30,11 +30,26 @@ const LAST_QUEST_ID := 15
 
 func _on_quest_completed(quest: Quest) -> void:
 	if quest in available_quests:
+		apply_rewards(quest)
 		available_quests.erase(quest)
 		completed_quests.append(quest)
 		for next_id in quest.next_quests:
 			unlock_quest_by_id(next_id)
 		SaveManager.save_game()
+
+func apply_rewards(quest: Quest) -> void:
+	for reward in quest.reward:
+		match reward.reward_type:
+			QuestReward.RewardType.ITEM:
+				GameState.hero.inventory.add_potion(reward.item, reward.amount)
+			QuestReward.RewardType.GOLD:
+				GameState.hero.inventory.gold += reward.amount
+			QuestReward.RewardType.EXPERIENCE:
+				GameState.hero.gain_experience(reward.amount)
+			QuestReward.RewardType.CLASS_WEAPON:
+				var weapon = WeaponDatabase.get_random_weapon_for_class(GameState.hero.hero_class, reward.weapon_rarity)
+				if weapon != null:
+					GameState.hero.inventory.add_weapon_to_stash(weapon)
 
 func new_game() -> void:
 	locked_quests = []

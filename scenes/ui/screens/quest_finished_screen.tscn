@@ -41,12 +41,12 @@ layout_mode = 2
 text = "Quest Reward"
 horizontal_alignment = 1
 
-[node name="CollectRewardButton" type="Button" parent="VBoxContainer"]
+[node name="ContinueButton" type="Button" parent="VBoxContainer"]
 custom_minimum_size = Vector2(96, 32)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme = ExtResource("1_63ps6")
-text = "Collect Reward"
+text = "Continue"
 
-[connection signal="pressed" from="VBoxContainer/CollectRewardButton" to="." method="_on_collect_reward_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/ContinueButton" to="." method="_on_continue_button_pressed"]
