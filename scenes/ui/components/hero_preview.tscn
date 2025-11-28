@@ -33,16 +33,22 @@ alignment = 1
 
 [node name="ClassNameLabel" type="Label" parent="VBoxContainer"]
 layout_mode = 2
+size_flags_horizontal = 4
 text = "Class Name"
 horizontal_alignment = 1
 
 [node name="Portrait" type="TextureRect" parent="VBoxContainer"]
 custom_minimum_size = Vector2(128, 128)
 layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
 mouse_filter = 2
 texture = ExtResource("3_x1gnv")
 
 [node name="WeaponLabel" type="Label" parent="VBoxContainer"]
+custom_minimum_size = Vector2(124, 0)
 layout_mode = 2
+size_flags_vertical = 0
 text = "Weapon Name"
 horizontal_alignment = 1
+autowrap_mode = 2

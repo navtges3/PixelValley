@@ -23,6 +23,7 @@ offset_top = 100.0
 offset_right = 220.0
 offset_bottom = 167.0
 grow_horizontal = 2
+theme_override_constants/separation = 16
 alignment = 1
 
 [node name="LeftPanel" type="VBoxContainer" parent="HBoxContainer"]
@@ -54,8 +55,20 @@ text = "Equip"
 
 [node name="RightPanel" type="VBoxContainer" parent="HBoxContainer"]
 layout_mode = 2
+theme_override_constants/separation = 10
 
-[node name="Label" type="Label" parent="HBoxContainer/RightPanel"]
+[node name="NameLabel" type="Label" parent="HBoxContainer/RightPanel"]
+layout_mode = 2
+text = "Weapon Name"
+horizontal_alignment = 1
+
+[node name="DescriptionLabel" type="Label" parent="HBoxContainer/RightPanel"]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+text = "Description label starts here. This is what it would look like if it was a long description"
+autowrap_mode = 2
+
+[node name="AbilitiesLabel" type="Label" parent="HBoxContainer/RightPanel"]
 layout_mode = 2
 text = "Abilities"
 horizontal_alignment = 1

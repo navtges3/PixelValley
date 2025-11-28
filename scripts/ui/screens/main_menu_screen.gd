@@ -18,12 +18,12 @@ func _ready() -> void:
 	exit_button.pressed.connect(_on_exit_button_pressed)
 
 func _on_new_game_button_pressed():
-	ScreenManager.go_to_screen("new_game")
+	ScreenManager.go_to_screen(ScreenManager.ScreenName.NEW_GAME)
 
 func _on_load_game_button_pressed():
 	SaveManager.load_game()
 	if GameState.hero and GameState.village:
-		ScreenManager.go_to_screen("village")
+		ScreenManager.go_to_screen(ScreenManager.ScreenName.VILLAGE)
 
 func _on_options_button_pressed():
 	options_popup.popup_centered()

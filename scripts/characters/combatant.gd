@@ -5,21 +5,12 @@ const REST_CD := 5
 
 @export var name: String
 @export var portrait: Texture2D
-@export var active_effects: Array[Effect] = []
+@export var active_effects: Array[ActiveEffect] = []
 @export var stat_block: StatBlock
-@export var attack_modifier: int = 0
-@export var magic_modifier: int = 0
-@export var defense_modifier: int = 0
-@export var resistance_modifier: int = 0
 @export var rest_cooldown: int = 0
 
 func get_colored_name() -> String:
-	if self is Hero:
-		return "[color=green]" + self.name + "[/color]"
-	elif self is Monster:
-		return "[color=red]" + self.name + "[/color]"
-	else:
-		return self.name
+	return self.name
 
 func is_alive() -> bool:
 	return stat_block.current_hp > 0
@@ -31,14 +22,7 @@ func rest() -> void:
 		rest_cooldown = REST_CD
 
 func take_damage(amount: int, type: Attack.AttackType) -> String:
-	var damage = amount
-	match type:
-		Attack.AttackType.PHYSICAL:
-			var modifier = self.stat_block.defense + self.defense_modifier
-			damage = max(damage - modifier, 0)
-		Attack.AttackType.MAGICAL:
-			var modifier = self.stat_block.resistance + self.resistance_modifier
-			damage = max(damage - modifier, 0)
+	var damage = _calculate_damage(amount, type)
 	self.stat_block.current_hp = max(self.stat_block.current_hp - damage, 0)
 	if damage <= 0:
 		return "%s blocked the attack!\n" % self.get_colored_name()
@@ -58,44 +42,27 @@ func use_energy(amount: int) -> bool:
 func recover_energy(amount: int) -> void:
 	self.stat_block.current_nrg = min(self.stat_block.current_nrg + amount, self.stat_block.max_nrg)
 
-func apply_effect(effect: Effect) -> String:
-	if effect.duration <= 0:
-		return "Effect has expired.\n"
-	active_effects.append(effect)
+func apply_effect(effect: Effect, source = null, remaining_turns := 0) -> String:
+	var ae = ActiveEffect.new(effect, self, source)
+	if remaining_turns > 0:
+		ae.remaining_turns = remaining_turns
+	active_effects.append(ae)
+	ae.on_apply()
 	return "%s applied.\n" % effect.get_tooltip()
 
 func process_active_effects() -> void:
-	self.attack_modifier = 0
-	self.magic_modifier = 0
-	self.defense_modifier = 0
-	self.resistance_modifier = 0
-	for i in range(active_effects.size() -1, -1, -1):
-		var effect = active_effects[i]
-		_update_effect(effect)
-		effect.duration -= 1
-		if effect.duration <= 0:
-			active_effects.remove_at(i)
-			print("Effect '%s' has expired." % effect.type_to_string())
+	for ae in active_effects:
+		ae.on_tick()
 
-func _update_effect(effect: Effect) -> void:
-	match effect.type:
-		Effect.EffectType.HEAL:
-			self.heal(effect.strength)
-		Effect.EffectType.ENERGY:
-			self.recover_energy(effect.strength)
-		Effect.EffectType.BUFF_ATTACK:
-			self.attack_modifier += effect.strength
-		Effect.EffectType.BUFF_MAGIC:
-			self.magic_modifier += effect.strength
-		Effect.EffectType.BUFF_DEFENSE:
-			self.defense_modifier += effect.strength
-		Effect.EffectType.BUFF_RESISTANCE:
-			self.resistance_modifier += effect.strength
-		Effect.EffectType.DEBUFF_ATTACK:
-			self.attack_modifier -= effect.strength
-		Effect.EffectType.DEBUFF_MAGIC:
-			self.magic_modifier -= effect.strength
-		Effect.EffectType.DEBUFF_DEFENSE:
-			self.defense_modifier -= effect.strength
-		Effect.EffectType.DEBUFF_RESISTANCE:
-			self.resistance_modifier -= effect.strength
+	for ae in active_effects.duplicate():
+		if ae.remaining_turns <= 0:
+			active_effects.erase(ae)
+
+func _calculate_damage(amount: int, type: Attack.AttackType) -> int:
+	var damage = amount
+	match type:
+		Attack.AttackType.PHYSICAL:
+			damage = max(damage - self.stat_block.defense, 0)
+		Attack.AttackType.MAGICAL:
+			damage = max(damage - self.stat_block.resistance, 0)
+	return damage

@@ -7,7 +7,7 @@
 
 [sub_resource type="Resource" id="Resource_1qfmq"]
 script = ExtResource("1_ve2sn")
-min_damage = 8
+min_damage = 6
 max_damage = 12
 metadata/_custom_type_script = "uid://bo48scp6lbwrb"
 
@@ -15,6 +15,7 @@ metadata/_custom_type_script = "uid://bo48scp6lbwrb"
 script = ExtResource("4_hat3b")
 type = 4
 strength = 5
+duration = 2
 metadata/_custom_type_script = "uid://c5deti4sb2k2j"
 
 [sub_resource type="Resource" id="Resource_8s4lx"]

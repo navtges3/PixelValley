@@ -28,7 +28,10 @@ func equip_weapon(weapon: Weapon) -> void:
 	weapon_stash.erase(weapon)
 
 func add_weapon_to_stash(weapon: Weapon) -> void:
-	weapon_stash.append(weapon)
+	if weapon not in weapon_stash and weapon != equipped_weapon:
+		weapon_stash.append(weapon)
+	else:
+		gold += weapon.value
 
 func remove_weapon_from_stash(weapon: Weapon) -> void:
 	weapon_stash.erase(weapon)

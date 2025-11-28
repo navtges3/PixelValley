@@ -1,0 +1,42 @@
+[gd_resource type="Resource" script_class="Weapon" load_steps=10 format=3 uid="uid://boo6sulkcbpjl"]
+
+[ext_resource type="Script" uid="uid://b2o7w8q10stxo" path="res://scripts/data/ability.gd" id="1_lgn1t"]
+[ext_resource type="Script" uid="uid://bo48scp6lbwrb" path="res://scripts/data/attack.gd" id="2_bq7oy"]
+[ext_resource type="Script" uid="uid://dgykeyxn7fefw" path="res://scripts/data/weapon.gd" id="2_c4khl"]
+[ext_resource type="Script" uid="uid://bvuw0uyc36uxx" path="res://scripts/data/utility.gd" id="3_7vas0"]
+[ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://assets/button_themes/regular/green_button.tres" id="5_bq7oy"]
+
+[sub_resource type="Resource" id="Resource_jskeh"]
+script = ExtResource("2_bq7oy")
+min_damage = 6
+max_damage = 14
+metadata/_custom_type_script = "uid://bo48scp6lbwrb"
+
+[sub_resource type="Resource" id="Resource_nlyxl"]
+script = ExtResource("1_lgn1t")
+name = "Heavy Cleave"
+attack = SubResource("Resource_jskeh")
+metadata/_custom_type_script = "uid://b2o7w8q10stxo"
+
+[sub_resource type="Resource" id="Resource_3d462"]
+script = ExtResource("2_bq7oy")
+min_damage = 12
+max_damage = 20
+metadata/_custom_type_script = "uid://bo48scp6lbwrb"
+
+[sub_resource type="Resource" id="Resource_5b7wv"]
+script = ExtResource("1_lgn1t")
+name = "Overhead Breaker"
+energy_cost = 8
+cooldown = 3
+attack = SubResource("Resource_3d462")
+metadata/_custom_type_script = "uid://b2o7w8q10stxo"
+
+[resource]
+script = ExtResource("2_c4khl")
+abilities = Array[ExtResource("1_lgn1t")]([SubResource("Resource_nlyxl"), SubResource("Resource_5b7wv")])
+name = "Steel Claymore"
+description = "A massive two‑handed sword whose weight alone commands respect."
+theme = ExtResource("5_bq7oy")
+value = 110
+metadata/_custom_type_script = "uid://dgykeyxn7fefw"

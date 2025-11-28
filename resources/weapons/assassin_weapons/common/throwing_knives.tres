@@ -1,0 +1,42 @@
+[gd_resource type="Resource" script_class="Weapon" load_steps=10 format=3 uid="uid://c1eadp7x4uhx4"]
+
+[ext_resource type="Script" uid="uid://b2o7w8q10stxo" path="res://scripts/data/ability.gd" id="1_oruj2"]
+[ext_resource type="Script" uid="uid://dgykeyxn7fefw" path="res://scripts/data/weapon.gd" id="2_0s4bu"]
+[ext_resource type="Script" uid="uid://bo48scp6lbwrb" path="res://scripts/data/attack.gd" id="2_rqbtv"]
+[ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://assets/button_themes/regular/green_button.tres" id="3_oruj2"]
+[ext_resource type="Script" uid="uid://bvuw0uyc36uxx" path="res://scripts/data/utility.gd" id="3_vd5bo"]
+
+[sub_resource type="Resource" id="Resource_mcd4h"]
+script = ExtResource("2_rqbtv")
+min_damage = 5
+max_damage = 10
+metadata/_custom_type_script = "uid://bo48scp6lbwrb"
+
+[sub_resource type="Resource" id="Resource_buh3f"]
+script = ExtResource("1_oruj2")
+name = "Knife Toss"
+attack = SubResource("Resource_mcd4h")
+metadata/_custom_type_script = "uid://b2o7w8q10stxo"
+
+[sub_resource type="Resource" id="Resource_kqgva"]
+script = ExtResource("2_rqbtv")
+min_damage = 11
+max_damage = 17
+metadata/_custom_type_script = "uid://bo48scp6lbwrb"
+
+[sub_resource type="Resource" id="Resource_lond5"]
+script = ExtResource("1_oruj2")
+name = "Rapid Volley"
+energy_cost = 5
+cooldown = 3
+attack = SubResource("Resource_kqgva")
+metadata/_custom_type_script = "uid://b2o7w8q10stxo"
+
+[resource]
+script = ExtResource("2_0s4bu")
+abilities = Array[ExtResource("1_oruj2")]([SubResource("Resource_buh3f"), SubResource("Resource_lond5")])
+name = "Throwing Knives"
+description = "Slim steel knives bearing blackened edges to reduce glint in the dark."
+theme = ExtResource("3_oruj2")
+value = 95
+metadata/_custom_type_script = "uid://dgykeyxn7fefw"

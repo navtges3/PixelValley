@@ -11,18 +11,19 @@ func apply_utility(caster: Combatant, target: Combatant) -> String:
 	for effect in effects:
 		match subject:
 			UtilitySubject.CASTER:
-				output += caster.apply_effect(effect.duplicate()) + "\n"
+				output += caster.apply_effect(effect.duplicate())
 			UtilitySubject.TARGET:
-				output += target.apply_effect(effect.duplicate()) + "\n"
+				output += target.apply_effect(effect.duplicate())
 	return output
 
 func get_tooltip() -> String:
-	var output := "Energy Cost: %d\nCooldown: %d\n" % [self.energy_cost, self.cooldown]
+	var output = ""
+	var targets = ""
 	match subject:
 		UtilitySubject.CASTER:
-			output += "Affects: Caster\n"
+			targets += "Self: "
 		UtilitySubject.TARGET:
-			output += "Affects: Target\n"
+			targets += "Target: "
 	for effect in effects:
-		output += "Effect: %s\n" %  effect.get_tooltip()
-	return output
+		output += "%s%s\n" %  [targets, effect.get_tooltip()]
+	return "%s" % [output]

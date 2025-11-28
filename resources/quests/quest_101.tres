@@ -3,21 +3,23 @@
 [ext_resource type="Script" uid="uid://bhsjswm1wnll8" path="res://scripts/quest/monster_requirement.gd" id="1_jrwqx"]
 [ext_resource type="Resource" uid="uid://dm48acoifufc0" path="res://resources/monsters/goblin.tres" id="2_5u7t5"]
 [ext_resource type="Script" uid="uid://xekqra2mjp3l" path="res://scripts/quest/quest_reward.gd" id="3_hp04e"]
-[ext_resource type="Resource" uid="uid://c4ew36sfl85ym" path="res://resources/items/experience.tres" id="4_whmia"]
 [ext_resource type="Script" uid="uid://xhl8p6y5w5e6" path="res://scripts/quest/quest.gd" id="6_sm1w6"]
 
 [sub_resource type="Resource" id="Resource_668k3"]
 script = ExtResource("1_jrwqx")
 monster = ExtResource("2_5u7t5")
 target_amount = 8
-current_amount = 0
 metadata/_custom_type_script = "uid://bhsjswm1wnll8"
 
 [sub_resource type="Resource" id="Resource_sp1ti"]
 script = ExtResource("3_hp04e")
-item = ExtResource("4_whmia")
+reward_type = 2
 amount = 150
-target = 0
+metadata/_custom_type_script = "uid://xekqra2mjp3l"
+
+[sub_resource type="Resource" id="Resource_bnm22"]
+script = ExtResource("3_hp04e")
+reward_type = 3
 metadata/_custom_type_script = "uid://xekqra2mjp3l"
 
 [resource]
@@ -26,6 +28,6 @@ title = "Lost Relic"
 id = 101
 description = "A priest asks you to recover a relic stolen by goblins."
 monster_objectives = Array[ExtResource("1_jrwqx")]([SubResource("Resource_668k3")])
-reward = Array[ExtResource("3_hp04e")]([SubResource("Resource_sp1ti")])
+reward = Array[ExtResource("3_hp04e")]([SubResource("Resource_sp1ti"), SubResource("Resource_bnm22")])
 next_quests = Array[int]([5])
 metadata/_custom_type_script = "uid://xhl8p6y5w5e6"
