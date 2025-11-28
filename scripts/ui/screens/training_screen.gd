@@ -62,15 +62,15 @@ func _on_confirm() -> void:
 		if increase > 0:
 			hero.stat_block.set_stat(stat, hero.stat_block.get_stat(stat) + increase)
 	hero.skill_points = available_points
-	ScreenManager.go_to_screen("village")
+	ScreenManager.go_to_screen(ScreenManager.ScreenName.VILLAGE)
 
 func _on_back() -> void:
-	ScreenManager.go_to_screen("village")
+	ScreenManager.go_to_screen(ScreenManager.ScreenName.VILLAGE)
 
 func update_ui() -> void:
 	skill_points_label.text = "Unspent Skill Points: %d" % available_points
 	var no_points_left = available_points <= 0
-	
+
 	for stat in stat_labels.keys():
 		var base_val = hero.stat_block.get_stat(stat)
 		var bonus = temp_allocations[stat]
@@ -78,6 +78,6 @@ func update_ui() -> void:
 			stat_labels[stat].text = "%s: %d (+%d)" % [stat.capitalize(), base_val, bonus]
 		else:
 			stat_labels[stat].text = "%s: %d" % [stat.capitalize(), base_val]
-		
+
 		plus_buttons[stat].disabled = no_points_left
 		minus_buttons[stat].disabled = bonus <= 0

@@ -26,16 +26,16 @@ func _on_pause_button_pressed():
 	pause_popup.popup_centered()
 
 func _on_quests_button_pressed():
-	ScreenManager.go_to_screen("quest")
+	ScreenManager.go_to_screen(ScreenManager.ScreenName.QUEST)
 
 func _on_shop_button_pressed():
-	ScreenManager.go_to_screen("shop")
+	ScreenManager.go_to_screen(ScreenManager.ScreenName.SHOP)
 
 func _on_armory_button_pressed():
-	ScreenManager.go_to_screen("armory")
+	ScreenManager.go_to_screen(ScreenManager.ScreenName.ARMORY)
 
 func _on_training_button_pressed():
-	ScreenManager.go_to_screen("training")
+	ScreenManager.go_to_screen(ScreenManager.ScreenName.TRAINING)
 
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_cancel") and not pause_popup.is_visible():

@@ -16,4 +16,4 @@ func _ready() -> void:
 	reward_label.text = reward_text.strip_edges()
 
 func _on_continue_button_pressed() -> void:
-	ScreenManager.go_to_screen("Village")
+	ScreenManager.go_to_screen(ScreenManager.ScreenName.VILLAGE)
