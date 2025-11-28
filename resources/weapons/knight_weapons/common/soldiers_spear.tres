@@ -1,0 +1,56 @@
+[gd_resource type="Resource" script_class="Weapon" load_steps=13 format=3 uid="uid://jxwmi2we3vyq"]
+
+[ext_resource type="Script" uid="uid://b2o7w8q10stxo" path="res://scripts/data/ability.gd" id="1_u42vx"]
+[ext_resource type="Script" uid="uid://bo48scp6lbwrb" path="res://scripts/data/attack.gd" id="2_8vja4"]
+[ext_resource type="Script" uid="uid://dgykeyxn7fefw" path="res://scripts/data/weapon.gd" id="2_oulmc"]
+[ext_resource type="Script" uid="uid://bvuw0uyc36uxx" path="res://scripts/data/utility.gd" id="2_v6upd"]
+[ext_resource type="Script" uid="uid://c5deti4sb2k2j" path="res://scripts/data/effect.gd" id="4_a1m3a"]
+[ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://assets/button_themes/regular/green_button.tres" id="6_8vja4"]
+
+[sub_resource type="Resource" id="Resource_qku5v"]
+script = ExtResource("2_8vja4")
+min_damage = 9
+max_damage = 11
+metadata/_custom_type_script = "uid://bo48scp6lbwrb"
+
+[sub_resource type="Resource" id="Resource_8vja4"]
+script = ExtResource("1_u42vx")
+name = "Piercing Thrust"
+attack = SubResource("Resource_qku5v")
+metadata/_custom_type_script = "uid://b2o7w8q10stxo"
+
+[sub_resource type="Resource" id="Resource_k2woj"]
+script = ExtResource("2_8vja4")
+min_damage = 12
+max_damage = 16
+metadata/_custom_type_script = "uid://bo48scp6lbwrb"
+
+[sub_resource type="Resource" id="Resource_vqwmt"]
+script = ExtResource("4_a1m3a")
+type = 4
+strength = 3
+duration = 2
+metadata/_custom_type_script = "uid://c5deti4sb2k2j"
+
+[sub_resource type="Resource" id="Resource_4i7jx"]
+script = ExtResource("2_v6upd")
+effects = Array[ExtResource("4_a1m3a")]([SubResource("Resource_vqwmt")])
+metadata/_custom_type_script = "uid://bvuw0uyc36uxx"
+
+[sub_resource type="Resource" id="Resource_a1m3a"]
+script = ExtResource("1_u42vx")
+name = "Spearwall Jab"
+energy_cost = 4
+cooldown = 3
+attack = SubResource("Resource_k2woj")
+utilities = Array[ExtResource("2_v6upd")]([SubResource("Resource_4i7jx")])
+metadata/_custom_type_script = "uid://b2o7w8q10stxo"
+
+[resource]
+script = ExtResource("2_oulmc")
+abilities = Array[ExtResource("1_u42vx")]([SubResource("Resource_8vja4"), SubResource("Resource_a1m3a")])
+name = "Soldier's Spear"
+description = "A straight ash pole tipped with polished steel, used by every footsoldier."
+theme = ExtResource("6_8vja4")
+value = 90
+metadata/_custom_type_script = "uid://dgykeyxn7fefw"

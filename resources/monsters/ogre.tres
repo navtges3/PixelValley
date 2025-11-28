@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="Monster" load_steps=12 format=3 uid="uid://bxig3cedsllcl"]
 
 [ext_resource type="Script" uid="uid://bd6ohffno5w7r" path="res://scripts/characters/monster.gd" id="1_frc05"]
-[ext_resource type="Script" uid="uid://c5deti4sb2k2j" path="res://scripts/data/effect.gd" id="1_nqds1"]
+[ext_resource type="Script" uid="uid://blp0fv0xnajdb" path="res://scripts/data/active_effect.gd" id="1_pi0wg"]
 [ext_resource type="Texture2D" uid="uid://bxc2p8w8wawwk" path="res://assets/ogre.png" id="1_x6w26"]
 [ext_resource type="Resource" uid="uid://waytpolwnsyp" path="res://resources/abilities/smash.tres" id="2_pi0wg"]
 [ext_resource type="Script" uid="uid://dxnu3vjlxl2pn" path="res://scripts/data/conditional_ability.gd" id="2_rcnog"]

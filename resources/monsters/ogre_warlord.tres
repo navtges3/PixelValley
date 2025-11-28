@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="Monster" load_steps=15 format=3 uid="uid://bhvavuaqg4vna"]
 
-[ext_resource type="Script" uid="uid://c5deti4sb2k2j" path="res://scripts/data/effect.gd" id="1_b6dpx"]
+[ext_resource type="Script" uid="uid://blp0fv0xnajdb" path="res://scripts/data/active_effect.gd" id="1_cd3ku"]
 [ext_resource type="Resource" uid="uid://5301qdbddvxa" path="res://resources/abilities/crushing_blow.tres" id="2_cd3ku"]
 [ext_resource type="Script" uid="uid://dxnu3vjlxl2pn" path="res://scripts/data/conditional_ability.gd" id="3_afcsi"]
 [ext_resource type="Resource" uid="uid://cnpsmwryevais" path="res://resources/abilities/enrage.tres" id="4_cd3ku"]
@@ -13,7 +13,6 @@
 [sub_resource type="Resource" id="Resource_sff3n"]
 script = ExtResource("5_sff3n")
 condition_type = 1
-condition_subject = 0
 value = 0.4
 metadata/_custom_type_script = "uid://cnso83bg7vodw"
 
@@ -55,11 +54,5 @@ basic_attack = ExtResource("2_cd3ku")
 conditional_abilities = Array[ExtResource("3_afcsi")]([SubResource("Resource_co4bm"), SubResource("Resource_kbsnj")])
 name = "Ogre Warlord"
 portrait = ExtResource("6_co4bm")
-active_effects = Array[ExtResource("1_b6dpx")]([])
 stat_block = SubResource("Resource_0xu8l")
-attack_modifier = 0
-magic_modifier = 0
-defense_modifier = 0
-resistance_modifier = 0
-rest_cooldown = 0
 metadata/_custom_type_script = "uid://bd6ohffno5w7r"

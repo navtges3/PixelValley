@@ -44,18 +44,18 @@ func _on_class_selected(selected_class: Hero) -> void:
 		print("Deselected class")
 	else:
 		hero_selected = selected_class
-		hero_class.text = selected_class.hero_class
-		print("Selected class: ", hero_selected.hero_class)
+		hero_class.text = selected_class.get_class_name()
+		print("Selected class: ", hero_selected.get_class_name())
 	check_create_button_state()
 
 func _on_back_button_pressed() -> void:
-	ScreenManager.go_to_screen("main_menu")
+	ScreenManager.go_to_screen(ScreenManager.ScreenName.MAIN_MENU)
 
 func _on_create_button_pressed() -> void:
 	var new_hero = hero_selected.duplicate()
 	new_hero.name = hero_name.text
 	GameState.start_new_game(new_hero)
-	ScreenManager.go_to_screen("village")
+	ScreenManager.go_to_screen(ScreenManager.ScreenName.VILLAGE)
 
 func _on_line_edit_text_changed(_new_text):
 	check_create_button_state()

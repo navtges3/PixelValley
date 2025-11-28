@@ -97,7 +97,7 @@ func _on_rest_button_pressed() -> void:
 	battle_manager.rest()
 
 func _on_flee_button_pressed() -> void:
-	ScreenManager.go_to_screen("village")
+	ScreenManager.go_to_screen(ScreenManager.ScreenName.VILLAGE)
 
 func _on_player_turn():
 	ability_button.disabled = false
@@ -119,20 +119,20 @@ func _on_monster_turn():
 func _on_quest_completed():
 	print("Quest completed!")
 	if current_quest.id == GameState.quest_manager.LAST_QUEST_ID:
-		ScreenManager.go_to_screen("victory")
+		ScreenManager.go_to_screen(ScreenManager.ScreenName.VICTORY)
 	else:
-		ScreenManager.go_to_screen("quest_finished")
+		ScreenManager.go_to_screen(ScreenManager.ScreenName.QUEST_FINISHED)
 
 func _on_hero_defeated():
 	print("Hero defeated!")
-	ScreenManager.go_to_screen("defeat")
+	ScreenManager.go_to_screen(ScreenManager.ScreenName.DEFEAT)
 
 func _on_victory_popup_continue_pressed() -> void:
 	battle_manager.get_new_monster()
 	battle_manager.start_player_turn()
 
 func _on_victory_popup_retreat_pressed() -> void:
-	ScreenManager.go_to_screen("village")
+	ScreenManager.go_to_screen(ScreenManager.ScreenName.VICTORY)
 
 func _on_ability_button_pressed(ability: Ability) -> void:
 	print("Ability pressed: ", ability.name)

@@ -17,5 +17,4 @@ name = "Shadowquake"
 energy_cost = 35
 cooldown = 5
 attack = SubResource("Resource_1qfmq")
-utilities = Array[ExtResource("3_6crwo")]([])
 metadata/_custom_type_script = "uid://b2o7w8q10stxo"

@@ -32,7 +32,7 @@ func refresh() -> void:
 
 func _update_text() -> void:
 	name_label.text = hero.name
-	class_label.text = "Class: " + hero.hero_class
+	class_label.text = "Class: " + hero.get_class_name()
 	picture.texture = hero.portrait
 	level_label.text = "Level: " + str(hero.level)
 	experience_label.text = "XP: " + str(hero.experience)
@@ -60,12 +60,8 @@ func _update_energy_bar():
 func _update_active_effects():
 	var active_effects_text = "Active Effects: "
 	if hero.active_effects.size() == 0:
-		active_effects_text += "\n  None"
+		active_effects_text += "\n -None"
 	else:
-		for effect in hero.active_effects:
-			active_effects_text += "\n%s %d" % [effect.type_to_string(), effect.strength]
-			if effect.duration > 1:
-				active_effects_text += ", %d turns" % effect.duration
-			else:
-				active_effects_text += ", %d turn" % effect.duration
+		for ae in hero.active_effects:
+			active_effects_text += "\n -%s" % ae.get_tooltip()
 	active_effects_label.text = active_effects_text

@@ -87,7 +87,7 @@ func _on_purchase_button_pressed() -> void:
 	_update_item_list()
 
 func _on_exit_button_pressed() -> void:
-	ScreenManager.go_to_screen("village")
+	ScreenManager.go_to_screen(ScreenManager.ScreenName.VILLAGE)
 
 func empty_item_list() -> void:
 	for child in item_list.get_children():

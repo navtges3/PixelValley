@@ -1,39 +1,32 @@
-[gd_resource type="Resource" script_class="Quest" load_steps=12 format=3 uid="uid://7krcd1djuos7"]
+[gd_resource type="Resource" script_class="Quest" load_steps=10 format=3 uid="uid://7krcd1djuos7"]
 
 [ext_resource type="Script" uid="uid://bhsjswm1wnll8" path="res://scripts/quest/monster_requirement.gd" id="1_fi5yr"]
 [ext_resource type="Resource" uid="uid://bxig3cedsllcl" path="res://resources/monsters/ogre.tres" id="2_4wg3f"]
 [ext_resource type="Resource" uid="uid://yrw5qgu7qwe0" path="res://resources/monsters/orc.tres" id="2_51uxk"]
 [ext_resource type="Script" uid="uid://xekqra2mjp3l" path="res://scripts/quest/quest_reward.gd" id="3_51uxk"]
-[ext_resource type="Resource" uid="uid://c4ew36sfl85ym" path="res://resources/items/experience.tres" id="4_668k3"]
-[ext_resource type="Resource" uid="uid://3s3rxn0iei3l" path="res://resources/weapons/warhammer.tres" id="6_4wg3f"]
 [ext_resource type="Script" uid="uid://xhl8p6y5w5e6" path="res://scripts/quest/quest.gd" id="6_l1doq"]
 
 [sub_resource type="Resource" id="Resource_68l85"]
 script = ExtResource("1_fi5yr")
 monster = ExtResource("2_51uxk")
 target_amount = 5
-current_amount = 0
 metadata/_custom_type_script = "uid://bhsjswm1wnll8"
 
 [sub_resource type="Resource" id="Resource_668k3"]
 script = ExtResource("1_fi5yr")
 monster = ExtResource("2_4wg3f")
 target_amount = 2
-current_amount = 0
 metadata/_custom_type_script = "uid://bhsjswm1wnll8"
 
 [sub_resource type="Resource" id="Resource_sp1ti"]
 script = ExtResource("3_51uxk")
-item = ExtResource("4_668k3")
+reward_type = 2
 amount = 600
-target = 0
 metadata/_custom_type_script = "uid://xekqra2mjp3l"
 
-[sub_resource type="Resource" id="Resource_mec1n"]
+[sub_resource type="Resource" id="Resource_dwfj8"]
 script = ExtResource("3_51uxk")
-item = ExtResource("6_4wg3f")
-amount = 1
-target = 1
+reward_type = 3
 metadata/_custom_type_script = "uid://xekqra2mjp3l"
 
 [resource]
@@ -42,6 +35,6 @@ title = "Fortress Siege"
 id = 10
 description = "The enemy has fortified an old keep. Break their defenses."
 monster_objectives = Array[ExtResource("1_fi5yr")]([SubResource("Resource_68l85"), SubResource("Resource_668k3")])
-reward = Array[ExtResource("3_51uxk")]([SubResource("Resource_sp1ti"), SubResource("Resource_mec1n")])
+reward = Array[ExtResource("3_51uxk")]([SubResource("Resource_sp1ti"), SubResource("Resource_dwfj8")])
 next_quests = Array[int]([11])
 metadata/_custom_type_script = "uid://xhl8p6y5w5e6"

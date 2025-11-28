@@ -7,6 +7,9 @@ const HEALTH_WEIGHT := 0.5
 @export var basic_attack: Ability
 @export var conditional_abilities: Array[ConditionalAbility]
 
+func get_colored_name() -> String:
+	return "[color=red]" + self.name + "[/color]"
+
 func choose_ability(target: Combatant) -> Ability:
 	for conditional in conditional_abilities:
 		if conditional.is_ready(self, target) and stat_block.current_nrg >= conditional.ability.energy_cost:

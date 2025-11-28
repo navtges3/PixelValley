@@ -19,6 +19,6 @@ func _on_click_area_pressed() -> void:
 func _update_preview() -> void:
 	if not hero:
 		return
-	$VBoxContainer/ClassNameLabel.text = hero.hero_class
+	$VBoxContainer/ClassNameLabel.text = hero.get_class_name()
 	$VBoxContainer/Portrait.texture = hero.portrait
 	$VBoxContainer/WeaponLabel.text = hero.inventory.equipped_weapon.name
