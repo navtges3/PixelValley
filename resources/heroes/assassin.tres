@@ -1,10 +1,10 @@
 [gd_resource type="Resource" script_class="Hero" load_steps=15 format=3 uid="uid://b833aodacue5s"]
 
 [ext_resource type="Script" uid="uid://d0mdck5mlsm03" path="res://scripts/data/item_stack.gd" id="1_cwdy8"]
+[ext_resource type="Script" uid="uid://blp0fv0xnajdb" path="res://scripts/data/active_effect.gd" id="1_d62i1"]
 [ext_resource type="Texture2D" uid="uid://onvyq0o8uo1i" path="res://assets/assassin.png" id="1_doq74"]
 [ext_resource type="Script" uid="uid://b1x8jfufxk3xv" path="res://scripts/characters/hero.gd" id="1_iafiy"]
-[ext_resource type="Script" uid="uid://c5deti4sb2k2j" path="res://scripts/data/effect.gd" id="1_k5puk"]
-[ext_resource type="Resource" uid="uid://ytx0xnb7ewpw" path="res://resources/weapons/twin_daggers.tres" id="2_d62i1"]
+[ext_resource type="Resource" uid="uid://dxambea5c1r2r" path="res://resources/weapons/assassin_weapons/common/twin_daggers.tres" id="2_3jpf1"]
 [ext_resource type="Resource" uid="uid://cyiqwotfm3gq6" path="res://resources/potions/regeneration_potion.tres" id="2_k5puk"]
 [ext_resource type="Resource" uid="uid://cfwejpwyn8due" path="res://resources/potions/attack_potion.tres" id="3_d62i1"]
 [ext_resource type="Script" uid="uid://hxleldka7y06" path="res://scripts/characters/stat_block.gd" id="3_qjpei"]
@@ -26,7 +26,7 @@ metadata/_custom_type_script = "uid://d0mdck5mlsm03"
 [sub_resource type="Resource" id="Resource_0t77m"]
 script = ExtResource("4_3jpf1")
 gold = 50
-equipped_weapon = ExtResource("2_d62i1")
+equipped_weapon = ExtResource("2_3jpf1")
 potions = Array[ExtResource("1_cwdy8")]([SubResource("Resource_myjxf"), SubResource("Resource_8bnnm")])
 metadata/_custom_type_script = "uid://4rm24oomjap7"
 
