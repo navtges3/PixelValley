@@ -25,13 +25,6 @@ min_damage = 3
 max_damage = 8
 metadata/_custom_type_script = "uid://bo48scp6lbwrb"
 
-[sub_resource type="Resource" id="Resource_c2b47"]
-script = ExtResource("5_8t3c1")
-type = 4
-strength = 5
-duration = 2
-metadata/_custom_type_script = "uid://c5deti4sb2k2j"
-
 [sub_resource type="Resource" id="Resource_dvku2"]
 script = ExtResource("5_8t3c1")
 type = 5
@@ -39,9 +32,16 @@ strength = 5
 duration = 2
 metadata/_custom_type_script = "uid://c5deti4sb2k2j"
 
+[sub_resource type="Resource" id="Resource_c2b47"]
+script = ExtResource("5_8t3c1")
+type = 6
+strength = 5
+duration = 2
+metadata/_custom_type_script = "uid://c5deti4sb2k2j"
+
 [sub_resource type="Resource" id="Resource_xu8gp"]
 script = ExtResource("4_3pinp")
-effects = Array[ExtResource("5_8t3c1")]([SubResource("Resource_c2b47"), SubResource("Resource_dvku2")])
+effects = Array[ExtResource("5_8t3c1")]([SubResource("Resource_dvku2"), SubResource("Resource_c2b47")])
 metadata/_custom_type_script = "uid://bvuw0uyc36uxx"
 
 [sub_resource type="Resource" id="Resource_pl52e"]
