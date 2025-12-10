@@ -19,8 +19,8 @@ metadata/_custom_type_script = "uid://xekqra2mjp3l"
 
 [sub_resource type="Resource" id="Resource_tj5w2"]
 script = ExtResource("3_rukrk")
-reward_type = 1
-amount = 80
+reward_type = 3
+weapon_rarity = 2
 metadata/_custom_type_script = "uid://xekqra2mjp3l"
 
 [resource]
