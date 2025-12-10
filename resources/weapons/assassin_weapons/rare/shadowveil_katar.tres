@@ -1,12 +1,57 @@
-[gd_resource type="Resource" script_class="Weapon" load_steps=4 format=3 uid="uid://8r04y42a6lj3"]
+[gd_resource type="Resource" script_class="Weapon" load_steps=12 format=3 uid="uid://8r04y42a6lj3"]
 
 [ext_resource type="Script" uid="uid://b2o7w8q10stxo" path="res://scripts/data/ability.gd" id="1_qu7u2"]
 [ext_resource type="Script" uid="uid://dgykeyxn7fefw" path="res://scripts/data/weapon.gd" id="2_0bpmb"]
-[ext_resource type="Theme" uid="uid://e6xnt81pte22" path="res://assets/button_themes/regular/gray_button.tres" id="3_uxi3j"]
+[ext_resource type="Script" uid="uid://bo48scp6lbwrb" path="res://scripts/data/attack.gd" id="2_uxi3j"]
+[ext_resource type="Script" uid="uid://bvuw0uyc36uxx" path="res://scripts/data/utility.gd" id="3_8bucm"]
+[ext_resource type="Theme" uid="uid://dqwm8agt87lsh" path="res://assets/button_themes/regular/blue_button.tres" id="3_qu7u2"]
+
+[sub_resource type="Resource" id="Resource_no1xk"]
+script = ExtResource("2_uxi3j")
+min_damage = 1
+max_damage = 8
+metadata/_custom_type_script = "uid://bo48scp6lbwrb"
+
+[sub_resource type="Resource" id="Resource_gpskx"]
+script = ExtResource("1_qu7u2")
+name = "Wrist Lunge"
+attack = SubResource("Resource_no1xk")
+metadata/_custom_type_script = "uid://b2o7w8q10stxo"
+
+[sub_resource type="Resource" id="Resource_aiq1s"]
+script = ExtResource("2_uxi3j")
+min_damage = 5
+max_damage = 13
+metadata/_custom_type_script = "uid://bo48scp6lbwrb"
+
+[sub_resource type="Resource" id="Resource_0i4sv"]
+script = ExtResource("1_qu7u2")
+name = "Veiled Strike"
+energy_cost = 5
+cooldown = 3
+attack = SubResource("Resource_aiq1s")
+metadata/_custom_type_script = "uid://b2o7w8q10stxo"
+
+[sub_resource type="Resource" id="Resource_uxi3j"]
+script = ExtResource("2_uxi3j")
+min_damage = 8
+max_damage = 16
+metadata/_custom_type_script = "uid://bo48scp6lbwrb"
+
+[sub_resource type="Resource" id="Resource_0nd0f"]
+script = ExtResource("1_qu7u2")
+name = "Hidden Talons"
+energy_cost = 10
+cooldown = 6
+attack = SubResource("Resource_uxi3j")
+metadata/_custom_type_script = "uid://b2o7w8q10stxo"
 
 [resource]
 script = ExtResource("2_0bpmb")
 rarity = 1
+abilities = Array[ExtResource("1_qu7u2")]([SubResource("Resource_gpskx"), SubResource("Resource_0i4sv"), SubResource("Resource_0nd0f")])
 name = "Shadowveil Katar"
 description = "A pair of forearm blades hidden beneath dark cloth wraps."
+theme = ExtResource("3_qu7u2")
+value = 325
 metadata/_custom_type_script = "uid://dgykeyxn7fefw"

@@ -1,12 +1,57 @@
-[gd_resource type="Resource" script_class="Weapon" load_steps=4 format=3 uid="uid://dh8o7nn7aisag"]
+[gd_resource type="Resource" script_class="Weapon" load_steps=12 format=3 uid="uid://dh8o7nn7aisag"]
 
 [ext_resource type="Script" uid="uid://b2o7w8q10stxo" path="res://scripts/data/ability.gd" id="1_sxr83"]
 [ext_resource type="Script" uid="uid://dgykeyxn7fefw" path="res://scripts/data/weapon.gd" id="2_06yle"]
-[ext_resource type="Theme" uid="uid://e6xnt81pte22" path="res://assets/button_themes/regular/gray_button.tres" id="3_xxto6"]
+[ext_resource type="Script" uid="uid://bo48scp6lbwrb" path="res://scripts/data/attack.gd" id="2_xxto6"]
+[ext_resource type="Script" uid="uid://bvuw0uyc36uxx" path="res://scripts/data/utility.gd" id="3_n63ji"]
+[ext_resource type="Theme" uid="uid://dqwm8agt87lsh" path="res://assets/button_themes/regular/blue_button.tres" id="3_sxr83"]
+
+[sub_resource type="Resource" id="Resource_l0p61"]
+script = ExtResource("2_xxto6")
+min_damage = 2
+max_damage = 12
+metadata/_custom_type_script = "uid://bo48scp6lbwrb"
+
+[sub_resource type="Resource" id="Resource_kquh3"]
+script = ExtResource("1_sxr83")
+name = "Serpent Cut"
+attack = SubResource("Resource_l0p61")
+metadata/_custom_type_script = "uid://b2o7w8q10stxo"
+
+[sub_resource type="Resource" id="Resource_ovrhj"]
+script = ExtResource("2_xxto6")
+min_damage = 4
+max_damage = 14
+metadata/_custom_type_script = "uid://bo48scp6lbwrb"
+
+[sub_resource type="Resource" id="Resource_18xr5"]
+script = ExtResource("1_sxr83")
+name = "Toxic Lash"
+energy_cost = 5
+cooldown = 3
+attack = SubResource("Resource_ovrhj")
+metadata/_custom_type_script = "uid://b2o7w8q10stxo"
+
+[sub_resource type="Resource" id="Resource_pbsws"]
+script = ExtResource("2_xxto6")
+min_damage = 6
+max_damage = 16
+metadata/_custom_type_script = "uid://bo48scp6lbwrb"
+
+[sub_resource type="Resource" id="Resource_u8vg7"]
+script = ExtResource("1_sxr83")
+name = "Venom Flood"
+energy_cost = 10
+cooldown = 6
+attack = SubResource("Resource_pbsws")
+metadata/_custom_type_script = "uid://b2o7w8q10stxo"
 
 [resource]
 script = ExtResource("2_06yle")
 rarity = 1
+abilities = Array[ExtResource("1_sxr83")]([SubResource("Resource_kquh3"), SubResource("Resource_18xr5"), SubResource("Resource_u8vg7")])
 name = "Venomfang Blades"
 description = "Twin daggers with serpent‑shaped hilts, their grooves designed to hold poison."
+theme = ExtResource("3_sxr83")
+value = 360
 metadata/_custom_type_script = "uid://dgykeyxn7fefw"

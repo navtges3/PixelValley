@@ -8,8 +8,8 @@
 
 [sub_resource type="Resource" id="Resource_yjfna"]
 script = ExtResource("2_6p0la")
-min_damage = 5
-max_damage = 8
+min_damage = 1
+max_damage = 6
 metadata/_custom_type_script = "uid://bo48scp6lbwrb"
 
 [sub_resource type="Resource" id="Resource_5u2n6"]
@@ -20,14 +20,14 @@ metadata/_custom_type_script = "uid://b2o7w8q10stxo"
 
 [sub_resource type="Resource" id="Resource_ofr0u"]
 script = ExtResource("2_6p0la")
-min_damage = 10
-max_damage = 15
+min_damage = 6
+max_damage = 12
 metadata/_custom_type_script = "uid://bo48scp6lbwrb"
 
 [sub_resource type="Resource" id="Resource_0cotu"]
 script = ExtResource("1_t4dvg")
 name = "Opportunist Cut"
-energy_cost = 4
+energy_cost = 5
 cooldown = 2
 attack = SubResource("Resource_ofr0u")
 metadata/_custom_type_script = "uid://b2o7w8q10stxo"

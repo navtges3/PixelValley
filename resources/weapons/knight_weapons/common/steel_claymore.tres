@@ -8,8 +8,8 @@
 
 [sub_resource type="Resource" id="Resource_jskeh"]
 script = ExtResource("2_bq7oy")
-min_damage = 6
-max_damage = 14
+min_damage = 1
+max_damage = 12
 metadata/_custom_type_script = "uid://bo48scp6lbwrb"
 
 [sub_resource type="Resource" id="Resource_nlyxl"]
@@ -20,14 +20,14 @@ metadata/_custom_type_script = "uid://b2o7w8q10stxo"
 
 [sub_resource type="Resource" id="Resource_3d462"]
 script = ExtResource("2_bq7oy")
-min_damage = 12
-max_damage = 20
+min_damage = 10
+max_damage = 17
 metadata/_custom_type_script = "uid://bo48scp6lbwrb"
 
 [sub_resource type="Resource" id="Resource_5b7wv"]
 script = ExtResource("1_lgn1t")
 name = "Overhead Breaker"
-energy_cost = 8
+energy_cost = 5
 cooldown = 3
 attack = SubResource("Resource_3d462")
 metadata/_custom_type_script = "uid://b2o7w8q10stxo"
