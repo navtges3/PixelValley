@@ -32,14 +32,14 @@ metadata/_custom_type_script = "uid://4rm24oomjap7"
 
 [sub_resource type="Resource" id="Resource_wwsut"]
 script = ExtResource("5_j6mr1")
-current_hp = 120
+current_hp = 100
 current_nrg = 40
-max_hp = 120
+max_hp = 100
 max_nrg = 40
-attack = 10
-magic = 2
-defense = 8
-resistance = 4
+attack = 3
+magic = 1
+defense = 4
+resistance = 2
 metadata/_custom_type_script = "uid://hxleldka7y06"
 
 [resource]

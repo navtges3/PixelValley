@@ -36,15 +36,14 @@ current_hp = 80
 current_nrg = 60
 max_hp = 80
 max_nrg = 60
-attack = 12
-magic = 4
-defense = 4
-resistance = 3
+attack = 5
+magic = 1
+defense = 2
+resistance = 2
 metadata/_custom_type_script = "uid://hxleldka7y06"
 
 [resource]
 script = ExtResource("1_iafiy")
-hero_class = "Assassin"
 inventory = SubResource("Resource_0t77m")
 portrait = ExtResource("1_doq74")
 stat_block = SubResource("Resource_3wgu5")
