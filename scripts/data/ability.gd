@@ -29,11 +29,11 @@ func update_cooldown() -> void:
 		print(" - Ability %s is on cooldown for %d turns." % [self.name, self.current_cooldown])
 		self.current_cooldown -= 1
 
-func get_tooltip() -> String:
+func get_tooltip(stat_block: StatBlock = null) -> String:
 	var attack_tooltip = ""
 	var utility_tooltip = ""
 	if attack != null:
-		attack_tooltip = attack.get_tooltip() + "\n"
+		attack_tooltip = attack.get_tooltip(stat_block) + "\n"
 	for utility in utilities:
 		utility_tooltip += utility.get_tooltip()
 	return "%s%sEnergy cost: %d\nCooldown: %d" % [attack_tooltip, utility_tooltip, self.energy_cost, self.cooldown]

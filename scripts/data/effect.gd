@@ -9,30 +9,31 @@ enum EffectType { HEAL, ENERGY, POISON,
 @export var strength: int = 0
 @export var duration: int = 1
 
-func type_to_string() -> String:
+func _to_string() -> String:
+	var turn_text = "turn" if duration == 1 else "turns"
 	match type:
 		Effect.EffectType.HEAL:
-			return "Heal"
+			return "Heal %d (%d %s)" % [strength, duration, turn_text]
 		Effect.EffectType.ENERGY:
-			return "Recover Energy"
+			return "Recover Energy %d (%d %s)" % [strength, duration, turn_text]
 		Effect.EffectType.POISON:
-			return "Poison"
+			return "Poison %d (%d %s)" % [strength, duration, turn_text]
 		Effect.EffectType.BUFF_ATTACK:
-			return "Buff Attack"
+			return "Attack +%d (%d %s)" % [strength, duration, turn_text]
 		Effect.EffectType.BUFF_MAGIC:
-			return "Buff Magic"
+			return "Magic +%d (%d %s)" % [strength, duration, turn_text]
 		Effect.EffectType.BUFF_DEFENSE:
-			return "Buff Defense"
+			return "Defense +%d (%d %s)" % [strength, duration, turn_text]
 		Effect.EffectType.BUFF_RESISTANCE:
-			return "Buff Resistance"
+			return "Resistance +%d (%d %s)" % [strength, duration, turn_text]
 		Effect.EffectType.DEBUFF_ATTACK:
-			return "Debuff Attack"
+			return "Attack -%d (%d %s)" % [strength, duration, turn_text]
 		Effect.EffectType.DEBUFF_MAGIC:
-			return "Debuff Magic"
+			return "Magic -%d (%d %s)" % [strength, duration, turn_text]
 		Effect.EffectType.DEBUFF_DEFENSE:
-			return "Debuff Defense"
+			return "Defense -%d (%d %s)" % [strength, duration, turn_text]
 		Effect.EffectType.DEBUFF_RESISTANCE:
-			return "Debuff Resistance"
+			return "Resistance -%d (%d %s)" % [strength, duration, turn_text]
 	return "Unknown"
 
 func is_buff() -> bool:
@@ -42,9 +43,7 @@ func is_debuff() -> bool:
 	return type in [Effect.EffectType.DEBUFF_ATTACK, Effect.EffectType.DEBUFF_MAGIC, Effect.EffectType.DEBUFF_DEFENSE, Effect.EffectType.DEBUFF_RESISTANCE]
 
 func get_tooltip() -> String:
-	var name = type_to_string()
-	var turn_text = "turn" if duration == 1 else "turns"
-	return "%s +%d (%d %s)" % [name, strength, duration, turn_text]
+	return _to_string()
 
 func get_button_theme() -> Theme:
 	match type:
