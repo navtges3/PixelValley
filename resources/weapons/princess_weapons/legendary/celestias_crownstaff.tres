@@ -1,12 +1,88 @@
-[gd_resource type="Resource" script_class="Weapon" load_steps=4 format=3 uid="uid://cpw68ccc6le1g"]
+[gd_resource type="Resource" script_class="Weapon" load_steps=17 format=3 uid="uid://cpw68ccc6le1g"]
 
 [ext_resource type="Script" uid="uid://b2o7w8q10stxo" path="res://scripts/data/ability.gd" id="1_41mad"]
+[ext_resource type="Script" uid="uid://bo48scp6lbwrb" path="res://scripts/data/attack.gd" id="2_03qfv"]
 [ext_resource type="Script" uid="uid://dgykeyxn7fefw" path="res://scripts/data/weapon.gd" id="2_l1k5s"]
-[ext_resource type="Theme" uid="uid://e6xnt81pte22" path="res://assets/button_themes/regular/gray_button.tres" id="3_03qfv"]
+[ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://assets/button_themes/regular/red_button.tres" id="3_41mad"]
+[ext_resource type="Script" uid="uid://bvuw0uyc36uxx" path="res://scripts/data/utility.gd" id="3_phwh4"]
+[ext_resource type="Script" uid="uid://c5deti4sb2k2j" path="res://scripts/data/effect.gd" id="4_phwh4"]
+
+[sub_resource type="Resource" id="Resource_ljt0e"]
+script = ExtResource("2_03qfv")
+min_damage = 1
+max_damage = 8
+attack_type = 1
+metadata/_custom_type_script = "uid://bo48scp6lbwrb"
+
+[sub_resource type="Resource" id="Resource_ptb6g"]
+script = ExtResource("1_41mad")
+name = "Starfire Bolt"
+attack = SubResource("Resource_ljt0e")
+metadata/_custom_type_script = "uid://b2o7w8q10stxo"
+
+[sub_resource type="Resource" id="Resource_03qfv"]
+script = ExtResource("2_03qfv")
+min_damage = 5
+max_damage = 12
+attack_type = 1
+metadata/_custom_type_script = "uid://bo48scp6lbwrb"
+
+[sub_resource type="Resource" id="Resource_iecfl"]
+script = ExtResource("1_41mad")
+name = "Celestial Sweep"
+energy_cost = 5
+cooldown = 3
+attack = SubResource("Resource_03qfv")
+metadata/_custom_type_script = "uid://b2o7w8q10stxo"
+
+[sub_resource type="Resource" id="Resource_uu0b5"]
+script = ExtResource("4_phwh4")
+type = 4
+strength = 5
+duration = 3
+metadata/_custom_type_script = "uid://c5deti4sb2k2j"
+
+[sub_resource type="Resource" id="Resource_o4vhw"]
+script = ExtResource("4_phwh4")
+type = 5
+strength = 5
+duration = 3
+metadata/_custom_type_script = "uid://c5deti4sb2k2j"
+
+[sub_resource type="Resource" id="Resource_rav85"]
+script = ExtResource("3_phwh4")
+effects = Array[ExtResource("4_phwh4")]([SubResource("Resource_uu0b5"), SubResource("Resource_o4vhw")])
+metadata/_custom_type_script = "uid://bvuw0uyc36uxx"
+
+[sub_resource type="Resource" id="Resource_mtfn0"]
+script = ExtResource("1_41mad")
+name = "Halo Convergence"
+energy_cost = 10
+cooldown = 6
+utilities = Array[ExtResource("3_phwh4")]([SubResource("Resource_rav85")])
+metadata/_custom_type_script = "uid://b2o7w8q10stxo"
+
+[sub_resource type="Resource" id="Resource_phwh4"]
+script = ExtResource("2_03qfv")
+min_damage = 10
+max_damage = 20
+attack_type = 1
+metadata/_custom_type_script = "uid://bo48scp6lbwrb"
+
+[sub_resource type="Resource" id="Resource_nu3tn"]
+script = ExtResource("1_41mad")
+name = "Dawn of the Heavens"
+energy_cost = 20
+cooldown = 9
+attack = SubResource("Resource_phwh4")
+metadata/_custom_type_script = "uid://b2o7w8q10stxo"
 
 [resource]
 script = ExtResource("2_l1k5s")
 rarity = 2
+abilities = Array[ExtResource("1_41mad")]([SubResource("Resource_ptb6g"), SubResource("Resource_iecfl"), SubResource("Resource_mtfn0"), SubResource("Resource_nu3tn")])
 name = "Celestia’s Crownstaff"
 description = "A radiant staff crowned with a star‑shaped gem said to contain skyfire."
+theme = ExtResource("3_41mad")
+value = 1350
 metadata/_custom_type_script = "uid://dgykeyxn7fefw"

@@ -1,15 +1,16 @@
-[gd_resource type="Resource" script_class="Weapon" load_steps=10 format=3 uid="uid://mgjt4oel7eop"]
+[gd_resource type="Resource" script_class="Weapon" load_steps=13 format=3 uid="uid://mgjt4oel7eop"]
 
 [ext_resource type="Script" uid="uid://b2o7w8q10stxo" path="res://scripts/data/ability.gd" id="1_kbdf4"]
 [ext_resource type="Script" uid="uid://dgykeyxn7fefw" path="res://scripts/data/weapon.gd" id="2_6ytwx"]
 [ext_resource type="Script" uid="uid://bo48scp6lbwrb" path="res://scripts/data/attack.gd" id="2_yo1no"]
 [ext_resource type="Script" uid="uid://bvuw0uyc36uxx" path="res://scripts/data/utility.gd" id="3_fcgng"]
+[ext_resource type="Script" uid="uid://c5deti4sb2k2j" path="res://scripts/data/effect.gd" id="4_fcgng"]
 [ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://assets/button_themes/regular/green_button.tres" id="5_q8ulg"]
 
 [sub_resource type="Resource" id="Resource_ix40n"]
 script = ExtResource("2_yo1no")
-min_damage = 7
-max_damage = 10
+min_damage = 1
+max_damage = 8
 metadata/_custom_type_script = "uid://bo48scp6lbwrb"
 
 [sub_resource type="Resource" id="Resource_l4yvg"]
@@ -20,16 +21,28 @@ metadata/_custom_type_script = "uid://b2o7w8q10stxo"
 
 [sub_resource type="Resource" id="Resource_f4rv5"]
 script = ExtResource("2_yo1no")
-min_damage = 12
-max_damage = 17
+min_damage = 6
+max_damage = 14
 metadata/_custom_type_script = "uid://bo48scp6lbwrb"
+
+[sub_resource type="Resource" id="Resource_q8ulg"]
+script = ExtResource("4_fcgng")
+type = 6
+strength = 5
+metadata/_custom_type_script = "uid://c5deti4sb2k2j"
+
+[sub_resource type="Resource" id="Resource_07nft"]
+script = ExtResource("3_fcgng")
+effects = Array[ExtResource("4_fcgng")]([SubResource("Resource_q8ulg")])
+metadata/_custom_type_script = "uid://bvuw0uyc36uxx"
 
 [sub_resource type="Resource" id="Resource_uc2qj"]
 script = ExtResource("1_kbdf4")
 name = "Desert Dance"
 energy_cost = 5
-cooldown = 4
+cooldown = 3
 attack = SubResource("Resource_f4rv5")
+utilities = Array[ExtResource("3_fcgng")]([SubResource("Resource_07nft")])
 metadata/_custom_type_script = "uid://b2o7w8q10stxo"
 
 [resource]
