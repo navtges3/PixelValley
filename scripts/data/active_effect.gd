@@ -13,11 +13,8 @@ func _init(_effect: Effect, _target, _source = null):
 	remaining_turns = effect.duration
 
 func on_apply():
+	# Apply immediate stat changes for buffs/debuffs
 	match effect.type:
-		Effect.EffectType.HEAL:
-			target.heal(effect.strength)
-		Effect.EffectType.ENERGY:
-			target.recover_energy(effect.strength)
 		Effect.EffectType.BUFF_ATTACK:
 			target.stat_block.attack += effect.strength
 		Effect.EffectType.DEBUFF_ATTACK:
@@ -42,7 +39,8 @@ func on_tick():
 			target.heal(effect.strength)
 		Effect.EffectType.ENERGY:
 			target.recover_energy(effect.strength)
-		# Add more DoT or HoT effects here as needed
+		Effect.EffectType.POISON:
+			target.take_damage(effect.strength, Attack.AttackType.MAGICAL)
 	if remaining_turns <= 0:
 		on_expire()
 

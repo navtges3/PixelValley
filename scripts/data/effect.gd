@@ -1,7 +1,9 @@
 extends Resource
 class_name Effect
 
-enum EffectType { HEAL, ENERGY, BUFF_ATTACK, BUFF_MAGIC, BUFF_DEFENSE, BUFF_RESISTANCE, DEBUFF_ATTACK, DEBUFF_MAGIC, DEBUFF_DEFENSE, DEBUFF_RESISTANCE }
+enum EffectType { HEAL, ENERGY, POISON,
+					BUFF_ATTACK, BUFF_MAGIC, BUFF_DEFENSE, BUFF_RESISTANCE,
+					DEBUFF_ATTACK, DEBUFF_MAGIC, DEBUFF_DEFENSE, DEBUFF_RESISTANCE }
 
 @export var type: EffectType
 @export var strength: int = 0
@@ -13,6 +15,8 @@ func type_to_string() -> String:
 			return "Heal"
 		Effect.EffectType.ENERGY:
 			return "Recover Energy"
+		Effect.EffectType.POISON:
+			return "Poison"
 		Effect.EffectType.BUFF_ATTACK:
 			return "Buff Attack"
 		Effect.EffectType.BUFF_MAGIC:
@@ -48,6 +52,8 @@ func get_button_theme() -> Theme:
 			return preload("res://assets/button_themes/regular/green_button.tres")
 		Effect.EffectType.ENERGY:
 			return preload("res://assets/button_themes/regular/yellow_button.tres")
+		Effect.EffectType.POISON:
+			return preload("res://assets/button_themes/regular/green_button.tres")
 		Effect.EffectType.BUFF_ATTACK:
 			return preload("res://assets/button_themes/regular/red_button.tres")
 		Effect.EffectType.BUFF_MAGIC:
@@ -55,5 +61,13 @@ func get_button_theme() -> Theme:
 		Effect.EffectType.BUFF_DEFENSE:
 			return preload("res://assets/button_themes/regular/blue_button.tres")
 		Effect.EffectType.BUFF_RESISTANCE:
+			return preload("res://assets/button_themes/regular/blue_button.tres")
+		Effect.EffectType.DEBUFF_ATTACK:
+			return preload("res://assets/button_themes/regular/red_button.tres")
+		Effect.EffectType.DEBUFF_MAGIC:
+			return preload("res://assets/button_themes/regular/red_button.tres")
+		Effect.EffectType.DEBUFF_DEFENSE:
+			return preload("res://assets/button_themes/regular/blue_button.tres")
+		Effect.EffectType.DEBUFF_RESISTANCE:
 			return preload("res://assets/button_themes/regular/blue_button.tres")
 	return preload("res://assets/button_themes/regular/gray_button.tres")
