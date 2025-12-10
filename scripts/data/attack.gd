@@ -20,11 +20,19 @@ func apply_attack(caster: Combatant, target: Combatant) -> String:
 	output += target.take_damage(damage_dealt, self.attack_type)
 	return output
 
-func get_tooltip() -> String:
+func get_tooltip(stat_block: StatBlock = null) -> String:
 	var type_to_string = ""
+	var min_dmg = min_damage
+	var max_dmg = max_damage
 	match attack_type:
 		Attack.AttackType.PHYSICAL:
 			type_to_string = "Physical"
+			if stat_block != null:
+				min_dmg += stat_block.attack
+				max_dmg += stat_block.attack
 		Attack.AttackType.MAGICAL:
 			type_to_string = "Magical"
-	return "%s (%d-%d)" % [type_to_string, min_damage, max_damage]
+			if stat_block != null:
+				min_dmg += stat_block.magic
+				max_dmg += stat_block.magic
+	return "%s (%d-%d)" % [type_to_string, min_dmg, max_dmg]
