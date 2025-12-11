@@ -63,5 +63,5 @@ func _update_active_effects():
 		active_effects_text += "\n -None"
 	else:
 		for ae in hero.active_effects:
-			active_effects_text += "\n -%s" % ae.get_tooltip()
+			active_effects_text += "\n -%s" % ae.effect._to_string()
 	active_effects_label.text = active_effects_text

@@ -20,7 +20,7 @@ func apply_attack(caster: Combatant, target: Combatant) -> String:
 	output += target.take_damage(damage_dealt, self.attack_type)
 	return output
 
-func get_tooltip(stat_block: StatBlock = null) -> String:
+func _to_string(stat_block: StatBlock = null) -> String:
 	var type_to_string = ""
 	var min_dmg = min_damage
 	var max_dmg = max_damage

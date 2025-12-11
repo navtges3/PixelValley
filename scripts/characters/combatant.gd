@@ -48,7 +48,7 @@ func apply_effect(effect: Effect, source = null, remaining_turns := 0) -> String
 		ae.remaining_turns = remaining_turns
 	active_effects.append(ae)
 	ae.on_apply()
-	return "%s applied.\n" % effect.get_tooltip()
+	return "%s applied.\n" % effect._to_string()
 
 func process_active_effects() -> void:
 	for ae in active_effects:

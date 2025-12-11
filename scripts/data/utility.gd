@@ -16,7 +16,7 @@ func apply_utility(caster: Combatant, target: Combatant) -> String:
 				output += target.apply_effect(effect.duplicate())
 	return output
 
-func get_tooltip() -> String:
+func _to_string() -> String:
 	var output = ""
 	var targets = ""
 	match subject:
@@ -25,5 +25,5 @@ func get_tooltip() -> String:
 		UtilitySubject.TARGET:
 			targets += "Target: "
 	for effect in effects:
-		output += "%s%s\n" %  [targets, effect.get_tooltip()]
-	return "%s" % [output]
+		output += "\n -%s" %  [effect._to_string()]
+	return "%s%s" % [targets, output]

@@ -62,6 +62,3 @@ func on_expire():
 			target.stat_block.resistance -= effect.strength
 		Effect.EffectType.DEBUFF_RESISTANCE:
 			target.stat_block.resistance += effect.strength
-
-func get_tooltip() -> String:
-	return effect._to_string()
