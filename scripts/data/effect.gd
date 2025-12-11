@@ -9,6 +9,12 @@ enum EffectType { HEAL, ENERGY, POISON,
 @export var strength: int = 0
 @export var duration: int = 1
 
+func is_buff() -> bool:
+	return type in [Effect.EffectType.BUFF_ATTACK, Effect.EffectType.BUFF_MAGIC, Effect.EffectType.BUFF_DEFENSE, Effect.EffectType.BUFF_RESISTANCE]
+
+func is_debuff() -> bool:
+	return type in [Effect.EffectType.DEBUFF_ATTACK, Effect.EffectType.DEBUFF_MAGIC, Effect.EffectType.DEBUFF_DEFENSE, Effect.EffectType.DEBUFF_RESISTANCE]
+
 func _to_string() -> String:
 	var turn_text = "turn" if duration == 1 else "turns"
 	match type:
@@ -35,15 +41,6 @@ func _to_string() -> String:
 		Effect.EffectType.DEBUFF_RESISTANCE:
 			return "Resistance -%d (%d %s)" % [strength, duration, turn_text]
 	return "Unknown"
-
-func is_buff() -> bool:
-	return type in [Effect.EffectType.BUFF_ATTACK, Effect.EffectType.BUFF_MAGIC, Effect.EffectType.BUFF_DEFENSE, Effect.EffectType.BUFF_RESISTANCE]
-
-func is_debuff() -> bool:
-	return type in [Effect.EffectType.DEBUFF_ATTACK, Effect.EffectType.DEBUFF_MAGIC, Effect.EffectType.DEBUFF_DEFENSE, Effect.EffectType.DEBUFF_RESISTANCE]
-
-func get_tooltip() -> String:
-	return _to_string()
 
 func get_button_theme() -> Theme:
 	match type:

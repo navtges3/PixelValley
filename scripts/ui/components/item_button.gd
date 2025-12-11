@@ -26,7 +26,7 @@ func _update_text() -> void:
 
 func _update_tooltip() -> void:
 	if item_stack:
-		tooltip_text = item_stack.item.get_tooltip()
+		tooltip_text = item_stack.item._to_string()
 	else:
 		tooltip_text = ""
 

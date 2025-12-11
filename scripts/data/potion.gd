@@ -3,8 +3,8 @@ class_name Potion
 
 @export var effects: Array[Effect]
 
-func get_tooltip() -> String:
-	var tip = "%s\n" % name
+func _to_string() -> String:
+	var tip = "%s" % name
 	for effect in effects:
-		tip += "%s\n" % effect.get_tooltip()
+		tip += "\n%s" % effect._to_string()
 	return tip
