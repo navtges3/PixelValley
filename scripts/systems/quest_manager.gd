@@ -35,7 +35,7 @@ func _on_quest_completed(quest: Quest) -> void:
 		completed_quests.append(quest)
 		for next_id in quest.next_quests:
 			unlock_quest_by_id(next_id)
-		SaveManager.save_game()
+		GameState.save_game()
 
 func apply_rewards(quest: Quest) -> void:
 	for reward in quest.reward:
