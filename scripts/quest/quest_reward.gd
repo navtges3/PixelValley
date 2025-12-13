@@ -24,33 +24,3 @@ func get_description() -> String:
 		RewardType.CLASS_WEAPON:
 			return "Reward: Random Class Weapon"
 	return "Reward: Unknown"
-
-
-func get_save_data() -> Dictionary:
-	var data = {
-		"reward_type": reward_type,
-	}
-	match reward_type:
-		RewardType.ITEM:
-			data["item_path"] = item.resource_path
-			data["amount"] = amount
-		RewardType.GOLD, RewardType.EXPERIENCE:
-			data["amount"] = amount
-		RewardType.CLASS_WEAPON:
-			data["weapon_rarity"] = weapon_rarity
-	return data
-
-
-static func load_from_data(data: Dictionary) -> QuestReward:
-	var reward := QuestReward.new()
-	reward.reward_type = data.get("reward_type", RewardType.ITEM)
-
-	match reward.reward_type:
-		RewardType.ITEM:
-			reward.item = load(data.get("item_path", ""))
-			reward.amount = data.get("amount", 1)
-		RewardType.GOLD, RewardType.EXPERIENCE:
-			reward.amount = data.get("amount", 1)
-		RewardType.CLASS_WEAPON:
-			reward.weapon_rarity = data.get("weapon_rarity", Item.Rarity.COMMON)
-	return reward
