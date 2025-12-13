@@ -73,26 +73,3 @@ func add_available_quest(quest: Quest) -> void:
 		available_quests.append(quest)
 		quest.quest_completed.connect(Callable(self, "_on_quest_completed"))
 
-func get_save_data() -> Dictionary:
-	return {
-		"locked_quests": locked_quests.map(func(q: Quest): return q.get_save_data()),
-		"available_quests": available_quests.map(func(q: Quest): return q.get_save_data()),
-		"completed_quests": completed_quests.map(func(q: Quest): return q.get_save_data()),
-	}
-
-static func load_from_data(data: Dictionary) -> QuestManager:
-	var manager := QuestManager.new()
-	manager.locked_quests = []
-	manager.available_quests = []
-	manager.completed_quests = []
-	for locked_data in data.get("locked_quests", []):
-		var quest = Quest.load_from_data(locked_data)
-		manager.locked_quests.append(quest)
-	for available_data in data.get("available_quests", []):
-		var quest = Quest.load_from_data(available_data)
-		quest.quest_completed.connect(Callable(manager, "_on_quest_completed"))
-		manager.available_quests.append(quest)
-	for completed_data in data.get("completed_quests", []):
-		var quest = Quest.load_from_data(completed_data)
-		manager.completed_quests.append(quest)
-	return manager

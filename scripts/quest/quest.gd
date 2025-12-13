@@ -49,25 +49,3 @@ func is_complete() -> bool:
 	completed = true
 	emit_signal("quest_completed", self)
 	return completed
-
-func get_save_data() -> Dictionary:
-	return {
-		"title": title,
-		"description": description,
-		"monster_objectives": monster_objectives.map(func(obj: MonsterRequirement): return obj.get_save_data()),
-		"reward": reward.map(func(r: QuestReward): return r.get_save_data()),
-		"completed": completed,
-	}
-
-static func load_from_data(data: Dictionary) -> Quest:
-	var quest = Quest.new()
-	quest.title = data.get("title", "")
-	quest.description = data.get("description", "")
-	for obj_data in data.get("monster_objectives", []):
-		var obj = MonsterRequirement.load_from_data(obj_data)
-		quest.monster_objectives.append(obj)
-	for reward_data in data.get("reward", []):
-		var r = QuestReward.load_from_data(reward_data)
-		quest.reward.append(r)
-	quest.completed = data.get("completed", false)
-	return quest
