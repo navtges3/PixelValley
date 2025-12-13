@@ -21,7 +21,7 @@ func _on_options_pressed():
 	options_popup.popup_centered()
 
 func _on_exit_pressed():
-	SaveManager.save_game()
+	GameState.save_game()
 	get_tree().paused = false
 	ScreenManager.go_to_screen(ScreenManager.ScreenName.MAIN_MENU)
 

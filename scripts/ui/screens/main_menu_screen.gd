@@ -16,12 +16,13 @@ func _ready() -> void:
 		load_game_button.disabled = true
 	options_button.pressed.connect(_on_options_button_pressed)
 	exit_button.pressed.connect(_on_exit_button_pressed)
+	GameState.reset_state()
 
 func _on_new_game_button_pressed():
 	ScreenManager.go_to_screen(ScreenManager.ScreenName.NEW_GAME)
 
 func _on_load_game_button_pressed():
-	SaveManager.load_game()
+	GameState.load_game()
 	if GameState.hero and GameState.village:
 		ScreenManager.go_to_screen(ScreenManager.ScreenName.VILLAGE)
 
