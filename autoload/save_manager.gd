@@ -1,5 +1,4 @@
 extends Node
-class_name SaveManager
 
 const SAVE_DIR := "user://saves"
 const MAX_SLOTS := 3

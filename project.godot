@@ -15,10 +15,15 @@ run/main_scene="uid://4w3ilq3htolk"
 config/features=PackedStringArray("4.5", "Forward Plus")
 config/icon="res://icon.svg"
 
+[audio]
+
+buses/default_bus_layout="uid://crpk253ew4rsx"
+
 [autoload]
 
 GameState="*res://autoload/game_state.gd"
-MusicController="*res://scenes/controllers/music_controller.tscn"
+SettingsManager="*res://autoload/settings_manager.gd"
+SaveManager="*res://autoload/save_manager.gd"
 ScreenManager="*res://autoload/screen_manager.gd"
 MonsterLoader="*res://autoload/monster_loader.gd"
 WeaponDatabase="*res://autoload/weapon_database.gd"
