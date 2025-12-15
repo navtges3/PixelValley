@@ -17,6 +17,7 @@ func _ready() -> void:
 	options_button.pressed.connect(_on_options_button_pressed)
 	exit_button.pressed.connect(_on_exit_button_pressed)
 	GameState.reset_state()
+	AudioManager.play_music_by_id("background")
 
 func _on_new_game_button_pressed():
 	ScreenManager.go_to_screen(ScreenManager.ScreenName.NEW_GAME)

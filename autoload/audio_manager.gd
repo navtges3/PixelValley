@@ -13,6 +13,10 @@ const UI_BUS := "UI"
 
 const MUSIC_FADE_TIME := 0.8
 
+const MUSIC := {
+	"background": preload("res://audio/background_music.mp3")
+}
+
 # ---------------------------------------------------------
 # INIT
 # ---------------------------------------------------------
@@ -38,6 +42,12 @@ func play_music(stream: AudioStream, fade := true) -> void:
 		_music_player.stream = stream
 		_music_player.volume_db = 0.0
 		_music_player.play()
+
+func play_music_by_id(id: String, fade := true) -> void:
+	if not MUSIC.has(id):
+		push_warning("AudioManager: Unknown music id '%s'" % id)
+		return
+	play_music(MUSIC[id], fade)
 
 func stop_music(fade := true) -> void:
 	if not _music_player.playing:
