@@ -1,33 +1,33 @@
 extends PopupPanel
 
-# Get node references
-@onready var volume_slider = $VBoxContainer/HBoxContainer/VolumeSlider
+@onready var master_volume_slider: HSlider = $VBoxContainer/MasterVolumeSlider
+@onready var music_volume_slider: HSlider = $VBoxContainer/MusicVolumeSlider
+@onready var sfx_volume_slider: HSlider = $VBoxContainer/SFXVolumeSlider
 @onready var close_button = $VBoxContainer/CloseButton
-@onready var music_player = $"/root/MusicController"
 
 func _ready():
-	volume_slider.value_changed.connect(_on_volume_slider_value_changed)
-	load_volume_settings()
-	volume_slider.value = db_to_linear(music_player.volume_db) * 100
+	master_volume_slider.value = SettingsManager.master_volume
+	music_volume_slider.value = SettingsManager.music_volume
+	sfx_volume_slider.value = SettingsManager.sfx_volume
+	
+	master_volume_slider.value_changed.connect(_on_master_volume_slider_value_changed)
+	music_volume_slider.value_changed.connect(_on_music_volume_slider_value_changed)
+	sfx_volume_slider.value_changed.connect(_on_sfx_volume_slider_value_changed)
 
-func _on_volume_slider_value_changed(value):
-	var db_value = linear_to_db(value / 100)
-	music_player.volume_db = db_value
+func _on_master_volume_slider_value_changed(value) -> void:
+	SettingsManager.master_volume = value
+	SettingsManager.apply_settings()
+	SettingsManager.save_settings()
 
-func save_volume_settings(volume_value):
-	var config = ConfigFile.new()
-	config.set_value("audio", "music_volume", volume_value)
-	config.save("res://settings.cfg")
-	print("Saving new volume")
+func _on_music_volume_slider_value_changed(value) -> void:
+	SettingsManager.music_volume = value
+	SettingsManager.apply_settings()
+	SettingsManager.save_settings()
 
-func load_volume_settings():
-	var config = ConfigFile.new()
-	var err = config.load("res://settings.cfg")
-
-	if err == OK:
-		var saved_volume = config.get_value("audio", "music_volume", 50)
-		music_player.volume_db = linear_to_db(saved_volume / 100)
+func _on_sfx_volume_slider_value_changed(value) -> void:
+	SettingsManager.sfx_volume = value
+	SettingsManager.apply_settings()
+	SettingsManager.save_settings()
 
 func _on_CloseButton_pressed():
-	save_volume_settings(volume_slider.value)
 	hide()
