@@ -42,7 +42,7 @@ func reset_state() -> void:
 	quest_manager = null
 
 func get_slot_meta(slot: int) -> Dictionary:
-	var path := SaveManager.get_slot_dir(slot).path_join("meta.json")
+	var path = SaveManager.get_slot_dir(slot).path_join("meta.json")
 	if not FileAccess.file_exists(path):
 		return {}
 
