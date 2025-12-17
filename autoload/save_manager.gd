@@ -53,13 +53,13 @@ static func load_game() -> void:
 		return
 
 	var hero_json := _load_json(slot, "hero.json")
-	GameState.hero = _load_hero(hero_json)
+	GameState.hero = _load_hero(hero_json.get("data", {}))
 
 	var village_json := _load_json(slot, "village.json")
-	GameState.village = _load_village(village_json)
+	GameState.village = _load_village(village_json.get("data", {}))
 
 	var quest_json := _load_json(slot, "quests.json")
-	GameState.quest_manager = _load_quests(quest_json)
+	GameState.quest_manager = _load_quests(quest_json.get("data", {}))
 
 	print("SaveManager: Loaded game from slot %d" % slot)
 

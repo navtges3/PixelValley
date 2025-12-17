@@ -12,11 +12,11 @@ font_size = 32
 
 [node name="MainMenuScreen" type="Control"]
 layout_mode = 3
-anchors_preset = 0
-offset_left = 120.0
-offset_top = 80.0
-offset_right = 1032.0
-offset_bottom = 568.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 script = ExtResource("1_4vbu3")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
@@ -39,6 +39,7 @@ alignment = 1
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
+size_flags_horizontal = 4
 text = "Welcome to Village Defense"
 label_settings = SubResource("LabelSettings_l72w3")
 horizontal_alignment = 1
