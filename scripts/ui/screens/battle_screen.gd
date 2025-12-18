@@ -132,7 +132,7 @@ func _on_victory_popup_continue_pressed() -> void:
 	battle_manager.start_player_turn()
 
 func _on_victory_popup_retreat_pressed() -> void:
-	ScreenManager.go_to_screen(ScreenManager.ScreenName.VICTORY)
+	ScreenManager.go_to_screen(ScreenManager.ScreenName.VILLAGE)
 
 func _on_ability_button_pressed(ability: Ability) -> void:
 	print("Ability pressed: ", ability.name)
