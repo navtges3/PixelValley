@@ -7,7 +7,7 @@ const REST_CD := 5
 @export var portrait: Texture2D
 @export var active_effects: Array[ActiveEffect] = []
 @export var stat_block: StatBlock
-@export var rest_cooldown: int = 0
+var rest_cooldown = 0
 
 func get_colored_name() -> String:
 	return self.name
@@ -16,10 +16,19 @@ func is_alive() -> bool:
 	return stat_block.current_hp > 0
 
 func rest() -> void:
-	if rest_cooldown <= 0:
-		self.heal(int(self.stat_block.max_hp * 0.5))
-		self.recover_energy(self.stat_block.max_nrg)
-		rest_cooldown = REST_CD
+	self.stat_block.current_hp = self.stat_block.max_hp
+	self.stat_block.current_nrg = self.stat_block.max_nrg
+	active_effects.clear()
+
+func meditate() -> void:
+	var base_hp = 8
+	var base_nrg = 5
+	var magic_scale = 1.3
+	var defense_scale = 1.5
+	var resistance_scale = 1.5
+	self.rest_cooldown = REST_CD
+	self.heal(base_hp + (stat_block.defense * defense_scale) + (stat_block.resistance * resistance_scale))
+	self.recover_energy(base_nrg + (stat_block.magic * magic_scale))
 
 func take_damage(amount: int, type: Attack.AttackType) -> String:
 	var damage = _calculate_damage(amount, type)

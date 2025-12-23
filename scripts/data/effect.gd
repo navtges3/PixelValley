@@ -15,32 +15,35 @@ func is_buff() -> bool:
 func is_debuff() -> bool:
 	return type in [Effect.EffectType.DEBUFF_ATTACK, Effect.EffectType.DEBUFF_MAGIC, Effect.EffectType.DEBUFF_DEFENSE, Effect.EffectType.DEBUFF_RESISTANCE]
 
-func _to_string() -> String:
-	var turn_text = "turn" if duration == 1 else "turns"
+func _to_string(turns_remaining := duration) -> String:
+	var turn_text = "turn" if turns_remaining == 1 else "turns"
+	var type_text = ""
 	match type:
 		Effect.EffectType.HEAL:
-			return "Heal %d (%d %s)" % [strength, duration, turn_text]
+			type_text = "Heal %d" % strength
 		Effect.EffectType.ENERGY:
-			return "Recover Energy %d (%d %s)" % [strength, duration, turn_text]
+			type_text = "Recover Energy %d" % strength
 		Effect.EffectType.POISON:
-			return "Poison %d (%d %s)" % [strength, duration, turn_text]
+			type_text = "Poison %d" % strength
 		Effect.EffectType.BUFF_ATTACK:
-			return "Attack +%d (%d %s)" % [strength, duration, turn_text]
+			type_text = "Attack +%d" % strength
 		Effect.EffectType.BUFF_MAGIC:
-			return "Magic +%d (%d %s)" % [strength, duration, turn_text]
+			type_text = "Magic +%d" % strength
 		Effect.EffectType.BUFF_DEFENSE:
-			return "Defense +%d (%d %s)" % [strength, duration, turn_text]
+			type_text = "Defense +%d" % strength
 		Effect.EffectType.BUFF_RESISTANCE:
-			return "Resistance +%d (%d %s)" % [strength, duration, turn_text]
+			type_text = "Resistance +%d" % strength
 		Effect.EffectType.DEBUFF_ATTACK:
-			return "Attack -%d (%d %s)" % [strength, duration, turn_text]
+			type_text = "Attack -%d" % strength
 		Effect.EffectType.DEBUFF_MAGIC:
-			return "Magic -%d (%d %s)" % [strength, duration, turn_text]
+			type_text = "Magic -%d" % strength
 		Effect.EffectType.DEBUFF_DEFENSE:
-			return "Defense -%d (%d %s)" % [strength, duration, turn_text]
+			type_text = "Defense -%d" % strength
 		Effect.EffectType.DEBUFF_RESISTANCE:
-			return "Resistance -%d (%d %s)" % [strength, duration, turn_text]
-	return "Unknown"
+			type_text = "Resistance -%d" % strength
+	if type_text == "":
+		type_text = "Unknown"
+	return "%s (%d %s)" % [type_text, turns_remaining, turn_text]
 
 func get_button_theme() -> Theme:
 	match type:
