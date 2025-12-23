@@ -81,14 +81,14 @@ theme = ExtResource("8_qmdt6")
 toggle_mode = true
 text = "Use Item"
 
-[node name="RestButton" type="Button" parent="ActionArea/LeftPanel"]
+[node name="MeditateButton" type="Button" parent="ActionArea/LeftPanel"]
 custom_minimum_size = Vector2(96, 32)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 tooltip_text = "Restore health and energy."
 theme = ExtResource("9_06vtu")
-text = "Rest"
+text = "Meditate"
 
 [node name="FleeButton" type="Button" parent="ActionArea/LeftPanel"]
 custom_minimum_size = Vector2(96, 32)
