@@ -49,13 +49,13 @@ func player_item_selected(item_stack: ItemStack) -> void:
 	emit_signal("hero_updated", hero)
 	end_player_turn()
 
-func rest() -> void:
+func meditate() -> void:
 	if state != BattleState.PLAYER_TURN:
 		return
 	if hero.rest_cooldown > 0:
 		return
-	hero.rest()
-	emit_signal("battle_log_updated", "%s takes a rest recovering health and energy.\n" % hero.get_colored_name())
+	hero.meditate()
+	emit_signal("battle_log_updated", "%s takes a meditates recovering health and energy.\n" % hero.get_colored_name())
 	emit_signal("hero_updated", hero)
 	end_player_turn()
 

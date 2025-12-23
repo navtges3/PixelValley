@@ -62,3 +62,6 @@ func on_expire():
 			target.stat_block.resistance -= effect.strength
 		Effect.EffectType.DEBUFF_RESISTANCE:
 			target.stat_block.resistance += effect.strength
+
+func _to_string() -> String:
+	return effect._to_string(remaining_turns)
