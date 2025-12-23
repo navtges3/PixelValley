@@ -1,5 +1,6 @@
-[gd_resource type="Resource" script_class="Village" load_steps=17 format=3 uid="uid://f2sd72cs3ago"]
+[gd_resource type="Resource" script_class="Village" load_steps=19 format=3 uid="uid://f2sd72cs3ago"]
 
+[ext_resource type="Script" uid="uid://uyfn30s8tiqo" path="res://scripts/world/inn.gd" id="1_7dxoq"]
 [ext_resource type="Script" uid="uid://rq03ukhf4lx3" path="res://scripts/world/village.gd" id="1_lfw73"]
 [ext_resource type="Script" uid="uid://d0mdck5mlsm03" path="res://scripts/data/item_stack.gd" id="2_jaxnw"]
 [ext_resource type="Resource" uid="uid://e282ko0xakwg" path="res://resources/potions/lesser_healing_potion.tres" id="3_1rgf8"]
@@ -9,6 +10,10 @@
 [ext_resource type="Resource" uid="uid://bwrkv1dmrco38" path="res://resources/potions/magic_potion.tres" id="6_qxqy8"]
 [ext_resource type="Resource" uid="uid://u70yyjyvfpwq" path="res://resources/potions/defense_potion.tres" id="7_oynn8"]
 [ext_resource type="Resource" uid="uid://bcox8swspcsyg" path="res://resources/potions/resistance_potion.tres" id="8_yw8qv"]
+
+[sub_resource type="Resource" id="Resource_qybmw"]
+script = ExtResource("1_7dxoq")
+metadata/_custom_type_script = "uid://uyfn30s8tiqo"
 
 [sub_resource type="Resource" id="Resource_6vt8r"]
 script = ExtResource("2_jaxnw")
@@ -56,4 +61,5 @@ metadata/_custom_type_script = "uid://fafwxg2j84k6"
 script = ExtResource("1_lfw73")
 name = "Lexiton"
 shop = SubResource("Resource_dr5x7")
+inn = SubResource("Resource_qybmw")
 metadata/_custom_type_script = "uid://rq03ukhf4lx3"

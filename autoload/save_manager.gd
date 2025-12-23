@@ -127,8 +127,8 @@ static func _load_hero(data: Dictionary) -> Hero:
 	hero.experience = data.get("experience", 0)
 	hero.skill_points = data.get("skill_points", 0)
 
-	_load_active_effects(data.get("active_effects", []), hero)
 	hero.stat_block = _load_stat_block(data.get("stat_block", {}))
+	_load_active_effects(data.get("active_effects", []), hero)
 	hero.inventory = _load_inventory(data.get("inventory", {}))
 
 	return hero
@@ -145,6 +145,7 @@ static func _get_active_effects_data(combatant: Combatant) -> Array:
 			"duration": ae.effect.duration,
 			"remaining_turns": ae.remaining_turns
 		})
+		ae.on_expire()
 	return result
 
 static func _load_active_effects(data: Array, combatant: Combatant) -> void:
@@ -234,13 +235,15 @@ static func _load_inventory(data: Dictionary) -> Inventory:
 static func _get_village_data(village: Village) -> Dictionary:
 	return {
 		"name": village.name,
-		"shop": _get_shop_data(village.shop)
+		"shop": _get_shop_data(village.shop),
+		"inn": _get_inn_data(village.inn)
 	}
 
 static func _load_village(data: Dictionary) -> Village:
 	var village := Village.new()
 	village.name = data.get("name", "Unnamed Village")
 	village.shop = _load_shop(data.get("shop", {}))
+	village.inn = _load_inn(data.get("inn", {}))
 	return village
 
 # ---------------------------------------------------------
@@ -273,6 +276,20 @@ static func _load_shop(data: Dictionary) -> Shop:
 
 	return shop
 
+# ---------------------------------------------------------
+# SHOP
+# ---------------------------------------------------------
+static func _get_inn_data(inn: Inn) -> Dictionary:
+	return {
+		"name": inn.name,
+		"rest_cost": inn.rest_cost
+	}
+
+static func _load_inn(data: Dictionary) -> Inn:
+	var inn := Inn.new()
+	inn.name = data.get("name", "The Crooked Tusk")
+	inn.rest_cost = data.get("rest_cost", 10)
+	return inn
 # ---------------------------------------------------------
 # QUEST MANAGER
 # ---------------------------------------------------------

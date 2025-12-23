@@ -13,7 +13,7 @@ extends Control
 # Action Area
 @onready var ability_button = $ActionArea/LeftPanel/AbilityButton
 @onready var item_button = $ActionArea/LeftPanel/ItemButton
-@onready var rest_button = $ActionArea/LeftPanel/RestButton
+@onready var meditate_button = $ActionArea/LeftPanel/MeditateButton
 @onready var flee_button = $ActionArea/LeftPanel/FleeButton
 
 @onready var option_list = $ActionArea/MiddlePanel/OptionList
@@ -33,7 +33,7 @@ func _ready() -> void:
 	victory_popup.retreat_pressed.connect(_on_victory_popup_retreat_pressed)
 	ability_button.toggled.connect(_on_ability_button_toggled)
 	item_button.toggled.connect(_on_item_button_toggled)
-	rest_button.pressed.connect(_on_rest_button_pressed)
+	meditate_button.pressed.connect(_on_meditate_button_pressed)
 	flee_button.pressed.connect(_on_flee_button_pressed)
 
 	battle_manager.player_turn.connect(_on_player_turn)
@@ -92,9 +92,11 @@ func _on_item_button_toggled(button_pressed: bool):
 	else:
 		option_list.visible = false
 
-func _on_rest_button_pressed() -> void:
+func _on_meditate_button_pressed() -> void:
+	battle_manager.meditate()
 	option_list.visible = false
-	battle_manager.rest()
+	ability_button.button_pressed = false
+	item_button.button_pressed = false
 
 func _on_flee_button_pressed() -> void:
 	ScreenManager.go_to_screen(ScreenManager.ScreenName.VILLAGE)
@@ -103,17 +105,17 @@ func _on_player_turn():
 	ability_button.disabled = false
 	item_button.disabled = hero.inventory.potions.is_empty()
 	if hero.rest_cooldown > 0:
-		rest_button.disabled = true
-		rest_button.text = "Rest CD: %d" % hero.rest_cooldown
+		meditate_button.disabled = true
+		meditate_button.text = "Cooldown: %d" % hero.rest_cooldown
 	else:
-		rest_button.disabled = false
-		rest_button.text = "Rest"
+		meditate_button.disabled = false
+		meditate_button.text = "Meditate"
 	flee_button.disabled = false
 
 func _on_monster_turn():
 	ability_button.disabled = true
 	item_button.disabled = true
-	rest_button.disabled = true
+	meditate_button.disabled = true
 	flee_button.disabled = true
 
 func _on_quest_completed():
