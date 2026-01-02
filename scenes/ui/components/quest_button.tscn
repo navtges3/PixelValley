@@ -16,8 +16,8 @@ script = ExtResource("2_t2kcf")
 layout_mode = 0
 offset_left = 16.0
 offset_top = 8.0
-offset_right = 692.0
-offset_bottom = 80.0
+offset_right = 688.0
+offset_bottom = 84.0
 
 [node name="TitleLabel" type="Label" parent="VBoxContainer"]
 layout_mode = 2

@@ -12,9 +12,8 @@ var save_slot: int = 1
 # ---------------------------------------------------------
 # GAME START FLOW
 # ---------------------------------------------------------
-func start_new_game(hero_inst: Hero, slot := 1) -> void:
+func start_new_game(slot := 1) -> void:
 	save_slot = slot
-	hero = hero_inst
 	village = DEFAULT_VILLAGE.duplicate()
 	quest_manager = QuestManager.new()
 	quest_manager.new_game()

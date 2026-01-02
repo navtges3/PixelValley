@@ -4,11 +4,10 @@
 [ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://assets/button_themes/regular/green_button.tres" id="2_6pkpi"]
 [ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://assets/button_themes/regular/red_button.tres" id="4_hlvmy"]
 
-[node name="BattleVictoryPopup" type="Window"]
-size = Vector2i(200, 100)
-wrap_controls = true
-borderless = true
-popup_window = true
+[node name="BattleVictoryPopup" type="PopupPanel"]
+oversampling_override = 1.0
+size = Vector2i(204, 100)
+visible = true
 script = ExtResource("1_b4ntk")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
@@ -16,6 +15,7 @@ offset_left = 4.0
 offset_top = 4.0
 offset_right = 200.0
 offset_bottom = 96.0
+alignment = 1
 
 [node name="Label" type="Label" parent="VBoxContainer"]
 layout_mode = 2

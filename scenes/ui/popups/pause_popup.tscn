@@ -6,21 +6,23 @@
 [ext_resource type="PackedScene" uid="uid://bxmcs3dj7nfvs" path="res://scenes/ui/popups/options_popup.tscn" id="4_fgroy"]
 [ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://assets/button_themes/regular/red_button.tres" id="4_xrtjw"]
 
-[node name="PausePopup" type="Window"]
+[node name="PausePopup" type="PopupPanel"]
 oversampling_override = 1.0
-size = Vector2i(100, 142)
-wrap_controls = true
-exclusive = true
-borderless = true
-popup_window = true
+size = Vector2i(104, 150)
+visible = true
 script = ExtResource("1_at05d")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = -4.0
+offset_bottom = -4.0
 grow_horizontal = 2
 grow_vertical = 2
+alignment = 1
 
 [node name="Label" type="Label" parent="VBoxContainer"]
 layout_mode = 2
