@@ -1,9 +1,10 @@
-[gd_scene load_steps=3 format=3 uid="uid://bs7wwh1qgbon3"]
+[gd_scene load_steps=3 format=3 uid="uid://cn8g0ieg4l5fo"]
 
 [ext_resource type="Theme" uid="uid://bqmax31b7iqan" path="res://assets/button_themes/specialty/minus_button.tres" id="1_6ssq3"]
 [ext_resource type="Theme" uid="uid://dx6nuheoualbl" path="res://assets/button_themes/specialty/plus_button.tres" id="2_klwc2"]
 
 [node name="LevelUpPopup" type="Window"]
+oversampling_override = 1.0
 size = Vector2i(214, 248)
 wrap_controls = true
 borderless = true
