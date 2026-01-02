@@ -86,7 +86,7 @@ static func _save_json(slot: int, filename: String, data: Dictionary) -> void:
 static func _load_json(slot: int, filename: String) -> Dictionary:
 	var path := _file(slot, filename)
 	if not FileAccess.file_exists(path):
-		push_error("SaveManager: Missing file: %s" % filename)
+		push_error("SaveManager: Slot %d Missing file: %s" % [slot, filename])
 		return {}
 
 	var file := FileAccess.open(path, FileAccess.READ)
