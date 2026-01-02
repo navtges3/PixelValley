@@ -7,7 +7,8 @@
 [ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://assets/button_themes/regular/red_button.tres" id="4_xrtjw"]
 
 [node name="PausePopup" type="Window"]
-size = Vector2i(100, 140)
+oversampling_override = 1.0
+size = Vector2i(100, 142)
 wrap_controls = true
 exclusive = true
 borderless = true

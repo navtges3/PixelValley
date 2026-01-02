@@ -12,9 +12,7 @@ extends Control
 @onready var hero_ui: HeroUI = $UIRoot/HeroUI
 
 func _ready() -> void:
-	process_mode = Node.PROCESS_MODE_PAUSABLE
 	pause_button.pressed.connect(_on_pause_button_pressed)
-	
 	inn_button.pressed.connect(_on_inn_button_pressed)
 	shop_button.pressed.connect(_on_shop_button_pressed)
 	armory_button.pressed.connect(_on_armory_button_pressed)
