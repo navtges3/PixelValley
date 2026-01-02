@@ -63,7 +63,7 @@ static func load_game(save_slot: int = 1) -> void:
 
 	print("SaveManager: Loaded game from slot %d" % save_slot)
 
-static func get_save_meta(slot: int = 1) -> Dictionary:
+static func get_meta_data(slot: int = 1) -> Dictionary:
 	var meta_json := _load_json(slot, "meta.json")
 	return meta_json
 
