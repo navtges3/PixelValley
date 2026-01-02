@@ -23,45 +23,49 @@ static func has_save_data(slot: int = 1) -> bool:
 	return FileAccess.file_exists(dir.path_join("meta.json"))
 
 static func save_game() -> void:
-	var slot = GameState.save_slot
+	var save_slot = GameState.save_slot
 
-	_save_json(slot, "hero.json", {
+	_save_json(save_slot, "hero.json", {
 		"data": _get_hero_data(GameState.hero)
 	})
 
-	_save_json(slot, "village.json", {
+	_save_json(save_slot, "village.json", {
 		"data": _get_village_data(GameState.village)
 	})
 
-	_save_json(slot, "quests.json", {
+	_save_json(save_slot, "quests.json", {
 		"data": _get_quests_data(GameState.quest_manager)
 	})
 
-	_save_json(slot, "meta.json", {
+	_save_json(save_slot, "meta.json", {
 		"hero_name": GameState.hero.name,
 		"level": GameState.hero.level,
 		"time": Time.get_datetime_string_from_system()
 	})
 
-	print("SaveManager: Saved game to slot %d" % slot)
+	print("SaveManager: Saved game to slot %d" % save_slot)
 
-static func load_game() -> void:
-	var slot := GameState.save_slot
+static func load_game(save_slot: int = 1) -> void:
+	GameState.save_slot = save_slot
 
-	if not has_save_data(slot):
-		push_error("SaveManager: no save data found for slot %d" % slot)
+	if not has_save_data(save_slot):
+		push_error("SaveManager: no save data found for slot %d" % save_slot)
 		return
 
-	var hero_json := _load_json(slot, "hero.json")
+	var hero_json := _load_json(save_slot, "hero.json")
 	GameState.hero = _load_hero(hero_json.get("data", {}))
 
-	var village_json := _load_json(slot, "village.json")
+	var village_json := _load_json(save_slot, "village.json")
 	GameState.village = _load_village(village_json.get("data", {}))
 
-	var quest_json := _load_json(slot, "quests.json")
+	var quest_json := _load_json(save_slot, "quests.json")
 	GameState.quest_manager = _load_quests(quest_json.get("data", {}))
 
-	print("SaveManager: Loaded game from slot %d" % slot)
+	print("SaveManager: Loaded game from slot %d" % save_slot)
+
+static func get_meta_data(slot: int = 1) -> Dictionary:
+	var meta_json := _load_json(slot, "meta.json")
+	return meta_json
 
 # ---------------------------------------------------------
 # LOW-LEVEL JSON HANDLING
@@ -82,7 +86,7 @@ static func _save_json(slot: int, filename: String, data: Dictionary) -> void:
 static func _load_json(slot: int, filename: String) -> Dictionary:
 	var path := _file(slot, filename)
 	if not FileAccess.file_exists(path):
-		push_error("SaveManager: Missing file: %s" % filename)
+		push_error("SaveManager: Slot %d Missing file: %s" % [slot, filename])
 		return {}
 
 	var file := FileAccess.open(path, FileAccess.READ)

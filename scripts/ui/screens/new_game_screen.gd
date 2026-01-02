@@ -1,5 +1,7 @@
 extends Control
 
+@onready var new_game_popup: PopupPanel = $NewGamePopup
+
 @onready var hero_class = $VBoxContainer/HBoxContainer/HeroInfoContainer/HeroClassLabel
 @onready var hero_name = $VBoxContainer/HBoxContainer/HeroInfoContainer/HeroName
 
@@ -49,13 +51,14 @@ func _on_class_selected(selected_class: Hero) -> void:
 	check_create_button_state()
 
 func _on_back_button_pressed() -> void:
+	GameState.hero = null
 	ScreenManager.go_to_screen(ScreenManager.ScreenName.MAIN_MENU)
 
 func _on_create_button_pressed() -> void:
 	var new_hero = hero_selected.duplicate()
 	new_hero.name = hero_name.text
-	GameState.start_new_game(new_hero)
-	ScreenManager.go_to_screen(ScreenManager.ScreenName.VILLAGE)
+	GameState.hero = new_hero
+	new_game_popup.popup_centered()
 
 func _on_line_edit_text_changed(_new_text):
 	check_create_button_state()
