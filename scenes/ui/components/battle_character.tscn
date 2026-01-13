@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://bsh4xy5omgwej"]
+
+[ext_resource type="Script" uid="uid://kcysixmfxdo0" path="res://scripts/ui/components/battle_character.gd" id="1_il1nn"]
+[ext_resource type="SpriteFrames" uid="uid://cxd5elo40h8pv" path="res://assets/knight/knight_sprite_frames.tres" id="2_3rhhs"]
+
+[node name="BattleCharacter" type="Node2D"]
+script = ExtResource("1_il1nn")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = ExtResource("2_3rhhs")
+animation = &"hurt"
