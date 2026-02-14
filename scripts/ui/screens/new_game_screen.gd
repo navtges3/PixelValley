@@ -13,7 +13,7 @@ extends Control
 const PREVIEW_SCENE = preload("res://scenes/ui/components/hero_preview.tscn")
 
 const HERO_DEFAULTS = [
-	"res://resources/heroes/knight.tres",
+	"res://resources/heroes/knight/knight.tres",
 	"res://resources/heroes/assassin.tres",
 	"res://resources/heroes/princess.tres",
 ]

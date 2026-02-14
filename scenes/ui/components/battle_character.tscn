@@ -1,11 +1,16 @@
 [gd_scene load_steps=3 format=3 uid="uid://bsh4xy5omgwej"]
 
 [ext_resource type="Script" uid="uid://kcysixmfxdo0" path="res://scripts/ui/components/battle_character.gd" id="1_il1nn"]
-[ext_resource type="SpriteFrames" uid="uid://cxd5elo40h8pv" path="res://resources/heroes/sprite_frames/knight_sprite_frames.tres" id="2_3rhhs"]
+[ext_resource type="SpriteFrames" uid="uid://4ywebwliybf7" path="res://resources/monsters/goblin/goblin_sprite_frames.tres" id="2_stq27"]
 
 [node name="BattleCharacter" type="Node2D"]
+scale = Vector2(5, 5)
 script = ExtResource("1_il1nn")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-sprite_frames = ExtResource("2_3rhhs")
+[node name="Visual" type="Node2D" parent="."]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Visual"]
+sprite_frames = ExtResource("2_stq27")
 animation = &"idle"
+centered = false
+offset = Vector2(0, -64)

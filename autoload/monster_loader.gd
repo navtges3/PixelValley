@@ -1,7 +1,7 @@
 extends Node
 
 var monster_db: Dictionary = {
-	"Goblin": preload("res://resources/monsters/goblin.tres"),
+	"Goblin": preload("res://resources/monsters/goblin/goblin.tres"),
 	"Orc": preload("res://resources/monsters/orc.tres"),
 	"Ogre": preload("res://resources/monsters/ogre.tres"),
 }

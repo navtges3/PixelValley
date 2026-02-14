@@ -1,9 +1,10 @@
-[gd_resource type="Resource" script_class="Monster" load_steps=12 format=3 uid="uid://dm48acoifufc0"]
+[gd_resource type="Resource" script_class="Monster" load_steps=13 format=3 uid="uid://dm48acoifufc0"]
 
 [ext_resource type="Script" uid="uid://bd6ohffno5w7r" path="res://scripts/characters/monster.gd" id="1_a5h8a"]
 [ext_resource type="Texture2D" uid="uid://vdpvmy1cvfnu" path="res://assets/goblin.png" id="1_dekqg"]
 [ext_resource type="Script" uid="uid://blp0fv0xnajdb" path="res://scripts/data/active_effect.gd" id="1_hcon4"]
 [ext_resource type="Resource" uid="uid://nav1377jn0pa" path="res://resources/abilities/stab.tres" id="2_hcon4"]
+[ext_resource type="Resource" uid="uid://b81f7dg2c777j" path="res://resources/monsters/goblin/goblin_visual.tres" id="3_1gqbc"]
 [ext_resource type="Script" uid="uid://dxnu3vjlxl2pn" path="res://scripts/data/conditional_ability.gd" id="3_xq86m"]
 [ext_resource type="Script" uid="uid://hxleldka7y06" path="res://scripts/characters/stat_block.gd" id="4_ejpcc"]
 [ext_resource type="Resource" uid="uid://ct2tqqk78lcn3" path="res://resources/abilities/desperation.tres" id="4_hcon4"]
@@ -38,5 +39,6 @@ basic_attack = ExtResource("2_hcon4")
 conditional_abilities = Array[ExtResource("3_xq86m")]([SubResource("Resource_sgp6s")])
 name = "Goblin"
 portrait = ExtResource("1_dekqg")
+battle_visual = ExtResource("3_1gqbc")
 stat_block = SubResource("Resource_hcon4")
 metadata/_custom_type_script = "uid://bd6ohffno5w7r"

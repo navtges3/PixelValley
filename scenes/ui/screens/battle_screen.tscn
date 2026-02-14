@@ -1,9 +1,7 @@
-[gd_scene load_steps=11 format=3 uid="uid://wy2cht7kkgmh"]
+[gd_scene load_steps=9 format=3 uid="uid://wy2cht7kkgmh"]
 
 [ext_resource type="Script" uid="uid://cqc6b58dnjxis" path="res://scripts/ui/screens/battle_screen.gd" id="1_ihhiw"]
 [ext_resource type="PackedScene" uid="uid://ehxty8k3d2vu" path="res://scenes/ui/components/quest_progress_bar.tscn" id="3_ihhiw"]
-[ext_resource type="PackedScene" uid="uid://bjx12sxd6xqme" path="res://scenes/ui/components/hero_ui.tscn" id="5_fgwq0"]
-[ext_resource type="PackedScene" uid="uid://pxhpjm0rsnof" path="res://scenes/ui/components/monster_ui.tscn" id="6_q2vii"]
 [ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://assets/button_themes/regular/red_button.tres" id="7_iw40k"]
 [ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://assets/button_themes/regular/green_button.tres" id="8_qmdt6"]
 [ext_resource type="Theme" uid="uid://dqwm8agt87lsh" path="res://assets/button_themes/regular/blue_button.tres" id="9_06vtu"]
@@ -20,6 +18,12 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_ihhiw")
 
+[node name="HeroSlot" type="Marker2D" parent="."]
+position = Vector2(450, 800)
+
+[node name="MonsterSlot" type="Marker2D" parent="."]
+position = Vector2(1470, 800)
+
 [node name="TopBar" type="HBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = -1
@@ -30,24 +34,6 @@ size_flags_vertical = 0
 layout_mode = 2
 size_flags_horizontal = 6
 size_flags_vertical = 0
-
-[node name="BattleField" type="HBoxContainer" parent="."]
-layout_mode = 1
-anchors_preset = -1
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_top = 33.0
-offset_bottom = -241.0
-
-[node name="HeroUI" parent="BattleField" instance=ExtResource("5_fgwq0")]
-layout_mode = 2
-size_flags_horizontal = 6
-size_flags_vertical = 4
-
-[node name="MonsterUI" parent="BattleField" instance=ExtResource("6_q2vii")]
-layout_mode = 2
-size_flags_horizontal = 6
-size_flags_vertical = 4
 
 [node name="ActionArea" type="HBoxContainer" parent="."]
 layout_mode = 1
