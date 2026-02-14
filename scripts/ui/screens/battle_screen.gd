@@ -6,10 +6,6 @@ extends Control
 @onready var quest_bar = $TopBar/QuestProgressBar
 @onready var victory_popup = $BattleVictoryPopup
 
-# Battle Field
-@onready var hero_ui = $BattleField/HeroUI
-@onready var monster_ui = $BattleField/MonsterUI
-
 # Action Area
 @onready var ability_button = $ActionArea/LeftPanel/AbilityButton
 @onready var item_button = $ActionArea/LeftPanel/ItemButton
@@ -20,10 +16,15 @@ extends Control
 
 var AbilityButton := preload("res://scenes/ui/components/ability_button.tscn")
 var ItemButton := preload("res://scenes/ui/components/item_button.tscn")
+const BATTLE_CHARACTER = preload("uid://bsh4xy5omgwej")
+const GOBLIN_SPRITE_FRAMES = preload("uid://4ywebwliybf7")
+const KNIGHT_SPRITE_FRAMES = preload("uid://cxd5elo40h8pv")
 
 var hero: Hero
 var monster: Monster
 var current_quest: Quest
+var hero_visual
+var monster_visual
 
 func _ready() -> void:
 	hero = GameState.hero
@@ -41,29 +42,29 @@ func _ready() -> void:
 	battle_manager.quest_completed.connect(_on_quest_completed)
 	battle_manager.hero_defeated.connect(_on_hero_defeated)
 	battle_manager.battle_log_updated.connect(_on_battle_log_updated)
-	battle_manager.hero_updated.connect(_on_hero_updated)
-	battle_manager.monster_updated.connect(_on_monster_updated)
-	battle_manager.new_monster.connect(_on_new_monster)
 	battle_manager.monster_slain.connect(_on_monster_slain)
 
 	empty_option_list()
 	battle_manager.start_battle(hero, current_quest)
+	_spawn_characters()
+
+func _spawn_characters() -> void:
+	hero_visual = BATTLE_CHARACTER.instantiate()
+	monster_visual = BATTLE_CHARACTER.instantiate()
+	
+	$HeroSlot.add_child(hero_visual)
+	$MonsterSlot.add_child(monster_visual)
+	
+	hero_visual.set_frames(KNIGHT_SPRITE_FRAMES)
+	monster_visual.set_frames(GOBLIN_SPRITE_FRAMES)
+	
+	hero_visual.scale.x = 5
+	hero_visual.scale.y = 5
+	monster_visual.scale.x = -5
+	monster_visual.scale.y = 5
 
 func _on_battle_log_updated(msg: String) -> void:
 	$ActionArea/BattleLog.append_text(msg)
-
-func _on_hero_updated(hero_ref: Hero) -> void:
-	if hero_ui.hero:
-		hero_ui.refresh()
-	else:
-		hero_ui.hero = hero_ref
-
-func _on_monster_updated(monster_ref: Monster) -> void:
-	monster_ui.set_monster_info(monster_ref)
-
-func _on_new_monster(monster_ref: Monster) -> void:
-	monster = monster_ref
-	monster_ui.set_monster_info(monster)
 
 func _on_monster_slain(monster_name: String) -> void:
 	print("%s was slain!" % monster_name)
