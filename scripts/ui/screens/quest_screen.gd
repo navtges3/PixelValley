@@ -69,9 +69,12 @@ func _on_back_pressed():
 
 func _on_start_pressed():
 	if selected_quest:
-		var quest = selected_quest.get_quest()
-		GameState.current_quest = quest
-		ScreenManager.go_to_screen(ScreenManager.ScreenName.BATTLE)
+		GameState.current_quest = selected_quest.get_quest()
+		var config := BattleConfig.new()
+		config.hero = GameState.hero
+		config.quest = GameState.current_quest
+		config.is_test_battle = false
+		ScreenManager.go_to_screen(ScreenManager.ScreenName.BATTLE, config)
 
 func _on_pause_pressed():
 	pause_popup.popup_centered()
