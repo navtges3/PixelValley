@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="Monster" load_steps=12 format=3 uid="uid://yrw5qgu7qwe0"]
+[gd_resource type="Resource" script_class="Monster" format=3 uid="uid://yrw5qgu7qwe0"]
 
 [ext_resource type="Texture2D" uid="uid://ced3cfcakcx6o" path="res://assets/orc.png" id="1_0ed2k"]
 [ext_resource type="Script" uid="uid://blp0fv0xnajdb" path="res://scripts/data/active_effect.gd" id="1_1gfu0"]

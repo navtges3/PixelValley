@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="Monster" load_steps=13 format=3 uid="uid://dm48acoifufc0"]
+[gd_resource type="Resource" script_class="Monster" format=3 uid="uid://dm48acoifufc0"]
 
 [ext_resource type="Script" uid="uid://bd6ohffno5w7r" path="res://scripts/characters/monster.gd" id="1_a5h8a"]
 [ext_resource type="Texture2D" uid="uid://vdpvmy1cvfnu" path="res://assets/goblin.png" id="1_dekqg"]
