@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="Weapon" load_steps=13 format=3 uid="uid://2xnjln6p48rw"]
+[gd_resource type="Resource" script_class="Weapon" format=3 uid="uid://2xnjln6p48rw"]
 
 [ext_resource type="Script" uid="uid://b2o7w8q10stxo" path="res://scripts/data/ability.gd" id="1_8oaf2"]
 [ext_resource type="Script" uid="uid://dgykeyxn7fefw" path="res://scripts/data/weapon.gd" id="2_5im0a"]

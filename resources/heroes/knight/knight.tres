@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="Hero" load_steps=16 format=3 uid="uid://dx2kyn4g35jcw"]
+[gd_resource type="Resource" script_class="Hero" format=3 uid="uid://dx2kyn4g35jcw"]
 
 [ext_resource type="Script" uid="uid://d0mdck5mlsm03" path="res://scripts/data/item_stack.gd" id="1_3wev5"]
 [ext_resource type="Script" uid="uid://b1x8jfufxk3xv" path="res://scripts/characters/hero.gd" id="1_1744r"]
@@ -47,6 +47,7 @@ metadata/_custom_type_script = "uid://hxleldka7y06"
 script = ExtResource("1_1744r")
 hero_class = 1
 inventory = SubResource("Resource_w4hxg")
+name = "Knight"
 portrait = ExtResource("3_5j7dh")
 battle_visual = ExtResource("2_1hoqp")
 stat_block = SubResource("Resource_wwsut")

@@ -1,4 +1,4 @@
-[gd_resource type="SpriteFrames" load_steps=25 format=3 uid="uid://cxd5elo40h8pv"]
+[gd_resource type="SpriteFrames" format=3 uid="uid://cxd5elo40h8pv"]
 
 [ext_resource type="Texture2D" uid="uid://bduqtvdbauyut" path="res://assets/knight/KnightAttack.png" id="1_0e8ej"]
 [ext_resource type="Texture2D" uid="uid://dntkptq3yecd6" path="res://assets/knight/KnightBlock.png" id="2_iop1y"]

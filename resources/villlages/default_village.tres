@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="Village" load_steps=19 format=3 uid="uid://f2sd72cs3ago"]
+[gd_resource type="Resource" script_class="Village" format=3 uid="uid://f2sd72cs3ago"]
 
 [ext_resource type="Script" uid="uid://uyfn30s8tiqo" path="res://scripts/world/inn.gd" id="1_7dxoq"]
 [ext_resource type="Script" uid="uid://rq03ukhf4lx3" path="res://scripts/world/village.gd" id="1_lfw73"]

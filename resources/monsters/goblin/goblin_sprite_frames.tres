@@ -1,4 +1,4 @@
-[gd_resource type="SpriteFrames" load_steps=22 format=3 uid="uid://4ywebwliybf7"]
+[gd_resource type="SpriteFrames" format=3 uid="uid://4ywebwliybf7"]
 
 [ext_resource type="Texture2D" uid="uid://disomt164y5ny" path="res://assets/goblin/GoblinAttack.png" id="1_exr8a"]
 [ext_resource type="Texture2D" uid="uid://bpx8ustvbw0ue" path="res://assets/goblin/GoblinBlock.png" id="2_omvw2"]
