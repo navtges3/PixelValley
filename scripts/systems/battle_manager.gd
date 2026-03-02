@@ -34,6 +34,9 @@ func start_player_turn() -> void:
 	emit_signal("battle_log_updated", "%s's turn!\n" % hero.get_colored_name())
 	emit_signal("player_turn")
 
+func get_hero_abilities() -> Array[Ability]:
+	return hero.inventory.equipped_weapon.abilities
+
 func player_ability_selected(ability: Ability) -> void:
 	if state != BattleState.PLAYER_TURN:
 		return
@@ -44,6 +47,9 @@ func player_ability_selected(ability: Ability) -> void:
 		emit_signal("monster_updated", monster)
 		emit_signal("hero_updated", hero)
 		end_player_turn()
+
+func get_hero_items() -> Array[ItemStack]:
+	return hero.inventory.potions
 
 func player_item_selected(item_stack: ItemStack) -> void:
 	if state != BattleState.PLAYER_TURN:

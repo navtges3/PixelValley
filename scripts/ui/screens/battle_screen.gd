@@ -41,27 +41,27 @@ func _ready() -> void:
 	battle_manager.monster_slain.connect(_on_monster_slain)
 
 	empty_option_list()
-	_spawn_characters()
+	_spawn_hero()
+	_spawn_monster()
 	
 	battle_manager.setup_battle(battle_config)
 
 func setup(config: BattleConfig) -> void:
 	battle_config = config
 
-func _spawn_characters() -> void:
-	hero_visual = BATTLE_CHARACTER.instantiate()
+func _spawn_monster() -> void:
 	monster_visual = BATTLE_CHARACTER.instantiate()
-	
-	$HeroSlot.add_child(hero_visual)
 	$MonsterSlot.add_child(monster_visual)
-	
-	hero_visual.set_frames(KNIGHT_SPRITE_FRAMES)
 	monster_visual.set_frames(GOBLIN_SPRITE_FRAMES)
-	
-	hero_visual.scale.x = 5
-	hero_visual.scale.y = 5
 	monster_visual.scale.x = -5
 	monster_visual.scale.y = 5
+
+func _spawn_hero() -> void:
+	hero_visual = BATTLE_CHARACTER.instantiate()
+	$HeroSlot.add_child(hero_visual)
+	hero_visual.set_frames(KNIGHT_SPRITE_FRAMES)
+	hero_visual.scale.x = 5
+	hero_visual.scale.y = 5
 
 func _on_battle_log_updated(msg: String) -> void:
 	$ActionArea/BattleLog.append_text(msg)
@@ -76,7 +76,7 @@ func _on_ability_button_toggled(button_pressed: bool):
 		item_button.button_pressed = false
 		option_list.visible = true
 		empty_option_list()
-		for ability: Ability in battle_manager.hero.inventory.equipped_weapon.abilities:
+		for ability: Ability in battle_manager.get_hero_abilities():
 			var btn = create_ability_button(ability)
 			option_list.add_child(btn)
 	else:
@@ -87,7 +87,7 @@ func _on_item_button_toggled(button_pressed: bool):
 		ability_button.button_pressed = false
 		option_list.visible = true
 		empty_option_list()
-		for item_stack: ItemStack in battle_manager.hero.inventory.potions:
+		for item_stack: ItemStack in battle_manager.get_hero_items():
 			var btn = create_item_button(item_stack)
 			option_list.add_child(btn)
 	else:
@@ -107,7 +107,7 @@ func _on_flee_button_pressed() -> void:
 
 func _on_player_turn():
 	ability_button.disabled = false
-	item_button.disabled = battle_manager.hero.inventory.potions.is_empty()
+	item_button.disabled = battle_manager.get_hero_items().is_empty()
 	if battle_manager.hero.rest_cooldown > 0:
 		meditate_button.disabled = true
 		meditate_button.text = "Cooldown: %d" % battle_manager.hero.rest_cooldown
