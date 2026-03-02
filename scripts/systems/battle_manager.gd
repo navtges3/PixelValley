@@ -5,6 +5,7 @@ enum BattleState { PLAYER_TURN, MONSTER_TURN, RESOLVING, VICTORY, DEFEAT }
 var hero: Hero
 var monster: Monster
 var current_quest: Quest
+var is_test_battle: bool = false
 
 var state = BattleState.PLAYER_TURN
 
@@ -18,10 +19,13 @@ signal battle_log_updated(msg: String)
 signal monster_updated(monster_ref: Monster)
 signal hero_updated(hero_ref: Hero)
 
-func start_battle(hero_ref: Hero, current_quest_ref: Quest) -> void:
-	hero = hero_ref
-	current_quest = current_quest_ref
+func setup_battle(config: BattleConfig) -> void:
+	hero = config.hero
+	current_quest = config.quest
+	is_test_battle = config.is_test_battle
+	
 	emit_signal("hero_updated", hero)
+	
 	get_new_monster()
 	start_player_turn()
 
@@ -78,7 +82,6 @@ func end_player_turn() -> void:
 		hero.inventory.gold += monster.gold
 		hero.gain_experience(experience)
 		emit_signal("hero_updated", hero)
-
 		if current_quest.slay_monster(monster.name):
 			end_battle(true)
 		else:

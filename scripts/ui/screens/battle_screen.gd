@@ -20,15 +20,11 @@ const BATTLE_CHARACTER = preload("uid://bsh4xy5omgwej")
 const GOBLIN_SPRITE_FRAMES = preload("uid://4ywebwliybf7")
 const KNIGHT_SPRITE_FRAMES = preload("uid://cxd5elo40h8pv")
 
-var hero: Hero
-var monster: Monster
-var current_quest: Quest
+var battle_config: BattleConfig
 var hero_visual
 var monster_visual
 
 func _ready() -> void:
-	hero = GameState.hero
-	current_quest = GameState.current_quest
 
 	victory_popup.continue_pressed.connect(_on_victory_popup_continue_pressed)
 	victory_popup.retreat_pressed.connect(_on_victory_popup_retreat_pressed)
@@ -45,8 +41,12 @@ func _ready() -> void:
 	battle_manager.monster_slain.connect(_on_monster_slain)
 
 	empty_option_list()
-	battle_manager.start_battle(hero, current_quest)
 	_spawn_characters()
+	
+	battle_manager.setup_battle(battle_config)
+
+func setup(config: BattleConfig) -> void:
+	battle_config = config
 
 func _spawn_characters() -> void:
 	hero_visual = BATTLE_CHARACTER.instantiate()
@@ -76,7 +76,7 @@ func _on_ability_button_toggled(button_pressed: bool):
 		item_button.button_pressed = false
 		option_list.visible = true
 		empty_option_list()
-		for ability: Ability in hero.inventory.equipped_weapon.abilities:
+		for ability: Ability in battle_manager.hero.inventory.equipped_weapon.abilities:
 			var btn = create_ability_button(ability)
 			option_list.add_child(btn)
 	else:
@@ -87,7 +87,7 @@ func _on_item_button_toggled(button_pressed: bool):
 		ability_button.button_pressed = false
 		option_list.visible = true
 		empty_option_list()
-		for item_stack: ItemStack in hero.inventory.potions:
+		for item_stack: ItemStack in battle_manager.hero.inventory.potions:
 			var btn = create_item_button(item_stack)
 			option_list.add_child(btn)
 	else:
@@ -100,14 +100,17 @@ func _on_meditate_button_pressed() -> void:
 	item_button.button_pressed = false
 
 func _on_flee_button_pressed() -> void:
-	ScreenManager.go_to_screen(ScreenManager.ScreenName.VILLAGE)
+	if battle_manager.is_test_battle:
+		ScreenManager.go_to_screen(ScreenManager.ScreenName.TEST)
+	else:
+		ScreenManager.go_to_screen(ScreenManager.ScreenName.VILLAGE)
 
 func _on_player_turn():
 	ability_button.disabled = false
-	item_button.disabled = hero.inventory.potions.is_empty()
-	if hero.rest_cooldown > 0:
+	item_button.disabled = battle_manager.hero.inventory.potions.is_empty()
+	if battle_manager.hero.rest_cooldown > 0:
 		meditate_button.disabled = true
-		meditate_button.text = "Cooldown: %d" % hero.rest_cooldown
+		meditate_button.text = "Cooldown: %d" % battle_manager.hero.rest_cooldown
 	else:
 		meditate_button.disabled = false
 		meditate_button.text = "Meditate"
@@ -121,7 +124,7 @@ func _on_monster_turn():
 
 func _on_quest_completed():
 	print("Quest completed!")
-	if current_quest.id == GameState.quest_manager.LAST_QUEST_ID:
+	if battle_manager.current_quest.id == GameState.quest_manager.LAST_QUEST_ID:
 		ScreenManager.go_to_screen(ScreenManager.ScreenName.VICTORY)
 	else:
 		ScreenManager.go_to_screen(ScreenManager.ScreenName.QUEST_FINISHED)
@@ -154,7 +157,7 @@ func empty_option_list() -> void:
 func create_ability_button(ability: Ability) -> Button:
 	var button := AbilityButton.instantiate()
 	button.ability = ability
-	button.user_energy = hero.stat_block.current_nrg
+	button.user_energy = battle_manager.hero.stat_block.current_nrg
 	button.connect("ability_pressed", Callable(self, "_on_ability_button_pressed"))
 	return button
 

@@ -15,6 +15,7 @@ enum ScreenName {
 	QUEST_FINISHED,
 	DEFEAT,
 	VICTORY,
+	TEST,
 }
 
 var SCENE_PATHS := {
@@ -30,13 +31,21 @@ var SCENE_PATHS := {
 	ScreenName.QUEST_FINISHED: "res://scenes/ui/screens/quest_finished_screen.tscn",
 	ScreenName.DEFEAT: "res://scenes/ui/screens/defeat_screen.tscn",
 	ScreenName.VICTORY: "res://scenes/ui/screens/victory_screen.tscn",
+	ScreenName.TEST: "res://scenes/test/battle_tester.tscn",
 }
 
-func go_to_screen(screen_name: ScreenName) -> void:
+func go_to_screen(screen_name: ScreenName, data = null) -> void:
 	if SCENE_PATHS.has(screen_name):
-		call_deferred("_change_scene", SCENE_PATHS[screen_name])
+		call_deferred("_change_scene", SCENE_PATHS[screen_name], data)
 	else:
 		push_error("Screen not found: %s" % screen_name)
 
-func _change_scene(path: String) -> void:
-	get_tree().change_scene_to_file(path)
+func _change_scene(path: String, data = null) -> void:
+	var scene = load(path).instantiate()
+	
+	if data != null and scene.has_method("setup"):
+		scene.setup(data)
+	
+	get_tree().current_scene.free()
+	get_tree().root.add_child(scene)
+	get_tree().current_scene = scene
