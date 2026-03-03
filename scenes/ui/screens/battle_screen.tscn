@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://wy2cht7kkgmh"]
+[gd_scene format=3 uid="uid://wy2cht7kkgmh"]
 
 [ext_resource type="Script" uid="uid://cqc6b58dnjxis" path="res://scripts/ui/screens/battle_screen.gd" id="1_ihhiw"]
 [ext_resource type="PackedScene" uid="uid://ehxty8k3d2vu" path="res://scenes/ui/components/quest_progress_bar.tscn" id="3_ihhiw"]
@@ -9,7 +9,7 @@
 [ext_resource type="Script" uid="uid://bgmcha5vrlqop" path="res://scripts/systems/battle_manager.gd" id="11_o00jr"]
 [ext_resource type="PackedScene" uid="uid://i13p0dcm5xx0" path="res://scenes/ui/popups/battle_victory_popup.tscn" id="13_jn4pq"]
 
-[node name="BattleScreen" type="Control"]
+[node name="BattleScreen" type="Control" unique_id=1921801911]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -18,24 +18,24 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_ihhiw")
 
-[node name="HeroSlot" type="Marker2D" parent="."]
+[node name="HeroSlot" type="Marker2D" parent="." unique_id=1425626208]
 position = Vector2(450, 800)
 
-[node name="MonsterSlot" type="Marker2D" parent="."]
+[node name="MonsterSlot" type="Marker2D" parent="." unique_id=1177753450]
 position = Vector2(1470, 800)
 
-[node name="TopBar" type="HBoxContainer" parent="."]
+[node name="TopBar" type="HBoxContainer" parent="." unique_id=450098864]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
 size_flags_vertical = 0
 
-[node name="QuestProgressBar" parent="TopBar" instance=ExtResource("3_ihhiw")]
+[node name="QuestProgressBar" parent="TopBar" unique_id=786005872 instance=ExtResource("3_ihhiw")]
 layout_mode = 2
 size_flags_horizontal = 6
 size_flags_vertical = 0
 
-[node name="ActionArea" type="HBoxContainer" parent="."]
+[node name="ActionArea" type="HBoxContainer" parent="." unique_id=337684969]
 layout_mode = 1
 anchors_preset = -1
 anchor_top = 1.0
@@ -46,10 +46,10 @@ offset_top = -155.0
 offset_right = -5.0
 offset_bottom = -5.0
 
-[node name="LeftPanel" type="VBoxContainer" parent="ActionArea"]
+[node name="LeftPanel" type="VBoxContainer" parent="ActionArea" unique_id=756459339]
 layout_mode = 2
 
-[node name="AbilityButton" type="Button" parent="ActionArea/LeftPanel"]
+[node name="AbilityButton" type="Button" parent="ActionArea/LeftPanel" unique_id=598476712]
 custom_minimum_size = Vector2(96, 32)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -58,7 +58,7 @@ theme = ExtResource("7_iw40k")
 toggle_mode = true
 text = "Use Ability"
 
-[node name="ItemButton" type="Button" parent="ActionArea/LeftPanel"]
+[node name="ItemButton" type="Button" parent="ActionArea/LeftPanel" unique_id=110423753]
 custom_minimum_size = Vector2(96, 32)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -67,7 +67,7 @@ theme = ExtResource("8_qmdt6")
 toggle_mode = true
 text = "Use Item"
 
-[node name="MeditateButton" type="Button" parent="ActionArea/LeftPanel"]
+[node name="MeditateButton" type="Button" parent="ActionArea/LeftPanel" unique_id=1755693489]
 custom_minimum_size = Vector2(96, 32)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -76,7 +76,7 @@ tooltip_text = "Restore health and energy."
 theme = ExtResource("9_06vtu")
 text = "Meditate"
 
-[node name="FleeButton" type="Button" parent="ActionArea/LeftPanel"]
+[node name="FleeButton" type="Button" parent="ActionArea/LeftPanel" unique_id=2132098312]
 custom_minimum_size = Vector2(96, 32)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -84,26 +84,28 @@ size_flags_vertical = 4
 theme = ExtResource("10_c2ins")
 text = "Flee"
 
-[node name="MiddlePanel" type="ScrollContainer" parent="ActionArea"]
+[node name="MiddlePanel" type="ScrollContainer" parent="ActionArea" unique_id=121735259]
 layout_mode = 2
 horizontal_scroll_mode = 0
 
-[node name="OptionList" type="VBoxContainer" parent="ActionArea/MiddlePanel"]
+[node name="OptionList" type="VBoxContainer" parent="ActionArea/MiddlePanel" unique_id=781619579]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Button" type="Button" parent="ActionArea/MiddlePanel/OptionList"]
+[node name="Button" type="Button" parent="ActionArea/MiddlePanel/OptionList" unique_id=1920686518]
 layout_mode = 2
 text = "This is an Ability"
 
-[node name="BattleLog" type="RichTextLabel" parent="ActionArea"]
+[node name="BattleLog" type="RichTextLabel" parent="ActionArea" unique_id=1459385711]
 custom_minimum_size = Vector2(576, 0)
 layout_mode = 2
 size_flags_horizontal = 10
 scroll_following = true
 
-[node name="BattleManager" type="Node" parent="."]
+[node name="BattleManager" type="Node" parent="." unique_id=973972740]
 script = ExtResource("11_o00jr")
 
-[node name="BattleVictoryPopup" parent="." instance=ExtResource("13_jn4pq")]
+[node name="BattleVictoryPopup" parent="." unique_id=1609275692 instance=ExtResource("13_jn4pq")]
 visible = false
+
+[connection signal="hero_attack" from="BattleManager" to="." method="_on_battle_manager_hero_attack"]

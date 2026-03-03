@@ -25,7 +25,6 @@ var hero_visual
 var monster_visual
 
 func _ready() -> void:
-
 	victory_popup.continue_pressed.connect(_on_victory_popup_continue_pressed)
 	victory_popup.retreat_pressed.connect(_on_victory_popup_retreat_pressed)
 	ability_button.toggled.connect(_on_ability_button_toggled)
@@ -39,7 +38,15 @@ func _ready() -> void:
 	battle_manager.hero_defeated.connect(_on_hero_defeated)
 	battle_manager.battle_log_updated.connect(_on_battle_log_updated)
 	battle_manager.monster_slain.connect(_on_monster_slain)
+	
+	# Battle Animations
+	battle_manager.hero_attacking.connect(_on_hero_attack)
+	battle_manager.hero_hurt.connect(_on_hero_hurt)
+	battle_manager.monster_attacking.connect(_on_monster_attack)
+	battle_manager.monster_hurt.connect(_on_monster_hurt)
 
+	quest_bar.quest = battle_config.quest
+	quest_bar.update_quest()
 	empty_option_list()
 	_spawn_hero()
 	_spawn_monster()
@@ -62,6 +69,20 @@ func _spawn_hero() -> void:
 	hero_visual.set_frames(KNIGHT_SPRITE_FRAMES)
 	hero_visual.scale.x = 5
 	hero_visual.scale.y = 5
+
+func _on_hero_attack() -> void:
+	hero_visual.play_attack()
+	await hero_visual.animation_done
+
+func _on_hero_hurt() -> void:
+	hero_visual.play_hurt()
+
+func _on_monster_attack() -> void:
+	monster_visual.play_attack()
+	await monster_visual.animation_done
+
+func _on_monster_hurt() -> void:
+	monster_visual.play_hurt()
 
 func _on_battle_log_updated(msg: String) -> void:
 	$ActionArea/BattleLog.append_text(msg)
