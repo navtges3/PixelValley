@@ -33,6 +33,7 @@ func _on_start_battle_pressed() -> void:
 	monster_obj.monster = monster_resources[monster_dropdown.get_selected_id()]
 	monster_obj.target_amount = monster_spin_box.value
 	var test_quest = Quest.new()
+	test_quest.title = "Test Quest"
 	test_quest.monster_objectives.append(monster_obj)
 	
 	var config := BattleConfig.new()

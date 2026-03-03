@@ -9,15 +9,23 @@ var is_test_battle: bool = false
 
 var state = BattleState.PLAYER_TURN
 
-signal monster_slain(monster_name: String)
 signal new_monster(monster_ref: Monster)
 signal player_turn()
 signal monster_turn()
+signal monster_slain(monster_name: String)
 signal quest_completed()
 signal hero_defeated()
+
+# UI updates
 signal battle_log_updated(msg: String)
-signal monster_updated(monster_ref: Monster)
 signal hero_updated(hero_ref: Hero)
+signal monster_updated(monster_ref: Monster)
+
+# Animation Signals
+signal hero_attacking()
+signal hero_hurt()
+signal monster_attacking()
+signal monster_hurt()
 
 func setup_battle(config: BattleConfig) -> void:
 	hero = config.hero
@@ -40,10 +48,11 @@ func get_hero_abilities() -> Array[Ability]:
 func player_ability_selected(ability: Ability) -> void:
 	if state != BattleState.PLAYER_TURN:
 		return
-	# Find the ability by name
+	emit_signal("hero_attacking")
 	var output = ability.use(hero, monster)
 	if output:
 		emit_signal("battle_log_updated", output)
+		emit_signal("monster_hurt")
 		emit_signal("monster_updated", monster)
 		emit_signal("hero_updated", hero)
 		end_player_turn()
@@ -106,9 +115,11 @@ func get_new_monster() -> void:
 
 func enemy_turn() -> void:
 	emit_signal("battle_log_updated", "Enemy turn...\n")
+	emit_signal("monster_attacking")
 	var monster_ability = monster.choose_ability(hero)
 	var output = monster_ability.use(monster, hero)
 	emit_signal("battle_log_updated", output)
+	emit_signal("hero_hurt")
 	emit_signal("hero_updated", hero)
 	end_enemy_turn()
 
