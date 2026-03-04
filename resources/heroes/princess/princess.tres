@@ -1,10 +1,11 @@
-[gd_resource type="Resource" script_class="Hero" load_steps=15 format=3 uid="uid://55x3e6cs541f"]
+[gd_resource type="Resource" script_class="Hero" format=3 uid="uid://55x3e6cs541f"]
 
 [ext_resource type="Script" uid="uid://b1x8jfufxk3xv" path="res://scripts/characters/hero.gd" id="1_1p74l"]
 [ext_resource type="Script" uid="uid://d0mdck5mlsm03" path="res://scripts/data/item_stack.gd" id="1_kacum"]
 [ext_resource type="Script" uid="uid://blp0fv0xnajdb" path="res://scripts/data/active_effect.gd" id="1_r86n4"]
 [ext_resource type="Resource" uid="uid://cyiqwotfm3gq6" path="res://resources/potions/regeneration_potion.tres" id="2_r86n4"]
 [ext_resource type="Resource" uid="uid://2xnjln6p48rw" path="res://resources/weapons/princess_weapons/common/silver_scepter.tres" id="2_xnok4"]
+[ext_resource type="Resource" uid="uid://c2n1qo8jdtaxw" path="res://resources/heroes/princess/princess_visual.tres" id="2_xxoo0"]
 [ext_resource type="Resource" uid="uid://4gl0mwbttg8d" path="res://resources/potions/energy_potion.tres" id="4_f5ok2"]
 [ext_resource type="Script" uid="uid://4rm24oomjap7" path="res://scripts/characters/inventory.gd" id="5_i72c6"]
 [ext_resource type="Texture2D" uid="uid://crvpafnprgkcq" path="res://assets/Princess.png" id="7_6ulj1"]
@@ -46,6 +47,8 @@ metadata/_custom_type_script = "uid://hxleldka7y06"
 script = ExtResource("1_1p74l")
 hero_class = 2
 inventory = SubResource("Resource_od506")
+name = "Princess"
 portrait = ExtResource("7_6ulj1")
+battle_visual = ExtResource("2_xxoo0")
 stat_block = SubResource("Resource_qej26")
 metadata/_custom_type_script = "uid://b1x8jfufxk3xv"

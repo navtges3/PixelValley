@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://cupb66b88ue3i"]
+[gd_scene format=3 uid="uid://cupb66b88ue3i"]
 
 [ext_resource type="Script" uid="uid://5witl1w8vjwd" path="res://scripts/ui/screens/training_screen.gd" id="1_na7g7"]
 [ext_resource type="Theme" uid="uid://bqmax31b7iqan" path="res://assets/button_themes/specialty/minus_button.tres" id="2_w8u6p"]

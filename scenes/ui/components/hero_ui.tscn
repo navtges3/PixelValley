@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://bjx12sxd6xqme"]
+[gd_scene format=3 uid="uid://bjx12sxd6xqme"]
 
 [ext_resource type="Script" uid="uid://q77kndwotwb7" path="res://scripts/ui/components/hero_ui.gd" id="1_iitki"]
 [ext_resource type="Texture2D" uid="uid://c8hydb1a47nnk" path="res://assets/knight.png" id="1_vhqxb"]

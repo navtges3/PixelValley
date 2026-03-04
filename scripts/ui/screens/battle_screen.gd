@@ -40,9 +40,9 @@ func _ready() -> void:
 	battle_manager.monster_slain.connect(_on_monster_slain)
 	
 	# Battle Animations
-	battle_manager.hero_attacking.connect(_on_hero_attack)
+	battle_manager.hero_attacking.connect(_on_hero_attacking)
 	battle_manager.hero_hurt.connect(_on_hero_hurt)
-	battle_manager.monster_attacking.connect(_on_monster_attack)
+	battle_manager.monster_attacking.connect(_on_monster_attacking)
 	battle_manager.monster_hurt.connect(_on_monster_hurt)
 
 	quest_bar.quest = battle_config.quest
@@ -66,18 +66,18 @@ func _spawn_monster() -> void:
 func _spawn_hero() -> void:
 	hero_visual = BATTLE_CHARACTER.instantiate()
 	$HeroSlot.add_child(hero_visual)
-	hero_visual.set_frames(KNIGHT_SPRITE_FRAMES)
+	hero_visual.set_frames(battle_config.hero.battle_visual.frames)
 	hero_visual.scale.x = 5
 	hero_visual.scale.y = 5
 
-func _on_hero_attack() -> void:
+func _on_hero_attacking() -> void:
 	hero_visual.play_attack()
 	await hero_visual.animation_done
 
 func _on_hero_hurt() -> void:
 	hero_visual.play_hurt()
 
-func _on_monster_attack() -> void:
+func _on_monster_attacking() -> void:
 	monster_visual.play_attack()
 	await monster_visual.animation_done
 

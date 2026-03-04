@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=3 uid="uid://bhduvoqlk8alf"]
+[gd_scene format=3 uid="uid://bhduvoqlk8alf"]
 
 [ext_resource type="Script" uid="uid://dae4dtwh4tjs5" path="res://scripts/ui/components/hero_preview.gd" id="1_bgug4"]
 [ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://assets/button_themes/regular/red_button.tres" id="2_0bdmq"]

@@ -14,6 +14,7 @@ func _ready():
 func load_heroes():
 	hero_resources = [
 		preload("res://resources/heroes/knight/knight.tres"),
+		preload("res://resources/heroes/princess/princess.tres"),
 	]
 	for i in hero_resources.size():
 		hero_dropdown.add_item(hero_resources[i].name, i)
@@ -28,6 +29,7 @@ func load_monsters():
 
 func _on_start_battle_pressed() -> void:
 	GameState.hero = hero_resources[hero_dropdown.get_selected_id()]
+	print("Hero selected: ", GameState.hero.name)
 	
 	var monster_obj = MonsterRequirement.new()
 	monster_obj.monster = monster_resources[monster_dropdown.get_selected_id()]

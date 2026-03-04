@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="Item" load_steps=3 format=3 uid="uid://c4ew36sfl85ym"]
+[gd_resource type="Resource" script_class="Item" format=3 uid="uid://c4ew36sfl85ym"]
 
 [ext_resource type="Script" uid="uid://bfx11j545xbf5" path="res://scripts/data/item.gd" id="1_wkabm"]
 [ext_resource type="Theme" uid="uid://dqwm8agt87lsh" path="res://assets/button_themes/regular/blue_button.tres" id="2_v24x7"]

@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=3 uid="uid://i13p0dcm5xx0"]
+[gd_scene format=3 uid="uid://i13p0dcm5xx0"]
 
 [ext_resource type="Script" uid="uid://bva6rvsdfvro1" path="res://scripts/ui/popups/battle_victory_popup.gd" id="1_b4ntk"]
 [ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://assets/button_themes/regular/green_button.tres" id="2_6pkpi"]
