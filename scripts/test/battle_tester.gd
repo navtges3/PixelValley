@@ -42,3 +42,7 @@ func _on_start_battle_pressed() -> void:
 	config.is_test_battle = true
 	
 	ScreenManager.go_to_screen(ScreenManager.ScreenName.BATTLE, config)
+
+
+func _on_back_button_pressed() -> void:
+	get_tree().quit()

@@ -145,7 +145,9 @@ func _on_monster_turn():
 
 func _on_quest_completed():
 	print("Quest completed!")
-	if battle_manager.current_quest.id == GameState.quest_manager.LAST_QUEST_ID:
+	if battle_config.is_test_battle:
+		ScreenManager.go_to_screen(ScreenManager.ScreenName.TEST)
+	elif battle_manager.current_quest.id == GameState.quest_manager.LAST_QUEST_ID:
 		ScreenManager.go_to_screen(ScreenManager.ScreenName.VICTORY)
 	else:
 		ScreenManager.go_to_screen(ScreenManager.ScreenName.QUEST_FINISHED)
