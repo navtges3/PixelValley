@@ -33,7 +33,3 @@ func play_attack() -> void:
 func play_hurt() -> void:
 	if sprite.animation != "hurt":
 		sprite.play("hurt")
-
-func play_block() -> void:
-	if sprite.animation != "block":
-		sprite.play("block")

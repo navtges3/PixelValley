@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://blhwqbfk6j0u7"]
+[gd_scene format=3 uid="uid://blhwqbfk6j0u7"]
 
 [ext_resource type="Script" uid="uid://cmd8ja1dvnkcv" path="res://scripts/ui/screens/village_screen.gd" id="1_dtw0c"]
 [ext_resource type="Theme" uid="uid://66dgdyq2o64x" path="res://assets/button_themes/specialty/pause_button.tres" id="3_o0vxf"]

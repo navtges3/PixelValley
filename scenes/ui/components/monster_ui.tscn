@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=3 uid="uid://pxhpjm0rsnof"]
+[gd_scene format=3 uid="uid://pxhpjm0rsnof"]
 
 [ext_resource type="Texture2D" uid="uid://vdpvmy1cvfnu" path="res://assets/goblin.png" id="1_5jiu2"]
 [ext_resource type="Script" uid="uid://cbwqwryr8jmjh" path="res://scripts/ui/components/monster_ui.gd" id="1_r2qmi"]

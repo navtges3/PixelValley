@@ -1,4 +1,4 @@
-[gd_scene load_steps=3 format=3 uid="uid://c6yjltrg5xsq"]
+[gd_scene format=3 uid="uid://c6yjltrg5xsq"]
 
 [ext_resource type="Theme" uid="uid://dqwm8agt87lsh" path="res://assets/button_themes/regular/blue_button.tres" id="1_11lqi"]
 [ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://assets/button_themes/regular/green_button.tres" id="2_aby8h"]

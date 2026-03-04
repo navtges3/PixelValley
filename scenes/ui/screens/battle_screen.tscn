@@ -107,5 +107,3 @@ script = ExtResource("11_o00jr")
 
 [node name="BattleVictoryPopup" parent="." unique_id=1609275692 instance=ExtResource("13_jn4pq")]
 visible = false
-
-[connection signal="hero_attack" from="BattleManager" to="." method="_on_battle_manager_hero_attack"]
