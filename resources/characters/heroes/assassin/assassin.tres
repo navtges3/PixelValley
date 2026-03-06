@@ -1,0 +1,53 @@
+[gd_resource type="Resource" script_class="Hero" format=3 uid="uid://b833aodacue5s"]
+
+[ext_resource type="Script" uid="uid://blp0fv0xnajdb" path="res://scripts/data/active_effect.gd" id="1_5kf2f"]
+[ext_resource type="Resource" uid="uid://v505fsseyxvh" path="res://resources/characters/heroes/assassin/assassin_visual.tres" id="2_yl6vl"]
+[ext_resource type="Resource" uid="uid://dxambea5c1r2r" path="res://resources/characters/weapons/assassin_weapons/common/twin_daggers.tres" id="3_fisov"]
+[ext_resource type="Script" uid="uid://d0mdck5mlsm03" path="res://scripts/data/item_stack.gd" id="4_sg6bw"]
+[ext_resource type="Resource" uid="uid://cyiqwotfm3gq6" path="res://resources/characters/potions/regeneration_potion.tres" id="5_irluw"]
+[ext_resource type="Resource" uid="uid://cfwejpwyn8due" path="res://resources/characters/potions/attack_potion.tres" id="6_mtvg4"]
+[ext_resource type="Script" uid="uid://4rm24oomjap7" path="res://scripts/characters/inventory.gd" id="7_w01e8"]
+[ext_resource type="Script" uid="uid://dgykeyxn7fefw" path="res://scripts/data/weapon.gd" id="8_xru4w"]
+[ext_resource type="Texture2D" uid="uid://onvyq0o8uo1i" path="res://assets/assassin.png" id="9_v2cp1"]
+[ext_resource type="Script" uid="uid://b1x8jfufxk3xv" path="res://scripts/characters/hero.gd" id="10_bn4q3"]
+[ext_resource type="Script" uid="uid://hxleldka7y06" path="res://scripts/characters/stat_block.gd" id="11_k7l02"]
+
+[sub_resource type="Resource" id="Resource_myjxf"]
+script = ExtResource("4_sg6bw")
+item = ExtResource("5_irluw")
+count = 2
+metadata/_custom_type_script = "uid://d0mdck5mlsm03"
+
+[sub_resource type="Resource" id="Resource_8bnnm"]
+script = ExtResource("4_sg6bw")
+item = ExtResource("6_mtvg4")
+count = 2
+metadata/_custom_type_script = "uid://d0mdck5mlsm03"
+
+[sub_resource type="Resource" id="Resource_0t77m"]
+script = ExtResource("7_w01e8")
+gold = 50
+equipped_weapon = ExtResource("3_fisov")
+potions = Array[ExtResource("4_sg6bw")]([SubResource("Resource_myjxf"), SubResource("Resource_8bnnm")])
+metadata/_custom_type_script = "uid://4rm24oomjap7"
+
+[sub_resource type="Resource" id="Resource_3wgu5"]
+script = ExtResource("11_k7l02")
+current_hp = 80
+current_nrg = 60
+max_hp = 80
+max_nrg = 60
+attack = 5
+magic = 1
+defense = 2
+resistance = 2
+metadata/_custom_type_script = "uid://hxleldka7y06"
+
+[resource]
+script = ExtResource("10_bn4q3")
+inventory = SubResource("Resource_0t77m")
+name = "Assassin"
+portrait = ExtResource("9_v2cp1")
+battle_visual = ExtResource("2_yl6vl")
+stat_block = SubResource("Resource_3wgu5")
+metadata/_custom_type_script = "uid://b1x8jfufxk3xv"

@@ -1,0 +1,78 @@
+[gd_resource type="Resource" script_class="Weapon" format=3 uid="uid://d4k5ndnd6k24a"]
+
+[ext_resource type="Script" uid="uid://b2o7w8q10stxo" path="res://scripts/data/ability.gd" id="1_0xrqs"]
+[ext_resource type="Script" uid="uid://bo48scp6lbwrb" path="res://scripts/data/attack.gd" id="2_c0mxv"]
+[ext_resource type="Script" uid="uid://bvuw0uyc36uxx" path="res://scripts/data/utility.gd" id="3_0x2gu"]
+[ext_resource type="Script" uid="uid://c5deti4sb2k2j" path="res://scripts/data/effect.gd" id="4_hja36"]
+[ext_resource type="Script" uid="uid://dgykeyxn7fefw" path="res://scripts/data/weapon.gd" id="5_cmtrc"]
+[ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://assets/button_themes/regular/red_button.tres" id="6_yihs2"]
+
+[sub_resource type="Resource" id="Resource_0aisa"]
+script = ExtResource("2_c0mxv")
+min_damage = 1
+max_damage = 8
+metadata/_custom_type_script = "uid://bo48scp6lbwrb"
+
+[sub_resource type="Resource" id="Resource_w68nx"]
+script = ExtResource("1_0xrqs")
+name = "Widow's Cut"
+attack = SubResource("Resource_0aisa")
+metadata/_custom_type_script = "uid://b2o7w8q10stxo"
+
+[sub_resource type="Resource" id="Resource_eqh21"]
+script = ExtResource("2_c0mxv")
+min_damage = 4
+max_damage = 12
+metadata/_custom_type_script = "uid://bo48scp6lbwrb"
+
+[sub_resource type="Resource" id="Resource_s0gv6"]
+script = ExtResource("1_0xrqs")
+name = "Bloodline Sever"
+energy_cost = 5
+cooldown = 3
+attack = SubResource("Resource_eqh21")
+metadata/_custom_type_script = "uid://b2o7w8q10stxo"
+
+[sub_resource type="Resource" id="Resource_ervrq"]
+script = ExtResource("4_hja36")
+type = 2
+strength = 10
+duration = 2
+metadata/_custom_type_script = "uid://c5deti4sb2k2j"
+
+[sub_resource type="Resource" id="Resource_fvyw7"]
+script = ExtResource("3_0x2gu")
+effects = Array[ExtResource("4_hja36")]([SubResource("Resource_ervrq")])
+metadata/_custom_type_script = "uid://bvuw0uyc36uxx"
+
+[sub_resource type="Resource" id="Resource_5hw8h"]
+script = ExtResource("1_0xrqs")
+name = "Cursed Bladewaltze"
+energy_cost = 10
+cooldown = 6
+utilities = Array[ExtResource("3_0x2gu")]([SubResource("Resource_fvyw7")])
+metadata/_custom_type_script = "uid://b2o7w8q10stxo"
+
+[sub_resource type="Resource" id="Resource_kyhev"]
+script = ExtResource("2_c0mxv")
+min_damage = 10
+max_damage = 25
+metadata/_custom_type_script = "uid://bo48scp6lbwrb"
+
+[sub_resource type="Resource" id="Resource_td3vm"]
+script = ExtResource("1_0xrqs")
+name = "Death's Embrace"
+energy_cost = 20
+cooldown = 9
+attack = SubResource("Resource_kyhev")
+metadata/_custom_type_script = "uid://b2o7w8q10stxo"
+
+[resource]
+script = ExtResource("5_cmtrc")
+rarity = 2
+abilities = Array[ExtResource("1_0xrqs")]([SubResource("Resource_w68nx"), SubResource("Resource_s0gv6"), SubResource("Resource_5hw8h"), SubResource("Resource_td3vm")])
+name = "The Widowmaker"
+description = "Cursed‑silver daggers whispered to have ended entire bloodlines."
+theme = ExtResource("6_yihs2")
+value = 1300
+metadata/_custom_type_script = "uid://dgykeyxn7fefw"

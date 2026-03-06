@@ -1,0 +1,77 @@
+[gd_resource type="Resource" script_class="Weapon" format=3 uid="uid://dgrmkfucxbe5f"]
+
+[ext_resource type="Script" uid="uid://b2o7w8q10stxo" path="res://scripts/data/ability.gd" id="1_3w7bg"]
+[ext_resource type="Script" uid="uid://bo48scp6lbwrb" path="res://scripts/data/attack.gd" id="2_m8b1m"]
+[ext_resource type="Script" uid="uid://bvuw0uyc36uxx" path="res://scripts/data/utility.gd" id="3_drag8"]
+[ext_resource type="Script" uid="uid://c5deti4sb2k2j" path="res://scripts/data/effect.gd" id="4_u4rf2"]
+[ext_resource type="Script" uid="uid://dgykeyxn7fefw" path="res://scripts/data/weapon.gd" id="5_1ihhc"]
+[ext_resource type="Theme" uid="uid://dqwm8agt87lsh" path="res://assets/button_themes/regular/blue_button.tres" id="6_50i6b"]
+
+[sub_resource type="Resource" id="Resource_bt3qu"]
+script = ExtResource("2_m8b1m")
+min_damage = 1
+max_damage = 8
+metadata/_custom_type_script = "uid://bo48scp6lbwrb"
+
+[sub_resource type="Resource" id="Resource_0gtlg"]
+script = ExtResource("1_3w7bg")
+name = "Commander's Sweep"
+attack = SubResource("Resource_bt3qu")
+metadata/_custom_type_script = "uid://b2o7w8q10stxo"
+
+[sub_resource type="Resource" id="Resource_71p4r"]
+script = ExtResource("2_m8b1m")
+min_damage = 5
+max_damage = 12
+metadata/_custom_type_script = "uid://bo48scp6lbwrb"
+
+[sub_resource type="Resource" id="Resource_g8hf2"]
+script = ExtResource("4_u4rf2")
+type = 6
+strength = 5
+duration = 2
+metadata/_custom_type_script = "uid://c5deti4sb2k2j"
+
+[sub_resource type="Resource" id="Resource_rbnab"]
+script = ExtResource("3_drag8")
+effects = Array[ExtResource("4_u4rf2")]([SubResource("Resource_g8hf2")])
+metadata/_custom_type_script = "uid://bvuw0uyc36uxx"
+
+[sub_resource type="Resource" id="Resource_bq87x"]
+script = ExtResource("1_3w7bg")
+name = "Halberd Hook"
+energy_cost = 5
+cooldown = 3
+attack = SubResource("Resource_71p4r")
+utilities = Array[ExtResource("3_drag8")]([SubResource("Resource_rbnab")])
+metadata/_custom_type_script = "uid://b2o7w8q10stxo"
+
+[sub_resource type="Resource" id="Resource_m36sb"]
+script = ExtResource("4_u4rf2")
+type = 2
+strength = 5
+duration = 4
+metadata/_custom_type_script = "uid://c5deti4sb2k2j"
+
+[sub_resource type="Resource" id="Resource_7jnpc"]
+script = ExtResource("3_drag8")
+effects = Array[ExtResource("4_u4rf2")]([SubResource("Resource_m36sb")])
+metadata/_custom_type_script = "uid://bvuw0uyc36uxx"
+
+[sub_resource type="Resource" id="Resource_5dh36"]
+script = ExtResource("1_3w7bg")
+name = "Battlefield Rally"
+energy_cost = 10
+cooldown = 6
+utilities = Array[ExtResource("3_drag8")]([SubResource("Resource_7jnpc")])
+metadata/_custom_type_script = "uid://b2o7w8q10stxo"
+
+[resource]
+script = ExtResource("5_1ihhc")
+rarity = 1
+abilities = Array[ExtResource("1_3w7bg")]([SubResource("Resource_0gtlg"), SubResource("Resource_bq87x"), SubResource("Resource_5dh36")])
+name = "Knight Commander’s Halberd"
+description = "An ornate polearm engraved with honors of past battlefield victories."
+theme = ExtResource("6_50i6b")
+value = 375
+metadata/_custom_type_script = "uid://dgykeyxn7fefw"

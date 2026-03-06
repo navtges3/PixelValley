@@ -1,13 +1,13 @@
 [gd_resource type="Resource" script_class="Quest" format=3 uid="uid://c0rjkhwxh04cq"]
 
 [ext_resource type="Script" uid="uid://bhsjswm1wnll8" path="res://scripts/quest/monster_requirement.gd" id="1_jrwqx"]
-[ext_resource type="Resource" uid="uid://dm48acoifufc0" path="res://resources/monsters/goblin/goblin.tres" id="2_5u7t5"]
+[ext_resource type="Resource" uid="uid://dm48acoifufc0" path="res://resources/characters/monsters/goblin/goblin.tres" id="2_bnm22"]
 [ext_resource type="Script" uid="uid://xekqra2mjp3l" path="res://scripts/quest/quest_reward.gd" id="3_hp04e"]
 [ext_resource type="Script" uid="uid://xhl8p6y5w5e6" path="res://scripts/quest/quest.gd" id="6_sm1w6"]
 
 [sub_resource type="Resource" id="Resource_668k3"]
 script = ExtResource("1_jrwqx")
-monster = ExtResource("2_5u7t5")
+monster = ExtResource("2_bnm22")
 target_amount = 8
 metadata/_custom_type_script = "uid://bhsjswm1wnll8"
 
