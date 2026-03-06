@@ -148,7 +148,6 @@ static func _get_active_effects_data(combatant: Combatant) -> Array:
 			"duration": ae.effect.duration,
 			"remaining_turns": ae.remaining_turns
 		})
-		ae.on_expire()
 	return result
 
 static func _load_active_effects(data: Array, combatant: Combatant) -> void:
