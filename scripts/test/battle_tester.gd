@@ -4,8 +4,8 @@ extends Control
 @onready var monster_spin_box: SpinBox = $MarginContainer/VBoxContainer/MonsterSelection/MonsterSpinBox
 @onready var monster_dropdown: OptionButton = $MarginContainer/VBoxContainer/MonsterSelection/MonsterDropdown
 
-var hero_resources: Array = []
-var monster_resources: Array = []
+var hero_resources: Array[Hero] = []
+var monster_resources: Array[Monster] = []
 
 func _ready():
 	load_heroes()
@@ -18,7 +18,7 @@ func load_heroes():
 		preload("res://resources/heroes/assassin/assassin.tres"),
 	]
 	for i in hero_resources.size():
-		hero_dropdown.add_item(hero_resources[i].name, i)
+		hero_dropdown.add_item(hero_resources[i].get_class_name(), i)
 
 func load_monsters():
 	monster_resources = [
@@ -29,7 +29,7 @@ func load_monsters():
 
 
 func _on_start_battle_pressed() -> void:
-	GameState.hero = hero_resources[hero_dropdown.get_selected_id()]
+	GameState.hero = hero_resources[hero_dropdown.get_selected_id()].duplicate()
 	print("Hero selected: ", GameState.hero.name)
 	
 	var monster_obj = MonsterRequirement.new()

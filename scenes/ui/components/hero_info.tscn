@@ -1,0 +1,124 @@
+[gd_scene format=3 uid="uid://bjx12sxd6xqme"]
+
+[ext_resource type="Script" uid="uid://bhcbpl5f7iy2h" path="res://scripts/ui/components/hero_info.gd" id="1_65tph"]
+[ext_resource type="Theme" uid="uid://cra87dj7simd8" path="res://resources/ui/progress_bar/red_bar.tres" id="1_gupx4"]
+[ext_resource type="Theme" uid="uid://c70dcpx1conb6" path="res://resources/ui/progress_bar/blue_bar.tres" id="2_x6d6m"]
+[ext_resource type="Theme" uid="uid://ckmtiaybiiuaw" path="res://resources/ui/progress_bar/green_bar.tres" id="3_vut8i"]
+
+[node name="HeroInfo" type="VBoxContainer" unique_id=571032287]
+offset_right = 119.0
+offset_bottom = 158.0
+script = ExtResource("1_65tph")
+
+[node name="NameLabel" type="Label" parent="." unique_id=414402984]
+layout_mode = 2
+text = "Hero Name"
+
+[node name="HeroBars" type="GridContainer" parent="." unique_id=438105983]
+layout_mode = 2
+columns = 2
+
+[node name="HealthLabel" type="Label" parent="HeroBars" unique_id=1077424389]
+layout_mode = 2
+text = "HP"
+horizontal_alignment = 2
+
+[node name="HealthBar" type="ProgressBar" parent="HeroBars" unique_id=1417861012]
+custom_minimum_size = Vector2(256, 24)
+layout_mode = 2
+theme = ExtResource("1_gupx4")
+value = 75.0
+show_percentage = false
+
+[node name="HealthBarLabel" type="Label" parent="HeroBars/HealthBar" unique_id=259577349]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -26.0
+offset_top = -11.5
+offset_right = 26.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "75/100"
+
+[node name="EnergyLabel" type="Label" parent="HeroBars" unique_id=1712989395]
+layout_mode = 2
+text = "NRG"
+horizontal_alignment = 2
+
+[node name="EnergyBar" type="ProgressBar" parent="HeroBars" unique_id=1168189246]
+custom_minimum_size = Vector2(256, 24)
+layout_mode = 2
+theme = ExtResource("2_x6d6m")
+value = 25.0
+show_percentage = false
+
+[node name="EnergyBarLabel" type="Label" parent="HeroBars/EnergyBar" unique_id=801824752]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -26.0
+offset_top = -11.5
+offset_right = 26.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "25/100"
+
+[node name="LevelLabel" type="Label" parent="HeroBars" unique_id=510535556]
+layout_mode = 2
+theme_override_font_sizes/font_size = 13
+text = "LVL: X"
+horizontal_alignment = 2
+
+[node name="XPBar" type="ProgressBar" parent="HeroBars" unique_id=1163130065]
+custom_minimum_size = Vector2(256, 16)
+layout_mode = 2
+theme = ExtResource("3_vut8i")
+value = 25.0
+show_percentage = false
+
+[node name="HeroStats" type="GridContainer" parent="." unique_id=958391015]
+layout_mode = 2
+theme_override_constants/h_separation = 10
+columns = 2
+
+[node name="AttackLabel" type="Label" parent="HeroStats" unique_id=1511903067]
+layout_mode = 2
+tooltip_text = "Attack increases physical damage."
+mouse_filter = 0
+text = "Attack: 1"
+horizontal_alignment = 2
+
+[node name="MagicLabel" type="Label" parent="HeroStats" unique_id=2116112631]
+layout_mode = 2
+tooltip_text = "Magic increases magic damage."
+mouse_filter = 0
+text = "Magic: 1"
+
+[node name="DefenseLabel" type="Label" parent="HeroStats" unique_id=2076151251]
+layout_mode = 2
+tooltip_text = "Defense increases physical protection."
+mouse_filter = 0
+text = "Defence: 1"
+horizontal_alignment = 2
+
+[node name="ResistanceLabel" type="Label" parent="HeroStats" unique_id=1319160702]
+layout_mode = 2
+tooltip_text = "Resistance increases magic protection."
+mouse_filter = 0
+text = "Resist: 1"
+
+[node name="GoldLabel" type="Label" parent="HeroStats" unique_id=143955776]
+layout_mode = 2
+text = "Gold: 0"
+horizontal_alignment = 2
