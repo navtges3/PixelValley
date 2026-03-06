@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="Monster" load_steps=15 format=3 uid="uid://dcwvon7sw5nst"]
+[gd_resource type="Resource" script_class="Monster" format=3 uid="uid://dcwvon7sw5nst"]
 
 [ext_resource type="Script" uid="uid://blp0fv0xnajdb" path="res://scripts/data/active_effect.gd" id="1_vnhbq"]
 [ext_resource type="Resource" uid="uid://butpfi06boe3d" path="res://resources/abilities/kings_smash.tres" id="2_vnhbq"]

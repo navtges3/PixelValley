@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="Ability" load_steps=6 format=3 uid="uid://ctce7oq3s4kox"]
+[gd_resource type="Resource" script_class="Ability" format=3 uid="uid://ctce7oq3s4kox"]
 
 [ext_resource type="Script" uid="uid://b2o7w8q10stxo" path="res://scripts/data/ability.gd" id="1_i4xvw"]
 [ext_resource type="Script" uid="uid://bvuw0uyc36uxx" path="res://scripts/data/utility.gd" id="2_tior7"]

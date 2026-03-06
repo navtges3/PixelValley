@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="Quest" load_steps=8 format=3 uid="uid://dyfimlcm8natd"]
+[gd_resource type="Resource" script_class="Quest" format=3 uid="uid://dyfimlcm8natd"]
 
 [ext_resource type="Script" uid="uid://bhsjswm1wnll8" path="res://scripts/quest/monster_requirement.gd" id="1_ilb8g"]
 [ext_resource type="Script" uid="uid://xekqra2mjp3l" path="res://scripts/quest/quest_reward.gd" id="3_2xns0"]
