@@ -2,24 +2,25 @@ extends Resource
 class_name QuestManager
 
 const QUEST_LIST := [
-	"res://resources/quests/quest_1.tres",
-	"res://resources/quests/quest_2.tres",
-	"res://resources/quests/quest_3.tres",
-	"res://resources/quests/quest_4.tres",
-	"res://resources/quests/quest_5.tres",
-	"res://resources/quests/quest_6.tres",
-	"res://resources/quests/quest_7.tres",
-	"res://resources/quests/quest_8.tres",
-	"res://resources/quests/quest_9.tres",
-	"res://resources/quests/quest_10.tres",
-	"res://resources/quests/quest_11.tres",
-	"res://resources/quests/quest_12.tres",
-	"res://resources/quests/quest_13.tres",
-	"res://resources/quests/quest_14.tres",
-	"res://resources/quests/quest_15.tres",
-	"res://resources/quests/quest_101.tres",
-	"res://resources/quests/quest_102.tres"
+	preload("res://resources/quests/quest_1.tres"),
+	preload("res://resources/quests/quest_2.tres"),
+	preload("res://resources/quests/quest_3.tres"),
+	preload("res://resources/quests/quest_4.tres"),
+	preload("res://resources/quests/quest_5.tres"),
+	preload("res://resources/quests/quest_6.tres"),
+	preload("res://resources/quests/quest_7.tres"),
+	preload("res://resources/quests/quest_8.tres"),
+	preload("res://resources/quests/quest_9.tres"),
+	preload("res://resources/quests/quest_10.tres"),
+	preload("res://resources/quests/quest_11.tres"),
+	preload("res://resources/quests/quest_12.tres"),
+	preload("res://resources/quests/quest_13.tres"),
+	preload("res://resources/quests/quest_14.tres"),
+	preload("res://resources/quests/quest_15.tres"),
+	preload("res://resources/quests/quest_101.tres"),
+	preload("res://resources/quests/quest_102.tres")
 ]
+
 
 const FIRST_QUEST_ID := 1
 const LAST_QUEST_ID := 15
@@ -56,8 +57,7 @@ func new_game() -> void:
 	available_quests = []
 	completed_quests = []
 	for quest_res in QUEST_LIST:
-		var quest = load(quest_res)
-		locked_quests.append(quest)
+		locked_quests.append(quest_res.duplicate())
 	if locked_quests.size() > 0:
 		unlock_quest_by_id(FIRST_QUEST_ID)
 
@@ -72,4 +72,3 @@ func add_available_quest(quest: Quest) -> void:
 	if quest not in available_quests and quest not in completed_quests:
 		available_quests.append(quest)
 		quest.quest_completed.connect(Callable(self, "_on_quest_completed"))
-
