@@ -31,10 +31,6 @@ func get_class_name() -> String:
 		_:
 			return "Unknown"
 
-func meditate() -> void:
-	heal((MEDITATE_HP_GAIN * level) + stat_block.resistance)
-	recover_energy((MEDITATE_NRG_GAIN * level) + stat_block.magic)
-
 func gain_experience(amount: int) -> void:
 	experience += amount
 	if experience >= level * LEVEL_UP_MULT:
