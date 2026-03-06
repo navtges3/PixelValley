@@ -9,8 +9,15 @@ var class_weapon_table := {
 			preload("res://resources/weapons/assassin_weapons/common/throwing_knives.tres"),
 			preload("res://resources/weapons/assassin_weapons/common/twin_daggers.tres"),		
 		],
-		Item.Rarity.RARE: [],
-		Item.Rarity.LEGENDARY: [],
+		Item.Rarity.RARE: [
+			preload("res://resources/weapons/assassin_weapons/rare/eclipse_edge.tres"),
+			preload("res://resources/weapons/assassin_weapons/rare/shadowveil_katar.tres"),
+			preload("res://resources/weapons/assassin_weapons/rare/venomfang_blades.tres"),
+		],
+		Item.Rarity.LEGENDARY: [
+			preload("res://resources/weapons/assassin_weapons/legendary/shades_whisper.tres"),
+			preload("res://resources/weapons/assassin_weapons/legendary/widowmaker.tres"),
+		],
 	},
 	Hero.HeroClass.KNIGHT: {
 		Item.Rarity.COMMON: [
@@ -18,10 +25,17 @@ var class_weapon_table := {
 			preload("res://resources/weapons/knight_weapons/common/iron_longsword.tres"),
 			preload("res://resources/weapons/knight_weapons/common/soldiers_spear.tres"),
 			preload("res://resources/weapons/knight_weapons/common/steel_claymore.tres"),
-			preload("res://resources/weapons/knight_weapons/common/wooden_shieldblade.tres"),		
+			preload("res://resources/weapons/knight_weapons/common/wooden_shieldblade.tres"),
 		],
-		Item.Rarity.RARE: [],
-		Item.Rarity.LEGENDARY: [],
+		Item.Rarity.RARE: [
+			preload("res://resources/weapons/knight_weapons/rare/knight_commanders_halberd.tres"),
+			preload("res://resources/weapons/knight_weapons/rare/oathkeeper_blade.tres"),
+			preload("res://resources/weapons/knight_weapons/rare/paladins_brand.tres"),
+		],
+		Item.Rarity.LEGENDARY: [
+			preload("res://resources/weapons/knight_weapons/legendary/aegisbreaker.tres"),
+			preload("res://resources/weapons/knight_weapons/legendary/valors_end.tres"),
+		],
 	},
 	Hero.HeroClass.PRINCESS: {
 		Item.Rarity.COMMON: [
@@ -29,10 +43,17 @@ var class_weapon_table := {
 			preload("res://resources/weapons/princess_weapons/common/enchanted_fan.tres"),
 			preload("res://resources/weapons/princess_weapons/common/focus_orb.tres"),
 			preload("res://resources/weapons/princess_weapons/common/runed_staff.tres"),
-			preload("res://resources/weapons/princess_weapons/common/silver_scepter.tres"),		
+			preload("res://resources/weapons/princess_weapons/common/silver_scepter.tres"),
 		],
-		Item.Rarity.RARE: [],
-		Item.Rarity.LEGENDARY: [],
+		Item.Rarity.RARE: [
+			preload("res://resources/weapons/princess_weapons/rare/moonlight_wand.tres"),
+			preload("res://resources/weapons/princess_weapons/rare/royal_channelers_staff.tres"),
+			preload("res://resources/weapons/princess_weapons/rare/sages_mirror_orb.tres"),
+		],
+		Item.Rarity.LEGENDARY: [
+			preload("res://resources/weapons/princess_weapons/legendary/celestias_crownstaff.tres"),
+			preload("res://resources/weapons/princess_weapons/legendary/heart_of_eternity.tres"),
+		],
 	},
 }
 
