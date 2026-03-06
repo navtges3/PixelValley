@@ -11,12 +11,6 @@ var completed: bool = false
 
 signal quest_completed
 
-func slay_monster(monster_name: String) -> bool:
-	for objective in monster_objectives:
-		if objective.monster.name == monster_name:
-			objective.current_amount += 1
-	return is_complete()
-
 func get_monster() -> Monster:
 	var candidates := []
 	for objective in monster_objectives:
@@ -38,14 +32,20 @@ func get_slain_count() -> int:
 		count += objective.current_amount
 	return count
 
-func complete_quest() -> void:
-	completed = true
-	emit_signal("quest_completed", self)
+func slay_monster(monster_name: String) -> bool:
+	for objective in monster_objectives:
+		if objective.monster.name == monster_name:
+			objective.current_amount += 1
+	return is_complete()
 
 func is_complete() -> bool:
 	for objective in monster_objectives:
 		if objective.current_amount < objective.target_amount:
 			return false
-	completed = true
-	emit_signal("quest_completed", self)
+	complete_quest()
 	return completed
+
+func complete_quest() -> void:
+	if not completed:
+		completed = true
+		emit_signal("quest_completed", self)
