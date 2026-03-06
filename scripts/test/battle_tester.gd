@@ -15,6 +15,7 @@ func load_heroes():
 	hero_resources = [
 		preload("res://resources/heroes/knight/knight.tres"),
 		preload("res://resources/heroes/princess/princess.tres"),
+		preload("res://resources/heroes/assassin/assassin.tres"),
 	]
 	for i in hero_resources.size():
 		hero_dropdown.add_item(hero_resources[i].name, i)
