@@ -1,19 +1,19 @@
 [gd_scene format=3 uid="uid://ehxty8k3d2vu"]
 
 [ext_resource type="Script" uid="uid://2ys6twbk6x5f" path="res://scripts/ui/components/quest_progress_bar.gd" id="1_pghnx"]
-[ext_resource type="Theme" uid="uid://sgmp1sjkesbm" path="res://assets/progress_bars/energy_bar.tres" id="2_pghnx"]
+[ext_resource type="Theme" uid="uid://c70dcpx1conb6" path="res://resources/ui/progress_bar/blue_bar.tres" id="2_pghnx"]
 
-[node name="QuestProgressBar" type="HBoxContainer"]
+[node name="QuestProgressBar" type="HBoxContainer" unique_id=1582434758]
 offset_right = 40.0
 offset_bottom = 24.0
 script = ExtResource("1_pghnx")
 
-[node name="QuestLabel" type="Label" parent="."]
+[node name="QuestLabel" type="Label" parent="." unique_id=1759561822]
 layout_mode = 2
-size_flags_vertical = 0
 text = "Current Quest"
+vertical_alignment = 1
 
-[node name="ProgressBar" type="ProgressBar" parent="."]
+[node name="ProgressBar" type="ProgressBar" parent="." unique_id=767357460]
 custom_minimum_size = Vector2(256, 24)
 layout_mode = 2
 theme = ExtResource("2_pghnx")

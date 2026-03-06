@@ -3,7 +3,7 @@
 [ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://assets/button_themes/regular/green_button.tres" id="1_6epuk"]
 [ext_resource type="Script" uid="uid://eo2d48vcqq63" path="res://scripts/ui/screens/shop_screen.gd" id="1_wjsap"]
 [ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://assets/button_themes/regular/red_button.tres" id="2_ec12o"]
-[ext_resource type="PackedScene" uid="uid://bjx12sxd6xqme" path="res://scenes/ui/components/hero_ui.tscn" id="3_ec12o"]
+[ext_resource type="PackedScene" uid="uid://bjx12sxd6xqme" path="res://scenes/ui/components/hero_info.tscn" id="3_ec12o"]
 [ext_resource type="Script" uid="uid://hgt4ge7m4nn2" path="res://scripts/systems/shop_manager.gd" id="5_8niu3"]
 
 [node name="ShopScreen" type="Control"]
