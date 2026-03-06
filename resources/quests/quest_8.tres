@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="Quest" load_steps=8 format=3 uid="uid://5cxoduk38hp0"]
+[gd_resource type="Resource" script_class="Quest" format=3 uid="uid://5cxoduk38hp0"]
 
 [ext_resource type="Script" uid="uid://bhsjswm1wnll8" path="res://scripts/quest/monster_requirement.gd" id="1_hrtie"]
 [ext_resource type="Resource" uid="uid://defc2ss743h1d" path="res://resources/monsters/orc_chieftain.tres" id="2_rpd37"]

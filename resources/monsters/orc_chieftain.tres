@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="Monster" load_steps=15 format=3 uid="uid://defc2ss743h1d"]
+[gd_resource type="Resource" script_class="Monster" format=3 uid="uid://defc2ss743h1d"]
 
 [ext_resource type="Script" uid="uid://blp0fv0xnajdb" path="res://scripts/data/active_effect.gd" id="1_mpmry"]
 [ext_resource type="Resource" uid="uid://wdlsildxyd0p" path="res://resources/abilities/cleave.tres" id="2_mpmry"]

@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="Quest" load_steps=10 format=3 uid="uid://cwjcl1sqesfn"]
+[gd_resource type="Resource" script_class="Quest" format=3 uid="uid://cwjcl1sqesfn"]
 
 [ext_resource type="Script" uid="uid://bhsjswm1wnll8" path="res://scripts/quest/monster_requirement.gd" id="1_vwm1u"]
 [ext_resource type="Resource" uid="uid://dm48acoifufc0" path="res://resources/monsters/goblin/goblin.tres" id="2_jhy7i"]

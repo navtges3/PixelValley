@@ -1,7 +1,7 @@
 extends Node
 
 const SAVE_DIR := "user://saves"
-const DEFAULT_VILLAGE = preload("res://resources/villlages/default_village.tres")
+const DEFAULT_VILLAGE = preload("res://resources/villages/default_village.tres")
 
 var hero: Hero = null
 var village: Village = null

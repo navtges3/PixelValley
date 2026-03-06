@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="Monster" load_steps=15 format=3 uid="uid://bhvavuaqg4vna"]
+[gd_resource type="Resource" script_class="Monster" format=3 uid="uid://bhvavuaqg4vna"]
 
 [ext_resource type="Script" uid="uid://blp0fv0xnajdb" path="res://scripts/data/active_effect.gd" id="1_cd3ku"]
 [ext_resource type="Resource" uid="uid://5301qdbddvxa" path="res://resources/abilities/crushing_blow.tres" id="2_cd3ku"]

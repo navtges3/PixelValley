@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="Quest" load_steps=8 format=3 uid="uid://bx73nymnh0wfe"]
+[gd_resource type="Resource" script_class="Quest" format=3 uid="uid://bx73nymnh0wfe"]
 
 [ext_resource type="Script" uid="uid://bhsjswm1wnll8" path="res://scripts/quest/monster_requirement.gd" id="1_6j6nb"]
 [ext_resource type="Resource" uid="uid://bhvavuaqg4vna" path="res://resources/monsters/ogre_warlord.tres" id="2_trt7l"]
