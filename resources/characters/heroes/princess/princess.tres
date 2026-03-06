@@ -1,0 +1,54 @@
+[gd_resource type="Resource" script_class="Hero" format=3 uid="uid://55x3e6cs541f"]
+
+[ext_resource type="Script" uid="uid://blp0fv0xnajdb" path="res://scripts/data/active_effect.gd" id="1_j0i8t"]
+[ext_resource type="Resource" uid="uid://c2n1qo8jdtaxw" path="res://resources/characters/heroes/princess/princess_visual.tres" id="2_cu6tq"]
+[ext_resource type="Resource" uid="uid://2xnjln6p48rw" path="res://resources/characters/weapons/princess_weapons/common/silver_scepter.tres" id="3_if4lv"]
+[ext_resource type="Script" uid="uid://d0mdck5mlsm03" path="res://scripts/data/item_stack.gd" id="4_pouv5"]
+[ext_resource type="Resource" uid="uid://cyiqwotfm3gq6" path="res://resources/characters/potions/regeneration_potion.tres" id="5_rw6ih"]
+[ext_resource type="Resource" uid="uid://4gl0mwbttg8d" path="res://resources/characters/potions/energy_potion.tres" id="6_eoppb"]
+[ext_resource type="Script" uid="uid://4rm24oomjap7" path="res://scripts/characters/inventory.gd" id="7_ckwek"]
+[ext_resource type="Script" uid="uid://dgykeyxn7fefw" path="res://scripts/data/weapon.gd" id="8_43vr3"]
+[ext_resource type="Texture2D" uid="uid://crvpafnprgkcq" path="res://assets/Princess.png" id="9_b4bc3"]
+[ext_resource type="Script" uid="uid://b1x8jfufxk3xv" path="res://scripts/characters/hero.gd" id="10_j6iev"]
+[ext_resource type="Script" uid="uid://hxleldka7y06" path="res://scripts/characters/stat_block.gd" id="11_vf8yv"]
+
+[sub_resource type="Resource" id="Resource_2mwf8"]
+script = ExtResource("4_pouv5")
+item = ExtResource("5_rw6ih")
+count = 2
+metadata/_custom_type_script = "uid://d0mdck5mlsm03"
+
+[sub_resource type="Resource" id="Resource_xylvd"]
+script = ExtResource("4_pouv5")
+item = ExtResource("6_eoppb")
+count = 2
+metadata/_custom_type_script = "uid://d0mdck5mlsm03"
+
+[sub_resource type="Resource" id="Resource_od506"]
+script = ExtResource("7_ckwek")
+gold = 50
+equipped_weapon = ExtResource("3_if4lv")
+potions = Array[ExtResource("4_pouv5")]([SubResource("Resource_2mwf8"), SubResource("Resource_xylvd")])
+metadata/_custom_type_script = "uid://4rm24oomjap7"
+
+[sub_resource type="Resource" id="Resource_qej26"]
+script = ExtResource("11_vf8yv")
+current_hp = 90
+current_nrg = 80
+max_hp = 90
+max_nrg = 80
+attack = 1
+magic = 4
+defense = 2
+resistance = 3
+metadata/_custom_type_script = "uid://hxleldka7y06"
+
+[resource]
+script = ExtResource("10_j6iev")
+hero_class = 2
+inventory = SubResource("Resource_od506")
+name = "Princess"
+portrait = ExtResource("9_b4bc3")
+battle_visual = ExtResource("2_cu6tq")
+stat_block = SubResource("Resource_qej26")
+metadata/_custom_type_script = "uid://b1x8jfufxk3xv"

@@ -1,7 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://bsh4xy5omgwej"]
+[gd_scene format=3 uid="uid://bsh4xy5omgwej"]
 
 [ext_resource type="Script" uid="uid://kcysixmfxdo0" path="res://scripts/ui/components/battle_character.gd" id="1_il1nn"]
-[ext_resource type="SpriteFrames" uid="uid://4ywebwliybf7" path="res://resources/monsters/goblin/goblin_sprite_frames.tres" id="2_stq27"]
+[ext_resource type="SpriteFrames" uid="uid://4ywebwliybf7" path="res://resources/characters/monsters/goblin/goblin_sprite_frames.tres" id="2_stq27"]
 
 [node name="BattleCharacter" type="Node2D"]
 scale = Vector2(5, 5)

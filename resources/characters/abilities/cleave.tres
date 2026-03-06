@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="Ability" format=3 uid="uid://wdlsildxyd0p"]
+
+[ext_resource type="Script" uid="uid://bo48scp6lbwrb" path="res://scripts/data/attack.gd" id="1_irdgx"]
+[ext_resource type="Script" uid="uid://b2o7w8q10stxo" path="res://scripts/data/ability.gd" id="2_ji4qg"]
+[ext_resource type="Script" uid="uid://bvuw0uyc36uxx" path="res://scripts/data/utility.gd" id="3_0pmys"]
+
+[sub_resource type="Resource" id="Resource_1qfmq"]
+script = ExtResource("1_irdgx")
+min_damage = 15
+max_damage = 25
+metadata/_custom_type_script = "uid://bo48scp6lbwrb"
+
+[resource]
+script = ExtResource("2_ji4qg")
+name = "Cleave"
+attack = SubResource("Resource_1qfmq")
+metadata/_custom_type_script = "uid://b2o7w8q10stxo"

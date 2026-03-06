@@ -1,13 +1,13 @@
 [gd_resource type="Resource" script_class="Quest" format=3 uid="uid://0hdps2m3vqot"]
 
 [ext_resource type="Script" uid="uid://bhsjswm1wnll8" path="res://scripts/quest/monster_requirement.gd" id="1_oxf00"]
-[ext_resource type="Resource" uid="uid://bxig3cedsllcl" path="res://resources/monsters/ogre.tres" id="2_8v3ed"]
+[ext_resource type="Resource" uid="uid://bxig3cedsllcl" path="res://resources/characters/monsters/ogre.tres" id="2_spgja"]
 [ext_resource type="Script" uid="uid://xekqra2mjp3l" path="res://scripts/quest/quest_reward.gd" id="4_s7150"]
 [ext_resource type="Script" uid="uid://xhl8p6y5w5e6" path="res://scripts/quest/quest.gd" id="7_x30iv"]
 
 [sub_resource type="Resource" id="Resource_668k3"]
 script = ExtResource("1_oxf00")
-monster = ExtResource("2_8v3ed")
+monster = ExtResource("2_spgja")
 target_amount = 4
 metadata/_custom_type_script = "uid://bhsjswm1wnll8"
 

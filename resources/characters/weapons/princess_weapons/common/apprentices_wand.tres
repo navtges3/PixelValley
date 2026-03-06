@@ -1,0 +1,44 @@
+[gd_resource type="Resource" script_class="Weapon" format=3 uid="uid://cngbktvunykj4"]
+
+[ext_resource type="Script" uid="uid://b2o7w8q10stxo" path="res://scripts/data/ability.gd" id="1_0rrbu"]
+[ext_resource type="Script" uid="uid://bo48scp6lbwrb" path="res://scripts/data/attack.gd" id="2_xiusa"]
+[ext_resource type="Script" uid="uid://bvuw0uyc36uxx" path="res://scripts/data/utility.gd" id="3_cy7um"]
+[ext_resource type="Script" uid="uid://dgykeyxn7fefw" path="res://scripts/data/weapon.gd" id="4_5j3r0"]
+[ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://assets/button_themes/regular/green_button.tres" id="5_rguab"]
+
+[sub_resource type="Resource" id="Resource_ks0gs"]
+script = ExtResource("2_xiusa")
+min_damage = 1
+max_damage = 6
+attack_type = 1
+metadata/_custom_type_script = "uid://bo48scp6lbwrb"
+
+[sub_resource type="Resource" id="Resource_iiwb8"]
+script = ExtResource("1_0rrbu")
+name = "Spark Bolt"
+attack = SubResource("Resource_ks0gs")
+metadata/_custom_type_script = "uid://b2o7w8q10stxo"
+
+[sub_resource type="Resource" id="Resource_bur7y"]
+script = ExtResource("2_xiusa")
+min_damage = 4
+max_damage = 12
+attack_type = 1
+metadata/_custom_type_script = "uid://bo48scp6lbwrb"
+
+[sub_resource type="Resource" id="Resource_uta35"]
+script = ExtResource("1_0rrbu")
+name = "Beginner's Burst"
+energy_cost = 5
+cooldown = 3
+attack = SubResource("Resource_bur7y")
+metadata/_custom_type_script = "uid://b2o7w8q10stxo"
+
+[resource]
+script = ExtResource("4_5j3r0")
+abilities = Array[ExtResource("1_0rrbu")]([SubResource("Resource_iiwb8"), SubResource("Resource_uta35")])
+name = "Apprentice’s Wand"
+description = "A slim birch wand capped with a tiny crystal that hums with beginner’s magic."
+theme = ExtResource("5_rguab")
+value = 60
+metadata/_custom_type_script = "uid://dgykeyxn7fefw"
