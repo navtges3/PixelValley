@@ -46,6 +46,6 @@ func _change_scene(path: String, data = null) -> void:
 	if data != null and scene.has_method("setup"):
 		scene.setup(data)
 	
-	get_tree().current_scene.free()
+	get_tree().current_scene.queue_free()
 	get_tree().root.add_child(scene)
 	get_tree().current_scene = scene

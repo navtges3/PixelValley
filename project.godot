@@ -26,6 +26,7 @@ buses/default_bus_layout="uid://crpk253ew4rsx"
 [autoload]
 
 GameState="*res://autoload/game_state.gd"
+SaveManager="*uid://be6fxg7kvv6mj"
 SettingsManager="*res://autoload/settings_manager.gd"
 AudioManager="*res://autoload/audio_manager.gd"
 ScreenManager="*res://autoload/screen_manager.gd"

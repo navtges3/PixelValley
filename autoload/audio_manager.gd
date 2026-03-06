@@ -105,7 +105,7 @@ func play_sfx(stream: AudioStream, volume := 1.0) -> void:
 	p.stream = stream
 	add_child(p)
 	p.play()
-	
+
 	p.finished.connect(func(): p.queue_free())
 
 # ---------------------------------------------------------
@@ -118,8 +118,9 @@ func play_ui(stream: AudioStream, volume := 1.0) -> void:
 	p.bus = UI_BUS
 	p.volume_db = linear_to_db(clamp(volume, 0.0, 1.0))
 	p.stream = stream
+	add_child(p)
 	p.play()
-	
+
 	p.finished.connect(func(): p.queue_free())
 
 # ---------------------------------------------------------
