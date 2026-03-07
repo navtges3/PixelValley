@@ -6,7 +6,7 @@
 [ext_resource type="Resource" uid="uid://ctce7oq3s4kox" path="res://resources/characters/abilities/dark_regeneration.tres" id="4_4px0f"]
 [ext_resource type="Script" uid="uid://cnso83bg7vodw" path="res://scripts/data/condition.gd" id="5_833pn"]
 [ext_resource type="Resource" uid="uid://dwx4iywd6wl6h" path="res://resources/characters/abilities/shadowquake.tres" id="6_puwu8"]
-[ext_resource type="Texture2D" uid="uid://bxc2p8w8wawwk" path="res://assets/ogre.png" id="7_j4dxm"]
+[ext_resource type="Texture2D" uid="uid://bxc2p8w8wawwk" path="res://assets/monsters/ogre.png" id="7_j4dxm"]
 [ext_resource type="Script" uid="uid://bd6ohffno5w7r" path="res://scripts/characters/monster.gd" id="8_85bo5"]
 [ext_resource type="Script" uid="uid://hxleldka7y06" path="res://scripts/characters/stat_block.gd" id="9_jrhah"]
 

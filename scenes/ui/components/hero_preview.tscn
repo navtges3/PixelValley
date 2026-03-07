@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://dae4dtwh4tjs5" path="res://scripts/ui/components/hero_preview.gd" id="1_bgug4"]
 [ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://assets/button_themes/regular/red_button.tres" id="2_0bdmq"]
-[ext_resource type="Texture2D" uid="uid://c8hydb1a47nnk" path="res://assets/knight.png" id="3_x1gnv"]
+[ext_resource type="Texture2D" uid="uid://c8hydb1a47nnk" path="res://assets/heroes/knight/knight.png" id="3_x1gnv"]
 
 [node name="HeroPreview" type="Control"]
 custom_minimum_size = Vector2(132, 155)

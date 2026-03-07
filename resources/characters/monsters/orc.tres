@@ -5,7 +5,7 @@
 [ext_resource type="Script" uid="uid://dxnu3vjlxl2pn" path="res://scripts/data/conditional_ability.gd" id="3_lftr1"]
 [ext_resource type="Resource" uid="uid://cjhlewne3o5t4" path="res://resources/characters/abilities/battle_roar.tres" id="4_i1x55"]
 [ext_resource type="Script" uid="uid://cnso83bg7vodw" path="res://scripts/data/condition.gd" id="5_45tim"]
-[ext_resource type="Texture2D" uid="uid://ced3cfcakcx6o" path="res://assets/orc.png" id="6_3ve7s"]
+[ext_resource type="Texture2D" uid="uid://ced3cfcakcx6o" path="res://assets/monsters/orc.png" id="6_3ve7s"]
 [ext_resource type="Script" uid="uid://bd6ohffno5w7r" path="res://scripts/characters/monster.gd" id="7_xilo1"]
 [ext_resource type="Script" uid="uid://hxleldka7y06" path="res://scripts/characters/stat_block.gd" id="8_aw5hb"]
 

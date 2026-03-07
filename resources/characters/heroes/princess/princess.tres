@@ -8,7 +8,7 @@
 [ext_resource type="Resource" uid="uid://4gl0mwbttg8d" path="res://resources/characters/potions/energy_potion.tres" id="6_eoppb"]
 [ext_resource type="Script" uid="uid://4rm24oomjap7" path="res://scripts/characters/inventory.gd" id="7_ckwek"]
 [ext_resource type="Script" uid="uid://dgykeyxn7fefw" path="res://scripts/data/weapon.gd" id="8_43vr3"]
-[ext_resource type="Texture2D" uid="uid://crvpafnprgkcq" path="res://assets/Princess.png" id="9_b4bc3"]
+[ext_resource type="Texture2D" uid="uid://crvpafnprgkcq" path="res://assets/heroes/princess/Princess.png" id="9_b4bc3"]
 [ext_resource type="Script" uid="uid://b1x8jfufxk3xv" path="res://scripts/characters/hero.gd" id="10_j6iev"]
 [ext_resource type="Script" uid="uid://hxleldka7y06" path="res://scripts/characters/stat_block.gd" id="11_vf8yv"]
 

@@ -1,16 +1,18 @@
 [gd_scene format=3 uid="uid://bsh4xy5omgwej"]
 
 [ext_resource type="Script" uid="uid://kcysixmfxdo0" path="res://scripts/ui/components/battle_character.gd" id="1_il1nn"]
-[ext_resource type="SpriteFrames" uid="uid://4ywebwliybf7" path="res://resources/characters/monsters/goblin/goblin_sprite_frames.tres" id="2_stq27"]
+[ext_resource type="SpriteFrames" uid="uid://pch4plbc12hl" path="res://resources/characters/heroes/princess/princess_sprite_frames.tres" id="2_3rhhs"]
 
-[node name="BattleCharacter" type="Node2D"]
+[node name="BattleCharacter" type="Node2D" unique_id=2135240791]
 scale = Vector2(5, 5)
 script = ExtResource("1_il1nn")
 
-[node name="Visual" type="Node2D" parent="."]
+[node name="Visual" type="Node2D" parent="." unique_id=1615905558]
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Visual"]
-sprite_frames = ExtResource("2_stq27")
-animation = &"idle"
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Visual" unique_id=1921383678]
+sprite_frames = ExtResource("2_3rhhs")
+animation = &"attack"
+frame = 4
+frame_progress = 1.0
 centered = false
 offset = Vector2(0, -64)
