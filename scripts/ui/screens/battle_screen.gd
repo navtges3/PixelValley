@@ -5,6 +5,9 @@ extends Control
 # Top Bar
 @onready var quest_bar = $TopBar/QuestProgressBar
 @onready var victory_popup = $BattleVictoryPopup
+@onready var monster_health_bar: ProgressBar = $TopBar/VBoxContainer/MonsterHealthBar
+@onready var monster_health_bar_label: Label = $TopBar/VBoxContainer/MonsterHealthBar/MonsterHealthBarLabel
+@onready var monster_label: Label = $TopBar/VBoxContainer/MonsterLabel
 
 # Action Area
 @onready var hero_info: HeroInfo = $ActionArea/HeroInfo
@@ -30,7 +33,6 @@ func _ready() -> void:
 	quest_bar.update_quest()
 	_empty_option_list()
 	_spawn_hero()
-	_spawn_monster()
 	
 	battle_manager.setup_battle(battle_config)
 
@@ -45,15 +47,7 @@ func _spawn_hero() -> void:
 	hero_visual.scale.x = 5
 	hero_visual.scale.y = 5
 
-func _spawn_monster() -> void:
-	monster_visual = BATTLE_CHARACTER.instantiate()
-	$MonsterSlot.add_child(monster_visual)
-	monster_visual.set_frames(GOBLIN_SPRITE_FRAMES)
-	monster_visual.scale.x = -5
-	monster_visual.scale.y = 5
-
 func _on_hero_updated(hero_ref: Hero) -> void:
-	print("hero updated: ", hero_ref.name)
 	hero_info.refresh()
 
 func _on_hero_attacking() -> void:
@@ -62,6 +56,25 @@ func _on_hero_attacking() -> void:
 
 func _on_hero_hurt() -> void:
 	hero_visual.play_hurt()
+
+func _on_new_monster(monster_ref: Monster) -> void:
+	monster_label.text = monster_ref.name
+	_on_monster_updated(monster_ref)
+	_spawn_monster(monster_ref)
+
+func _spawn_monster(monster_ref: Monster) -> void:
+	monster_visual = BATTLE_CHARACTER.instantiate()
+	$MonsterSlot.add_child(monster_visual)
+	monster_visual.set_frames(monster_ref.battle_visual.frames)
+	monster_visual.scale.x = -5
+	monster_visual.scale.y = 5
+
+func _on_monster_updated(monster_ref: Monster) -> void:
+	var value = monster_ref.stat_block.current_hp
+	var max_value = monster_ref.stat_block.max_hp
+	monster_health_bar.max_value = max_value
+	monster_health_bar.value = value
+	monster_health_bar_label.text = "%d / %d" % [value, max_value]
 
 func _on_monster_attacking() -> void:
 	monster_visual.play_attack()
