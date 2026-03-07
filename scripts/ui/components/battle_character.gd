@@ -8,7 +8,7 @@ func _ready() -> void:
 	sprite.animation_finished.connect(_on_animation_finished)
 
 func _on_animation_finished() -> void:
-	if sprite.animation != "idle":
+	if sprite.animation != "idle" and sprite.animation != "death":
 		sprite.play("idle")
 	emit_signal("animation_done")
 

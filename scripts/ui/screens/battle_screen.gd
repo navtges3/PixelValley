@@ -85,6 +85,7 @@ func _on_monster_hurt() -> void:
 
 func _on_monster_slain(monster_name: String) -> void:
 	print("%s was slain!" % monster_name)
+	monster_visual.play_death()
 	quest_bar.update_bar()
 	victory_popup.popup_centered()
 
