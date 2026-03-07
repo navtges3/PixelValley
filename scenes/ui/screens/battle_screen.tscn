@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://cqc6b58dnjxis" path="res://scripts/ui/screens/battle_screen.gd" id="1_ihhiw"]
 [ext_resource type="PackedScene" uid="uid://bjx12sxd6xqme" path="res://scenes/ui/components/hero_info.tscn" id="3_e8mee"]
 [ext_resource type="PackedScene" uid="uid://ehxty8k3d2vu" path="res://scenes/ui/components/quest_progress_bar.tscn" id="3_ihhiw"]
+[ext_resource type="Theme" uid="uid://cra87dj7simd8" path="res://resources/ui/progress_bar/red_bar.tres" id="3_pxpkm"]
 [ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://assets/button_themes/regular/red_button.tres" id="7_iw40k"]
 [ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://assets/button_themes/regular/green_button.tres" id="8_qmdt6"]
 [ext_resource type="Theme" uid="uid://dqwm8agt87lsh" path="res://assets/button_themes/regular/blue_button.tres" id="9_06vtu"]
@@ -35,6 +36,37 @@ size_flags_vertical = 0
 layout_mode = 2
 size_flags_horizontal = 6
 size_flags_vertical = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TopBar" unique_id=12366038]
+layout_mode = 2
+
+[node name="MonsterHealthBar" type="ProgressBar" parent="TopBar/VBoxContainer" unique_id=520036926]
+custom_minimum_size = Vector2(360, 32)
+layout_mode = 2
+theme = ExtResource("3_pxpkm")
+value = 75.0
+show_percentage = false
+
+[node name="MonsterHealthBarLabel" type="Label" parent="TopBar/VBoxContainer/MonsterHealthBar" unique_id=208181708]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -26.0
+offset_top = -11.5
+offset_right = 26.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "75/100"
+
+[node name="MonsterLabel" type="Label" parent="TopBar/VBoxContainer" unique_id=420102121]
+layout_mode = 2
+text = "Monster Name"
+horizontal_alignment = 2
 
 [node name="ActionArea" type="HBoxContainer" parent="." unique_id=337684969]
 layout_mode = 1
@@ -114,6 +146,8 @@ visible = false
 [connection signal="monster_hurt" from="BattleManager" to="." method="_on_monster_hurt"]
 [connection signal="monster_slain" from="BattleManager" to="." method="_on_monster_slain"]
 [connection signal="monster_turn" from="BattleManager" to="." method="_on_monster_turn"]
+[connection signal="monster_updated" from="BattleManager" to="." method="_on_monster_updated"]
+[connection signal="new_monster" from="BattleManager" to="." method="_on_new_monster"]
 [connection signal="player_turn" from="BattleManager" to="." method="_on_player_turn"]
 [connection signal="quest_completed" from="BattleManager" to="." method="_on_quest_completed"]
 [connection signal="continue_pressed" from="BattleVictoryPopup" to="." method="_on_victory_popup_continue_pressed"]
