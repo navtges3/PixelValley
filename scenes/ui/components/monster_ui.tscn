@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://pxhpjm0rsnof"]
 
-[ext_resource type="Texture2D" uid="uid://vdpvmy1cvfnu" path="res://assets/goblin.png" id="1_5jiu2"]
+[ext_resource type="Texture2D" uid="uid://vdpvmy1cvfnu" path="res://assets/monsters/goblin/goblin.png" id="1_5jiu2"]
 [ext_resource type="Script" uid="uid://cbwqwryr8jmjh" path="res://scripts/ui/components/monster_ui.gd" id="1_r2qmi"]
-[ext_resource type="Theme" uid="uid://c1ucxbcu36trs" path="res://assets/progress_bars/health_bar.tres" id="2_smdef"]
+[ext_resource type="Theme" path="res://assets/progress_bars/health_bar.tres" id="2_smdef"]
 
 [node name="MonsterUI" type="VBoxContainer"]
 offset_right = 256.0

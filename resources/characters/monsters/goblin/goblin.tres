@@ -6,7 +6,7 @@
 [ext_resource type="Script" uid="uid://dxnu3vjlxl2pn" path="res://scripts/data/conditional_ability.gd" id="4_lygd1"]
 [ext_resource type="Resource" uid="uid://ct2tqqk78lcn3" path="res://resources/characters/abilities/desperation.tres" id="5_idm7f"]
 [ext_resource type="Script" uid="uid://cnso83bg7vodw" path="res://scripts/data/condition.gd" id="6_w4m2s"]
-[ext_resource type="Texture2D" uid="uid://vdpvmy1cvfnu" path="res://assets/goblin.png" id="7_0ojpk"]
+[ext_resource type="Texture2D" uid="uid://vdpvmy1cvfnu" path="res://assets/monsters/goblin/goblin.png" id="7_0ojpk"]
 [ext_resource type="Script" uid="uid://bd6ohffno5w7r" path="res://scripts/characters/monster.gd" id="8_li32v"]
 [ext_resource type="Script" uid="uid://hxleldka7y06" path="res://scripts/characters/stat_block.gd" id="9_pw2h8"]
 
