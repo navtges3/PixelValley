@@ -1,8 +1,10 @@
 extends Node
 
-var current_screen: Node = null
+var _current_screen_name: ScreenName = ScreenName.NONE
+var _history: Array[ScreenName] = []
 
 enum ScreenName {
+	NONE,
 	MAIN_MENU,
 	NEW_GAME,
 	VILLAGE,
@@ -36,9 +38,17 @@ var SCENE_PATHS := {
 
 func go_to_screen(screen_name: ScreenName, data = null) -> void:
 	if SCENE_PATHS.has(screen_name):
+		if _current_screen_name != ScreenName.NONE:
+			_history.append(_current_screen_name)
 		call_deferred("_change_scene", SCENE_PATHS[screen_name], data)
 	else:
 		push_error("Screen not found: %s" % screen_name)
+
+func go_back() -> void:
+	if _history.is_empty():
+		return
+	var previous: ScreenName = _history.pop_back()
+	go_to_screen(previous)
 
 func _change_scene(path: String, data = null) -> void:
 	var scene = load(path).instantiate()
