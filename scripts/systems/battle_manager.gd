@@ -74,7 +74,7 @@ func meditate() -> void:
 	if hero.rest_cooldown > 0:
 		return
 	hero.meditate()
-	emit_signal("battle_log_updated", "%s takes a meditates recovering health and energy.\n" % hero.get_colored_name())
+	emit_signal("battle_log_updated", "%s meditates recovering health and energy.\n" % hero.get_colored_name())
 	emit_signal("hero_updated", hero)
 	end_player_turn()
 
@@ -82,7 +82,8 @@ func end_player_turn() -> void:
 	if state != BattleState.PLAYER_TURN:
 		return
 	hero.update_cooldown()
-	hero.process_active_effects()
+	var effect_output := hero.process_active_effects()
+	emit_signal("battle_log_updated", effect_output)
 	emit_signal("hero_updated", hero)
 
 	if monster.is_alive():
@@ -125,7 +126,8 @@ func enemy_turn() -> void:
 
 func end_enemy_turn() -> void:
 	monster.update_cooldown()
-	monster.process_active_effects()
+	var effect_output := monster.process_active_effects()
+	emit_signal("battle_log_updated", effect_output)
 	emit_signal("monster_updated", monster)
 	if hero.is_alive():
 		start_player_turn()

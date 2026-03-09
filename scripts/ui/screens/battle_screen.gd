@@ -63,6 +63,8 @@ func _on_new_monster(monster_ref: Monster) -> void:
 	_spawn_monster(monster_ref)
 
 func _spawn_monster(monster_ref: Monster) -> void:
+	for child in $MonsterSlot.get_children():
+		child.queue_free()
 	monster_visual = BATTLE_CHARACTER.instantiate()
 	$MonsterSlot.add_child(monster_visual)
 	monster_visual.set_frames(monster_ref.battle_visual.frames)
@@ -86,6 +88,7 @@ func _on_monster_hurt() -> void:
 func _on_monster_slain(monster_name: String) -> void:
 	print("%s was slain!" % monster_name)
 	monster_visual.play_death()
+	await monster_visual.animation_done
 	quest_bar.update_bar()
 	victory_popup.popup_centered()
 
