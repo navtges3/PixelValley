@@ -1,0 +1,45 @@
+[gd_resource type="Resource" script_class="Monster" format=3 uid="uid://yrw5qgu7qwe0"]
+
+[ext_resource type="Script" uid="uid://blp0fv0xnajdb" path="res://scripts/data/active_effect.gd" id="1_t4p0j"]
+[ext_resource type="Resource" uid="uid://5gj0qi86ux23" path="res://resources/characters/abilities/slash.tres" id="2_5w78i"]
+[ext_resource type="Resource" uid="uid://hqmaejbgon3u" path="res://resources/characters/monsters/orc/orc_visual.tres" id="3_6vel4"]
+[ext_resource type="Script" uid="uid://dxnu3vjlxl2pn" path="res://scripts/data/conditional_ability.gd" id="3_htada"]
+[ext_resource type="Resource" uid="uid://cjhlewne3o5t4" path="res://resources/characters/abilities/battle_roar.tres" id="4_6vel4"]
+[ext_resource type="Script" uid="uid://cnso83bg7vodw" path="res://scripts/data/condition.gd" id="5_iwbsi"]
+[ext_resource type="Script" uid="uid://bd6ohffno5w7r" path="res://scripts/characters/monster.gd" id="6_b8a46"]
+[ext_resource type="Script" uid="uid://hxleldka7y06" path="res://scripts/characters/stat_block.gd" id="7_as0tk"]
+[ext_resource type="Texture2D" uid="uid://b668r1wauqf0a" path="res://assets/monsters/orc/orc.png" id="7_iwbsi"]
+
+[sub_resource type="Resource" id="Resource_1rq5t"]
+script = ExtResource("5_iwbsi")
+condition_type = 1
+value = 0.5
+metadata/_custom_type_script = "uid://cnso83bg7vodw"
+
+[sub_resource type="Resource" id="Resource_63lsj"]
+script = ExtResource("3_htada")
+ability = ExtResource("4_6vel4")
+condition = SubResource("Resource_1rq5t")
+metadata/_custom_type_script = "uid://dxnu3vjlxl2pn"
+
+[sub_resource type="Resource" id="Resource_1gfu0"]
+script = ExtResource("7_as0tk")
+current_hp = 75
+current_nrg = 24
+max_hp = 75
+max_nrg = 24
+attack = 6
+defense = 3
+resistance = 1
+metadata/_custom_type_script = "uid://hxleldka7y06"
+
+[resource]
+script = ExtResource("6_b8a46")
+gold = 12
+basic_attack = ExtResource("2_5w78i")
+conditional_abilities = Array[ExtResource("3_htada")]([SubResource("Resource_63lsj")])
+name = "Orc"
+portrait = ExtResource("7_iwbsi")
+battle_visual = ExtResource("3_6vel4")
+stat_block = SubResource("Resource_1gfu0")
+metadata/_custom_type_script = "uid://bd6ohffno5w7r"
