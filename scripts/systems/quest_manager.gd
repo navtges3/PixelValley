@@ -32,10 +32,10 @@ const LAST_QUEST_ID := 15
 func _on_quest_completed(quest: Quest) -> void:
 	if quest in available_quests:
 		apply_rewards(quest)
-		available_quests.erase(quest)
-		completed_quests.append(quest)
 		for next_id in quest.next_quests:
 			unlock_quest_by_id(next_id)
+		available_quests.erase(quest)
+		completed_quests.append(quest)
 		SaveManager.save_game()
 
 func apply_rewards(quest: Quest) -> void:
