@@ -7,7 +7,7 @@
 [sub_resource type="Resource" id="Resource_668k3"]
 script = ExtResource("1_oxf00")
 monster_id = 3
-target_amount = 4
+target_amount = 8
 metadata/_custom_type_script = "uid://bhsjswm1wnll8"
 
 [sub_resource type="Resource" id="Resource_sp1ti"]

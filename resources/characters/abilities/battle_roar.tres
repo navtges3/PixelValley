@@ -6,7 +6,7 @@
 
 [sub_resource type="Resource" id="Resource_fmdst"]
 script = ExtResource("3_oq158")
-type = 2
+type = 3
 strength = 4
 duration = 2
 metadata/_custom_type_script = "uid://c5deti4sb2k2j"
