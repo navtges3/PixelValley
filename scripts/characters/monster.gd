@@ -3,6 +3,7 @@ class_name Monster
 
 const HEALTH_WEIGHT := 0.5
 
+@export var monster_id: MonsterLoader.MonsterID
 @export var gold: int
 @export var basic_attack: Ability
 @export var conditional_abilities: Array[ConditionalAbility]

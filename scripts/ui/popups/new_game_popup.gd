@@ -13,7 +13,6 @@ const RED_BUTTON = preload("uid://130ubmqd1h3b")
 @onready var back_button: Button = $VBoxContainer/BackButton
 
 func _ready() -> void:
-	back_button.pressed.connect(_on_back_button_pressed)
 	populate_slots()
 
 func populate_slots() -> void:

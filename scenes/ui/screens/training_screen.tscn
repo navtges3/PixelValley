@@ -6,7 +6,7 @@
 [ext_resource type="Theme" uid="uid://dx6nuheoualbl" path="res://assets/button_themes/specialty/plus_button.tres" id="3_v1rkp"]
 [ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://assets/button_themes/regular/red_button.tres" id="5_2fton"]
 
-[node name="TrainingScreen" type="Control"]
+[node name="TrainingScreen" type="Control" unique_id=1721950050]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -15,7 +15,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_na7g7")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1591453339]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -27,134 +27,137 @@ theme_override_constants/margin_top = 32
 theme_override_constants/margin_right = 32
 theme_override_constants/margin_bottom = 32
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=2120943329]
 layout_mode = 2
 theme_override_constants/separation = 12
 alignment = 1
 
-[node name="TitleLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+[node name="TitleLabel" type="Label" parent="MarginContainer/VBoxContainer" unique_id=1809315689]
 layout_mode = 2
 text = "Training Grounds"
 horizontal_alignment = 1
 
-[node name="SkillPointsLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+[node name="SkillPointsLabel" type="Label" parent="MarginContainer/VBoxContainer" unique_id=812641121]
 layout_mode = 2
 text = "Unspent Skill Points: X"
 horizontal_alignment = 1
 
-[node name="AttackBox" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="AttackBox" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=43280787]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 size_flags_horizontal = 4
 alignment = 1
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/AttackBox"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/AttackBox" unique_id=1802742491]
 layout_mode = 2
 size_flags_horizontal = 2
 text = "Attack: 10 (+0)"
 
-[node name="Minus" type="Button" parent="MarginContainer/VBoxContainer/AttackBox"]
+[node name="Minus" type="Button" parent="MarginContainer/VBoxContainer/AttackBox" unique_id=2074779035]
 custom_minimum_size = Vector2(24, 24)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme = ExtResource("2_w8u6p")
 
-[node name="Plus" type="Button" parent="MarginContainer/VBoxContainer/AttackBox"]
+[node name="Plus" type="Button" parent="MarginContainer/VBoxContainer/AttackBox" unique_id=1351131141]
 custom_minimum_size = Vector2(24, 24)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme = ExtResource("3_v1rkp")
 
-[node name="MagicBox" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="MagicBox" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=31836807]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 size_flags_horizontal = 4
 alignment = 1
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/MagicBox"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/MagicBox" unique_id=1584164171]
 layout_mode = 2
 size_flags_horizontal = 2
 text = "Magic: 10 (+0)"
 
-[node name="Minus" type="Button" parent="MarginContainer/VBoxContainer/MagicBox"]
+[node name="Minus" type="Button" parent="MarginContainer/VBoxContainer/MagicBox" unique_id=1365163803]
 custom_minimum_size = Vector2(24, 24)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme = ExtResource("2_w8u6p")
 
-[node name="Plus" type="Button" parent="MarginContainer/VBoxContainer/MagicBox"]
+[node name="Plus" type="Button" parent="MarginContainer/VBoxContainer/MagicBox" unique_id=1701089857]
 custom_minimum_size = Vector2(24, 24)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme = ExtResource("3_v1rkp")
 
-[node name="DefenseBox" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="DefenseBox" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=944519478]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 size_flags_horizontal = 4
 alignment = 1
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/DefenseBox"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/DefenseBox" unique_id=774413004]
 layout_mode = 2
 size_flags_horizontal = 2
 text = "Defense: 10 (+0)"
 
-[node name="Minus" type="Button" parent="MarginContainer/VBoxContainer/DefenseBox"]
+[node name="Minus" type="Button" parent="MarginContainer/VBoxContainer/DefenseBox" unique_id=405138201]
 custom_minimum_size = Vector2(24, 24)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme = ExtResource("2_w8u6p")
 
-[node name="Plus" type="Button" parent="MarginContainer/VBoxContainer/DefenseBox"]
+[node name="Plus" type="Button" parent="MarginContainer/VBoxContainer/DefenseBox" unique_id=1053273704]
 custom_minimum_size = Vector2(24, 24)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme = ExtResource("3_v1rkp")
 
-[node name="ResistanceBox" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="ResistanceBox" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=141945485]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 size_flags_horizontal = 4
 alignment = 1
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ResistanceBox"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ResistanceBox" unique_id=721113334]
 layout_mode = 2
 size_flags_horizontal = 2
 text = "Resistance: 10 (+0)"
 
-[node name="Minus" type="Button" parent="MarginContainer/VBoxContainer/ResistanceBox"]
+[node name="Minus" type="Button" parent="MarginContainer/VBoxContainer/ResistanceBox" unique_id=1957711675]
 custom_minimum_size = Vector2(24, 24)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme = ExtResource("2_w8u6p")
 
-[node name="Plus" type="Button" parent="MarginContainer/VBoxContainer/ResistanceBox"]
+[node name="Plus" type="Button" parent="MarginContainer/VBoxContainer/ResistanceBox" unique_id=2098533364]
 custom_minimum_size = Vector2(24, 24)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme = ExtResource("3_v1rkp")
 
-[node name="NavigationBox" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="NavigationBox" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=889772430]
 layout_mode = 2
 size_flags_horizontal = 4
 
-[node name="BackButton" type="Button" parent="MarginContainer/VBoxContainer/NavigationBox"]
+[node name="BackButton" type="Button" parent="MarginContainer/VBoxContainer/NavigationBox" unique_id=1010606213]
 custom_minimum_size = Vector2(96, 32)
 layout_mode = 2
 theme = ExtResource("5_2fton")
 text = "Back"
 
-[node name="ConfirmButton" type="Button" parent="MarginContainer/VBoxContainer/NavigationBox"]
+[node name="ConfirmButton" type="Button" parent="MarginContainer/VBoxContainer/NavigationBox" unique_id=943265075]
 custom_minimum_size = Vector2(96, 32)
 layout_mode = 2
 size_flags_horizontal = 10
 theme = ExtResource("3_l55pj")
 text = "Confirm"
+
+[connection signal="pressed" from="MarginContainer/VBoxContainer/NavigationBox/BackButton" to="." method="_on_back_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/NavigationBox/ConfirmButton" to="." method="_on_confirm_button_pressed"]

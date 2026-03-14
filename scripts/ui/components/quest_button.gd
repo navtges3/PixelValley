@@ -16,7 +16,7 @@ func _update_quest() -> void:
 	$VBoxContainer/HBoxContainer/DescriptionLabel.text = quest.description
 	var monster_text := ""
 	for objective in quest.monster_objectives:
-		monster_text += "%s: %d/%d\n" % [objective.monster.name, objective.current_amount, objective.target_amount]
+		monster_text += "%s: %d/%d\n" % [MonsterLoader.get_monster_name(objective.monster_id), objective.current_amount, objective.target_amount]
 	$VBoxContainer/HBoxContainer/MonstersLabel.text = monster_text.strip_edges()
 
 	call_deferred("_update_size")

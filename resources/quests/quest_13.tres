@@ -1,21 +1,19 @@
 [gd_resource type="Resource" script_class="Quest" format=3 uid="uid://b0as4155xo8l5"]
 
 [ext_resource type="Script" uid="uid://bhsjswm1wnll8" path="res://scripts/quest/monster_requirement.gd" id="1_7ng8y"]
-[ext_resource type="Resource" uid="uid://dm48acoifufc0" path="res://resources/characters/monsters/goblin/goblin.tres" id="2_0n30g"]
-[ext_resource type="Resource" uid="uid://yrw5qgu7qwe0" path="res://resources/characters/monsters/orc/orc.tres" id="3_0n30g"]
 [ext_resource type="Script" uid="uid://xekqra2mjp3l" path="res://scripts/quest/quest_reward.gd" id="4_ep7ac"]
 [ext_resource type="Resource" uid="uid://mv5ykhn56sjs" path="res://resources/characters/potions/greater_healing_potion.tres" id="5_0qvi2"]
 [ext_resource type="Script" uid="uid://xhl8p6y5w5e6" path="res://scripts/quest/quest.gd" id="7_fxi4v"]
 
 [sub_resource type="Resource" id="Resource_668k3"]
 script = ExtResource("1_7ng8y")
-monster = ExtResource("2_0n30g")
+monster_id = 1
 target_amount = 10
 metadata/_custom_type_script = "uid://bhsjswm1wnll8"
 
 [sub_resource type="Resource" id="Resource_igw86"]
 script = ExtResource("1_7ng8y")
-monster = ExtResource("3_0n30g")
+monster_id = 3
 target_amount = 6
 metadata/_custom_type_script = "uid://bhsjswm1wnll8"
 

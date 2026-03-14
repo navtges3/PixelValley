@@ -9,9 +9,6 @@ signal class_selected(selected_class: Hero)
 		hero = value
 		_update_preview()
 
-func _ready() -> void:
-	click_area.pressed.connect(_on_click_area_pressed)
-
 func _on_click_area_pressed() -> void:
 	if hero:
 		emit_signal("class_selected", hero)

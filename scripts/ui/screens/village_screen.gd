@@ -1,26 +1,9 @@
 extends Control
 
-@onready var pause_button: Button = $UIRoot/PauseButton
 @onready var pause_popup: Window = $PausePopup
-
-@onready var inn_button: Button = $UIRoot/VillageActions/InnButton
 @onready var shop_button: Button = $UIRoot/VillageActions/ShopButton
-@onready var armory_button: Button = $UIRoot/VillageActions/ArmoryButton
-@onready var training_button: Button = $UIRoot/VillageActions/TrainingButton
-@onready var quests_button: Button = $UIRoot/VillageActions/QuestsButton
 
-@onready var hero_ui: HeroUI = $UIRoot/HeroUI
-
-func _ready() -> void:
-	pause_button.pressed.connect(_on_pause_button_pressed)
-	inn_button.pressed.connect(_on_inn_button_pressed)
-	shop_button.pressed.connect(_on_shop_button_pressed)
-	armory_button.pressed.connect(_on_armory_button_pressed)
-	training_button.pressed.connect(_on_training_button_pressed)
-	quests_button.pressed.connect(_on_quests_button_pressed)
-	
-	if GameState.hero:
-		hero_ui.hero = GameState.hero
+func _ready() -> void:	
 	if GameState.village.shop.has_inventory():
 		shop_button.disabled = false
 	else:

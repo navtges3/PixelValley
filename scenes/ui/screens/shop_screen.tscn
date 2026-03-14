@@ -6,7 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://bjx12sxd6xqme" path="res://scenes/ui/components/hero_info.tscn" id="3_ec12o"]
 [ext_resource type="Script" uid="uid://hgt4ge7m4nn2" path="res://scripts/systems/shop_manager.gd" id="5_8niu3"]
 
-[node name="ShopScreen" type="Control"]
+[node name="ShopScreen" type="Control" unique_id=1702352564]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -15,7 +15,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_wjsap")
 
-[node name="ShopNameLabel" type="Label" parent="."]
+[node name="ShopNameLabel" type="Label" parent="." unique_id=559161195]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.5
@@ -27,7 +27,7 @@ offset_bottom = 23.0
 grow_horizontal = 2
 text = "Shop Name"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=979985274]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
@@ -41,44 +41,44 @@ grow_vertical = 2
 theme_override_constants/separation = 50
 alignment = 1
 
-[node name="ScrollContainer" type="ScrollContainer" parent="HBoxContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="HBoxContainer" unique_id=1502094098]
 layout_mode = 2
 horizontal_scroll_mode = 0
 
-[node name="ItemList" type="VBoxContainer" parent="HBoxContainer/ScrollContainer"]
+[node name="ItemList" type="VBoxContainer" parent="HBoxContainer/ScrollContainer" unique_id=1345505191]
 layout_mode = 2
 
-[node name="Button" type="Button" parent="HBoxContainer/ScrollContainer/ItemList"]
+[node name="Button" type="Button" parent="HBoxContainer/ScrollContainer/ItemList" unique_id=2030915421]
 layout_mode = 2
 text = "Health Potion"
 
-[node name="DetailPanel" type="VBoxContainer" parent="HBoxContainer"]
+[node name="DetailPanel" type="VBoxContainer" parent="HBoxContainer" unique_id=1799574486]
 layout_mode = 2
 
-[node name="ItemNameLabel" type="Label" parent="HBoxContainer/DetailPanel"]
+[node name="ItemNameLabel" type="Label" parent="HBoxContainer/DetailPanel" unique_id=1409757400]
 layout_mode = 2
 theme_override_font_sizes/font_size = 24
 text = "Item Name"
 
-[node name="ItemDescriptionLabel" type="Label" parent="HBoxContainer/DetailPanel"]
+[node name="ItemDescriptionLabel" type="Label" parent="HBoxContainer/DetailPanel" unique_id=20343323]
 custom_minimum_size = Vector2(320, 0)
 layout_mode = 2
 text = "Item Descripton: This item has a powerful effect that will help the hero defeat more monsters"
 autowrap_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/DetailPanel"]
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/DetailPanel" unique_id=602352072]
 layout_mode = 2
 
-[node name="ItemCostLabel" type="Label" parent="HBoxContainer/DetailPanel/HBoxContainer"]
+[node name="ItemCostLabel" type="Label" parent="HBoxContainer/DetailPanel/HBoxContainer" unique_id=2124260684]
 layout_mode = 2
 text = "Item Gold"
 
-[node name="SpinBox" type="SpinBox" parent="HBoxContainer/DetailPanel/HBoxContainer"]
+[node name="SpinBox" type="SpinBox" parent="HBoxContainer/DetailPanel/HBoxContainer" unique_id=1426867500]
 layout_mode = 2
 min_value = 1.0
 value = 1.0
 
-[node name="PurchaseButton" type="Button" parent="HBoxContainer/DetailPanel"]
+[node name="PurchaseButton" type="Button" parent="HBoxContainer/DetailPanel" unique_id=296293788]
 custom_minimum_size = Vector2(96, 32)
 layout_mode = 2
 size_flags_horizontal = 0
@@ -86,7 +86,7 @@ size_flags_vertical = 0
 theme = ExtResource("1_6epuk")
 text = "Purchase"
 
-[node name="ExitButton" type="Button" parent="HBoxContainer/DetailPanel"]
+[node name="ExitButton" type="Button" parent="HBoxContainer/DetailPanel" unique_id=1691211180]
 custom_minimum_size = Vector2(96, 32)
 layout_mode = 2
 size_flags_horizontal = 0
@@ -94,15 +94,20 @@ size_flags_vertical = 0
 theme = ExtResource("2_ec12o")
 text = "Exit Shop"
 
-[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer" unique_id=1742232913]
 layout_mode = 2
 
-[node name="HeroUI" parent="HBoxContainer/VBoxContainer" instance=ExtResource("3_ec12o")]
+[node name="HeroUI" parent="HBoxContainer/VBoxContainer" unique_id=1959400994 instance=ExtResource("3_ec12o")]
 layout_mode = 2
 
-[node name="InventoryLabel" type="Label" parent="HBoxContainer/VBoxContainer"]
+[node name="InventoryLabel" type="Label" parent="HBoxContainer/VBoxContainer" unique_id=734318880]
 layout_mode = 2
 text = "Hero Inventory:"
 
-[node name="ShopManager" type="Node" parent="."]
+[node name="ShopManager" type="Node" parent="." unique_id=898180851]
 script = ExtResource("5_8niu3")
+
+[connection signal="value_changed" from="HBoxContainer/DetailPanel/HBoxContainer/SpinBox" to="." method="_on_spin_box_value_changed"]
+[connection signal="pressed" from="HBoxContainer/DetailPanel/PurchaseButton" to="." method="_on_purchase_button_pressed"]
+[connection signal="pressed" from="HBoxContainer/DetailPanel/ExitButton" to="." method="_on_exit_button_pressed"]
+[connection signal="hero_updated" from="ShopManager" to="." method="_on_shop_manager_hero_updated"]

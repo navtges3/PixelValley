@@ -4,14 +4,6 @@ extends Node2D
 
 signal animation_done()
 
-func _ready() -> void:
-	sprite.animation_finished.connect(_on_animation_finished)
-
-func _on_animation_finished() -> void:
-	if sprite.animation != "idle" and sprite.animation != "death":
-		sprite.play("idle")
-	emit_signal("animation_done")
-
 func set_frames(frames: SpriteFrames) -> void:
 	sprite.sprite_frames = frames
 	sprite.play("idle")
@@ -37,3 +29,8 @@ func play_hurt() -> void:
 func play_death() -> void:
 	if sprite.animation != "death":
 		sprite.play("death")
+
+func _on_animated_sprite_2d_animation_finished() -> void:
+	if sprite.animation != "idle" and sprite.animation != "death":
+		sprite.play("idle")
+	emit_signal("animation_done")

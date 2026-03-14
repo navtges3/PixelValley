@@ -11,7 +11,7 @@
 [sub_resource type="LabelSettings" id="LabelSettings_l72w3"]
 font_size = 32
 
-[node name="MainMenuScreen" type="Control"]
+[node name="MainMenuScreen" type="Control" unique_id=1003311715]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -20,7 +20,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_4vbu3")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=285143019]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -32,12 +32,12 @@ theme_override_constants/margin_top = 80
 theme_override_constants/margin_right = 120
 theme_override_constants/margin_bottom = 80
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=70003495]
 layout_mode = 2
 theme_override_constants/separation = 5
 alignment = 1
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer" unique_id=19328307]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -45,7 +45,7 @@ text = "Welcome to Village Defense"
 label_settings = SubResource("LabelSettings_l72w3")
 horizontal_alignment = 1
 
-[node name="New Game" type="Button" parent="MarginContainer/VBoxContainer"]
+[node name="NewGameButton" type="Button" parent="MarginContainer/VBoxContainer" unique_id=75236504]
 custom_minimum_size = Vector2(96, 32)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -54,7 +54,7 @@ tooltip_text = "Start a new game!"
 theme = ExtResource("2_pfh6i")
 text = "New Game"
 
-[node name="Load Game" type="Button" parent="MarginContainer/VBoxContainer"]
+[node name="LoadGameButton" type="Button" parent="MarginContainer/VBoxContainer" unique_id=158388745]
 custom_minimum_size = Vector2(96, 32)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -63,7 +63,7 @@ theme = ExtResource("3_7hl0s")
 text = "Load Game
 "
 
-[node name="Options" type="Button" parent="MarginContainer/VBoxContainer"]
+[node name="OptionsButton" type="Button" parent="MarginContainer/VBoxContainer" unique_id=1247803857]
 custom_minimum_size = Vector2(96, 32)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -71,7 +71,7 @@ size_flags_vertical = 4
 theme = ExtResource("4_3cs86")
 text = "Options"
 
-[node name="Exit Game" type="Button" parent="MarginContainer/VBoxContainer"]
+[node name="ExitButton" type="Button" parent="MarginContainer/VBoxContainer" unique_id=1801698680]
 custom_minimum_size = Vector2(96, 32)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -79,8 +79,13 @@ size_flags_vertical = 4
 theme = ExtResource("5_bd2wy")
 text = "Exit Game"
 
-[node name="OptionsPopup" parent="." instance=ExtResource("6_pqlu1")]
+[node name="OptionsPopup" parent="." unique_id=666019018 instance=ExtResource("6_pqlu1")]
 visible = false
 
-[node name="LoadPopup" parent="." instance=ExtResource("7_pfh6i")]
+[node name="LoadPopup" parent="." unique_id=1058313673 instance=ExtResource("7_pfh6i")]
 visible = false
+
+[connection signal="pressed" from="MarginContainer/VBoxContainer/NewGameButton" to="." method="_on_new_game_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/LoadGameButton" to="." method="_on_load_game_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/OptionsButton" to="." method="_on_options_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/ExitButton" to="." method="_on_exit_button_pressed"]

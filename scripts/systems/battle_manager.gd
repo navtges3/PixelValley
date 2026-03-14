@@ -31,9 +31,9 @@ func setup_battle(config: BattleConfig) -> void:
 	hero = config.hero
 	current_quest = config.quest
 	is_test_battle = config.is_test_battle
-	
+
 	emit_signal("hero_updated", hero)
-	
+
 	get_new_monster()
 	start_player_turn()
 
@@ -98,17 +98,16 @@ func end_player_turn() -> void:
 		hero.inventory.gold += monster.gold
 		hero.gain_experience(experience)
 		emit_signal("hero_updated", hero)
-		if current_quest.slay_monster(monster.name):
+		if current_quest.slay_monster(monster.monster_id):
 			end_battle(true)
 		else:
-			emit_signal("monster_slain", monster.name)
+			emit_signal("monster_slain", monster.get_colored_name())
 
 func get_new_monster() -> void:
-	var quest_monster = current_quest.get_monster()
-	if quest_monster:
-		monster = quest_monster.duplicate(true)
+	monster = current_quest.get_monster()
+	if monster:
 		emit_signal("new_monster", monster)
-		emit_signal("battle_log_updated", "A new monster appears: %s!\n" % quest_monster.name)
+		emit_signal("battle_log_updated", "A new monster appears: %s!\n" % monster.get_colored_name())
 		emit_signal("monster_updated", monster)
 	else:
 		emit_signal("battle_log_updated", "No more monsters to fight!\n")

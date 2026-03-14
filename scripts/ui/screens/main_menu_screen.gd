@@ -3,22 +3,15 @@ extends Control
 @onready var options_popup = $OptionsPopup
 @onready var load_popup: PopupPanel = $LoadPopup
 
-@onready var new_game_button = $"MarginContainer/VBoxContainer/New Game"
-@onready var load_game_button = $"MarginContainer/VBoxContainer/Load Game"
-@onready var options_button = $MarginContainer/VBoxContainer/Options
-@onready var exit_button = $"MarginContainer/VBoxContainer/Exit Game"
+@onready var load_game_button: Button = $MarginContainer/VBoxContainer/LoadGameButton
 
 func _ready() -> void:
 	options_popup.hide()
-	new_game_button.pressed.connect(_on_new_game_button_pressed)
+	GameState.reset_state()
 	if SaveManager.has_save_data():
 		load_game_button.disabled = false
-		load_game_button.pressed.connect(_on_load_game_button_pressed)
 	else:
 		load_game_button.disabled = true
-	options_button.pressed.connect(_on_options_button_pressed)
-	exit_button.pressed.connect(_on_exit_button_pressed)
-	GameState.reset_state()
 	AudioManager.play_music_by_id("background")
 
 func _on_new_game_button_pressed():

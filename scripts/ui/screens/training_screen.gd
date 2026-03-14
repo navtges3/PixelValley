@@ -40,32 +40,7 @@ func _ready() -> void:
 	for stat in plus_buttons.keys():
 		plus_buttons[stat].pressed.connect(_on_increase.bind(stat))
 		minus_buttons[stat].pressed.connect(_on_decrease.bind(stat))
-	confirm_button.pressed.connect(_on_confirm)
-	back_button.pressed.connect(_on_back)
 	update_ui()
-
-func _on_increase(stat: String) -> void:
-	if available_points > 0:
-		temp_allocations[stat] += 1
-		available_points -= 1
-		update_ui()
-
-func _on_decrease(stat: String) -> void:
-	if temp_allocations[stat] > 0:
-		temp_allocations[stat] -= 1
-		available_points += 1
-		update_ui()
-
-func _on_confirm() -> void:
-	for stat in temp_allocations.keys():
-		var increase = temp_allocations[stat]
-		if increase > 0:
-			hero.stat_block.set_stat(stat, hero.stat_block.get_stat(stat) + increase)
-	hero.skill_points = available_points
-	ScreenManager.go_to_screen(ScreenManager.ScreenName.VILLAGE)
-
-func _on_back() -> void:
-	ScreenManager.go_to_screen(ScreenManager.ScreenName.VILLAGE)
 
 func update_ui() -> void:
 	skill_points_label.text = "Unspent Skill Points: %d" % available_points
@@ -81,3 +56,27 @@ func update_ui() -> void:
 
 		plus_buttons[stat].disabled = no_points_left
 		minus_buttons[stat].disabled = bonus <= 0
+
+
+func _on_increase(stat: String) -> void:
+	if available_points > 0:
+		temp_allocations[stat] += 1
+		available_points -= 1
+		update_ui()
+
+func _on_decrease(stat: String) -> void:
+	if temp_allocations[stat] > 0:
+		temp_allocations[stat] -= 1
+		available_points += 1
+		update_ui()
+
+func _on_back_button_pressed() -> void:
+	ScreenManager.go_to_screen(ScreenManager.ScreenName.VILLAGE)
+
+func _on_confirm_button_pressed() -> void:
+	for stat in temp_allocations.keys():
+		var increase = temp_allocations[stat]
+		if increase > 0:
+			hero.stat_block.set_stat(stat, hero.stat_block.get_stat(stat) + increase)
+	hero.skill_points = available_points
+	ScreenManager.go_to_screen(ScreenManager.ScreenName.VILLAGE)

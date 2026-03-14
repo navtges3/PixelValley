@@ -2,7 +2,6 @@
 
 [ext_resource type="Script" uid="uid://cmd8ja1dvnkcv" path="res://scripts/ui/screens/village_screen.gd" id="1_dtw0c"]
 [ext_resource type="Theme" uid="uid://66dgdyq2o64x" path="res://assets/button_themes/specialty/pause_button.tres" id="3_o0vxf"]
-[ext_resource type="PackedScene" uid="uid://bjx12sxd6xqme" path="res://scenes/ui/components/hero_info.tscn" id="4_nqqh3"]
 [ext_resource type="Theme" uid="uid://cn00sxx7cmfjh" path="res://assets/button_themes/regular/pink_button.tres" id="5_o0vxf"]
 [ext_resource type="Theme" uid="uid://dqwm8agt87lsh" path="res://assets/button_themes/regular/blue_button.tres" id="5_yofci"]
 [ext_resource type="Theme" uid="uid://phfh7c5hwx1n" path="res://assets/button_themes/regular/yellow_button.tres" id="6_6cp2h"]
@@ -10,7 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://btej8vh3kxmxo" path="res://scenes/ui/popups/pause_popup.tscn" id="7_csxqu"]
 [ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://assets/button_themes/regular/green_button.tres" id="8_m0hxj"]
 
-[node name="VillageScreen" type="Control"]
+[node name="VillageScreen" type="Control" unique_id=1349460561]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -19,10 +18,10 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_dtw0c")
 
-[node name="PausePopup" parent="." instance=ExtResource("7_csxqu")]
+[node name="PausePopup" parent="." unique_id=1704860843 instance=ExtResource("7_csxqu")]
 visible = false
 
-[node name="UIRoot" type="MarginContainer" parent="."]
+[node name="UIRoot" type="MarginContainer" parent="." unique_id=1126406363]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -34,51 +33,53 @@ theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 5
 theme_override_constants/margin_bottom = 5
 
-[node name="PauseButton" type="Button" parent="UIRoot"]
+[node name="PauseButton" type="Button" parent="UIRoot" unique_id=71872494]
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 0
 theme = ExtResource("3_o0vxf")
 
-[node name="HeroUI" parent="UIRoot" instance=ExtResource("4_nqqh3")]
-layout_mode = 2
-size_flags_horizontal = 0
-size_flags_vertical = 8
-
-[node name="VillageActions" type="VBoxContainer" parent="UIRoot"]
+[node name="VillageActions" type="VBoxContainer" parent="UIRoot" unique_id=571421781]
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 8
 theme_override_constants/separation = 10
 
-[node name="InnButton" type="Button" parent="UIRoot/VillageActions"]
+[node name="InnButton" type="Button" parent="UIRoot/VillageActions" unique_id=1161979244]
 custom_minimum_size = Vector2(96, 32)
 layout_mode = 2
 theme = ExtResource("5_o0vxf")
 text = "Inn"
 
-[node name="ShopButton" type="Button" parent="UIRoot/VillageActions"]
+[node name="ShopButton" type="Button" parent="UIRoot/VillageActions" unique_id=1961446170]
 custom_minimum_size = Vector2(96, 32)
 layout_mode = 2
 theme = ExtResource("6_6cp2h")
 text = "Shop"
 
-[node name="ArmoryButton" type="Button" parent="UIRoot/VillageActions"]
+[node name="ArmoryButton" type="Button" parent="UIRoot/VillageActions" unique_id=1050058891]
 custom_minimum_size = Vector2(96, 32)
 layout_mode = 2
 theme = ExtResource("6_dtw0c")
 text = "Armory"
 
-[node name="TrainingButton" type="Button" parent="UIRoot/VillageActions"]
+[node name="TrainingButton" type="Button" parent="UIRoot/VillageActions" unique_id=1397990016]
 custom_minimum_size = Vector2(96, 32)
 layout_mode = 2
 theme = ExtResource("8_m0hxj")
 text = "Training
 "
 
-[node name="QuestsButton" type="Button" parent="UIRoot/VillageActions"]
+[node name="QuestsButton" type="Button" parent="UIRoot/VillageActions" unique_id=632070655]
 custom_minimum_size = Vector2(96, 32)
 layout_mode = 2
 theme = ExtResource("5_yofci")
 text = "Quests"
+
+[connection signal="pressed" from="UIRoot/PauseButton" to="." method="_on_pause_button_pressed"]
+[connection signal="pressed" from="UIRoot/VillageActions/InnButton" to="." method="_on_inn_button_pressed"]
+[connection signal="pressed" from="UIRoot/VillageActions/ShopButton" to="." method="_on_shop_button_pressed"]
+[connection signal="pressed" from="UIRoot/VillageActions/ArmoryButton" to="." method="_on_armory_button_pressed"]
+[connection signal="pressed" from="UIRoot/VillageActions/TrainingButton" to="." method="_on_training_button_pressed"]
+[connection signal="pressed" from="UIRoot/VillageActions/QuestsButton" to="." method="_on_quests_button_pressed"]

@@ -12,13 +12,14 @@ var completed: bool = false
 signal quest_completed
 
 func get_monster() -> Monster:
-	var candidates := []
+	var available_ids := []
 	for objective in monster_objectives:
 		if objective.current_amount < objective.target_amount:
-			candidates.append(objective.monster)
-	if candidates.size() == 0:
+			available_ids.append(objective.monster_id)
+	if available_ids.size() == 0:
 		return null
-	return candidates[randi() % candidates.size()]
+	var monster_id = available_ids[randi() % available_ids.size()]
+	return MonsterLoader.new_monster(monster_id)
 
 func get_monster_count() -> int:
 	var count := 0
@@ -32,9 +33,9 @@ func get_slain_count() -> int:
 		count += objective.current_amount
 	return count
 
-func slay_monster(monster_name: String) -> bool:
+func slay_monster(monster_id: MonsterLoader.MonsterID) -> bool:
 	for objective in monster_objectives:
-		if objective.monster.name == monster_name:
+		if objective.monster_id == monster_id:
 			objective.current_amount += 1
 	return is_complete()
 
