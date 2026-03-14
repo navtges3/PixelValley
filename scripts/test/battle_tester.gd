@@ -23,6 +23,7 @@ func load_heroes():
 func load_monsters():
 	monster_resources = [
 		preload("res://resources/characters/monsters/goblin/goblin.tres"),
+		preload("res://resources/characters/monsters/orc/orc.tres")
 	]
 	for i in monster_resources.size():
 		monster_dropdown.add_item(monster_resources[i].name, i)

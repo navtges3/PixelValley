@@ -6,7 +6,6 @@
 [ext_resource type="Resource" uid="uid://crgnqxkfk1fo7" path="res://resources/characters/abilities/execute.tres" id="4_4jr1p"]
 [ext_resource type="Script" uid="uid://cnso83bg7vodw" path="res://scripts/data/condition.gd" id="5_srbga"]
 [ext_resource type="Resource" uid="uid://cst727hpy86fv" path="res://resources/characters/abilities/war_cry.tres" id="6_va3cs"]
-[ext_resource type="Texture2D" uid="uid://ced3cfcakcx6o" path="res://assets/monsters/orc.png" id="7_2v7w5"]
 [ext_resource type="Script" uid="uid://bd6ohffno5w7r" path="res://scripts/characters/monster.gd" id="8_nt0ri"]
 [ext_resource type="Script" uid="uid://hxleldka7y06" path="res://scripts/characters/stat_block.gd" id="9_1fxti"]
 
@@ -35,6 +34,9 @@ ability = ExtResource("6_va3cs")
 condition = SubResource("Resource_7fsos")
 metadata/_custom_type_script = "uid://dxnu3vjlxl2pn"
 
+[sub_resource type="Resource" id="Resource_uhjsd"]
+metadata/__load_path__ = "res://assets/monsters/orc.png"
+
 [sub_resource type="Resource" id="Resource_ryf8n"]
 script = ExtResource("9_1fxti")
 current_hp = 180
@@ -53,6 +55,6 @@ gold = 20
 basic_attack = ExtResource("2_o1xgh")
 conditional_abilities = Array[ExtResource("3_qjb12")]([SubResource("Resource_sap3r"), SubResource("Resource_7hvvo")])
 name = "Orc Cheiftain"
-portrait = ExtResource("7_2v7w5")
+portrait = SubResource("Resource_uhjsd")
 stat_block = SubResource("Resource_ryf8n")
 metadata/_custom_type_script = "uid://bd6ohffno5w7r"

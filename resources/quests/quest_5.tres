@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="Quest" format=3 uid="uid://cx6ioouupcahb"]
 
 [ext_resource type="Script" uid="uid://bhsjswm1wnll8" path="res://scripts/quest/monster_requirement.gd" id="1_sp1ti"]
-[ext_resource type="Resource" uid="uid://yrw5qgu7qwe0" path="res://resources/characters/monsters/orc.tres" id="2_71rn4"]
+[ext_resource type="Resource" uid="uid://yrw5qgu7qwe0" path="res://resources/characters/monsters/orc/orc.tres" id="2_71rn4"]
 [ext_resource type="Script" uid="uid://xekqra2mjp3l" path="res://scripts/quest/quest_reward.gd" id="4_n4lo1"]
 [ext_resource type="Script" uid="uid://xhl8p6y5w5e6" path="res://scripts/quest/quest.gd" id="9_xpbrd"]
 
