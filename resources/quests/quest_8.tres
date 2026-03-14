@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="Quest" format=3 uid="uid://5cxoduk38hp0"]
 
 [ext_resource type="Script" uid="uid://bhsjswm1wnll8" path="res://scripts/quest/monster_requirement.gd" id="1_hrtie"]
-[ext_resource type="Resource" uid="uid://defc2ss743h1d" path="res://resources/characters/monsters/orc_chieftain.tres" id="2_k4bu8"]
+[ext_resource type="Resource" uid="uid://defc2ss743h1d" path="res://resources/characters/monsters/orc_chieftain/orc_chieftain.tres" id="2_k4bu8"]
 [ext_resource type="Script" uid="uid://xekqra2mjp3l" path="res://scripts/quest/quest_reward.gd" id="4_75oh8"]
 [ext_resource type="Script" uid="uid://xhl8p6y5w5e6" path="res://scripts/quest/quest.gd" id="7_52usu"]
 
