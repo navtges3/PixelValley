@@ -16,11 +16,6 @@ var current_tab = "available"
 func _ready() -> void:
 	load_quests(current_tab)
 	start_button.disabled = true
-	available_button.toggled.connect(_on_available_toggled)
-	complete_button.toggled.connect(_on_complete_toggled)
-	back_button.pressed.connect(_on_back_pressed)
-	start_button.pressed.connect(_on_start_pressed)
-	pause_button.pressed.connect(_on_pause_pressed)
 	available_button.button_pressed = true
 
 func clear_quest_list():
@@ -46,15 +41,15 @@ func _on_quest_selected(selected_button: QuestButton):
 		selected_quest = selected_button
 		start_button.disabled = false
 
-func _on_available_toggled(button_pressed: bool):
-	if button_pressed:
+func _on_avaiable_button_toggled(toggled_on: bool) -> void:
+	if toggled_on:
 		if current_tab != "available":
 			current_tab = "available"
 			complete_button.button_pressed = false
 			load_quests(current_tab)
 
-func _on_complete_toggled(button_pressed: bool):
-	if button_pressed:
+func _on_complete_button_toggled(toggled_on: bool) -> void:
+	if toggled_on:
 		if current_tab != "complete":
 			current_tab = "complete"
 			available_button.button_pressed = false
@@ -64,10 +59,13 @@ func _on_complete_toggled(button_pressed: bool):
 			start_button.disabled = true
 			load_quests(current_tab)
 
-func _on_back_pressed():
+func _on_pause_button_pressed() -> void:
+	pause_popup.popup_centered()
+
+func _on_back_button_pressed() -> void:
 	ScreenManager.go_to_screen(ScreenManager.ScreenName.VILLAGE)
 
-func _on_start_pressed():
+func _on_start_button_pressed() -> void:
 	if selected_quest:
 		GameState.current_quest = selected_quest.get_quest()
 		var config := BattleConfig.new()
@@ -76,9 +74,6 @@ func _on_start_pressed():
 		config.is_test_battle = false
 		ScreenManager.go_to_screen(ScreenManager.ScreenName.BATTLE, config)
 
-func _on_pause_pressed():
-	pause_popup.popup_centered()
-
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_cancel") and not pause_popup.is_visible():
-		_on_pause_pressed()
+		_on_pause_button_pressed()

@@ -6,13 +6,13 @@
 [ext_resource type="PackedScene" uid="uid://bxmcs3dj7nfvs" path="res://scenes/ui/popups/options_popup.tscn" id="4_fgroy"]
 [ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://assets/button_themes/regular/red_button.tres" id="4_xrtjw"]
 
-[node name="PausePopup" type="PopupPanel"]
+[node name="PausePopup" type="PopupPanel" unique_id=1808442530]
 oversampling_override = 1.0
 size = Vector2i(104, 150)
 visible = true
 script = ExtResource("1_at05d")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1162970874]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -24,12 +24,12 @@ grow_horizontal = 2
 grow_vertical = 2
 alignment = 1
 
-[node name="Label" type="Label" parent="VBoxContainer"]
+[node name="Label" type="Label" parent="VBoxContainer" unique_id=2046835299]
 layout_mode = 2
 text = "Pause"
 horizontal_alignment = 1
 
-[node name="ResumeButton" type="Button" parent="VBoxContainer"]
+[node name="ResumeButton" type="Button" parent="VBoxContainer" unique_id=2030639335]
 custom_minimum_size = Vector2(96, 32)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -37,7 +37,7 @@ size_flags_vertical = 0
 theme = ExtResource("2_kn3un")
 text = "Resume"
 
-[node name="OptionsButton" type="Button" parent="VBoxContainer"]
+[node name="OptionsButton" type="Button" parent="VBoxContainer" unique_id=11389612]
 custom_minimum_size = Vector2(96, 32)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -45,7 +45,7 @@ size_flags_vertical = 0
 theme = ExtResource("3_ra2dh")
 text = "Options"
 
-[node name="SaveExitButton" type="Button" parent="VBoxContainer"]
+[node name="SaveExitButton" type="Button" parent="VBoxContainer" unique_id=1807643563]
 custom_minimum_size = Vector2(96, 32)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -53,5 +53,9 @@ size_flags_vertical = 0
 theme = ExtResource("4_xrtjw")
 text = "Save & Exit"
 
-[node name="OptionsPopup" parent="." instance=ExtResource("4_fgroy")]
+[node name="OptionsPopup" parent="." unique_id=585304747 instance=ExtResource("4_fgroy")]
 visible = false
+
+[connection signal="pressed" from="VBoxContainer/ResumeButton" to="." method="_on_resume_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/OptionsButton" to="." method="_on_options_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/SaveExitButton" to="." method="_on_save_exit_button_pressed"]

@@ -50,6 +50,7 @@ metadata/_custom_type_script = "uid://hxleldka7y06"
 
 [resource]
 script = ExtResource("9_77wwi")
+monster_id = 2
 gold = 20
 basic_attack = ExtResource("2_t544c")
 conditional_abilities = Array[ExtResource("4_yrisj")]([SubResource("Resource_sap3r"), SubResource("Resource_7hvvo")])

@@ -9,12 +9,6 @@ signal item_pressed(item_stack: ItemStack)
 		_update_tooltip()
 		_update_theme()
 
-func _ready() -> void:
-	connect("pressed", Callable(self, "_on_button_pressed"))
-
-func _on_button_pressed() -> void:
-	item_pressed.emit(item_stack)
-
 func _update_text() -> void:
 	if item_stack:
 		if item_stack.count > 1:
@@ -35,3 +29,7 @@ func _update_theme() -> void:
 		theme = item_stack.item.theme
 	else:
 		theme = preload("res://assets/button_themes/regular/gray_button.tres")
+
+
+func _on_pressed() -> void:
+	item_pressed.emit(item_stack)

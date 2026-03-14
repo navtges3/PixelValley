@@ -48,8 +48,6 @@ func save_game() -> void:
 	print("SaveManager: Saved game to slot %d" % save_slot)
 
 func load_game(slot: int = 1) -> void:
-	GameState.save_slot = slot
-
 	if not has_save_data(slot):
 		push_error("SaveManager: no save data found for slot %d" % slot)
 		return
@@ -109,6 +107,7 @@ func _get_hero_data(hero: Hero) -> Dictionary:
 	return {
 		"hero_name": hero.name,
 		"portrait": hero.portrait.resource_path,
+		"battle_visual": hero.battle_visual.resource_path,
 		"hero_class": hero.hero_class,
 		"level": hero.level,
 		"experience": hero.experience,
@@ -127,6 +126,10 @@ func _load_hero(data: Dictionary) -> Hero:
 	var portrait_path = data.get("portrait", "")
 	if portrait_path != "":
 		hero.portrait = load(portrait_path)
+
+	var battle_visuals_path = data.get("battle_visual", "")
+	if battle_visuals_path != "":
+		hero.battle_visual = load(battle_visuals_path)
 
 	hero.hero_class = data.get("hero_class", Hero.HeroClass.KNIGHT)
 	hero.level = data.get("level", 1)
@@ -340,7 +343,7 @@ func _get_quest_data(quest: Quest) -> Dictionary:
 	# monster_objectives
 	for obj in quest.monster_objectives:
 		var obj_data = {
-			"monster_path": obj.monster.resource_path,
+			"monster_id": obj.monster_id,
 			"target_amount": obj.target_amount,
 			"current_amount": obj.current_amount
 		}
@@ -368,7 +371,7 @@ func _load_quest(data: Dictionary) -> Quest:
 	# monster_objectives
 	for obj_data in data.get("monster_objectives", []):
 		var obj = MonsterRequirement.new()
-		obj.monster = load(obj_data.get("monster_path", ""))
+		obj.monster_id = obj_data.get("monster_id", MonsterLoader.MonsterID.GOBLIN)
 		obj.target_amount = obj_data.get("target_amount", 1)
 		obj.current_amount = obj_data.get("current_amount", 0)
 		quest.monster_objectives.append(obj)

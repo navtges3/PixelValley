@@ -15,9 +15,6 @@ var selected_weapon: Weapon
 
 func _ready() -> void:
 	hero = GameState.hero
-
-	back_button.pressed.connect(_on_back_button_pressed)
-	equip_button.pressed.connect(_on_equip_button_pressed)
 	_update_weapon_list()
 
 func _update_weapon_list() -> void:

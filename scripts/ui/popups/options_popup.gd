@@ -9,10 +9,6 @@ func _ready():
 	master_volume_slider.value = SettingsManager.master_volume
 	music_volume_slider.value = SettingsManager.music_volume
 	sfx_volume_slider.value = SettingsManager.sfx_volume
-	
-	master_volume_slider.value_changed.connect(_on_master_volume_slider_value_changed)
-	music_volume_slider.value_changed.connect(_on_music_volume_slider_value_changed)
-	sfx_volume_slider.value_changed.connect(_on_sfx_volume_slider_value_changed)
 
 func _on_master_volume_slider_value_changed(value) -> void:
 	SettingsManager.master_volume = value

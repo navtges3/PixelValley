@@ -33,7 +33,7 @@ func _ready() -> void:
 	quest_bar.update_quest()
 	_empty_option_list()
 	_spawn_hero()
-	
+
 	battle_manager.setup_battle(battle_config)
 
 func setup(config: BattleConfig) -> void:
@@ -47,7 +47,7 @@ func _spawn_hero() -> void:
 	hero_visual.scale.x = 5
 	hero_visual.scale.y = 5
 
-func _on_hero_updated(hero_ref: Hero) -> void:
+func _on_hero_updated(_hero_ref: Hero) -> void:
 	hero_info.refresh()
 
 func _on_hero_attacking() -> void:

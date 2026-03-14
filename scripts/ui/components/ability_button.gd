@@ -12,9 +12,6 @@ signal ability_pressed(ability: Ability)
 		user_energy = value
 		_refresh()
 
-func _ready() -> void:
-	connect("pressed", Callable(self, "_on_pressed"))
-
 func _on_pressed():
 	emit_signal("ability_pressed", ability)
 

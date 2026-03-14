@@ -4,35 +4,38 @@
 [ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://assets/button_themes/regular/green_button.tres" id="2_6pkpi"]
 [ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://assets/button_themes/regular/red_button.tres" id="4_hlvmy"]
 
-[node name="BattleVictoryPopup" type="PopupPanel"]
+[node name="BattleVictoryPopup" type="PopupPanel" unique_id=995468359]
 oversampling_override = 1.0
 size = Vector2i(204, 100)
 visible = true
 script = ExtResource("1_b4ntk")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1060352825]
 offset_left = 4.0
 offset_top = 4.0
 offset_right = 200.0
 offset_bottom = 96.0
 alignment = 1
 
-[node name="Label" type="Label" parent="VBoxContainer"]
+[node name="Label" type="Label" parent="VBoxContainer" unique_id=1511118906]
 layout_mode = 2
 text = "Continue Fighting?"
 horizontal_alignment = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer" unique_id=910354632]
 layout_mode = 2
 
-[node name="RetreatButton" type="Button" parent="VBoxContainer/HBoxContainer"]
+[node name="RetreatButton" type="Button" parent="VBoxContainer/HBoxContainer" unique_id=1621354855]
 custom_minimum_size = Vector2(96, 32)
 layout_mode = 2
 theme = ExtResource("4_hlvmy")
 text = "Retreat"
 
-[node name="ContinueButton" type="Button" parent="VBoxContainer/HBoxContainer"]
+[node name="ContinueButton" type="Button" parent="VBoxContainer/HBoxContainer" unique_id=1546421235]
 custom_minimum_size = Vector2(96, 32)
 layout_mode = 2
 theme = ExtResource("2_6pkpi")
 text = "Continue"
+
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/RetreatButton" to="." method="_on_retreat_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/ContinueButton" to="." method="_on_continue_button_pressed"]
