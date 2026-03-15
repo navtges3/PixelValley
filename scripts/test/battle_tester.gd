@@ -26,6 +26,8 @@ func load_monsters():
 		MonsterLoader.MonsterID.ORC,
 		MonsterLoader.MonsterID.ORC_CHIEFTAIN,
 		MonsterLoader.MonsterID.OGRE,
+		MonsterLoader.MonsterID.OGRE_WARLORD,
+		MonsterLoader.MonsterID.OGRE_KING,
 	]
 	for i in monster_resources.size():
 		monster_dropdown.add_item(MonsterLoader.get_monster_name(i))
