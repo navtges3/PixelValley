@@ -6,5 +6,4 @@
 [resource]
 script = ExtResource("1_07gm0")
 frames = ExtResource("1_y8ijd")
-scale = Vector2(-1, 1)
 metadata/_custom_type_script = "uid://c3t8kckce6hdk"
