@@ -18,11 +18,12 @@ extends Control
 
 @onready var option_list = $ActionArea/MiddlePanel/OptionList
 
-var AbilityButton := preload("res://scenes/ui/components/ability_button.tscn")
-var ItemButton := preload("res://scenes/ui/components/item_button.tscn")
-const BATTLE_CHARACTER = preload("uid://bsh4xy5omgwej")
-const GOBLIN_SPRITE_FRAMES = preload("uid://4ywebwliybf7")
-const KNIGHT_SPRITE_FRAMES = preload("uid://cxd5elo40h8pv")
+const ABILITY_BUTTON = preload("res://scenes/ui/components/ability_button.tscn")
+const ITEM_BUTTON = preload("res://scenes/ui/components/item_button.tscn")
+const BATTLE_CHARACTER = preload("res://scenes/ui/components/battle_character.tscn")
+
+const SPRITE_SCALE := 5
+const SPRITE_OFFSET_Y := 64
 
 var battle_config: BattleConfig
 var hero_visual
@@ -44,8 +45,8 @@ func _spawn_hero() -> void:
 	hero_visual = BATTLE_CHARACTER.instantiate()
 	$HeroSlot.add_child(hero_visual)
 	hero_visual.set_frames(battle_config.hero.battle_visual.frames)
-	hero_visual.scale.x = 5
-	hero_visual.scale.y = 5
+	hero_visual.scale.x = SPRITE_SCALE
+	hero_visual.scale.y = SPRITE_SCALE
 
 func _on_hero_updated(_hero_ref: Hero) -> void:
 	hero_info.refresh()
@@ -68,8 +69,10 @@ func _spawn_monster(monster_ref: Monster) -> void:
 	monster_visual = BATTLE_CHARACTER.instantiate()
 	$MonsterSlot.add_child(monster_visual)
 	monster_visual.set_frames(monster_ref.battle_visual.frames)
-	monster_visual.scale.x = -5
-	monster_visual.scale.y = 5
+	monster_visual.scale.x = -SPRITE_SCALE
+	monster_visual.scale.y = SPRITE_SCALE
+	var sprite_height = (monster_ref.battle_visual.sprite_height - SPRITE_OFFSET_Y) * SPRITE_SCALE
+	monster_visual.position.y = -sprite_height
 
 func _on_monster_updated(monster_ref: Monster) -> void:
 	var value = monster_ref.stat_block.current_hp
@@ -175,7 +178,7 @@ func _on_ability_button_pressed(ability: Ability) -> void:
 	ability_button.button_pressed = false
 
 func _create_ability_button(ability: Ability) -> Button:
-	var button := AbilityButton.instantiate()
+	var button := ABILITY_BUTTON.instantiate()
 	button.ability = ability
 	button.user_energy = battle_manager.hero.stat_block.current_nrg
 	button.connect("ability_pressed", Callable(self, "_on_ability_button_pressed"))
@@ -187,7 +190,7 @@ func _on_item_button_pressed(item_stack: ItemStack) -> void:
 	item_button.button_pressed = false
 
 func _create_item_button(item_stack: ItemStack) -> Button:
-	var button := ItemButton.instantiate()
+	var button := ITEM_BUTTON.instantiate()
 	button.item_stack = item_stack
 	button.connect("item_pressed", Callable(self, "_on_item_button_pressed"))
 	return button

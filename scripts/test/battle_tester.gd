@@ -5,7 +5,7 @@ extends Control
 @onready var monster_dropdown: OptionButton = $MarginContainer/VBoxContainer/MonsterSelection/MonsterDropdown
 
 var hero_resources: Array[Hero] = []
-var monster_resources: Array[Monster] = []
+var monster_resources: Array[MonsterLoader.MonsterID] = []
 
 func _ready():
 	load_heroes()
@@ -22,12 +22,13 @@ func load_heroes():
 
 func load_monsters():
 	monster_resources = [
-		preload("res://resources/characters/monsters/goblin/goblin.tres"),
-		preload("res://resources/characters/monsters/orc/orc.tres"),
-		preload("res://resources/characters/monsters/orc_chieftain/orc_chieftain.tres"),
+		MonsterLoader.MonsterID.GOBLIN,
+		MonsterLoader.MonsterID.ORC,
+		MonsterLoader.MonsterID.ORC_CHIEFTAIN,
+		MonsterLoader.MonsterID.OGRE,
 	]
 	for i in monster_resources.size():
-		monster_dropdown.add_item(monster_resources[i].name, i)
+		monster_dropdown.add_item(MonsterLoader.get_monster_name(i))
 
 
 func _on_start_battle_pressed() -> void:
@@ -35,7 +36,7 @@ func _on_start_battle_pressed() -> void:
 	print("Hero selected: ", GameState.hero.name)
 
 	var monster_obj = MonsterRequirement.new()
-	monster_obj.monster = monster_resources[monster_dropdown.get_selected_id()]
+	monster_obj.monster_id = monster_resources[monster_dropdown.get_selected_id()]
 	monster_obj.target_amount = monster_spin_box.value
 	var test_quest = Quest.new()
 	test_quest.title = "Test Quest"
