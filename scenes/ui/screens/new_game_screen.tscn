@@ -2,8 +2,8 @@
 
 [ext_resource type="Script" uid="uid://dw56ke2y7ajcx" path="res://scripts/ui/screens/new_game_screen.gd" id="1_dm5gj"]
 [ext_resource type="PackedScene" uid="uid://cw4dm1x3j5e12" path="res://scenes/ui/windows/new_game_window.tscn" id="4_bkijf"]
-[ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://assets/button_themes/regular/red_button.tres" id="4_rq6u8"]
-[ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://assets/button_themes/regular/green_button.tres" id="5_5p1ja"]
+[ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://resources/ui/button_themes/regular/red_button.tres" id="4_rq6u8"]
+[ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://resources/ui/button_themes/regular/green_button.tres" id="5_5p1ja"]
 
 [node name="NewGameScreen" type="Control" unique_id=838715774]
 layout_mode = 3

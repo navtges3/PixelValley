@@ -5,7 +5,7 @@
 [ext_resource type="Script" uid="uid://bvuw0uyc36uxx" path="res://scripts/data/utility.gd" id="3_pb7x2"]
 [ext_resource type="Script" uid="uid://c5deti4sb2k2j" path="res://scripts/data/effect.gd" id="4_2vl5x"]
 [ext_resource type="Script" uid="uid://dgykeyxn7fefw" path="res://scripts/data/weapon.gd" id="5_ptiqx"]
-[ext_resource type="Theme" uid="uid://dqwm8agt87lsh" path="res://assets/button_themes/regular/blue_button.tres" id="6_j4gdb"]
+[ext_resource type="Theme" uid="uid://dqwm8agt87lsh" path="res://resources/ui/button_themes/regular/blue_button.tres" id="6_j4gdb"]
 
 [sub_resource type="Resource" id="Resource_6vvbq"]
 script = ExtResource("2_h5ukb")

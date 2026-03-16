@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://dcvm4b84vw7j0"]
 
 [ext_resource type="Script" uid="uid://ywep7djd0dql" path="res://scripts/ui/screens/inn_screen.gd" id="1_804oe"]
-[ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://assets/button_themes/regular/green_button.tres" id="2_aw0ui"]
-[ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://assets/button_themes/regular/red_button.tres" id="3_i3slg"]
+[ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://resources/ui/button_themes/regular/green_button.tres" id="2_aw0ui"]
+[ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://resources/ui/button_themes/regular/red_button.tres" id="3_i3slg"]
 
 [node name="InnScreen" type="Control" unique_id=1176203611]
 layout_mode = 3

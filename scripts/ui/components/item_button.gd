@@ -28,7 +28,7 @@ func _update_theme() -> void:
 	if item_stack:
 		theme = item_stack.item.theme
 	else:
-		theme = preload("res://assets/button_themes/regular/gray_button.tres")
+		theme = preload("res://resources/ui/button_themes/regular/gray_button.tres")
 
 
 func _on_pressed() -> void:

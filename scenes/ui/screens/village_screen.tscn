@@ -1,13 +1,13 @@
 [gd_scene format=3 uid="uid://blhwqbfk6j0u7"]
 
 [ext_resource type="Script" uid="uid://cmd8ja1dvnkcv" path="res://scripts/ui/screens/village_screen.gd" id="1_dtw0c"]
-[ext_resource type="Theme" uid="uid://66dgdyq2o64x" path="res://assets/button_themes/specialty/pause_button.tres" id="3_o0vxf"]
-[ext_resource type="Theme" uid="uid://cn00sxx7cmfjh" path="res://assets/button_themes/regular/pink_button.tres" id="5_o0vxf"]
-[ext_resource type="Theme" uid="uid://dqwm8agt87lsh" path="res://assets/button_themes/regular/blue_button.tres" id="5_yofci"]
-[ext_resource type="Theme" uid="uid://phfh7c5hwx1n" path="res://assets/button_themes/regular/yellow_button.tres" id="6_6cp2h"]
-[ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://assets/button_themes/regular/red_button.tres" id="6_dtw0c"]
+[ext_resource type="Theme" uid="uid://66dgdyq2o64x" path="res://resources/ui/button_themes/specialty/pause_button.tres" id="3_o0vxf"]
+[ext_resource type="Theme" uid="uid://cn00sxx7cmfjh" path="res://resources/ui/button_themes/regular/pink_button.tres" id="5_o0vxf"]
+[ext_resource type="Theme" uid="uid://dqwm8agt87lsh" path="res://resources/ui/button_themes/regular/blue_button.tres" id="5_yofci"]
+[ext_resource type="Theme" uid="uid://phfh7c5hwx1n" path="res://resources/ui/button_themes/regular/yellow_button.tres" id="6_6cp2h"]
+[ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://resources/ui/button_themes/regular/red_button.tres" id="6_dtw0c"]
 [ext_resource type="PackedScene" uid="uid://btej8vh3kxmxo" path="res://scenes/ui/windows/pause_window.tscn" id="7_csxqu"]
-[ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://assets/button_themes/regular/green_button.tres" id="8_m0hxj"]
+[ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://resources/ui/button_themes/regular/green_button.tres" id="8_m0hxj"]
 
 [node name="VillageScreen" type="Control" unique_id=1349460561]
 layout_mode = 3

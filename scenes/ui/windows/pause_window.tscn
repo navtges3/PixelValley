@@ -1,9 +1,9 @@
 [gd_scene format=3 uid="uid://btej8vh3kxmxo"]
 
 [ext_resource type="Script" uid="uid://d3wpretxg3nb3" path="res://scripts/ui/windows/pause_window.gd" id="1_2fh80"]
-[ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://assets/button_themes/regular/green_button.tres" id="1_b63r8"]
-[ext_resource type="Theme" uid="uid://phfh7c5hwx1n" path="res://assets/button_themes/regular/yellow_button.tres" id="2_h8ss4"]
-[ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://assets/button_themes/regular/red_button.tres" id="3_dj31w"]
+[ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://resources/ui/button_themes/regular/green_button.tres" id="1_b63r8"]
+[ext_resource type="Theme" uid="uid://phfh7c5hwx1n" path="res://resources/ui/button_themes/regular/yellow_button.tres" id="2_h8ss4"]
+[ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://resources/ui/button_themes/regular/red_button.tres" id="3_dj31w"]
 [ext_resource type="PackedScene" uid="uid://bxmcs3dj7nfvs" path="res://scenes/ui/windows/options_window.tscn" id="4_jh7gt"]
 
 [node name="PauseWindow" type="Window" unique_id=917561531]

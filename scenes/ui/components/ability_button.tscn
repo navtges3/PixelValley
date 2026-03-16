@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://emvh52r6npk1"]
 
-[ext_resource type="Theme" uid="uid://e6xnt81pte22" path="res://assets/button_themes/regular/gray_button.tres" id="1_4bq2l"]
+[ext_resource type="Theme" uid="uid://e6xnt81pte22" path="res://resources/ui/button_themes/regular/gray_button.tres" id="1_4bq2l"]
 [ext_resource type="Script" uid="uid://bm7t71mm68jsv" path="res://scripts/ui/components/ability_button.gd" id="1_6idto"]
 
 [node name="AbilityButton" type="Button" unique_id=1448381906]
