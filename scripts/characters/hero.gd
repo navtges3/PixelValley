@@ -8,8 +8,6 @@ enum HeroClass {
 }
 
 const LEVEL_UP_MULT := 25
-const MEDITATE_HP_GAIN := 5
-const MEDITATE_NRG_GAIN := 5
 
 @export var hero_class: HeroClass
 @export var level := 1
