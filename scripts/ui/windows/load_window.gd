@@ -1,18 +1,19 @@
-extends PopupPanel
+extends Window
 
 const GREEN_BUTTON = preload("uid://cgbnpl6hlm7s2")
 const RED_BUTTON = preload("uid://130ubmqd1h3b")
 
 @onready var slot_buttons: Array[Button] = [
-	$VBoxContainer/SlotButton1,
-	$VBoxContainer/SlotButton2,
-	$VBoxContainer/SlotButton3,
-	$VBoxContainer/SlotButton4,
-	$VBoxContainer/SlotButton5
+	$PanelContainer/MarginContainer/VBoxContainer/SlotButton1,
+	$PanelContainer/MarginContainer/VBoxContainer/SlotButton2,
+	$PanelContainer/MarginContainer/VBoxContainer/SlotButton3,
+	$PanelContainer/MarginContainer/VBoxContainer/SlotButton4,
+	$PanelContainer/MarginContainer/VBoxContainer/SlotButton5,
 ]
-@onready var back_button: Button = $VBoxContainer/BackButton
+@onready var back_button: Button = $PanelContainer/MarginContainer/VBoxContainer/BackButton
 
 func _ready() -> void:
+	exclusive = true
 	populate_slots()
 
 func populate_slots() -> void:

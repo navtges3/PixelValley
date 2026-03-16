@@ -4,8 +4,6 @@
 [ext_resource type="Theme" uid="uid://phfh7c5hwx1n" path="res://assets/button_themes/regular/yellow_button.tres" id="2_u7xef"]
 [ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://assets/button_themes/regular/green_button.tres" id="3_btxr8"]
 [ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://assets/button_themes/regular/red_button.tres" id="4_4tgk3"]
-[ext_resource type="Theme" uid="uid://66dgdyq2o64x" path="res://assets/button_themes/specialty/pause_button.tres" id="5_5vov0"]
-[ext_resource type="PackedScene" uid="uid://btej8vh3kxmxo" path="res://scenes/ui/popups/pause_popup.tscn" id="5_u7xef"]
 
 [node name="QuestScreen" type="Control" unique_id=2024311036]
 layout_mode = 3
@@ -48,13 +46,6 @@ theme = ExtResource("3_btxr8")
 toggle_mode = true
 text = "Complete"
 
-[node name="PauseButton" type="Button" parent="MarginContainer/VBoxContainer/QuestTabs" unique_id=1448416765]
-custom_minimum_size = Vector2(32, 32)
-layout_mode = 2
-size_flags_horizontal = 10
-size_flags_vertical = 0
-theme = ExtResource("5_5vov0")
-
 [node name="QuestScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer" unique_id=1978116151]
 custom_minimum_size = Vector2(0, 500)
 layout_mode = 2
@@ -80,11 +71,7 @@ size_flags_horizontal = 10
 theme = ExtResource("3_btxr8")
 text = "Start Quest"
 
-[node name="PausePopup" parent="." unique_id=1825677053 instance=ExtResource("5_u7xef")]
-visible = false
-
 [connection signal="toggled" from="MarginContainer/VBoxContainer/QuestTabs/AvaiableButton" to="." method="_on_avaiable_button_toggled"]
 [connection signal="toggled" from="MarginContainer/VBoxContainer/QuestTabs/CompleteButton" to="." method="_on_complete_button_toggled"]
-[connection signal="pressed" from="MarginContainer/VBoxContainer/QuestTabs/PauseButton" to="." method="_on_pause_button_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/BottomControls/BackButton" to="." method="_on_back_button_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/BottomControls/StartButton" to="." method="_on_start_button_pressed"]

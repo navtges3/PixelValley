@@ -1,6 +1,6 @@
 extends Control
 
-@onready var pause_popup: Window = $PausePopup
+@onready var pause_window: Window = $PauseWindow
 @onready var shop_button: Button = $UIRoot/VillageActions/ShopButton
 
 func _ready() -> void:	
@@ -10,7 +10,7 @@ func _ready() -> void:
 		shop_button.disabled = true
 
 func _on_pause_button_pressed():
-	pause_popup.popup_centered()
+	pause_window.popup_centered()
 
 func _on_inn_button_pressed():
 	ScreenManager.go_to_screen(ScreenManager.ScreenName.INN)
@@ -28,5 +28,5 @@ func _on_quests_button_pressed():
 	ScreenManager.go_to_screen(ScreenManager.ScreenName.QUEST)
 
 func _input(event: InputEvent) -> void:
-	if event.is_action_pressed("ui_cancel") and not pause_popup.is_visible():
+	if event.is_action_pressed("ui_cancel") and not pause_window.is_visible():
 		_on_pause_button_pressed()

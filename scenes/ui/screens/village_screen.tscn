@@ -6,7 +6,7 @@
 [ext_resource type="Theme" uid="uid://dqwm8agt87lsh" path="res://assets/button_themes/regular/blue_button.tres" id="5_yofci"]
 [ext_resource type="Theme" uid="uid://phfh7c5hwx1n" path="res://assets/button_themes/regular/yellow_button.tres" id="6_6cp2h"]
 [ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://assets/button_themes/regular/red_button.tres" id="6_dtw0c"]
-[ext_resource type="PackedScene" uid="uid://btej8vh3kxmxo" path="res://scenes/ui/popups/pause_popup.tscn" id="7_csxqu"]
+[ext_resource type="PackedScene" uid="uid://btej8vh3kxmxo" path="res://scenes/ui/windows/pause_window.tscn" id="7_csxqu"]
 [ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://assets/button_themes/regular/green_button.tres" id="8_m0hxj"]
 
 [node name="VillageScreen" type="Control" unique_id=1349460561]
@@ -17,9 +17,6 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_dtw0c")
-
-[node name="PausePopup" parent="." unique_id=1704860843 instance=ExtResource("7_csxqu")]
-visible = false
 
 [node name="UIRoot" type="MarginContainer" parent="." unique_id=1126406363]
 layout_mode = 1
@@ -76,6 +73,8 @@ custom_minimum_size = Vector2(96, 32)
 layout_mode = 2
 theme = ExtResource("5_yofci")
 text = "Quests"
+
+[node name="PauseWindow" parent="." unique_id=917561531 instance=ExtResource("7_csxqu")]
 
 [connection signal="pressed" from="UIRoot/PauseButton" to="." method="_on_pause_button_pressed"]
 [connection signal="pressed" from="UIRoot/VillageActions/InnButton" to="." method="_on_inn_button_pressed"]

@@ -1,7 +1,7 @@
 extends Control
 
 @onready var options_popup = $OptionsPopup
-@onready var load_popup: PopupPanel = $LoadPopup
+@onready var load_window: Window = $LoadWindow
 
 @onready var load_game_button: Button = $MarginContainer/VBoxContainer/LoadGameButton
 
@@ -18,7 +18,7 @@ func _on_new_game_button_pressed():
 	ScreenManager.go_to_screen(ScreenManager.ScreenName.NEW_GAME)
 
 func _on_load_game_button_pressed():
-	load_popup.popup_centered()
+	load_window.popup_centered()
 
 func _on_options_button_pressed():
 	options_popup.popup_centered()
