@@ -12,7 +12,7 @@ enum Rarity {
 @export var theme: Theme = preload("res://assets/button_themes/regular/gray_button.tres")
 @export var value: int
 
-func rarity_to_string(rarity: Rarity) -> String:
+static func rarity_to_string(rarity: Rarity) -> String:
 	match rarity:
 		Rarity.COMMON:
 			return "Common"

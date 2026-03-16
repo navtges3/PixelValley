@@ -3,6 +3,7 @@ extends Control
 @onready var battle_manager = $BattleManager
 
 @onready var monster_slain_window: Window = $MonsterSlainWindow
+@onready var quest_complete_window: Window = $QuestCompleteWindow
 
 # Top Bar
 @onready var quest_bar = $TopBar/QuestProgressBar
@@ -152,12 +153,15 @@ func _on_monster_turn():
 
 func _on_quest_completed():
 	print("Quest completed!")
+	quest_complete_window.show_quest_complete(battle_config.quest)
+
+func _on_quest_complete_window_reward_collected(_quest: Quest) -> void:
 	if battle_config.is_test_battle:
 		ScreenManager.go_to_screen(ScreenManager.ScreenName.TEST)
 	elif battle_manager.current_quest.id == GameState.quest_manager.LAST_QUEST_ID:
 		ScreenManager.go_to_screen(ScreenManager.ScreenName.VICTORY)
 	else:
-		ScreenManager.go_to_screen(ScreenManager.ScreenName.QUEST_FINISHED)
+		ScreenManager.go_to_screen(ScreenManager.ScreenName.VILLAGE)
 
 func _on_hero_defeated():
 	print("Hero defeated!")

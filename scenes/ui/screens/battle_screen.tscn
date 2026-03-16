@@ -10,6 +10,7 @@
 [ext_resource type="Theme" uid="uid://phfh7c5hwx1n" path="res://assets/button_themes/regular/yellow_button.tres" id="10_c2ins"]
 [ext_resource type="Script" uid="uid://bgmcha5vrlqop" path="res://scripts/systems/battle_manager.gd" id="11_o00jr"]
 [ext_resource type="PackedScene" uid="uid://4fne8gv1pkcd" path="res://scenes/ui/windows/monster_slain_window.tscn" id="11_xvgma"]
+[ext_resource type="PackedScene" uid="uid://brs86db0uckno" path="res://scenes/ui/windows/quest_complete_window.tscn" id="11_yj4kj"]
 
 [node name="BattleScreen" type="Control" unique_id=1921801911]
 layout_mode = 3
@@ -133,6 +134,9 @@ script = ExtResource("11_o00jr")
 [node name="MonsterSlainWindow" parent="." unique_id=534091905 instance=ExtResource("11_xvgma")]
 visible = false
 
+[node name="QuestCompleteWindow" parent="." unique_id=1401141905 instance=ExtResource("11_yj4kj")]
+visible = false
+
 [connection signal="toggled" from="ActionArea/LeftPanel/AbilityButton" to="." method="_on_ability_button_toggled"]
 [connection signal="toggled" from="ActionArea/LeftPanel/ItemButton" to="." method="_on_item_button_toggled"]
 [connection signal="pressed" from="ActionArea/LeftPanel/MeditateButton" to="." method="_on_meditate_button_pressed"]
@@ -152,3 +156,4 @@ visible = false
 [connection signal="quest_completed" from="BattleManager" to="." method="_on_quest_completed"]
 [connection signal="continue_pressed" from="MonsterSlainWindow" to="." method="_on_monster_slain_window_continue_pressed"]
 [connection signal="retreat_pressed" from="MonsterSlainWindow" to="." method="_on_monster_slain_window_retreat_pressed"]
+[connection signal="reward_collected" from="QuestCompleteWindow" to="." method="_on_quest_complete_window_reward_collected"]
