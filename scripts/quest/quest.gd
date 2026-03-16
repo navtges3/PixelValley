@@ -43,6 +43,7 @@ func is_complete() -> bool:
 	for objective in monster_objectives:
 		if objective.current_amount < objective.target_amount:
 			return false
-	completed = true
-	emit_signal("quest_completed", self)
-	return completed
+	if not completed:
+		completed = true
+		emit_signal("quest_completed", self)
+	return true
