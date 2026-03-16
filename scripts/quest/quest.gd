@@ -7,9 +7,9 @@ extends Resource
 @export var monster_objectives: Array[MonsterRequirement]
 @export var reward: Array[QuestReward]
 @export var next_quests: Array[int]
-var completed: bool = false
+@export var completed: bool = false
 
-signal quest_completed
+signal quest_completed(quest: Quest)
 
 func get_monster() -> Monster:
 	var available_ids := []
@@ -37,13 +37,21 @@ func slay_monster(monster_id: MonsterLoader.MonsterID) -> bool:
 	for objective in monster_objectives:
 		if objective.monster_id == monster_id:
 			objective.current_amount += 1
-	return is_complete()
+	return check_completion()
 
-func is_complete() -> bool:
+func all_objectives_met() -> bool:
 	for objective in monster_objectives:
 		if objective.current_amount < objective.target_amount:
 			return false
+	return true
+
+func check_completion() -> bool:
+	if not all_objectives_met():
+		return false
 	if not completed:
 		completed = true
-		emit_signal("quest_completed", self)
+		quest_completed.emit(self)
 	return true
+
+func is_complete() -> bool:
+	return all_objectives_met()

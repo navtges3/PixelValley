@@ -30,13 +30,15 @@ const LAST_QUEST_ID := 15
 @export var completed_quests: Array[Quest] = []
 
 func _on_quest_completed(quest: Quest) -> void:
-	if quest in available_quests:
-		apply_rewards(quest)
-		for next_id in quest.next_quests:
-			unlock_quest_by_id(next_id)
-		available_quests.erase(quest)
-		completed_quests.append(quest)
-		SaveManager.save_game()
+	if quest not in available_quests:
+		push_warning("QuestManager: completed quest '%s' was not in available_quests" % quest.title)
+		return
+	apply_rewards(quest)
+	for next_id in quest.next_quests:
+		unlock_quest_by_id(next_id)
+	available_quests.erase(quest)
+	completed_quests.append(quest)
+	SaveManager.save_game()
 
 func apply_rewards(quest: Quest) -> void:
 	for reward in quest.reward:
@@ -57,7 +59,7 @@ func new_game() -> void:
 	available_quests = []
 	completed_quests = []
 	for quest_res in QUEST_LIST:
-		locked_quests.append(quest_res.duplicate())
+		locked_quests.append(quest_res.duplicate(true))
 	if locked_quests.size() > 0:
 		unlock_quest_by_id(FIRST_QUEST_ID)
 
@@ -69,6 +71,7 @@ func unlock_quest_by_id(quest_id: int) -> void:
 			return
 
 func add_available_quest(quest: Quest) -> void:
-	if quest not in available_quests and quest not in completed_quests:
-		available_quests.append(quest)
-		quest.quest_completed.connect(Callable(self, "_on_quest_completed"))
+	if quest in available_quests or quest in completed_quests:
+		return
+	available_quests.append(quest)
+	quest.quest_completed.connect(_on_quest_completed)
