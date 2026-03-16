@@ -25,10 +25,10 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/margin_left = 5
-theme_override_constants/margin_top = 5
-theme_override_constants/margin_right = 5
-theme_override_constants/margin_bottom = 5
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
 
 [node name="PauseButton" type="Button" parent="UIRoot" unique_id=71872494]
 custom_minimum_size = Vector2(32, 32)
@@ -37,49 +37,74 @@ size_flags_horizontal = 8
 size_flags_vertical = 0
 theme = ExtResource("3_o0vxf")
 
-[node name="VillageActions" type="VBoxContainer" parent="UIRoot" unique_id=571421781]
+[node name="GridContainer" type="GridContainer" parent="UIRoot" unique_id=163508055]
 layout_mode = 2
-size_flags_horizontal = 8
-size_flags_vertical = 8
-theme_override_constants/separation = 10
+size_flags_horizontal = 4
+size_flags_vertical = 4
+columns = 2
 
-[node name="InnButton" type="Button" parent="UIRoot/VillageActions" unique_id=1161979244]
+[node name="QuestLabel" type="Label" parent="UIRoot/GridContainer" unique_id=18049282]
+layout_mode = 2
+text = "Choose a quest."
+horizontal_alignment = 2
+
+[node name="QuestsButton" type="Button" parent="UIRoot/GridContainer" unique_id=632070655]
+custom_minimum_size = Vector2(96, 32)
+layout_mode = 2
+theme = ExtResource("5_yofci")
+text = "Quests"
+
+[node name="InnLabel" type="Label" parent="UIRoot/GridContainer" unique_id=895958448]
+layout_mode = 2
+text = "Rest at the Inn."
+horizontal_alignment = 2
+
+[node name="InnButton" type="Button" parent="UIRoot/GridContainer" unique_id=1161979244]
 custom_minimum_size = Vector2(96, 32)
 layout_mode = 2
 theme = ExtResource("5_o0vxf")
 text = "Inn"
 
-[node name="ShopButton" type="Button" parent="UIRoot/VillageActions" unique_id=1961446170]
+[node name="ShopLabel" type="Label" parent="UIRoot/GridContainer" unique_id=1648720875]
+layout_mode = 2
+text = "Shop for items."
+horizontal_alignment = 2
+
+[node name="ShopButton" type="Button" parent="UIRoot/GridContainer" unique_id=1961446170]
 custom_minimum_size = Vector2(96, 32)
 layout_mode = 2
 theme = ExtResource("6_6cp2h")
 text = "Shop"
 
-[node name="ArmoryButton" type="Button" parent="UIRoot/VillageActions" unique_id=1050058891]
+[node name="ArmoryLabel" type="Label" parent="UIRoot/GridContainer" unique_id=288062381]
+layout_mode = 2
+text = "Change your weapons."
+horizontal_alignment = 2
+
+[node name="ArmoryButton" type="Button" parent="UIRoot/GridContainer" unique_id=1050058891]
 custom_minimum_size = Vector2(96, 32)
 layout_mode = 2
 theme = ExtResource("6_dtw0c")
 text = "Armory"
 
-[node name="TrainingButton" type="Button" parent="UIRoot/VillageActions" unique_id=1397990016]
+[node name="TrainingLabel" type="Label" parent="UIRoot/GridContainer" unique_id=1818352369]
+layout_mode = 2
+text = "Improve your stats."
+horizontal_alignment = 2
+
+[node name="TrainingButton" type="Button" parent="UIRoot/GridContainer" unique_id=1397990016]
 custom_minimum_size = Vector2(96, 32)
 layout_mode = 2
 theme = ExtResource("8_m0hxj")
 text = "Training
 "
 
-[node name="QuestsButton" type="Button" parent="UIRoot/VillageActions" unique_id=632070655]
-custom_minimum_size = Vector2(96, 32)
-layout_mode = 2
-theme = ExtResource("5_yofci")
-text = "Quests"
-
 [node name="PauseWindow" parent="." unique_id=917561531 instance=ExtResource("7_csxqu")]
 visible = false
 
 [connection signal="pressed" from="UIRoot/PauseButton" to="." method="_on_pause_button_pressed"]
-[connection signal="pressed" from="UIRoot/VillageActions/InnButton" to="." method="_on_inn_button_pressed"]
-[connection signal="pressed" from="UIRoot/VillageActions/ShopButton" to="." method="_on_shop_button_pressed"]
-[connection signal="pressed" from="UIRoot/VillageActions/ArmoryButton" to="." method="_on_armory_button_pressed"]
-[connection signal="pressed" from="UIRoot/VillageActions/TrainingButton" to="." method="_on_training_button_pressed"]
-[connection signal="pressed" from="UIRoot/VillageActions/QuestsButton" to="." method="_on_quests_button_pressed"]
+[connection signal="pressed" from="UIRoot/GridContainer/QuestsButton" to="." method="_on_quests_button_pressed"]
+[connection signal="pressed" from="UIRoot/GridContainer/InnButton" to="." method="_on_inn_button_pressed"]
+[connection signal="pressed" from="UIRoot/GridContainer/ShopButton" to="." method="_on_shop_button_pressed"]
+[connection signal="pressed" from="UIRoot/GridContainer/ArmoryButton" to="." method="_on_armory_button_pressed"]
+[connection signal="pressed" from="UIRoot/GridContainer/TrainingButton" to="." method="_on_training_button_pressed"]
