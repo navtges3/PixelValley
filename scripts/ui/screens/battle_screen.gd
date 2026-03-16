@@ -2,9 +2,10 @@ extends Control
 
 @onready var battle_manager = $BattleManager
 
+@onready var monster_slain_window: Window = $MonsterSlainWindow
+
 # Top Bar
 @onready var quest_bar = $TopBar/QuestProgressBar
-@onready var victory_popup = $BattleVictoryPopup
 @onready var monster_health_bar: ProgressBar = $TopBar/VBoxContainer/MonsterHealthBar
 @onready var monster_health_bar_label: Label = $TopBar/VBoxContainer/MonsterHealthBar/MonsterHealthBarLabel
 @onready var monster_label: Label = $TopBar/VBoxContainer/MonsterLabel
@@ -93,7 +94,7 @@ func _on_monster_slain(monster_name: String) -> void:
 	monster_visual.play_death()
 	await monster_visual.animation_done
 	quest_bar.update_bar()
-	victory_popup.popup_centered()
+	monster_slain_window.popup_centered()
 
 func _on_battle_log_updated(msg: String) -> void:
 	$ActionArea/BattleLog.append_text(msg)
@@ -162,11 +163,11 @@ func _on_hero_defeated():
 	print("Hero defeated!")
 	ScreenManager.go_to_screen(ScreenManager.ScreenName.DEFEAT)
 
-func _on_victory_popup_continue_pressed() -> void:
+func _on_monster_slain_window_continue_pressed() -> void:
 	battle_manager.get_new_monster()
 	battle_manager.start_player_turn()
 
-func _on_victory_popup_retreat_pressed() -> void:
+func _on_monster_slain_window_retreat_pressed() -> void:
 	if battle_config.is_test_battle:
 		ScreenManager.go_to_screen(ScreenManager.ScreenName.TEST)
 	else:

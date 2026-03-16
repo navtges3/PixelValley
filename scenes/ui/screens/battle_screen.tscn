@@ -9,7 +9,7 @@
 [ext_resource type="Theme" uid="uid://dqwm8agt87lsh" path="res://assets/button_themes/regular/blue_button.tres" id="9_06vtu"]
 [ext_resource type="Theme" uid="uid://phfh7c5hwx1n" path="res://assets/button_themes/regular/yellow_button.tres" id="10_c2ins"]
 [ext_resource type="Script" uid="uid://bgmcha5vrlqop" path="res://scripts/systems/battle_manager.gd" id="11_o00jr"]
-[ext_resource type="PackedScene" uid="uid://i13p0dcm5xx0" path="res://scenes/ui/popups/battle_victory_popup.tscn" id="13_jn4pq"]
+[ext_resource type="PackedScene" uid="uid://4fne8gv1pkcd" path="res://scenes/ui/windows/monster_slain_window.tscn" id="11_xvgma"]
 
 [node name="BattleScreen" type="Control" unique_id=1921801911]
 layout_mode = 3
@@ -130,7 +130,7 @@ scroll_following = true
 [node name="BattleManager" type="Node" parent="." unique_id=973972740]
 script = ExtResource("11_o00jr")
 
-[node name="BattleVictoryPopup" parent="." unique_id=1609275692 instance=ExtResource("13_jn4pq")]
+[node name="MonsterSlainWindow" parent="." unique_id=534091905 instance=ExtResource("11_xvgma")]
 visible = false
 
 [connection signal="toggled" from="ActionArea/LeftPanel/AbilityButton" to="." method="_on_ability_button_toggled"]
@@ -150,5 +150,5 @@ visible = false
 [connection signal="new_monster" from="BattleManager" to="." method="_on_new_monster"]
 [connection signal="player_turn" from="BattleManager" to="." method="_on_player_turn"]
 [connection signal="quest_completed" from="BattleManager" to="." method="_on_quest_completed"]
-[connection signal="continue_pressed" from="BattleVictoryPopup" to="." method="_on_victory_popup_continue_pressed"]
-[connection signal="retreat_pressed" from="BattleVictoryPopup" to="." method="_on_victory_popup_retreat_pressed"]
+[connection signal="continue_pressed" from="MonsterSlainWindow" to="." method="_on_monster_slain_window_continue_pressed"]
+[connection signal="retreat_pressed" from="MonsterSlainWindow" to="." method="_on_monster_slain_window_retreat_pressed"]

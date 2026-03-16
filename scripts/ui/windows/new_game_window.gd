@@ -1,18 +1,19 @@
-extends PopupPanel
+extends Window
 
 const GREEN_BUTTON = preload("uid://cgbnpl6hlm7s2")
 const RED_BUTTON = preload("uid://130ubmqd1h3b")
 
+@onready var back_button: Button = $PanelContainer/MarginContainer/VBoxContainer/BackButton
 @onready var slot_buttons: Array[Button] = [
-	$VBoxContainer/SlotButton1,
-	$VBoxContainer/SlotButton2,
-	$VBoxContainer/SlotButton3,
-	$VBoxContainer/SlotButton4,
-	$VBoxContainer/SlotButton5
+	$PanelContainer/MarginContainer/VBoxContainer/SlotButton1,
+	$PanelContainer/MarginContainer/VBoxContainer/SlotButton2,
+	$PanelContainer/MarginContainer/VBoxContainer/SlotButton3,
+	$PanelContainer/MarginContainer/VBoxContainer/SlotButton4,
+	$PanelContainer/MarginContainer/VBoxContainer/SlotButton5,
 ]
-@onready var back_button: Button = $VBoxContainer/BackButton
 
 func _ready() -> void:
+	exclusive = true
 	populate_slots()
 
 func populate_slots() -> void:
@@ -23,13 +24,12 @@ func populate_slots() -> void:
 		if SaveManager.has_save_data(slot_index):
 			var meta := SaveManager.get_meta_data(slot_index)
 			setup_filled_slot(button, meta)
+			button.pressed.connect(func():
+				GameState.start_new_game(slot_index)
+				ScreenManager.go_to_screen(ScreenManager.ScreenName.VILLAGE)
+			)
 		else:
 			setup_empty_slot(button)
-
-		button.pressed.connect(func():
-			GameState.start_new_game(slot_index)
-			ScreenManager.go_to_screen(ScreenManager.ScreenName.VILLAGE)
-		)
 
 func setup_empty_slot(button: Button) -> void:
 	button.text = "Empty Slot"

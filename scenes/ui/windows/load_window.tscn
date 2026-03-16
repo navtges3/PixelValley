@@ -1,0 +1,89 @@
+[gd_scene format=3 uid="uid://bcurrites3af"]
+
+[ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://assets/button_themes/regular/green_button.tres" id="1_mciuq"]
+[ext_resource type="Script" uid="uid://cv56v1xyoucqs" path="res://scripts/ui/windows/load_window.gd" id="1_svb4e"]
+[ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://assets/button_themes/regular/red_button.tres" id="2_svb4e"]
+
+[node name="LoadWindow" type="Window" unique_id=1918541071]
+oversampling_override = 1.0
+size = Vector2i(352, 588)
+wrap_controls = true
+borderless = true
+script = ExtResource("1_svb4e")
+
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=1195771532]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer" unique_id=1667844039]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer" unique_id=327546771]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="TitleLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=1769944883]
+layout_mode = 2
+text = "Load Game"
+horizontal_alignment = 1
+
+[node name="SlotButton1" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=1422867528]
+custom_minimum_size = Vector2(320, 90)
+layout_mode = 2
+theme = ExtResource("1_mciuq")
+text = "Hero Name:
+Level: XX
+Last Played: YYYY-MM-DDTHH:MM:SS"
+alignment = 0
+
+[node name="SlotButton2" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=79140556]
+custom_minimum_size = Vector2(320, 90)
+layout_mode = 2
+theme = ExtResource("1_mciuq")
+text = "Hero Name:
+Level: XX
+Last Played: YYYY-MM-DDTHH:MM:SS"
+alignment = 0
+
+[node name="SlotButton3" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=409984525]
+custom_minimum_size = Vector2(320, 90)
+layout_mode = 2
+theme = ExtResource("1_mciuq")
+text = "Hero Name:
+Level: XX
+Last Played: YYYY-MM-DDTHH:MM:SS"
+alignment = 0
+
+[node name="SlotButton4" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=783843583]
+custom_minimum_size = Vector2(320, 90)
+layout_mode = 2
+theme = ExtResource("1_mciuq")
+text = "Hero Name:
+Level: XX
+Last Played: YYYY-MM-DDTHH:MM:SS"
+alignment = 0
+
+[node name="SlotButton5" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=1531682940]
+custom_minimum_size = Vector2(320, 90)
+layout_mode = 2
+theme = ExtResource("2_svb4e")
+text = "Empty Slot"
+
+[node name="BackButton" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=807725961]
+custom_minimum_size = Vector2(96, 32)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+theme = ExtResource("2_svb4e")
+text = "Back"
+
+[connection signal="pressed" from="PanelContainer/MarginContainer/VBoxContainer/BackButton" to="." method="_on_back_button_pressed"]

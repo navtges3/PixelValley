@@ -7,9 +7,6 @@ extends Control
 @onready var start_button = $MarginContainer/VBoxContainer/BottomControls/StartButton
 @onready var back_button = $MarginContainer/VBoxContainer/BottomControls/BackButton
 
-@onready var pause_button = $MarginContainer/VBoxContainer/QuestTabs/PauseButton
-@onready var pause_popup = $PausePopup
-
 var selected_quest:Button = null
 var current_tab = "available"
 
@@ -59,9 +56,6 @@ func _on_complete_button_toggled(toggled_on: bool) -> void:
 			start_button.disabled = true
 			load_quests(current_tab)
 
-func _on_pause_button_pressed() -> void:
-	pause_popup.popup_centered()
-
 func _on_back_button_pressed() -> void:
 	ScreenManager.go_to_screen(ScreenManager.ScreenName.VILLAGE)
 
@@ -73,7 +67,3 @@ func _on_start_button_pressed() -> void:
 		config.quest = GameState.current_quest
 		config.is_test_battle = false
 		ScreenManager.go_to_screen(ScreenManager.ScreenName.BATTLE, config)
-
-func _input(event: InputEvent) -> void:
-	if event.is_action_pressed("ui_cancel") and not pause_popup.is_visible():
-		_on_pause_button_pressed()

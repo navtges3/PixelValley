@@ -1,6 +1,6 @@
 extends Control
 
-@onready var new_game_popup: PopupPanel = $NewGamePopup
+@onready var new_game_window: Window = $NewGameWindow
 
 @onready var hero_class = $VBoxContainer/HBoxContainer/HeroInfoContainer/HeroClassLabel
 @onready var hero_name = $VBoxContainer/HBoxContainer/HeroInfoContainer/HeroName
@@ -59,7 +59,7 @@ func _on_create_button_pressed() -> void:
 	var new_hero = hero_selected.duplicate()
 	new_hero.name = hero_name.text
 	GameState.hero = new_hero
-	new_game_popup.popup_centered()
+	new_game_window.popup_centered()
 
 func _on_hero_name_text_changed(_new_text: String) -> void:
 	check_create_button_state()

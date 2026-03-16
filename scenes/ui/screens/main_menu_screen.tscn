@@ -5,8 +5,8 @@
 [ext_resource type="Theme" uid="uid://dqwm8agt87lsh" path="res://assets/button_themes/regular/blue_button.tres" id="3_7hl0s"]
 [ext_resource type="Theme" uid="uid://phfh7c5hwx1n" path="res://assets/button_themes/regular/yellow_button.tres" id="4_3cs86"]
 [ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://assets/button_themes/regular/red_button.tres" id="5_bd2wy"]
-[ext_resource type="PackedScene" uid="uid://bxmcs3dj7nfvs" path="res://scenes/ui/popups/options_popup.tscn" id="6_pqlu1"]
-[ext_resource type="PackedScene" uid="uid://bcurrites3af" path="res://scenes/ui/popups/load_popup.tscn" id="7_pfh6i"]
+[ext_resource type="PackedScene" uid="uid://bxmcs3dj7nfvs" path="res://scenes/ui/windows/options_window.tscn" id="6_pqlu1"]
+[ext_resource type="PackedScene" uid="uid://bcurrites3af" path="res://scenes/ui/windows/load_window.tscn" id="7_pfh6i"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_l72w3"]
 font_size = 32
@@ -82,7 +82,7 @@ text = "Exit Game"
 [node name="OptionsPopup" parent="." unique_id=666019018 instance=ExtResource("6_pqlu1")]
 visible = false
 
-[node name="LoadPopup" parent="." unique_id=1058313673 instance=ExtResource("7_pfh6i")]
+[node name="LoadWindow" parent="." unique_id=1918541071 instance=ExtResource("7_pfh6i")]
 visible = false
 
 [connection signal="pressed" from="MarginContainer/VBoxContainer/NewGameButton" to="." method="_on_new_game_button_pressed"]
