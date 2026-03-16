@@ -334,23 +334,24 @@ func _load_quests(data: Dictionary) -> QuestManager:
 # ---------------------------------------------------------
 func _get_quest_data(quest: Quest) -> Dictionary:
 	var data := {
+		"id": quest.id,
 		"title": quest.title,
 		"description": quest.description,
+		"next_quests": quest.next_quests.duplicate(),
+		"completed": quest.completed,
 		"monster_objectives": [],
 		"rewards": [],
-		"completed": quest.completed,
 	}
 	# monster_objectives
 	for obj in quest.monster_objectives:
-		var obj_data = {
+		data["monster_objectives"].append({
 			"monster_id": obj.monster_id,
 			"target_amount": obj.target_amount,
 			"current_amount": obj.current_amount
-		}
-		data["monster_objectives"].append(obj_data)
+		})
 	# rewards
 	for reward in quest.reward:
-		var reward_data = {
+		var reward_data := {
 			"reward_type": reward.reward_type,
 		}
 		match reward.reward_type:
@@ -363,21 +364,26 @@ func _get_quest_data(quest: Quest) -> Dictionary:
 				reward_data["weapon_rarity"] = reward.weapon_rarity
 		data["rewards"].append(reward_data)
 	return data
-
+ 
 func _load_quest(data: Dictionary) -> Quest:
 	var quest := Quest.new()
+	quest.id = data.get("id", 0)
 	quest.title = data.get("title", "")
 	quest.description = data.get("description", "")
+	quest.completed = data.get("completed", false)
+	# Restore next_quests so unlocking the follow-up works after a load.
+	var raw_next: Array = data.get("next_quests", [])
+	quest.next_quests.assign(raw_next)
 	# monster_objectives
 	for obj_data in data.get("monster_objectives", []):
-		var obj = MonsterRequirement.new()
+		var obj := MonsterRequirement.new()
 		obj.monster_id = obj_data.get("monster_id", MonsterLoader.MonsterID.GOBLIN)
 		obj.target_amount = obj_data.get("target_amount", 1)
 		obj.current_amount = obj_data.get("current_amount", 0)
 		quest.monster_objectives.append(obj)
 	# rewards
 	for reward_data in data.get("rewards", []):
-		var reward = QuestReward.new()
+		var reward := QuestReward.new()
 		reward.reward_type = reward_data.get("reward_type", QuestReward.RewardType.ITEM)
 		match reward.reward_type:
 			QuestReward.RewardType.ITEM:
@@ -388,5 +394,4 @@ func _load_quest(data: Dictionary) -> Quest:
 			QuestReward.RewardType.CLASS_WEAPON:
 				reward.weapon_rarity = reward_data.get("weapon_rarity", Item.Rarity.COMMON)
 		quest.reward.append(reward)
-	quest.completed = data.get("completed", false)
 	return quest
