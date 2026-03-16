@@ -1,9 +1,9 @@
 [gd_scene format=3 uid="uid://bbyfy1t2gk1j0"]
 
 [ext_resource type="Script" uid="uid://wg1idljk7tbo" path="res://scripts/ui/screens/quest_screen.gd" id="1_7qxwm"]
-[ext_resource type="Theme" uid="uid://phfh7c5hwx1n" path="res://assets/button_themes/regular/yellow_button.tres" id="2_u7xef"]
-[ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://assets/button_themes/regular/green_button.tres" id="3_btxr8"]
-[ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://assets/button_themes/regular/red_button.tres" id="4_4tgk3"]
+[ext_resource type="Theme" uid="uid://phfh7c5hwx1n" path="res://resources/ui/button_themes/regular/yellow_button.tres" id="2_u7xef"]
+[ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://resources/ui/button_themes/regular/green_button.tres" id="3_btxr8"]
+[ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://resources/ui/button_themes/regular/red_button.tres" id="4_4tgk3"]
 
 [node name="QuestScreen" type="Control" unique_id=2024311036]
 layout_mode = 3

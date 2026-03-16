@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://brs86db0uckno"]
 
 [ext_resource type="Script" uid="uid://08pp0ak3741o" path="res://scripts/ui/windows/quest_complete_window.gd" id="1_1a5rb"]
-[ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://assets/button_themes/regular/green_button.tres" id="1_lyrd2"]
+[ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://resources/ui/button_themes/regular/green_button.tres" id="1_lyrd2"]
 
 [node name="QuestCompleteWindow" type="Window" unique_id=1401141905]
 oversampling_override = 1.0

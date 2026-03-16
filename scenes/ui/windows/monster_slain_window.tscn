@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://4fne8gv1pkcd"]
 
 [ext_resource type="Script" uid="uid://caohucn1fu4sk" path="res://scripts/ui/windows/monster_slain_window.gd" id="1_x71dq"]
-[ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://assets/button_themes/regular/red_button.tres" id="2_tb7yy"]
-[ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://assets/button_themes/regular/green_button.tres" id="3_qn43k"]
+[ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://resources/ui/button_themes/regular/red_button.tres" id="2_tb7yy"]
+[ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://resources/ui/button_themes/regular/green_button.tres" id="3_qn43k"]
 
 [node name="MonsterSlainWindow" type="Window" unique_id=534091905]
 oversampling_override = 1.0

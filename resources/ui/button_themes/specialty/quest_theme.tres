@@ -1,6 +1,6 @@
 [gd_resource type="Theme" format=4 uid="uid://c8c0de0nb2jpw"]
 
-[ext_resource type="Texture2D" uid="uid://doqs0o1w5qmcl" path="res://assets/quest_buttons/quest_button.png" id="1_cviqi"]
+[ext_resource type="Texture2D" uid="uid://doqs0o1w5qmcl" path="res://assets/ui/quest_button.png" id="1_2e3fl"]
 
 [sub_resource type="Image" id="Image_3utsd"]
 data = {
@@ -929,7 +929,7 @@ cache/0/16/0/glyphs/402653253/uv_rect = Rect2(13, 149, 10, 14)
 cache/0/16/0/glyphs/402653253/texture_idx = 0
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_b30gm"]
-texture = ExtResource("1_cviqi")
+texture = ExtResource("1_2e3fl")
 texture_margin_left = 13.0
 texture_margin_top = 35.0
 texture_margin_right = 13.0
@@ -937,7 +937,7 @@ texture_margin_bottom = 13.0
 region_rect = Rect2(2112, 0.0394859, 704.004, 93.982)
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_nl72c"]
-texture = ExtResource("1_cviqi")
+texture = ExtResource("1_2e3fl")
 texture_margin_left = 13.0
 texture_margin_top = 35.0
 texture_margin_right = 13.0
@@ -945,7 +945,7 @@ texture_margin_bottom = 13.0
 region_rect = Rect2(704, 0, 704, 94)
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_0cxy6"]
-texture = ExtResource("1_cviqi")
+texture = ExtResource("1_2e3fl")
 texture_margin_left = 13.0
 texture_margin_top = 35.0
 texture_margin_right = 13.0
@@ -953,7 +953,7 @@ texture_margin_bottom = 13.0
 region_rect = Rect2(0, 0, 704, 94)
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_lh5at"]
-texture = ExtResource("1_cviqi")
+texture = ExtResource("1_2e3fl")
 texture_margin_left = 13.0
 texture_margin_top = 35.0
 texture_margin_right = 13.0

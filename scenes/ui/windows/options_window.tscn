@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://bxmcs3dj7nfvs"]
 
 [ext_resource type="Script" uid="uid://pfl64t4dtsn8" path="res://scripts/ui/windows/options_window.gd" id="1_rw7p8"]
-[ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://assets/button_themes/regular/red_button.tres" id="2_6tprg"]
+[ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://resources/ui/button_themes/regular/red_button.tres" id="2_6tprg"]
 
 [node name="OptionsWindow" type="Window" unique_id=101606992]
 oversampling_override = 1.0

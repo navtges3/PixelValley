@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://dpb1ryciamtoc"]
 
-[ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://assets/button_themes/regular/red_button.tres" id="1_dtw34"]
+[ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://resources/ui/button_themes/regular/red_button.tres" id="1_dtw34"]
 [ext_resource type="Script" uid="uid://slps15qde4l3" path="res://scripts/ui/screens/armory_screen.gd" id="1_opibq"]
-[ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://assets/button_themes/regular/green_button.tres" id="1_tqoty"]
+[ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://resources/ui/button_themes/regular/green_button.tres" id="1_tqoty"]
 
 [node name="ArmoryScreen" type="Control" unique_id=1199069137]
 layout_mode = 3

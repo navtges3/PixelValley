@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://bcurrites3af"]
 
-[ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://assets/button_themes/regular/green_button.tres" id="1_mciuq"]
+[ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://resources/ui/button_themes/regular/green_button.tres" id="1_mciuq"]
 [ext_resource type="Script" uid="uid://cv56v1xyoucqs" path="res://scripts/ui/windows/load_window.gd" id="1_svb4e"]
-[ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://assets/button_themes/regular/red_button.tres" id="2_svb4e"]
+[ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://resources/ui/button_themes/regular/red_button.tres" id="2_svb4e"]
 
 [node name="LoadWindow" type="Window" unique_id=1918541071]
 oversampling_override = 1.0
