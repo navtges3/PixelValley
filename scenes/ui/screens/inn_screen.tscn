@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://dcvm4b84vw7j0"]
 
 [ext_resource type="Script" uid="uid://ywep7djd0dql" path="res://scripts/ui/screens/inn_screen.gd" id="1_804oe"]
+[ext_resource type="Theme" uid="uid://dq41s7i7v61gk" path="res://resources/ui/backgrounds/background_panel.tres" id="2_804oe"]
 [ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://resources/ui/button_themes/regular/green_button.tres" id="2_aw0ui"]
 [ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://resources/ui/button_themes/regular/red_button.tres" id="3_i3slg"]
 
@@ -13,31 +14,32 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_804oe")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=1339140949]
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=389629624]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -260.5
-offset_top = -156.0
-offset_right = 260.5
-offset_bottom = 156.0
+offset_left = -69.0
+offset_top = -51.0
+offset_right = 69.0
+offset_bottom = 51.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 32
-alignment = 1
+theme = ExtResource("2_804oe")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer" unique_id=194814246]
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer" unique_id=194814246]
 layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
 alignment = 1
 
-[node name="InnNameLabel" type="Label" parent="HBoxContainer/VBoxContainer" unique_id=2082631827]
+[node name="InnNameLabel" type="Label" parent="PanelContainer/VBoxContainer" unique_id=2082631827]
 layout_mode = 2
 text = "The Crooked Tusk"
 
-[node name="RestButton" type="Button" parent="HBoxContainer/VBoxContainer" unique_id=437353846]
+[node name="RestButton" type="Button" parent="PanelContainer/VBoxContainer" unique_id=437353846]
 custom_minimum_size = Vector2(96, 32)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -45,7 +47,7 @@ size_flags_vertical = 4
 theme = ExtResource("2_aw0ui")
 text = "Rest"
 
-[node name="LeaveButton" type="Button" parent="HBoxContainer/VBoxContainer" unique_id=379837659]
+[node name="LeaveButton" type="Button" parent="PanelContainer/VBoxContainer" unique_id=379837659]
 custom_minimum_size = Vector2(96, 32)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -53,5 +55,5 @@ size_flags_vertical = 4
 theme = ExtResource("3_i3slg")
 text = "Leave"
 
-[connection signal="pressed" from="HBoxContainer/VBoxContainer/RestButton" to="." method="_on_rest_button_pressed"]
-[connection signal="pressed" from="HBoxContainer/VBoxContainer/LeaveButton" to="." method="_on_leave_button_pressed"]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/RestButton" to="." method="_on_rest_button_pressed"]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/LeaveButton" to="." method="_on_leave_button_pressed"]

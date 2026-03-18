@@ -6,10 +6,12 @@
 [ext_resource type="Theme" uid="uid://dq41s7i7v61gk" path="res://resources/ui/backgrounds/background_panel.tres" id="2_xdcf0"]
 
 [node name="LoadWindow" type="Window" unique_id=1918541071]
+transparent_bg = true
 oversampling_override = 1.0
-size = Vector2i(375, 612)
+size = Vector2i(382, 619)
 wrap_controls = true
 borderless = true
+transparent = true
 script = ExtResource("1_svb4e")
 
 [node name="PanelContainer" type="PanelContainer" parent="." unique_id=1195771532]

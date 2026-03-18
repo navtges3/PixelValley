@@ -8,12 +8,14 @@
 [ext_resource type="PackedScene" uid="uid://bxmcs3dj7nfvs" path="res://scenes/ui/windows/options_window.tscn" id="4_jh7gt"]
 
 [node name="PauseWindow" type="Window" unique_id=917561531]
+transparent_bg = true
 oversampling_override = 1.0
 position = Vector2i(0, 36)
 size = Vector2i(159, 205)
 wrap_controls = true
 exclusive = true
 borderless = true
+transparent = true
 script = ExtResource("1_2fh80")
 
 [node name="PanelContainer" type="PanelContainer" parent="." unique_id=1201378259]

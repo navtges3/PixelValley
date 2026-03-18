@@ -6,10 +6,12 @@
 [ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://resources/ui/button_themes/regular/red_button.tres" id="3_l77w7"]
 
 [node name="NewGameWindow" type="Window" unique_id=1924150137]
+transparent_bg = true
 oversampling_override = 1.0
-size = Vector2i(375, 612)
+size = Vector2i(382, 619)
 wrap_controls = true
 borderless = true
+transparent = true
 script = ExtResource("1_1unjh")
 
 [node name="PanelContainer" type="PanelContainer" parent="." unique_id=2141844913]

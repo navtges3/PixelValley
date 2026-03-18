@@ -1,31 +1,30 @@
 extends Control
 
 @onready var hero = GameState.hero
-@onready var skill_points_label: Label = $MarginContainer/VBoxContainer/SkillPointsLabel
+@onready var skill_points_label: Label = $PanelContainer/VBoxContainer/SkillPointsLabel
 
 @onready var stat_labels = {
-	"attack": $MarginContainer/VBoxContainer/AttackBox/Label,
-	"magic": $MarginContainer/VBoxContainer/MagicBox/Label,
-	"defense": $MarginContainer/VBoxContainer/DefenseBox/Label,
-	"resistance": $MarginContainer/VBoxContainer/ResistanceBox/Label,
+	"attack": $PanelContainer/VBoxContainer/AttackBox/Label,
+	"magic": $PanelContainer/VBoxContainer/MagicBox/Label,
+	"defense": $PanelContainer/VBoxContainer/DefenseBox/Label,
+	"resistance": $PanelContainer/VBoxContainer/ResistanceBox/Label,
 }
 
 @onready var plus_buttons = {
-	"attack": $MarginContainer/VBoxContainer/AttackBox/Plus,
-	"magic": $MarginContainer/VBoxContainer/MagicBox/Plus,
-	"defense": $MarginContainer/VBoxContainer/DefenseBox/Plus,
-	"resistance": $MarginContainer/VBoxContainer/ResistanceBox/Plus,
+	"attack": $PanelContainer/VBoxContainer/AttackBox/Plus,
+	"magic": $PanelContainer/VBoxContainer/MagicBox/Plus,
+	"defense": $PanelContainer/VBoxContainer/DefenseBox/Plus,
+	"resistance": $PanelContainer/VBoxContainer/ResistanceBox/Plus,
 }
 
 @onready var minus_buttons = {
-	"attack": $MarginContainer/VBoxContainer/AttackBox/Minus,
-	"magic": $MarginContainer/VBoxContainer/MagicBox/Minus,
-	"defense": $MarginContainer/VBoxContainer/DefenseBox/Minus,
-	"resistance": $MarginContainer/VBoxContainer/ResistanceBox/Minus,
+	"attack": $PanelContainer/VBoxContainer/AttackBox/Minus,
+	"magic": $PanelContainer/VBoxContainer/MagicBox/Minus,
+	"defense": $PanelContainer/VBoxContainer/DefenseBox/Minus,
+	"resistance": $PanelContainer/VBoxContainer/ResistanceBox/Minus,
 }
 
-@onready var back_button: Button = $MarginContainer/VBoxContainer/NavigationBox/BackButton
-@onready var confirm_button: Button = $MarginContainer/VBoxContainer/NavigationBox/ConfirmButton
+@onready var confirm_button: Button = $PanelContainer/VBoxContainer/NavigationBox/ConfirmButton
 
 var temp_allocations = {
 	"attack": 0,

@@ -1,8 +1,7 @@
 extends Control
 
-@onready var inn_name_label: Label = $HBoxContainer/VBoxContainer/InnNameLabel
-@onready var rest_button: Button = $HBoxContainer/VBoxContainer/RestButton
-@onready var leave_button: Button = $HBoxContainer/VBoxContainer/LeaveButton
+@onready var rest_button: Button = $PanelContainer/VBoxContainer/RestButton
+@onready var inn_name_label: Label = $PanelContainer/VBoxContainer/InnNameLabel
 
 var hero: Hero
 var inn: Inn

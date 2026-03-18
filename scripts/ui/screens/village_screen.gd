@@ -1,7 +1,7 @@
 extends Control
 
 @onready var pause_window: Window = $PauseWindow
-@onready var shop_button: Button = $UIRoot/GridContainer/ShopButton
+@onready var shop_button: Button = $UIRoot/PanelContainer/GridContainer/ShopButton
 
 func _ready() -> void:	
 	if GameState.village.shop.has_inventory():
