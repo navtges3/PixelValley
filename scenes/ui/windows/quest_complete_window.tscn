@@ -6,7 +6,7 @@
 
 [node name="QuestCompleteWindow" type="Window" unique_id=1401141905]
 oversampling_override = 1.0
-size = Vector2i(185, 123)
+size = Vector2i(192, 130)
 wrap_controls = true
 exclusive = true
 borderless = true
