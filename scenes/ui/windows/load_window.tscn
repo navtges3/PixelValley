@@ -3,10 +3,11 @@
 [ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://resources/ui/button_themes/regular/green_button.tres" id="1_mciuq"]
 [ext_resource type="Script" uid="uid://cv56v1xyoucqs" path="res://scripts/ui/windows/load_window.gd" id="1_svb4e"]
 [ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://resources/ui/button_themes/regular/red_button.tres" id="2_svb4e"]
+[ext_resource type="Theme" uid="uid://dq41s7i7v61gk" path="res://resources/ui/backgrounds/background_panel.tres" id="2_xdcf0"]
 
 [node name="LoadWindow" type="Window" unique_id=1918541071]
 oversampling_override = 1.0
-size = Vector2i(352, 588)
+size = Vector2i(375, 612)
 wrap_controls = true
 borderless = true
 script = ExtResource("1_svb4e")
@@ -17,6 +18,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("2_xdcf0")
 
 [node name="MarginContainer" type="MarginContainer" parent="PanelContainer" unique_id=1667844039]
 layout_mode = 2
