@@ -8,8 +8,6 @@ enum HeroClass {
 }
 
 const LEVEL_UP_MULT := 25
-const MEDITATE_HP_GAIN := 5
-const MEDITATE_NRG_GAIN := 5
 
 @export var hero_class: HeroClass
 @export var level := 1
@@ -30,10 +28,6 @@ func get_class_name() -> String:
 			return "Princess"
 		_:
 			return "Unknown"
-
-func meditate() -> void:
-	heal((MEDITATE_HP_GAIN * level) + stat_block.resistance)
-	recover_energy((MEDITATE_NRG_GAIN * level) + stat_block.magic)
 
 func gain_experience(amount: int) -> void:
 	experience += amount

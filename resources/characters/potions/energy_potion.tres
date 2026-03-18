@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="Potion" format=3 uid="uid://4gl0mwbttg8d"]
+
+[ext_resource type="Script" uid="uid://c5deti4sb2k2j" path="res://scripts/data/effect.gd" id="1_kd8eo"]
+[ext_resource type="Script" uid="uid://dvmhh34nbwxaq" path="res://scripts/data/potion.gd" id="2_ha4g1"]
+[ext_resource type="Theme" uid="uid://phfh7c5hwx1n" path="res://resources/ui/button_themes/regular/yellow_button.tres" id="3_dec3d"]
+
+[sub_resource type="Resource" id="Resource_cvcl3"]
+script = ExtResource("1_kd8eo")
+type = 1
+strength = 5
+duration = 3
+metadata/_custom_type_script = "uid://c5deti4sb2k2j"
+
+[resource]
+script = ExtResource("2_ha4g1")
+effects = Array[ExtResource("1_kd8eo")]([SubResource("Resource_cvcl3")])
+name = "Energy Potion"
+description = "A zesty blend of rare herbs and concentrated mana, fizzing with barely contained energy.Restores Energy, allowing the hero to act again sooner. Favored by spell-slingers, swift blades, and anyone who doesn’t know the meaning of “take a break.”"
+theme = ExtResource("3_dec3d")
+value = 20
+metadata/_custom_type_script = "uid://dvmhh34nbwxaq"

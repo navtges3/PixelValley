@@ -1,11 +1,12 @@
-[gd_scene load_steps=5 format=3 uid="uid://y1lpa1n51x43"]
+[gd_scene format=3 uid="uid://y1lpa1n51x43"]
 
 [ext_resource type="Script" uid="uid://dw56ke2y7ajcx" path="res://scripts/ui/screens/new_game_screen.gd" id="1_dm5gj"]
-[ext_resource type="PackedScene" uid="uid://cw4dm1x3j5e12" path="res://scenes/ui/popups/new_game_popup.tscn" id="4_bkijf"]
-[ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://assets/button_themes/regular/red_button.tres" id="4_rq6u8"]
-[ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://assets/button_themes/regular/green_button.tres" id="5_5p1ja"]
+[ext_resource type="Theme" uid="uid://dq41s7i7v61gk" path="res://resources/ui/backgrounds/background_panel.tres" id="2_dm5gj"]
+[ext_resource type="PackedScene" uid="uid://cw4dm1x3j5e12" path="res://scenes/ui/windows/new_game_window.tscn" id="4_bkijf"]
+[ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://resources/ui/button_themes/regular/red_button.tres" id="4_rq6u8"]
+[ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://resources/ui/button_themes/regular/green_button.tres" id="5_5p1ja"]
 
-[node name="NewGameScreen" type="Control"]
+[node name="NewGameScreen" type="Control" unique_id=838715774]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -14,7 +15,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_dm5gj")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=174151213]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -23,62 +24,82 @@ grow_horizontal = 2
 grow_vertical = 2
 alignment = 1
 
-[node name="ClassSelector" type="HBoxContainer" parent="VBoxContainer"]
+[node name="ClassSelector" type="HBoxContainer" parent="VBoxContainer" unique_id=1183235648]
 custom_minimum_size = Vector2(0, 256)
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_constants/separation = 10
 alignment = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer" unique_id=815673437]
 layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("2_dm5gj")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/PanelContainer" unique_id=1111748835]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/PanelContainer/VBoxContainer" unique_id=1027328871]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
 alignment = 1
 
-[node name="LabelContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
+[node name="LabelContainer" type="VBoxContainer" parent="VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer" unique_id=1189531443]
 custom_minimum_size = Vector2(128, 0)
 layout_mode = 2
 
-[node name="NameLabel" type="Label" parent="VBoxContainer/HBoxContainer/LabelContainer"]
+[node name="NameLabel" type="Label" parent="VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/LabelContainer" unique_id=2059844444]
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
 text = "Hero Name: "
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="ClassLabel" type="Label" parent="VBoxContainer/HBoxContainer/LabelContainer"]
+[node name="ClassLabel" type="Label" parent="VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/LabelContainer" unique_id=1354190659]
 layout_mode = 2
 text = "Hero Class: "
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="HeroInfoContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
+[node name="HeroInfoContainer" type="VBoxContainer" parent="VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer" unique_id=1010445592]
 custom_minimum_size = Vector2(128, 0)
 layout_mode = 2
 
-[node name="HeroName" type="LineEdit" parent="VBoxContainer/HBoxContainer/HeroInfoContainer"]
+[node name="HeroName" type="LineEdit" parent="VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/HeroInfoContainer" unique_id=367131204]
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
 placeholder_text = "Hero Name"
 
-[node name="HeroClassLabel" type="Label" parent="VBoxContainer/HBoxContainer/HeroInfoContainer"]
+[node name="HeroClassLabel" type="Label" parent="VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/HeroInfoContainer" unique_id=699238175]
 layout_mode = 2
 vertical_alignment = 1
 
-[node name="ButtonContainer" type="HBoxContainer" parent="VBoxContainer"]
+[node name="ButtonContainer" type="HBoxContainer" parent="VBoxContainer/PanelContainer/VBoxContainer" unique_id=1885325300]
 layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
 alignment = 1
 
-[node name="Back" type="Button" parent="VBoxContainer/ButtonContainer"]
+[node name="BackButton" type="Button" parent="VBoxContainer/PanelContainer/VBoxContainer/ButtonContainer" unique_id=1467087085]
 custom_minimum_size = Vector2(96, 32)
 layout_mode = 2
 theme = ExtResource("4_rq6u8")
 text = "Back"
 
-[node name="Create" type="Button" parent="VBoxContainer/ButtonContainer"]
+[node name="CreateButton" type="Button" parent="VBoxContainer/PanelContainer/VBoxContainer/ButtonContainer" unique_id=1842755393]
 custom_minimum_size = Vector2(96, 32)
 layout_mode = 2
 theme = ExtResource("5_5p1ja")
+disabled = true
 text = "Create Hero"
 
-[node name="NewGamePopup" parent="." instance=ExtResource("4_bkijf")]
+[node name="NewGameWindow" parent="." unique_id=1924150137 instance=ExtResource("4_bkijf")]
 visible = false
+
+[connection signal="text_changed" from="VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/HeroInfoContainer/HeroName" to="." method="_on_hero_name_text_changed"]
+[connection signal="pressed" from="VBoxContainer/PanelContainer/VBoxContainer/ButtonContainer/BackButton" to="." method="_on_back_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/PanelContainer/VBoxContainer/ButtonContainer/CreateButton" to="." method="_on_create_button_pressed"]

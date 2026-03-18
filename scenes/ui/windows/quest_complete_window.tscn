@@ -1,0 +1,51 @@
+[gd_scene format=3 uid="uid://brs86db0uckno"]
+
+[ext_resource type="Script" uid="uid://08pp0ak3741o" path="res://scripts/ui/windows/quest_complete_window.gd" id="1_1a5rb"]
+[ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://resources/ui/button_themes/regular/green_button.tres" id="1_lyrd2"]
+[ext_resource type="Theme" uid="uid://dq41s7i7v61gk" path="res://resources/ui/backgrounds/background_panel.tres" id="2_5vchb"]
+
+[node name="QuestCompleteWindow" type="Window" unique_id=1401141905]
+transparent_bg = true
+oversampling_override = 1.0
+size = Vector2i(192, 130)
+wrap_controls = true
+exclusive = true
+borderless = true
+transparent = true
+script = ExtResource("1_1a5rb")
+
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=1201637584]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_5vchb")
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer" unique_id=634873865]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer" unique_id=1295292409]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=197174244]
+layout_mode = 2
+text = "Quest Complete!"
+horizontal_alignment = 1
+
+[node name="RewardList" type="VBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=1311809814]
+layout_mode = 2
+
+[node name="CollectButton" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=1372604339]
+custom_minimum_size = Vector2(96, 32)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("1_lyrd2")
+text = "Collect"
+
+[connection signal="pressed" from="PanelContainer/MarginContainer/VBoxContainer/CollectButton" to="." method="_on_collect_button_pressed"]

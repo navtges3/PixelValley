@@ -5,6 +5,7 @@ const REST_CD := 5
 
 @export var name: String
 @export var portrait: Texture2D
+@export var battle_visual: BattleVisualData
 @export var active_effects: Array[ActiveEffect] = []
 @export var stat_block: StatBlock
 var rest_cooldown = 0
@@ -59,13 +60,14 @@ func apply_effect(effect: Effect, source = null, remaining_turns := 0) -> String
 	ae.on_apply()
 	return "%s applied.\n" % effect._to_string()
 
-func process_active_effects() -> void:
+func process_active_effects() -> String:
+	var output := ""
 	for ae in active_effects:
-		ae.on_tick()
-
+		output += ae.on_tick()
 	for ae in active_effects.duplicate():
 		if ae.remaining_turns <= 0:
 			active_effects.erase(ae)
+	return output
 
 func _calculate_damage(amount: int, type: Attack.AttackType) -> int:
 	var damage = amount

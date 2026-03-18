@@ -1,29 +1,32 @@
 extends Node
-class_name SaveManager
 
 const SAVE_DIR := "user://saves"
+
+var save_slot: int = 1
 
 # ---------------------------------------------------------
 # PATH HELPERS
 # ---------------------------------------------------------
-static func get_slot_dir(slot: int = 1) -> String:
+func get_slot_dir(slot: int = 1) -> String:
 	var saves_dir := ProjectSettings.globalize_path(SAVE_DIR)
 	DirAccess.make_dir_recursive_absolute(saves_dir)
 	return saves_dir.path_join("slot_%d" % slot)
 
-static func _file(slot: int, filename: String) -> String:
+func _file(slot: int, filename: String) -> String:
 	return get_slot_dir(slot).path_join(filename)
 
 # ---------------------------------------------------------
 # BASIC API
 # ---------------------------------------------------------
-static func has_save_data(slot: int = 1) -> bool:
+func has_save_data(slot: int = 1) -> bool:
 	var dir := get_slot_dir(slot)
 	return FileAccess.file_exists(dir.path_join("meta.json"))
 
-static func save_game() -> void:
-	var save_slot = GameState.save_slot
+func new_save(slot: int = 1) -> void:
+	save_slot = slot
+	save_game()
 
+func save_game() -> void:
 	_save_json(save_slot, "hero.json", {
 		"data": _get_hero_data(GameState.hero)
 	})
@@ -44,32 +47,30 @@ static func save_game() -> void:
 
 	print("SaveManager: Saved game to slot %d" % save_slot)
 
-static func load_game(save_slot: int = 1) -> void:
-	GameState.save_slot = save_slot
-
-	if not has_save_data(save_slot):
-		push_error("SaveManager: no save data found for slot %d" % save_slot)
+func load_game(slot: int = 1) -> void:
+	if not has_save_data(slot):
+		push_error("SaveManager: no save data found for slot %d" % slot)
 		return
 
-	var hero_json := _load_json(save_slot, "hero.json")
+	var hero_json := _load_json(slot, "hero.json")
 	GameState.hero = _load_hero(hero_json.get("data", {}))
 
-	var village_json := _load_json(save_slot, "village.json")
+	var village_json := _load_json(slot, "village.json")
 	GameState.village = _load_village(village_json.get("data", {}))
 
-	var quest_json := _load_json(save_slot, "quests.json")
+	var quest_json := _load_json(slot, "quests.json")
 	GameState.quest_manager = _load_quests(quest_json.get("data", {}))
 
-	print("SaveManager: Loaded game from slot %d" % save_slot)
+	print("SaveManager: Loaded game from slot %d" % slot)
 
-static func get_meta_data(slot: int = 1) -> Dictionary:
+func get_meta_data(slot: int = 1) -> Dictionary:
 	var meta_json := _load_json(slot, "meta.json")
 	return meta_json
 
 # ---------------------------------------------------------
 # LOW-LEVEL JSON HANDLING
 # ---------------------------------------------------------
-static func _save_json(slot: int, filename: String, data: Dictionary) -> void:
+func _save_json(slot: int, filename: String, data: Dictionary) -> void:
 	var dir:= get_slot_dir(slot)
 	DirAccess.make_dir_recursive_absolute(dir)
 
@@ -82,7 +83,7 @@ static func _save_json(slot: int, filename: String, data: Dictionary) -> void:
 	file.flush()
 	file.close()
 
-static func _load_json(slot: int, filename: String) -> Dictionary:
+func _load_json(slot: int, filename: String) -> Dictionary:
 	var path := _file(slot, filename)
 	if not FileAccess.file_exists(path):
 		push_error("SaveManager: Slot %d Missing file: %s" % [slot, filename])
@@ -102,10 +103,11 @@ static func _load_json(slot: int, filename: String) -> Dictionary:
 # ---------------------------------------------------------
 # HERO SERIALIZATION
 # ---------------------------------------------------------
-static func _get_hero_data(hero: Hero) -> Dictionary:
+func _get_hero_data(hero: Hero) -> Dictionary:
 	return {
 		"hero_name": hero.name,
 		"portrait": hero.portrait.resource_path,
+		"battle_visual": hero.battle_visual.resource_path,
 		"hero_class": hero.hero_class,
 		"level": hero.level,
 		"experience": hero.experience,
@@ -116,7 +118,7 @@ static func _get_hero_data(hero: Hero) -> Dictionary:
 		"inventory": _get_inventory_data(hero.inventory)
 	}
 
-static func _load_hero(data: Dictionary) -> Hero:
+func _load_hero(data: Dictionary) -> Hero:
 	var hero := Hero.new()
 
 	hero.name = data.get("hero_name", "Unnamed Hero")
@@ -124,6 +126,10 @@ static func _load_hero(data: Dictionary) -> Hero:
 	var portrait_path = data.get("portrait", "")
 	if portrait_path != "":
 		hero.portrait = load(portrait_path)
+
+	var battle_visuals_path = data.get("battle_visual", "")
+	if battle_visuals_path != "":
+		hero.battle_visual = load(battle_visuals_path)
 
 	hero.hero_class = data.get("hero_class", Hero.HeroClass.KNIGHT)
 	hero.level = data.get("level", 1)
@@ -139,7 +145,7 @@ static func _load_hero(data: Dictionary) -> Hero:
 # ---------------------------------------------------------
 # ACTIVE EFFECTS
 # ---------------------------------------------------------
-static func _get_active_effects_data(combatant: Combatant) -> Array:
+func _get_active_effects_data(combatant: Combatant) -> Array:
 	var result := []
 	for ae in combatant.active_effects:
 		result.append({
@@ -148,10 +154,9 @@ static func _get_active_effects_data(combatant: Combatant) -> Array:
 			"duration": ae.effect.duration,
 			"remaining_turns": ae.remaining_turns
 		})
-		ae.on_expire()
 	return result
 
-static func _load_active_effects(data: Array, combatant: Combatant) -> void:
+func _load_active_effects(data: Array, combatant: Combatant) -> void:
 	for effect_data in data:
 		var effect := Effect.new()
 		effect.type = effect_data.get("type", Effect.EffectType.HEAL)
@@ -164,7 +169,7 @@ static func _load_active_effects(data: Array, combatant: Combatant) -> void:
 # ---------------------------------------------------------
 # STATS
 # ---------------------------------------------------------
-static func _get_stat_block_data(stat_block: StatBlock) -> Dictionary:
+func _get_stat_block_data(stat_block: StatBlock) -> Dictionary:
 	return {
 		"current_hp": stat_block.current_hp,
 		"current_nrg": stat_block.current_nrg,
@@ -176,7 +181,7 @@ static func _get_stat_block_data(stat_block: StatBlock) -> Dictionary:
 		"resistance": stat_block.resistance,
 	}
 
-static func _load_stat_block(data: Dictionary) -> StatBlock:
+func _load_stat_block(data: Dictionary) -> StatBlock:
 	var stat_block := StatBlock.new()
 	stat_block.current_hp = data.get("current_hp", 10)
 	stat_block.current_nrg = data.get("current_nrg", 5)
@@ -191,7 +196,7 @@ static func _load_stat_block(data: Dictionary) -> StatBlock:
 # ---------------------------------------------------------
 # INVENTORY
 # ---------------------------------------------------------
-static func _get_inventory_data(inventory: Inventory) -> Dictionary:
+func _get_inventory_data(inventory: Inventory) -> Dictionary:
 	var data := {
 		"gold": inventory.gold,
 		"equipped_weapon": inventory.equipped_weapon.resource_path,
@@ -210,7 +215,7 @@ static func _get_inventory_data(inventory: Inventory) -> Dictionary:
 
 	return data
 
-static func _load_inventory(data: Dictionary) -> Inventory:
+func _load_inventory(data: Dictionary) -> Inventory:
 	var inv := Inventory.new()
 	inv.gold = data.get("gold", 0)
 
@@ -235,14 +240,14 @@ static func _load_inventory(data: Dictionary) -> Inventory:
 # ---------------------------------------------------------
 # VILLAGE
 # ---------------------------------------------------------
-static func _get_village_data(village: Village) -> Dictionary:
+func _get_village_data(village: Village) -> Dictionary:
 	return {
 		"name": village.name,
 		"shop": _get_shop_data(village.shop),
 		"inn": _get_inn_data(village.inn)
 	}
 
-static func _load_village(data: Dictionary) -> Village:
+func _load_village(data: Dictionary) -> Village:
 	var village := Village.new()
 	village.name = data.get("name", "Unnamed Village")
 	village.shop = _load_shop(data.get("shop", {}))
@@ -252,7 +257,7 @@ static func _load_village(data: Dictionary) -> Village:
 # ---------------------------------------------------------
 # SHOP
 # ---------------------------------------------------------
-static func _get_shop_data(shop: Shop) -> Dictionary:
+func _get_shop_data(shop: Shop) -> Dictionary:
 	var data := {
 		"name": shop.name,
 		"inventory": []
@@ -266,7 +271,7 @@ static func _get_shop_data(shop: Shop) -> Dictionary:
 
 	return data
 
-static func _load_shop(data: Dictionary) -> Shop:
+func _load_shop(data: Dictionary) -> Shop:
 	var shop := Shop.new()
 	shop.name = data.get("name", "Unnamed Shop")
 
@@ -280,23 +285,24 @@ static func _load_shop(data: Dictionary) -> Shop:
 	return shop
 
 # ---------------------------------------------------------
-# SHOP
+# INN
 # ---------------------------------------------------------
-static func _get_inn_data(inn: Inn) -> Dictionary:
+func _get_inn_data(inn: Inn) -> Dictionary:
 	return {
 		"name": inn.name,
 		"rest_cost": inn.rest_cost
 	}
 
-static func _load_inn(data: Dictionary) -> Inn:
+func _load_inn(data: Dictionary) -> Inn:
 	var inn := Inn.new()
 	inn.name = data.get("name", "The Crooked Tusk")
 	inn.rest_cost = data.get("rest_cost", 10)
 	return inn
+
 # ---------------------------------------------------------
 # QUEST MANAGER
 # ---------------------------------------------------------
-static func _get_quests_data(quest_manager: QuestManager) -> Dictionary:
+func _get_quests_data(quest_manager: QuestManager) -> Dictionary:
 	var data := {
 		"locked_quests": [],
 		"available_quests": [],
@@ -310,7 +316,7 @@ static func _get_quests_data(quest_manager: QuestManager) -> Dictionary:
 		data["completed_quests"].append(_get_quest_data(quest))
 	return data
 
-static func _load_quests(data: Dictionary) -> QuestManager:
+func _load_quests(data: Dictionary) -> QuestManager:
 	var manager := QuestManager.new()
 	for quest_data in data.get("locked_quests", []):
 		var quest = _load_quest(quest_data)
@@ -326,25 +332,26 @@ static func _load_quests(data: Dictionary) -> QuestManager:
 # ---------------------------------------------------------
 # QUESTS
 # ---------------------------------------------------------
-static func _get_quest_data(quest: Quest) -> Dictionary:
+func _get_quest_data(quest: Quest) -> Dictionary:
 	var data := {
+		"id": quest.id,
 		"title": quest.title,
 		"description": quest.description,
+		"next_quests": quest.next_quests.duplicate(),
+		"completed": quest.completed,
 		"monster_objectives": [],
 		"rewards": [],
-		"completed": quest.completed,
 	}
 	# monster_objectives
 	for obj in quest.monster_objectives:
-		var obj_data = {
-			"monster_path": obj.monster.resource_path,
+		data["monster_objectives"].append({
+			"monster_id": obj.monster_id,
 			"target_amount": obj.target_amount,
 			"current_amount": obj.current_amount
-		}
-		data["monster_objectives"].append(obj_data)
+		})
 	# rewards
 	for reward in quest.reward:
-		var reward_data = {
+		var reward_data := {
 			"reward_type": reward.reward_type,
 		}
 		match reward.reward_type:
@@ -357,21 +364,26 @@ static func _get_quest_data(quest: Quest) -> Dictionary:
 				reward_data["weapon_rarity"] = reward.weapon_rarity
 		data["rewards"].append(reward_data)
 	return data
-
-static func _load_quest(data: Dictionary) -> Quest:
+ 
+func _load_quest(data: Dictionary) -> Quest:
 	var quest := Quest.new()
+	quest.id = data.get("id", 0)
 	quest.title = data.get("title", "")
 	quest.description = data.get("description", "")
+	quest.completed = data.get("completed", false)
+	# Restore next_quests so unlocking the follow-up works after a load.
+	var raw_next: Array = data.get("next_quests", [])
+	quest.next_quests.assign(raw_next)
 	# monster_objectives
 	for obj_data in data.get("monster_objectives", []):
-		var obj = MonsterRequirement.new()
-		obj.monster = load(obj_data.get("monster_path", ""))
+		var obj := MonsterRequirement.new()
+		obj.monster_id = obj_data.get("monster_id", MonsterLoader.MonsterID.GOBLIN)
 		obj.target_amount = obj_data.get("target_amount", 1)
 		obj.current_amount = obj_data.get("current_amount", 0)
 		quest.monster_objectives.append(obj)
 	# rewards
 	for reward_data in data.get("rewards", []):
-		var reward = QuestReward.new()
+		var reward := QuestReward.new()
 		reward.reward_type = reward_data.get("reward_type", QuestReward.RewardType.ITEM)
 		match reward.reward_type:
 			QuestReward.RewardType.ITEM:
@@ -382,5 +394,4 @@ static func _load_quest(data: Dictionary) -> Quest:
 			QuestReward.RewardType.CLASS_WEAPON:
 				reward.weapon_rarity = reward_data.get("weapon_rarity", Item.Rarity.COMMON)
 		quest.reward.append(reward)
-	quest.completed = data.get("completed", false)
 	return quest

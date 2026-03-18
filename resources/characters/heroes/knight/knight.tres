@@ -1,0 +1,54 @@
+[gd_resource type="Resource" script_class="Hero" format=3 uid="uid://dx2kyn4g35jcw"]
+
+[ext_resource type="Script" uid="uid://blp0fv0xnajdb" path="res://scripts/data/active_effect.gd" id="1_it814"]
+[ext_resource type="Resource" uid="uid://b0yth7mxsivg0" path="res://resources/characters/heroes/knight/knight_visual.tres" id="2_2ujav"]
+[ext_resource type="Resource" uid="uid://br6hwj0vp2ykl" path="res://resources/characters/weapons/knight_weapons/common/wooden_shieldblade.tres" id="3_1b3f1"]
+[ext_resource type="Script" uid="uid://d0mdck5mlsm03" path="res://scripts/data/item_stack.gd" id="4_h2kic"]
+[ext_resource type="Resource" uid="uid://cyiqwotfm3gq6" path="res://resources/characters/potions/regeneration_potion.tres" id="5_psytt"]
+[ext_resource type="Resource" uid="uid://4gl0mwbttg8d" path="res://resources/characters/potions/energy_potion.tres" id="6_ygbpt"]
+[ext_resource type="Script" uid="uid://4rm24oomjap7" path="res://scripts/characters/inventory.gd" id="7_i6dhb"]
+[ext_resource type="Script" uid="uid://dgykeyxn7fefw" path="res://scripts/data/weapon.gd" id="8_33c6g"]
+[ext_resource type="Texture2D" uid="uid://c8hydb1a47nnk" path="res://assets/heroes/knight/knight.png" id="9_gftrw"]
+[ext_resource type="Script" uid="uid://b1x8jfufxk3xv" path="res://scripts/characters/hero.gd" id="10_y0wgc"]
+[ext_resource type="Script" uid="uid://hxleldka7y06" path="res://scripts/characters/stat_block.gd" id="11_qfr5j"]
+
+[sub_resource type="Resource" id="Resource_nsv5r"]
+script = ExtResource("4_h2kic")
+item = ExtResource("5_psytt")
+count = 2
+metadata/_custom_type_script = "uid://d0mdck5mlsm03"
+
+[sub_resource type="Resource" id="Resource_msovw"]
+script = ExtResource("4_h2kic")
+item = ExtResource("6_ygbpt")
+count = 2
+metadata/_custom_type_script = "uid://d0mdck5mlsm03"
+
+[sub_resource type="Resource" id="Resource_w4hxg"]
+script = ExtResource("7_i6dhb")
+gold = 50
+equipped_weapon = ExtResource("3_1b3f1")
+potions = Array[ExtResource("4_h2kic")]([SubResource("Resource_nsv5r"), SubResource("Resource_msovw")])
+metadata/_custom_type_script = "uid://4rm24oomjap7"
+
+[sub_resource type="Resource" id="Resource_wwsut"]
+script = ExtResource("11_qfr5j")
+current_hp = 100
+current_nrg = 40
+max_hp = 100
+max_nrg = 40
+attack = 3
+magic = 1
+defense = 4
+resistance = 2
+metadata/_custom_type_script = "uid://hxleldka7y06"
+
+[resource]
+script = ExtResource("10_y0wgc")
+hero_class = 1
+inventory = SubResource("Resource_w4hxg")
+name = "Knight"
+portrait = ExtResource("9_gftrw")
+battle_visual = ExtResource("2_2ujav")
+stat_block = SubResource("Resource_wwsut")
+metadata/_custom_type_script = "uid://b1x8jfufxk3xv"

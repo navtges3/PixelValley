@@ -1,14 +1,10 @@
 extends Control
 
-@onready var quest_list_vbox = $MarginContainer/VBoxContainer/QuestScrollContainer/QuestListVBox
-@onready var available_button = $MarginContainer/VBoxContainer/QuestTabs/AvaiableButton
-@onready var complete_button = $MarginContainer/VBoxContainer/QuestTabs/CompleteButton
+@onready var available_button: Button = $MarginContainer/VBoxContainer/QuestTabs/AvailableButton
+@onready var complete_button: Button = $MarginContainer/VBoxContainer/QuestTabs/CompleteButton
+@onready var quest_list_vbox: VBoxContainer = $MarginContainer/VBoxContainer/QuestScrollContainer/QuestListVBox
 
-@onready var start_button = $MarginContainer/VBoxContainer/BottomControls/StartButton
-@onready var back_button = $MarginContainer/VBoxContainer/BottomControls/BackButton
-
-@onready var pause_button = $MarginContainer/VBoxContainer/QuestTabs/PauseButton
-@onready var pause_popup = $PausePopup
+@onready var start_button: Button = $MarginContainer/VBoxContainer/BottomControls/StartButton
 
 var selected_quest:Button = null
 var current_tab = "available"
@@ -16,11 +12,6 @@ var current_tab = "available"
 func _ready() -> void:
 	load_quests(current_tab)
 	start_button.disabled = true
-	available_button.toggled.connect(_on_available_toggled)
-	complete_button.toggled.connect(_on_complete_toggled)
-	back_button.pressed.connect(_on_back_pressed)
-	start_button.pressed.connect(_on_start_pressed)
-	pause_button.pressed.connect(_on_pause_pressed)
 	available_button.button_pressed = true
 
 func clear_quest_list():
@@ -46,15 +37,15 @@ func _on_quest_selected(selected_button: QuestButton):
 		selected_quest = selected_button
 		start_button.disabled = false
 
-func _on_available_toggled(button_pressed: bool):
-	if button_pressed:
+func _on_available_button_toggled(toggled_on: bool) -> void:
+	if toggled_on:
 		if current_tab != "available":
 			current_tab = "available"
 			complete_button.button_pressed = false
 			load_quests(current_tab)
 
-func _on_complete_toggled(button_pressed: bool):
-	if button_pressed:
+func _on_complete_button_toggled(toggled_on: bool) -> void:
+	if toggled_on:
 		if current_tab != "complete":
 			current_tab = "complete"
 			available_button.button_pressed = false
@@ -64,18 +55,14 @@ func _on_complete_toggled(button_pressed: bool):
 			start_button.disabled = true
 			load_quests(current_tab)
 
-func _on_back_pressed():
+func _on_back_button_pressed() -> void:
 	ScreenManager.go_to_screen(ScreenManager.ScreenName.VILLAGE)
 
-func _on_start_pressed():
+func _on_start_button_pressed() -> void:
 	if selected_quest:
-		var quest = selected_quest.get_quest()
-		GameState.current_quest = quest
-		ScreenManager.go_to_screen(ScreenManager.ScreenName.BATTLE)
-
-func _on_pause_pressed():
-	pause_popup.popup_centered()
-
-func _input(event: InputEvent) -> void:
-	if event.is_action_pressed("ui_cancel") and not pause_popup.is_visible():
-		_on_pause_pressed()
+		GameState.current_quest = selected_quest.get_quest()
+		var config := BattleConfig.new()
+		config.hero = GameState.hero
+		config.quest = GameState.current_quest
+		config.is_test_battle = false
+		ScreenManager.go_to_screen(ScreenManager.ScreenName.BATTLE, config)

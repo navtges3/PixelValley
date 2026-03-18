@@ -12,9 +12,6 @@ signal ability_pressed(ability: Ability)
 		user_energy = value
 		_refresh()
 
-func _ready() -> void:
-	connect("pressed", Callable(self, "_on_pressed"))
-
 func _on_pressed():
 	emit_signal("ability_pressed", ability)
 
@@ -46,11 +43,11 @@ func _update_tooltip() -> void:
 func _update_theme() -> void:
 	if ability:
 		if ability.attack != null:
-			theme = preload("res://assets/button_themes/regular/red_button.tres")
+			theme = preload("res://resources/ui/button_themes/regular/red_button.tres")
 		else:
-			theme = preload("res://assets/button_themes/regular/green_button.tres")
+			theme = preload("res://resources/ui/button_themes/regular/green_button.tres")
 	else:
-		theme = preload("res://assets/button_themes/regular/gray_button.tres")
+		theme = preload("res://resources/ui/button_themes/regular/gray_button.tres")
 
 func _update_disabled() -> void:
 	if ability and user_energy:

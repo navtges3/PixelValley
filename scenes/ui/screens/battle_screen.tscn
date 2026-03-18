@@ -1,17 +1,18 @@
-[gd_scene load_steps=11 format=3 uid="uid://wy2cht7kkgmh"]
+[gd_scene format=3 uid="uid://wy2cht7kkgmh"]
 
 [ext_resource type="Script" uid="uid://cqc6b58dnjxis" path="res://scripts/ui/screens/battle_screen.gd" id="1_ihhiw"]
+[ext_resource type="PackedScene" uid="uid://bjx12sxd6xqme" path="res://scenes/ui/components/hero_info.tscn" id="3_e8mee"]
 [ext_resource type="PackedScene" uid="uid://ehxty8k3d2vu" path="res://scenes/ui/components/quest_progress_bar.tscn" id="3_ihhiw"]
-[ext_resource type="PackedScene" uid="uid://bjx12sxd6xqme" path="res://scenes/ui/components/hero_ui.tscn" id="5_fgwq0"]
-[ext_resource type="PackedScene" uid="uid://pxhpjm0rsnof" path="res://scenes/ui/components/monster_ui.tscn" id="6_q2vii"]
-[ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://assets/button_themes/regular/red_button.tres" id="7_iw40k"]
-[ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://assets/button_themes/regular/green_button.tres" id="8_qmdt6"]
-[ext_resource type="Theme" uid="uid://dqwm8agt87lsh" path="res://assets/button_themes/regular/blue_button.tres" id="9_06vtu"]
-[ext_resource type="Theme" uid="uid://phfh7c5hwx1n" path="res://assets/button_themes/regular/yellow_button.tres" id="10_c2ins"]
+[ext_resource type="Theme" uid="uid://cra87dj7simd8" path="res://resources/ui/progress_bar/red_bar.tres" id="3_pxpkm"]
+[ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://resources/ui/button_themes/regular/red_button.tres" id="7_iw40k"]
+[ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://resources/ui/button_themes/regular/green_button.tres" id="8_qmdt6"]
+[ext_resource type="Theme" uid="uid://dqwm8agt87lsh" path="res://resources/ui/button_themes/regular/blue_button.tres" id="9_06vtu"]
+[ext_resource type="Theme" uid="uid://phfh7c5hwx1n" path="res://resources/ui/button_themes/regular/yellow_button.tres" id="10_c2ins"]
 [ext_resource type="Script" uid="uid://bgmcha5vrlqop" path="res://scripts/systems/battle_manager.gd" id="11_o00jr"]
-[ext_resource type="PackedScene" uid="uid://i13p0dcm5xx0" path="res://scenes/ui/popups/battle_victory_popup.tscn" id="13_jn4pq"]
+[ext_resource type="PackedScene" uid="uid://4fne8gv1pkcd" path="res://scenes/ui/windows/monster_slain_window.tscn" id="11_xvgma"]
+[ext_resource type="PackedScene" uid="uid://brs86db0uckno" path="res://scenes/ui/windows/quest_complete_window.tscn" id="11_yj4kj"]
 
-[node name="BattleScreen" type="Control"]
+[node name="BattleScreen" type="Control" unique_id=1921801911]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -20,104 +21,139 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_ihhiw")
 
-[node name="TopBar" type="HBoxContainer" parent="."]
+[node name="HeroSlot" type="Marker2D" parent="." unique_id=1425626208]
+position = Vector2(450, 800)
+
+[node name="MonsterSlot" type="Marker2D" parent="." unique_id=1177753450]
+position = Vector2(1470, 800)
+
+[node name="TopBar" type="HBoxContainer" parent="." unique_id=450098864]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
 size_flags_vertical = 0
 
-[node name="QuestProgressBar" parent="TopBar" instance=ExtResource("3_ihhiw")]
+[node name="QuestProgressBar" parent="TopBar" unique_id=786005872 instance=ExtResource("3_ihhiw")]
 layout_mode = 2
 size_flags_horizontal = 6
 size_flags_vertical = 0
 
-[node name="BattleField" type="HBoxContainer" parent="."]
+[node name="VBoxContainer" type="VBoxContainer" parent="TopBar" unique_id=12366038]
+layout_mode = 2
+
+[node name="MonsterHealthBar" type="ProgressBar" parent="TopBar/VBoxContainer" unique_id=520036926]
+custom_minimum_size = Vector2(360, 32)
+layout_mode = 2
+theme = ExtResource("3_pxpkm")
+value = 75.0
+show_percentage = false
+
+[node name="MonsterHealthBarLabel" type="Label" parent="TopBar/VBoxContainer/MonsterHealthBar" unique_id=208181708]
 layout_mode = 1
-anchors_preset = -1
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_top = 33.0
-offset_bottom = -241.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -26.0
+offset_top = -11.5
+offset_right = 26.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "75/100"
 
-[node name="HeroUI" parent="BattleField" instance=ExtResource("5_fgwq0")]
+[node name="MonsterLabel" type="Label" parent="TopBar/VBoxContainer" unique_id=420102121]
 layout_mode = 2
-size_flags_horizontal = 6
-size_flags_vertical = 4
+text = "Monster Name"
+horizontal_alignment = 2
 
-[node name="MonsterUI" parent="BattleField" instance=ExtResource("6_q2vii")]
-layout_mode = 2
-size_flags_horizontal = 6
-size_flags_vertical = 4
-
-[node name="ActionArea" type="HBoxContainer" parent="."]
+[node name="ActionArea" type="HBoxContainer" parent="." unique_id=337684969]
 layout_mode = 1
 anchors_preset = -1
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 5.0
-offset_top = -155.0
-offset_right = -5.0
-offset_bottom = -5.0
+grow_vertical = 0
 
-[node name="LeftPanel" type="VBoxContainer" parent="ActionArea"]
+[node name="HeroInfo" parent="ActionArea" unique_id=1121426668 instance=ExtResource("3_e8mee")]
 layout_mode = 2
 
-[node name="AbilityButton" type="Button" parent="ActionArea/LeftPanel"]
+[node name="LeftPanel" type="VBoxContainer" parent="ActionArea" unique_id=756459339]
+layout_mode = 2
+
+[node name="AbilityButton" type="Button" parent="ActionArea/LeftPanel" unique_id=598476712]
 custom_minimum_size = Vector2(96, 32)
 layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
 theme = ExtResource("7_iw40k")
 toggle_mode = true
 text = "Use Ability"
 
-[node name="ItemButton" type="Button" parent="ActionArea/LeftPanel"]
+[node name="ItemButton" type="Button" parent="ActionArea/LeftPanel" unique_id=110423753]
 custom_minimum_size = Vector2(96, 32)
 layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
 theme = ExtResource("8_qmdt6")
 toggle_mode = true
 text = "Use Item"
 
-[node name="MeditateButton" type="Button" parent="ActionArea/LeftPanel"]
+[node name="MeditateButton" type="Button" parent="ActionArea/LeftPanel" unique_id=1755693489]
 custom_minimum_size = Vector2(96, 32)
 layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
 tooltip_text = "Restore health and energy."
 theme = ExtResource("9_06vtu")
 text = "Meditate"
 
-[node name="FleeButton" type="Button" parent="ActionArea/LeftPanel"]
+[node name="FleeButton" type="Button" parent="ActionArea/LeftPanel" unique_id=2132098312]
 custom_minimum_size = Vector2(96, 32)
 layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
 theme = ExtResource("10_c2ins")
 text = "Flee"
 
-[node name="MiddlePanel" type="ScrollContainer" parent="ActionArea"]
+[node name="MiddlePanel" type="ScrollContainer" parent="ActionArea" unique_id=121735259]
 layout_mode = 2
 horizontal_scroll_mode = 0
 
-[node name="OptionList" type="VBoxContainer" parent="ActionArea/MiddlePanel"]
+[node name="OptionList" type="VBoxContainer" parent="ActionArea/MiddlePanel" unique_id=781619579]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Button" type="Button" parent="ActionArea/MiddlePanel/OptionList"]
+[node name="Button" type="Button" parent="ActionArea/MiddlePanel/OptionList" unique_id=1920686518]
 layout_mode = 2
 text = "This is an Ability"
 
-[node name="BattleLog" type="RichTextLabel" parent="ActionArea"]
+[node name="BattleLog" type="RichTextLabel" parent="ActionArea" unique_id=1459385711]
 custom_minimum_size = Vector2(576, 0)
 layout_mode = 2
 size_flags_horizontal = 10
 scroll_following = true
 
-[node name="BattleManager" type="Node" parent="."]
+[node name="BattleManager" type="Node" parent="." unique_id=973972740]
 script = ExtResource("11_o00jr")
 
-[node name="BattleVictoryPopup" parent="." instance=ExtResource("13_jn4pq")]
+[node name="MonsterSlainWindow" parent="." unique_id=534091905 instance=ExtResource("11_xvgma")]
 visible = false
+
+[node name="QuestCompleteWindow" parent="." unique_id=1401141905 instance=ExtResource("11_yj4kj")]
+visible = false
+
+[connection signal="toggled" from="ActionArea/LeftPanel/AbilityButton" to="." method="_on_ability_button_toggled"]
+[connection signal="toggled" from="ActionArea/LeftPanel/ItemButton" to="." method="_on_item_button_toggled"]
+[connection signal="pressed" from="ActionArea/LeftPanel/MeditateButton" to="." method="_on_meditate_button_pressed"]
+[connection signal="pressed" from="ActionArea/LeftPanel/FleeButton" to="." method="_on_flee_button_pressed"]
+[connection signal="battle_log_updated" from="BattleManager" to="." method="_on_battle_log_updated"]
+[connection signal="hero_attacking" from="BattleManager" to="." method="_on_hero_attacking"]
+[connection signal="hero_defeated" from="BattleManager" to="." method="_on_hero_defeated"]
+[connection signal="hero_hurt" from="BattleManager" to="." method="_on_hero_hurt"]
+[connection signal="hero_updated" from="BattleManager" to="." method="_on_hero_updated"]
+[connection signal="monster_attacking" from="BattleManager" to="." method="_on_monster_attacking"]
+[connection signal="monster_hurt" from="BattleManager" to="." method="_on_monster_hurt"]
+[connection signal="monster_slain" from="BattleManager" to="." method="_on_monster_slain"]
+[connection signal="monster_turn" from="BattleManager" to="." method="_on_monster_turn"]
+[connection signal="monster_updated" from="BattleManager" to="." method="_on_monster_updated"]
+[connection signal="new_monster" from="BattleManager" to="." method="_on_new_monster"]
+[connection signal="player_turn" from="BattleManager" to="." method="_on_player_turn"]
+[connection signal="quest_completed" from="BattleManager" to="." method="_on_quest_completed"]
+[connection signal="continue_pressed" from="MonsterSlainWindow" to="." method="_on_monster_slain_window_continue_pressed"]
+[connection signal="retreat_pressed" from="MonsterSlainWindow" to="." method="_on_monster_slain_window_retreat_pressed"]
+[connection signal="reward_collected" from="QuestCompleteWindow" to="." method="_on_quest_complete_window_reward_collected"]

@@ -5,23 +5,35 @@ enum BattleState { PLAYER_TURN, MONSTER_TURN, RESOLVING, VICTORY, DEFEAT }
 var hero: Hero
 var monster: Monster
 var current_quest: Quest
+var is_test_battle: bool = false
 
 var state = BattleState.PLAYER_TURN
 
-signal monster_slain(monster_name: String)
 signal new_monster(monster_ref: Monster)
 signal player_turn()
 signal monster_turn()
+signal monster_slain(monster_name: String)
 signal quest_completed()
 signal hero_defeated()
-signal battle_log_updated(msg: String)
-signal monster_updated(monster_ref: Monster)
-signal hero_updated(hero_ref: Hero)
 
-func start_battle(hero_ref: Hero, current_quest_ref: Quest) -> void:
-	hero = hero_ref
-	current_quest = current_quest_ref
+# UI updates
+signal battle_log_updated(msg: String)
+signal hero_updated(hero_ref: Hero)
+signal monster_updated(monster_ref: Monster)
+
+# Animation Signals
+signal hero_attacking()
+signal hero_hurt()
+signal monster_attacking()
+signal monster_hurt()
+
+func setup_battle(config: BattleConfig) -> void:
+	hero = config.hero
+	current_quest = config.quest
+	is_test_battle = config.is_test_battle
+
 	emit_signal("hero_updated", hero)
+
 	get_new_monster()
 	start_player_turn()
 
@@ -30,16 +42,23 @@ func start_player_turn() -> void:
 	emit_signal("battle_log_updated", "%s's turn!\n" % hero.get_colored_name())
 	emit_signal("player_turn")
 
+func get_hero_abilities() -> Array[Ability]:
+	return hero.inventory.equipped_weapon.abilities
+
 func player_ability_selected(ability: Ability) -> void:
 	if state != BattleState.PLAYER_TURN:
 		return
-	# Find the ability by name
+	emit_signal("hero_attacking")
 	var output = ability.use(hero, monster)
 	if output:
 		emit_signal("battle_log_updated", output)
+		emit_signal("monster_hurt")
 		emit_signal("monster_updated", monster)
 		emit_signal("hero_updated", hero)
 		end_player_turn()
+
+func get_hero_items() -> Array[ItemStack]:
+	return hero.inventory.potions
 
 func player_item_selected(item_stack: ItemStack) -> void:
 	if state != BattleState.PLAYER_TURN:
@@ -55,7 +74,7 @@ func meditate() -> void:
 	if hero.rest_cooldown > 0:
 		return
 	hero.meditate()
-	emit_signal("battle_log_updated", "%s takes a meditates recovering health and energy.\n" % hero.get_colored_name())
+	emit_signal("battle_log_updated", "%s meditates recovering health and energy.\n" % hero.get_colored_name())
 	emit_signal("hero_updated", hero)
 	end_player_turn()
 
@@ -63,7 +82,8 @@ func end_player_turn() -> void:
 	if state != BattleState.PLAYER_TURN:
 		return
 	hero.update_cooldown()
-	hero.process_active_effects()
+	var effect_output := hero.process_active_effects()
+	emit_signal("battle_log_updated", effect_output)
 	emit_signal("hero_updated", hero)
 
 	if monster.is_alive():
@@ -78,18 +98,16 @@ func end_player_turn() -> void:
 		hero.inventory.gold += monster.gold
 		hero.gain_experience(experience)
 		emit_signal("hero_updated", hero)
-
-		if current_quest.slay_monster(monster.name):
+		if current_quest.slay_monster(monster.monster_id):
 			end_battle(true)
 		else:
-			emit_signal("monster_slain", monster.name)
+			emit_signal("monster_slain", monster.get_colored_name())
 
 func get_new_monster() -> void:
-	var quest_monster = current_quest.get_monster()
-	if quest_monster:
-		monster = quest_monster.duplicate(true)
+	monster = current_quest.get_monster()
+	if monster:
 		emit_signal("new_monster", monster)
-		emit_signal("battle_log_updated", "A new monster appears: %s!\n" % quest_monster.name)
+		emit_signal("battle_log_updated", "A new monster appears: %s!\n" % monster.get_colored_name())
 		emit_signal("monster_updated", monster)
 	else:
 		emit_signal("battle_log_updated", "No more monsters to fight!\n")
@@ -97,15 +115,18 @@ func get_new_monster() -> void:
 
 func enemy_turn() -> void:
 	emit_signal("battle_log_updated", "Enemy turn...\n")
+	emit_signal("monster_attacking")
 	var monster_ability = monster.choose_ability(hero)
 	var output = monster_ability.use(monster, hero)
 	emit_signal("battle_log_updated", output)
+	emit_signal("hero_hurt")
 	emit_signal("hero_updated", hero)
 	end_enemy_turn()
 
 func end_enemy_turn() -> void:
 	monster.update_cooldown()
-	monster.process_active_effects()
+	var effect_output := monster.process_active_effects()
+	emit_signal("battle_log_updated", effect_output)
 	emit_signal("monster_updated", monster)
 	if hero.is_alive():
 		start_player_turn()

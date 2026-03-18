@@ -1,13 +1,11 @@
-[gd_scene load_steps=7 format=3 uid="uid://bbyfy1t2gk1j0"]
+[gd_scene format=3 uid="uid://bbyfy1t2gk1j0"]
 
 [ext_resource type="Script" uid="uid://wg1idljk7tbo" path="res://scripts/ui/screens/quest_screen.gd" id="1_7qxwm"]
-[ext_resource type="Theme" uid="uid://phfh7c5hwx1n" path="res://assets/button_themes/regular/yellow_button.tres" id="2_u7xef"]
-[ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://assets/button_themes/regular/green_button.tres" id="3_btxr8"]
-[ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://assets/button_themes/regular/red_button.tres" id="4_4tgk3"]
-[ext_resource type="Theme" uid="uid://66dgdyq2o64x" path="res://assets/button_themes/specialty/pause_button.tres" id="5_5vov0"]
-[ext_resource type="PackedScene" uid="uid://btej8vh3kxmxo" path="res://scenes/ui/popups/pause_popup.tscn" id="5_u7xef"]
+[ext_resource type="Theme" uid="uid://phfh7c5hwx1n" path="res://resources/ui/button_themes/regular/yellow_button.tres" id="2_u7xef"]
+[ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://resources/ui/button_themes/regular/green_button.tres" id="3_btxr8"]
+[ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://resources/ui/button_themes/regular/red_button.tres" id="4_4tgk3"]
 
-[node name="QuestScreen" type="Control"]
+[node name="QuestScreen" type="Control" unique_id=2024311036]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -16,69 +14,64 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_7qxwm")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1874555744]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/margin_left = 5
-theme_override_constants/margin_top = 5
-theme_override_constants/margin_right = 5
-theme_override_constants/margin_bottom = 5
+theme_override_constants/margin_left = 128
+theme_override_constants/margin_top = 128
+theme_override_constants/margin_right = 128
+theme_override_constants/margin_bottom = 128
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=14211835]
 layout_mode = 2
 
-[node name="QuestTabs" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="QuestTabs" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=820146565]
 layout_mode = 2
 
-[node name="AvaiableButton" type="Button" parent="MarginContainer/VBoxContainer/QuestTabs"]
+[node name="AvailableButton" type="Button" parent="MarginContainer/VBoxContainer/QuestTabs" unique_id=2019261122]
 custom_minimum_size = Vector2(96, 32)
 layout_mode = 2
 theme = ExtResource("2_u7xef")
 toggle_mode = true
 text = "Available"
 
-[node name="CompleteButton" type="Button" parent="MarginContainer/VBoxContainer/QuestTabs"]
+[node name="CompleteButton" type="Button" parent="MarginContainer/VBoxContainer/QuestTabs" unique_id=554873445]
 custom_minimum_size = Vector2(96, 32)
 layout_mode = 2
 theme = ExtResource("3_btxr8")
 toggle_mode = true
 text = "Complete"
 
-[node name="PauseButton" type="Button" parent="MarginContainer/VBoxContainer/QuestTabs"]
-custom_minimum_size = Vector2(32, 32)
-layout_mode = 2
-size_flags_horizontal = 10
-size_flags_vertical = 0
-theme = ExtResource("5_5vov0")
-
-[node name="QuestScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer"]
+[node name="QuestScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer" unique_id=1978116151]
 custom_minimum_size = Vector2(0, 500)
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="QuestListVBox" type="VBoxContainer" parent="MarginContainer/VBoxContainer/QuestScrollContainer"]
+[node name="QuestListVBox" type="VBoxContainer" parent="MarginContainer/VBoxContainer/QuestScrollContainer" unique_id=1235147832]
 layout_mode = 2
 
-[node name="BottomControls" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="BottomControls" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=11504208]
 layout_mode = 2
 size_flags_vertical = 10
 
-[node name="BackButton" type="Button" parent="MarginContainer/VBoxContainer/BottomControls"]
+[node name="BackButton" type="Button" parent="MarginContainer/VBoxContainer/BottomControls" unique_id=937862856]
 custom_minimum_size = Vector2(96, 32)
 layout_mode = 2
 theme = ExtResource("4_4tgk3")
 text = "Back"
 
-[node name="StartButton" type="Button" parent="MarginContainer/VBoxContainer/BottomControls"]
+[node name="StartButton" type="Button" parent="MarginContainer/VBoxContainer/BottomControls" unique_id=669956484]
 custom_minimum_size = Vector2(96, 32)
 layout_mode = 2
 size_flags_horizontal = 10
 theme = ExtResource("3_btxr8")
 text = "Start Quest"
 
-[node name="PausePopup" parent="." instance=ExtResource("5_u7xef")]
-visible = false
+[connection signal="toggled" from="MarginContainer/VBoxContainer/QuestTabs/AvailableButton" to="." method="_on_available_button_toggled"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/QuestTabs/CompleteButton" to="." method="_on_complete_button_toggled"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/BottomControls/BackButton" to="." method="_on_back_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/BottomControls/StartButton" to="." method="_on_start_button_pressed"]

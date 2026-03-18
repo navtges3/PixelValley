@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="Potion" format=3 uid="uid://e282ko0xakwg"]
+
+[ext_resource type="Script" uid="uid://c5deti4sb2k2j" path="res://scripts/data/effect.gd" id="1_uagfq"]
+[ext_resource type="Script" uid="uid://dvmhh34nbwxaq" path="res://scripts/data/potion.gd" id="2_3kq30"]
+[ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://resources/ui/button_themes/regular/green_button.tres" id="3_k7y32"]
+
+[sub_resource type="Resource" id="Resource_ccqrf"]
+script = ExtResource("1_uagfq")
+strength = 50
+metadata/_custom_type_script = "uid://c5deti4sb2k2j"
+
+[resource]
+script = ExtResource("2_3kq30")
+effects = Array[ExtResource("1_uagfq")]([SubResource("Resource_ccqrf")])
+name = "Potion of Lesser Healing"
+theme = ExtResource("3_k7y32")
+value = 25
+metadata/_custom_type_script = "uid://dvmhh34nbwxaq"

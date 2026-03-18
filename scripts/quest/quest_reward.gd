@@ -22,5 +22,5 @@ func get_description() -> String:
 		RewardType.EXPERIENCE:
 			return "Reward: %d Experience" % amount
 		RewardType.CLASS_WEAPON:
-			return "Reward: Random Class Weapon"
+			return "Reward: Random %s Class Weapon" % Item.rarity_to_string(weapon_rarity)
 	return "Reward: Unknown"
