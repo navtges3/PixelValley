@@ -2,11 +2,12 @@
 
 [ext_resource type="Script" uid="uid://bfiqtcx4e3s5r" path="res://scripts/ui/windows/new_game_window.gd" id="1_1unjh"]
 [ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://resources/ui/button_themes/regular/green_button.tres" id="2_tqaw0"]
+[ext_resource type="Theme" uid="uid://dq41s7i7v61gk" path="res://resources/ui/backgrounds/background_panel.tres" id="2_ycxpi"]
 [ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://resources/ui/button_themes/regular/red_button.tres" id="3_l77w7"]
 
 [node name="NewGameWindow" type="Window" unique_id=1924150137]
 oversampling_override = 1.0
-size = Vector2i(352, 588)
+size = Vector2i(375, 612)
 wrap_controls = true
 borderless = true
 script = ExtResource("1_1unjh")
@@ -17,6 +18,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("2_ycxpi")
 
 [node name="MarginContainer" type="MarginContainer" parent="PanelContainer" unique_id=1654309153]
 layout_mode = 2
