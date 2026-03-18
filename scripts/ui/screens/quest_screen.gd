@@ -1,11 +1,10 @@
 extends Control
 
-@onready var quest_list_vbox = $MarginContainer/VBoxContainer/QuestScrollContainer/QuestListVBox
-@onready var available_button = $MarginContainer/VBoxContainer/QuestTabs/AvaiableButton
-@onready var complete_button = $MarginContainer/VBoxContainer/QuestTabs/CompleteButton
+@onready var available_button: Button = $MarginContainer/VBoxContainer/QuestTabs/AvailableButton
+@onready var complete_button: Button = $MarginContainer/VBoxContainer/QuestTabs/CompleteButton
+@onready var quest_list_vbox: VBoxContainer = $MarginContainer/VBoxContainer/QuestScrollContainer/QuestListVBox
 
-@onready var start_button = $MarginContainer/VBoxContainer/BottomControls/StartButton
-@onready var back_button = $MarginContainer/VBoxContainer/BottomControls/BackButton
+@onready var start_button: Button = $MarginContainer/VBoxContainer/BottomControls/StartButton
 
 var selected_quest:Button = null
 var current_tab = "available"
@@ -38,7 +37,7 @@ func _on_quest_selected(selected_button: QuestButton):
 		selected_quest = selected_button
 		start_button.disabled = false
 
-func _on_avaiable_button_toggled(toggled_on: bool) -> void:
+func _on_available_button_toggled(toggled_on: bool) -> void:
 	if toggled_on:
 		if current_tab != "available":
 			current_tab = "available"

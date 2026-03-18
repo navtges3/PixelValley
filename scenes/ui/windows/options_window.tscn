@@ -5,11 +5,13 @@
 [ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://resources/ui/button_themes/regular/red_button.tres" id="2_6tprg"]
 
 [node name="OptionsWindow" type="Window" unique_id=101606992]
+transparent_bg = true
 oversampling_override = 1.0
-size = Vector2i(287, 301)
+size = Vector2i(294, 308)
 wrap_controls = true
 exclusive = true
 borderless = true
+transparent = true
 script = ExtResource("1_rw7p8")
 
 [node name="PanelContainer" type="PanelContainer" parent="." unique_id=287335624]

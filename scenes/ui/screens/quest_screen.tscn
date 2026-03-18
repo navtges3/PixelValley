@@ -21,10 +21,10 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/margin_left = 5
-theme_override_constants/margin_top = 5
-theme_override_constants/margin_right = 5
-theme_override_constants/margin_bottom = 5
+theme_override_constants/margin_left = 128
+theme_override_constants/margin_top = 128
+theme_override_constants/margin_right = 128
+theme_override_constants/margin_bottom = 128
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=14211835]
 layout_mode = 2
@@ -32,7 +32,7 @@ layout_mode = 2
 [node name="QuestTabs" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=820146565]
 layout_mode = 2
 
-[node name="AvaiableButton" type="Button" parent="MarginContainer/VBoxContainer/QuestTabs" unique_id=2019261122]
+[node name="AvailableButton" type="Button" parent="MarginContainer/VBoxContainer/QuestTabs" unique_id=2019261122]
 custom_minimum_size = Vector2(96, 32)
 layout_mode = 2
 theme = ExtResource("2_u7xef")
@@ -71,7 +71,7 @@ size_flags_horizontal = 10
 theme = ExtResource("3_btxr8")
 text = "Start Quest"
 
-[connection signal="toggled" from="MarginContainer/VBoxContainer/QuestTabs/AvaiableButton" to="." method="_on_avaiable_button_toggled"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/QuestTabs/AvailableButton" to="." method="_on_available_button_toggled"]
 [connection signal="toggled" from="MarginContainer/VBoxContainer/QuestTabs/CompleteButton" to="." method="_on_complete_button_toggled"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/BottomControls/BackButton" to="." method="_on_back_button_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/BottomControls/StartButton" to="." method="_on_start_button_pressed"]

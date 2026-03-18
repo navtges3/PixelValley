@@ -2,25 +2,25 @@ extends Control
 
 @onready var shop_manager = $ShopManager
 
-@onready var item_list = $HBoxContainer/ScrollContainer/ItemList
+@onready var item_list: VBoxContainer = $HBoxContainer/ListPanelContainer/ScrollContainer/ItemList
 
-@onready var shop_name_label = $ShopNameLabel
+@onready var shop_name_label: Label = $ShopNameLabel
 # Detail Panel
-@onready var item_name_label = $HBoxContainer/DetailPanel/ItemNameLabel
-@onready var item_description_label = $HBoxContainer/DetailPanel/ItemDescriptionLabel
-@onready var item_cost_label = $HBoxContainer/DetailPanel/HBoxContainer/ItemCostLabel
-@onready var quantity_spin_box = $HBoxContainer/DetailPanel/HBoxContainer/SpinBox
+@onready var item_name_label: Label = $HBoxContainer/InfoPanelContainer/VBoxContainer/ItemNameLabel
+@onready var item_description_label: Label = $HBoxContainer/InfoPanelContainer/VBoxContainer/ItemDescriptionLabel
+@onready var item_cost_label: Label = $HBoxContainer/InfoPanelContainer/VBoxContainer/HBoxContainer/ItemCostLabel
+@onready var quantity_spin_box: SpinBox = $HBoxContainer/InfoPanelContainer/VBoxContainer/HBoxContainer/SpinBox
 
-@onready var purchase_button = $HBoxContainer/DetailPanel/PurchaseButton
-@onready var exit_button = $HBoxContainer/DetailPanel/ExitButton
+@onready var purchase_button: Button = $HBoxContainer/InfoPanelContainer/VBoxContainer/PurchaseButton
 
-@onready var hero_ui = $HBoxContainer/VBoxContainer/HeroUI
-@onready var inventory_label = $HBoxContainer/VBoxContainer/InventoryLabel
+@onready var hero_ui: HeroInfo = $HBoxContainer/HeroPanelContainer/VBoxContainer/HeroUI
+@onready var inventory_label: Label = $HBoxContainer/HeroPanelContainer/VBoxContainer/InventoryLabel
 
 var ItemButton := preload("res://scenes/ui/components/item_button.tscn")
 
 var hero: Hero
 var shop: Shop
+var item_cost: int
 
 func _ready() -> void:
 	hero = GameState.hero
@@ -57,7 +57,11 @@ func _on_item_pressed(item_stack: ItemStack) -> void:
 	quantity_spin_box.value = 1
 	quantity_spin_box.max_value = item_stack.count if item_stack and item_stack.item else 1
 
+	_update_item_cost()
 	_update_purchase_button()
+
+func _update_item_cost() -> void:
+	item_cost_label.text = str(shop_manager.item_stack_selected.item.value * quantity_spin_box.value)
 
 func _update_purchase_button() -> void:
 	var selected_stack = shop_manager.item_stack_selected
@@ -82,6 +86,7 @@ func _on_shop_manager_hero_updated(hero_ref: Hero) -> void:
 	inventory_label.text = inventory_text
 	
 func _on_spin_box_value_changed(_value: float) -> void:
+	_update_item_cost()
 	_update_purchase_button()
 
 func _on_purchase_button_pressed() -> void:

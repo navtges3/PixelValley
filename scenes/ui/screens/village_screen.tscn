@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://blhwqbfk6j0u7"]
 
 [ext_resource type="Script" uid="uid://cmd8ja1dvnkcv" path="res://scripts/ui/screens/village_screen.gd" id="1_dtw0c"]
+[ext_resource type="Theme" uid="uid://dq41s7i7v61gk" path="res://resources/ui/backgrounds/background_panel.tres" id="3_nqqh3"]
 [ext_resource type="Theme" uid="uid://66dgdyq2o64x" path="res://resources/ui/button_themes/specialty/pause_button.tres" id="3_o0vxf"]
 [ext_resource type="Theme" uid="uid://cn00sxx7cmfjh" path="res://resources/ui/button_themes/regular/pink_button.tres" id="5_o0vxf"]
 [ext_resource type="Theme" uid="uid://dqwm8agt87lsh" path="res://resources/ui/button_themes/regular/blue_button.tres" id="5_yofci"]
@@ -37,62 +38,68 @@ size_flags_horizontal = 8
 size_flags_vertical = 0
 theme = ExtResource("3_o0vxf")
 
-[node name="GridContainer" type="GridContainer" parent="UIRoot" unique_id=163508055]
+[node name="PanelContainer" type="PanelContainer" parent="UIRoot" unique_id=1317003809]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("3_nqqh3")
+
+[node name="GridContainer" type="GridContainer" parent="UIRoot/PanelContainer" unique_id=163508055]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 columns = 2
 
-[node name="QuestLabel" type="Label" parent="UIRoot/GridContainer" unique_id=18049282]
+[node name="QuestLabel" type="Label" parent="UIRoot/PanelContainer/GridContainer" unique_id=18049282]
 layout_mode = 2
 text = "Choose a quest."
 horizontal_alignment = 2
 
-[node name="QuestsButton" type="Button" parent="UIRoot/GridContainer" unique_id=632070655]
+[node name="QuestsButton" type="Button" parent="UIRoot/PanelContainer/GridContainer" unique_id=632070655]
 custom_minimum_size = Vector2(96, 32)
 layout_mode = 2
 theme = ExtResource("5_yofci")
 text = "Quests"
 
-[node name="InnLabel" type="Label" parent="UIRoot/GridContainer" unique_id=895958448]
+[node name="InnLabel" type="Label" parent="UIRoot/PanelContainer/GridContainer" unique_id=895958448]
 layout_mode = 2
 text = "Rest at the Inn."
 horizontal_alignment = 2
 
-[node name="InnButton" type="Button" parent="UIRoot/GridContainer" unique_id=1161979244]
+[node name="InnButton" type="Button" parent="UIRoot/PanelContainer/GridContainer" unique_id=1161979244]
 custom_minimum_size = Vector2(96, 32)
 layout_mode = 2
 theme = ExtResource("5_o0vxf")
 text = "Inn"
 
-[node name="ShopLabel" type="Label" parent="UIRoot/GridContainer" unique_id=1648720875]
+[node name="ShopLabel" type="Label" parent="UIRoot/PanelContainer/GridContainer" unique_id=1648720875]
 layout_mode = 2
 text = "Shop for items."
 horizontal_alignment = 2
 
-[node name="ShopButton" type="Button" parent="UIRoot/GridContainer" unique_id=1961446170]
+[node name="ShopButton" type="Button" parent="UIRoot/PanelContainer/GridContainer" unique_id=1961446170]
 custom_minimum_size = Vector2(96, 32)
 layout_mode = 2
 theme = ExtResource("6_6cp2h")
 text = "Shop"
 
-[node name="ArmoryLabel" type="Label" parent="UIRoot/GridContainer" unique_id=288062381]
+[node name="ArmoryLabel" type="Label" parent="UIRoot/PanelContainer/GridContainer" unique_id=288062381]
 layout_mode = 2
 text = "Change your weapons."
 horizontal_alignment = 2
 
-[node name="ArmoryButton" type="Button" parent="UIRoot/GridContainer" unique_id=1050058891]
+[node name="ArmoryButton" type="Button" parent="UIRoot/PanelContainer/GridContainer" unique_id=1050058891]
 custom_minimum_size = Vector2(96, 32)
 layout_mode = 2
 theme = ExtResource("6_dtw0c")
 text = "Armory"
 
-[node name="TrainingLabel" type="Label" parent="UIRoot/GridContainer" unique_id=1818352369]
+[node name="TrainingLabel" type="Label" parent="UIRoot/PanelContainer/GridContainer" unique_id=1818352369]
 layout_mode = 2
 text = "Improve your stats."
 horizontal_alignment = 2
 
-[node name="TrainingButton" type="Button" parent="UIRoot/GridContainer" unique_id=1397990016]
+[node name="TrainingButton" type="Button" parent="UIRoot/PanelContainer/GridContainer" unique_id=1397990016]
 custom_minimum_size = Vector2(96, 32)
 layout_mode = 2
 theme = ExtResource("8_m0hxj")
@@ -103,8 +110,8 @@ text = "Training
 visible = false
 
 [connection signal="pressed" from="UIRoot/PauseButton" to="." method="_on_pause_button_pressed"]
-[connection signal="pressed" from="UIRoot/GridContainer/QuestsButton" to="." method="_on_quests_button_pressed"]
-[connection signal="pressed" from="UIRoot/GridContainer/InnButton" to="." method="_on_inn_button_pressed"]
-[connection signal="pressed" from="UIRoot/GridContainer/ShopButton" to="." method="_on_shop_button_pressed"]
-[connection signal="pressed" from="UIRoot/GridContainer/ArmoryButton" to="." method="_on_armory_button_pressed"]
-[connection signal="pressed" from="UIRoot/GridContainer/TrainingButton" to="." method="_on_training_button_pressed"]
+[connection signal="pressed" from="UIRoot/PanelContainer/GridContainer/QuestsButton" to="." method="_on_quests_button_pressed"]
+[connection signal="pressed" from="UIRoot/PanelContainer/GridContainer/InnButton" to="." method="_on_inn_button_pressed"]
+[connection signal="pressed" from="UIRoot/PanelContainer/GridContainer/ShopButton" to="." method="_on_shop_button_pressed"]
+[connection signal="pressed" from="UIRoot/PanelContainer/GridContainer/ArmoryButton" to="." method="_on_armory_button_pressed"]
+[connection signal="pressed" from="UIRoot/PanelContainer/GridContainer/TrainingButton" to="." method="_on_training_button_pressed"]

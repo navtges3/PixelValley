@@ -3,6 +3,7 @@
 [ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://resources/ui/button_themes/regular/red_button.tres" id="1_dtw34"]
 [ext_resource type="Script" uid="uid://slps15qde4l3" path="res://scripts/ui/screens/armory_screen.gd" id="1_opibq"]
 [ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://resources/ui/button_themes/regular/green_button.tres" id="1_tqoty"]
+[ext_resource type="Theme" uid="uid://dq41s7i7v61gk" path="res://resources/ui/backgrounds/background_panel.tres" id="2_phmq5"]
 
 [node name="ArmoryScreen" type="Control" unique_id=1199069137]
 layout_mode = 3
@@ -26,56 +27,64 @@ grow_horizontal = 2
 theme_override_constants/separation = 16
 alignment = 1
 
-[node name="LeftPanel" type="VBoxContainer" parent="HBoxContainer" unique_id=81677445]
+[node name="LeftPanelContainer" type="PanelContainer" parent="HBoxContainer" unique_id=605839631]
+layout_mode = 2
+theme = ExtResource("2_phmq5")
+
+[node name="LeftPanel" type="VBoxContainer" parent="HBoxContainer/LeftPanelContainer" unique_id=81677445]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="HBoxContainer/LeftPanel" unique_id=837052842]
+[node name="Label" type="Label" parent="HBoxContainer/LeftPanelContainer/LeftPanel" unique_id=837052842]
 layout_mode = 2
 text = "Weapons"
 horizontal_alignment = 1
 
-[node name="ItemList" type="VBoxContainer" parent="HBoxContainer/LeftPanel" unique_id=1151194162]
+[node name="ItemList" type="VBoxContainer" parent="HBoxContainer/LeftPanelContainer/LeftPanel" unique_id=1151194162]
 layout_mode = 2
 
-[node name="Buttons" type="HBoxContainer" parent="HBoxContainer/LeftPanel" unique_id=2058390167]
+[node name="Buttons" type="HBoxContainer" parent="HBoxContainer/LeftPanelContainer/LeftPanel" unique_id=2058390167]
 layout_mode = 2
 alignment = 1
 
-[node name="BackButton" type="Button" parent="HBoxContainer/LeftPanel/Buttons" unique_id=282035316]
+[node name="BackButton" type="Button" parent="HBoxContainer/LeftPanelContainer/LeftPanel/Buttons" unique_id=282035316]
 custom_minimum_size = Vector2(96, 32)
 layout_mode = 2
 theme = ExtResource("1_dtw34")
 text = "Back"
 
-[node name="EquipButton" type="Button" parent="HBoxContainer/LeftPanel/Buttons" unique_id=958124866]
+[node name="EquipButton" type="Button" parent="HBoxContainer/LeftPanelContainer/LeftPanel/Buttons" unique_id=958124866]
 custom_minimum_size = Vector2(96, 32)
 layout_mode = 2
 theme = ExtResource("1_tqoty")
 text = "Equip"
 
-[node name="RightPanel" type="VBoxContainer" parent="HBoxContainer" unique_id=647640271]
+[node name="RightPanelContainer" type="PanelContainer" parent="HBoxContainer" unique_id=1897823751]
+layout_mode = 2
+theme = ExtResource("2_phmq5")
+
+[node name="RightPanel" type="VBoxContainer" parent="HBoxContainer/RightPanelContainer" unique_id=647640271]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="NameLabel" type="Label" parent="HBoxContainer/RightPanel" unique_id=136605903]
+[node name="NameLabel" type="Label" parent="HBoxContainer/RightPanelContainer/RightPanel" unique_id=136605903]
 layout_mode = 2
 text = "Weapon Name"
 horizontal_alignment = 1
 
-[node name="DescriptionLabel" type="Label" parent="HBoxContainer/RightPanel" unique_id=1752209097]
+[node name="DescriptionLabel" type="Label" parent="HBoxContainer/RightPanelContainer/RightPanel" unique_id=1752209097]
 custom_minimum_size = Vector2(250, 0)
 layout_mode = 2
 text = "Description label starts here. This is what it would look like if it was a long description"
 autowrap_mode = 2
 
-[node name="AbilitiesLabel" type="Label" parent="HBoxContainer/RightPanel" unique_id=554395521]
+[node name="AbilitiesLabel" type="Label" parent="HBoxContainer/RightPanelContainer/RightPanel" unique_id=554395521]
 layout_mode = 2
 text = "Abilities"
 horizontal_alignment = 1
 
-[node name="AbilityContainer" type="VBoxContainer" parent="HBoxContainer/RightPanel" unique_id=434377508]
+[node name="AbilityContainer" type="VBoxContainer" parent="HBoxContainer/RightPanelContainer/RightPanel" unique_id=434377508]
 custom_minimum_size = Vector2(240, 0)
 layout_mode = 2
 
-[connection signal="pressed" from="HBoxContainer/LeftPanel/Buttons/BackButton" to="." method="_on_back_button_pressed"]
-[connection signal="pressed" from="HBoxContainer/LeftPanel/Buttons/EquipButton" to="." method="_on_equip_button_pressed"]
+[connection signal="pressed" from="HBoxContainer/LeftPanelContainer/LeftPanel/Buttons/BackButton" to="." method="_on_back_button_pressed"]
+[connection signal="pressed" from="HBoxContainer/LeftPanelContainer/LeftPanel/Buttons/EquipButton" to="." method="_on_equip_button_pressed"]

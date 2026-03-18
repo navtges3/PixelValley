@@ -6,11 +6,13 @@
 [ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://resources/ui/button_themes/regular/green_button.tres" id="3_qn43k"]
 
 [node name="MonsterSlainWindow" type="Window" unique_id=534091905]
+transparent_bg = true
 oversampling_override = 1.0
 title = "Monster Slain"
-size = Vector2i(251, 120)
+size = Vector2i(258, 126)
 wrap_controls = true
 borderless = true
+transparent = true
 script = ExtResource("1_x71dq")
 
 [node name="PanelContainer" type="PanelContainer" parent="." unique_id=26150428]

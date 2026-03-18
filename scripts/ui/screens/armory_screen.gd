@@ -1,12 +1,11 @@
 extends Control
 
-@onready var item_list: VBoxContainer = $HBoxContainer/LeftPanel/ItemList
-@onready var back_button: Button = $HBoxContainer/LeftPanel/Buttons/BackButton
-@onready var equip_button: Button = $HBoxContainer/LeftPanel/Buttons/EquipButton
+@onready var item_list: VBoxContainer = $HBoxContainer/LeftPanelContainer/LeftPanel/ItemList
+@onready var equip_button: Button = $HBoxContainer/LeftPanelContainer/LeftPanel/Buttons/EquipButton
 
-@onready var name_label: Label = $HBoxContainer/RightPanel/NameLabel
-@onready var description_label: Label = $HBoxContainer/RightPanel/DescriptionLabel
-@onready var ability_container: VBoxContainer = $HBoxContainer/RightPanel/AbilityContainer
+@onready var name_label: Label = $HBoxContainer/RightPanelContainer/RightPanel/NameLabel
+@onready var description_label: Label = $HBoxContainer/RightPanelContainer/RightPanel/DescriptionLabel
+@onready var ability_container: VBoxContainer = $HBoxContainer/RightPanelContainer/RightPanel/AbilityContainer
 
 var ItemButton := preload("res://scenes/ui/components/item_button.tscn")
 
