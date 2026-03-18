@@ -1,0 +1,44 @@
+[gd_resource type="Resource" script_class="Monster" format=3 uid="uid://dm48acoifufc0"]
+
+[ext_resource type="Script" uid="uid://blp0fv0xnajdb" path="res://scripts/data/active_effect.gd" id="1_ehlpm"]
+[ext_resource type="Resource" uid="uid://nav1377jn0pa" path="res://resources/characters/abilities/stab.tres" id="2_7quqt"]
+[ext_resource type="Resource" uid="uid://b81f7dg2c777j" path="res://resources/characters/monsters/goblin/goblin_visual.tres" id="3_lwmax"]
+[ext_resource type="Script" uid="uid://dxnu3vjlxl2pn" path="res://scripts/data/conditional_ability.gd" id="4_lygd1"]
+[ext_resource type="Resource" uid="uid://ct2tqqk78lcn3" path="res://resources/characters/abilities/desperation.tres" id="5_idm7f"]
+[ext_resource type="Script" uid="uid://cnso83bg7vodw" path="res://scripts/data/condition.gd" id="6_w4m2s"]
+[ext_resource type="Texture2D" uid="uid://vdpvmy1cvfnu" path="res://assets/monsters/goblin/goblin.png" id="7_0ojpk"]
+[ext_resource type="Script" uid="uid://bd6ohffno5w7r" path="res://scripts/characters/monster.gd" id="8_li32v"]
+[ext_resource type="Script" uid="uid://hxleldka7y06" path="res://scripts/characters/stat_block.gd" id="9_pw2h8"]
+
+[sub_resource type="Resource" id="Resource_nb4d4"]
+script = ExtResource("6_w4m2s")
+condition_type = 1
+value = 0.25
+metadata/_custom_type_script = "uid://cnso83bg7vodw"
+
+[sub_resource type="Resource" id="Resource_sgp6s"]
+script = ExtResource("4_lygd1")
+ability = ExtResource("5_idm7f")
+condition = SubResource("Resource_nb4d4")
+metadata/_custom_type_script = "uid://dxnu3vjlxl2pn"
+
+[sub_resource type="Resource" id="Resource_hcon4"]
+script = ExtResource("9_pw2h8")
+current_hp = 50
+current_nrg = 5
+max_hp = 50
+max_nrg = 5
+attack = 3
+defense = 1
+metadata/_custom_type_script = "uid://hxleldka7y06"
+
+[resource]
+script = ExtResource("8_li32v")
+gold = 5
+basic_attack = ExtResource("2_7quqt")
+conditional_abilities = Array[ExtResource("4_lygd1")]([SubResource("Resource_sgp6s")])
+name = "Goblin"
+portrait = ExtResource("7_0ojpk")
+battle_visual = ExtResource("3_lwmax")
+stat_block = SubResource("Resource_hcon4")
+metadata/_custom_type_script = "uid://bd6ohffno5w7r"

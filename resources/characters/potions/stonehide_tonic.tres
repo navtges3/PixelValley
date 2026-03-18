@@ -1,0 +1,28 @@
+[gd_resource type="Resource" script_class="Potion" format=3 uid="uid://dpjrexdhi5jec"]
+
+[ext_resource type="Script" uid="uid://c5deti4sb2k2j" path="res://scripts/data/effect.gd" id="1_15062"]
+[ext_resource type="Script" uid="uid://dvmhh34nbwxaq" path="res://scripts/data/potion.gd" id="2_vym5q"]
+[ext_resource type="Theme" uid="uid://dqwm8agt87lsh" path="res://resources/ui/button_themes/regular/blue_button.tres" id="3_vym5q"]
+
+[sub_resource type="Resource" id="Resource_olsek"]
+script = ExtResource("1_15062")
+type = 5
+strength = 10
+duration = 3
+metadata/_custom_type_script = "uid://c5deti4sb2k2j"
+
+[sub_resource type="Resource" id="Resource_5nxkv"]
+script = ExtResource("1_15062")
+type = 6
+strength = 5
+duration = 3
+metadata/_custom_type_script = "uid://c5deti4sb2k2j"
+
+[resource]
+script = ExtResource("2_vym5q")
+effects = Array[ExtResource("1_15062")]([SubResource("Resource_olsek"), SubResource("Resource_5nxkv")])
+name = "Stonehide Tonic"
+description = "Grants temporary resistance to physical and magical damage, inspired by the ogre’s thick hide"
+theme = ExtResource("3_vym5q")
+value = 25
+metadata/_custom_type_script = "uid://dvmhh34nbwxaq"

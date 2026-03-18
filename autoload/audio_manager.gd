@@ -105,7 +105,7 @@ func play_sfx(stream: AudioStream, volume := 1.0) -> void:
 	p.stream = stream
 	add_child(p)
 	p.play()
-	
+
 	p.finished.connect(func(): p.queue_free())
 
 # ---------------------------------------------------------
@@ -118,20 +118,23 @@ func play_ui(stream: AudioStream, volume := 1.0) -> void:
 	p.bus = UI_BUS
 	p.volume_db = linear_to_db(clamp(volume, 0.0, 1.0))
 	p.stream = stream
+	add_child(p)
 	p.play()
-	
+
 	p.finished.connect(func(): p.queue_free())
 
 # ---------------------------------------------------------
 # DIALOGUE DUCKING
 # ---------------------------------------------------------
+var _pre_duck_volume_db: float = 0.0
+
 func duck_music(db := -15.0) -> void:
 	var bus := AudioServer.get_bus_index(MUSIC_BUS)
 	if bus >= 0:
+		_pre_duck_volume_db = AudioServer.get_bus_volume_db(bus)
 		AudioServer.set_bus_volume_db(bus, db)
 
 func unduck_music() -> void:
 	var bus := AudioServer.get_bus_index(MUSIC_BUS)
 	if bus >= 0:
-		var vol := SettingsManager.music_volume
-		AudioServer.set_bus_volume_db(bus, linear_to_db(vol))
+		AudioServer.set_bus_volume_db(bus, _pre_duck_volume_db)

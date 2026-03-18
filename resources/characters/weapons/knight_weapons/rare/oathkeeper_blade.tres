@@ -1,0 +1,76 @@
+[gd_resource type="Resource" script_class="Weapon" format=3 uid="uid://b2d7ymc2y24vg"]
+
+[ext_resource type="Script" uid="uid://b2o7w8q10stxo" path="res://scripts/data/ability.gd" id="1_dpxvn"]
+[ext_resource type="Script" uid="uid://bo48scp6lbwrb" path="res://scripts/data/attack.gd" id="2_82qyj"]
+[ext_resource type="Script" uid="uid://bvuw0uyc36uxx" path="res://scripts/data/utility.gd" id="3_jevni"]
+[ext_resource type="Script" uid="uid://c5deti4sb2k2j" path="res://scripts/data/effect.gd" id="4_hkjln"]
+[ext_resource type="Script" uid="uid://dgykeyxn7fefw" path="res://scripts/data/weapon.gd" id="5_t7lus"]
+[ext_resource type="Theme" uid="uid://dqwm8agt87lsh" path="res://resources/ui/button_themes/regular/blue_button.tres" id="6_eee34"]
+
+[sub_resource type="Resource" id="Resource_q8m5m"]
+script = ExtResource("2_82qyj")
+min_damage = 1
+max_damage = 10
+metadata/_custom_type_script = "uid://bo48scp6lbwrb"
+
+[sub_resource type="Resource" id="Resource_5oggx"]
+script = ExtResource("1_dpxvn")
+name = "Valiant Cut"
+attack = SubResource("Resource_q8m5m")
+metadata/_custom_type_script = "uid://b2o7w8q10stxo"
+
+[sub_resource type="Resource" id="Resource_xvh6k"]
+script = ExtResource("4_hkjln")
+type = 4
+strength = 5
+duration = 2
+metadata/_custom_type_script = "uid://c5deti4sb2k2j"
+
+[sub_resource type="Resource" id="Resource_jvump"]
+script = ExtResource("4_hkjln")
+type = 5
+strength = 5
+duration = 2
+metadata/_custom_type_script = "uid://c5deti4sb2k2j"
+
+[sub_resource type="Resource" id="Resource_uvpfp"]
+script = ExtResource("3_jevni")
+effects = Array[ExtResource("4_hkjln")]([SubResource("Resource_xvh6k"), SubResource("Resource_jvump")])
+metadata/_custom_type_script = "uid://bvuw0uyc36uxx"
+
+[sub_resource type="Resource" id="Resource_0f65f"]
+script = ExtResource("1_dpxvn")
+name = "Oathbound Parry"
+energy_cost = 5
+cooldown = 3
+utilities = Array[ExtResource("3_jevni")]([SubResource("Resource_uvpfp")])
+metadata/_custom_type_script = "uid://b2o7w8q10stxo"
+
+[sub_resource type="Resource" id="Resource_hvqum"]
+script = ExtResource("4_hkjln")
+strength = 10
+duration = 4
+metadata/_custom_type_script = "uid://c5deti4sb2k2j"
+
+[sub_resource type="Resource" id="Resource_ieohv"]
+script = ExtResource("3_jevni")
+effects = Array[ExtResource("4_hkjln")]([SubResource("Resource_hvqum")])
+metadata/_custom_type_script = "uid://bvuw0uyc36uxx"
+
+[sub_resource type="Resource" id="Resource_t48fg"]
+script = ExtResource("1_dpxvn")
+name = "Stand Unbroken"
+energy_cost = 10
+cooldown = 5
+utilities = Array[ExtResource("3_jevni")]([SubResource("Resource_ieohv")])
+metadata/_custom_type_script = "uid://b2o7w8q10stxo"
+
+[resource]
+script = ExtResource("5_t7lus")
+rarity = 1
+abilities = Array[ExtResource("1_dpxvn")]([SubResource("Resource_5oggx"), SubResource("Resource_0f65f"), SubResource("Resource_t48fg")])
+name = "Oathkeeper Blade"
+description = "A ceremonial sword that glows softly whenever its wielder stands firm."
+theme = ExtResource("6_eee34")
+value = 400
+metadata/_custom_type_script = "uid://dgykeyxn7fefw"

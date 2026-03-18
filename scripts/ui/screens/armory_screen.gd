@@ -1,12 +1,11 @@
 extends Control
 
-@onready var item_list: VBoxContainer = $HBoxContainer/LeftPanel/ItemList
-@onready var back_button: Button = $HBoxContainer/LeftPanel/Buttons/BackButton
-@onready var equip_button: Button = $HBoxContainer/LeftPanel/Buttons/EquipButton
+@onready var item_list: VBoxContainer = $HBoxContainer/LeftPanelContainer/LeftPanel/ItemList
+@onready var equip_button: Button = $HBoxContainer/LeftPanelContainer/LeftPanel/Buttons/EquipButton
 
-@onready var name_label: Label = $HBoxContainer/RightPanel/NameLabel
-@onready var description_label: Label = $HBoxContainer/RightPanel/DescriptionLabel
-@onready var ability_container: VBoxContainer = $HBoxContainer/RightPanel/AbilityContainer
+@onready var name_label: Label = $HBoxContainer/RightPanelContainer/RightPanel/NameLabel
+@onready var description_label: Label = $HBoxContainer/RightPanelContainer/RightPanel/DescriptionLabel
+@onready var ability_container: VBoxContainer = $HBoxContainer/RightPanelContainer/RightPanel/AbilityContainer
 
 var ItemButton := preload("res://scenes/ui/components/item_button.tscn")
 
@@ -15,9 +14,6 @@ var selected_weapon: Weapon
 
 func _ready() -> void:
 	hero = GameState.hero
-
-	back_button.pressed.connect(_on_back_button_pressed)
-	equip_button.pressed.connect(_on_equip_button_pressed)
 	_update_weapon_list()
 
 func _update_weapon_list() -> void:

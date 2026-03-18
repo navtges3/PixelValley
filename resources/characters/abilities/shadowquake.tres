@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="Ability" format=3 uid="uid://dwx4iywd6wl6h"]
+
+[ext_resource type="Script" uid="uid://bo48scp6lbwrb" path="res://scripts/data/attack.gd" id="1_18r0q"]
+[ext_resource type="Script" uid="uid://b2o7w8q10stxo" path="res://scripts/data/ability.gd" id="2_bteev"]
+[ext_resource type="Script" uid="uid://bvuw0uyc36uxx" path="res://scripts/data/utility.gd" id="3_4qebd"]
+
+[sub_resource type="Resource" id="Resource_1qfmq"]
+script = ExtResource("1_18r0q")
+min_damage = 40
+max_damage = 65
+attack_type = 1
+metadata/_custom_type_script = "uid://bo48scp6lbwrb"
+
+[resource]
+script = ExtResource("2_bteev")
+name = "Shadowquake"
+energy_cost = 35
+cooldown = 5
+attack = SubResource("Resource_1qfmq")
+metadata/_custom_type_script = "uid://b2o7w8q10stxo"

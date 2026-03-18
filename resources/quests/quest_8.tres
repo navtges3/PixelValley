@@ -1,13 +1,12 @@
-[gd_resource type="Resource" script_class="Quest" load_steps=8 format=3 uid="uid://5cxoduk38hp0"]
+[gd_resource type="Resource" script_class="Quest" format=3 uid="uid://5cxoduk38hp0"]
 
 [ext_resource type="Script" uid="uid://bhsjswm1wnll8" path="res://scripts/quest/monster_requirement.gd" id="1_hrtie"]
-[ext_resource type="Resource" uid="uid://defc2ss743h1d" path="res://resources/monsters/orc_chieftain.tres" id="2_rpd37"]
 [ext_resource type="Script" uid="uid://xekqra2mjp3l" path="res://scripts/quest/quest_reward.gd" id="4_75oh8"]
 [ext_resource type="Script" uid="uid://xhl8p6y5w5e6" path="res://scripts/quest/quest.gd" id="7_52usu"]
 
 [sub_resource type="Resource" id="Resource_68l85"]
 script = ExtResource("1_hrtie")
-monster = ExtResource("2_rpd37")
+monster_id = 2
 metadata/_custom_type_script = "uid://bhsjswm1wnll8"
 
 [sub_resource type="Resource" id="Resource_sp1ti"]
@@ -19,7 +18,7 @@ metadata/_custom_type_script = "uid://xekqra2mjp3l"
 [sub_resource type="Resource" id="Resource_k4bu8"]
 script = ExtResource("4_75oh8")
 reward_type = 3
-weapon_rarity = 1
+weapon_rarity = 2
 metadata/_custom_type_script = "uid://xekqra2mjp3l"
 
 [resource]

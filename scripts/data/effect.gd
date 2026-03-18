@@ -48,25 +48,25 @@ func _to_string(turns_remaining := duration) -> String:
 func get_button_theme() -> Theme:
 	match type:
 		Effect.EffectType.HEAL:
-			return preload("res://assets/button_themes/regular/green_button.tres")
+			return preload("res://resources/ui/button_themes/regular/green_button.tres")
 		Effect.EffectType.ENERGY:
-			return preload("res://assets/button_themes/regular/yellow_button.tres")
+			return preload("res://resources/ui/button_themes/regular/yellow_button.tres")
 		Effect.EffectType.POISON:
-			return preload("res://assets/button_themes/regular/green_button.tres")
+			return preload("res://resources/ui/button_themes/regular/green_button.tres")
 		Effect.EffectType.BUFF_ATTACK:
-			return preload("res://assets/button_themes/regular/red_button.tres")
+			return preload("res://resources/ui/button_themes/regular/red_button.tres")
 		Effect.EffectType.BUFF_MAGIC:
-			return preload("res://assets/button_themes/regular/red_button.tres")
+			return preload("res://resources/ui/button_themes/regular/red_button.tres")
 		Effect.EffectType.BUFF_DEFENSE:
-			return preload("res://assets/button_themes/regular/blue_button.tres")
+			return preload("res://resources/ui/button_themes/regular/blue_button.tres")
 		Effect.EffectType.BUFF_RESISTANCE:
-			return preload("res://assets/button_themes/regular/blue_button.tres")
+			return preload("res://resources/ui/button_themes/regular/blue_button.tres")
 		Effect.EffectType.DEBUFF_ATTACK:
-			return preload("res://assets/button_themes/regular/red_button.tres")
+			return preload("res://resources/ui/button_themes/regular/red_button.tres")
 		Effect.EffectType.DEBUFF_MAGIC:
-			return preload("res://assets/button_themes/regular/red_button.tres")
+			return preload("res://resources/ui/button_themes/regular/red_button.tres")
 		Effect.EffectType.DEBUFF_DEFENSE:
-			return preload("res://assets/button_themes/regular/blue_button.tres")
+			return preload("res://resources/ui/button_themes/regular/blue_button.tres")
 		Effect.EffectType.DEBUFF_RESISTANCE:
-			return preload("res://assets/button_themes/regular/blue_button.tres")
-	return preload("res://assets/button_themes/regular/gray_button.tres")
+			return preload("res://resources/ui/button_themes/regular/blue_button.tres")
+	return preload("res://resources/ui/button_themes/regular/gray_button.tres")

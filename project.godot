@@ -8,11 +8,16 @@
 
 config_version=5
 
+[animation]
+
+compatibility/default_parent_skeleton_in_mesh_instance_3d=true
+
 [application]
 
 config/name="VillageDefense"
+config/version="0.1.0"
 run/main_scene="uid://4w3ilq3htolk"
-config/features=PackedStringArray("4.5", "Forward Plus")
+config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://icon.svg"
 
 [audio]
@@ -22,6 +27,7 @@ buses/default_bus_layout="uid://crpk253ew4rsx"
 [autoload]
 
 GameState="*res://autoload/game_state.gd"
+SaveManager="*uid://be6fxg7kvv6mj"
 SettingsManager="*res://autoload/settings_manager.gd"
 AudioManager="*res://autoload/audio_manager.gd"
 ScreenManager="*res://autoload/screen_manager.gd"

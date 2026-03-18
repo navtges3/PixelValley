@@ -7,24 +7,19 @@ extends Resource
 @export var monster_objectives: Array[MonsterRequirement]
 @export var reward: Array[QuestReward]
 @export var next_quests: Array[int]
-var completed: bool = false
+@export var completed: bool = false
 
-signal quest_completed
-
-func slay_monster(monster_name: String) -> bool:
-	for objective in monster_objectives:
-		if objective.monster.name == monster_name:
-			objective.current_amount += 1
-	return is_complete()
+signal quest_completed(quest: Quest)
 
 func get_monster() -> Monster:
-	var candidates := []
+	var available_ids := []
 	for objective in monster_objectives:
 		if objective.current_amount < objective.target_amount:
-			candidates.append(objective.monster)
-	if candidates.size() == 0:
+			available_ids.append(objective.monster_id)
+	if available_ids.size() == 0:
 		return null
-	return candidates[randi() % candidates.size()]
+	var monster_id = available_ids[randi() % available_ids.size()]
+	return MonsterLoader.new_monster(monster_id)
 
 func get_monster_count() -> int:
 	var count := 0
@@ -38,14 +33,25 @@ func get_slain_count() -> int:
 		count += objective.current_amount
 	return count
 
-func complete_quest() -> void:
-	completed = true
-	emit_signal("quest_completed", self)
+func slay_monster(monster_id: MonsterLoader.MonsterID) -> bool:
+	for objective in monster_objectives:
+		if objective.monster_id == monster_id:
+			objective.current_amount += 1
+	return check_completion()
 
-func is_complete() -> bool:
+func all_objectives_met() -> bool:
 	for objective in monster_objectives:
 		if objective.current_amount < objective.target_amount:
 			return false
-	completed = true
-	emit_signal("quest_completed", self)
-	return completed
+	return true
+
+func check_completion() -> bool:
+	if not all_objectives_met():
+		return false
+	if not completed:
+		completed = true
+		quest_completed.emit(self)
+	return true
+
+func is_complete() -> bool:
+	return all_objectives_met()

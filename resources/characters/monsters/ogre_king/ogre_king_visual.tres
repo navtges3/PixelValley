@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="BattleVisualData" format=3 uid="uid://vaoqe50vrr0g"]
+
+[ext_resource type="SpriteFrames" uid="uid://bi0hjkjhgixba" path="res://resources/characters/monsters/ogre_king/ogre_king_sprite_frames.tres" id="1_4ui2b"]
+[ext_resource type="Script" uid="uid://c3t8kckce6hdk" path="res://scripts/characters/battle_visual_data.gd" id="2_5gon3"]
+
+[resource]
+script = ExtResource("2_5gon3")
+frames = ExtResource("1_4ui2b")
+sprite_height = 96
+metadata/_custom_type_script = "uid://c3t8kckce6hdk"

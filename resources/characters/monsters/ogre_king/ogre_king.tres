@@ -1,0 +1,60 @@
+[gd_resource type="Resource" script_class="Monster" format=3 uid="uid://dcwvon7sw5nst"]
+
+[ext_resource type="Script" uid="uid://blp0fv0xnajdb" path="res://scripts/data/active_effect.gd" id="1_t5nbi"]
+[ext_resource type="Resource" uid="uid://butpfi06boe3d" path="res://resources/characters/abilities/kings_smash.tres" id="2_u1xk6"]
+[ext_resource type="Resource" uid="uid://vaoqe50vrr0g" path="res://resources/characters/monsters/ogre_king/ogre_king_visual.tres" id="3_38k3l"]
+[ext_resource type="Script" uid="uid://dxnu3vjlxl2pn" path="res://scripts/data/conditional_ability.gd" id="3_u6cbq"]
+[ext_resource type="Resource" uid="uid://ctce7oq3s4kox" path="res://resources/characters/abilities/dark_regeneration.tres" id="4_4px0f"]
+[ext_resource type="Script" uid="uid://cnso83bg7vodw" path="res://scripts/data/condition.gd" id="5_833pn"]
+[ext_resource type="Resource" uid="uid://dwx4iywd6wl6h" path="res://resources/characters/abilities/shadowquake.tres" id="6_puwu8"]
+[ext_resource type="Script" uid="uid://bd6ohffno5w7r" path="res://scripts/characters/monster.gd" id="8_85bo5"]
+[ext_resource type="Texture2D" uid="uid://dqyfb7invyhyx" path="res://assets/monsters/ogre_king/ogre_king.png" id="8_gb37p"]
+[ext_resource type="Script" uid="uid://hxleldka7y06" path="res://scripts/characters/stat_block.gd" id="9_jrhah"]
+
+[sub_resource type="Resource" id="Resource_eyhfi"]
+script = ExtResource("5_833pn")
+condition_type = 1
+value = 0.3
+metadata/_custom_type_script = "uid://cnso83bg7vodw"
+
+[sub_resource type="Resource" id="Resource_caabp"]
+script = ExtResource("3_u6cbq")
+ability = ExtResource("4_4px0f")
+condition = SubResource("Resource_eyhfi")
+metadata/_custom_type_script = "uid://dxnu3vjlxl2pn"
+
+[sub_resource type="Resource" id="Resource_q3pdi"]
+script = ExtResource("5_833pn")
+condition_type = 3
+value = 0.4
+metadata/_custom_type_script = "uid://cnso83bg7vodw"
+
+[sub_resource type="Resource" id="Resource_m4btp"]
+script = ExtResource("3_u6cbq")
+ability = ExtResource("6_puwu8")
+condition = SubResource("Resource_q3pdi")
+metadata/_custom_type_script = "uid://dxnu3vjlxl2pn"
+
+[sub_resource type="Resource" id="Resource_0xu8l"]
+script = ExtResource("9_jrhah")
+current_hp = 500
+current_nrg = 120
+max_hp = 500
+max_nrg = 120
+attack = 45
+magic = 20
+defense = 25
+resistance = 18
+metadata/_custom_type_script = "uid://hxleldka7y06"
+
+[resource]
+script = ExtResource("8_85bo5")
+monster_id = 5
+gold = 50
+basic_attack = ExtResource("2_u1xk6")
+conditional_abilities = Array[ExtResource("3_u6cbq")]([SubResource("Resource_caabp"), SubResource("Resource_m4btp")])
+name = "Ogre King"
+portrait = ExtResource("8_gb37p")
+battle_visual = ExtResource("3_38k3l")
+stat_block = SubResource("Resource_0xu8l")
+metadata/_custom_type_script = "uid://bd6ohffno5w7r"

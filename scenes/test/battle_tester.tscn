@@ -1,0 +1,74 @@
+[gd_scene format=3 uid="uid://drm4xancgvo1e"]
+
+[ext_resource type="Script" uid="uid://byfgkx2xlhx6y" path="res://scripts/test/battle_tester.gd" id="1_q2tk8"]
+
+[node name="BattleTester" type="Control" unique_id=2124471276]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_q2tk8")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=426941112]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1410097710]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+alignment = 1
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer" unique_id=900260736]
+layout_mode = 2
+text = "Battle Tester"
+horizontal_alignment = 1
+
+[node name="HeroSelection" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1137276132]
+layout_mode = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HeroSelection" unique_id=412056703]
+layout_mode = 2
+text = "Select Hero"
+
+[node name="HeroDropdown" type="OptionButton" parent="MarginContainer/VBoxContainer/HeroSelection" unique_id=1601213495]
+layout_mode = 2
+
+[node name="MonsterSelection" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=965546804]
+layout_mode = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/MonsterSelection" unique_id=737588544]
+layout_mode = 2
+text = "Select Monster"
+
+[node name="MonsterSpinBox" type="SpinBox" parent="MarginContainer/VBoxContainer/MonsterSelection" unique_id=1448949819]
+layout_mode = 2
+min_value = 1.0
+value = 1.0
+
+[node name="MonsterDropdown" type="OptionButton" parent="MarginContainer/VBoxContainer/MonsterSelection" unique_id=1261724360]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=594024335]
+layout_mode = 2
+alignment = 1
+
+[node name="StartBattle" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=841805937]
+layout_mode = 2
+text = "Start Battle"
+
+[node name="BackButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=1717863857]
+layout_mode = 2
+text = "Back
+"
+
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/StartBattle" to="." method="_on_start_battle_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/BackButton" to="." method="_on_back_button_pressed"]

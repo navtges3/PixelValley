@@ -1,0 +1,95 @@
+[gd_scene format=3 uid="uid://cw4dm1x3j5e12"]
+
+[ext_resource type="Script" uid="uid://bfiqtcx4e3s5r" path="res://scripts/ui/windows/new_game_window.gd" id="1_1unjh"]
+[ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://resources/ui/button_themes/regular/green_button.tres" id="2_tqaw0"]
+[ext_resource type="Theme" uid="uid://dq41s7i7v61gk" path="res://resources/ui/backgrounds/background_panel.tres" id="2_ycxpi"]
+[ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://resources/ui/button_themes/regular/red_button.tres" id="3_l77w7"]
+
+[node name="NewGameWindow" type="Window" unique_id=1924150137]
+transparent_bg = true
+oversampling_override = 1.0
+size = Vector2i(382, 619)
+wrap_controls = true
+borderless = true
+transparent = true
+script = ExtResource("1_1unjh")
+
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=2141844913]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_ycxpi")
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer" unique_id=1654309153]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer" unique_id=756526555]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="TitleLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=2136661901]
+layout_mode = 2
+text = "New Game"
+horizontal_alignment = 1
+
+[node name="SlotButton1" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=382983934]
+custom_minimum_size = Vector2(320, 90)
+layout_mode = 2
+theme = ExtResource("2_tqaw0")
+text = "Hero Name:
+Level: XX
+Last Played: YYYY-MM-DDTHH:MM:SS"
+alignment = 0
+
+[node name="SlotButton2" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=1516771454]
+custom_minimum_size = Vector2(320, 90)
+layout_mode = 2
+theme = ExtResource("2_tqaw0")
+text = "Hero Name:
+Level: XX
+Last Played: YYYY-MM-DDTHH:MM:SS"
+alignment = 0
+
+[node name="SlotButton3" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=1818763008]
+custom_minimum_size = Vector2(320, 90)
+layout_mode = 2
+theme = ExtResource("2_tqaw0")
+text = "Hero Name:
+Level: XX
+Last Played: YYYY-MM-DDTHH:MM:SS"
+alignment = 0
+
+[node name="SlotButton4" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=1057833472]
+custom_minimum_size = Vector2(320, 90)
+layout_mode = 2
+theme = ExtResource("2_tqaw0")
+text = "Hero Name:
+Level: XX
+Last Played: YYYY-MM-DDTHH:MM:SS"
+alignment = 0
+
+[node name="SlotButton5" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=1626547322]
+custom_minimum_size = Vector2(320, 90)
+layout_mode = 2
+theme = ExtResource("2_tqaw0")
+text = "Hero Name:
+Level: XX
+Last Played: YYYY-MM-DDTHH:MM:SS"
+alignment = 0
+
+[node name="BackButton" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=264319117]
+custom_minimum_size = Vector2(96, 32)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+theme = ExtResource("3_l77w7")
+text = "Back
+"
+
+[connection signal="pressed" from="PanelContainer/MarginContainer/VBoxContainer/BackButton" to="." method="_on_back_button_pressed"]
