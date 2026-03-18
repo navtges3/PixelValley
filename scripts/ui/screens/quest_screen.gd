@@ -1,10 +1,10 @@
 extends Control
 
-@onready var available_button: Button = $MarginContainer/VBoxContainer/QuestTabs/AvailableButton
-@onready var complete_button: Button = $MarginContainer/VBoxContainer/QuestTabs/CompleteButton
-@onready var quest_list_vbox: VBoxContainer = $MarginContainer/VBoxContainer/QuestScrollContainer/QuestListVBox
+@onready var available_button: Button = $MarginContainer/PanelContainer/VBoxContainer/QuestTabs/AvailableButton
+@onready var complete_button: Button = $MarginContainer/PanelContainer/VBoxContainer/QuestTabs/CompleteButton
+@onready var quest_list_v_box: VBoxContainer = $MarginContainer/PanelContainer/VBoxContainer/QuestScrollContainer/QuestListVBox
 
-@onready var start_button: Button = $MarginContainer/VBoxContainer/BottomControls/StartButton
+@onready var start_button: Button = $MarginContainer/PanelContainer/VBoxContainer/BottomControls/StartButton
 
 var selected_quest:Button = null
 var current_tab = "available"
@@ -15,7 +15,7 @@ func _ready() -> void:
 	available_button.button_pressed = true
 
 func clear_quest_list():
-	for child in quest_list_vbox.get_children():
+	for child in quest_list_v_box.get_children():
 		child.queue_free()
 
 func load_quests(type: String):
@@ -25,7 +25,7 @@ func load_quests(type: String):
 		var quest_button = preload("res://scenes/ui/components/quest_button.tscn").instantiate()
 		quest_button.quest = quest
 		quest_button.connect("quest_selected", _on_quest_selected)
-		quest_list_vbox.add_child(quest_button)
+		quest_list_v_box.add_child(quest_button)
 
 func _on_quest_selected(selected_button: QuestButton):
 	if selected_quest == selected_button:
