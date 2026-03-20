@@ -20,16 +20,12 @@ func populate_slots() -> void:
 	for i in slot_buttons.size():
 		var button := slot_buttons[i]
 		var slot_index := i + 1
-
 		if SaveManager.has_save_data(slot_index):
 			var meta := SaveManager.get_meta_data(slot_index)
 			setup_filled_slot(button, meta)
-			button.pressed.connect(func():
-				GameState.start_new_game(slot_index)
-				ScreenManager.go_to_screen(ScreenManager.ScreenName.VILLAGE)
-			)
 		else:
 			setup_empty_slot(button)
+		button.pressed.connect(_slot_button_pressed.bind(slot_index))
 
 func setup_empty_slot(button: Button) -> void:
 	button.text = "Empty Slot"
@@ -44,6 +40,10 @@ func setup_filled_slot(button: Button, meta: Dictionary) -> void:
 	button.text = "%s\nLevel: %d\nLast Played: %s" % [hero_name, level, last_played]
 	button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 	button.theme = GREEN_BUTTON
+
+func _slot_button_pressed(slot_index: int) -> void:
+	GameState.start_new_game(slot_index)
+	ScreenManager.go_to_screen(ScreenManager.ScreenName.VILLAGE)
 
 func _on_back_button_pressed() -> void:
 	self.hide()
