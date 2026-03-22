@@ -2,7 +2,7 @@ extends Node2D
 class_name BattleCharacter
 
 const Y_OFFSET := 64
-const SPRITE_SCALE := Vector2(3.0, 3.0)
+const SCALE := Vector2(3.0, 3.0)
 
 @onready var sprite: AnimatedSprite2D = $Visual/AnimatedSprite2D
 signal animation_done()
@@ -13,10 +13,9 @@ func set_frames(frames: SpriteFrames) -> void:
 
 func apply_visual(visual: BattleVisualData, flip_h := false) -> void:
 	sprite.sprite_frames = visual.frames
-	sprite.scale = SPRITE_SCALE
-	print("Sprite size", sprite.sprite_frames.get_frame_texture(sprite.animation, sprite.frame).get_size())
-	sprite.flip_h = flip_h
+	scale = SCALE
 	sprite.position.y -= (visual.sprite_height - Y_OFFSET)
+	sprite.flip_h = flip_h
 	sprite.play("idle")
 
 func play_idle() -> void:
