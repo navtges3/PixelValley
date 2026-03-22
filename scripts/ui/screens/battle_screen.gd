@@ -24,12 +24,9 @@ const ABILITY_BUTTON = preload("res://scenes/ui/components/ability_button.tscn")
 const ITEM_BUTTON = preload("res://scenes/ui/components/item_button.tscn")
 const BATTLE_CHARACTER = preload("res://scenes/ui/components/battle_character.tscn")
 
-const SPRITE_SCALE := 5
-const SPRITE_OFFSET_Y := 64
-
 var battle_config: BattleConfig
-var hero_visual
-var monster_visual
+var hero_visual: BattleCharacter
+var monster_visual: BattleCharacter
 
 func _ready() -> void:
 	quest_bar.quest = battle_config.quest
@@ -46,9 +43,7 @@ func _spawn_hero() -> void:
 	hero_info.hero = battle_config.hero
 	hero_visual = BATTLE_CHARACTER.instantiate()
 	$HeroSlot.add_child(hero_visual)
-	hero_visual.set_frames(battle_config.hero.battle_visual.frames)
-	hero_visual.scale.x = SPRITE_SCALE
-	hero_visual.scale.y = SPRITE_SCALE
+	hero_visual.apply_visual(battle_config.hero.battle_visual)
 
 func _on_hero_updated(_hero_ref: Hero) -> void:
 	hero_info.refresh()
@@ -70,11 +65,7 @@ func _spawn_monster(monster_ref: Monster) -> void:
 		child.queue_free()
 	monster_visual = BATTLE_CHARACTER.instantiate()
 	$MonsterSlot.add_child(monster_visual)
-	monster_visual.set_frames(monster_ref.battle_visual.frames)
-	monster_visual.scale.x = -SPRITE_SCALE
-	monster_visual.scale.y = SPRITE_SCALE
-	var sprite_height = (monster_ref.battle_visual.sprite_height - SPRITE_OFFSET_Y) * SPRITE_SCALE
-	monster_visual.position.y = -sprite_height
+	monster_visual.apply_visual(monster_ref.battle_visual, true)
 
 func _on_monster_updated(monster_ref: Monster) -> void:
 	var value = monster_ref.stat_block.current_hp
