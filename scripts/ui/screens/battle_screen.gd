@@ -1,28 +1,34 @@
 extends Control
 
-@onready var battle_manager = $BattleManager
-
-@onready var monster_slain_window: Window = $MonsterSlainWindow
-@onready var quest_complete_window: Window = $QuestCompleteWindow
-
-# Top Bar
-@onready var quest_bar = $TopBar/QuestProgressBar
-@onready var monster_health_bar: ProgressBar = $TopBar/VBoxContainer/MonsterHealthBar
-@onready var monster_health_bar_label: Label = $TopBar/VBoxContainer/MonsterHealthBar/MonsterHealthBarLabel
-@onready var monster_label: Label = $TopBar/VBoxContainer/MonsterLabel
-
-# Action Area
-@onready var hero_info: HeroInfo = $ActionArea/HeroInfo
-@onready var ability_button = $ActionArea/LeftPanel/AbilityButton
-@onready var item_button = $ActionArea/LeftPanel/ItemButton
-@onready var meditate_button = $ActionArea/LeftPanel/MeditateButton
-@onready var flee_button = $ActionArea/LeftPanel/FleeButton
-
-@onready var option_list = $ActionArea/MiddlePanel/OptionList
-
 const ABILITY_BUTTON = preload("res://scenes/ui/components/ability_button.tscn")
 const ITEM_BUTTON = preload("res://scenes/ui/components/item_button.tscn")
 const BATTLE_CHARACTER = preload("res://scenes/ui/components/battle_character.tscn")
+
+@onready var battle_manager = $BattleManager
+
+# Popup Windows
+@onready var monster_slain_window: Window = $MonsterSlainWindow
+@onready var quest_complete_window: Window = $QuestCompleteWindow
+
+@onready var battle_log: RichTextLabel = $MarginContainer/BattleLog
+
+@onready var quest_bar: HBoxContainer = $MarginContainer/QuestProgressBar
+
+# Monster Info
+@onready var monster_health_bar: ProgressBar = $MarginContainer/VBoxContainer/MonsterHealthBar
+@onready var monster_health_bar_label: Label = $MarginContainer/VBoxContainer/MonsterHealthBar/MonsterHealthBarLabel
+@onready var monster_label: Label = $MarginContainer/VBoxContainer/MonsterLabel
+
+
+# Action Area
+@onready var hero_info: HeroInfo = $MarginContainer/ActionArea/HeroInfo
+# Action Buttons
+@onready var ability_button: Button = $MarginContainer/ActionArea/LeftPanel/AbilityButton
+@onready var item_button: Button = $MarginContainer/ActionArea/LeftPanel/ItemButton
+@onready var meditate_button: Button = $MarginContainer/ActionArea/LeftPanel/MeditateButton
+@onready var flee_button: Button = $MarginContainer/ActionArea/LeftPanel/FleeButton
+# Action Options
+@onready var option_list: VBoxContainer = $MarginContainer/ActionArea/MiddlePanel/OptionList
 
 var battle_config: BattleConfig
 var hero_visual: BattleCharacter
@@ -89,7 +95,7 @@ func _on_monster_slain(monster_name: String) -> void:
 	monster_slain_window.popup_centered()
 
 func _on_battle_log_updated(msg: String) -> void:
-	$ActionArea/BattleLog.append_text(msg)
+	battle_log.append_text(msg)
 
 func _on_ability_button_toggled(button_pressed: bool):
 	if button_pressed:

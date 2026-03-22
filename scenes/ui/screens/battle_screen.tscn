@@ -22,33 +22,48 @@ grow_vertical = 2
 script = ExtResource("1_ihhiw")
 
 [node name="HeroSlot" type="Marker2D" parent="." unique_id=1425626208]
-position = Vector2(320, 500)
+position = Vector2(400, 480)
 
 [node name="MonsterSlot" type="Marker2D" parent="." unique_id=1177753450]
-position = Vector2(896, 500)
+position = Vector2(896, 480)
 
-[node name="TopBar" type="HBoxContainer" parent="." unique_id=450098864]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=552745420]
 layout_mode = 1
-anchors_preset = -1
+anchors_preset = 15
 anchor_right = 1.0
-size_flags_vertical = 0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 32
+theme_override_constants/margin_top = 32
+theme_override_constants/margin_right = 32
+theme_override_constants/margin_bottom = 32
 
-[node name="QuestProgressBar" parent="TopBar" unique_id=786005872 instance=ExtResource("3_ihhiw")]
+[node name="BattleLog" type="RichTextLabel" parent="MarginContainer" unique_id=1459385711]
+custom_minimum_size = Vector2(300, 300)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+scroll_following = true
+
+[node name="QuestProgressBar" parent="MarginContainer" unique_id=786005872 instance=ExtResource("3_ihhiw")]
 layout_mode = 2
 size_flags_horizontal = 6
 size_flags_vertical = 0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="TopBar" unique_id=12366038]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=12366038]
 layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
 
-[node name="MonsterHealthBar" type="ProgressBar" parent="TopBar/VBoxContainer" unique_id=520036926]
+[node name="MonsterHealthBar" type="ProgressBar" parent="MarginContainer/VBoxContainer" unique_id=520036926]
 custom_minimum_size = Vector2(360, 32)
 layout_mode = 2
 theme = ExtResource("3_pxpkm")
 value = 75.0
 show_percentage = false
 
-[node name="MonsterHealthBarLabel" type="Label" parent="TopBar/VBoxContainer/MonsterHealthBar" unique_id=208181708]
+[node name="MonsterHealthBarLabel" type="Label" parent="MarginContainer/VBoxContainer/MonsterHealthBar" unique_id=208181708]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -64,69 +79,61 @@ grow_vertical = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "75/100"
 
-[node name="MonsterLabel" type="Label" parent="TopBar/VBoxContainer" unique_id=420102121]
+[node name="MonsterLabel" type="Label" parent="MarginContainer/VBoxContainer" unique_id=420102121]
 layout_mode = 2
 text = "Monster Name"
 horizontal_alignment = 2
 
-[node name="ActionArea" type="HBoxContainer" parent="." unique_id=337684969]
-layout_mode = 1
-anchors_preset = -1
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_vertical = 0
+[node name="ActionArea" type="HBoxContainer" parent="MarginContainer" unique_id=337684969]
+custom_minimum_size = Vector2(600, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
 
-[node name="HeroInfo" parent="ActionArea" unique_id=1121426668 instance=ExtResource("3_e8mee")]
+[node name="HeroInfo" parent="MarginContainer/ActionArea" unique_id=1121426668 instance=ExtResource("3_e8mee")]
 layout_mode = 2
 
-[node name="LeftPanel" type="VBoxContainer" parent="ActionArea" unique_id=756459339]
+[node name="LeftPanel" type="VBoxContainer" parent="MarginContainer/ActionArea" unique_id=756459339]
 layout_mode = 2
 
-[node name="AbilityButton" type="Button" parent="ActionArea/LeftPanel" unique_id=598476712]
+[node name="AbilityButton" type="Button" parent="MarginContainer/ActionArea/LeftPanel" unique_id=598476712]
 custom_minimum_size = Vector2(96, 32)
 layout_mode = 2
 theme = ExtResource("7_iw40k")
 toggle_mode = true
 text = "Use Ability"
 
-[node name="ItemButton" type="Button" parent="ActionArea/LeftPanel" unique_id=110423753]
+[node name="ItemButton" type="Button" parent="MarginContainer/ActionArea/LeftPanel" unique_id=110423753]
 custom_minimum_size = Vector2(96, 32)
 layout_mode = 2
 theme = ExtResource("8_qmdt6")
 toggle_mode = true
 text = "Use Item"
 
-[node name="MeditateButton" type="Button" parent="ActionArea/LeftPanel" unique_id=1755693489]
+[node name="MeditateButton" type="Button" parent="MarginContainer/ActionArea/LeftPanel" unique_id=1755693489]
 custom_minimum_size = Vector2(96, 32)
 layout_mode = 2
 tooltip_text = "Restore health and energy."
 theme = ExtResource("9_06vtu")
 text = "Meditate"
 
-[node name="FleeButton" type="Button" parent="ActionArea/LeftPanel" unique_id=2132098312]
+[node name="FleeButton" type="Button" parent="MarginContainer/ActionArea/LeftPanel" unique_id=2132098312]
 custom_minimum_size = Vector2(96, 32)
 layout_mode = 2
 theme = ExtResource("10_c2ins")
 text = "Flee"
 
-[node name="MiddlePanel" type="ScrollContainer" parent="ActionArea" unique_id=121735259]
+[node name="MiddlePanel" type="ScrollContainer" parent="MarginContainer/ActionArea" unique_id=121735259]
 layout_mode = 2
 horizontal_scroll_mode = 0
 
-[node name="OptionList" type="VBoxContainer" parent="ActionArea/MiddlePanel" unique_id=781619579]
+[node name="OptionList" type="VBoxContainer" parent="MarginContainer/ActionArea/MiddlePanel" unique_id=781619579]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Button" type="Button" parent="ActionArea/MiddlePanel/OptionList" unique_id=1920686518]
+[node name="Button" type="Button" parent="MarginContainer/ActionArea/MiddlePanel/OptionList" unique_id=1920686518]
 layout_mode = 2
 text = "This is an Ability"
-
-[node name="BattleLog" type="RichTextLabel" parent="ActionArea" unique_id=1459385711]
-custom_minimum_size = Vector2(576, 0)
-layout_mode = 2
-size_flags_horizontal = 10
-scroll_following = true
 
 [node name="BattleManager" type="Node" parent="." unique_id=973972740]
 script = ExtResource("11_o00jr")
@@ -137,10 +144,10 @@ visible = false
 [node name="QuestCompleteWindow" parent="." unique_id=1401141905 instance=ExtResource("11_yj4kj")]
 visible = false
 
-[connection signal="toggled" from="ActionArea/LeftPanel/AbilityButton" to="." method="_on_ability_button_toggled"]
-[connection signal="toggled" from="ActionArea/LeftPanel/ItemButton" to="." method="_on_item_button_toggled"]
-[connection signal="pressed" from="ActionArea/LeftPanel/MeditateButton" to="." method="_on_meditate_button_pressed"]
-[connection signal="pressed" from="ActionArea/LeftPanel/FleeButton" to="." method="_on_flee_button_pressed"]
+[connection signal="toggled" from="MarginContainer/ActionArea/LeftPanel/AbilityButton" to="." method="_on_ability_button_toggled"]
+[connection signal="toggled" from="MarginContainer/ActionArea/LeftPanel/ItemButton" to="." method="_on_item_button_toggled"]
+[connection signal="pressed" from="MarginContainer/ActionArea/LeftPanel/MeditateButton" to="." method="_on_meditate_button_pressed"]
+[connection signal="pressed" from="MarginContainer/ActionArea/LeftPanel/FleeButton" to="." method="_on_flee_button_pressed"]
 [connection signal="battle_log_updated" from="BattleManager" to="." method="_on_battle_log_updated"]
 [connection signal="hero_attacking" from="BattleManager" to="." method="_on_hero_attacking"]
 [connection signal="hero_defeated" from="BattleManager" to="." method="_on_hero_defeated"]
