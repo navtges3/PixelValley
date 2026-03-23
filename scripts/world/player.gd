@@ -15,6 +15,7 @@ func _physics_process(_delta: float) -> void:
 	velocity = input * SPEED
 	move_and_slide()
 	_update_animation(input)
+	_check_tile()
 
 func _update_animation(input: Vector2) -> void:
 	if input == Vector2.ZERO:
@@ -27,3 +28,15 @@ func _update_animation(input: Vector2) -> void:
 		anim.play("walk_right" if input.x > 0 else "walk_left")
 	else:
 		anim.play("walk_down" if input.y > 0 else "walk_up")
+
+func _check_tile() -> void:
+	var tile_map_layer: TileMapLayer = get_parent().get_node("TileMapLayer")
+	var tile_pos := tile_map_layer.local_to_map(global_position)
+	var tile_data := tile_map_layer.get_cell_tile_data(tile_pos)
+	if tile_data:
+		var loc: String = tile_data.get_custom_data("location_id")
+		var danger: bool = tile_data.get_custom_data("danger")
+		if loc != "":
+			print("location: ", loc)
+		if danger:
+			print("danger zone!")
