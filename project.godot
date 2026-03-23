@@ -40,10 +40,22 @@ window/size/viewport_width=1280
 window/size/viewport_height=720
 window/stretch/mode="canvas_items"
 
+[file_customization]
+
+folder_colors={
+"res://assets/": "yellow",
+"res://scenes/": "green",
+"res://scripts/": "blue"
+}
+
 [gui]
 
 timers/tooltip_delay_sec=0.25
 theme/default_font_multichannel_signed_distance_field=true
+
+[layer_names]
+
+2d_physics/layer_1="world"
 
 [rendering]
 
