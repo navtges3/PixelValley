@@ -9,5 +9,6 @@ func _on_options_button_pressed() -> void:
 	options_window.popup_centered()
 
 func _on_save_exit_button_pressed() -> void:
+	self.hide()
 	SaveManager.save_game()
 	ScreenManager.go_to_screen(ScreenManager.ScreenName.MAIN_MENU)

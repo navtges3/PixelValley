@@ -28,11 +28,11 @@ buses/default_bus_layout="uid://crpk253ew4rsx"
 
 GameState="*res://autoload/game_state.gd"
 SaveManager="*uid://be6fxg7kvv6mj"
-SettingsManager="*res://autoload/settings_manager.gd"
+SettingsManager="*uid://pbuy3m18awm"
 AudioManager="*res://autoload/audio_manager.gd"
-ScreenManager="*res://autoload/screen_manager.gd"
 MonsterLoader="*res://autoload/monster_loader.gd"
 WeaponDatabase="*res://autoload/weapon_database.gd"
+ScreenManager="*uid://ci5rl1jgfmryi"
 
 [display]
 
