@@ -3,6 +3,9 @@ extends Node
 var _current_screen_name: ScreenName = ScreenName.NONE
 var _history: Array[ScreenName] = []
 
+var _is_transitioning := false
+var _overlay: ColorRect
+
 enum ScreenName {
 	NONE,
 	MAIN_MENU,
@@ -17,6 +20,7 @@ enum ScreenName {
 	DEFEAT,
 	VICTORY,
 	TEST,
+	OVERWORLD,
 }
 
 var SCENE_PATHS := {
@@ -32,28 +36,59 @@ var SCENE_PATHS := {
 	ScreenName.DEFEAT: "res://scenes/ui/screens/defeat_screen.tscn",
 	ScreenName.VICTORY: "res://scenes/ui/screens/victory_screen.tscn",
 	ScreenName.TEST: "res://scenes/test/battle_tester.tscn",
+	ScreenName.OVERWORLD: "res://scenes/world/overworld.tscn",
 }
 
-func go_to_screen(screen_name: ScreenName, data = null) -> void:
-	if SCENE_PATHS.has(screen_name):
-		if _current_screen_name != ScreenName.NONE:
-			_history.append(_current_screen_name)
-		call_deferred("_change_scene", SCENE_PATHS[screen_name], data)
-	else:
-		push_error("Screen not found: %s" % screen_name)
+func _ready() -> void:
+	var canvas := CanvasLayer.new()
+	canvas.layer = 100
+	add_child(canvas)
+	
+	_overlay = ColorRect.new()
+	_overlay.color = Color(0, 0, 0, 1)
+	_overlay.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	canvas.add_child(_overlay)
+	_overlay.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	_overlay.modulate = Color(1, 1, 1, 0)
 
-func go_back() -> void:
+func _fade(target_alpha: float) -> void:
+	var tween := create_tween()
+	tween.tween_property(_overlay, "modulate:a", target_alpha, 0.4)\
+		.set_ease(Tween.EASE_IN_OUT)
+	await tween.finished
+
+func go_to_screen(screen_name: ScreenName, data = null) -> void:
+	if _is_transitioning:
+		return
+	if not SCENE_PATHS.has(screen_name):
+		push_error("Screen not found: %s" % screen_name)
+		return
+	if _current_screen_name != ScreenName.NONE:
+		_history.append(_current_screen_name)
+	_current_screen_name = screen_name
+	_change_scene.call_deferred(SCENE_PATHS[screen_name], data)
+
+func go_back(data = null) -> void:
 	if _history.is_empty():
 		return
 	var previous: ScreenName = _history.pop_back()
-	go_to_screen(previous)
+	_current_screen_name = previous
+	_change_scene.call_deferred(SCENE_PATHS[previous], data)
 
 func _change_scene(path: String, data = null) -> void:
-	var scene = load(path).instantiate()
+	_is_transitioning = true
 	
+	await _fade(1.0)
+	
+	var scene = load(path).instantiate()
 	if data != null and scene.has_method("setup"):
 		scene.setup(data)
 	
 	get_tree().current_scene.queue_free()
 	get_tree().root.add_child(scene)
 	get_tree().current_scene = scene
+	
+	await get_tree().process_frame
+	await _fade(0.0)
+	
+	_is_transitioning = false

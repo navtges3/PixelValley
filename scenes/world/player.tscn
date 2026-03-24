@@ -147,7 +147,7 @@ script = ExtResource("1_l3o4k")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=2050771278]
 sprite_frames = SubResource("SpriteFrames_ebiuu")
 animation = &"walk_up"
-frame_progress = 0.4141223
+frame_progress = 0.47689337
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=934297636]
 shape = SubResource("RectangleShape2D_hqqc5")

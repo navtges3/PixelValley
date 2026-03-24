@@ -41,6 +41,7 @@ func setup_filled_slot(button: Button, meta: Dictionary, slot_index: int) -> voi
 	button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 	button.theme = GREEN_BUTTON
 	button.pressed.connect(func():
+		self.hide()
 		SaveManager.load_game(slot_index)
 		ScreenManager.go_to_screen(ScreenManager.ScreenName.VILLAGE)
 	)
