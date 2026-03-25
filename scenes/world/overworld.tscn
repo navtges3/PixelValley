@@ -66,9 +66,10 @@ shape = SubResource("CircleShape2D_h0wcu")
 [node name="ForestTriggerZone" type="Area2D" parent="TriggerZones" unique_id=1917125163 groups=["trigger_zone"]]
 position = Vector2(240, 144)
 script = ExtResource("5_h0wcu")
-locked = true
+locked = null
 entrance_id = "forest"
 locked_message = "The forest is blocked."
+screen_target = 14
 metadata/_custom_type_script = "uid://c5sed60hjy0rk"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="TriggerZones/ForestTriggerZone" unique_id=1840918726]
@@ -80,6 +81,7 @@ script = ExtResource("5_h0wcu")
 locked = true
 entrance_id = "war_camp"
 locked_message = "The war camp is blocked."
+screen_target = null
 metadata/_custom_type_script = "uid://c5sed60hjy0rk"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="TriggerZones/WarCampTriggerZone" unique_id=596380109]
@@ -91,6 +93,7 @@ script = ExtResource("5_h0wcu")
 locked = true
 entrance_id = "cave"
 locked_message = "The cave is blocked."
+screen_target = null
 metadata/_custom_type_script = "uid://c5sed60hjy0rk"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="TriggerZones/CaveTriggerZone" unique_id=155573026]
