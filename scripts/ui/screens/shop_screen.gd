@@ -97,4 +97,4 @@ func _on_purchase_button_pressed() -> void:
 	_update_item_list()
 
 func _on_exit_button_pressed() -> void:
-	ScreenManager.go_back()
+	ScreenManager.go_back("shop")

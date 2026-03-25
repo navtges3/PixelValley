@@ -21,12 +21,13 @@ enum ScreenName {
 	VICTORY,
 	TEST,
 	OVERWORLD,
+	FOREST,
 }
 
 var SCENE_PATHS := {
 	ScreenName.MAIN_MENU: "res://scenes/ui/screens/main_menu_screen.tscn",
 	ScreenName.NEW_GAME: "res://scenes/ui/screens/new_game_screen.tscn",
-	ScreenName.VILLAGE: "res://scenes/ui/screens/village_screen.tscn",
+	ScreenName.VILLAGE: "res://scenes/world/village.tscn",
 	ScreenName.INN: "res://scenes/ui/screens/inn_screen.tscn",
 	ScreenName.SHOP: "res://scenes/ui/screens/shop_screen.tscn",
 	ScreenName.ARMORY: "res://scenes/ui/screens/armory_screen.tscn",
@@ -37,6 +38,7 @@ var SCENE_PATHS := {
 	ScreenName.VICTORY: "res://scenes/ui/screens/victory_screen.tscn",
 	ScreenName.TEST: "res://scenes/test/battle_tester.tscn",
 	ScreenName.OVERWORLD: "res://scenes/world/overworld.tscn",
+	ScreenName.FOREST: "res://scenes/world/forest.tscn",
 }
 
 func _ready() -> void:
@@ -80,7 +82,7 @@ func _change_scene(path: String, entrance_id: String = "", data = null) -> void:
 	await _fade(1.0)
 	
 	var scene = load(path).instantiate()
-	get_tree().current_scene.queue_free()
+	get_tree().current_scene.free()
 	get_tree().root.add_child(scene)
 	get_tree().current_scene = scene
 	if data != null and scene.has_method("setup"):

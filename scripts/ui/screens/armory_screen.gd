@@ -53,7 +53,7 @@ func _on_equip_button_pressed() -> void:
 		_update_weapon_list()
 
 func _on_back_button_pressed() -> void:
-	ScreenManager.go_back()
+	ScreenManager.go_back("armory")
 
 func empty_ability_list() -> void:
 	for child in ability_container.get_children():
