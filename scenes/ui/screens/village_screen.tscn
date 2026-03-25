@@ -50,6 +50,14 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 columns = 2
 
+[node name="OverworldLabel" type="Label" parent="UIRoot/PanelContainer/GridContainer" unique_id=1336576819]
+layout_mode = 2
+text = "Go to the world map"
+
+[node name="OverworldButton" type="Button" parent="UIRoot/PanelContainer/GridContainer" unique_id=558374382]
+layout_mode = 2
+text = "Overworld"
+
 [node name="QuestLabel" type="Label" parent="UIRoot/PanelContainer/GridContainer" unique_id=18049282]
 layout_mode = 2
 text = "Choose a quest."
@@ -110,6 +118,7 @@ text = "Training
 visible = false
 
 [connection signal="pressed" from="UIRoot/PauseButton" to="." method="_on_pause_button_pressed"]
+[connection signal="pressed" from="UIRoot/PanelContainer/GridContainer/OverworldButton" to="." method="_on_overworld_button_pressed"]
 [connection signal="pressed" from="UIRoot/PanelContainer/GridContainer/QuestsButton" to="." method="_on_quests_button_pressed"]
 [connection signal="pressed" from="UIRoot/PanelContainer/GridContainer/InnButton" to="." method="_on_inn_button_pressed"]
 [connection signal="pressed" from="UIRoot/PanelContainer/GridContainer/ShopButton" to="." method="_on_shop_button_pressed"]

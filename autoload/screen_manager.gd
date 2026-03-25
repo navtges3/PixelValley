@@ -57,7 +57,7 @@ func _fade(target_alpha: float) -> void:
 		.set_ease(Tween.EASE_IN_OUT)
 	await tween.finished
 
-func go_to_screen(screen_name: ScreenName, data = null) -> void:
+func go_to_screen(screen_name: ScreenName, entrance_id: String = "", data = null) -> void:
 	if _is_transitioning:
 		return
 	if not SCENE_PATHS.has(screen_name):
@@ -66,18 +66,17 @@ func go_to_screen(screen_name: ScreenName, data = null) -> void:
 	if _current_screen_name != ScreenName.NONE:
 		_history.append(_current_screen_name)
 	_current_screen_name = screen_name
-	_change_scene.call_deferred(SCENE_PATHS[screen_name], data)
+	_change_scene.call_deferred(SCENE_PATHS[screen_name], entrance_id, data)
 
-func go_back(data = null) -> void:
+func go_back(entrance_id: String = "", data = null) -> void:
 	if _history.is_empty():
 		return
 	var previous: ScreenName = _history.pop_back()
 	_current_screen_name = previous
-	_change_scene.call_deferred(SCENE_PATHS[previous], data)
+	_change_scene.call_deferred(SCENE_PATHS[previous], entrance_id, data)
 
-func _change_scene(path: String, data = null) -> void:
+func _change_scene(path: String, entrance_id: String = "", data = null) -> void:
 	_is_transitioning = true
-	
 	await _fade(1.0)
 	
 	var scene = load(path).instantiate()
@@ -86,8 +85,9 @@ func _change_scene(path: String, data = null) -> void:
 	get_tree().current_scene = scene
 	if data != null and scene.has_method("setup"):
 		scene.setup(data)
+	if entrance_id != "" and scene.has_method("place_player_at_entrance"):
+		scene.place_player_at_entrance(entrance_id)
 	
 	await get_tree().process_frame
 	await _fade(0.0)
-	
 	_is_transitioning = false
