@@ -81,12 +81,11 @@ func _change_scene(path: String, data = null) -> void:
 	await _fade(1.0)
 	
 	var scene = load(path).instantiate()
-	if data != null and scene.has_method("setup"):
-		scene.setup(data)
-	
 	get_tree().current_scene.queue_free()
 	get_tree().root.add_child(scene)
 	get_tree().current_scene = scene
+	if data != null and scene.has_method("setup"):
+		scene.setup(data)
 	
 	await get_tree().process_frame
 	await _fade(0.0)

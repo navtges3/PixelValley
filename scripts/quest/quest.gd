@@ -52,6 +52,3 @@ func check_completion() -> bool:
 		completed = true
 		quest_completed.emit(self)
 	return true
-
-func is_complete() -> bool:
-	return all_objectives_met()
