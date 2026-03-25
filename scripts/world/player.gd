@@ -7,6 +7,8 @@ const SPEED := 120.0
 var _last_location_id: String = ""
 var last_direction := Vector2.DOWN
 
+var _zone_cooldown := false
+
 func _physics_process(_delta: float) -> void:
 	var input := Vector2(
 		Input.get_axis("ui_left", "ui_right"),
@@ -39,13 +41,21 @@ func _check_tile() -> void:
 		if loc != _last_location_id:
 			_last_location_id = loc
 			var danger: bool = tile_data.get_custom_data("danger")
-			match loc:
-				"village":
-					ScreenManager.go_to_screen(ScreenManager.ScreenName.VILLAGE, loc)
-				"cave", "forest", "war_camp":
-					print("location: ", loc)
+			print("location: ", loc)
 			if danger:
 				print("danger zone!")
+
+func on_zone_entered(zone: TriggerZone) -> void:
+	if _zone_cooldown:
+		return
+	_zone_cooldown = true
+	await get_tree().process_frame
+	match zone.entrance_id:
+		"village":
+			ScreenManager.go_to_screen(ScreenManager.ScreenName.VILLAGE, zone.entrance_id)
+		_:
+			ScreenManager.go_to_screen(zone.screen_target, zone.entrance_id)
+	_zone_cooldown = false
 
 func place_at_entrance(entrance_node: Node2D) -> void:
 	global_position = entrance_node.global_position
