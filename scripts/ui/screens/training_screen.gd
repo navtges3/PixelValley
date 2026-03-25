@@ -70,7 +70,7 @@ func _on_decrease(stat: String) -> void:
 		update_ui()
 
 func _on_back_button_pressed() -> void:
-	ScreenManager.go_to_screen(ScreenManager.ScreenName.VILLAGE)
+	ScreenManager.go_back()
 
 func _on_confirm_button_pressed() -> void:
 	for stat in temp_allocations.keys():

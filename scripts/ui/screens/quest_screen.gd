@@ -31,7 +31,7 @@ func _on_quest_selected(selected_button: QuestButton):
 	if selected_quest == selected_button:
 		selected_quest = null
 		start_button.disabled = true
-	elif not selected_button.quest.is_complete():
+	elif not selected_button.quest.check_completion():
 		if selected_quest:
 			selected_quest.button_pressed = false
 		selected_quest = selected_button
@@ -56,7 +56,7 @@ func _on_complete_button_toggled(toggled_on: bool) -> void:
 			load_quests(current_tab)
 
 func _on_back_button_pressed() -> void:
-	ScreenManager.go_to_screen(ScreenManager.ScreenName.VILLAGE)
+	ScreenManager.go_back()
 
 func _on_start_button_pressed() -> void:
 	if selected_quest:
@@ -65,4 +65,4 @@ func _on_start_button_pressed() -> void:
 		config.hero = GameState.hero
 		config.quest = GameState.current_quest
 		config.is_test_battle = false
-		ScreenManager.go_to_screen(ScreenManager.ScreenName.BATTLE, config)
+		ScreenManager.go_to_screen(ScreenManager.ScreenName.BATTLE, "", config)

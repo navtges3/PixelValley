@@ -125,10 +125,7 @@ func _on_meditate_button_pressed() -> void:
 	item_button.button_pressed = false
 
 func _on_flee_button_pressed() -> void:
-	if battle_manager.is_test_battle:
-		ScreenManager.go_to_screen(ScreenManager.ScreenName.TEST)
-	else:
-		ScreenManager.go_to_screen(ScreenManager.ScreenName.VILLAGE)
+	ScreenManager.go_back()
 
 func _on_player_turn():
 	ability_button.disabled = false
@@ -155,9 +152,7 @@ func _on_quest_complete_window_reward_collected(_quest: Quest) -> void:
 	if battle_config.is_test_battle:
 		ScreenManager.go_to_screen(ScreenManager.ScreenName.TEST)
 	elif battle_manager.current_quest.id == GameState.quest_manager.LAST_QUEST_ID:
-		ScreenManager.go_to_screen(ScreenManager.ScreenName.VICTORY)
-	else:
-		ScreenManager.go_to_screen(ScreenManager.ScreenName.VILLAGE)
+		ScreenManager.go_back()
 
 func _on_hero_defeated():
 	print("Hero defeated!")
@@ -168,10 +163,7 @@ func _on_monster_slain_window_continue_pressed() -> void:
 	battle_manager.start_player_turn()
 
 func _on_monster_slain_window_retreat_pressed() -> void:
-	if battle_config.is_test_battle:
-		ScreenManager.go_to_screen(ScreenManager.ScreenName.TEST)
-	else:
-		ScreenManager.go_to_screen(ScreenManager.ScreenName.VILLAGE)
+	ScreenManager.go_back()
 
 func _on_ability_button_pressed(ability: Ability) -> void:
 	print("Ability pressed: ", ability.name)

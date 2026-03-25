@@ -136,7 +136,7 @@ func end_enemy_turn() -> void:
 func end_battle(player_won: bool) -> void:
 	state = BattleState.VICTORY if player_won else BattleState.DEFEAT
 	emit_signal("battle_log_updated", "%s wins!\n" % hero.get_colored_name() if player_won else "%s loses!\n" % hero.get_colored_name())
-	if player_won and current_quest.is_complete():
+	if player_won and current_quest.check_completion():
 		# skip victory popup if quest is complete
 		emit_signal("battle_log_updated", "Quest completed: %s\n" % current_quest.title)
 		emit_signal("quest_completed")

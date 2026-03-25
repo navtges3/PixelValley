@@ -19,4 +19,4 @@ func _on_rest_button_pressed() -> void:
 		hero.rest()
 
 func _on_leave_button_pressed() -> void:
-	ScreenManager.go_to_screen(ScreenManager.ScreenName.VILLAGE)
+	ScreenManager.go_back()
