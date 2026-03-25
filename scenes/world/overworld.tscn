@@ -50,20 +50,6 @@ tile_set = SubResource("TileSet_het3u")
 [node name="Player" parent="." unique_id=426329780 groups=["player"] instance=ExtResource("2_het3u")]
 position = Vector2(656, 527)
 
-[node name="Entrances" type="Node2D" parent="." unique_id=964173781]
-
-[node name="village" type="Node2D" parent="Entrances" unique_id=429005142]
-position = Vector2(240, 688)
-
-[node name="cave" type="Node2D" parent="Entrances" unique_id=2038074304]
-position = Vector2(1264, 688)
-
-[node name="forest" type="Node2D" parent="Entrances" unique_id=373436931]
-position = Vector2(240, 144)
-
-[node name="war_camp" type="Node2D" parent="Entrances" unique_id=1547669404]
-position = Vector2(1264, 144)
-
 [node name="ZoneMessageLabel" parent="." unique_id=1327906442 instance=ExtResource("4_fxtkv")]
 
 [node name="TriggerZones" type="Node2D" parent="." unique_id=1819620231]
