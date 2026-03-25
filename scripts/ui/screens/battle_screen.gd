@@ -35,15 +35,14 @@ var hero_visual: BattleCharacter
 var monster_visual: BattleCharacter
 
 func _ready() -> void:
-	quest_bar.quest = battle_config.quest
-	quest_bar.update_quest()
 	_empty_option_list()
-	_spawn_hero()
-
-	battle_manager.setup_battle(battle_config)
 
 func setup(config: BattleConfig) -> void:
 	battle_config = config
+	quest_bar.quest = battle_config.quest
+	quest_bar.update_quest()
+	_spawn_hero()
+	battle_manager.setup_battle(battle_config)
 
 func _spawn_hero() -> void:
 	hero_info.hero = battle_config.hero
