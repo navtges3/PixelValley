@@ -38,6 +38,10 @@ func save_game() -> void:
 	_save_json(save_slot, "quests.json", {
 		"data": _get_quests_data(GameState.quest_manager)
 	})
+	
+	_save_json(save_slot, "zone_state.json", {
+		"data": _get_zone_state_data()
+	})
 
 	_save_json(save_slot, "meta.json", {
 		"hero_name": GameState.hero.name,
@@ -60,6 +64,9 @@ func load_game(slot: int = 1) -> void:
 
 	var quest_json := _load_json(slot, "quests.json")
 	GameState.quest_manager = _load_quests(quest_json.get("data", {}))
+
+	var zone_json := _load_json(slot, "zone_state.json")
+	_load_zone_state(zone_json.get("data", {}))
 
 	print("SaveManager: Loaded game from slot %d" % slot)
 
@@ -236,6 +243,20 @@ func _load_inventory(data: Dictionary) -> Inventory:
 			inv.potions.append(ItemStack.new(item, count))
 
 	return inv
+
+# ---------------------------------------------------------
+# ZONE STATE
+# ---------------------------------------------------------
+func _get_zone_state_data() -> Dictionary:
+	return {
+		"unlocked_zones": GameState.unlocked_zones.duplicate()
+	}
+
+func _load_zone_state(data: Dictionary) -> void:
+	GameState.reset_zone_state()
+	var zones = data.get("unlocked_zones", [])
+	for z in zones:
+		GameState.unlocked_zones.append(z)
 
 # ---------------------------------------------------------
 # VILLAGE
