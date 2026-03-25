@@ -12,11 +12,12 @@ func _ready() -> void:
 		zone.zone_locked.connect(_on_zone_locked.bind(zone))
 
 func place_player_at_entrance(entrance_id: String) -> void:
-	var entrance = get_node_or_null("Entrances/" + entrance_id)
-	if entrance:
-		$Player.place_at_entrance(entrance)
-	else:
-		push_warning("Entrance not found: ", entrance_id)
+	for zone in get_tree().get_nodes_in_group("trigger_zone"):
+		zone = zone as TriggerZone
+		if entrance_id == zone.entrance_id:
+			$Player.place_at_entrance(zone)
+			return
+	push_warning("Entrance not found: ", entrance_id)
 
 func _on_zone_entered(zone: TriggerZone) -> void:
 	player.on_zone_entered(zone)
