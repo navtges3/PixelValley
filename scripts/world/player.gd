@@ -4,6 +4,7 @@ const SPEED := 120.0
 
 @onready var anim: AnimatedSprite2D = $AnimatedSprite2D
 
+var _last_location_id: String = ""
 var last_direction := Vector2.DOWN
 
 func _physics_process(_delta: float) -> void:
@@ -35,8 +36,16 @@ func _check_tile() -> void:
 	var tile_data := tile_map_layer.get_cell_tile_data(tile_pos)
 	if tile_data:
 		var loc: String = tile_data.get_custom_data("location_id")
-		var danger: bool = tile_data.get_custom_data("danger")
-		if loc != "":
-			print("location: ", loc)
-		if danger:
-			print("danger zone!")
+		if loc != _last_location_id:
+			_last_location_id = loc
+			var danger: bool = tile_data.get_custom_data("danger")
+			match loc:
+				"village":
+					ScreenManager.go_to_screen(ScreenManager.ScreenName.VILLAGE, loc)
+				"cave", "forest", "war_camp":
+					print("location: ", loc)
+			if danger:
+				print("danger zone!")
+
+func place_at_entrance(entrance_node: Node2D) -> void:
+	global_position = entrance_node.global_position

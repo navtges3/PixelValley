@@ -12,6 +12,9 @@ func _ready() -> void:
 func _on_pause_button_pressed():
 	pause_window.popup_centered()
 
+func _on_overworld_button_pressed() -> void:
+	ScreenManager.go_to_screen(ScreenManager.ScreenName.OVERWORLD, "village")
+
 func _on_quests_button_pressed():
 	ScreenManager.go_to_screen(ScreenManager.ScreenName.QUEST)
 
