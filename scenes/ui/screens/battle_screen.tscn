@@ -2,15 +2,12 @@
 
 [ext_resource type="Script" uid="uid://cqc6b58dnjxis" path="res://scripts/ui/screens/battle_screen.gd" id="1_ihhiw"]
 [ext_resource type="PackedScene" uid="uid://bjx12sxd6xqme" path="res://scenes/ui/components/hero_info.tscn" id="3_e8mee"]
-[ext_resource type="PackedScene" uid="uid://ehxty8k3d2vu" path="res://scenes/ui/components/quest_progress_bar.tscn" id="3_ihhiw"]
 [ext_resource type="Theme" uid="uid://cra87dj7simd8" path="res://resources/ui/progress_bar/red_bar.tres" id="3_pxpkm"]
 [ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://resources/ui/button_themes/regular/red_button.tres" id="7_iw40k"]
 [ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://resources/ui/button_themes/regular/green_button.tres" id="8_qmdt6"]
 [ext_resource type="Theme" uid="uid://dqwm8agt87lsh" path="res://resources/ui/button_themes/regular/blue_button.tres" id="9_06vtu"]
 [ext_resource type="Theme" uid="uid://phfh7c5hwx1n" path="res://resources/ui/button_themes/regular/yellow_button.tres" id="10_c2ins"]
 [ext_resource type="Script" uid="uid://bgmcha5vrlqop" path="res://scripts/systems/battle_manager.gd" id="11_o00jr"]
-[ext_resource type="PackedScene" uid="uid://4fne8gv1pkcd" path="res://scenes/ui/windows/monster_slain_window.tscn" id="11_xvgma"]
-[ext_resource type="PackedScene" uid="uid://brs86db0uckno" path="res://scenes/ui/windows/quest_complete_window.tscn" id="11_yj4kj"]
 
 [node name="BattleScreen" type="Control" unique_id=1921801911]
 layout_mode = 3
@@ -45,11 +42,6 @@ layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
 scroll_following = true
-
-[node name="QuestProgressBar" parent="MarginContainer" unique_id=786005872 instance=ExtResource("3_ihhiw")]
-layout_mode = 2
-size_flags_horizontal = 6
-size_flags_vertical = 0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=12366038]
 layout_mode = 2
@@ -138,29 +130,19 @@ text = "This is an Ability"
 [node name="BattleManager" type="Node" parent="." unique_id=973972740]
 script = ExtResource("11_o00jr")
 
-[node name="MonsterSlainWindow" parent="." unique_id=534091905 instance=ExtResource("11_xvgma")]
-visible = false
-
-[node name="QuestCompleteWindow" parent="." unique_id=1401141905 instance=ExtResource("11_yj4kj")]
-visible = false
-
 [connection signal="toggled" from="MarginContainer/ActionArea/LeftPanel/AbilityButton" to="." method="_on_ability_button_toggled"]
 [connection signal="toggled" from="MarginContainer/ActionArea/LeftPanel/ItemButton" to="." method="_on_item_button_toggled"]
 [connection signal="pressed" from="MarginContainer/ActionArea/LeftPanel/MeditateButton" to="." method="_on_meditate_button_pressed"]
 [connection signal="pressed" from="MarginContainer/ActionArea/LeftPanel/FleeButton" to="." method="_on_flee_button_pressed"]
 [connection signal="battle_log_updated" from="BattleManager" to="." method="_on_battle_log_updated"]
+[connection signal="battle_won" from="BattleManager" to="." method="_on_battle_won"]
 [connection signal="hero_attacking" from="BattleManager" to="." method="_on_hero_attacking"]
 [connection signal="hero_defeated" from="BattleManager" to="." method="_on_hero_defeated"]
 [connection signal="hero_hurt" from="BattleManager" to="." method="_on_hero_hurt"]
 [connection signal="hero_updated" from="BattleManager" to="." method="_on_hero_updated"]
 [connection signal="monster_attacking" from="BattleManager" to="." method="_on_monster_attacking"]
 [connection signal="monster_hurt" from="BattleManager" to="." method="_on_monster_hurt"]
-[connection signal="monster_slain" from="BattleManager" to="." method="_on_monster_slain"]
 [connection signal="monster_turn" from="BattleManager" to="." method="_on_monster_turn"]
 [connection signal="monster_updated" from="BattleManager" to="." method="_on_monster_updated"]
 [connection signal="new_monster" from="BattleManager" to="." method="_on_new_monster"]
 [connection signal="player_turn" from="BattleManager" to="." method="_on_player_turn"]
-[connection signal="quest_completed" from="BattleManager" to="." method="_on_quest_completed"]
-[connection signal="continue_pressed" from="MonsterSlainWindow" to="." method="_on_monster_slain_window_continue_pressed"]
-[connection signal="retreat_pressed" from="MonsterSlainWindow" to="." method="_on_monster_slain_window_retreat_pressed"]
-[connection signal="reward_collected" from="QuestCompleteWindow" to="." method="_on_quest_complete_window_reward_collected"]
