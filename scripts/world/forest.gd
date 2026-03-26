@@ -24,7 +24,9 @@ func _activate_spawn_points() -> void:
 
 func _on_combat_initiated(enemy: Enemy) -> void:
 	enemy.set_physics_process(false)
-	push_warning("Forest: combat_initiated with enemy type '%s'. Wire up CombatManager here." % enemy.enemy_type)
+	print("Starting combat with spawn id: %s" % enemy.spawn_point_id)
+	var config := BattleConfig.create(GameState.hero, enemy, enemy.spawn_point_id)
+	ScreenManager.go_to_screen(ScreenManager.ScreenName.BATTLE, "", config)
 
 func place_player_at_entrance(entrance_id: String) -> void:
 	if not is_node_ready():

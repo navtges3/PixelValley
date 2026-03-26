@@ -9,6 +9,9 @@ class_name SpawnPoint
 var spawned_enemies: Array[Enemy] = []
 
 func spawn(parent: Node, combat_handler: Callable) -> void:
+	if get_path() in GameState.defeated_spawn_ids:
+		return
+
 	if use_existing_children:
 		_wire_existing_children(combat_handler)
 		return
@@ -25,6 +28,7 @@ func spawn(parent: Node, combat_handler: Callable) -> void:
 		enemy.global_position = global_position + spawn_offset * i
 		parent.add_child(enemy)
 		spawned_enemies.append(enemy)
+		enemy.spawn_point_id = get_path()
 		enemy.combat_initiated.connect(combat_handler)
 
 func _wire_existing_children(combat_handler: Callable) -> void:
@@ -33,5 +37,6 @@ func _wire_existing_children(combat_handler: Callable) -> void:
 		if enemy == null:
 			continue
 		spawned_enemies.append(enemy)
+		enemy.spawn_point_id = get_path()
 		if not enemy.combat_initiated.is_connected(combat_handler):
 			enemy.combat_initiated.connect(combat_handler)

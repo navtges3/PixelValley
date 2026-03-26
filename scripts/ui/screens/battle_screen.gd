@@ -6,28 +6,19 @@ const BATTLE_CHARACTER = preload("res://scenes/ui/components/battle_character.ts
 
 @onready var battle_manager = $BattleManager
 
-# Popup Windows
-@onready var monster_slain_window: Window = $MonsterSlainWindow
-@onready var quest_complete_window: Window = $QuestCompleteWindow
-
 @onready var battle_log: RichTextLabel = $MarginContainer/BattleLog
-
-@onready var quest_bar: HBoxContainer = $MarginContainer/QuestProgressBar
 
 # Monster Info
 @onready var monster_health_bar: ProgressBar = $MarginContainer/VBoxContainer/MonsterHealthBar
 @onready var monster_health_bar_label: Label = $MarginContainer/VBoxContainer/MonsterHealthBar/MonsterHealthBarLabel
 @onready var monster_label: Label = $MarginContainer/VBoxContainer/MonsterLabel
 
-
 # Action Area
 @onready var hero_info: HeroInfo = $MarginContainer/ActionArea/HeroInfo
-# Action Buttons
 @onready var ability_button: Button = $MarginContainer/ActionArea/LeftPanel/AbilityButton
 @onready var item_button: Button = $MarginContainer/ActionArea/LeftPanel/ItemButton
 @onready var meditate_button: Button = $MarginContainer/ActionArea/LeftPanel/MeditateButton
 @onready var flee_button: Button = $MarginContainer/ActionArea/LeftPanel/FleeButton
-# Action Options
 @onready var option_list: VBoxContainer = $MarginContainer/ActionArea/MiddlePanel/OptionList
 
 var battle_config: BattleConfig
@@ -39,10 +30,10 @@ func _ready() -> void:
 
 func setup(config: BattleConfig) -> void:
 	battle_config = config
-	quest_bar.quest = battle_config.quest
-	quest_bar.update_quest()
 	_spawn_hero()
 	battle_manager.setup_battle(battle_config)
+
+# --- Hero ---
 
 func _spawn_hero() -> void:
 	hero_info.hero = battle_config.hero
@@ -60,6 +51,7 @@ func _on_hero_attacking() -> void:
 func _on_hero_hurt() -> void:
 	hero_visual.play_hurt()
 
+# --- Monster ---
 func _on_new_monster(monster_ref: Monster) -> void:
 	monster_label.text = monster_ref.name
 	_on_monster_updated(monster_ref)
@@ -86,15 +78,12 @@ func _on_monster_attacking() -> void:
 func _on_monster_hurt() -> void:
 	monster_visual.play_hurt()
 
-func _on_monster_slain(monster_name: String) -> void:
-	print("%s was slain!" % monster_name)
-	monster_visual.play_death()
-	await monster_visual.animation_done
-	quest_bar.update_bar()
-	monster_slain_window.popup_centered()
+# --- Battle Log ---
 
 func _on_battle_log_updated(msg: String) -> void:
 	battle_log.append_text(msg)
+
+# --- Action Buttons ---
 
 func _on_ability_button_toggled(button_pressed: bool):
 	if button_pressed:
@@ -125,6 +114,7 @@ func _on_meditate_button_pressed() -> void:
 	item_button.button_pressed = false
 
 func _on_flee_button_pressed() -> void:
+	battle_manager.player_fled()
 	ScreenManager.go_back()
 
 func _on_player_turn():
@@ -144,26 +134,15 @@ func _on_monster_turn():
 	meditate_button.disabled = true
 	flee_button.disabled = true
 
-func _on_quest_completed():
-	print("Quest completed!")
-	quest_complete_window.show_quest_complete(battle_config.quest)
+# --- End-of-battle ---
 
-func _on_quest_complete_window_reward_collected(_quest: Quest) -> void:
-	if battle_config.is_test_battle:
-		ScreenManager.go_to_screen(ScreenManager.ScreenName.TEST)
-	elif battle_manager.current_quest.id == GameState.quest_manager.LAST_QUEST_ID:
-		ScreenManager.go_back()
+func _on_battle_won() -> void:
+	ScreenManager.go_back()
 
 func _on_hero_defeated():
-	print("Hero defeated!")
 	ScreenManager.go_to_screen(ScreenManager.ScreenName.DEFEAT)
 
-func _on_monster_slain_window_continue_pressed() -> void:
-	battle_manager.get_new_monster()
-	battle_manager.start_player_turn()
-
-func _on_monster_slain_window_retreat_pressed() -> void:
-	ScreenManager.go_back()
+# --- Button Factories ---
 
 func _on_ability_button_pressed(ability: Ability) -> void:
 	print("Ability pressed: ", ability.name)

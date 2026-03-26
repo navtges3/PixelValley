@@ -8,6 +8,7 @@ var village: Village = null
 var current_quest: Quest = null
 var quest_manager: QuestManager = null
 var unlocked_zones: Array = []
+var defeated_spawn_ids: Array[String] = []
 
 # ---------------------------------------------------------
 # GAME START FLOW

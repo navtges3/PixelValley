@@ -6,7 +6,7 @@ signal combat_initiated(enemy: Enemy)
 enum State { IDLE, PATROL, CHASE, DEAD }
 
 @export_group("Identity")
-@export var enemy_type: String = "goblin"
+@export var monster_id: MonsterLoader.MonsterID = MonsterLoader.MonsterID.GOBLIN
 
 @export_group("Patrol")
 @export var patrol_speed: float = 40.0
@@ -16,6 +16,8 @@ enum State { IDLE, PATROL, CHASE, DEAD }
 @export_group("Detection")
 @export var detection_radius: float = 80.0
 @export var detection_collision_mask: int = 1
+
+var spawn_point_id: String = ""
 
 var _state: State = State.PATROL
 var _origin: Vector2 = Vector2.ZERO
@@ -43,14 +45,10 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	match _state:
-		State.IDLE:
-			_process_idle(delta)
-		State.PATROL:
-			_process_patrol(delta)
-		State.CHASE:
-			_process_chase()
-		State.DEAD:
-			pass
+		State.IDLE: _process_idle(delta)
+		State.PATROL: _process_patrol(delta)
+		State.CHASE: _process_chase()
+		State.DEAD: pass
 
 func _process_idle(delta: float) -> void:
 	velocity = Vector2.ZERO
