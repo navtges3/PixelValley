@@ -4,6 +4,8 @@
 [ext_resource type="Script" uid="uid://bearvy32v502w" path="res://scripts/world/forest.gd" id="1_tvyim"]
 [ext_resource type="PackedScene" uid="uid://cv120tmswg7xm" path="res://scenes/world/player.tscn" id="2_ftutg"]
 [ext_resource type="Script" uid="uid://c5sed60hjy0rk" path="res://scripts/world/trigger_zone.gd" id="3_ttkfb"]
+[ext_resource type="Script" uid="uid://bh4ht0hpunwty" path="res://scripts/world/spawn_point.gd" id="5_euhvq"]
+[ext_resource type="PackedScene" uid="uid://bbuw3kio461fn" path="res://scenes/world/enemy.tscn" id="6_uuut2"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ftutg"]
 resource_name = "Forest"
@@ -53,3 +55,10 @@ metadata/_custom_type_script = "uid://c5sed60hjy0rk"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="TriggerZones/ExitTriggerZone" unique_id=496789199]
 shape = SubResource("CircleShape2D_ttkfb")
+
+[node name="EnemySpawns" type="Node2D" parent="." unique_id=1042456803]
+
+[node name="SpawnPoint" type="Marker2D" parent="EnemySpawns" unique_id=1804905389 groups=["spawn_point"]]
+position = Vector2(336, 367)
+script = ExtResource("5_euhvq")
+enemy_scene = ExtResource("6_uuut2")
