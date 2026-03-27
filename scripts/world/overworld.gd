@@ -1,5 +1,6 @@
 extends Node2D
 
+@onready var pause_window: Window = $PauseWindow
 @onready var player: CharacterBody2D = $Player
 @onready var zone_message_label: ZoneMessageLabel = $ZoneMessageLabel
 
@@ -31,3 +32,7 @@ func _on_zone_entered(zone: TriggerZone) -> void:
 
 func _on_zone_locked(message: String, zone: TriggerZone) -> void:
 	zone_message_label.show_message(message, zone.global_position)
+
+func _input(event: InputEvent) -> void:
+	if event.is_action_pressed("ui_cancel") and not pause_window.is_visible():
+		pause_window.popup_centered()

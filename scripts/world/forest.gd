@@ -2,6 +2,7 @@ extends Node2D
 
 const LOCATION_ID := "forest"
 
+@onready var pause_window: Window = $PauseWindow
 @onready var player: CharacterBody2D = $Player
 
 var _pending_entrance_id: String = ""
@@ -46,3 +47,7 @@ func place_player_at_entrance(entrance_id: String) -> void:
 
 func _on_zone_entered(zone: TriggerZone) -> void:
 	player.on_zone_entered(zone)
+
+func _input(event: InputEvent) -> void:
+	if event.is_action_pressed("ui_cancel") and not pause_window.is_visible():
+		pause_window.popup_centered()
