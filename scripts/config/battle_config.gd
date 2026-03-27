@@ -6,6 +6,7 @@ var monster_id: MonsterLoader.MonsterID
 var monster_override: Monster = null
 var enemy_ref: WeakRef = null
 var spawn_point_id: String = ""
+var location_id: String = ""
 
 static func create(p_hero: Hero, p_enemy: Enemy, p_spawn_point_id: String = "", p_monster: Monster = null) -> BattleConfig:
 	var cfg := BattleConfig.new()

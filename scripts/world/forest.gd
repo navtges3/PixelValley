@@ -1,5 +1,7 @@
 extends Node2D
 
+const LOCATION_ID := "forest"
+
 @onready var player: CharacterBody2D = $Player
 
 var _pending_entrance_id: String = ""
@@ -20,12 +22,13 @@ func _activate_spawn_points() -> void:
 		if node is SpawnPoint and not points.has(node):
 			points.append(node)
 	for sp in points:
-		sp.spawn(self, _on_combat_initiated)
+		sp.spawn(self, _on_combat_initiated, LOCATION_ID)
 
 func _on_combat_initiated(enemy: Enemy) -> void:
 	enemy.set_physics_process(false)
 	print("Starting combat with spawn id: %s" % enemy.spawn_point_id)
 	var config := BattleConfig.create(GameState.hero, enemy, enemy.spawn_point_id)
+	config.location_id = LOCATION_ID
 	ScreenManager.go_to_screen(ScreenManager.ScreenName.BATTLE, "", config)
 
 func place_player_at_entrance(entrance_id: String) -> void:

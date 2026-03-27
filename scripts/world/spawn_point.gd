@@ -8,8 +8,9 @@ class_name SpawnPoint
 
 var spawned_enemies: Array[Enemy] = []
 
-func spawn(parent: Node, combat_handler: Callable) -> void:
-	if get_path() in GameState.defeated_spawn_ids:
+func spawn(parent: Node, combat_handler: Callable, location_id: String) -> void:
+	var path = str(get_path())
+	if WorldManager.is_spawner_defeated(location_id, path):
 		return
 
 	if use_existing_children:
@@ -28,15 +29,16 @@ func spawn(parent: Node, combat_handler: Callable) -> void:
 		enemy.global_position = global_position + spawn_offset * i
 		parent.add_child(enemy)
 		spawned_enemies.append(enemy)
-		enemy.spawn_point_id = get_path()
+		enemy.spawn_point_id = path
 		enemy.combat_initiated.connect(combat_handler)
 
 func _wire_existing_children(combat_handler: Callable) -> void:
+	var path = str(get_path())
 	for child in get_children():
 		var enemy := child as Enemy
 		if enemy == null:
 			continue
 		spawned_enemies.append(enemy)
-		enemy.spawn_point_id = get_path()
+		enemy.spawn_point_id = path
 		if not enemy.combat_initiated.is_connected(combat_handler):
 			enemy.combat_initiated.connect(combat_handler)
