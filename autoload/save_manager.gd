@@ -50,8 +50,11 @@ func save_game() -> void:
 	_save_json(save_slot, "meta.json", {
 		"hero_name": GameState.hero.name,
 		"level": GameState.hero.level,
-		"time": Time.get_datetime_string_from_system()
+		"time": Time.get_datetime_string_from_system(),
+		"player_scene": GameState.player_location["scene"],
+		"player_entrance": GameState.player_location["entrance_id"]
 	})
+	print("Saving player location: %s, %s" % [GameState.player_location["scene"], GameState.player_location["entrance_id"]])
 
 	print("SaveManager: Saved game to slot %d" % save_slot)
 
@@ -74,6 +77,12 @@ func load_game(slot: int = 1) -> void:
 
 	var world_json := _load_json(slot, "world_state.json")
 	WorldManager.load_save_data(world_json.get("data", {}))
+
+	var meta_json := _load_json(slot, "meta.json")
+	var scene_int: int = meta_json.get("player_scene", ScreenManager.ScreenName.OVERWORLD)
+	var entrance: String = meta_json.get("player_entrance", "")
+	GameState.player_location = { "scene": scene_int, "entrance_id": entrance }
+	print("Loading player location: %s, %s" % [GameState.player_location["scene"], GameState.player_location["entrance_id"]])
 
 	print("SaveManager: Loaded game from slot %d" % slot)
 

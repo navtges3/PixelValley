@@ -88,6 +88,7 @@ func _change_scene(path: String, entrance_id: String = "", data = null) -> void:
 	if data != null and scene.has_method("setup"):
 		scene.setup(data)
 	if entrance_id != "" and scene.has_method("place_player_at_entrance"):
+		print("Placing player at entrance: %s" % entrance_id)
 		scene.place_player_at_entrance(entrance_id)
 	
 	await get_tree().process_frame

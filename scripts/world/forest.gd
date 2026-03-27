@@ -33,6 +33,7 @@ func _on_combat_initiated(enemy: Enemy) -> void:
 	ScreenManager.go_to_screen(ScreenManager.ScreenName.BATTLE, "", config)
 
 func place_player_at_entrance(entrance_id: String) -> void:
+	GameState.set_player_location(ScreenManager.ScreenName.FOREST, entrance_id)
 	if not is_node_ready():
 		_pending_entrance_id = entrance_id
 		return

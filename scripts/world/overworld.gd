@@ -17,6 +17,7 @@ func _ready() -> void:
 		place_player_at_entrance(_pending_entrance_id)
 
 func place_player_at_entrance(entrance_id: String) -> void:
+	GameState.set_player_location(ScreenManager.ScreenName.OVERWORLD, entrance_id)
 	if not is_node_ready():
 		_pending_entrance_id = entrance_id
 		return

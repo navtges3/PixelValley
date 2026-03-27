@@ -43,7 +43,9 @@ func setup_filled_slot(button: Button, meta: Dictionary, slot_index: int) -> voi
 	button.pressed.connect(func():
 		self.hide()
 		SaveManager.load_game(slot_index)
-		ScreenManager.go_to_screen(ScreenManager.ScreenName.VILLAGE)
+		var loc := GameState.player_location
+		print("Scene: %s, Entrance: %s" % [loc["scene"], loc["entrance_id"]])
+		ScreenManager.go_to_screen(loc["scene"], loc["entrance_id"])
 	)
 
 func _on_back_button_pressed():
