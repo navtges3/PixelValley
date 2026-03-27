@@ -6,6 +6,7 @@
 [ext_resource type="Script" uid="uid://c5sed60hjy0rk" path="res://scripts/world/trigger_zone.gd" id="3_ttkfb"]
 [ext_resource type="Script" uid="uid://bh4ht0hpunwty" path="res://scripts/world/spawn_point.gd" id="5_euhvq"]
 [ext_resource type="PackedScene" uid="uid://bbuw3kio461fn" path="res://scenes/world/enemy.tscn" id="6_uuut2"]
+[ext_resource type="PackedScene" uid="uid://btej8vh3kxmxo" path="res://scenes/ui/windows/pause_window.tscn" id="7_1da0x"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ftutg"]
 resource_name = "Forest"
@@ -64,3 +65,6 @@ script = ExtResource("5_euhvq")
 enemy_scene = ExtResource("6_uuut2")
 spawn_count = 3
 spawn_offset = Vector2(32, 0)
+
+[node name="PauseWindow" parent="." unique_id=917561531 instance=ExtResource("7_1da0x")]
+visible = false

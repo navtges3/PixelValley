@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://bs76crftspga2" path="res://assets/overworld/overworld_tileset_placeholder.png" id="1_fyirm"]
 [ext_resource type="PackedScene" uid="uid://cv120tmswg7xm" path="res://scenes/world/player.tscn" id="2_e7reh"]
 [ext_resource type="Script" uid="uid://c5sed60hjy0rk" path="res://scripts/world/trigger_zone.gd" id="2_rt3mv"]
+[ext_resource type="PackedScene" uid="uid://btej8vh3kxmxo" path="res://scenes/ui/windows/pause_window.tscn" id="5_h8u16"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_fyirm"]
 resource_name = "VillageAtlas"
@@ -117,3 +118,6 @@ offset_top = -39.0
 offset_right = 31.0
 offset_bottom = -16.0
 text = "Armory"
+
+[node name="PauseWindow" parent="." unique_id=917561531 instance=ExtResource("5_h8u16")]
+visible = false

@@ -5,6 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://cv120tmswg7xm" path="res://scenes/world/player.tscn" id="2_het3u"]
 [ext_resource type="PackedScene" uid="uid://be34gw2t63gdo" path="res://scenes/world/zone_message_label.tscn" id="4_fxtkv"]
 [ext_resource type="Script" uid="uid://c5sed60hjy0rk" path="res://scripts/world/trigger_zone.gd" id="5_h0wcu"]
+[ext_resource type="PackedScene" uid="uid://btej8vh3kxmxo" path="res://scenes/ui/windows/pause_window.tscn" id="6_espw7"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_pwl2g"]
 resource_name = "placeholder"
@@ -98,3 +99,6 @@ metadata/_custom_type_script = "uid://c5sed60hjy0rk"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="TriggerZones/CaveTriggerZone" unique_id=155573026]
 shape = SubResource("CircleShape2D_h0wcu")
+
+[node name="PauseWindow" parent="." unique_id=917561531 instance=ExtResource("6_espw7")]
+visible = false
