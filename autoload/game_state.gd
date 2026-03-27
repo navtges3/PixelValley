@@ -8,7 +8,6 @@ var village: Village = null
 var current_quest: Quest = null
 var quest_manager: QuestManager = null
 var unlocked_zones: Array = []
-var defeated_spawn_ids: Array[String] = []
 
 # ---------------------------------------------------------
 # GAME START FLOW
@@ -18,6 +17,7 @@ func start_new_game(slot := 1) -> void:
 	quest_manager = QuestManager.new()
 	quest_manager.new_game()
 	reset_zone_state()
+	WorldManager.reset()
 	SaveManager.new_save(slot)
 	print("GameState: New game started in slot %d" % slot)
 

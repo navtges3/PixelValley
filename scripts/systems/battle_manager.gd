@@ -5,6 +5,7 @@ enum BattleState { PLAYER_TURN, MONSTER_TURN, RESOLVING, VICTORY, DEFEAT }
 var hero: Hero
 var monster: Monster
 var spawn_point_id: String = ""
+var location_id: String = ""
 
 var state = BattleState.PLAYER_TURN
 
@@ -28,11 +29,14 @@ signal monster_hurt()
 func setup_battle(config: BattleConfig) -> void:
 	hero = config.hero
 	spawn_point_id = config.spawn_point_id
+	location_id = config.location_id
+
 	var m: Monster = config.monster_override if config.monster_override \
 		else MonsterLoader.new_monster(config.monster_id)
 	if m == null:
 		push_error("BattleManager: could not load monster for monster_id '%s'" % config.monster_id)
 		return
+
 	monster = m
 	hero_updated.emit(hero)
 	new_monster.emit(monster)
@@ -131,7 +135,7 @@ func end_battle(player_won: bool) -> void:
 	battle_log_updated.emit("%s wins!\n" % hero.get_colored_name() if player_won else "%s loses!\n" % hero.get_colored_name())
 	if player_won:
 		if spawn_point_id != "":
-			GameState.defeated_spawn_ids.append(spawn_point_id)
+			WorldManager.mark_spawner_defeated(location_id, spawn_point_id)
 		battle_won.emit()
 	else:
 		hero_defeated.emit()

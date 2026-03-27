@@ -43,6 +43,10 @@ func save_game() -> void:
 		"data": _get_zone_state_data()
 	})
 
+	_save_json(save_slot, "world_state.json", {
+		"data": WorldManager.get_save_data()
+	})
+
 	_save_json(save_slot, "meta.json", {
 		"hero_name": GameState.hero.name,
 		"level": GameState.hero.level,
@@ -67,6 +71,9 @@ func load_game(slot: int = 1) -> void:
 
 	var zone_json := _load_json(slot, "zone_state.json")
 	_load_zone_state(zone_json.get("data", {}))
+
+	var world_json := _load_json(slot, "world_state.json")
+	WorldManager.load_save_data(world_json.get("data", {}))
 
 	print("SaveManager: Loaded game from slot %d" % slot)
 
