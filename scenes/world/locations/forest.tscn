@@ -39,7 +39,7 @@ position = Vector2(513, 441)
 position = Vector2(112, 368)
 script = ExtResource("3_ttkfb")
 entrance_id = "forest"
-screen_target = 13
+screen_target = 8
 metadata/_custom_type_script = "uid://c5sed60hjy0rk"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="TriggerZones/ExitTriggerZone" unique_id=496789199]
