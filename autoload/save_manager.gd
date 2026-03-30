@@ -38,10 +38,6 @@ func save_game() -> void:
 	_save_json(save_slot, "quests.json", {
 		"data": _get_quests_data(GameState.quest_manager)
 	})
-	
-	_save_json(save_slot, "zone_state.json", {
-		"data": _get_zone_state_data()
-	})
 
 	_save_json(save_slot, "world_state.json", {
 		"data": WorldManager.get_save_data()
@@ -54,8 +50,7 @@ func save_game() -> void:
 		"player_scene": GameState.player_location["scene"],
 		"player_entrance": GameState.player_location["entrance_id"]
 	})
-	print("Saving player location: %s, %s" % [GameState.player_location["scene"], GameState.player_location["entrance_id"]])
-
+	print("SaveManager: Saving player location: %s, %s" % [GameState.player_location["scene"], GameState.player_location["entrance_id"]])
 	print("SaveManager: Saved game to slot %d" % save_slot)
 
 func load_game(slot: int = 1) -> void:
@@ -72,9 +67,6 @@ func load_game(slot: int = 1) -> void:
 	var quest_json := _load_json(slot, "quests.json")
 	GameState.quest_manager = _load_quests(quest_json.get("data", {}))
 
-	var zone_json := _load_json(slot, "zone_state.json")
-	_load_zone_state(zone_json.get("data", {}))
-
 	var world_json := _load_json(slot, "world_state.json")
 	WorldManager.load_save_data(world_json.get("data", {}))
 
@@ -82,8 +74,7 @@ func load_game(slot: int = 1) -> void:
 	var scene_int: int = meta_json.get("player_scene", ScreenManager.ScreenName.OVERWORLD)
 	var entrance: String = meta_json.get("player_entrance", "")
 	GameState.player_location = { "scene": scene_int, "entrance_id": entrance }
-	print("Loading player location: %s, %s" % [GameState.player_location["scene"], GameState.player_location["entrance_id"]])
-
+	print("SaveManager: Loading player location: %s, %s" % [GameState.player_location["scene"], GameState.player_location["entrance_id"]])
 	print("SaveManager: Loaded game from slot %d" % slot)
 
 func get_meta_data(slot: int = 1) -> Dictionary:
@@ -273,20 +264,6 @@ func _load_inventory(data: Dictionary) -> Inventory:
 			inv.potions.append(ItemStack.new(item, count))
 
 	return inv
-
-# ---------------------------------------------------------
-# ZONE STATE
-# ---------------------------------------------------------
-func _get_zone_state_data() -> Dictionary:
-	return {
-		"unlocked_zones": GameState.unlocked_zones.duplicate()
-	}
-
-func _load_zone_state(data: Dictionary) -> void:
-	GameState.reset_zone_state()
-	var zones = data.get("unlocked_zones", [])
-	for z in zones:
-		GameState.unlocked_zones.append(z)
 
 # ---------------------------------------------------------
 # VILLAGE
