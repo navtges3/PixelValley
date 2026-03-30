@@ -8,7 +8,7 @@
 [node name="LoadWindow" type="Window" unique_id=1918541071]
 transparent_bg = true
 oversampling_override = 1.0
-size = Vector2i(382, 619)
+size = Vector2i(706, 1064)
 wrap_controls = true
 borderless = true
 transparent = true
@@ -40,7 +40,11 @@ layout_mode = 2
 text = "Load Game"
 horizontal_alignment = 1
 
-[node name="SlotButton1" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=1422867528]
+[node name="GridContainer" type="GridContainer" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=1009516300]
+layout_mode = 2
+columns = 2
+
+[node name="SlotButton1" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/GridContainer" unique_id=1422867528]
 custom_minimum_size = Vector2(320, 90)
 layout_mode = 2
 theme = ExtResource("1_mciuq")
@@ -49,7 +53,16 @@ Level: XX
 Last Played: YYYY-MM-DDTHH:MM:SS"
 alignment = 0
 
-[node name="SlotButton2" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=79140556]
+[node name="DeleteButton1" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/GridContainer" unique_id=713398297]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("2_svb4e")
+text = "Delete"
+alignment = 0
+
+[node name="SlotButton2" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/GridContainer" unique_id=79140556]
 custom_minimum_size = Vector2(320, 90)
 layout_mode = 2
 theme = ExtResource("1_mciuq")
@@ -58,7 +71,16 @@ Level: XX
 Last Played: YYYY-MM-DDTHH:MM:SS"
 alignment = 0
 
-[node name="SlotButton3" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=409984525]
+[node name="DeleteButton2" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/GridContainer" unique_id=1942092349]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("2_svb4e")
+text = "Delete"
+alignment = 0
+
+[node name="SlotButton3" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/GridContainer" unique_id=409984525]
 custom_minimum_size = Vector2(320, 90)
 layout_mode = 2
 theme = ExtResource("1_mciuq")
@@ -67,7 +89,16 @@ Level: XX
 Last Played: YYYY-MM-DDTHH:MM:SS"
 alignment = 0
 
-[node name="SlotButton4" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=783843583]
+[node name="DeleteButton3" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/GridContainer" unique_id=258294251]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("2_svb4e")
+text = "Delete"
+alignment = 0
+
+[node name="SlotButton4" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/GridContainer" unique_id=783843583]
 custom_minimum_size = Vector2(320, 90)
 layout_mode = 2
 theme = ExtResource("1_mciuq")
@@ -76,11 +107,29 @@ Level: XX
 Last Played: YYYY-MM-DDTHH:MM:SS"
 alignment = 0
 
-[node name="SlotButton5" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=1531682940]
+[node name="DeleteButton4" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/GridContainer" unique_id=671504719]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("2_svb4e")
+text = "Delete"
+alignment = 0
+
+[node name="SlotButton5" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/GridContainer" unique_id=1531682940]
 custom_minimum_size = Vector2(320, 90)
 layout_mode = 2
 theme = ExtResource("2_svb4e")
 text = "Empty Slot"
+
+[node name="DeleteButton5" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/GridContainer" unique_id=1593900263]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("2_svb4e")
+text = "Delete"
+alignment = 0
 
 [node name="BackButton" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=807725961]
 custom_minimum_size = Vector2(96, 32)
