@@ -4,28 +4,52 @@ const GREEN_BUTTON = preload("uid://cgbnpl6hlm7s2")
 const RED_BUTTON = preload("uid://130ubmqd1h3b")
 
 @onready var slot_buttons: Array[Button] = [
-	$PanelContainer/MarginContainer/VBoxContainer/SlotButton1,
-	$PanelContainer/MarginContainer/VBoxContainer/SlotButton2,
-	$PanelContainer/MarginContainer/VBoxContainer/SlotButton3,
-	$PanelContainer/MarginContainer/VBoxContainer/SlotButton4,
-	$PanelContainer/MarginContainer/VBoxContainer/SlotButton5,
+	$PanelContainer/MarginContainer/VBoxContainer/GridContainer/SlotButton1,
+	$PanelContainer/MarginContainer/VBoxContainer/GridContainer/SlotButton2,
+	$PanelContainer/MarginContainer/VBoxContainer/GridContainer/SlotButton3,
+	$PanelContainer/MarginContainer/VBoxContainer/GridContainer/SlotButton4, 
+	$PanelContainer/MarginContainer/VBoxContainer/GridContainer/SlotButton5
+]
+@onready var delete_buttons: Array[Button] = [
+	$PanelContainer/MarginContainer/VBoxContainer/GridContainer/DeleteButton1,
+	$PanelContainer/MarginContainer/VBoxContainer/GridContainer/DeleteButton2,
+	$PanelContainer/MarginContainer/VBoxContainer/GridContainer/DeleteButton3,
+	$PanelContainer/MarginContainer/VBoxContainer/GridContainer/DeleteButton4,
+	$PanelContainer/MarginContainer/VBoxContainer/GridContainer/DeleteButton5
 ]
 @onready var back_button: Button = $PanelContainer/MarginContainer/VBoxContainer/BackButton
 
 func _ready() -> void:
 	exclusive = true
+	for i in slot_buttons.size():
+		var slot_index = i + 1
+		slot_buttons[i].pressed.connect(func(): _on_slot_button_pressed(slot_index))
+		delete_buttons[i].pressed.connect(func(): _on_delete_button_pressed(slot_index))
 	populate_slots()
 
 func populate_slots() -> void:
 	for i in slot_buttons.size():
-		var button := slot_buttons[i]
 		var slot_index := i + 1
-
 		if SaveManager.has_save_data(slot_index):
 			var meta := SaveManager.get_meta_data(slot_index)
-			setup_filled_slot(button, meta, slot_index)
+			setup_filled_slot(slot_buttons[i], meta, slot_index)
+			delete_buttons[i].disabled = false
 		else:
-			setup_empty_slot(button)
+			setup_empty_slot(slot_buttons[i])
+			delete_buttons[i].disabled = true
+
+func _on_slot_button_pressed(slot: int) -> void:
+	if not SaveManager.has_save_data(slot):
+		return
+	self.hide()
+	SaveManager.load_game(slot)
+	var loc := GameState.player_location
+	print("Scene: %s, Entrance: %s" % [loc["scene"], loc["entrance_id"]])
+	ScreenManager.go_to_screen(loc["scene"], loc["entrance_id"])
+
+func _on_delete_button_pressed(slot: int) -> void:
+	SaveManager.delete_slot(slot)
+	populate_slots()
 
 func setup_empty_slot(button: Button) -> void:
 	button.text = "Empty Slot"
@@ -40,13 +64,7 @@ func setup_filled_slot(button: Button, meta: Dictionary, slot_index: int) -> voi
 	button.text = "%s\nLevel: %d\nLast Played: %s" % [hero_name, level, last_played]
 	button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 	button.theme = GREEN_BUTTON
-	button.pressed.connect(func():
-		self.hide()
-		SaveManager.load_game(slot_index)
-		var loc := GameState.player_location
-		print("Scene: %s, Entrance: %s" % [loc["scene"], loc["entrance_id"]])
-		ScreenManager.go_to_screen(loc["scene"], loc["entrance_id"])
-	)
+	button.pressed.connect(func(): _on_slot_button_pressed(slot_index))
 
 func _on_back_button_pressed():
 	self.hide()

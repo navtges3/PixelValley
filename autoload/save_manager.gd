@@ -90,6 +90,20 @@ func get_meta_data(slot: int = 1) -> Dictionary:
 	var meta_json := _load_json(slot, "meta.json")
 	return meta_json
 
+func delete_slot(slot: int = 1) -> void:
+	var dir := get_slot_dir(slot)
+	if not DirAccess.dir_exists_absolute(dir):
+		push_warning("SaveManager: No save data to delete for slot %d" % slot)
+		return
+	var files := ["hero.json", "village.json", "quests.json",
+		"zone_state.json", "world_state.json", "meta.json"]
+	for filename in files:
+		var path := dir.path_join(filename)
+		if FileAccess.file_exists(path):
+			DirAccess.remove_absolute(path)
+	DirAccess.remove_absolute(dir)
+	print("SaveManager: Deleted slot %d" % slot)
+
 # ---------------------------------------------------------
 # LOW-LEVEL JSON HANDLING
 # ---------------------------------------------------------
