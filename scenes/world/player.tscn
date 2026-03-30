@@ -153,3 +153,4 @@ frame_progress = 0.47689337
 shape = SubResource("RectangleShape2D_hqqc5")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=955191571]
+zoom = Vector2(1.5, 1.5)
