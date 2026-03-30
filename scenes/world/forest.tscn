@@ -27,6 +27,7 @@ tile_map_data = PackedByteArray("AAACAAoAAwAIAAAAAAACAAsAAwAIAAEAAAACAAwAAwAIAAM
 tile_set = ExtResource("2_1da0x")
 
 [node name="Locations" type="TileMapLayer" parent="." unique_id=1617493271]
+tile_map_data = PackedByteArray("AAADAAsAAQAGAAAAAAA=")
 tile_set = ExtResource("2_1da0x")
 
 [node name="Player" parent="." unique_id=426329780 groups=["player"] instance=ExtResource("2_ftutg")]

@@ -11,7 +11,7 @@ signal zone_locked(message: String)
 
 func _ready() -> void:
 	body_entered.connect(_on_body_entered)
-	if locked and GameState.is_zone_unlocked(entrance_id):
+	if locked and WorldManager.is_unlocked(entrance_id):
 		locked = false
 
 func _on_body_entered(body: Node2D) -> void:
@@ -25,4 +25,4 @@ func _on_body_entered(body: Node2D) -> void:
 func unlock() -> void:
 	if locked:
 		locked = false
-		GameState.unlock_zone(entrance_id)
+		WorldManager.unlock_location(entrance_id)

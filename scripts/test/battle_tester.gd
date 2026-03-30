@@ -32,25 +32,13 @@ func load_monsters():
 	for i in monster_resources.size():
 		monster_dropdown.add_item(MonsterLoader.get_monster_name(i))
 
-
 func _on_start_battle_pressed() -> void:
-	GameState.hero = hero_resources[hero_dropdown.get_selected_id()].duplicate()
-	print("Hero selected: ", GameState.hero.name)
-
-	var monster_obj = MonsterRequirement.new()
-	monster_obj.monster_id = monster_resources[monster_dropdown.get_selected_id()]
-	monster_obj.target_amount = monster_spin_box.value
-	var test_quest = Quest.new()
-	test_quest.title = "Test Quest"
-	test_quest.monster_objectives.append(monster_obj)
-
 	var config := BattleConfig.new()
-	config.hero = GameState.hero
-	config.quest = test_quest
-	config.is_test_battle = true
-
+	config.monster_id = monster_resources[monster_dropdown.get_selected_id()]
+	config.hero = hero_resources[hero_dropdown.get_selected_id()].duplicate()
+	GameState.hero = config.hero
+	print("Hero selected: ", GameState.hero.name)
 	ScreenManager.go_to_screen(ScreenManager.ScreenName.BATTLE, "", config)
-
 
 func _on_back_button_pressed() -> void:
 	get_tree().quit()
