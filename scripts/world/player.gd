@@ -30,7 +30,7 @@ func _update_animation(input: Vector2) -> void:
 		anim.play("walk_down" if input.y > 0 else "walk_up")
 
 func on_zone_entered(zone: TriggerZone) -> void:
-	if _zone_cooldown:
+	if _zone_cooldown or zone.locked:
 		return
 	_zone_cooldown = true
 	await get_tree().process_frame
