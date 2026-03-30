@@ -8,6 +8,7 @@ var village: Village = null
 var current_quest: Quest = null
 var quest_manager: QuestManager = null
 var unlocked_zones: Array = []
+var pre_combat_position: Vector2 = Vector2.ZERO
 
 # --- Game Start Flow ---
 func start_new_game(slot := 1) -> void:

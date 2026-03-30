@@ -16,6 +16,12 @@ func _ready() -> void:
 	if _pending_entrance_id != "":
 		place_player_at_entrance(_pending_entrance_id)
 	_activate_spawn_points()
+	_restore_combat_position()
+
+func _restore_combat_position() -> void:
+	if GameState.pre_combat_position != Vector2.ZERO:
+		$Player.global_position = GameState.pre_combat_position
+		GameState.pre_combat_position = Vector2.ZERO
 
 func _activate_spawn_points() -> void:
 	var points: Array = []
@@ -27,6 +33,7 @@ func _activate_spawn_points() -> void:
 
 func _on_combat_initiated(enemy: Enemy) -> void:
 	enemy.set_physics_process(false)
+	GameState.pre_combat_position = $Player.global_position
 	print("Starting combat with spawn id: %s" % enemy.spawn_point_id)
 	var config := BattleConfig.create(GameState.hero, enemy, enemy.spawn_point_id)
 	config.location_id = LOCATION_ID
