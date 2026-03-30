@@ -50,7 +50,7 @@ position = Vector2(753, 367)
 position = Vector2(1248, 291)
 script = ExtResource("2_rt3mv")
 entrance_id = "village"
-screen_target = 13
+screen_target = 8
 metadata/_custom_type_script = "uid://c5sed60hjy0rk"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="TriggerZones/ExitTriggerZone" unique_id=1369611110]

@@ -4,7 +4,7 @@ class_name TriggerZone
 @export var locked: bool = false
 @export var entrance_id: String = ""
 @export var locked_message: String = "The path is blocked."
-@export var screen_target: ScreenManager.ScreenName = ScreenManager.ScreenName.VILLAGE
+@export var screen_target: ScreenManager.ScreenName = ScreenManager.ScreenName.NONE
 
 signal zone_entered(zone: TriggerZone)
 signal zone_locked(message: String)
