@@ -34,7 +34,6 @@ func setup(config: BattleConfig) -> void:
 	battle_manager.setup_battle(battle_config)
 
 # --- Hero ---
-
 func _spawn_hero() -> void:
 	hero_info.hero = battle_config.hero
 	hero_visual = BATTLE_CHARACTER.instantiate()
@@ -79,12 +78,10 @@ func _on_monster_hurt() -> void:
 	monster_visual.play_hurt()
 
 # --- Battle Log ---
-
 func _on_battle_log_updated(msg: String) -> void:
 	battle_log.append_text(msg)
 
 # --- Action Buttons ---
-
 func _on_ability_button_toggled(button_pressed: bool):
 	if button_pressed:
 		item_button.button_pressed = false
@@ -135,15 +132,14 @@ func _on_monster_turn():
 	flee_button.disabled = true
 
 # --- End-of-battle ---
-
 func _on_battle_won() -> void:
 	ScreenManager.go_back()
 
 func _on_hero_defeated():
-	ScreenManager.go_to_screen(ScreenManager.ScreenName.DEFEAT)
+	GameState.hero.rest()
+	ScreenManager.go_to_screen(ScreenManager.ScreenName.VILLAGE, "village")
 
 # --- Button Factories ---
-
 func _on_ability_button_pressed(ability: Ability) -> void:
 	print("Ability pressed: ", ability.name)
 	battle_manager.player_ability_selected(ability)

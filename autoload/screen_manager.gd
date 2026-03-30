@@ -8,37 +8,31 @@ var _overlay: ColorRect
 
 enum ScreenName {
 	NONE,
-	MAIN_MENU,
-	NEW_GAME,
+	MAIN_MENU, NEW_GAME,
 	VILLAGE,
-	INN,
-	SHOP,
-	ARMORY,
-	TRAINING,
-	BATTLE,
-	QUEST,
-	DEFEAT,
-	VICTORY,
-	TEST,
+	INN, SHOP, ARMORY, TRAINING,
 	OVERWORLD,
 	FOREST,
+	BATTLE,
+	QUEST,
+	VICTORY,
+	TEST,
 }
 
 var SCENE_PATHS := {
 	ScreenName.MAIN_MENU: "res://scenes/ui/screens/main_menu_screen.tscn",
 	ScreenName.NEW_GAME: "res://scenes/ui/screens/new_game_screen.tscn",
-	ScreenName.VILLAGE: "res://scenes/world/village.tscn",
+	ScreenName.VILLAGE: "res://scenes/world/locations/village.tscn",
 	ScreenName.INN: "res://scenes/ui/screens/inn_screen.tscn",
 	ScreenName.SHOP: "res://scenes/ui/screens/shop_screen.tscn",
 	ScreenName.ARMORY: "res://scenes/ui/screens/armory_screen.tscn",
 	ScreenName.TRAINING: "res://scenes/ui/screens/training_screen.tscn",
+	ScreenName.OVERWORLD: "res://scenes/world/locations/overworld.tscn",
+	ScreenName.FOREST: "res://scenes/world/locations/forest.tscn",
 	ScreenName.BATTLE: "res://scenes/ui/screens/battle_screen.tscn",
 	ScreenName.QUEST: "res://scenes/ui/screens/quest_screen.tscn",
-	ScreenName.DEFEAT: "res://scenes/ui/screens/defeat_screen.tscn",
 	ScreenName.VICTORY: "res://scenes/ui/screens/victory_screen.tscn",
 	ScreenName.TEST: "res://scenes/test/battle_tester.tscn",
-	ScreenName.OVERWORLD: "res://scenes/world/overworld.tscn",
-	ScreenName.FOREST: "res://scenes/world/forest.tscn",
 }
 
 func _ready() -> void:
