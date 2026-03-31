@@ -108,6 +108,7 @@ func _on_monster_killed() -> void:
 	hero.inventory.gold += monster.gold
 	hero.gain_experience(experience)
 	hero_updated.emit(hero)
+	GameState.monster_killed.emit(monster.monster_id, location_id)
 	end_battle(true)
 
 func enemy_turn() -> void:

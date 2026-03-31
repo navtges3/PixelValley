@@ -9,6 +9,8 @@ var current_quest: Quest = null
 var quest_manager: QuestManager = null
 var pre_combat_position: Vector2 = Vector2.ZERO
 
+signal monster_killed(monster_id: MonsterLoader.MonsterID, location_id: String)
+
 # --- Game Start Flow ---
 func start_new_game(slot := 1) -> void:
 	village = DEFAULT_VILLAGE.duplicate()
