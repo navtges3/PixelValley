@@ -74,6 +74,7 @@ func load_game(slot: int = 1) -> void:
 	var scene_int: int = meta_json.get("player_scene", ScreenManager.ScreenName.OVERWORLD)
 	var entrance: String = meta_json.get("player_entrance", "")
 	GameState.player_location = { "scene": scene_int, "entrance_id": entrance }
+	GameState.quest_manager.reconnect_signals()
 	print("SaveManager: Loading player location: %s, %s" % [GameState.player_location["scene"], GameState.player_location["entrance_id"]])
 	print("SaveManager: Loaded game from slot %d" % slot)
 
@@ -367,6 +368,7 @@ func _get_quest_data(quest: Quest) -> Dictionary:
 		"description": quest.description,
 		"next_quests": quest.next_quests.duplicate(),
 		"completed": quest.completed,
+		"unlocks_locations": quest.unlocks_locations.duplicate(),
 		"monster_objectives": [],
 		"rewards": [],
 	}
@@ -375,7 +377,8 @@ func _get_quest_data(quest: Quest) -> Dictionary:
 		data["monster_objectives"].append({
 			"monster_id": obj.monster_id,
 			"target_amount": obj.target_amount,
-			"current_amount": obj.current_amount
+			"current_amount": obj.current_amount,
+			"location_id": obj.location_id
 		})
 	# rewards
 	for reward in quest.reward:
@@ -402,12 +405,15 @@ func _load_quest(data: Dictionary) -> Quest:
 	# Restore next_quests so unlocking the follow-up works after a load.
 	var raw_next: Array = data.get("next_quests", [])
 	quest.next_quests.assign(raw_next)
+	var raw_unlocks: Array = data.get("unlocks_locations", [])
+	quest.unlocks_locations.assign(raw_unlocks)
 	# monster_objectives
 	for obj_data in data.get("monster_objectives", []):
 		var obj := MonsterRequirement.new()
 		obj.monster_id = obj_data.get("monster_id", MonsterLoader.MonsterID.GOBLIN)
 		obj.target_amount = obj_data.get("target_amount", 1)
 		obj.current_amount = obj_data.get("current_amount", 0)
+		obj.location_id = obj_data.get("location_id", "")
 		quest.monster_objectives.append(obj)
 	# rewards
 	for reward_data in data.get("rewards", []):

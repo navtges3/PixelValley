@@ -6,7 +6,8 @@
 
 [sub_resource type="Resource" id="Resource_fhtom"]
 script = ExtResource("1_gm6gv")
-target_amount = 5
+target_amount = 3
+location_id = "forest"
 metadata/_custom_type_script = "uid://bhsjswm1wnll8"
 
 [sub_resource type="Resource" id="Resource_10kci"]

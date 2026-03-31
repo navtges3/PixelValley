@@ -7,6 +7,7 @@ extends Resource
 @export var monster_objectives: Array[MonsterRequirement]
 @export var reward: Array[QuestReward]
 @export var next_quests: Array[int]
+@export var unlocks_locations: Array[String] = []
 @export var completed: bool = false
 
 signal quest_completed(quest: Quest)
@@ -33,9 +34,13 @@ func get_slain_count() -> int:
 		count += objective.current_amount
 	return count
 
-func slay_monster(monster_id: MonsterLoader.MonsterID) -> bool:
+func slay_monster(monster_id: MonsterLoader.MonsterID, location_id: String = "") -> bool:
 	for objective in monster_objectives:
-		if objective.monster_id == monster_id:
+		if objective.monster_id != monster_id:
+			continue
+		if objective.location_id != "" and objective.location_id != location_id:
+			continue
+		if objective.current_amount < objective.target_amount:
 			objective.current_amount += 1
 	return check_completion()
 
