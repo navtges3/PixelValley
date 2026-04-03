@@ -2,6 +2,10 @@
 
 [ext_resource type="Texture2D" uid="uid://c034etcwisgao" path="res://assets/monsters/goblin/goblin_world_spritesheet.png" id="1_1knkk"]
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_1knkk"]
+atlas = ExtResource("1_1knkk")
+region = Rect2(0, 0, 32, 32)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_5ec8c"]
 atlas = ExtResource("1_1knkk")
 region = Rect2(0, 0, 32, 32)
@@ -68,6 +72,14 @@ region = Rect2(96, 96, 32, 32)
 
 [resource]
 animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1knkk")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_5ec8c")
