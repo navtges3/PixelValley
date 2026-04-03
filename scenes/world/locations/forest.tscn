@@ -5,7 +5,6 @@
 [ext_resource type="PackedScene" uid="uid://cv120tmswg7xm" path="res://scenes/world/player.tscn" id="2_ftutg"]
 [ext_resource type="Script" uid="uid://c5sed60hjy0rk" path="res://scripts/world/trigger_zone.gd" id="3_ttkfb"]
 [ext_resource type="Script" uid="uid://bh4ht0hpunwty" path="res://scripts/world/spawn_point.gd" id="5_euhvq"]
-[ext_resource type="PackedScene" uid="uid://bbuw3kio461fn" path="res://scenes/world/enemy.tscn" id="6_uuut2"]
 [ext_resource type="PackedScene" uid="uid://btej8vh3kxmxo" path="res://scenes/ui/windows/pause_window.tscn" id="7_1da0x"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ttkfb"]
@@ -51,21 +50,27 @@ shape = SubResource("CircleShape2D_ttkfb")
 [node name="EnemySpawns" type="Node2D" parent="." unique_id=1042456803]
 
 [node name="SpawnPoint" type="Marker2D" parent="EnemySpawns" unique_id=1804905389 groups=["spawn_point"]]
-position = Vector2(621, 130)
+position = Vector2(233, 536)
 script = ExtResource("5_euhvq")
-enemy_scene = ExtResource("6_uuut2")
 
 [node name="SpawnPoint2" type="Marker2D" parent="EnemySpawns" unique_id=345326014 groups=["spawn_point"]]
-position = Vector2(853, 385)
+position = Vector2(460, 556)
 script = ExtResource("5_euhvq")
-enemy_scene = ExtResource("6_uuut2")
 
 [node name="SpawnPoint3" type="Marker2D" parent="EnemySpawns" unique_id=1164514806 groups=["spawn_point"]]
-position = Vector2(814, 545)
+position = Vector2(621, 128)
 script = ExtResource("5_euhvq")
-enemy_scene = ExtResource("6_uuut2")
 
 [node name="SpawnPoint4" type="Marker2D" parent="EnemySpawns" unique_id=2105180426 groups=["spawn_point"]]
-position = Vector2(1161, 130)
+position = Vector2(778, 574)
 script = ExtResource("5_euhvq")
-enemy_scene = ExtResource("6_uuut2")
+
+[node name="SpawnPoint5" type="Marker2D" parent="EnemySpawns" unique_id=298816999 groups=["spawn_point"]]
+position = Vector2(847, 438)
+script = ExtResource("5_euhvq")
+
+[node name="BossSpawnPoint" type="Marker2D" parent="EnemySpawns" unique_id=1100285348 groups=["spawn_point"]]
+position = Vector2(1154, 117)
+script = ExtResource("5_euhvq")
+monster_id = 1
+quest_id = 3
