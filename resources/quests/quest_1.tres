@@ -30,4 +30,5 @@ description = "The village reports goblins raiding the grain stores. Drive them 
 monster_objectives = Array[ExtResource("1_gm6gv")]([SubResource("Resource_fhtom")])
 reward = Array[ExtResource("3_ac10j")]([SubResource("Resource_10kci"), SubResource("Resource_mwjs7")])
 next_quests = Array[int]([2])
+unlocks_locations = Array[String](["war_camp"])
 metadata/_custom_type_script = "uid://xhl8p6y5w5e6"

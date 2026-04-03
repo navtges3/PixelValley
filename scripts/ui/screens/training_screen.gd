@@ -1,5 +1,7 @@
 extends Control
 
+const LOCATION_ID := "training"
+
 @onready var hero = GameState.hero
 @onready var skill_points_label: Label = $PanelContainer/VBoxContainer/SkillPointsLabel
 
@@ -70,7 +72,7 @@ func _on_decrease(stat: String) -> void:
 		update_ui()
 
 func _on_back_button_pressed() -> void:
-	ScreenManager.go_back("training")
+	ScreenManager.go_back(LOCATION_ID)
 
 func _on_confirm_button_pressed() -> void:
 	for stat in temp_allocations.keys():
@@ -78,4 +80,4 @@ func _on_confirm_button_pressed() -> void:
 		if increase > 0:
 			hero.stat_block.set_stat(stat, hero.stat_block.get_stat(stat) + increase)
 	hero.skill_points = available_points
-	ScreenManager.go_to_screen(ScreenManager.ScreenName.VILLAGE)
+	ScreenManager.go_back(LOCATION_ID)

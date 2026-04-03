@@ -1,5 +1,7 @@
 extends Control
 
+const LOCATION_ID := "quest"
+
 @onready var available_button: Button = $MarginContainer/PanelContainer/VBoxContainer/QuestTabs/AvailableButton
 @onready var complete_button: Button = $MarginContainer/PanelContainer/VBoxContainer/QuestTabs/CompleteButton
 @onready var quest_list_v_box: VBoxContainer = $MarginContainer/PanelContainer/VBoxContainer/QuestScrollContainer/QuestListVBox
@@ -15,7 +17,7 @@ func _ready() -> void:
 	available_button.button_pressed = true
 
 func _on_back_button_pressed() -> void:
-	ScreenManager.go_back("quest")
+	ScreenManager.go_back(LOCATION_ID)
 
 func _on_complete_button_toggled(toggled_on: bool) -> void:
 	if toggled_on:
