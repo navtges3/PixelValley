@@ -31,6 +31,7 @@ var _player_ref: Node2D = null
 func _ready() -> void:
 	_origin = global_position
 	add_to_group("enemies")
+	_apply_visuals()
 	
 	detection_area.body_entered.connect(_on_body_entered)
 	detection_area.body_exited.connect(_on_body_exited)
@@ -42,6 +43,13 @@ func _ready() -> void:
 	detection_area.add_child(col)
 	
 	detection_area.collision_mask = detection_collision_mask
+
+func _apply_visuals() -> void:
+	var monster: Monster = MonsterLoader.new_monster(monster_id)
+	if monster == null or monster.world_visual == null:
+		return
+	anim.sprite_frames = monster.world_visual
+	anim.play("idle")
 
 func _physics_process(delta: float) -> void:
 	match _state:
