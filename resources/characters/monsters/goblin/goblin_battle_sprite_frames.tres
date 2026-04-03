@@ -1,6 +1,6 @@
 [gd_resource type="SpriteFrames" format=3 uid="uid://4ywebwliybf7"]
 
-[ext_resource type="Texture2D" uid="uid://c22irjr0w8j1y" path="res://assets/monsters/goblin/GoblinSprite.png" id="1_gb41e"]
+[ext_resource type="Texture2D" uid="uid://c22irjr0w8j1y" path="res://assets/monsters/goblin/goblin_battle_spritesheet.png" id="1_gb41e"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_y38oe"]
 atlas = ExtResource("1_gb41e")

@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://blp0fv0xnajdb" path="res://scripts/data/active_effect.gd" id="1_o5knh"]
 [ext_resource type="Resource" uid="uid://wdlsildxyd0p" path="res://resources/characters/abilities/cleave.tres" id="2_t544c"]
-[ext_resource type="Resource" uid="uid://px5md5kliryy" path="res://resources/characters/monsters/orc_chieftain/orc_chieftain_visual.tres" id="3_slxg0"]
+[ext_resource type="Resource" uid="uid://px5md5kliryy" path="res://resources/characters/monsters/orc_chieftain/orc_chieftain_battle_visual.tres" id="3_slxg0"]
 [ext_resource type="Script" uid="uid://dxnu3vjlxl2pn" path="res://scripts/data/conditional_ability.gd" id="4_yrisj"]
 [ext_resource type="Resource" uid="uid://crgnqxkfk1fo7" path="res://resources/characters/abilities/execute.tres" id="5_w2vh6"]
 [ext_resource type="Script" uid="uid://cnso83bg7vodw" path="res://scripts/data/condition.gd" id="6_tp04t"]

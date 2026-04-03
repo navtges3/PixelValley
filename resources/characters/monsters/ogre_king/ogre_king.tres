@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://blp0fv0xnajdb" path="res://scripts/data/active_effect.gd" id="1_t5nbi"]
 [ext_resource type="Resource" uid="uid://butpfi06boe3d" path="res://resources/characters/abilities/kings_smash.tres" id="2_u1xk6"]
-[ext_resource type="Resource" uid="uid://vaoqe50vrr0g" path="res://resources/characters/monsters/ogre_king/ogre_king_visual.tres" id="3_38k3l"]
+[ext_resource type="Resource" uid="uid://vaoqe50vrr0g" path="res://resources/characters/monsters/ogre_king/ogre_king_battle_visual.tres" id="3_38k3l"]
 [ext_resource type="Script" uid="uid://dxnu3vjlxl2pn" path="res://scripts/data/conditional_ability.gd" id="3_u6cbq"]
 [ext_resource type="Resource" uid="uid://ctce7oq3s4kox" path="res://resources/characters/abilities/dark_regeneration.tres" id="4_4px0f"]
 [ext_resource type="Script" uid="uid://cnso83bg7vodw" path="res://scripts/data/condition.gd" id="5_833pn"]

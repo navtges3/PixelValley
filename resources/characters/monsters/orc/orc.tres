@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://blp0fv0xnajdb" path="res://scripts/data/active_effect.gd" id="1_t4p0j"]
 [ext_resource type="Resource" uid="uid://5gj0qi86ux23" path="res://resources/characters/abilities/slash.tres" id="2_5w78i"]
-[ext_resource type="Resource" uid="uid://hqmaejbgon3u" path="res://resources/characters/monsters/orc/orc_visual.tres" id="3_6vel4"]
+[ext_resource type="Resource" uid="uid://hqmaejbgon3u" path="res://resources/characters/monsters/orc/orc_battle_visual.tres" id="3_6vel4"]
 [ext_resource type="Script" uid="uid://dxnu3vjlxl2pn" path="res://scripts/data/conditional_ability.gd" id="3_htada"]
 [ext_resource type="Resource" uid="uid://cjhlewne3o5t4" path="res://resources/characters/abilities/battle_roar.tres" id="4_6vel4"]
 [ext_resource type="Script" uid="uid://cnso83bg7vodw" path="res://scripts/data/condition.gd" id="5_iwbsi"]

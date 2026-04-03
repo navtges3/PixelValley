@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="BattleVisualData" format=3 uid="uid://px5md5kliryy"]
 
 [ext_resource type="Script" uid="uid://c3t8kckce6hdk" path="res://scripts/characters/battle_visual_data.gd" id="1_8l75b"]
-[ext_resource type="SpriteFrames" uid="uid://c0eq7l4ijhmwd" path="res://resources/characters/monsters/orc_chieftain/orc_chieftain_sprite_frames.tres" id="1_pa0w4"]
+[ext_resource type="SpriteFrames" uid="uid://c0eq7l4ijhmwd" path="res://resources/characters/monsters/orc_chieftain/orc_chieftain_battle_sprite_frames.tres" id="1_pa0w4"]
 
 [resource]
 script = ExtResource("1_8l75b")
