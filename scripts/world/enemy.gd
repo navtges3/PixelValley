@@ -26,7 +26,7 @@ var _idle_timer: float = 0.0
 var _player_ref: Node2D = null
 
 @onready var detection_area: Area2D = $DetectionArea
-@onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
+@onready var anim: AnimatedSprite2D = $AnimatedSprite2D
 
 func _ready() -> void:
 	_origin = global_position
@@ -52,7 +52,7 @@ func _physics_process(delta: float) -> void:
 
 func _process_idle(delta: float) -> void:
 	velocity = Vector2.ZERO
-	sprite.play("idle")
+	anim.play("idle")
 	move_and_slide()
 	_idle_timer -= delta
 	if _idle_timer <= 0.0:
@@ -93,11 +93,11 @@ func _on_body_exited(body: Node2D) -> void:
 
 func _update_sprite_flip() -> void:
 	if velocity.x > 0:
-		sprite.play("walk_right")
+		anim.play("walk_right")
 	elif velocity.x < 0:
-		sprite.play("walk_left")
+		anim.play("walk_left")
 	else:
-		sprite.play("idle")
+		anim.play("idle")
 
 func on_combat_ended(win: bool) -> void:
 	if win:
