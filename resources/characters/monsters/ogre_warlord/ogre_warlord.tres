@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://blp0fv0xnajdb" path="res://scripts/data/active_effect.gd" id="1_s0n28"]
 [ext_resource type="Resource" uid="uid://5301qdbddvxa" path="res://resources/characters/abilities/crushing_blow.tres" id="2_7dfqd"]
-[ext_resource type="Resource" uid="uid://7gacxrq5a6yp" path="res://resources/characters/monsters/ogre_warlord/ogre_warlord_visual.tres" id="3_dqixp"]
+[ext_resource type="Resource" uid="uid://7gacxrq5a6yp" path="res://resources/characters/monsters/ogre_warlord/ogre_warlord_battle_visual.tres" id="3_dqixp"]
 [ext_resource type="Script" uid="uid://dxnu3vjlxl2pn" path="res://scripts/data/conditional_ability.gd" id="3_g512o"]
 [ext_resource type="Resource" uid="uid://cnpsmwryevais" path="res://resources/characters/abilities/enrage.tres" id="4_5m3q8"]
 [ext_resource type="Script" uid="uid://cnso83bg7vodw" path="res://scripts/data/condition.gd" id="5_jmrfh"]
