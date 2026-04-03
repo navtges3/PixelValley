@@ -13,6 +13,7 @@ func _ready() -> void:
 			continue
 		zone.zone_entered.connect(_on_zone_entered)
 		zone.zone_locked.connect(_on_zone_locked.bind(zone))
+	player.set_sprite_frames(GameState.hero.world_visual)
 	if _pending_entrance_id != "":
 		place_player_at_entrance(_pending_entrance_id)
 
@@ -24,7 +25,7 @@ func place_player_at_entrance(entrance_id: String) -> void:
 	for zone in get_tree().get_nodes_in_group("trigger_zone"):
 		zone = zone as TriggerZone
 		if entrance_id == zone.entrance_id:
-			$Player.place_at_entrance(zone)
+			player.place_at_entrance(zone)
 			return
 	push_warning("Entrance not found: ", entrance_id)
 

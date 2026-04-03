@@ -137,6 +137,7 @@ func _get_hero_data(hero: Hero) -> Dictionary:
 		"hero_name": hero.name,
 		"portrait": hero.portrait.resource_path,
 		"battle_visual": hero.battle_visual.resource_path,
+		"world_visual": hero.world_visual.resource_path,
 		"hero_class": hero.hero_class,
 		"level": hero.level,
 		"experience": hero.experience,
@@ -159,6 +160,10 @@ func _load_hero(data: Dictionary) -> Hero:
 	var battle_visuals_path = data.get("battle_visual", "")
 	if battle_visuals_path != "":
 		hero.battle_visual = load(battle_visuals_path)
+	
+	var world_visuals_path = data.get("world_visual", "")
+	if world_visuals_path != "":
+		hero.world_visual = load(world_visuals_path)
 
 	hero.hero_class = data.get("hero_class", Hero.HeroClass.KNIGHT)
 	hero.level = data.get("level", 1)

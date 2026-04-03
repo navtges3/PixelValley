@@ -11,6 +11,7 @@ func _ready() -> void:
 		if zone == null:
 			continue
 		zone.zone_entered.connect(_on_zone_entered)
+	player.set_sprite_frames(GameState.hero.world_visual)
 	if _pending_entrance_id != "":
 		place_player_at_entrance(_pending_entrance_id)
 

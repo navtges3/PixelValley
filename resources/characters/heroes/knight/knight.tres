@@ -11,6 +11,7 @@
 [ext_resource type="Texture2D" uid="uid://c8hydb1a47nnk" path="res://assets/heroes/knight/knight.png" id="9_gftrw"]
 [ext_resource type="Script" uid="uid://b1x8jfufxk3xv" path="res://scripts/characters/hero.gd" id="10_y0wgc"]
 [ext_resource type="Script" uid="uid://hxleldka7y06" path="res://scripts/characters/stat_block.gd" id="11_qfr5j"]
+[ext_resource type="SpriteFrames" uid="uid://d31u570pq5i0f" path="res://resources/characters/heroes/knight/knight_world_sprite_frames.tres" id="12_2ujav"]
 
 [sub_resource type="Resource" id="Resource_nsv5r"]
 script = ExtResource("4_h2kic")
@@ -50,5 +51,6 @@ inventory = SubResource("Resource_w4hxg")
 name = "Knight"
 portrait = ExtResource("9_gftrw")
 battle_visual = ExtResource("2_2ujav")
+world_visual = ExtResource("12_2ujav")
 stat_block = SubResource("Resource_wwsut")
 metadata/_custom_type_script = "uid://b1x8jfufxk3xv"
