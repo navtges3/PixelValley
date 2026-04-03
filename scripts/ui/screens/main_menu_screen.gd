@@ -8,10 +8,6 @@ extends Control
 func _ready() -> void:
 	options_popup.hide()
 	GameState.reset_state()
-	if SaveManager.has_save_data():
-		load_game_button.disabled = false
-	else:
-		load_game_button.disabled = true
 	AudioManager.play_music_by_id("background")
 
 func _on_new_game_button_pressed():
