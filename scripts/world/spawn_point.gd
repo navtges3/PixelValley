@@ -7,11 +7,17 @@ const enemy_scene = preload("res://scenes/world/enemy.tscn")
 @export var spawn_count: int = 1
 @export var use_existing_children: bool = false
 @export var spawn_offset: Vector2 = Vector2(16, 0)
+@export var quest_id: int = 0
 
 var spawned_enemies: Array[Enemy] = []
 
 func spawn(parent: Node, combat_handler: Callable, location_id: String) -> void:
 	var path = str(get_path())
+	
+	if quest_id > 0:
+		if not _is_quest_active(quest_id):
+			return
+
 	if WorldManager.is_spawner_defeated(location_id, path):
 		return
 
@@ -38,3 +44,11 @@ func _wire_existing_children(combat_handler: Callable) -> void:
 		enemy.spawn_point_id = path
 		if not enemy.combat_initiated.is_connected(combat_handler):
 			enemy.combat_initiated.connect(combat_handler)
+
+func _is_quest_active(id: int) -> bool:
+	if GameState.quest_manager == null:
+		return false
+	for quest in GameState.quest_manager.available_quests:
+		if quest.id == id:
+			return true
+	return false

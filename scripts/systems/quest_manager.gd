@@ -11,19 +11,10 @@ const QUEST_LIST := [
 	preload("res://resources/quests/quest_7.tres"),
 	preload("res://resources/quests/quest_8.tres"),
 	preload("res://resources/quests/quest_9.tres"),
-	preload("res://resources/quests/quest_10.tres"),
-	preload("res://resources/quests/quest_11.tres"),
-	preload("res://resources/quests/quest_12.tres"),
-	preload("res://resources/quests/quest_13.tres"),
-	preload("res://resources/quests/quest_14.tres"),
-	preload("res://resources/quests/quest_15.tres"),
-	preload("res://resources/quests/quest_101.tres"),
-	preload("res://resources/quests/quest_102.tres")
 ]
 
 
 const FIRST_QUEST_ID := 1
-const LAST_QUEST_ID := 15
 
 @export var locked_quests: Array[Quest] = []
 @export var available_quests: Array[Quest] = []
@@ -91,7 +82,16 @@ func unlock_quest_by_id(quest_id: int) -> void:
 		if locked_quest.id == quest_id:
 			locked_quests.erase(locked_quest)
 			add_available_quest(locked_quest)
+			_reset_spawners_for_quest(locked_quest)
 			return
+
+func _reset_spawners_for_quest(quest: Quest) -> void:
+	var locations_to_reset: Array[String] = []
+	for objective in quest.monster_objectives:
+		if objective.location_id != "" and objective.location_id not in locations_to_reset:
+			locations_to_reset.append(objective.location_id)
+	for location_id in locations_to_reset:
+		WorldManager.reset_location_spawners(location_id)
 
 func add_available_quest(quest: Quest) -> void:
 	if quest in available_quests or quest in completed_quests:

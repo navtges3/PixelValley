@@ -32,6 +32,10 @@ func is_spawner_defeated(location_id: String, spawner_path: String) -> bool:
 		return false
 	return spawner_path in _locations[location_id]["defeated_spawners"]
 
+func reset_location_spawners(location_id: String) -> void:
+	if _locations.has(location_id):
+		_locations[location_id]["defeated_spawners"] = []
+
 # --- Serialization (called by SaveManager) ---
 func get_save_data() -> Dictionary:
 	return _locations.duplicate(true)
@@ -41,6 +45,7 @@ func load_save_data(data: Dictionary) -> void:
 	for location_id in data:
 		var raw: Dictionary = data[location_id]
 		var loc := _get_or_create(location_id)
+		loc["unlocked"] = raw.get("unlocked", false)
 		for path in raw.get("defeated_spawners", []):
 			loc["defeated_spawners"].append(path)
 
