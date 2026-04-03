@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="BattleVisualData" format=3 uid="uid://b0yth7mxsivg0"]
 
 [ext_resource type="Script" uid="uid://c3t8kckce6hdk" path="res://scripts/characters/battle_visual_data.gd" id="1_cr8wb"]
-[ext_resource type="SpriteFrames" uid="uid://cxd5elo40h8pv" path="res://resources/characters/heroes/knight/knight_sprite_frames.tres" id="1_ly2oy"]
+[ext_resource type="SpriteFrames" uid="uid://cxd5elo40h8pv" path="res://resources/characters/heroes/knight/knight_battle_sprite_frames.tres" id="1_ly2oy"]
 
 [resource]
 script = ExtResource("1_cr8wb")

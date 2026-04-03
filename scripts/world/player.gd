@@ -39,3 +39,7 @@ func on_zone_entered(zone: TriggerZone) -> void:
 
 func place_at_entrance(entrance_node: Node2D) -> void:
 	global_position = entrance_node.global_position
+
+func set_sprite_frames(frames: SpriteFrames) -> void:
+	if frames:
+		anim.sprite_frames = frames

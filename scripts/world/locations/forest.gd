@@ -13,6 +13,7 @@ func _ready() -> void:
 		if zone == null:
 			continue
 		zone.zone_entered.connect(_on_zone_entered)
+	player.set_sprite_frames(GameState.hero.world_visual)
 	if _pending_entrance_id != "":
 		place_player_at_entrance(_pending_entrance_id)
 	_activate_spawn_points()
@@ -20,7 +21,7 @@ func _ready() -> void:
 
 func _restore_combat_position() -> void:
 	if GameState.pre_combat_position != Vector2.ZERO:
-		$Player.global_position = GameState.pre_combat_position
+		player.global_position = GameState.pre_combat_position
 		GameState.pre_combat_position = Vector2.ZERO
 
 func _activate_spawn_points() -> void:
@@ -33,7 +34,7 @@ func _activate_spawn_points() -> void:
 
 func _on_combat_initiated(enemy: Enemy) -> void:
 	enemy.set_physics_process(false)
-	GameState.pre_combat_position = $Player.global_position
+	GameState.pre_combat_position = player.global_position
 	print("Starting combat with spawn id: %s" % enemy.spawn_point_id)
 	var config := BattleConfig.create(GameState.hero, enemy, enemy.spawn_point_id)
 	config.location_id = LOCATION_ID
@@ -49,7 +50,7 @@ func place_player_at_entrance(entrance_id: String) -> void:
 		if zone == null:
 			continue
 		if entrance_id == zone.entrance_id:
-			$Player.place_at_entrance(zone)
+			player.place_at_entrance(zone)
 			return
 	push_warning("Entrance not found: ", entrance_id)
 
