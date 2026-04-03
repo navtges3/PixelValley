@@ -52,6 +52,11 @@ folder_colors={
 "res://scripts/": "blue"
 }
 
+[global_group]
+
+player="Group for the player"
+trigger_zone="Trigger zone for interacting with the world"
+
 [gui]
 
 timers/tooltip_delay_sec=0.25

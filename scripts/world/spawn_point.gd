@@ -1,7 +1,9 @@
 extends Marker2D
 class_name SpawnPoint
 
-@export var enemy_scene: PackedScene
+const enemy_scene = preload("res://scenes/world/enemy.tscn")
+
+@export var monster_id: MonsterLoader.MonsterID = MonsterLoader.MonsterID.GOBLIN
 @export var spawn_count: int = 1
 @export var use_existing_children: bool = false
 @export var spawn_offset: Vector2 = Vector2(16, 0)
@@ -17,15 +19,9 @@ func spawn(parent: Node, combat_handler: Callable, location_id: String) -> void:
 		_wire_existing_children(combat_handler)
 		return
 	
-	if enemy_scene == null:
-		push_error("SpawnPoint '%s': enemy_scene is not set." % name)
-		return
-	
 	for i in spawn_count:
 		var enemy: Enemy = enemy_scene.instantiate() as Enemy
-		if enemy == null:
-			push_error("SpawnPoint '%s': enemy_scene does not contain an Enemy node." % name)
-			continue
+		enemy.monster_id = monster_id
 		enemy.global_position = global_position + spawn_offset * i
 		parent.add_child(enemy)
 		spawned_enemies.append(enemy)

@@ -1,5 +1,7 @@
 extends Control
 
+const LOCATION_ID := "inn"
+
 @onready var rest_button: Button = $PanelContainer/VBoxContainer/RestButton
 @onready var inn_name_label: Label = $PanelContainer/VBoxContainer/InnNameLabel
 
@@ -19,4 +21,4 @@ func _on_rest_button_pressed() -> void:
 		hero.rest()
 
 func _on_leave_button_pressed() -> void:
-	ScreenManager.go_back()
+	ScreenManager.go_back(LOCATION_ID)
