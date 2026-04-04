@@ -12,6 +12,7 @@ const QUEST_LIST := [
 	preload("res://resources/quests/quest_8.tres"),
 	preload("res://resources/quests/quest_9.tres"),
 	preload("res://resources/quests/quest_10.tres"),
+	preload("res://resources/quests/quest_11.tres"),
 ]
 
 
