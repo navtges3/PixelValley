@@ -7,6 +7,7 @@
 [sub_resource type="Resource" id="Resource_f8h81"]
 script = ExtResource("1_xh3w7")
 monster_id = 4
+location_id = "cave"
 metadata/_custom_type_script = "uid://bhsjswm1wnll8"
 
 [sub_resource type="Resource" id="Resource_g74nm"]
