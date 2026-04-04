@@ -79,3 +79,9 @@ position = Vector2(1154, 117)
 script = ExtResource("6_xe7xg")
 monster_id = 4
 quest_id = 9
+
+[node name="BossSpawnPoint2" type="Marker2D" parent="EnemySpawns" unique_id=138004234 groups=["spawn_point"]]
+position = Vector2(1154, 117)
+script = ExtResource("6_xe7xg")
+monster_id = 5
+quest_id = 10
