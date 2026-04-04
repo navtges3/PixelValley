@@ -1,61 +1,61 @@
 [gd_resource type="SpriteFrames" format=3 uid="uid://bi0hjkjhgixba"]
 
-[ext_resource type="Texture2D" uid="uid://e0ns4dbnrcep" path="res://assets/monsters/ogre_king/OgreKingSprite.png" id="1_iaxas"]
+[ext_resource type="Texture2D" uid="uid://e0ns4dbnrcep" path="res://assets/monsters/ogre_king/ogre_king_battle_spritesheet.png" id="1_duutm"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_654ca"]
-atlas = ExtResource("1_iaxas")
+atlas = ExtResource("1_duutm")
 region = Rect2(0, 0, 96, 96)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_dwj4m"]
-atlas = ExtResource("1_iaxas")
+atlas = ExtResource("1_duutm")
 region = Rect2(288, 0, 96, 96)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_sb6l3"]
-atlas = ExtResource("1_iaxas")
+atlas = ExtResource("1_duutm")
 region = Rect2(0, 96, 96, 96)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_v3r30"]
-atlas = ExtResource("1_iaxas")
+atlas = ExtResource("1_duutm")
 region = Rect2(96, 96, 96, 96)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_e0t7w"]
-atlas = ExtResource("1_iaxas")
+atlas = ExtResource("1_duutm")
 region = Rect2(0, 0, 96, 96)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_0s1sm"]
-atlas = ExtResource("1_iaxas")
+atlas = ExtResource("1_duutm")
 region = Rect2(0, 192, 96, 96)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_jof1f"]
-atlas = ExtResource("1_iaxas")
+atlas = ExtResource("1_duutm")
 region = Rect2(96, 192, 96, 96)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_lc0xd"]
-atlas = ExtResource("1_iaxas")
+atlas = ExtResource("1_duutm")
 region = Rect2(192, 192, 96, 96)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_urlnu"]
-atlas = ExtResource("1_iaxas")
+atlas = ExtResource("1_duutm")
 region = Rect2(0, 0, 96, 96)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_3hl4v"]
-atlas = ExtResource("1_iaxas")
+atlas = ExtResource("1_duutm")
 region = Rect2(192, 96, 96, 96)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_spvse"]
-atlas = ExtResource("1_iaxas")
+atlas = ExtResource("1_duutm")
 region = Rect2(288, 96, 96, 96)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_4ckg8"]
-atlas = ExtResource("1_iaxas")
+atlas = ExtResource("1_duutm")
 region = Rect2(0, 0, 96, 96)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_iaxas"]
-atlas = ExtResource("1_iaxas")
+atlas = ExtResource("1_duutm")
 region = Rect2(96, 0, 96, 96)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_3mu8g"]
-atlas = ExtResource("1_iaxas")
+atlas = ExtResource("1_duutm")
 region = Rect2(192, 0, 96, 96)
 
 [resource]

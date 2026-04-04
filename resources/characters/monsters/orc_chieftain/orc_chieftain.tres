@@ -10,6 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://dgbh3u78hhof6" path="res://assets/monsters/orc_chieftain/orc_chieftain.png" id="8_xqsrt"]
 [ext_resource type="Script" uid="uid://bd6ohffno5w7r" path="res://scripts/characters/monster.gd" id="9_77wwi"]
 [ext_resource type="Script" uid="uid://hxleldka7y06" path="res://scripts/characters/stat_block.gd" id="10_7xu3g"]
+[ext_resource type="SpriteFrames" uid="uid://csar6wm63v6f" path="res://resources/characters/monsters/orc_chieftain/orc_chieftain_world_sprite_frames.tres" id="11_t544c"]
 
 [sub_resource type="Resource" id="Resource_3vdcj"]
 script = ExtResource("6_tp04t")
@@ -57,5 +58,6 @@ conditional_abilities = Array[ExtResource("4_yrisj")]([SubResource("Resource_sap
 name = "Orc Cheiftain"
 portrait = ExtResource("8_xqsrt")
 battle_visual = ExtResource("3_slxg0")
+world_visual = ExtResource("11_t544c")
 stat_block = SubResource("Resource_ryf8n")
 metadata/_custom_type_script = "uid://bd6ohffno5w7r"
