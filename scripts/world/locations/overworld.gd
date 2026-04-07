@@ -2,6 +2,14 @@ extends BaseLocation
 class_name OverworldLocation
 
 @onready var zone_message_label: ZoneMessageLabel = $ZoneMessageLabel
+@onready var camp_gate_closed: StaticBody2D = $CampGateClosed
+@onready var camp_gate_open: StaticBody2D = $CampGateOpen
+
+func _ready() -> void:
+	super._ready()
+	var war_camp_unlocked := WorldManager.is_unlocked(WarCampLocation.LOCATION_ID)
+	camp_gate_closed.visible = !war_camp_unlocked
+	camp_gate_open.visible = war_camp_unlocked
 
 func _get_screen_name() -> ScreenManager.ScreenName:
 	return ScreenManager.ScreenName.OVERWORLD
