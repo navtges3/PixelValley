@@ -9,6 +9,11 @@ var current_quest: Quest = null
 var quest_manager: QuestManager = null
 var pre_combat_position: Vector2 = Vector2.ZERO
 
+var player_location: Dictionary = {
+	"scene": ScreenManager.ScreenName.OVERWORLD,
+	"entrance_id": ""
+}
+
 @warning_ignore("unused_signal")
 signal monster_killed(monster_id: MonsterLoader.MonsterID, location_id: String)
 
@@ -27,12 +32,6 @@ func reset_state() -> void:
 	village = null
 	current_quest = null
 	quest_manager = null
-
-# --- Player Location ---
-var player_location: Dictionary = {
-	"scene": ScreenManager.ScreenName.OVERWORLD,
-	"entrance_id": ""
-}
 
 func set_player_location(scene: ScreenManager.ScreenName, entrance_id: String = "") -> void:
 	print("Scene: %s, Entrance: %s" % [scene, entrance_id])

@@ -15,6 +15,8 @@ func _ready() -> void:
 	player.set_sprite_frames(GameState.hero.world_visual)
 	if _pending_entraince_id != "":
 		place_player_at_entrance(_pending_entraince_id)
+	else:
+		GameState.set_player_location(_get_screen_name(), "")
 	_on_location_ready()
 
 # Override in subclasses for extra setup (e.g. spawn points, extra signals)
