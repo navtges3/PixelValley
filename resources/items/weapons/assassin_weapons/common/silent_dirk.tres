@@ -1,0 +1,57 @@
+[gd_resource type="Resource" script_class="Weapon" format=3 uid="uid://beneaxw0gbsmv"]
+
+[ext_resource type="Script" uid="uid://b2o7w8q10stxo" path="res://scripts/data/ability.gd" id="1_6juse"]
+[ext_resource type="Script" uid="uid://bo48scp6lbwrb" path="res://scripts/data/attack.gd" id="2_5flqd"]
+[ext_resource type="Script" uid="uid://bvuw0uyc36uxx" path="res://scripts/data/utility.gd" id="3_3dqle"]
+[ext_resource type="Script" uid="uid://c5deti4sb2k2j" path="res://scripts/data/effect.gd" id="4_dbdax"]
+[ext_resource type="Script" uid="uid://dgykeyxn7fefw" path="res://scripts/data/weapon.gd" id="5_iylp1"]
+[ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://resources/ui/button_themes/regular/green_button.tres" id="6_7cthf"]
+
+[sub_resource type="Resource" id="Resource_lfnt3"]
+script = ExtResource("2_5flqd")
+min_damage = 1
+max_damage = 10
+metadata/_custom_type_script = "uid://bo48scp6lbwrb"
+
+[sub_resource type="Resource" id="Resource_wf80y"]
+script = ExtResource("1_6juse")
+name = "Quiet Jab"
+attack = SubResource("Resource_lfnt3")
+metadata/_custom_type_script = "uid://b2o7w8q10stxo"
+
+[sub_resource type="Resource" id="Resource_vyjwg"]
+script = ExtResource("2_5flqd")
+min_damage = 6
+max_damage = 15
+metadata/_custom_type_script = "uid://bo48scp6lbwrb"
+
+[sub_resource type="Resource" id="Resource_pt5e6"]
+script = ExtResource("4_dbdax")
+type = 6
+strength = 5
+metadata/_custom_type_script = "uid://c5deti4sb2k2j"
+
+[sub_resource type="Resource" id="Resource_utv1b"]
+script = ExtResource("3_3dqle")
+effects = Array[ExtResource("4_dbdax")]([SubResource("Resource_pt5e6")])
+subject = 1
+metadata/_custom_type_script = "uid://bvuw0uyc36uxx"
+
+[sub_resource type="Resource" id="Resource_pkfrm"]
+script = ExtResource("1_6juse")
+name = "Shadow Step"
+energy_cost = 5
+cooldown = 3
+attack = SubResource("Resource_vyjwg")
+utilities = Array[ExtResource("3_3dqle")]([SubResource("Resource_utv1b")])
+metadata/_custom_type_script = "uid://b2o7w8q10stxo"
+
+[resource]
+script = ExtResource("5_iylp1")
+abilities = Array[ExtResource("1_6juse")]([SubResource("Resource_wf80y"), SubResource("Resource_pkfrm")])
+item_id = "silent_dirk"
+name = "Silent Dirk"
+description = "A narrow, shadow‑colored dagger designed for one purpose: silence."
+theme = ExtResource("6_7cthf")
+value = 70
+metadata/_custom_type_script = "uid://dgykeyxn7fefw"

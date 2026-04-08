@@ -1,0 +1,59 @@
+[gd_resource type="Resource" script_class="Weapon" format=3 uid="uid://2xnjln6p48rw"]
+
+[ext_resource type="Script" uid="uid://b2o7w8q10stxo" path="res://scripts/data/ability.gd" id="1_sigq7"]
+[ext_resource type="Script" uid="uid://bo48scp6lbwrb" path="res://scripts/data/attack.gd" id="2_6usb4"]
+[ext_resource type="Script" uid="uid://bvuw0uyc36uxx" path="res://scripts/data/utility.gd" id="3_3wogk"]
+[ext_resource type="Script" uid="uid://c5deti4sb2k2j" path="res://scripts/data/effect.gd" id="4_nw3g1"]
+[ext_resource type="Script" uid="uid://dgykeyxn7fefw" path="res://scripts/data/weapon.gd" id="5_6cf6l"]
+[ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://resources/ui/button_themes/regular/green_button.tres" id="6_buuea"]
+
+[sub_resource type="Resource" id="Resource_il6a2"]
+script = ExtResource("2_6usb4")
+min_damage = 1
+max_damage = 8
+attack_type = 1
+metadata/_custom_type_script = "uid://bo48scp6lbwrb"
+
+[sub_resource type="Resource" id="Resource_u3gri"]
+script = ExtResource("1_sigq7")
+name = "Royal Beam"
+attack = SubResource("Resource_il6a2")
+metadata/_custom_type_script = "uid://b2o7w8q10stxo"
+
+[sub_resource type="Resource" id="Resource_8djcv"]
+script = ExtResource("2_6usb4")
+min_damage = 5
+max_damage = 12
+attack_type = 1
+metadata/_custom_type_script = "uid://bo48scp6lbwrb"
+
+[sub_resource type="Resource" id="Resource_dy084"]
+script = ExtResource("4_nw3g1")
+type = 3
+strength = 3
+duration = 2
+metadata/_custom_type_script = "uid://c5deti4sb2k2j"
+
+[sub_resource type="Resource" id="Resource_at8ll"]
+script = ExtResource("3_3wogk")
+effects = Array[ExtResource("4_nw3g1")]([SubResource("Resource_dy084")])
+metadata/_custom_type_script = "uid://bvuw0uyc36uxx"
+
+[sub_resource type="Resource" id="Resource_m0u44"]
+script = ExtResource("1_sigq7")
+name = "Sovereign Grace"
+energy_cost = 5
+cooldown = 3
+attack = SubResource("Resource_8djcv")
+utilities = Array[ExtResource("3_3wogk")]([SubResource("Resource_at8ll")])
+metadata/_custom_type_script = "uid://b2o7w8q10stxo"
+
+[resource]
+script = ExtResource("5_6cf6l")
+abilities = Array[ExtResource("1_sigq7")]([SubResource("Resource_u3gri"), SubResource("Resource_m0u44")])
+item_id = "silver_scepter"
+name = "Silver Scepter"
+description = "A polished scepter adorned with small gemstones favored by young nobles."
+theme = ExtResource("6_buuea")
+value = 115
+metadata/_custom_type_script = "uid://dgykeyxn7fefw"

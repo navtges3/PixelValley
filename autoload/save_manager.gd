@@ -233,17 +233,17 @@ func _load_stat_block(data: Dictionary) -> StatBlock:
 func _get_inventory_data(inventory: Inventory) -> Dictionary:
 	var data := {
 		"gold": inventory.gold,
-		"equipped_weapon": inventory.equipped_weapon.resource_path,
+		"equipped_weapon": ItemLoader.get_item_id(inventory.equipped_weapon),
 		"weapon_stash": [],
 		"potions": []
 	}
 
 	for weapon in inventory.weapon_stash:
-		data["weapon_stash"].append(weapon.resource_path)
+		data["weapon_stash"].append(ItemLoader.get_item_id(weapon))
 
 	for item_stack in inventory.potions:
 		data["potions"].append({
-			"potion_path": item_stack.item.resource_path,
+			"item_id": ItemLoader.get_item_id(item_stack.item),
 			"count": item_stack.count
 		})
 
@@ -253,23 +253,37 @@ func _load_inventory(data: Dictionary) -> Inventory:
 	var inv := Inventory.new()
 	inv.gold = data.get("gold", 0)
 
-	var equipped_path = data.get("equipped_weapon", "")
-	if equipped_path != "":
-		inv.equipped_weapon = load(equipped_path)
+	var weapon_id = data.get("equipped_weapon", "")
+	if weapon_id != "":
+		var weapon = ItemLoader.get_item(weapon_id)
+		if weapon is Weapon:
+			inv.equipped_weapon = weapon
 
-	for weapon_path in data.get("weapon_stash", []):
-		var weapon = load(weapon_path)
+	for wid in data.get("weapon_stash", []):
+		var weapon = ItemLoader.get_item(wid)
 		if weapon is Weapon:
 			inv.weapon_stash.append(weapon)
 
 	for item_data in data.get("potions", []):
-		var item_path = item_data.get("potion_path", "")
-		var count = item_data.get("count", 0)
-		var item = load(item_path)
+		var item: Item = null
+		if item_data.has("item_id"):
+			item = ItemLoader.get_item(item_data["item_id"])
+		elif item_data.has("potion_path"):
+			# Migration path for existing saves
+			var path: String = item_data["potion_path"]
+			var id := _path_to_item_id(path)
+			item = ItemLoader.get_item(id) if id != "" else load(path)
 		if item is Potion:
-			inv.potions.append(ItemStack.new(item, count))
+			inv.potions.append(ItemStack.new(item, item_data.get("count", 1)))
 
 	return inv
+	
+	# Migration helper — maps old resource paths to new IDs
+func _path_to_item_id(path: String) -> String:
+	var filename := path.get_file().get_basename()  # e.g. "lesser_healing_potion"
+	if ItemLoader.has_item(filename):
+		return filename
+	return ""
 
 # ---------------------------------------------------------
 # VILLAGE
@@ -299,7 +313,7 @@ func _get_shop_data(shop: Shop) -> Dictionary:
 
 	for item_stack in shop.inventory:
 		data["inventory"].append({
-			"item_path": item_stack.item.resource_path,
+			"item_id": ItemLoader.get_item_id(item_stack.item),
 			"count": item_stack.count
 		})
 
@@ -310,11 +324,15 @@ func _load_shop(data: Dictionary) -> Shop:
 	shop.name = data.get("name", "Unnamed Shop")
 
 	for item_data in data.get("inventory", []):
-		var item_path = item_data.get("item_path", "")
-		var count = item_data.get("count", 0)
-		var item = load(item_path)
-		if item is Item:
-			shop.add_item(item, count)
+		var item: Item = null
+		if item_data.has("item_id"):
+			item = ItemLoader.get_item(item_data["item_id"])
+		elif item_data.has("item_path"):
+			var path = item_data.get("item_path", "")
+			var id := _path_to_item_id(path)
+			item = ItemLoader.get_item(id)
+		if item:
+			shop.add_item(item, item_data.get("count", 1))
 
 	return shop
 

@@ -1,0 +1,79 @@
+[gd_resource type="Resource" script_class="Weapon" format=3 uid="uid://c6a60u6eo1des"]
+
+[ext_resource type="Script" uid="uid://b2o7w8q10stxo" path="res://scripts/data/ability.gd" id="1_ipkux"]
+[ext_resource type="Script" uid="uid://bo48scp6lbwrb" path="res://scripts/data/attack.gd" id="2_imtcy"]
+[ext_resource type="Script" uid="uid://bvuw0uyc36uxx" path="res://scripts/data/utility.gd" id="3_re3g3"]
+[ext_resource type="Script" uid="uid://c5deti4sb2k2j" path="res://scripts/data/effect.gd" id="4_i2cq2"]
+[ext_resource type="Script" uid="uid://dgykeyxn7fefw" path="res://scripts/data/weapon.gd" id="5_3pp53"]
+[ext_resource type="Theme" uid="uid://dqwm8agt87lsh" path="res://resources/ui/button_themes/regular/blue_button.tres" id="6_odv22"]
+
+[sub_resource type="Resource" id="Resource_y4640"]
+script = ExtResource("2_imtcy")
+min_damage = 1
+max_damage = 8
+attack_type = 1
+metadata/_custom_type_script = "uid://bo48scp6lbwrb"
+
+[sub_resource type="Resource" id="Resource_8onn7"]
+script = ExtResource("1_ipkux")
+name = "Regal Ray"
+attack = SubResource("Resource_y4640")
+metadata/_custom_type_script = "uid://b2o7w8q10stxo"
+
+[sub_resource type="Resource" id="Resource_2ui71"]
+script = ExtResource("4_i2cq2")
+type = 6
+strength = 2
+duration = 3
+metadata/_custom_type_script = "uid://c5deti4sb2k2j"
+
+[sub_resource type="Resource" id="Resource_vd7xe"]
+script = ExtResource("3_re3g3")
+effects = Array[ExtResource("4_i2cq2")]([SubResource("Resource_2ui71")])
+subject = 1
+metadata/_custom_type_script = "uid://bvuw0uyc36uxx"
+
+[sub_resource type="Resource" id="Resource_8xiw2"]
+script = ExtResource("1_ipkux")
+name = "Charmflare"
+energy_cost = 5
+cooldown = 3
+utilities = Array[ExtResource("3_re3g3")]([SubResource("Resource_vd7xe")])
+metadata/_custom_type_script = "uid://b2o7w8q10stxo"
+
+[sub_resource type="Resource" id="Resource_yendx"]
+script = ExtResource("4_i2cq2")
+strength = 5
+duration = 4
+metadata/_custom_type_script = "uid://c5deti4sb2k2j"
+
+[sub_resource type="Resource" id="Resource_q3vb3"]
+script = ExtResource("4_i2cq2")
+type = 1
+strength = 3
+duration = 4
+metadata/_custom_type_script = "uid://c5deti4sb2k2j"
+
+[sub_resource type="Resource" id="Resource_qa8ox"]
+script = ExtResource("3_re3g3")
+effects = Array[ExtResource("4_i2cq2")]([SubResource("Resource_yendx"), SubResource("Resource_q3vb3")])
+metadata/_custom_type_script = "uid://bvuw0uyc36uxx"
+
+[sub_resource type="Resource" id="Resource_q7rne"]
+script = ExtResource("1_ipkux")
+name = "Courtly Blessing"
+energy_cost = 10
+cooldown = 6
+utilities = Array[ExtResource("3_re3g3")]([SubResource("Resource_qa8ox")])
+metadata/_custom_type_script = "uid://b2o7w8q10stxo"
+
+[resource]
+script = ExtResource("5_3pp53")
+rarity = 1
+abilities = Array[ExtResource("1_ipkux")]([SubResource("Resource_8onn7"), SubResource("Resource_8xiw2"), SubResource("Resource_q7rne")])
+item_id = "royal_channelers_staff"
+name = "Royal Channeler’s Staff"
+description = "A regal gold‑trimmed staff passed down among magically gifted heirs."
+theme = ExtResource("6_odv22")
+value = 340
+metadata/_custom_type_script = "uid://dgykeyxn7fefw"

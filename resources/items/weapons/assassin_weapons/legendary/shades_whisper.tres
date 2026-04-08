@@ -1,0 +1,73 @@
+[gd_resource type="Resource" script_class="Weapon" format=3 uid="uid://dsjt7anfpbhvo"]
+
+[ext_resource type="Script" uid="uid://b2o7w8q10stxo" path="res://scripts/data/ability.gd" id="1_edp5q"]
+[ext_resource type="Script" uid="uid://bo48scp6lbwrb" path="res://scripts/data/attack.gd" id="2_j03qa"]
+[ext_resource type="Script" uid="uid://bvuw0uyc36uxx" path="res://scripts/data/utility.gd" id="3_xsekn"]
+[ext_resource type="Script" uid="uid://dgykeyxn7fefw" path="res://scripts/data/weapon.gd" id="4_otj3g"]
+[ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://resources/ui/button_themes/regular/red_button.tres" id="5_fhm4p"]
+
+[sub_resource type="Resource" id="Resource_s7xan"]
+script = ExtResource("2_j03qa")
+min_damage = 1
+max_damage = 10
+metadata/_custom_type_script = "uid://bo48scp6lbwrb"
+
+[sub_resource type="Resource" id="Resource_f0x1o"]
+script = ExtResource("1_edp5q")
+name = "Echo Slice"
+attack = SubResource("Resource_s7xan")
+metadata/_custom_type_script = "uid://b2o7w8q10stxo"
+
+[sub_resource type="Resource" id="Resource_pkltf"]
+script = ExtResource("2_j03qa")
+min_damage = 3
+max_damage = 15
+metadata/_custom_type_script = "uid://bo48scp6lbwrb"
+
+[sub_resource type="Resource" id="Resource_3u0ce"]
+script = ExtResource("1_edp5q")
+name = "Silent Rift"
+energy_cost = 5
+cooldown = 3
+attack = SubResource("Resource_pkltf")
+metadata/_custom_type_script = "uid://b2o7w8q10stxo"
+
+[sub_resource type="Resource" id="Resource_mufvr"]
+script = ExtResource("2_j03qa")
+min_damage = 10
+max_damage = 20
+attack_type = 1
+metadata/_custom_type_script = "uid://bo48scp6lbwrb"
+
+[sub_resource type="Resource" id="Resource_2637p"]
+script = ExtResource("1_edp5q")
+name = "Chostveil Razor"
+energy_cost = 10
+cooldown = 6
+attack = SubResource("Resource_mufvr")
+metadata/_custom_type_script = "uid://b2o7w8q10stxo"
+
+[sub_resource type="Resource" id="Resource_uvdpl"]
+script = ExtResource("2_j03qa")
+min_damage = 8
+max_damage = 25
+metadata/_custom_type_script = "uid://bo48scp6lbwrb"
+
+[sub_resource type="Resource" id="Resource_aek06"]
+script = ExtResource("1_edp5q")
+name = "Whisper of Oblivion"
+energy_cost = 20
+cooldown = 9
+attack = SubResource("Resource_uvdpl")
+metadata/_custom_type_script = "uid://b2o7w8q10stxo"
+
+[resource]
+script = ExtResource("4_otj3g")
+rarity = 2
+abilities = Array[ExtResource("1_edp5q")]([SubResource("Resource_f0x1o"), SubResource("Resource_3u0ce"), SubResource("Resource_2637p"), SubResource("Resource_aek06")])
+item_id = "shades_whisper"
+name = "Shade’s Whisper"
+description = "An ethereal blade that flickers like a lingering shadow."
+theme = ExtResource("5_fhm4p")
+value = 1450
+metadata/_custom_type_script = "uid://dgykeyxn7fefw"

@@ -1,0 +1,56 @@
+[gd_resource type="Resource" script_class="Weapon" format=3 uid="uid://mgjt4oel7eop"]
+
+[ext_resource type="Script" uid="uid://b2o7w8q10stxo" path="res://scripts/data/ability.gd" id="1_bk72t"]
+[ext_resource type="Script" uid="uid://bo48scp6lbwrb" path="res://scripts/data/attack.gd" id="2_56twx"]
+[ext_resource type="Script" uid="uid://bvuw0uyc36uxx" path="res://scripts/data/utility.gd" id="3_0uhrt"]
+[ext_resource type="Script" uid="uid://c5deti4sb2k2j" path="res://scripts/data/effect.gd" id="4_y3ryf"]
+[ext_resource type="Script" uid="uid://dgykeyxn7fefw" path="res://scripts/data/weapon.gd" id="5_a0l43"]
+[ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://resources/ui/button_themes/regular/green_button.tres" id="6_7deuu"]
+
+[sub_resource type="Resource" id="Resource_ix40n"]
+script = ExtResource("2_56twx")
+min_damage = 1
+max_damage = 8
+metadata/_custom_type_script = "uid://bo48scp6lbwrb"
+
+[sub_resource type="Resource" id="Resource_l4yvg"]
+script = ExtResource("1_bk72t")
+name = "Sweeping Slash"
+attack = SubResource("Resource_ix40n")
+metadata/_custom_type_script = "uid://b2o7w8q10stxo"
+
+[sub_resource type="Resource" id="Resource_f4rv5"]
+script = ExtResource("2_56twx")
+min_damage = 6
+max_damage = 14
+metadata/_custom_type_script = "uid://bo48scp6lbwrb"
+
+[sub_resource type="Resource" id="Resource_q8ulg"]
+script = ExtResource("4_y3ryf")
+type = 6
+strength = 5
+metadata/_custom_type_script = "uid://c5deti4sb2k2j"
+
+[sub_resource type="Resource" id="Resource_07nft"]
+script = ExtResource("3_0uhrt")
+effects = Array[ExtResource("4_y3ryf")]([SubResource("Resource_q8ulg")])
+metadata/_custom_type_script = "uid://bvuw0uyc36uxx"
+
+[sub_resource type="Resource" id="Resource_uc2qj"]
+script = ExtResource("1_bk72t")
+name = "Desert Dance"
+energy_cost = 5
+cooldown = 3
+attack = SubResource("Resource_f4rv5")
+utilities = Array[ExtResource("3_0uhrt")]([SubResource("Resource_07nft")])
+metadata/_custom_type_script = "uid://b2o7w8q10stxo"
+
+[resource]
+script = ExtResource("5_a0l43")
+abilities = Array[ExtResource("1_bk72t")]([SubResource("Resource_l4yvg"), SubResource("Resource_uc2qj")])
+item_id = "curved_scimitar"
+name = "Curved Scimitar"
+description = "A crescent blade with an exotic curve favored by roaming cutthroats."
+theme = ExtResource("6_7deuu")
+value = 100
+metadata/_custom_type_script = "uid://dgykeyxn7fefw"

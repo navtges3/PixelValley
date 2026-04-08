@@ -1,0 +1,64 @@
+[gd_resource type="Resource" script_class="Weapon" format=3 uid="uid://br6hwj0vp2ykl"]
+
+[ext_resource type="Script" uid="uid://b2o7w8q10stxo" path="res://scripts/data/ability.gd" id="1_w886c"]
+[ext_resource type="Script" uid="uid://bo48scp6lbwrb" path="res://scripts/data/attack.gd" id="2_hf5da"]
+[ext_resource type="Script" uid="uid://bvuw0uyc36uxx" path="res://scripts/data/utility.gd" id="3_kf2se"]
+[ext_resource type="Script" uid="uid://c5deti4sb2k2j" path="res://scripts/data/effect.gd" id="4_7ykdc"]
+[ext_resource type="Script" uid="uid://dgykeyxn7fefw" path="res://scripts/data/weapon.gd" id="5_6pyyr"]
+[ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://resources/ui/button_themes/regular/green_button.tres" id="6_jr0cu"]
+
+[sub_resource type="Resource" id="Resource_mdp5g"]
+script = ExtResource("2_hf5da")
+min_damage = 1
+max_damage = 6
+metadata/_custom_type_script = "uid://bo48scp6lbwrb"
+
+[sub_resource type="Resource" id="Resource_wl6y2"]
+script = ExtResource("1_w886c")
+name = "Shielded Slash"
+attack = SubResource("Resource_mdp5g")
+metadata/_custom_type_script = "uid://b2o7w8q10stxo"
+
+[sub_resource type="Resource" id="Resource_vwtgm"]
+script = ExtResource("2_hf5da")
+min_damage = 3
+max_damage = 8
+metadata/_custom_type_script = "uid://bo48scp6lbwrb"
+
+[sub_resource type="Resource" id="Resource_dvku2"]
+script = ExtResource("4_7ykdc")
+type = 5
+strength = 5
+duration = 2
+metadata/_custom_type_script = "uid://c5deti4sb2k2j"
+
+[sub_resource type="Resource" id="Resource_c2b47"]
+script = ExtResource("4_7ykdc")
+type = 6
+strength = 5
+duration = 2
+metadata/_custom_type_script = "uid://c5deti4sb2k2j"
+
+[sub_resource type="Resource" id="Resource_xu8gp"]
+script = ExtResource("3_kf2se")
+effects = Array[ExtResource("4_7ykdc")]([SubResource("Resource_dvku2"), SubResource("Resource_c2b47")])
+metadata/_custom_type_script = "uid://bvuw0uyc36uxx"
+
+[sub_resource type="Resource" id="Resource_pl52e"]
+script = ExtResource("1_w886c")
+name = "Guarded Counter"
+energy_cost = 7
+cooldown = 3
+attack = SubResource("Resource_vwtgm")
+utilities = Array[ExtResource("3_kf2se")]([SubResource("Resource_xu8gp")])
+metadata/_custom_type_script = "uid://b2o7w8q10stxo"
+
+[resource]
+script = ExtResource("5_6pyyr")
+abilities = Array[ExtResource("1_w886c")]([SubResource("Resource_wl6y2"), SubResource("Resource_pl52e")])
+item_id = "wooden_shieldblade"
+name = "Wooden Shieldblade"
+description = "A short sword paired with a small wooden shield etched with faded heraldry."
+theme = ExtResource("6_jr0cu")
+value = 75
+metadata/_custom_type_script = "uid://dgykeyxn7fefw"
