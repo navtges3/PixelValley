@@ -2,8 +2,8 @@ extends BaseLocation
 class_name OverworldLocation
 
 @onready var zone_message_label: ZoneMessageLabel = $ZoneMessageLabel
-@onready var camp_gate_closed: StaticBody2D = $CampGateClosed
-@onready var camp_gate_open: StaticBody2D = $CampGateOpen
+@onready var camp_gate_closed: StaticBody2D = $WoodWalls/CampGateClosed
+@onready var camp_gate_open: StaticBody2D = $WoodWalls/CampGateOpen
 
 func _ready() -> void:
 	super._ready()
