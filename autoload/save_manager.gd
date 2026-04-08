@@ -57,7 +57,8 @@ func load_game(slot: int = 1) -> void:
 	if not has_save_data(slot):
 		push_error("SaveManager: no save data found for slot %d" % slot)
 		return
-
+	save_slot = slot
+	
 	var hero_json := _load_json(slot, "hero.json")
 	GameState.hero = _load_hero(hero_json.get("data", {}))
 
