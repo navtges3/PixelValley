@@ -2,10 +2,10 @@
 
 [ext_resource type="Script" uid="uid://blp0fv0xnajdb" path="res://scripts/data/active_effect.gd" id="1_it814"]
 [ext_resource type="Resource" uid="uid://b0yth7mxsivg0" path="res://resources/characters/heroes/knight/knight_battle_visual.tres" id="2_2ujav"]
-[ext_resource type="Resource" uid="uid://br6hwj0vp2ykl" path="res://resources/characters/weapons/knight_weapons/common/wooden_shieldblade.tres" id="3_1b3f1"]
+[ext_resource type="Resource" uid="uid://br6hwj0vp2ykl" path="res://resources/items/weapons/knight_weapons/common/wooden_shieldblade.tres" id="3_1b3f1"]
 [ext_resource type="Script" uid="uid://d0mdck5mlsm03" path="res://scripts/data/item_stack.gd" id="4_h2kic"]
-[ext_resource type="Resource" uid="uid://cyiqwotfm3gq6" path="res://resources/characters/potions/regeneration_potion.tres" id="5_psytt"]
-[ext_resource type="Resource" uid="uid://4gl0mwbttg8d" path="res://resources/characters/potions/energy_potion.tres" id="6_ygbpt"]
+[ext_resource type="Resource" uid="uid://cyiqwotfm3gq6" path="res://resources/items/potions/regeneration_potion.tres" id="5_psytt"]
+[ext_resource type="Resource" uid="uid://4gl0mwbttg8d" path="res://resources/items/potions/energy_potion.tres" id="6_ygbpt"]
 [ext_resource type="Script" uid="uid://4rm24oomjap7" path="res://scripts/characters/inventory.gd" id="7_i6dhb"]
 [ext_resource type="Script" uid="uid://dgykeyxn7fefw" path="res://scripts/data/weapon.gd" id="8_33c6g"]
 [ext_resource type="Texture2D" uid="uid://c8hydb1a47nnk" path="res://assets/heroes/knight/knight.png" id="9_gftrw"]

@@ -16,6 +16,7 @@ signal monster_killed(monster_id: MonsterLoader.MonsterID, location_id: String)
 func start_new_game(slot := 1) -> void:
 	village = DEFAULT_VILLAGE.duplicate()
 	quest_manager = QuestManager.new()
+	pre_combat_position = Vector2.ZERO
 	quest_manager.new_game()
 	WorldManager.reset()
 	SaveManager.new_save(slot)

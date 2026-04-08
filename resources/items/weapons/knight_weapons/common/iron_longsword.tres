@@ -1,0 +1,43 @@
+[gd_resource type="Resource" script_class="Weapon" format=3 uid="uid://byt7knbbmt5h6"]
+
+[ext_resource type="Script" uid="uid://b2o7w8q10stxo" path="res://scripts/data/ability.gd" id="1_vv2ry"]
+[ext_resource type="Script" uid="uid://bo48scp6lbwrb" path="res://scripts/data/attack.gd" id="2_3i434"]
+[ext_resource type="Script" uid="uid://bvuw0uyc36uxx" path="res://scripts/data/utility.gd" id="3_t1bkc"]
+[ext_resource type="Script" uid="uid://dgykeyxn7fefw" path="res://scripts/data/weapon.gd" id="4_n4usl"]
+[ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://resources/ui/button_themes/regular/green_button.tres" id="5_wgt2k"]
+
+[sub_resource type="Resource" id="Resource_3tf42"]
+script = ExtResource("2_3i434")
+min_damage = 1
+max_damage = 10
+metadata/_custom_type_script = "uid://bo48scp6lbwrb"
+
+[sub_resource type="Resource" id="Resource_ldvfv"]
+script = ExtResource("1_vv2ry")
+name = "Steel Slash"
+attack = SubResource("Resource_3tf42")
+metadata/_custom_type_script = "uid://b2o7w8q10stxo"
+
+[sub_resource type="Resource" id="Resource_kmumv"]
+script = ExtResource("2_3i434")
+min_damage = 5
+max_damage = 14
+metadata/_custom_type_script = "uid://bo48scp6lbwrb"
+
+[sub_resource type="Resource" id="Resource_6c35j"]
+script = ExtResource("1_vv2ry")
+name = "Training Strike"
+energy_cost = 5
+cooldown = 3
+attack = SubResource("Resource_kmumv")
+metadata/_custom_type_script = "uid://b2o7w8q10stxo"
+
+[resource]
+script = ExtResource("4_n4usl")
+abilities = Array[ExtResource("1_vv2ry")]([SubResource("Resource_ldvfv"), SubResource("Resource_6c35j")])
+item_id = "iron_longsword"
+name = "Iron Longsword"
+description = "A sturdy, timeworn blade bearing the training nicks of countless recruits."
+theme = ExtResource("5_wgt2k")
+value = 80
+metadata/_custom_type_script = "uid://dgykeyxn7fefw"

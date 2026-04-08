@@ -2,10 +2,10 @@
 
 [ext_resource type="Script" uid="uid://blp0fv0xnajdb" path="res://scripts/data/active_effect.gd" id="1_j0i8t"]
 [ext_resource type="Resource" uid="uid://c2n1qo8jdtaxw" path="res://resources/characters/heroes/princess/princess_battle_visual.tres" id="2_cu6tq"]
-[ext_resource type="Resource" uid="uid://2xnjln6p48rw" path="res://resources/characters/weapons/princess_weapons/common/silver_scepter.tres" id="3_if4lv"]
+[ext_resource type="Resource" uid="uid://2xnjln6p48rw" path="res://resources/items/weapons/princess_weapons/common/silver_scepter.tres" id="3_if4lv"]
 [ext_resource type="Script" uid="uid://d0mdck5mlsm03" path="res://scripts/data/item_stack.gd" id="4_pouv5"]
-[ext_resource type="Resource" uid="uid://cyiqwotfm3gq6" path="res://resources/characters/potions/regeneration_potion.tres" id="5_rw6ih"]
-[ext_resource type="Resource" uid="uid://4gl0mwbttg8d" path="res://resources/characters/potions/energy_potion.tres" id="6_eoppb"]
+[ext_resource type="Resource" uid="uid://cyiqwotfm3gq6" path="res://resources/items/potions/regeneration_potion.tres" id="5_rw6ih"]
+[ext_resource type="Resource" uid="uid://4gl0mwbttg8d" path="res://resources/items/potions/energy_potion.tres" id="6_eoppb"]
 [ext_resource type="Script" uid="uid://4rm24oomjap7" path="res://scripts/characters/inventory.gd" id="7_ckwek"]
 [ext_resource type="Script" uid="uid://dgykeyxn7fefw" path="res://scripts/data/weapon.gd" id="8_43vr3"]
 [ext_resource type="Texture2D" uid="uid://crvpafnprgkcq" path="res://assets/heroes/princess/Princess.png" id="9_b4bc3"]
