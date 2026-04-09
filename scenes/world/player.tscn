@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://lfkm5cksvubb" path="res://scripts/world/player.gd" id="1_l3o4k"]
 [ext_resource type="SpriteFrames" uid="uid://d31u570pq5i0f" path="res://resources/characters/heroes/knight/knight_world_sprite_frames.tres" id="2_l3o4k"]
+[ext_resource type="Script" uid="uid://dokev55xhiwxj" path="res://scripts/world/camera_2d.gd" id="3_hqqc5"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hqqc5"]
 size = Vector2(10, 14)
@@ -19,3 +20,4 @@ shape = SubResource("RectangleShape2D_hqqc5")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=955191571]
 zoom = Vector2(1.5, 1.5)
+script = ExtResource("3_hqqc5")
