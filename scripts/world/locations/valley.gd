@@ -1,5 +1,5 @@
 extends BaseLocation
-class_name OverworldLocation
+class_name ValleyLocation
 
 @onready var zone_message_label: ZoneMessageLabel = $ZoneMessageLabel
 @onready var camp_gate_closed: StaticBody2D = $WoodWalls/CampGateClosed
@@ -15,7 +15,7 @@ func _ready() -> void:
 	cave_closed.visible = ! cave_unlocked
 
 func _get_screen_name() -> ScreenManager.ScreenName:
-	return ScreenManager.ScreenName.OVERWORLD
+	return ScreenManager.ScreenName.VALLEY
 
 func _connect_zone(zone: TriggerZone) -> void:
 	super._connect_zone(zone)
