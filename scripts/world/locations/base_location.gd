@@ -25,9 +25,9 @@ func _on_location_ready() -> void:
 
 # Override to provide the correct ScreenName for set_player_location
 func _get_screen_name() -> ScreenManager.ScreenName:
-	return ScreenManager.ScreenName.OVERWORLD
+	return ScreenManager.ScreenName.VALLEY
 
-# Override to add extra zone signal connections (e.g. zone_locked in overworld)
+# Override to add extra zone signal connections (e.g. zone_locked in valley)
 func _connect_zone(zone: TriggerZone) -> void:
 	zone.zone_entered.connect(_on_zone_entered)
 

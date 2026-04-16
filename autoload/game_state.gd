@@ -10,7 +10,7 @@ var quest_manager: QuestManager = null
 var pre_combat_position: Vector2 = Vector2.ZERO
 
 var player_location: Dictionary = {
-	"scene": ScreenManager.ScreenName.OVERWORLD,
+	"scene": ScreenManager.ScreenName.VALLEY,
 	"entrance_id": ""
 }
 

@@ -11,7 +11,7 @@ enum ScreenName {
 	MAIN_MENU, NEW_GAME,
 	VILLAGE,
 	INN, SHOP, ARMORY, TRAINING, QUEST,
-	OVERWORLD,
+	VALLEY,
 	FOREST, WAR_CAMP, CAVE,
 	BATTLE,
 	VICTORY,
@@ -26,7 +26,7 @@ var SCENE_PATHS := {
 	ScreenName.SHOP: "res://scenes/ui/screens/shop_screen.tscn",
 	ScreenName.ARMORY: "res://scenes/ui/screens/armory_screen.tscn",
 	ScreenName.TRAINING: "res://scenes/ui/screens/training_screen.tscn",
-	ScreenName.OVERWORLD: "res://scenes/world/locations/overworld.tscn",
+	ScreenName.VALLEY: "res://scenes/world/locations/valley.tscn",
 	ScreenName.FOREST: "res://scenes/world/locations/forest.tscn",
 	ScreenName.WAR_CAMP: "res://scenes/world/locations/war_camp.tscn",
 	ScreenName.CAVE: "res://scenes/world/locations/cave.tscn",
@@ -40,7 +40,7 @@ func _ready() -> void:
 	var canvas := CanvasLayer.new()
 	canvas.layer = 100
 	add_child(canvas)
-	
+
 	_overlay = ColorRect.new()
 	_overlay.color = Color(0, 0, 0, 1)
 	_overlay.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -75,7 +75,7 @@ func go_back(entrance_id: String = "", data = null) -> void:
 func _change_scene(path: String, entrance_id: String = "", data = null) -> void:
 	_is_transitioning = true
 	await _fade(1.0)
-	
+
 	var scene = load(path).instantiate()
 	get_tree().current_scene.free()
 	get_tree().root.add_child(scene)
@@ -85,7 +85,7 @@ func _change_scene(path: String, entrance_id: String = "", data = null) -> void:
 	if entrance_id != "" and scene.has_method("place_player_at_entrance"):
 		print("Placing player at entrance: %s" % entrance_id)
 		scene.place_player_at_entrance(entrance_id)
-	
+
 	await get_tree().process_frame
 	await _fade(0.0)
 	_is_transitioning = false

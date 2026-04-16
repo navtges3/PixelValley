@@ -58,7 +58,7 @@ func load_game(slot: int = 1) -> void:
 		push_error("SaveManager: no save data found for slot %d" % slot)
 		return
 	save_slot = slot
-	
+
 	var hero_json := _load_json(slot, "hero.json")
 	GameState.hero = _load_hero(hero_json.get("data", {}))
 
@@ -72,7 +72,7 @@ func load_game(slot: int = 1) -> void:
 	WorldManager.load_save_data(world_json.get("data", {}))
 
 	var meta_json := _load_json(slot, "meta.json")
-	var scene_int: int = meta_json.get("player_scene", ScreenManager.ScreenName.OVERWORLD)
+	var scene_int: int = meta_json.get("player_scene", ScreenManager.ScreenName.VALLEY)
 	var entrance: String = meta_json.get("player_entrance", "")
 	GameState.player_location = { "scene": scene_int, "entrance_id": entrance }
 	GameState.quest_manager.reconnect_signals()
@@ -161,7 +161,7 @@ func _load_hero(data: Dictionary) -> Hero:
 	var battle_visuals_path = data.get("battle_visual", "")
 	if battle_visuals_path != "":
 		hero.battle_visual = load(battle_visuals_path)
-	
+
 	var world_visuals_path = data.get("world_visual", "")
 	if world_visuals_path != "":
 		hero.world_visual = load(world_visuals_path)
@@ -278,7 +278,7 @@ func _load_inventory(data: Dictionary) -> Inventory:
 			inv.potions.append(ItemStack.new(item, item_data.get("count", 1)))
 
 	return inv
-	
+
 	# Migration helper — maps old resource paths to new IDs
 func _path_to_item_id(path: String) -> String:
 	var filename := path.get_file().get_basename()  # e.g. "lesser_healing_potion"
@@ -419,7 +419,7 @@ func _get_quest_data(quest: Quest) -> Dictionary:
 				reward_data["weapon_rarity"] = reward.weapon_rarity
 		data["rewards"].append(reward_data)
 	return data
- 
+
 func _load_quest(data: Dictionary) -> Quest:
 	var quest := Quest.new()
 	quest.id = data.get("id", 0)
