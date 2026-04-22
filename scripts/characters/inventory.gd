@@ -33,5 +33,13 @@ func add_weapon_to_stash(weapon: Weapon) -> void:
 	else:
 		gold += weapon.value
 
+func has_weapon_in_stash(item_id: String) -> bool:
+	if equipped_weapon != null and ItemLoader.get_item_id(equipped_weapon) == item_id:
+		return true
+	for weapon in weapon_stash:
+		if ItemLoader.get_item_id(weapon) == item_id:
+			return true
+	return false
+
 func remove_weapon_from_stash(weapon: Weapon) -> void:
 	weapon_stash.erase(weapon)
