@@ -1,6 +1,6 @@
 extends Node
 
-var class_weapon_table := {
+const CLASS_WEAPON_TABLE := {
 	Hero.HeroClass.ASSASSIN: {
 		Item.Rarity.COMMON:     ["rusty_shortsword", "silent_dirk", "throwing_knives", "twin_daggers", "curved_scimitar"],
 		Item.Rarity.RARE:       ["eclipse_edge", "shadowveil_katar", "venomfang_blades"],
@@ -18,11 +18,23 @@ var class_weapon_table := {
 	},
 }
 
-func get_random_weapon_for_class(hero_class: Hero.HeroClass, rarity: Item.Rarity):
-	var class_list = class_weapon_table.get(hero_class, {})
-	var id_list = class_list.get(rarity, [])
-	if id_list.is_empty():
-		push_warning("WeaponDatabase: no weapons for class/rarity combo")
+const GOLD_BY_RARITY := {
+	Item.Rarity.COMMON:     50,
+	Item.Rarity.RARE:      150,
+	Item.Rarity.LEGENDARY: 400,
+}
+
+func get_random_unowned_weapon_for_class(hero_class: Hero.HeroClass, rarity: Item.Rarity) -> Weapon:
+	var class_list: Dictionary = CLASS_WEAPON_TABLE.get(hero_class, {})
+	var all_ids: Array = class_list.get(rarity, [])
+	var unowned_ids := all_ids.filter(
+		func(id: String) -> bool:
+			return not GameState.hero.inventory.has_weapon_in_stash(id)
+	)
+	if unowned_ids.is_empty():
 		return null
-	var id: String = id_list[randi() % id_list.size()]
-	return ItemLoader.get_item(id) as Weapon
+	var chosen_id: String = unowned_ids[randi() % unowned_ids.size()]
+	return ItemLoader.get_item(chosen_id) as Weapon
+
+func get_gold_fallback_for_rarity(rarity: Item.Rarity) -> int:
+	return GOLD_BY_RARITY.get(rarity, 50)

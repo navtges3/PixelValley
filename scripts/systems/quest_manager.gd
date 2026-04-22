@@ -15,7 +15,6 @@ const QUEST_LIST := [
 	preload("res://resources/quests/quest_11.tres"),
 ]
 
-
 const FIRST_QUEST_ID := 1
 
 @export var locked_quests: Array[Quest] = []
@@ -70,10 +69,15 @@ func _apply_rewards(quest: Quest) -> void:
 			QuestReward.RewardType.EXPERIENCE:
 				GameState.hero.gain_experience(reward.amount)
 			QuestReward.RewardType.CLASS_WEAPON:
-				var weapon = WeaponDatabase.get_random_weapon_for_class(
-					GameState.hero.hero_class, reward.weapon_rarity)
-				if weapon != null:
-					GameState.hero.inventory.add_weapon_to_stash(weapon)
+				_apply_weapon_rewards(reward.weapon_rarity)
+
+func _apply_weapon_rewards(rarity: Item.Rarity) -> void:
+	var weapon = WeaponDatabase.get_random_unowned_weapon_for_class(GameState.hero.hero_class, rarity)
+	if weapon != null:
+		GameState.hero.inventory.add_weapon_to_stash(weapon)
+	else:
+		var gold := WeaponDatabase.get_gold_fallback_for_rarity(rarity)
+		GameState.hero.inventory.gold += gold
 
 func _apply_location_unlocks(quest: Quest) -> void:
 	for location_id in quest.unlocks_locations:
