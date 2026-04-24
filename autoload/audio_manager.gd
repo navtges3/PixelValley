@@ -27,6 +27,8 @@ func _ready() -> void:
 	_music_player.volume_db = 0.0
 	add_child(_music_player)
 
+	_music_player.finished.connect(_on_music_finished)
+
 # ---------------------------------------------------------
 # MUSIC API
 # ---------------------------------------------------------
@@ -66,6 +68,10 @@ func resume_music() -> void:
 	if _music_player.stream_paused:
 		_music_player.stream_paused = false
 
+func _on_music_finished() -> void:
+	if _current_music != null:
+		_music_player.play()
+
 # ---------------------------------------------------------
 # FADE HELPERS
 # ---------------------------------------------------------
@@ -86,7 +92,6 @@ func _fade_out() -> void:
 	_music_fade_tween.tween_property(_music_player, "volume_db", -80.0, MUSIC_FADE_TIME)
 	_music_fade_tween.tween_callback(func():
 		_music_player.stop()
-		_current_music = null
 	)
 
 func _kill_fade() -> void:
