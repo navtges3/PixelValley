@@ -39,18 +39,25 @@ func save_game() -> void:
 		"data": _get_quests_data(GameState.quest_manager)
 	})
 
+	_save_json(save_slot, "world_state.json", {
+		"data": WorldManager.get_save_data()
+	})
+
 	_save_json(save_slot, "meta.json", {
 		"hero_name": GameState.hero.name,
 		"level": GameState.hero.level,
-		"time": Time.get_datetime_string_from_system()
+		"time": Time.get_datetime_string_from_system(),
+		"player_scene": GameState.player_location["scene"],
+		"player_entrance": GameState.player_location["entrance_id"]
 	})
-
+	print("SaveManager: Saving player location: %s, %s" % [GameState.player_location["scene"], GameState.player_location["entrance_id"]])
 	print("SaveManager: Saved game to slot %d" % save_slot)
 
 func load_game(slot: int = 1) -> void:
 	if not has_save_data(slot):
 		push_error("SaveManager: no save data found for slot %d" % slot)
 		return
+	save_slot = slot
 
 	var hero_json := _load_json(slot, "hero.json")
 	GameState.hero = _load_hero(hero_json.get("data", {}))
@@ -61,11 +68,34 @@ func load_game(slot: int = 1) -> void:
 	var quest_json := _load_json(slot, "quests.json")
 	GameState.quest_manager = _load_quests(quest_json.get("data", {}))
 
+	var world_json := _load_json(slot, "world_state.json")
+	WorldManager.load_save_data(world_json.get("data", {}))
+
+	var meta_json := _load_json(slot, "meta.json")
+	var scene_int: int = meta_json.get("player_scene", ScreenManager.ScreenName.VALLEY)
+	var entrance: String = meta_json.get("player_entrance", "")
+	GameState.player_location = { "scene": scene_int, "entrance_id": entrance }
+	GameState.quest_manager.reconnect_signals()
+	print("SaveManager: Loading player location: %s, %s" % [GameState.player_location["scene"], GameState.player_location["entrance_id"]])
 	print("SaveManager: Loaded game from slot %d" % slot)
 
 func get_meta_data(slot: int = 1) -> Dictionary:
 	var meta_json := _load_json(slot, "meta.json")
 	return meta_json
+
+func delete_slot(slot: int = 1) -> void:
+	var dir := get_slot_dir(slot)
+	if not DirAccess.dir_exists_absolute(dir):
+		push_warning("SaveManager: No save data to delete for slot %d" % slot)
+		return
+	var files := ["hero.json", "village.json", "quests.json",
+		"zone_state.json", "world_state.json", "meta.json"]
+	for filename in files:
+		var path := dir.path_join(filename)
+		if FileAccess.file_exists(path):
+			DirAccess.remove_absolute(path)
+	DirAccess.remove_absolute(dir)
+	print("SaveManager: Deleted slot %d" % slot)
 
 # ---------------------------------------------------------
 # LOW-LEVEL JSON HANDLING
@@ -108,6 +138,7 @@ func _get_hero_data(hero: Hero) -> Dictionary:
 		"hero_name": hero.name,
 		"portrait": hero.portrait.resource_path,
 		"battle_visual": hero.battle_visual.resource_path,
+		"world_visual": hero.world_visual.resource_path,
 		"hero_class": hero.hero_class,
 		"level": hero.level,
 		"experience": hero.experience,
@@ -130,6 +161,10 @@ func _load_hero(data: Dictionary) -> Hero:
 	var battle_visuals_path = data.get("battle_visual", "")
 	if battle_visuals_path != "":
 		hero.battle_visual = load(battle_visuals_path)
+
+	var world_visuals_path = data.get("world_visual", "")
+	if world_visuals_path != "":
+		hero.world_visual = load(world_visuals_path)
 
 	hero.hero_class = data.get("hero_class", Hero.HeroClass.KNIGHT)
 	hero.level = data.get("level", 1)
@@ -199,17 +234,17 @@ func _load_stat_block(data: Dictionary) -> StatBlock:
 func _get_inventory_data(inventory: Inventory) -> Dictionary:
 	var data := {
 		"gold": inventory.gold,
-		"equipped_weapon": inventory.equipped_weapon.resource_path,
+		"equipped_weapon": ItemLoader.get_item_id(inventory.equipped_weapon),
 		"weapon_stash": [],
 		"potions": []
 	}
 
 	for weapon in inventory.weapon_stash:
-		data["weapon_stash"].append(weapon.resource_path)
+		data["weapon_stash"].append(ItemLoader.get_item_id(weapon))
 
 	for item_stack in inventory.potions:
 		data["potions"].append({
-			"potion_path": item_stack.item.resource_path,
+			"item_id": ItemLoader.get_item_id(item_stack.item),
 			"count": item_stack.count
 		})
 
@@ -219,23 +254,37 @@ func _load_inventory(data: Dictionary) -> Inventory:
 	var inv := Inventory.new()
 	inv.gold = data.get("gold", 0)
 
-	var equipped_path = data.get("equipped_weapon", "")
-	if equipped_path != "":
-		inv.equipped_weapon = load(equipped_path)
+	var weapon_id = data.get("equipped_weapon", "")
+	if weapon_id != "":
+		var weapon = ItemLoader.get_item(weapon_id)
+		if weapon is Weapon:
+			inv.equipped_weapon = weapon
 
-	for weapon_path in data.get("weapon_stash", []):
-		var weapon = load(weapon_path)
+	for wid in data.get("weapon_stash", []):
+		var weapon = ItemLoader.get_item(wid)
 		if weapon is Weapon:
 			inv.weapon_stash.append(weapon)
 
 	for item_data in data.get("potions", []):
-		var item_path = item_data.get("potion_path", "")
-		var count = item_data.get("count", 0)
-		var item = load(item_path)
+		var item: Item = null
+		if item_data.has("item_id"):
+			item = ItemLoader.get_item(item_data["item_id"])
+		elif item_data.has("potion_path"):
+			# Migration path for existing saves
+			var path: String = item_data["potion_path"]
+			var id := _path_to_item_id(path)
+			item = ItemLoader.get_item(id) if id != "" else load(path)
 		if item is Potion:
-			inv.potions.append(ItemStack.new(item, count))
+			inv.potions.append(ItemStack.new(item, item_data.get("count", 1)))
 
 	return inv
+
+	# Migration helper — maps old resource paths to new IDs
+func _path_to_item_id(path: String) -> String:
+	var filename := path.get_file().get_basename()  # e.g. "lesser_healing_potion"
+	if ItemLoader.has_item(filename):
+		return filename
+	return ""
 
 # ---------------------------------------------------------
 # VILLAGE
@@ -265,7 +314,7 @@ func _get_shop_data(shop: Shop) -> Dictionary:
 
 	for item_stack in shop.inventory:
 		data["inventory"].append({
-			"item_path": item_stack.item.resource_path,
+			"item_id": ItemLoader.get_item_id(item_stack.item),
 			"count": item_stack.count
 		})
 
@@ -276,11 +325,15 @@ func _load_shop(data: Dictionary) -> Shop:
 	shop.name = data.get("name", "Unnamed Shop")
 
 	for item_data in data.get("inventory", []):
-		var item_path = item_data.get("item_path", "")
-		var count = item_data.get("count", 0)
-		var item = load(item_path)
-		if item is Item:
-			shop.add_item(item, count)
+		var item: Item = null
+		if item_data.has("item_id"):
+			item = ItemLoader.get_item(item_data["item_id"])
+		elif item_data.has("item_path"):
+			var path = item_data.get("item_path", "")
+			var id := _path_to_item_id(path)
+			item = ItemLoader.get_item(id)
+		if item:
+			shop.add_item(item, item_data.get("count", 1))
 
 	return shop
 
@@ -339,6 +392,7 @@ func _get_quest_data(quest: Quest) -> Dictionary:
 		"description": quest.description,
 		"next_quests": quest.next_quests.duplicate(),
 		"completed": quest.completed,
+		"unlocks_locations": quest.unlocks_locations.duplicate(),
 		"monster_objectives": [],
 		"rewards": [],
 	}
@@ -347,7 +401,8 @@ func _get_quest_data(quest: Quest) -> Dictionary:
 		data["monster_objectives"].append({
 			"monster_id": obj.monster_id,
 			"target_amount": obj.target_amount,
-			"current_amount": obj.current_amount
+			"current_amount": obj.current_amount,
+			"location_id": obj.location_id
 		})
 	# rewards
 	for reward in quest.reward:
@@ -364,7 +419,7 @@ func _get_quest_data(quest: Quest) -> Dictionary:
 				reward_data["weapon_rarity"] = reward.weapon_rarity
 		data["rewards"].append(reward_data)
 	return data
- 
+
 func _load_quest(data: Dictionary) -> Quest:
 	var quest := Quest.new()
 	quest.id = data.get("id", 0)
@@ -374,12 +429,15 @@ func _load_quest(data: Dictionary) -> Quest:
 	# Restore next_quests so unlocking the follow-up works after a load.
 	var raw_next: Array = data.get("next_quests", [])
 	quest.next_quests.assign(raw_next)
+	var raw_unlocks: Array = data.get("unlocks_locations", [])
+	quest.unlocks_locations.assign(raw_unlocks)
 	# monster_objectives
 	for obj_data in data.get("monster_objectives", []):
 		var obj := MonsterRequirement.new()
 		obj.monster_id = obj_data.get("monster_id", MonsterLoader.MonsterID.GOBLIN)
 		obj.target_amount = obj_data.get("target_amount", 1)
 		obj.current_amount = obj_data.get("current_amount", 0)
+		obj.location_id = obj_data.get("location_id", "")
 		quest.monster_objectives.append(obj)
 	# rewards
 	for reward_data in data.get("rewards", []):

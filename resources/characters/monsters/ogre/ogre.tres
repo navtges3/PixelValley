@@ -3,12 +3,13 @@
 [ext_resource type="Script" uid="uid://blp0fv0xnajdb" path="res://scripts/data/active_effect.gd" id="1_n6dtv"]
 [ext_resource type="Resource" uid="uid://waytpolwnsyp" path="res://resources/characters/abilities/smash.tres" id="2_xovwm"]
 [ext_resource type="Script" uid="uid://dxnu3vjlxl2pn" path="res://scripts/data/conditional_ability.gd" id="3_nob55"]
-[ext_resource type="Resource" uid="uid://c7yn6fv01vsey" path="res://resources/characters/monsters/ogre/ogre_visual.tres" id="3_u5tp0"]
+[ext_resource type="Resource" uid="uid://c7yn6fv01vsey" path="res://resources/characters/monsters/ogre/ogre_battle_visual.tres" id="3_u5tp0"]
 [ext_resource type="Resource" uid="uid://mxwf3pdjblcl" path="res://resources/characters/abilities/crushing_rage.tres" id="4_a7s2p"]
 [ext_resource type="Script" uid="uid://cnso83bg7vodw" path="res://scripts/data/condition.gd" id="5_1gn5i"]
 [ext_resource type="Texture2D" uid="uid://rvnloxwapjye" path="res://assets/monsters/ogre/ogre.png" id="7_8w1if"]
 [ext_resource type="Script" uid="uid://bd6ohffno5w7r" path="res://scripts/characters/monster.gd" id="7_18j1j"]
 [ext_resource type="Script" uid="uid://hxleldka7y06" path="res://scripts/characters/stat_block.gd" id="8_vnq8p"]
+[ext_resource type="SpriteFrames" uid="uid://ch11jts8h4hx2" path="res://resources/characters/monsters/ogre/ogre_world_sprite_frames.tres" id="10_8w1if"]
 
 [sub_resource type="Resource" id="Resource_a8dng"]
 script = ExtResource("5_1gn5i")
@@ -42,5 +43,6 @@ conditional_abilities = Array[ExtResource("3_nob55")]([SubResource("Resource_s8n
 name = "Ogre"
 portrait = ExtResource("7_8w1if")
 battle_visual = ExtResource("3_u5tp0")
+world_visual = ExtResource("10_8w1if")
 stat_block = SubResource("Resource_pi0wg")
 metadata/_custom_type_script = "uid://bd6ohffno5w7r"

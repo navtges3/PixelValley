@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://be34gw2t63gdo"]
+
+[ext_resource type="Script" uid="uid://c1usqtgk7qm4u" path="res://scripts/world/zone_message_label.gd" id="1_e1wwf"]
+
+[node name="ZoneMessageLabel" type="Label" unique_id=1327906442]
+script = ExtResource("1_e1wwf")

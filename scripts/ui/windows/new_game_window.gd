@@ -42,6 +42,7 @@ func setup_filled_slot(button: Button, meta: Dictionary) -> void:
 	button.theme = GREEN_BUTTON
 
 func _slot_button_pressed(slot_index: int) -> void:
+	self.hide()
 	GameState.start_new_game(slot_index)
 	ScreenManager.go_to_screen(ScreenManager.ScreenName.VILLAGE)
 
