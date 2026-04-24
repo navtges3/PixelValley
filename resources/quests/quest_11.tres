@@ -1,32 +1,12 @@
-[gd_resource type="Resource" script_class="Quest" format=3 uid="uid://bx73nymnh0wfe"]
+[gd_resource type="Resource" script_class="Quest" format=3 uid="uid://dhxmspsc22anp"]
 
-[ext_resource type="Script" uid="uid://bhsjswm1wnll8" path="res://scripts/quest/monster_requirement.gd" id="1_6j6nb"]
-[ext_resource type="Script" uid="uid://xekqra2mjp3l" path="res://scripts/quest/quest_reward.gd" id="4_3sxak"]
-[ext_resource type="Script" uid="uid://xhl8p6y5w5e6" path="res://scripts/quest/quest.gd" id="7_ru20b"]
-
-[sub_resource type="Resource" id="Resource_668k3"]
-script = ExtResource("1_6j6nb")
-monster_id = 4
-metadata/_custom_type_script = "uid://bhsjswm1wnll8"
-
-[sub_resource type="Resource" id="Resource_sp1ti"]
-script = ExtResource("4_3sxak")
-reward_type = 2
-amount = 800
-metadata/_custom_type_script = "uid://xekqra2mjp3l"
-
-[sub_resource type="Resource" id="Resource_xljhf"]
-script = ExtResource("4_3sxak")
-reward_type = 3
-weapon_rarity = 2
-metadata/_custom_type_script = "uid://xekqra2mjp3l"
+[ext_resource type="Script" uid="uid://bhsjswm1wnll8" path="res://scripts/quest/monster_requirement.gd" id="1_alwbf"]
+[ext_resource type="Script" uid="uid://xekqra2mjp3l" path="res://scripts/quest/quest_reward.gd" id="2_xljhf"]
+[ext_resource type="Script" uid="uid://xhl8p6y5w5e6" path="res://scripts/quest/quest.gd" id="3_trt7l"]
 
 [resource]
-script = ExtResource("7_ru20b")
-title = "The Ogre Warlord"
+script = ExtResource("3_trt7l")
+title = "Victory!"
 id = 11
-description = "An ogre warlord rallies both goblins and orcs. Strike him down."
-monster_objectives = Array[ExtResource("1_6j6nb")]([SubResource("Resource_668k3")])
-reward = Array[ExtResource("4_3sxak")]([SubResource("Resource_sp1ti"), SubResource("Resource_xljhf")])
-next_quests = Array[int]([12])
+description = "Thank you for playing! I hope you enjoyed my game!"
 metadata/_custom_type_script = "uid://xhl8p6y5w5e6"

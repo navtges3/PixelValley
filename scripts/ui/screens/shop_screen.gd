@@ -1,9 +1,9 @@
 extends Control
 
+const LOCATION_ID := "shop"
+
 @onready var shop_manager = $ShopManager
-
 @onready var item_list: VBoxContainer = $HBoxContainer/ListPanelContainer/ScrollContainer/ItemList
-
 @onready var shop_name_label: Label = $ShopNameLabel
 # Detail Panel
 @onready var item_name_label: Label = $HBoxContainer/InfoPanelContainer/VBoxContainer/ItemNameLabel
@@ -97,4 +97,4 @@ func _on_purchase_button_pressed() -> void:
 	_update_item_list()
 
 func _on_exit_button_pressed() -> void:
-	ScreenManager.go_to_screen(ScreenManager.ScreenName.VILLAGE)
+	ScreenManager.go_back(LOCATION_ID)

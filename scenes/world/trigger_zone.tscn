@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://b0tdph7ofmv7r"]
+
+[ext_resource type="Script" uid="uid://c5sed60hjy0rk" path="res://scripts/world/trigger_zone.gd" id="1_1420r"]
+
+[node name="TriggerZone" type="Area2D" unique_id=528423832 groups=["player"]]
+script = ExtResource("1_1420r")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

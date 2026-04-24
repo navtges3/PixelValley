@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="BattleVisualData" format=3 uid="uid://7gacxrq5a6yp"]
+
+[ext_resource type="SpriteFrames" uid="uid://6b425jjkhjxd" path="res://resources/characters/monsters/ogre_warlord/ogre_warlord_battle_sprite_frames.tres" id="1_bcwgj"]
+[ext_resource type="Script" uid="uid://c3t8kckce6hdk" path="res://scripts/characters/battle_visual_data.gd" id="2_sppj2"]
+
+[resource]
+script = ExtResource("2_sppj2")
+frames = ExtResource("1_bcwgj")
+sprite_height = 96
+metadata/_custom_type_script = "uid://c3t8kckce6hdk"

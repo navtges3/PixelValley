@@ -2,13 +2,14 @@
 
 [ext_resource type="Script" uid="uid://blp0fv0xnajdb" path="res://scripts/data/active_effect.gd" id="1_ehlpm"]
 [ext_resource type="Resource" uid="uid://nav1377jn0pa" path="res://resources/characters/abilities/stab.tres" id="2_7quqt"]
-[ext_resource type="Resource" uid="uid://b81f7dg2c777j" path="res://resources/characters/monsters/goblin/goblin_visual.tres" id="3_lwmax"]
+[ext_resource type="Resource" uid="uid://b81f7dg2c777j" path="res://resources/characters/monsters/goblin/goblin_battle_visual.tres" id="3_lwmax"]
 [ext_resource type="Script" uid="uid://dxnu3vjlxl2pn" path="res://scripts/data/conditional_ability.gd" id="4_lygd1"]
 [ext_resource type="Resource" uid="uid://ct2tqqk78lcn3" path="res://resources/characters/abilities/desperation.tres" id="5_idm7f"]
 [ext_resource type="Script" uid="uid://cnso83bg7vodw" path="res://scripts/data/condition.gd" id="6_w4m2s"]
 [ext_resource type="Texture2D" uid="uid://vdpvmy1cvfnu" path="res://assets/monsters/goblin/goblin.png" id="7_0ojpk"]
 [ext_resource type="Script" uid="uid://bd6ohffno5w7r" path="res://scripts/characters/monster.gd" id="8_li32v"]
 [ext_resource type="Script" uid="uid://hxleldka7y06" path="res://scripts/characters/stat_block.gd" id="9_pw2h8"]
+[ext_resource type="SpriteFrames" uid="uid://2sjuet18mpdk" path="res://resources/characters/monsters/goblin/goblin_world_sprite_frames.tres" id="10_7quqt"]
 
 [sub_resource type="Resource" id="Resource_nb4d4"]
 script = ExtResource("6_w4m2s")
@@ -40,5 +41,6 @@ conditional_abilities = Array[ExtResource("4_lygd1")]([SubResource("Resource_sgp
 name = "Goblin"
 portrait = ExtResource("7_0ojpk")
 battle_visual = ExtResource("3_lwmax")
+world_visual = ExtResource("10_7quqt")
 stat_block = SubResource("Resource_hcon4")
 metadata/_custom_type_script = "uid://bd6ohffno5w7r"

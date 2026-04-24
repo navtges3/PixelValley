@@ -1,32 +1,27 @@
-[gd_resource type="Resource" script_class="Quest" format=3 uid="uid://cr1abqodbmr5q"]
+[gd_resource type="Resource" script_class="Quest" format=3 uid="uid://pwtbjocpil70"]
 
 [ext_resource type="Script" uid="uid://bhsjswm1wnll8" path="res://scripts/quest/monster_requirement.gd" id="1_nt4ml"]
 [ext_resource type="Script" uid="uid://xekqra2mjp3l" path="res://scripts/quest/quest_reward.gd" id="3_6f6sq"]
-[ext_resource type="Resource" uid="uid://e282ko0xakwg" path="res://resources/characters/potions/lesser_healing_potion.tres" id="4_fablu"]
 [ext_resource type="Script" uid="uid://xhl8p6y5w5e6" path="res://scripts/quest/quest.gd" id="5_0104a"]
 
-[sub_resource type="Resource" id="Resource_fhtom"]
+[sub_resource type="Resource" id="Resource_f8h81"]
 script = ExtResource("1_nt4ml")
-target_amount = 10
+target_amount = 5
+location_id = "forest"
 metadata/_custom_type_script = "uid://bhsjswm1wnll8"
 
-[sub_resource type="Resource" id="Resource_6wbxw"]
+[sub_resource type="Resource" id="Resource_g74nm"]
 script = ExtResource("3_6f6sq")
-reward_type = 2
+reward_type = 1
 amount = 75
-metadata/_custom_type_script = "uid://xekqra2mjp3l"
-
-[sub_resource type="Resource" id="Resource_0104a"]
-script = ExtResource("3_6f6sq")
-item = ExtResource("4_fablu")
 metadata/_custom_type_script = "uid://xekqra2mjp3l"
 
 [resource]
 script = ExtResource("5_0104a")
-title = "Clearing the Woods"
+title = "Deep in the Woods"
 id = 2
-description = "The goblins regroup deeper in the woods. Hunt them down."
-monster_objectives = Array[ExtResource("1_nt4ml")]([SubResource("Resource_fhtom")])
-reward = Array[ExtResource("3_6f6sq")]([SubResource("Resource_6wbxw"), SubResource("Resource_0104a")])
+description = "The goblin infestation runs deeper than we thought. Clear them out entirely."
+monster_objectives = Array[ExtResource("1_nt4ml")]([SubResource("Resource_f8h81")])
+reward = Array[ExtResource("3_6f6sq")]([SubResource("Resource_g74nm")])
 next_quests = Array[int]([3])
 metadata/_custom_type_script = "uid://xhl8p6y5w5e6"

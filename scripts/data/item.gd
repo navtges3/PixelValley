@@ -7,6 +7,7 @@ enum Rarity {
 	LEGENDARY
 }
 
+@export var item_id: String = ""
 @export var name: String
 @export var description: String
 @export var theme: Theme = preload("res://resources/ui/button_themes/regular/gray_button.tres")

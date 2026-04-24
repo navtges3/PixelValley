@@ -1,0 +1,43 @@
+[gd_resource type="Resource" script_class="Weapon" format=3 uid="uid://cd7r4b62aqqdt"]
+
+[ext_resource type="Script" uid="uid://b2o7w8q10stxo" path="res://scripts/data/ability.gd" id="1_kp53j"]
+[ext_resource type="Script" uid="uid://bo48scp6lbwrb" path="res://scripts/data/attack.gd" id="2_ifmx5"]
+[ext_resource type="Script" uid="uid://bvuw0uyc36uxx" path="res://scripts/data/utility.gd" id="3_to5jp"]
+[ext_resource type="Script" uid="uid://dgykeyxn7fefw" path="res://scripts/data/weapon.gd" id="4_aon3y"]
+[ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://resources/ui/button_themes/regular/green_button.tres" id="5_hrvtg"]
+
+[sub_resource type="Resource" id="Resource_yjfna"]
+script = ExtResource("2_ifmx5")
+min_damage = 1
+max_damage = 6
+metadata/_custom_type_script = "uid://bo48scp6lbwrb"
+
+[sub_resource type="Resource" id="Resource_5u2n6"]
+script = ExtResource("1_kp53j")
+name = "Ragged Slash"
+attack = SubResource("Resource_yjfna")
+metadata/_custom_type_script = "uid://b2o7w8q10stxo"
+
+[sub_resource type="Resource" id="Resource_ofr0u"]
+script = ExtResource("2_ifmx5")
+min_damage = 6
+max_damage = 12
+metadata/_custom_type_script = "uid://bo48scp6lbwrb"
+
+[sub_resource type="Resource" id="Resource_0cotu"]
+script = ExtResource("1_kp53j")
+name = "Opportunist Cut"
+energy_cost = 5
+cooldown = 2
+attack = SubResource("Resource_ofr0u")
+metadata/_custom_type_script = "uid://b2o7w8q10stxo"
+
+[resource]
+script = ExtResource("4_aon3y")
+abilities = Array[ExtResource("1_kp53j")]([SubResource("Resource_5u2n6"), SubResource("Resource_0cotu")])
+item_id = "rusty_shortsword"
+name = "Rusty Shortsword"
+description = "A battered short blade showing the scars of rough back‑alley jobs."
+theme = ExtResource("5_hrvtg")
+value = 45
+metadata/_custom_type_script = "uid://dgykeyxn7fefw"
