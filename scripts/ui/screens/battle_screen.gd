@@ -14,12 +14,12 @@ const BATTLE_CHARACTER = preload("res://scenes/ui/components/battle_character.ts
 @onready var monster_label: Label = $MarginContainer/VBoxContainer/MonsterLabel
 
 # Action Area
-@onready var hero_info: HeroInfo = $MarginContainer/ActionArea/HeroInfo
-@onready var ability_button: Button = $MarginContainer/ActionArea/LeftPanel/AbilityButton
-@onready var item_button: Button = $MarginContainer/ActionArea/LeftPanel/ItemButton
-@onready var meditate_button: Button = $MarginContainer/ActionArea/LeftPanel/MeditateButton
-@onready var flee_button: Button = $MarginContainer/ActionArea/LeftPanel/FleeButton
-@onready var option_list: VBoxContainer = $MarginContainer/ActionArea/MiddlePanel/OptionList
+@onready var hero_info: HeroInfo = $MarginContainer/ActionPanel/ActionArea/HeroInfo
+@onready var ability_button: Button = $MarginContainer/ActionPanel/ActionArea/LeftPanel/AbilityButton
+@onready var item_button: Button = $MarginContainer/ActionPanel/ActionArea/LeftPanel/ItemButton
+@onready var meditate_button: Button = $MarginContainer/ActionPanel/ActionArea/LeftPanel/MeditateButton
+@onready var flee_button: Button = $MarginContainer/ActionPanel/ActionArea/LeftPanel/FleeButton
+@onready var option_list: VBoxContainer = $MarginContainer/ActionPanel/ActionArea/MiddlePanel/OptionList
 
 var battle_config: BattleConfig
 var hero_visual: BattleCharacter

@@ -1,8 +1,10 @@
 [gd_scene format=3 uid="uid://wy2cht7kkgmh"]
 
 [ext_resource type="Script" uid="uid://cqc6b58dnjxis" path="res://scripts/ui/screens/battle_screen.gd" id="1_ihhiw"]
+[ext_resource type="Texture2D" uid="uid://ch4xo4n02q3jw" path="res://assets/BattleBackground.png" id="2_e8mee"]
 [ext_resource type="PackedScene" uid="uid://bjx12sxd6xqme" path="res://scenes/ui/components/hero_info.tscn" id="3_e8mee"]
 [ext_resource type="Theme" uid="uid://cra87dj7simd8" path="res://resources/ui/progress_bar/red_bar.tres" id="3_pxpkm"]
+[ext_resource type="Theme" uid="uid://dq41s7i7v61gk" path="res://resources/ui/backgrounds/background_panel.tres" id="4_pxpkm"]
 [ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://resources/ui/button_themes/regular/red_button.tres" id="7_iw40k"]
 [ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://resources/ui/button_themes/regular/green_button.tres" id="8_qmdt6"]
 [ext_resource type="Theme" uid="uid://dqwm8agt87lsh" path="res://resources/ui/button_themes/regular/blue_button.tres" id="9_06vtu"]
@@ -18,6 +20,15 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_ihhiw")
 
+[node name="BackgroundTextureRect" type="TextureRect" parent="." unique_id=1181602262]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_e8mee")
+
 [node name="HeroSlot" type="Marker2D" parent="." unique_id=1425626208]
 position = Vector2(400, 480)
 
@@ -31,10 +42,10 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/margin_left = 32
-theme_override_constants/margin_top = 32
-theme_override_constants/margin_right = 32
-theme_override_constants/margin_bottom = 32
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
 
 [node name="BattleLog" type="RichTextLabel" parent="MarginContainer" unique_id=1459385711]
 custom_minimum_size = Vector2(300, 300)
@@ -76,64 +87,70 @@ layout_mode = 2
 text = "Monster Name"
 horizontal_alignment = 2
 
-[node name="ActionArea" type="HBoxContainer" parent="MarginContainer" unique_id=337684969]
+[node name="ActionPanel" type="PanelContainer" parent="MarginContainer" unique_id=393718084]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+theme = ExtResource("4_pxpkm")
+
+[node name="ActionArea" type="HBoxContainer" parent="MarginContainer/ActionPanel" unique_id=337684969]
 custom_minimum_size = Vector2(600, 0)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 8
 
-[node name="HeroInfo" parent="MarginContainer/ActionArea" unique_id=1121426668 instance=ExtResource("3_e8mee")]
+[node name="HeroInfo" parent="MarginContainer/ActionPanel/ActionArea" unique_id=1121426668 instance=ExtResource("3_e8mee")]
 layout_mode = 2
 
-[node name="LeftPanel" type="VBoxContainer" parent="MarginContainer/ActionArea" unique_id=756459339]
+[node name="LeftPanel" type="VBoxContainer" parent="MarginContainer/ActionPanel/ActionArea" unique_id=756459339]
 layout_mode = 2
 
-[node name="AbilityButton" type="Button" parent="MarginContainer/ActionArea/LeftPanel" unique_id=598476712]
+[node name="AbilityButton" type="Button" parent="MarginContainer/ActionPanel/ActionArea/LeftPanel" unique_id=598476712]
 custom_minimum_size = Vector2(96, 32)
 layout_mode = 2
 theme = ExtResource("7_iw40k")
 toggle_mode = true
 text = "Use Ability"
 
-[node name="ItemButton" type="Button" parent="MarginContainer/ActionArea/LeftPanel" unique_id=110423753]
+[node name="ItemButton" type="Button" parent="MarginContainer/ActionPanel/ActionArea/LeftPanel" unique_id=110423753]
 custom_minimum_size = Vector2(96, 32)
 layout_mode = 2
 theme = ExtResource("8_qmdt6")
 toggle_mode = true
 text = "Use Item"
 
-[node name="MeditateButton" type="Button" parent="MarginContainer/ActionArea/LeftPanel" unique_id=1755693489]
+[node name="MeditateButton" type="Button" parent="MarginContainer/ActionPanel/ActionArea/LeftPanel" unique_id=1755693489]
 custom_minimum_size = Vector2(96, 32)
 layout_mode = 2
 tooltip_text = "Restore health and energy."
 theme = ExtResource("9_06vtu")
 text = "Meditate"
 
-[node name="FleeButton" type="Button" parent="MarginContainer/ActionArea/LeftPanel" unique_id=2132098312]
+[node name="FleeButton" type="Button" parent="MarginContainer/ActionPanel/ActionArea/LeftPanel" unique_id=2132098312]
 custom_minimum_size = Vector2(96, 32)
 layout_mode = 2
 theme = ExtResource("10_c2ins")
 text = "Flee"
 
-[node name="MiddlePanel" type="ScrollContainer" parent="MarginContainer/ActionArea" unique_id=121735259]
+[node name="MiddlePanel" type="ScrollContainer" parent="MarginContainer/ActionPanel/ActionArea" unique_id=121735259]
 layout_mode = 2
 horizontal_scroll_mode = 0
 
-[node name="OptionList" type="VBoxContainer" parent="MarginContainer/ActionArea/MiddlePanel" unique_id=781619579]
+[node name="OptionList" type="VBoxContainer" parent="MarginContainer/ActionPanel/ActionArea/MiddlePanel" unique_id=781619579]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Button" type="Button" parent="MarginContainer/ActionArea/MiddlePanel/OptionList" unique_id=1920686518]
+[node name="Button" type="Button" parent="MarginContainer/ActionPanel/ActionArea/MiddlePanel/OptionList" unique_id=1920686518]
 layout_mode = 2
 text = "This is an Ability"
 
 [node name="BattleManager" type="Node" parent="." unique_id=973972740]
 script = ExtResource("11_o00jr")
 
-[connection signal="toggled" from="MarginContainer/ActionArea/LeftPanel/AbilityButton" to="." method="_on_ability_button_toggled"]
-[connection signal="toggled" from="MarginContainer/ActionArea/LeftPanel/ItemButton" to="." method="_on_item_button_toggled"]
-[connection signal="pressed" from="MarginContainer/ActionArea/LeftPanel/MeditateButton" to="." method="_on_meditate_button_pressed"]
-[connection signal="pressed" from="MarginContainer/ActionArea/LeftPanel/FleeButton" to="." method="_on_flee_button_pressed"]
+[connection signal="toggled" from="MarginContainer/ActionPanel/ActionArea/LeftPanel/AbilityButton" to="." method="_on_ability_button_toggled"]
+[connection signal="toggled" from="MarginContainer/ActionPanel/ActionArea/LeftPanel/ItemButton" to="." method="_on_item_button_toggled"]
+[connection signal="pressed" from="MarginContainer/ActionPanel/ActionArea/LeftPanel/MeditateButton" to="." method="_on_meditate_button_pressed"]
+[connection signal="pressed" from="MarginContainer/ActionPanel/ActionArea/LeftPanel/FleeButton" to="." method="_on_flee_button_pressed"]
 [connection signal="battle_log_updated" from="BattleManager" to="." method="_on_battle_log_updated"]
 [connection signal="battle_won" from="BattleManager" to="." method="_on_battle_won"]
 [connection signal="hero_attacking" from="BattleManager" to="." method="_on_hero_attacking"]
