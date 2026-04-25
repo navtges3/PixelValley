@@ -2,15 +2,21 @@
 
 [ext_resource type="Script" uid="uid://kcysixmfxdo0" path="res://scripts/ui/components/battle_character.gd" id="1_il1nn"]
 [ext_resource type="SpriteFrames" uid="uid://bn15t6nu6n6nf" path="res://resources/characters/monsters/orc/orc_battle_sprite_frames.tres" id="2_3rhhs"]
+[ext_resource type="Texture2D" uid="uid://j5ackm5k12l4" path="res://assets/BattleFloor.png" id="2_stq27"]
 
 [node name="BattleCharacter" type="Node2D" unique_id=2135240791]
 script = ExtResource("1_il1nn")
 
 [node name="Visual" type="Node2D" parent="." unique_id=1615905558]
 
+[node name="Sprite2D" type="Sprite2D" parent="Visual" unique_id=1053423451]
+texture = ExtResource("2_stq27")
+offset = Vector2(0, -6)
+
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Visual" unique_id=1921383678]
 sprite_frames = ExtResource("2_3rhhs")
-animation = &"attack"
+animation = &"idle"
+frame_progress = 0.10304702
 centered = false
 offset = Vector2(-32, -64)
 
