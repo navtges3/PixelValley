@@ -1,17 +1,17 @@
-extends CanvasLayer
+extends Control
 class_name QuestHUD
 
-@onready var panel: PanelContainer = $Panel
-@onready var quest_list: VBoxContainer = $Panel/MarginContainer/VBoxContainer/QuestList
+@onready var panel: PanelContainer = $PanelContainer
+@onready var quest_list: VBoxContainer = $PanelContainer/MarginContainer/VBoxContainer/QuestList
 @onready var toggle_button: Button = $ToggleButton
 
 var _is_collapsed: bool = false
 
-const COLOR_COMPLETE := Color(0.25, 0.85, 0.35)
-const COLOR_IN_PROGRESS := Color(0.92, 0.87, 0.72)
-const COLOR_OBJECTIVE_DONE := Color(0.45, 0.9, 0.55)
+const COLOR_COMPLETE         := Color(0.25, 0.85, 0.35)
+const COLOR_IN_PROGRESS      := Color(0.92, 0.87, 0.72)
+const COLOR_OBJECTIVE_DONE   := Color(0.45, 0.90, 0.55)
 const COLOR_OBJECTIVE_PENDING := Color(0.72, 0.67, 0.57)
-const COLOR_SEPARATOR := Color(0.4, 0.35, 0.3, 0.4)
+const COLOR_SEPARATOR        := Color(0.4,  0.35, 0.3,  0.4)
 
 func _ready() -> void:
 	toggle_button.pressed.connect(_on_toggle_pressed)
@@ -23,6 +23,7 @@ func _connect_signals() -> void:
 		GameState.monster_killed.connect(_on_monster_killed)
 
 func _on_monster_killed(_monster_id: int, _location_id: String) -> void:
+	# Wait one frame so QuestManager processes the kill first
 	await get_tree().process_frame
 	_refresh()
 
@@ -48,8 +49,7 @@ func _refresh() -> void:
 		return
 
 	for i in quests.size():
-		var quest: Quest = quests[i]
-		quest_list.add_child(_build_quest_entry(quest, i < quests.size() - 1))
+		quest_list.add_child(_build_quest_entry(quests[i], i < quests.size() - 1))
 
 func _build_quest_entry(quest: Quest, add_separator: bool) -> Control:
 	var complete := quest.all_objectives_met()
