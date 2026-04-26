@@ -1,6 +1,8 @@
 extends Node2D
 class_name BaseLocation
 
+const QUEST_HUD = preload("res://scenes/ui/hud/quest_hud.tscn")
+
 @onready var pause_window: Window = $PauseWindow
 @onready var player: Player = $Player
 
@@ -17,7 +19,12 @@ func _ready() -> void:
 		place_player_at_entrance(_pending_entraince_id)
 	else:
 		GameState.set_player_location(_get_screen_name(), "")
+	_add_quest_hud()
 	_on_location_ready()
+
+func _add_quest_hud() -> void:
+	var hud := QUEST_HUD.instantiate()
+	add_child(hud)
 
 # Override in subclasses for extra setup (e.g. spawn points, extra signals)
 func _on_location_ready() -> void:
