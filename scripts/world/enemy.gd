@@ -3,7 +3,7 @@ class_name Enemy
 
 signal combat_initiated(enemy: Enemy)
 
-enum State { IDLE, PATROL, GUARD, WANDER, CHASE, DEAD }
+enum State { IDLE, PATROL, GUARD, WANDER, CHASE, RETURN, DEAD }
 enum Behavior { PATROL, GUARD, WANDER }
 
 @export_group("Identity")
@@ -18,6 +18,11 @@ enum Behavior { PATROL, GUARD, WANDER }
 @export var detection_radius: float = 80.0
 @export var detection_collision_mask: int = 1
 
+@export_group("Chase")
+@export var chase_speed: float = 70.0
+@export var chase_duration: float = 3.0
+@export var combat_radius: float = 16.0
+
 var behavior: Behavior = Behavior.PATROL
 var wander_bounds: Rect2 = Rect2(0, 0, 0, 0)
 var _wander_target: Vector2 = Vector2.ZERO
@@ -28,6 +33,7 @@ var _state: State = State.PATROL
 var _origin: Vector2 = Vector2.ZERO
 var _patrol_dir: int = 1
 var _idle_timer: float = 0.0
+var _chase_timer: float = 0.0
 var _player_ref: Node2D = null
 
 @onready var detection_area: Area2D = $DetectionArea
@@ -67,11 +73,12 @@ func _apply_visuals() -> void:
 
 func _physics_process(delta: float) -> void:
 	match _state:
-		State.IDLE: _process_idle(delta)
+		State.IDLE:   _process_idle(delta)
 		State.PATROL: _process_patrol(delta)
-		State.GUARD: _process_guard()
+		State.GUARD:  _process_guard()
 		State.WANDER: _process_wander(delta)
-		State.CHASE: _process_chase()
+		State.CHASE:  _process_chase(delta)
+		State.RETURN: _process_return()
 		State.DEAD: pass
 
 func _process_idle(delta: float) -> void:
@@ -131,21 +138,64 @@ func _pick_wander_target() -> void:
 		randf_range(wander_bounds.position.y, wander_bounds.position.y + wander_bounds.size.y)
 	)
 
-func _process_chase() -> void:
-	pass
+func _process_chase(delta: float) -> void:
+	if _player_ref == null:
+		_begin_return()
+		return
+	
+	var to_player: Vector2 = _player_ref.global_position - global_position
+	
+	if to_player.length() <= combat_radius:
+		combat_initiated.emit(self)
+		return
+	
+	_chase_timer -= delta
+	if _chase_timer <= 0.0:
+		_begin_return()
+		return
+	
+	velocity = to_player.normalized() * chase_speed
+	move_and_slide()
+	_update_walk_anim()
+
+func _process_return() -> void:
+	var to_origin: Vector2 = _origin - global_position
+	
+	if to_origin.length() < 4.0:
+		global_position = _origin
+		velocity = Vector2.ZERO
+		_resume_roam()
+		return
+	
+	velocity = to_origin.normalized() * patrol_speed
+	move_and_slide()
+	_update_walk_anim()
+
+func _begin_return() -> void:
+	_state = State.RETURN
+	_player_ref = null
+
+func _resume_roam() -> void:
+	match behavior:
+		Behavior.GUARD: _state = State.GUARD
+		Behavior.WANDER:
+			_pick_wander_target()
+			_state = State.WANDER
+		_: _state = State.PATROL
 
 func _on_body_entered(body: Node2D) -> void:
 	if not body.is_in_group("player"):
 		return
+	if _state == State.CHASE or _state == State.DEAD:
+		return
 	_player_ref = body
+	_chase_timer = chase_duration
 	_state = State.CHASE
-	combat_initiated.emit(self)
 
 func _on_body_exited(body: Node2D) -> void:
 	if body != _player_ref:
 		return
 	_player_ref = null
-	_state = State.PATROL
 
 func _update_walk_anim() -> void:
 	if velocity.x > 0:
@@ -168,8 +218,5 @@ func on_combat_ended(win: bool) -> void:
 		_state = State.DEAD
 		queue_free()
 	else:
-		match behavior:
-			Behavior.GUARD: _state = State.GUARD
-			Behavior.WANDER: _state = State.WANDER
-			_: _state = State.PATROL
 		_player_ref = null
+		_resume_roam()
