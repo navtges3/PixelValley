@@ -62,15 +62,16 @@ shape = SubResource("CircleShape2D_ttkfb")
 [node name="EnemySpawns" type="Node2D" parent="." unique_id=1042456803]
 
 [node name="SpawnPoint" type="Marker2D" parent="EnemySpawns" unique_id=1804905389 groups=["spawn_point"]]
-position = Vector2(233, 536)
+position = Vector2(223, 379)
 script = ExtResource("5_euhvq")
 
 [node name="SpawnPoint2" type="Marker2D" parent="EnemySpawns" unique_id=345326014 groups=["spawn_point"]]
-position = Vector2(460, 556)
+position = Vector2(454, 522)
 script = ExtResource("5_euhvq")
+behavior = 2
 
 [node name="SpawnPoint3" type="Marker2D" parent="EnemySpawns" unique_id=1164514806 groups=["spawn_point"]]
-position = Vector2(621, 128)
+position = Vector2(715, 127)
 script = ExtResource("5_euhvq")
 
 [node name="SpawnPoint4" type="Marker2D" parent="EnemySpawns" unique_id=2105180426 groups=["spawn_point"]]
@@ -78,11 +79,13 @@ position = Vector2(778, 574)
 script = ExtResource("5_euhvq")
 
 [node name="SpawnPoint5" type="Marker2D" parent="EnemySpawns" unique_id=298816999 groups=["spawn_point"]]
-position = Vector2(847, 438)
+position = Vector2(809, 398)
 script = ExtResource("5_euhvq")
+behavior = 2
 
 [node name="BossSpawnPoint" type="Marker2D" parent="EnemySpawns" unique_id=1100285348 groups=["spawn_point"]]
-position = Vector2(1154, 117)
+position = Vector2(1163, 122)
 script = ExtResource("5_euhvq")
 monster_id = 1
 quest_id = 3
+behavior = 1
