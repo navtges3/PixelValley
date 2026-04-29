@@ -47,11 +47,10 @@ No plugins or external dependencies required.
 autoload/       # Singletons: GameState, SaveManager, ScreenManager, AudioManager, etc.
 scripts/
   characters/   # Hero, Monster, Combatant, Inventory, StatBlock
-  data/         # Ability, Attack, Effect, ActiveEffect, Weapon, Potion, Item
+  data/         # Ability, Attack, Effect, ActiveEffect, Weapon, Potion, Item, Quest, QuestReward, QuestObjective
   systems/      # BattleManager, QuestManager, ShopManager
   ui/           # Screen and component scripts
   world/        # Player, overworld scripts
-  quest/        # Quest, QuestReward, MonsterRequirement
 resources/      # All game data as .tres files (heroes, monsters, weapons, quests, abilities)
 scenes/         # Godot scenes for all screens, components, and the overworld
 assets/         # Sprites and UI images
