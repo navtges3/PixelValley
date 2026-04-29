@@ -47,7 +47,7 @@ No plugins or external dependencies required.
 autoload/       # Singletons: GameState, SaveManager, ScreenManager, AudioManager, etc.
 scripts/
   characters/   # Hero, Monster, Combatant, Inventory, StatBlock
-  data/         # Ability, Attack, Effect, ActiveEffect, Weapon, Potion, Item, Quest, QuestReward, QuestObjective
+  data/         # Ability, Attack, Effect, ActiveEffect, Weapon, Potion, Item, Quest, Reward, QuestObjective
   systems/      # BattleManager, QuestManager, ShopManager
   ui/           # Screen and component scripts
   world/        # Player, overworld scripts

@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="Quest" format=3 uid="uid://skdoxt100bbf"]
 
 [ext_resource type="Script" uid="uid://bhsjswm1wnll8" path="res://scripts/data/quest_objective.gd" id="1_g2r4m"]
-[ext_resource type="Script" uid="uid://xekqra2mjp3l" path="res://scripts/data/quest_reward.gd" id="2_n4e23"]
+[ext_resource type="Script" uid="uid://bra22kkvfpket" path="res://scripts/data/reward.gd" id="3_n4e23"]
 [ext_resource type="Script" uid="uid://xhl8p6y5w5e6" path="res://scripts/data/quest.gd" id="3_vqcy4"]
 
 [sub_resource type="Resource" id="Resource_n4e23"]
@@ -10,11 +10,11 @@ monster_id = 2
 location_id = "war_camp"
 metadata/_custom_type_script = "uid://bhsjswm1wnll8"
 
-[sub_resource type="Resource" id="Resource_g74nm"]
-script = ExtResource("2_n4e23")
-reward_type = 3
-weapon_rarity = 1
-metadata/_custom_type_script = "uid://xekqra2mjp3l"
+[sub_resource type="Resource" id="Resource_g2r4m"]
+script = ExtResource("3_n4e23")
+random_weapon = true
+rarity = 1
+metadata/_custom_type_script = "uid://bra22kkvfpket"
 
 [resource]
 script = ExtResource("3_vqcy4")
@@ -22,7 +22,7 @@ title = "Cut Off the Head"
 id = 6
 description = "The Orc Chieftain rallies his forces from the heart of the camp. Defeat him and the warband will fall apart."
 objectives = Array[ExtResource("1_g2r4m")]([SubResource("Resource_n4e23")])
-reward = Array[ExtResource("2_n4e23")]([SubResource("Resource_g74nm")])
+reward = SubResource("Resource_g2r4m")
 next_quests = Array[int]([7])
 unlocks_locations = Array[String](["cave"])
 metadata/_custom_type_script = "uid://xhl8p6y5w5e6"

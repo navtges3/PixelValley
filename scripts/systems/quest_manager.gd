@@ -60,16 +60,13 @@ func turn_in_quest(quest: Quest) -> void:
 	SaveManager.save_game()
 
 func _apply_rewards(quest: Quest) -> void:
-	for reward in quest.reward:
-		match reward.reward_type:
-			QuestReward.RewardType.ITEM:
-				GameState.hero.inventory.add_potion(reward.item, reward.amount)
-			QuestReward.RewardType.GOLD:
-				GameState.hero.inventory.gold += reward.amount
-			QuestReward.RewardType.EXPERIENCE:
-				GameState.hero.gain_experience(reward.amount)
-			QuestReward.RewardType.CLASS_WEAPON:
-				_apply_weapon_rewards(reward.weapon_rarity)
+	var hero := GameState.hero
+	hero.gain_experience(quest.reward.experience)
+	hero.inventory.gold += quest.reward.gold
+	for item_name in quest.reward.items:
+		hero.inventory.add_potion(ItemLoader.get_item(item_name), 1)
+	if quest.reward.random_weapon:
+		_apply_weapon_rewards(quest.reward.rarity)
 
 func _apply_weapon_rewards(rarity: Item.Rarity) -> void:
 	var weapon = WeaponDatabase.get_random_unowned_weapon_for_class(GameState.hero.hero_class, rarity)

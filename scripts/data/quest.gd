@@ -5,7 +5,7 @@ class_name Quest
 @export var id: int
 @export var description: String
 @export var objectives: Array[QuestObjective]
-@export var reward: Array[QuestReward]
+@export var reward: Reward = Reward.new()
 @export var next_quests: Array[int]
 @export var unlocks_locations: Array[String] = []
 @export var completed: bool = false
