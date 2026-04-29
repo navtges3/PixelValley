@@ -1,5 +1,5 @@
 extends Resource
-class_name MonsterRequirement
+class_name QuestObjective
 
 @export var monster_id: MonsterLoader.MonsterID
 @export var target_amount: int = 1
