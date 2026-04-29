@@ -10,9 +10,9 @@ class_name Reward
 @export var rarity: Item.Rarity
 
 func get_description() -> String:
-	var description := "Reward:\n  XP: %d\n  Gold: %d"
+	var description := "Reward:\n  XP: %d\n  Gold: %d" % [experience, gold]
 	for item in items:
-		description += ("\n  " + item)
+		description += "\n  %s" % item
 	if random_weapon:
 		description += "\n  Random %s weapon" % Item.rarity_to_string(rarity)
 	return description
