@@ -1,28 +1,28 @@
 [gd_resource type="Resource" script_class="Quest" format=3 uid="uid://oa53q7divulk"]
 
-[ext_resource type="Script" uid="uid://bhsjswm1wnll8" path="res://scripts/quest/monster_requirement.gd" id="1_na1a4"]
-[ext_resource type="Script" uid="uid://xekqra2mjp3l" path="res://scripts/quest/quest_reward.gd" id="3_gy40x"]
-[ext_resource type="Script" uid="uid://xhl8p6y5w5e6" path="res://scripts/quest/quest.gd" id="6_68l85"]
+[ext_resource type="Script" uid="uid://bhsjswm1wnll8" path="res://scripts/data/quest_objective.gd" id="1_w36or"]
+[ext_resource type="Script" uid="uid://xekqra2mjp3l" path="res://scripts/data/quest_reward.gd" id="2_tjj41"]
+[ext_resource type="Script" uid="uid://xhl8p6y5w5e6" path="res://scripts/data/quest.gd" id="3_q3yux"]
 
-[sub_resource type="Resource" id="Resource_f8h81"]
-script = ExtResource("1_na1a4")
+[sub_resource type="Resource" id="Resource_tjj41"]
+script = ExtResource("1_w36or")
 monster_id = 3
 target_amount = 3
 location_id = "cave"
 metadata/_custom_type_script = "uid://bhsjswm1wnll8"
 
 [sub_resource type="Resource" id="Resource_g74nm"]
-script = ExtResource("3_gy40x")
+script = ExtResource("2_tjj41")
 reward_type = 1
 amount = 150
 metadata/_custom_type_script = "uid://xekqra2mjp3l"
 
 [resource]
-script = ExtResource("6_68l85")
+script = ExtResource("3_q3yux")
 title = "Into the Dark"
 id = 7
 description = "The ogres have made their home in a network of caves to the east. Venture in and thin their numbers."
-monster_objectives = Array[ExtResource("1_na1a4")]([SubResource("Resource_f8h81")])
-reward = Array[ExtResource("3_gy40x")]([SubResource("Resource_g74nm")])
+objectives = Array[ExtResource("1_w36or")]([SubResource("Resource_tjj41")])
+reward = Array[ExtResource("2_tjj41")]([SubResource("Resource_g74nm")])
 next_quests = Array[int]([8])
 metadata/_custom_type_script = "uid://xhl8p6y5w5e6"

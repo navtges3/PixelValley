@@ -63,7 +63,7 @@ func _build_quest_entry(quest: Quest, add_separator: bool) -> Control:
 	title.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	container.add_child(title)
 
-	for objective in quest.monster_objectives:
+	for objective in quest.objectives:
 		var done := objective.current_amount >= objective.target_amount
 		var obj_line := Label.new()
 		obj_line.text = "  • %s%s: %d/%d" % [

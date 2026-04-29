@@ -93,7 +93,7 @@ func unlock_quest_by_id(quest_id: int) -> void:
 
 func _reset_spawners_for_quest(quest: Quest) -> void:
 	var locations_to_reset: Array[String] = []
-	for objective in quest.monster_objectives:
+	for objective in quest.objectives:
 		if objective.location_id != "" and objective.location_id not in locations_to_reset:
 			locations_to_reset.append(objective.location_id)
 	for location_id in locations_to_reset:

@@ -393,12 +393,12 @@ func _get_quest_data(quest: Quest) -> Dictionary:
 		"next_quests": quest.next_quests.duplicate(),
 		"completed": quest.completed,
 		"unlocks_locations": quest.unlocks_locations.duplicate(),
-		"monster_objectives": [],
+		"objectives": [],
 		"rewards": [],
 	}
-	# monster_objectives
-	for obj in quest.monster_objectives:
-		data["monster_objectives"].append({
+	# objectives
+	for obj in quest.objectives:
+		data["objectives"].append({
 			"monster_id": obj.monster_id,
 			"target_amount": obj.target_amount,
 			"current_amount": obj.current_amount,
@@ -431,14 +431,14 @@ func _load_quest(data: Dictionary) -> Quest:
 	quest.next_quests.assign(raw_next)
 	var raw_unlocks: Array = data.get("unlocks_locations", [])
 	quest.unlocks_locations.assign(raw_unlocks)
-	# monster_objectives
-	for obj_data in data.get("monster_objectives", []):
-		var obj := MonsterRequirement.new()
+	# objectives
+	for obj_data in data.get("objectives", []):
+		var obj := QuestObjective.new()
 		obj.monster_id = obj_data.get("monster_id", MonsterLoader.MonsterID.GOBLIN)
 		obj.target_amount = obj_data.get("target_amount", 1)
 		obj.current_amount = obj_data.get("current_amount", 0)
 		obj.location_id = obj_data.get("location_id", "")
-		quest.monster_objectives.append(obj)
+		quest.objectives.append(obj)
 	# rewards
 	for reward_data in data.get("rewards", []):
 		var reward := QuestReward.new()
