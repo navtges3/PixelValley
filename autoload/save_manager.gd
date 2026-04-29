@@ -404,20 +404,14 @@ func _get_quest_data(quest: Quest) -> Dictionary:
 			"current_amount": obj.current_amount,
 			"location_id": obj.location_id
 		})
-	# rewards
-	for reward in quest.reward:
-		var reward_data := {
-			"reward_type": reward.reward_type,
-		}
-		match reward.reward_type:
-			QuestReward.RewardType.ITEM:
-				reward_data["item_path"] = reward.item.resource_path
-				reward_data["amount"] = reward.amount
-			QuestReward.RewardType.GOLD, QuestReward.RewardType.EXPERIENCE:
-				reward_data["amount"] = reward.amount
-			QuestReward.RewardType.CLASS_WEAPON:
-				reward_data["weapon_rarity"] = reward.weapon_rarity
-		data["rewards"].append(reward_data)
+	# reward
+	data["reward"] = {
+		"experience": quest.reward.experience,
+		"gold": quest.reward.gold,
+		"items": quest.reward.items.duplicate(),
+		"random_weapon": quest.reward.random_weapon,
+		"rarity": quest.reward.rarity
+	}
 	return data
 
 func _load_quest(data: Dictionary) -> Quest:
@@ -439,17 +433,14 @@ func _load_quest(data: Dictionary) -> Quest:
 		obj.current_amount = obj_data.get("current_amount", 0)
 		obj.location_id = obj_data.get("location_id", "")
 		quest.objectives.append(obj)
-	# rewards
-	for reward_data in data.get("rewards", []):
-		var reward := QuestReward.new()
-		reward.reward_type = reward_data.get("reward_type", QuestReward.RewardType.ITEM)
-		match reward.reward_type:
-			QuestReward.RewardType.ITEM:
-				reward.item = load(reward_data.get("item_path", ""))
-				reward.amount = reward_data.get("amount", 1)
-			QuestReward.RewardType.GOLD, QuestReward.RewardType.EXPERIENCE:
-				reward.amount = reward_data.get("amount", 1)
-			QuestReward.RewardType.CLASS_WEAPON:
-				reward.weapon_rarity = reward_data.get("weapon_rarity", Item.Rarity.COMMON)
-		quest.reward.append(reward)
+	# reward
+	var reward_data = data.get("reward", {})
+	var reward := Reward.new()
+	reward.experience = reward_data.get("experience", 0)
+	reward.gold = reward_data.get("gold", 0)
+	var items: Array = reward_data.get("items", [])
+	reward.items.assign(items)
+	reward.random_weapon = reward_data.get("random_weapon", false)
+	reward.rarity = reward_data.get("rarity", Item.Rarity.COMMON)
+	quest.reward = reward
 	return quest
