@@ -24,7 +24,7 @@ const GOLD_BY_RARITY := {
 	Item.Rarity.LEGENDARY: 400,
 }
 
-func get_random_unowned_weapon_for_class(hero_class: Hero.HeroClass, rarity: Item.Rarity) -> Weapon:
+func get_random_unowned_weapon_id_for_class(hero_class: Hero.HeroClass, rarity: Item.Rarity) -> String:
 	var class_list: Dictionary = CLASS_WEAPON_TABLE.get(hero_class, {})
 	var all_ids: Array = class_list.get(rarity, [])
 	var unowned_ids := all_ids.filter(
@@ -32,9 +32,8 @@ func get_random_unowned_weapon_for_class(hero_class: Hero.HeroClass, rarity: Ite
 			return not GameState.hero.inventory.has_weapon_in_stash(id)
 	)
 	if unowned_ids.is_empty():
-		return null
-	var chosen_id: String = unowned_ids[randi() % unowned_ids.size()]
-	return ItemLoader.get_item(chosen_id) as Weapon
+		return ""
+	return unowned_ids[randi() % unowned_ids.size()]
 
 func get_gold_fallback_for_rarity(rarity: Item.Rarity) -> int:
 	return GOLD_BY_RARITY.get(rarity, 50)

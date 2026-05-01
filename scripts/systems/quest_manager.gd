@@ -63,15 +63,15 @@ func _apply_rewards(quest: Quest) -> void:
 	var hero := GameState.hero
 	hero.gain_experience(quest.reward.experience)
 	hero.inventory.gold += quest.reward.gold
-	for item_name in quest.reward.items:
-		hero.inventory.add_potion(ItemLoader.get_item(item_name), 1)
+	for item_id in quest.reward.items:
+		hero.inventory.add_potion(item_id, 1)
 	if quest.reward.random_weapon:
 		_apply_weapon_rewards(quest.reward.rarity)
 
 func _apply_weapon_rewards(rarity: Item.Rarity) -> void:
-	var weapon = WeaponDatabase.get_random_unowned_weapon_for_class(GameState.hero.hero_class, rarity)
-	if weapon != null:
-		GameState.hero.inventory.add_weapon_to_stash(weapon)
+	var weapon_id := WeaponDatabase.get_random_unowned_weapon_id_for_class(GameState.hero.hero_class, rarity)
+	if weapon_id != "":
+		GameState.hero.inventory.add_weapon_to_stash(weapon_id)
 	else:
 		var gold := WeaponDatabase.get_gold_fallback_for_rarity(rarity)
 		GameState.hero.inventory.gold += gold

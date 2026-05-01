@@ -3,7 +3,7 @@ class_name ShopManager
 
 var hero: Hero
 var shop: Shop
-var item_stack_selected: ItemStack
+var selected_item_id: String = ""
 
 signal hero_updated(hero_ref: Hero)
 
@@ -11,21 +11,22 @@ func start_shop(hero_ref: Hero, shop_ref: Shop) -> void:
 	hero = hero_ref
 	shop = shop_ref
 	if not shop.inventory.is_empty():
-		item_stack_selected = shop.inventory[0]
+		selected_item_id = shop.inventory.keys()[0]
 	emit_signal("hero_updated", hero)
 
 func can_buy_selected(amount: int = 1) -> bool:
-	if hero.inventory.gold >= item_stack_selected.item.value * amount:
-		return true
-	return false
+	var item := ItemLoader.get_item(selected_item_id)
+	if item == null:
+		return false
+	return hero.inventory.gold >= item.value * amount
 
 func buy_item(amount: int = 1) -> void:
-	if can_buy_selected(amount):
-		print("Buying item: ", item_stack_selected.item.name, " x", amount)
-		hero.inventory.gold -= item_stack_selected.item.value * amount
-		if item_stack_selected.item is Potion:
-			hero.inventory.add_potion(item_stack_selected.item.duplicate(true), amount)
-		elif item_stack_selected.item is Weapon:
-			hero.inventory.add_weapon_to_stash(item_stack_selected.item)
-		shop.remove_item(item_stack_selected.item, amount)
-		emit_signal("hero_updated", hero)
+	if not can_buy_selected(amount):
+		return
+	var item := ItemLoader.get_item(selected_item_id)
+	if item is Potion:
+		hero.inventory.add_potion(selected_item_id, amount)
+	if item is Weapon:
+		hero.inventory.add_weapon_to_stash(selected_item_id)
+	shop.remove_item(selected_item_id, amount)
+	emit_signal("hero_updated", hero)

@@ -64,13 +64,13 @@ func player_ability_selected(ability: Ability) -> void:
 		hero_updated.emit(hero)
 		end_player_turn()
 
-func get_hero_items() -> Array[ItemStack]:
+func get_hero_items() -> Dictionary:
 	return hero.inventory.potions
 
-func player_item_selected(item_stack: ItemStack) -> void:
+func player_item_selected(item_id: String) -> void:
 	if state != BattleState.PLAYER_TURN:
 		return
-	var result := hero.use_item(item_stack)
+	var result := hero.use_item(item_id)
 	battle_log_updated.emit(result)
 	hero_updated.emit(hero)
 	end_player_turn()

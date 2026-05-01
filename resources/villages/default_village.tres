@@ -2,59 +2,15 @@
 
 [ext_resource type="Script" uid="uid://uyfn30s8tiqo" path="res://scripts/world/inn.gd" id="1_7dxoq"]
 [ext_resource type="Script" uid="uid://rq03ukhf4lx3" path="res://scripts/world/village_res.gd" id="1_lfw73"]
-[ext_resource type="Script" uid="uid://d0mdck5mlsm03" path="res://scripts/data/item_stack.gd" id="2_jaxnw"]
 [ext_resource type="Script" uid="uid://fafwxg2j84k6" path="res://scripts/world/shop.gd" id="3_x4ac3"]
-[ext_resource type="Resource" uid="uid://e282ko0xakwg" path="res://resources/items/potions/lesser_healing_potion.tres" id="4_d1l1m"]
-[ext_resource type="Resource" uid="uid://cyiqwotfm3gq6" path="res://resources/items/potions/regeneration_potion.tres" id="5_tl5qy"]
-[ext_resource type="Resource" uid="uid://cfwejpwyn8due" path="res://resources/items/potions/attack_potion.tres" id="6_hjkb2"]
-[ext_resource type="Resource" uid="uid://bwrkv1dmrco38" path="res://resources/items/potions/magic_potion.tres" id="7_wxqfe"]
-[ext_resource type="Resource" uid="uid://u70yyjyvfpwq" path="res://resources/items/potions/defense_potion.tres" id="8_v7721"]
-[ext_resource type="Resource" uid="uid://bcox8swspcsyg" path="res://resources/items/potions/resistance_potion.tres" id="9_0arqr"]
 
 [sub_resource type="Resource" id="Resource_qybmw"]
 script = ExtResource("1_7dxoq")
 metadata/_custom_type_script = "uid://uyfn30s8tiqo"
 
-[sub_resource type="Resource" id="Resource_6vt8r"]
-script = ExtResource("2_jaxnw")
-item = ExtResource("4_d1l1m")
-count = 5
-metadata/_custom_type_script = "uid://d0mdck5mlsm03"
-
-[sub_resource type="Resource" id="Resource_13o5d"]
-script = ExtResource("2_jaxnw")
-item = ExtResource("5_tl5qy")
-count = 5
-metadata/_custom_type_script = "uid://d0mdck5mlsm03"
-
-[sub_resource type="Resource" id="Resource_amsvw"]
-script = ExtResource("2_jaxnw")
-item = ExtResource("6_hjkb2")
-count = 5
-metadata/_custom_type_script = "uid://d0mdck5mlsm03"
-
-[sub_resource type="Resource" id="Resource_prjvu"]
-script = ExtResource("2_jaxnw")
-item = ExtResource("7_wxqfe")
-count = 5
-metadata/_custom_type_script = "uid://d0mdck5mlsm03"
-
-[sub_resource type="Resource" id="Resource_27o0v"]
-script = ExtResource("2_jaxnw")
-item = ExtResource("8_v7721")
-count = 5
-metadata/_custom_type_script = "uid://d0mdck5mlsm03"
-
-[sub_resource type="Resource" id="Resource_r5too"]
-script = ExtResource("2_jaxnw")
-item = ExtResource("9_0arqr")
-count = 5
-metadata/_custom_type_script = "uid://d0mdck5mlsm03"
-
 [sub_resource type="Resource" id="Resource_dr5x7"]
 script = ExtResource("3_x4ac3")
 name = "Lucky's Stop"
-inventory = Array[ExtResource("2_jaxnw")]([SubResource("Resource_6vt8r"), SubResource("Resource_13o5d"), SubResource("Resource_amsvw"), SubResource("Resource_prjvu"), SubResource("Resource_27o0v"), SubResource("Resource_r5too")])
 metadata/_custom_type_script = "uid://fafwxg2j84k6"
 
 [resource]
