@@ -1,18 +1,18 @@
 extends Resource
 class_name QuestManager
 
-const QUEST_LIST := [
-	preload("res://resources/quests/quest_1.tres"),
-	preload("res://resources/quests/quest_2.tres"),
-	preload("res://resources/quests/quest_3.tres"),
-	preload("res://resources/quests/quest_4.tres"),
-	preload("res://resources/quests/quest_5.tres"),
-	preload("res://resources/quests/quest_6.tres"),
-	preload("res://resources/quests/quest_7.tres"),
-	preload("res://resources/quests/quest_8.tres"),
-	preload("res://resources/quests/quest_9.tres"),
-	preload("res://resources/quests/quest_10.tres"),
-	preload("res://resources/quests/quest_11.tres"),
+const QUEST_PATHS := [
+	"res://resources/quests/quest_1.tres",
+	"res://resources/quests/quest_2.tres",
+	"res://resources/quests/quest_3.tres",
+	"res://resources/quests/quest_4.tres",
+	"res://resources/quests/quest_5.tres",
+	"res://resources/quests/quest_6.tres",
+	"res://resources/quests/quest_7.tres",
+	"res://resources/quests/quest_8.tres",
+	"res://resources/quests/quest_9.tres",
+	"res://resources/quests/quest_10.tres",
+	"res://resources/quests/quest_11.tres",
 ]
 
 const FIRST_QUEST_ID := 1
@@ -25,8 +25,9 @@ func new_game() -> void:
 	locked_quests = []
 	available_quests = []
 	completed_quests = []
-	for quest_res in QUEST_LIST:
-		locked_quests.append(quest_res.duplicate(true))
+	for path in QUEST_PATHS:
+		var quest := (load(path) as Quest).duplicate(true)
+		locked_quests.append(quest)
 	if locked_quests.size() > 0:
 		unlock_quest_by_id(FIRST_QUEST_ID)
 	_connect_signals()
