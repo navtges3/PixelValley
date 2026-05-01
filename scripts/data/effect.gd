@@ -5,6 +5,20 @@ enum EffectType { HEAL, ENERGY, POISON,
 					BUFF_ATTACK, BUFF_MAGIC, BUFF_DEFENSE, BUFF_RESISTANCE,
 					DEBUFF_ATTACK, DEBUFF_MAGIC, DEBUFF_DEFENSE, DEBUFF_RESISTANCE }
 
+const THEME_PATHS: Dictionary = {
+	Effect.EffectType.HEAL:             "res://resources/ui/button_themes/regular/green_button.tres",
+	Effect.EffectType.ENERGY:           "res://resources/ui/button_themes/regular/yellow_button.tres",
+	Effect.EffectType.POISON:           "res://resources/ui/button_themes/regular/green_button.tres",
+	Effect.EffectType.BUFF_ATTACK:      "res://resources/ui/button_themes/regular/red_button.tres",
+	Effect.EffectType.BUFF_MAGIC:       "res://resources/ui/button_themes/regular/red_button.tres",
+	Effect.EffectType.BUFF_DEFENSE:     "res://resources/ui/button_themes/regular/blue_button.tres",
+	Effect.EffectType.BUFF_RESISTANCE:  "res://resources/ui/button_themes/regular/blue_button.tres",
+	Effect.EffectType.DEBUFF_ATTACK:    "res://resources/ui/button_themes/regular/red_button.tres",
+	Effect.EffectType.DEBUFF_MAGIC:     "res://resources/ui/button_themes/regular/red_button.tres",
+	Effect.EffectType.DEBUFF_DEFENSE:   "res://resources/ui/button_themes/regular/blue_button.tres",
+	Effect.EffectType.DEBUFF_RESISTANCE:"res://resources/ui/button_themes/regular/blue_button.tres",
+}
+
 @export var type: EffectType
 @export var strength: int = 0
 @export var duration: int = 1
@@ -46,27 +60,5 @@ func _to_string(turns_remaining := duration) -> String:
 	return "%s (%d %s)" % [type_text, turns_remaining, turn_text]
 
 func get_button_theme() -> Theme:
-	match type:
-		Effect.EffectType.HEAL:
-			return preload("res://resources/ui/button_themes/regular/green_button.tres")
-		Effect.EffectType.ENERGY:
-			return preload("res://resources/ui/button_themes/regular/yellow_button.tres")
-		Effect.EffectType.POISON:
-			return preload("res://resources/ui/button_themes/regular/green_button.tres")
-		Effect.EffectType.BUFF_ATTACK:
-			return preload("res://resources/ui/button_themes/regular/red_button.tres")
-		Effect.EffectType.BUFF_MAGIC:
-			return preload("res://resources/ui/button_themes/regular/red_button.tres")
-		Effect.EffectType.BUFF_DEFENSE:
-			return preload("res://resources/ui/button_themes/regular/blue_button.tres")
-		Effect.EffectType.BUFF_RESISTANCE:
-			return preload("res://resources/ui/button_themes/regular/blue_button.tres")
-		Effect.EffectType.DEBUFF_ATTACK:
-			return preload("res://resources/ui/button_themes/regular/red_button.tres")
-		Effect.EffectType.DEBUFF_MAGIC:
-			return preload("res://resources/ui/button_themes/regular/red_button.tres")
-		Effect.EffectType.DEBUFF_DEFENSE:
-			return preload("res://resources/ui/button_themes/regular/blue_button.tres")
-		Effect.EffectType.DEBUFF_RESISTANCE:
-			return preload("res://resources/ui/button_themes/regular/blue_button.tres")
-	return preload("res://resources/ui/button_themes/regular/gray_button.tres")
+	var path = THEME_PATHS.get(type, "res://resources/ui/button_themes/regular/gray_button.tres")
+	return load(path) as Theme
