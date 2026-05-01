@@ -98,8 +98,9 @@ func _on_item_button_toggled(button_pressed: bool):
 		ability_button.button_pressed = false
 		option_list.visible = true
 		_empty_option_list()
-		for item_stack: ItemStack in battle_manager.get_hero_items():
-			var btn = _create_item_button(item_stack)
+		for item_id in battle_manager.get_hero_items():
+			var count: int = battle_manager.get_hero_items()[item_id]
+			var btn = _create_item_button(item_id, count)
 			option_list.add_child(btn)
 	else:
 		option_list.visible = false
@@ -152,14 +153,14 @@ func _create_ability_button(ability: Ability) -> Button:
 	button.connect("ability_pressed", Callable(self, "_on_ability_button_pressed"))
 	return button
 
-func _on_item_button_pressed(item_stack: ItemStack) -> void:
-	print("Item pressed: ", item_stack.item.name)
-	battle_manager.player_item_selected(item_stack)
+func _on_item_button_pressed(item_id: String) -> void:
+	battle_manager.player_item_selected(item_id)
 	item_button.button_pressed = false
 
-func _create_item_button(item_stack: ItemStack) -> Button:
+func _create_item_button(item_id: String, count: int) -> Button:
 	var button := ITEM_BUTTON.instantiate()
-	button.item_stack = item_stack
+	button.item_id = item_id
+	button.count = count
 	button.connect("item_pressed", Callable(self, "_on_item_button_pressed"))
 	return button
 

@@ -232,23 +232,12 @@ func _load_stat_block(data: Dictionary) -> StatBlock:
 # INVENTORY
 # ---------------------------------------------------------
 func _get_inventory_data(inventory: Inventory) -> Dictionary:
-	var data := {
+	return {
 		"gold": inventory.gold,
 		"equipped_weapon": ItemLoader.get_item_id(inventory.equipped_weapon),
-		"weapon_stash": [],
-		"potions": []
+		"weapon_stash": inventory.weapon_stash.duplicate(),
+		"potions": inventory.potions.duplicate()
 	}
-
-	for weapon in inventory.weapon_stash:
-		data["weapon_stash"].append(ItemLoader.get_item_id(weapon))
-
-	for item_stack in inventory.potions:
-		data["potions"].append({
-			"item_id": ItemLoader.get_item_id(item_stack.item),
-			"count": item_stack.count
-		})
-
-	return data
 
 func _load_inventory(data: Dictionary) -> Inventory:
 	var inv := Inventory.new()
@@ -261,30 +250,26 @@ func _load_inventory(data: Dictionary) -> Inventory:
 			inv.equipped_weapon = weapon
 
 	for wid in data.get("weapon_stash", []):
-		var weapon = ItemLoader.get_item(wid)
-		if weapon is Weapon:
-			inv.weapon_stash.append(weapon)
+		var resolved := _resolve_item_id(wid)
+		if resolved != "" and ItemLoader.has_item(resolved):
+			inv.weapon_stash.append(resolved)
+		else:
+			push_warning("SaveManager: unknown stash weapon '%s', skipping" % wid)
 
-	for item_data in data.get("potions", []):
-		var item: Item = null
-		if item_data.has("item_id"):
-			item = ItemLoader.get_item(item_data["item_id"])
-		elif item_data.has("potion_path"):
-			# Migration path for existing saves
-			var path: String = item_data["potion_path"]
-			var id := _path_to_item_id(path)
-			item = ItemLoader.get_item(id) if id != "" else load(path)
-		if item is Potion:
-			inv.potions.append(ItemStack.new(item, item_data.get("count", 1)))
+	for item_id in data.get("potions", {}):
+		var resolved := _resolve_item_id(item_id)
+		if resolved != "" and ItemLoader.has_item(resolved):
+			inv.potions[resolved] = data["potions"][item_id]
+		else:
+			push_warning("SaveManager: unknown potion '%s', skipping" % item_id)
 
 	return inv
 
-	# Migration helper — maps old resource paths to new IDs
-func _path_to_item_id(path: String) -> String:
-	var filename := path.get_file().get_basename()  # e.g. "lesser_healing_potion"
-	if ItemLoader.has_item(filename):
-		return filename
-	return ""
+# Consolidates the old migration path used in multiple places
+func _resolve_item_id(id: String) -> String:
+	if id.begins_with("res://"):
+		return id.get_file().get_basename()
+	return id
 
 # ---------------------------------------------------------
 # VILLAGE
@@ -307,34 +292,24 @@ func _load_village(data: Dictionary) -> Village:
 # SHOP
 # ---------------------------------------------------------
 func _get_shop_data(shop: Shop) -> Dictionary:
-	var data := {
+	return {
 		"name": shop.name,
-		"inventory": []
+		"inventory": shop.inventory.duplicate()
 	}
-
-	for item_stack in shop.inventory:
-		data["inventory"].append({
-			"item_id": ItemLoader.get_item_id(item_stack.item),
-			"count": item_stack.count
-		})
-
-	return data
 
 func _load_shop(data: Dictionary) -> Shop:
 	var shop := Shop.new()
 	shop.name = data.get("name", "Unnamed Shop")
 
-	for item_data in data.get("inventory", []):
-		var item: Item = null
-		if item_data.has("item_id"):
-			item = ItemLoader.get_item(item_data["item_id"])
-		elif item_data.has("item_path"):
-			var path = item_data.get("item_path", "")
-			var id := _path_to_item_id(path)
-			item = ItemLoader.get_item(id)
-		if item:
-			shop.add_item(item, item_data.get("count", 1))
-
+	var inv: Dictionary = data.get("inventory", {})
+	for item_id in inv:
+		var resolved_id = item_id
+		if (item_id as String).begins_with("res://"):
+			resolved_id = (item_id as String).get_file().get_basename()
+		if ItemLoader.has_item(resolved_id):
+			shop.inventory[resolved_id] = inv[item_id]
+		else:
+			push_warning("SaveManager: unknown shop item '%s', skipping" % item_id)
 	return shop
 
 # ---------------------------------------------------------

@@ -3,43 +3,46 @@ class_name Inventory
 
 @export var gold: int = 0
 @export var equipped_weapon: Weapon
-@export var weapon_stash: Array[Weapon]
-@export var potions: Array[ItemStack]
+@export var weapon_stash: Array[String]
+@export var potions: Dictionary = {}
 
-func use_potion(potion_stack: ItemStack) -> Array[Effect]:
-	var potion := potion_stack.item as Potion
-	potion_stack.count -= 1
-	if potion_stack.count <= 0:
-		print("Removing empty potion slot for %s" % potion_stack.item.name)
-		potions.erase(potion_stack)
-	return potion.effects
+# ================================================
+#  Potions
+# ================================================
+func use_potion(item_id: String) -> Array[Effect]:
+	if not potions.has(item_id):
+		return []
+	potions[item_id] -= 1
+	if potions[item_id] <= 0:
+		potions.erase(item_id)
+	var potion := ItemLoader.get_item(item_id) as Potion
+	return potion.effects if potion else []
 
-func add_potion(potion: Potion, amount: int = 1) -> void:
-	for i in range(potions.size()):
-		if potions[i].item.name == potion.name:
-			potions[i].count += amount
-			return
-	potions.append(ItemStack.new(potion, amount))
+func add_potion(item_id: String, amount: int = 1) -> void:
+	potions[item_id] = potions.get(item_id, 0) + amount
 
-func equip_weapon(weapon: Weapon) -> void:
+# ================================================
+#  Weapons
+# ================================================
+func equip_weapon(weapon_id: String) -> void:
 	if equipped_weapon:
-		weapon_stash.append(equipped_weapon)
-	equipped_weapon = weapon
-	weapon_stash.erase(weapon)
+		var old_id := ItemLoader.get_item_id(equipped_weapon)
+		if old_id != "" and old_id not in weapon_stash:
+			weapon_stash.append(old_id)
+	equipped_weapon = ItemLoader.get_item(weapon_id) as Weapon
+	weapon_stash.erase(weapon_id)
 
-func add_weapon_to_stash(weapon: Weapon) -> void:
-	if weapon not in weapon_stash and weapon != equipped_weapon:
-		weapon_stash.append(weapon)
+func add_weapon_to_stash(weapon_id: String) -> void:
+	var equipped_id := ItemLoader.get_item_id(equipped_weapon)
+	if weapon_id not in weapon_stash and weapon_id != equipped_id:
+		weapon_stash.append(weapon_id)
 	else:
-		gold += weapon.value
+		gold += (ItemLoader.get_item(weapon_id) as Weapon).value
 
 func has_weapon_in_stash(item_id: String) -> bool:
 	if equipped_weapon != null and ItemLoader.get_item_id(equipped_weapon) == item_id:
 		return true
-	for weapon in weapon_stash:
-		if ItemLoader.get_item_id(weapon) == item_id:
-			return true
-	return false
+	return item_id in weapon_stash
 
-func remove_weapon_from_stash(weapon: Weapon) -> void:
-	weapon_stash.erase(weapon)
+func remove_weapon_from_stash(weapon_id: String) -> void:
+	weapon_stash.erase(weapon_id)

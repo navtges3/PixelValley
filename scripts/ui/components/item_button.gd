@@ -1,35 +1,27 @@
 extends Button
 
-signal item_pressed(item_stack: ItemStack)
+signal item_pressed(item_id: String)
 
-@export var item_stack: ItemStack:
+@export var item_id: String = "":
 	set(value):
-		item_stack = value
-		_update_text()
-		_update_tooltip()
-		_update_theme()
+		item_id = value
+		_refresh()
 
-func _update_text() -> void:
-	if item_stack:
-		if item_stack.count > 1:
-			text = "%dx %s" % [item_stack.count, item_stack.item.name]
-		else:
-			text = item_stack.item.name
+@export var count: int = 1:
+	set(value):
+		count = value
+		_refresh()
+
+func _refresh() -> void:
+	var item := ItemLoader.get_item(item_id)
+	if item:
+		text = "%dx %s" % [count, item.name] if count > 1 else item.name
+		tooltip_text = item.to_string() if item.has_method("to_string") else ""
+		theme = item.theme
 	else:
 		text = ""
-
-func _update_tooltip() -> void:
-	if item_stack:
-		tooltip_text = item_stack.item._to_string()
-	else:
 		tooltip_text = ""
-
-func _update_theme() -> void:
-	if item_stack:
-		theme = item_stack.item.theme
-	else:
 		theme = preload("res://resources/ui/button_themes/regular/gray_button.tres")
 
-
 func _on_pressed() -> void:
-	item_pressed.emit(item_stack)
+	item_pressed.emit(item_id)
