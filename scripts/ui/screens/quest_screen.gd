@@ -7,6 +7,7 @@ const LOCATION_ID := "quest"
 @onready var quest_list_v_box: VBoxContainer = $MarginContainer/PanelContainer/VBoxContainer/QuestScrollContainer/QuestListVBox
 
 @onready var turn_in_button: Button = $MarginContainer/PanelContainer/VBoxContainer/BottomControls/TurnInButton
+@onready var reward_window: Window = $RewardWindow
 
 var selected_quest: QuestButton = null
 var current_tab = "available"
@@ -48,10 +49,13 @@ func _on_start_button_pressed() -> void:
 		return
 	var quest: Quest = selected_quest.get_quest()
 	if quest.all_objectives_met():
-		GameState.quest_manager.turn_in_quest(quest)
-		load_quests(current_tab)
+		var entries := GameState.quest_manager.turn_in_quest(quest)
+		reward_window.show_rewards("Quest Complete!", entries)
 		selected_quest = null
 		_update_complete_button()
+
+func _on_rewards_collected() -> void:
+	load_quests(current_tab)
 
 func _on_quest_selected(selected_button: QuestButton):
 	if selected_quest == selected_button:

@@ -45,37 +45,44 @@ func _on_monster_killed(monster_id: MonsterLoader.MonsterID, location_id: String
 			continue
 		quest.slay_monster(monster_id, location_id)
 
-func turn_in_quest(quest: Quest) -> void:
+func turn_in_quest(quest: Quest) -> Array[RewardEntry]:
 	if quest not in available_quests:
 		push_warning("QuestManager: quest '%s' not in available_quests" % quest.title)
-		return
+		return []
 	if not quest.all_objectives_met():
 		push_warning("QuestManager: quest '%s' objectives not met" % quest.title)
-		return
-	_apply_rewards(quest)
+		return []
+	var entries: Array[RewardEntry] = []
+	_apply_rewards(quest, entries)
 	_apply_location_unlocks(quest)
 	for next_id in quest.next_quests:
 		unlock_quest_by_id(next_id)
 	available_quests.erase(quest)
 	completed_quests.append(quest)
 	SaveManager.save_game()
+	return entries
 
-func _apply_rewards(quest: Quest) -> void:
+func _apply_rewards(quest: Quest, entries: Array[RewardEntry]) -> void:
 	var hero := GameState.hero
 	hero.gain_experience(quest.reward.experience)
 	hero.inventory.gold += quest.reward.gold
+	entries.append(RewardEntry.experience(quest.reward.experience))
+	entries.append(RewardEntry.gold(quest.reward.gold))
 	for item_id in quest.reward.items:
 		hero.inventory.add_potion(item_id, 1)
+		entries.append(RewardEntry.potion(item_id, 1))
 	if quest.reward.random_weapon:
-		_apply_weapon_rewards(quest.reward.rarity)
+		_apply_weapon_rewards(quest.reward.rarity, entries)
 
-func _apply_weapon_rewards(rarity: Item.Rarity) -> void:
+func _apply_weapon_rewards(rarity: Item.Rarity, entries: Array[RewardEntry]) -> void:
 	var weapon_id := WeaponDatabase.get_random_unowned_weapon_id_for_class(GameState.hero.hero_class, rarity)
 	if weapon_id != "":
 		GameState.hero.inventory.add_weapon_to_stash(weapon_id)
+		entries.append(RewardEntry.weapon(weapon_id))
 	else:
 		var gold := WeaponDatabase.get_gold_fallback_for_rarity(rarity)
 		GameState.hero.inventory.gold += gold
+		entries.append(RewardEntry.weapon_sold(weapon_id, gold))
 
 func _apply_location_unlocks(quest: Quest) -> void:
 	for location_id in quest.unlocks_locations:
