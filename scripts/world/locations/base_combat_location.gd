@@ -25,6 +25,9 @@ func _activate_spawn_points() -> void:
 func _on_combat_initiated(enemy: Enemy) -> void:
 	enemy.set_physics_process(false)
 	GameState.pre_combat_position = player.global_position
-	print("Starting combat with spawn id: %s" % enemy.spawn_point_id)
-	var config := BattleConfig.create(GameState.hero, enemy, _get_location_id())
-	ScreenManager.go_to_screen(ScreenManager.ScreenName.BATTLE, "", config)
+	ScreenManager.go_to_screen(ScreenManager.ScreenName.BATTLE, "", {
+		"hero": GameState.hero,
+		"monster_id": enemy.monster_id,
+		"spawn_point_id": enemy.spawn_point_id,
+		"location_id": _get_location_id()
+	})

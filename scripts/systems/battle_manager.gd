@@ -26,21 +26,15 @@ signal hero_hurt()
 signal monster_attacking()
 signal monster_hurt()
 
-func setup_battle(config: BattleConfig) -> void:
-	hero = config.hero
-	spawn_point_id = config.spawn_point_id
-	location_id = config.location_id
-
-	var m: Monster = config.monster_override if config.monster_override \
-		else MonsterLoader.new_monster(config.monster_id)
-	if m == null:
-		push_error("BattleManager: could not load monster for monster_id '%s'" % config.monster_id)
-		return
-
-	monster = m
+func setup_battle(config: Dictionary) -> void:
+	hero = config.get("hero")
+	spawn_point_id = config.get("spawn_point_id", "")
+	location_id = config.get("location_id", "")
+	var monster_id: MonsterLoader.MonsterID = config.get("monster_id", MonsterLoader.MonsterID.GOBLIN)
+	monster = MonsterLoader.new_monster(monster_id)
 	hero_updated.emit(hero)
 	new_monster.emit(monster)
-	battle_log_updated.emit("A wild %s appears!\n" % monster.get_colored_name())
+	battle_log_updated.emit("A %s aproaches!\n" % monster.get_colored_name())
 	monster_updated.emit(monster)
 	start_player_turn()
 

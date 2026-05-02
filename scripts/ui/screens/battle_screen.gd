@@ -21,15 +21,13 @@ const BATTLE_CHARACTER = preload("res://scenes/ui/components/battle_character.ts
 @onready var flee_button: Button = $MarginContainer/ActionPanel/ActionArea/LeftPanel/FleeButton
 @onready var option_list: VBoxContainer = $MarginContainer/ActionPanel/ActionArea/MiddlePanel/OptionList
 
-var battle_config: BattleConfig
 var hero_visual: BattleCharacter
 var monster_visual: BattleCharacter
 
 func _ready() -> void:
 	_empty_option_list()
 
-func setup(config: BattleConfig) -> void:
-	battle_config = config
+func setup(config: Dictionary) -> void:
 	_spawn_hero()
 	battle_manager.setup_battle(battle_config)
 
