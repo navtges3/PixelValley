@@ -18,8 +18,9 @@ const REST_CD := 5
 
 @export_group("Visuals")
 @export var portrait: Texture2D
-@export var battle_visual: BattleVisualData
 @export var world_visual: SpriteFrames
+@export var battle_visual: SpriteFrames
+@export var battle_height := 64
 
 @export_group("Active Effects")
 @export var active_effects: Array = []

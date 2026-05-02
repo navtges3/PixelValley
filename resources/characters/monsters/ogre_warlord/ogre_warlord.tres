@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="Monster" format=3 uid="uid://bhvavuaqg4vna"]
 
 [ext_resource type="Resource" uid="uid://5301qdbddvxa" path="res://resources/characters/abilities/crushing_blow.tres" id="2_7dfqd"]
-[ext_resource type="Resource" uid="uid://7gacxrq5a6yp" path="res://resources/characters/monsters/ogre_warlord/ogre_warlord_battle_visual.tres" id="3_dqixp"]
+[ext_resource type="SpriteFrames" uid="uid://6b425jjkhjxd" path="res://resources/characters/monsters/ogre_warlord/ogre_warlord_battle_sprite_frames.tres" id="2_dqixp"]
 [ext_resource type="Script" uid="uid://cnso83bg7vodw" path="res://scripts/data/condition.gd" id="5_jmrfh"]
 [ext_resource type="Script" uid="uid://bd6ohffno5w7r" path="res://scripts/characters/monster.gd" id="8_7yyue"]
 [ext_resource type="Texture2D" uid="uid://djrvhbepexlnu" path="res://assets/monsters/ogre_warlord/ogre_warlord.png" id="8_u1gyw"]
@@ -90,6 +90,6 @@ magic = 10
 defense = 18
 resistance = 12
 portrait = ExtResource("8_u1gyw")
-battle_visual = ExtResource("3_dqixp")
 world_visual = ExtResource("11_u1gyw")
+battle_visual = ExtResource("2_dqixp")
 metadata/_custom_type_script = "uid://bd6ohffno5w7r"

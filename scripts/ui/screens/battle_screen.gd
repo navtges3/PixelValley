@@ -38,7 +38,7 @@ func _spawn_hero() -> void:
 	hero_info.hero = battle_config.hero
 	hero_visual = BATTLE_CHARACTER.instantiate()
 	$HeroSlot.add_child(hero_visual)
-	hero_visual.apply_visual(battle_config.hero.battle_visual)
+	hero_visual.apply_visual(battle_config.hero)
 
 func _on_hero_updated(_hero_ref: Hero) -> void:
 	hero_info.refresh()
@@ -61,7 +61,7 @@ func _spawn_monster(monster_ref: Monster) -> void:
 		child.queue_free()
 	monster_visual = BATTLE_CHARACTER.instantiate()
 	$MonsterSlot.add_child(monster_visual)
-	monster_visual.apply_visual(monster_ref.battle_visual, true)
+	monster_visual.apply_visual(monster_ref, true)
 
 func _on_monster_updated(monster_ref: Monster) -> void:
 	var value = monster_ref.current_hp

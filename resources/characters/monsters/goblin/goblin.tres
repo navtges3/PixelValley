@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="Monster" format=3 uid="uid://dm48acoifufc0"]
 
 [ext_resource type="Resource" uid="uid://nav1377jn0pa" path="res://resources/characters/abilities/stab.tres" id="2_7quqt"]
-[ext_resource type="Resource" uid="uid://b81f7dg2c777j" path="res://resources/characters/monsters/goblin/goblin_battle_visual.tres" id="3_lwmax"]
+[ext_resource type="SpriteFrames" uid="uid://4ywebwliybf7" path="res://resources/characters/monsters/goblin/goblin_battle_sprite_frames.tres" id="2_ehlpm"]
 [ext_resource type="Script" uid="uid://bvuw0uyc36uxx" path="res://scripts/data/utility.gd" id="5_ehlpm"]
 [ext_resource type="Script" uid="uid://c5deti4sb2k2j" path="res://scripts/data/effect.gd" id="6_7quqt"]
 [ext_resource type="Script" uid="uid://cnso83bg7vodw" path="res://scripts/data/condition.gd" id="6_w4m2s"]
@@ -51,6 +51,6 @@ current_nrg = 5
 attack = 3
 defense = 1
 portrait = ExtResource("7_0ojpk")
-battle_visual = ExtResource("3_lwmax")
 world_visual = ExtResource("10_7quqt")
+battle_visual = ExtResource("2_ehlpm")
 metadata/_custom_type_script = "uid://bd6ohffno5w7r"

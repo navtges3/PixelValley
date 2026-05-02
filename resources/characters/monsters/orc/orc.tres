@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="Monster" format=3 uid="uid://yrw5qgu7qwe0"]
 
 [ext_resource type="Resource" uid="uid://5gj0qi86ux23" path="res://resources/characters/abilities/slash.tres" id="2_5w78i"]
-[ext_resource type="Resource" uid="uid://hqmaejbgon3u" path="res://resources/characters/monsters/orc/orc_battle_visual.tres" id="3_6vel4"]
+[ext_resource type="SpriteFrames" uid="uid://bn15t6nu6n6nf" path="res://resources/characters/monsters/orc/orc_battle_sprite_frames.tres" id="2_htada"]
 [ext_resource type="Script" uid="uid://cnso83bg7vodw" path="res://scripts/data/condition.gd" id="5_iwbsi"]
 [ext_resource type="Script" uid="uid://bd6ohffno5w7r" path="res://scripts/characters/monster.gd" id="6_b8a46"]
 [ext_resource type="Texture2D" uid="uid://b668r1wauqf0a" path="res://assets/monsters/orc/orc.png" id="7_iwbsi"]
@@ -52,6 +52,6 @@ attack = 6
 defense = 3
 resistance = 1
 portrait = ExtResource("7_iwbsi")
-battle_visual = ExtResource("3_6vel4")
 world_visual = ExtResource("10_6vel4")
+battle_visual = ExtResource("2_htada")
 metadata/_custom_type_script = "uid://bd6ohffno5w7r"
