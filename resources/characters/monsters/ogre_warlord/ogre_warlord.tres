@@ -1,6 +1,5 @@
 [gd_resource type="Resource" script_class="Monster" format=3 uid="uid://bhvavuaqg4vna"]
 
-[ext_resource type="Script" uid="uid://blp0fv0xnajdb" path="res://scripts/data/active_effect.gd" id="1_s0n28"]
 [ext_resource type="Resource" uid="uid://5301qdbddvxa" path="res://resources/characters/abilities/crushing_blow.tres" id="2_7dfqd"]
 [ext_resource type="Resource" uid="uid://7gacxrq5a6yp" path="res://resources/characters/monsters/ogre_warlord/ogre_warlord_battle_visual.tres" id="3_dqixp"]
 [ext_resource type="Script" uid="uid://dxnu3vjlxl2pn" path="res://scripts/data/conditional_ability.gd" id="3_g512o"]
@@ -9,7 +8,6 @@
 [ext_resource type="Resource" uid="uid://o8qau08p6lod" path="res://resources/characters/abilities/stunning_strike.tres" id="6_tn1b2"]
 [ext_resource type="Script" uid="uid://bd6ohffno5w7r" path="res://scripts/characters/monster.gd" id="8_7yyue"]
 [ext_resource type="Texture2D" uid="uid://djrvhbepexlnu" path="res://assets/monsters/ogre_warlord/ogre_warlord.png" id="8_u1gyw"]
-[ext_resource type="Script" uid="uid://hxleldka7y06" path="res://scripts/characters/stat_block.gd" id="9_umwto"]
 [ext_resource type="SpriteFrames" uid="uid://cdtggfnyvrjs5" path="res://resources/characters/monsters/ogre_warlord/ogre_warlord_world_sprite_frames.tres" id="11_u1gyw"]
 
 [sub_resource type="Resource" id="Resource_sff3n"]
@@ -37,18 +35,6 @@ ability = ExtResource("6_tn1b2")
 condition = SubResource("Resource_3bved")
 metadata/_custom_type_script = "uid://dxnu3vjlxl2pn"
 
-[sub_resource type="Resource" id="Resource_0xu8l"]
-script = ExtResource("9_umwto")
-current_hp = 300
-current_nrg = 80
-max_hp = 300
-max_nrg = 80
-attack = 35
-magic = 10
-defense = 18
-resistance = 12
-metadata/_custom_type_script = "uid://hxleldka7y06"
-
 [resource]
 script = ExtResource("8_7yyue")
 monster_id = 4
@@ -56,8 +42,15 @@ gold = 50
 basic_attack = ExtResource("2_7dfqd")
 conditional_abilities = Array[ExtResource("3_g512o")]([SubResource("Resource_co4bm"), SubResource("Resource_kbsnj")])
 name = "Ogre Warlord"
+max_hp = 300
+current_hp = 80
+max_nrg = 300
+current_nrg = 80
+attack = 35
+magic = 10
+defense = 18
+resistance = 12
 portrait = ExtResource("8_u1gyw")
 battle_visual = ExtResource("3_dqixp")
 world_visual = ExtResource("11_u1gyw")
-stat_block = SubResource("Resource_0xu8l")
 metadata/_custom_type_script = "uid://bd6ohffno5w7r"

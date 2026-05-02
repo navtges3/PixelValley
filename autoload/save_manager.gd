@@ -135,46 +135,43 @@ func _load_json(slot: int, filename: String) -> Dictionary:
 # ---------------------------------------------------------
 func _get_hero_data(hero: Hero) -> Dictionary:
 	return {
-		"hero_name": hero.name,
-		"portrait": hero.portrait.resource_path,
-		"battle_visual": hero.battle_visual.resource_path,
-		"world_visual": hero.world_visual.resource_path,
+		# Hero
 		"hero_class": hero.hero_class,
 		"level": hero.level,
 		"experience": hero.experience,
 		"skill_points": hero.skill_points,
 
+		# Combatant
+		"hero_name": hero.name,
+		"portrait": hero.portrait.resource_path,
+		"battle_visual": hero.battle_visual.resource_path,
+		"world_visual": hero.world_visual.resource_path,
+		"inventory": _get_inventory_data(hero.inventory),
 		"active_effects": _get_active_effects_data(hero),
-		"stat_block": _get_stat_block_data(hero.stat_block),
-		"inventory": _get_inventory_data(hero.inventory)
+		"stats": _get_stat_block_data(hero),
 	}
 
 func _load_hero(data: Dictionary) -> Hero:
 	var hero := Hero.new()
-
-	hero.name = data.get("hero_name", "Unnamed Hero")
-
-	var portrait_path = data.get("portrait", "")
-	if portrait_path != "":
-		hero.portrait = load(portrait_path)
-
-	var battle_visuals_path = data.get("battle_visual", "")
-	if battle_visuals_path != "":
-		hero.battle_visual = load(battle_visuals_path)
-
-	var world_visuals_path = data.get("world_visual", "")
-	if world_visuals_path != "":
-		hero.world_visual = load(world_visuals_path)
-
+	# Hero
 	hero.hero_class = data.get("hero_class", Hero.HeroClass.KNIGHT)
 	hero.level = data.get("level", 1)
 	hero.experience = data.get("experience", 0)
 	hero.skill_points = data.get("skill_points", 0)
-
-	hero.stat_block = _load_stat_block(data.get("stat_block", {}))
+	# Combatant
+	hero.name = data.get("hero_name", "Unnamed Hero")
+	var portrait_path = data.get("portrait", "")
+	if portrait_path != "":
+		hero.portrait = load(portrait_path)
+	var battle_visuals_path = data.get("battle_visual", "")
+	if battle_visuals_path != "":
+		hero.battle_visual = load(battle_visuals_path)
+	var world_visuals_path = data.get("world_visual", "")
+	if world_visuals_path != "":
+		hero.world_visual = load(world_visuals_path)
+	_load_stat_block(data.get("stats", {}), hero)
 	_load_active_effects(data.get("active_effects", []), hero)
 	hero.inventory = _load_inventory(data.get("inventory", {}))
-
 	return hero
 
 # ---------------------------------------------------------
@@ -204,29 +201,27 @@ func _load_active_effects(data: Array, combatant: Combatant) -> void:
 # ---------------------------------------------------------
 # STATS
 # ---------------------------------------------------------
-func _get_stat_block_data(stat_block: StatBlock) -> Dictionary:
+func _get_stat_block_data(combatant: Combatant) -> Dictionary:
 	return {
-		"current_hp": stat_block.current_hp,
-		"current_nrg": stat_block.current_nrg,
-		"max_hp": stat_block.max_hp,
-		"max_nrg": stat_block.max_nrg,
-		"attack": stat_block.attack,
-		"magic": stat_block.magic,
-		"defense": stat_block.defense,
-		"resistance": stat_block.resistance,
+		"current_hp": combatant.current_hp,
+		"current_nrg": combatant.current_nrg,
+		"max_hp": combatant.max_hp,
+		"max_nrg": combatant.max_nrg,
+		"attack": combatant.attack,
+		"magic": combatant.magic,
+		"defense": combatant.defense,
+		"resistance": combatant.resistance,
 	}
 
-func _load_stat_block(data: Dictionary) -> StatBlock:
-	var stat_block := StatBlock.new()
-	stat_block.current_hp = data.get("current_hp", 10)
-	stat_block.current_nrg = data.get("current_nrg", 5)
-	stat_block.max_hp = data.get("max_hp", 10)
-	stat_block.max_nrg = data.get("max_nrg", 5)
-	stat_block.attack = data.get("attack", 1)
-	stat_block.magic = data.get("magic", 1)
-	stat_block.defense = data.get("defense", 1)
-	stat_block.resistance = data.get("resistance", 1)
-	return stat_block
+func _load_stat_block(data: Dictionary, combatant: Combatant) -> void:
+	combatant.current_hp = data.get("current_hp", 10)
+	combatant.current_nrg = data.get("current_nrg", 5)
+	combatant.max_hp = data.get("max_hp", 10)
+	combatant.max_nrg = data.get("max_nrg", 5)
+	combatant.attack = data.get("attack", 1)
+	combatant.magic = data.get("magic", 1)
+	combatant.defense = data.get("defense", 1)
+	combatant.resistance = data.get("resistance", 1)
 
 # ---------------------------------------------------------
 # INVENTORY

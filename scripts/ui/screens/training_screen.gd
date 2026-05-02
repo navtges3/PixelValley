@@ -48,7 +48,7 @@ func update_ui() -> void:
 	var no_points_left = available_points <= 0
 
 	for stat in stat_labels.keys():
-		var base_val = hero.stat_block.get_stat(stat)
+		var base_val = _get_stat(stat)
 		var bonus = temp_allocations[stat]
 		if bonus > 0:
 			stat_labels[stat].text = "%s: %d (+%d)" % [stat.capitalize(), base_val, bonus]
@@ -78,6 +78,29 @@ func _on_confirm_button_pressed() -> void:
 	for stat in temp_allocations.keys():
 		var increase = temp_allocations[stat]
 		if increase > 0:
-			hero.stat_block.set_stat(stat, hero.stat_block.get_stat(stat) + increase)
+			_set_stat(stat, _get_stat(stat) + increase)
 	hero.skill_points = available_points
 	ScreenManager.go_back(LOCATION_ID)
+
+func _get_stat(stat: String) -> int:
+	match stat:
+		"attack":
+			return hero.attack
+		"magic":
+			return hero.magic
+		"defense":
+			return hero.defense
+		"resistance":
+			return hero.resistance
+	return -1
+
+func _set_stat(stat: String, value: int) -> void:
+	match stat:
+		"attack":
+			hero.attack = value
+		"magic":
+			hero.magic = value
+		"defense":
+			hero.defense = value
+		"resistance":
+			hero.resistance = value

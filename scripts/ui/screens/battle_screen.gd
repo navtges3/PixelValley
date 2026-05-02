@@ -64,8 +64,8 @@ func _spawn_monster(monster_ref: Monster) -> void:
 	monster_visual.apply_visual(monster_ref.battle_visual, true)
 
 func _on_monster_updated(monster_ref: Monster) -> void:
-	var value = monster_ref.stat_block.current_hp
-	var max_value = monster_ref.stat_block.max_hp
+	var value = monster_ref.current_hp
+	var max_value = monster_ref.max_hp
 	monster_health_bar.max_value = max_value
 	monster_health_bar.value = value
 	monster_health_bar_label.text = "%d / %d" % [value, max_value]
@@ -149,7 +149,7 @@ func _on_ability_button_pressed(ability: Ability) -> void:
 func _create_ability_button(ability: Ability) -> Button:
 	var button := ABILITY_BUTTON.instantiate()
 	button.ability = ability
-	button.user_energy = battle_manager.hero.stat_block.current_nrg
+	button.user_energy = battle_manager.hero.current_nrg
 	button.connect("ability_pressed", Callable(self, "_on_ability_button_pressed"))
 	return button
 

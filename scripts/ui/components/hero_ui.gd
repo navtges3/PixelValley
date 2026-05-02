@@ -36,23 +36,23 @@ func _update_text() -> void:
 	picture.texture = hero.portrait
 	level_label.text = "Level: " + str(hero.level)
 	experience_label.text = "XP: " + str(hero.experience)
-	attack_label.text = "Atk: " + str(hero.stat_block.attack)
-	magic_label.text = "Mag: " + str(hero.stat_block.magic)
-	defense_label.text = "Def: " + str(hero.stat_block.defense)
-	resistance_label.text = "Res: " + str(hero.stat_block.resistance)
+	attack_label.text = "Atk: " + str(hero.attack)
+	magic_label.text = "Mag: " + str(hero.magic)
+	defense_label.text = "Def: " + str(hero.defense)
+	resistance_label.text = "Res: " + str(hero.resistance)
 	gold_label.text = "Gold: " + str(hero.inventory.gold)
 	weapon_label.text = hero.inventory.equipped_weapon.name
 
 func _update_health_bar():
-	var value = hero.stat_block.current_hp
-	var max_value = hero.stat_block.max_hp
+	var value = hero.current_hp
+	var max_value = hero.max_hp
 	health_bar.max_value = max_value
 	health_bar.value = value
 	health_label.text = "%d / %d" % [value, max_value]
 
 func _update_energy_bar():
-	var value = hero.stat_block.current_nrg
-	var max_value = hero.stat_block.max_nrg
+	var value = hero.current_nrg
+	var max_value = hero.max_nrg
 	energy_bar.max_value = max_value
 	energy_bar.value = value
 	energy_label.text = "%d / %d" % [value, max_value]

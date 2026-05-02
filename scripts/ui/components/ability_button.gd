@@ -34,7 +34,7 @@ func _update_text() -> void:
 func _update_tooltip() -> void:
 	if ability:
 		if ability.is_ready():
-			tooltip_text = ability._to_string(GameState.hero.stat_block)
+			tooltip_text = ability._to_string(GameState.hero)
 		else:
 			tooltip_text = "On cooldown"
 	else:

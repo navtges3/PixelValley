@@ -10,9 +10,9 @@ enum AttackType { PHYSICAL, MAGICAL }
 func apply_attack(caster: Combatant, target: Combatant) -> String:
 	var damage_dealt = randi_range(min_damage, max_damage)
 	if self.attack_type == AttackType.PHYSICAL:
-		damage_dealt += caster.stat_block.attack
+		damage_dealt += caster.attack
 	elif self.attack_type == AttackType.MAGICAL:
-		damage_dealt += caster.stat_block.magic
+		damage_dealt += caster.magic
 	else:
 		print("Unknown attack type for %s." % self.name)
 		return "Unknown attack type."
@@ -20,19 +20,19 @@ func apply_attack(caster: Combatant, target: Combatant) -> String:
 	output += target.take_damage(damage_dealt, self.attack_type)
 	return output
 
-func _to_string(stat_block: StatBlock = null) -> String:
+func _to_string(combatant: Combatant = null) -> String:
 	var type_to_string = ""
 	var min_dmg = min_damage
 	var max_dmg = max_damage
 	match attack_type:
 		Attack.AttackType.PHYSICAL:
 			type_to_string = "Physical"
-			if stat_block != null:
-				min_dmg += stat_block.attack
-				max_dmg += stat_block.attack
+			if combatant != null:
+				min_dmg += combatant.attack
+				max_dmg += combatant.attack
 		Attack.AttackType.MAGICAL:
 			type_to_string = "Magical"
-			if stat_block != null:
-				min_dmg += stat_block.magic
-				max_dmg += stat_block.magic
+			if combatant != null:
+				min_dmg += combatant.magic
+				max_dmg += combatant.magic
 	return "%s (%d-%d)" % [type_to_string, min_dmg, max_dmg]
