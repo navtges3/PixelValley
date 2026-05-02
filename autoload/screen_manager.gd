@@ -5,6 +5,9 @@ var _history: Array[ScreenName] = []
 
 var _is_transitioning := false
 var _overlay: ColorRect
+var _world_hud: CanvasLayer = null
+
+const WORLD_HUD = preload("res://scenes/ui/hud/world_hud.tscn")
 
 enum ScreenName {
 	NONE,
@@ -18,7 +21,15 @@ enum ScreenName {
 	TEST,
 }
 
-var SCENE_PATHS := {
+const WORLD_SCREENS: Array = [
+	ScreenName.VALLEY,
+	ScreenName.VILLAGE,
+	ScreenName.FOREST,
+	ScreenName.WAR_CAMP,
+	ScreenName.CAVE,
+]
+
+const SCENE_PATHS := {
 	ScreenName.MAIN_MENU: "res://scenes/ui/screens/main_menu_screen.tscn",
 	ScreenName.NEW_GAME: "res://scenes/ui/screens/new_game_screen.tscn",
 	ScreenName.VILLAGE: "res://scenes/world/locations/village.tscn",
@@ -47,6 +58,13 @@ func _ready() -> void:
 	canvas.add_child(_overlay)
 	_overlay.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	_overlay.modulate = Color(1, 1, 1, 0)
+	
+	_world_hud = WORLD_HUD.instantiate()
+	add_child(_world_hud)
+	_world_hud.hide()
+
+func get_world_hud() -> CanvasLayer:
+	return _world_hud
 
 func _fade(target_alpha: float) -> void:
 	var tween := create_tween()
@@ -75,6 +93,8 @@ func go_back(entrance_id: String = "", data = null) -> void:
 func _change_scene(path: String, entrance_id: String = "", data = null) -> void:
 	_is_transitioning = true
 	await _fade(1.0)
+	
+	_world_hud.hide()
 
 	var scene = load(path).instantiate()
 	get_tree().current_scene.free()
@@ -85,6 +105,9 @@ func _change_scene(path: String, entrance_id: String = "", data = null) -> void:
 	if entrance_id != "" and scene.has_method("place_player_at_entrance"):
 		print("Placing player at entrance: %s" % entrance_id)
 		scene.place_player_at_entrance(entrance_id)
+
+	if _current_screen_name in WORLD_SCREENS:
+		_world_hud.show()
 
 	await get_tree().process_frame
 	await _fade(0.0)
