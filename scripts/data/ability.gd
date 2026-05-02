@@ -6,14 +6,20 @@ class_name Ability
 @export var cooldown: int
 @export var attack: Attack = null
 @export var utilities: Array[Utility] = []
+@export var condition: Condition = null
+
 var current_cooldown: int
 
-func is_ready() -> bool:
-	return current_cooldown <= 0
+func is_ready(caster: Combatant = null, target: Combatant = null) -> bool:
+	if current_cooldown > 0:
+		return false
+	if condition != null:
+		return condition.check(caster, target)
+	return true
 
 func use(caster: Combatant, target: Combatant) -> String:
 	var output = "%s used %s!\n" % [caster.get_colored_name(), self.name]
-	if is_ready() and caster.current_nrg >= self.energy_cost:
+	if is_ready(caster, target) and caster.current_nrg >= self.energy_cost:
 		if attack != null:
 			output += attack.apply_attack(caster, target)
 		for utility in utilities:

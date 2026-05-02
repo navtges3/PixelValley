@@ -2,12 +2,13 @@
 
 [ext_resource type="Resource" uid="uid://nav1377jn0pa" path="res://resources/characters/abilities/stab.tres" id="2_7quqt"]
 [ext_resource type="Resource" uid="uid://b81f7dg2c777j" path="res://resources/characters/monsters/goblin/goblin_battle_visual.tres" id="3_lwmax"]
-[ext_resource type="Script" uid="uid://dxnu3vjlxl2pn" path="res://scripts/data/conditional_ability.gd" id="4_lygd1"]
-[ext_resource type="Resource" uid="uid://ct2tqqk78lcn3" path="res://resources/characters/abilities/desperation.tres" id="5_idm7f"]
+[ext_resource type="Script" uid="uid://bvuw0uyc36uxx" path="res://scripts/data/utility.gd" id="5_ehlpm"]
+[ext_resource type="Script" uid="uid://c5deti4sb2k2j" path="res://scripts/data/effect.gd" id="6_7quqt"]
 [ext_resource type="Script" uid="uid://cnso83bg7vodw" path="res://scripts/data/condition.gd" id="6_w4m2s"]
 [ext_resource type="Texture2D" uid="uid://vdpvmy1cvfnu" path="res://assets/monsters/goblin/goblin.png" id="7_0ojpk"]
 [ext_resource type="Script" uid="uid://bd6ohffno5w7r" path="res://scripts/characters/monster.gd" id="8_li32v"]
 [ext_resource type="SpriteFrames" uid="uid://2sjuet18mpdk" path="res://resources/characters/monsters/goblin/goblin_world_sprite_frames.tres" id="10_7quqt"]
+[ext_resource type="Script" uid="uid://b2o7w8q10stxo" path="res://scripts/data/ability.gd" id="11_ability"]
 
 [sub_resource type="Resource" id="Resource_nb4d4"]
 script = ExtResource("6_w4m2s")
@@ -15,19 +16,36 @@ condition_type = 1
 value = 0.25
 metadata/_custom_type_script = "uid://cnso83bg7vodw"
 
+[sub_resource type="Resource" id="Resource_lwmax"]
+script = ExtResource("6_7quqt")
+type = 2
+strength = 5
+duration = 2
+metadata/_custom_type_script = "uid://c5deti4sb2k2j"
+
+[sub_resource type="Resource" id="Resource_lygd1"]
+script = ExtResource("5_ehlpm")
+effects = Array[ExtResource("6_7quqt")]([SubResource("Resource_lwmax")])
+subject = 1
+metadata/_custom_type_script = "uid://bvuw0uyc36uxx"
+
 [sub_resource type="Resource" id="Resource_sgp6s"]
-script = ExtResource("4_lygd1")
-ability = ExtResource("5_idm7f")
+script = ExtResource("11_ability")
+name = "Desperation"
+energy_cost = 5
+cooldown = 3
+utilities = Array[ExtResource("5_ehlpm")]([SubResource("Resource_lygd1")])
 condition = SubResource("Resource_nb4d4")
-metadata/_custom_type_script = "uid://dxnu3vjlxl2pn"
+metadata/_custom_type_script = "uid://b2o7w8q10stxo"
 
 [resource]
 script = ExtResource("8_li32v")
 gold = 5
 basic_attack = ExtResource("2_7quqt")
-conditional_abilities = Array[ExtResource("4_lygd1")]([SubResource("Resource_sgp6s")])
+conditional_abilities = Array[ExtResource("11_ability")]([SubResource("Resource_sgp6s")])
 name = "Goblin"
 max_hp = 50
+current_hp = 50
 max_nrg = 5
 current_nrg = 5
 attack = 3
