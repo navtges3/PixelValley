@@ -142,6 +142,7 @@ func _on_rewards_collected() -> void:
 
 func _on_hero_defeated():
 	GameState.hero.rest()
+	GameState.pre_combat_position = Vector2.ZERO
 	ScreenManager.go_to_screen(ScreenManager.ScreenName.VILLAGE, "village")
 
 # --- Button Factories ---
