@@ -1,10 +1,10 @@
-extends Resource
+extends RefCounted
 class_name ActiveEffect
 
 var effect: Effect
 var remaining_turns: int
-var source: Combatant
-var target: Combatant
+var source
+var target
 
 func _init(_effect: Effect, _target, _source = null):
 	effect = _effect
