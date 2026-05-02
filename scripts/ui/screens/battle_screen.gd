@@ -23,13 +23,15 @@ const BATTLE_CHARACTER = preload("res://scenes/ui/components/battle_character.ts
 
 var hero_visual: BattleCharacter
 var monster_visual: BattleCharacter
+var battle_config: Dictionary = {}
 
 func _ready() -> void:
 	_empty_option_list()
 
 func setup(config: Dictionary) -> void:
+	battle_config = config
 	_spawn_hero()
-	battle_manager.setup_battle(battle_config)
+	battle_manager.setup_battle(config)
 
 # --- Hero ---
 func _spawn_hero() -> void:
