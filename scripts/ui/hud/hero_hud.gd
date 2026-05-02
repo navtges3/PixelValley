@@ -38,11 +38,10 @@ func _refresh_if_dirty() -> void:
 	if GameState.hero == null:
 		return
 	var hero := GameState.hero
-	var sb := hero.stat_block
 	
 	var changed := (
-		sb.current_hp != _last_hp or 
-		sb.max_hp != _last_max_hp or
+		hero.current_hp != _last_hp or 
+		hero.max_hp != _last_max_hp or
 		hero.experience != _last_xp or 
 		hero.level != _last_level or 
 		hero.skill_points != _last_skill or 
@@ -51,29 +50,28 @@ func _refresh_if_dirty() -> void:
 	if not changed:
 		return
 	
-	_last_hp = sb.current_hp
-	_last_max_hp = sb.max_hp
+	_last_hp = hero.current_hp
+	_last_max_hp = hero.max_hp
 	_last_xp = hero.experience
 	_last_level = hero.level
 	_last_skill = hero.skill_points
 	_last_gold = hero.inventory.gold
 	
-	_draw_data(hero, sb)
+	_draw_data(hero)
 
 func _force_refresh() -> void:
 	if GameState.hero == null:
 		return
 	var hero := GameState.hero
-	var sb := hero.stat_block
 	
 	name_label.text = hero.name
 	class_label.text = hero.get_class_name()
 	name_label.add_theme_color_override("font_color", COLOR_NAME)
 	class_label.add_theme_color_override("font_color", COLOR_CLASS)
 	
-	_draw_data(hero, sb)
+	_draw_data(hero)
 
-func _draw_data(hero: Hero, sb: StatBlock) -> void:
+func _draw_data(hero: Hero) -> void:
 	level_label.text = "Lv %d" % hero.level
 	skill_label.text = "Skill Points: %d" % hero.skill_points
 	gold_label.text = "⬡ %d" % hero.inventory.gold
@@ -81,10 +79,10 @@ func _draw_data(hero: Hero, sb: StatBlock) -> void:
 	skill_label.add_theme_color_override("font_color", COLOR_LEVEL)
 	gold_label.add_theme_color_override("font_color", COLOR_GOLD)
 	
-	hp_bar.max_value = sb.max_hp
-	hp_bar.value = sb.current_hp
-	hp_label.text = "%d / %d" % [sb.current_hp, sb.max_hp]
-	_set_bar_color(hp_bar, _hp_color(sb.current_hp, sb.max_hp))
+	hp_bar.max_value = hero.max_hp
+	hp_bar.value = hero.current_hp
+	hp_label.text = "%d / %d" % [hero.current_hp, hero.max_hp]
+	_set_bar_color(hp_bar, _hp_color(hero.current_hp, hero.max_hp))
 	
 	var xp_needed: int = hero.level * Hero.LEVEL_UP_MULT
 	xp_bar.max_value = xp_needed

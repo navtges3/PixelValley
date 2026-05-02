@@ -37,10 +37,10 @@ func gain_experience(amount: int) -> void:
 
 func level_up() -> void:
 	level += 1
-	stat_block.max_hp += 5
-	stat_block.current_hp = stat_block.max_hp
-	stat_block.max_nrg += 2
-	stat_block.current_nrg = stat_block.max_nrg
+	max_hp += 5
+	current_hp = max_hp
+	max_nrg += 2
+	current_nrg = max_nrg
 	if level % 5 == 0:
 		skill_points += 5
 	else:

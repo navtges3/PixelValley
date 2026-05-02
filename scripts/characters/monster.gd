@@ -13,7 +13,7 @@ func get_colored_name() -> String:
 
 func choose_ability(target: Combatant) -> Ability:
 	for conditional in conditional_abilities:
-		if conditional.is_ready(self, target) and stat_block.current_nrg >= conditional.ability.energy_cost:
+		if conditional.is_ready(self, target) and current_nrg >= conditional.ability.energy_cost:
 			return conditional.ability
 	return basic_attack
 
@@ -25,5 +25,5 @@ func update_cooldown() -> void:
 			conditional.ability.current_cooldown -= 1
 
 func calculate_experience() -> int:
-	var health_exp := int(stat_block.max_hp * HEALTH_WEIGHT)
+	var health_exp := int(max_hp * HEALTH_WEIGHT)
 	return health_exp

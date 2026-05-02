@@ -4,22 +4,37 @@ class_name Combatant
 const REST_CD := 5
 
 @export var name: String
+
+@export_group("Stats")
+@export var max_hp := 0
+@export var current_hp := 0
+@export var max_nrg := 0
+@export var current_nrg := 0
+
+@export var attack := 0		# modifies physical attacks
+@export var magic := 0		# modifies magical attacks
+@export var defense := 0	# modifies physical defense
+@export var resistance := 0	# Modifies magical defense
+
+@export_group("Visuals")
 @export var portrait: Texture2D
 @export var battle_visual: BattleVisualData
 @export var world_visual: SpriteFrames
+
+@export_group("Active Effects")
 @export var active_effects: Array = []
-@export var stat_block: StatBlock
+
 var rest_cooldown = 0
 
 func get_colored_name() -> String:
 	return self.name
 
 func is_alive() -> bool:
-	return stat_block.current_hp > 0
+	return current_hp > 0
 
 func rest() -> void:
-	self.stat_block.current_hp = self.stat_block.max_hp
-	self.stat_block.current_nrg = self.stat_block.max_nrg
+	current_hp = max_hp
+	current_nrg = max_nrg
 	active_effects.clear()
 
 func meditate() -> void:
@@ -29,29 +44,29 @@ func meditate() -> void:
 	var defense_scale = 1.5
 	var resistance_scale = 1.5
 	self.rest_cooldown = REST_CD
-	self.heal(base_hp + (stat_block.defense * defense_scale) + (stat_block.resistance * resistance_scale))
-	self.recover_energy(base_nrg + (stat_block.magic * magic_scale))
+	self.heal(base_hp + (defense * defense_scale) + (resistance * resistance_scale))
+	self.recover_energy(base_nrg + (magic * magic_scale))
 
 func take_damage(amount: int, type: Attack.AttackType) -> String:
 	var damage = _calculate_damage(amount, type)
-	self.stat_block.current_hp = max(self.stat_block.current_hp - damage, 0)
+	current_hp = max(current_hp - damage, 0)
 	if damage <= 0:
 		return "%s blocked the attack!\n" % self.get_colored_name()
 	else:
 		return "%s took %d damage.\n" % [self.get_colored_name(), damage]
 
 func heal(amount: int) -> void:
-	self.stat_block.current_hp = min(self.stat_block.current_hp + amount, self.stat_block.max_hp)
+	current_hp = min(current_hp + amount, max_hp)
 
 func use_energy(amount: int) -> bool:
-	if self.stat_block.current_nrg >= amount:
-		self.stat_block.current_nrg -= amount
+	if current_nrg >= amount:
+		current_nrg -= amount
 		return true
 	else:
 		return false
 
 func recover_energy(amount: int) -> void:
-	self.stat_block.current_nrg = min(self.stat_block.current_nrg + amount, self.stat_block.max_nrg)
+	current_nrg = min(current_nrg + amount, max_nrg)
 
 func apply_effect(effect: Effect, source = null, remaining_turns := 0) -> String:
 	var ae = ActiveEffect.new(effect, self, source)
@@ -74,7 +89,7 @@ func _calculate_damage(amount: int, type: Attack.AttackType) -> int:
 	var damage = amount
 	match type:
 		Attack.AttackType.PHYSICAL:
-			damage = max(damage - self.stat_block.defense, 0)
+			damage = max(damage - defense, 0)
 		Attack.AttackType.MAGICAL:
-			damage = max(damage - self.stat_block.resistance, 0)
+			damage = max(damage - resistance, 0)
 	return damage
