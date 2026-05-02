@@ -4,7 +4,9 @@
 [ext_resource type="SpriteFrames" uid="uid://bn15t6nu6n6nf" path="res://resources/characters/monsters/orc/orc_battle_sprite_frames.tres" id="2_htada"]
 [ext_resource type="Script" uid="uid://cnso83bg7vodw" path="res://scripts/data/condition.gd" id="5_iwbsi"]
 [ext_resource type="Script" uid="uid://bd6ohffno5w7r" path="res://scripts/characters/monster.gd" id="6_b8a46"]
+[ext_resource type="Script" uid="uid://buxlf5aagrtgf" path="res://scripts/data/drop_entry.gd" id="7_b8a46"]
 [ext_resource type="Texture2D" uid="uid://b668r1wauqf0a" path="res://assets/monsters/orc/orc.png" id="7_iwbsi"]
+[ext_resource type="Script" uid="uid://birbqcxvye2x5" path="res://scripts/data/drop_table.gd" id="8_as0tk"]
 [ext_resource type="SpriteFrames" uid="uid://tt7ulvh24n6g" path="res://resources/characters/monsters/orc/orc_world_sprite_frames.tres" id="10_6vel4"]
 [ext_resource type="Script" uid="uid://b2o7w8q10stxo" path="res://scripts/data/ability.gd" id="11_ability"]
 [ext_resource type="Script" uid="uid://bvuw0uyc36uxx" path="res://scripts/data/utility.gd" id="12_utility"]
@@ -37,12 +39,37 @@ utilities = Array[ExtResource("12_utility")]([SubResource("Resource_roar_utility
 condition = SubResource("Resource_1rq5t")
 metadata/_custom_type_script = "uid://b2o7w8q10stxo"
 
+[sub_resource type="Resource" id="Resource_wl7km"]
+script = ExtResource("7_b8a46")
+item_id = "greater_healing_potion"
+chance = 0.25
+metadata/_custom_type_script = "uid://buxlf5aagrtgf"
+
+[sub_resource type="Resource" id="Resource_j1wbf"]
+script = ExtResource("7_b8a46")
+item_id = "attack_potion"
+chance = 0.2
+metadata/_custom_type_script = "uid://buxlf5aagrtgf"
+
+[sub_resource type="Resource" id="Resource_8ex7x"]
+script = ExtResource("7_b8a46")
+item_id = "defense_potion"
+chance = 0.2
+metadata/_custom_type_script = "uid://buxlf5aagrtgf"
+
+[sub_resource type="Resource" id="Resource_dmiw0"]
+script = ExtResource("8_as0tk")
+entries = Array[ExtResource("7_b8a46")]([SubResource("Resource_wl7km"), SubResource("Resource_j1wbf"), SubResource("Resource_8ex7x")])
+weapon_chance = 0.08
+metadata/_custom_type_script = "uid://birbqcxvye2x5"
+
 [resource]
 script = ExtResource("6_b8a46")
 monster_id = 1
-gold = 12
 basic_attack = ExtResource("2_5w78i")
 conditional_abilities = Array[ExtResource("11_ability")]([SubResource("Resource_63lsj")])
+gold = 12
+loot = SubResource("Resource_dmiw0")
 name = "Orc"
 max_hp = 75
 current_hp = 75

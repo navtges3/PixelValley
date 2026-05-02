@@ -4,9 +4,11 @@ class_name Monster
 const HEALTH_WEIGHT := 0.5
 
 @export var monster_id: MonsterLoader.MonsterID
-@export var gold: int
 @export var basic_attack: Ability
 @export var conditional_abilities: Array[Ability]
+@export var gold: int
+@export var gold_variance: float = 0.2
+@export var loot: DropTable = null
 
 func get_colored_name() -> String:
 	return "[color=red]" + self.name + "[/color]"
@@ -27,3 +29,12 @@ func update_cooldown() -> void:
 func calculate_experience() -> int:
 	var health_exp := int(max_hp * HEALTH_WEIGHT)
 	return health_exp
+
+func calculate_gold() -> int:
+	var variance := gold * gold_variance
+	return int(gold + randf_range(-variance, variance))
+
+func roll_loot(hero_class: Hero.HeroClass) -> Dictionary:
+	if loot == null:
+		return {}
+	return loot.roll(hero_class)

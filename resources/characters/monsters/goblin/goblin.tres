@@ -6,7 +6,9 @@
 [ext_resource type="Script" uid="uid://c5deti4sb2k2j" path="res://scripts/data/effect.gd" id="6_7quqt"]
 [ext_resource type="Script" uid="uid://cnso83bg7vodw" path="res://scripts/data/condition.gd" id="6_w4m2s"]
 [ext_resource type="Texture2D" uid="uid://vdpvmy1cvfnu" path="res://assets/monsters/goblin/goblin.png" id="7_0ojpk"]
+[ext_resource type="Script" uid="uid://buxlf5aagrtgf" path="res://scripts/data/drop_entry.gd" id="7_lwmax"]
 [ext_resource type="Script" uid="uid://bd6ohffno5w7r" path="res://scripts/characters/monster.gd" id="8_li32v"]
+[ext_resource type="Script" uid="uid://birbqcxvye2x5" path="res://scripts/data/drop_table.gd" id="8_lygd1"]
 [ext_resource type="SpriteFrames" uid="uid://2sjuet18mpdk" path="res://resources/characters/monsters/goblin/goblin_world_sprite_frames.tres" id="10_7quqt"]
 [ext_resource type="Script" uid="uid://b2o7w8q10stxo" path="res://scripts/data/ability.gd" id="11_ability"]
 
@@ -38,11 +40,31 @@ utilities = Array[ExtResource("5_ehlpm")]([SubResource("Resource_lygd1")])
 condition = SubResource("Resource_nb4d4")
 metadata/_custom_type_script = "uid://b2o7w8q10stxo"
 
+[sub_resource type="Resource" id="Resource_idm7f"]
+script = ExtResource("7_lwmax")
+item_id = "lesser_healing_potion"
+chance = 0.3
+max_count = 2
+metadata/_custom_type_script = "uid://buxlf5aagrtgf"
+
+[sub_resource type="Resource" id="Resource_w4m2s"]
+script = ExtResource("7_lwmax")
+item_id = "energy_potion"
+chance = 0.2
+metadata/_custom_type_script = "uid://buxlf5aagrtgf"
+
+[sub_resource type="Resource" id="Resource_0ojpk"]
+script = ExtResource("8_lygd1")
+entries = Array[ExtResource("7_lwmax")]([SubResource("Resource_idm7f"), SubResource("Resource_w4m2s")])
+weapon_chance = 0.05
+metadata/_custom_type_script = "uid://birbqcxvye2x5"
+
 [resource]
 script = ExtResource("8_li32v")
-gold = 5
 basic_attack = ExtResource("2_7quqt")
 conditional_abilities = Array[ExtResource("11_ability")]([SubResource("Resource_sgp6s")])
+gold = 5
+loot = SubResource("Resource_0ojpk")
 name = "Goblin"
 max_hp = 50
 current_hp = 50
