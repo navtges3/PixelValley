@@ -97,13 +97,40 @@ func end_player_turn() -> void:
 
 func _on_monster_killed() -> void:
 	var experience := monster.calculate_experience()
-	battle_log_updated.emit("%s defeated %s!\n" % [hero.get_colored_name(), monster.get_colored_name()])
-	battle_log_updated.emit("%s gains %d experience and %d gold.\n" % [hero.get_colored_name(), experience, monster.gold])
-	hero.inventory.gold += monster.gold
+	var gold := monster.calculate_gold()
+	var loot := monster.roll_loot(hero.hero_class)
+	hero.inventory.gold += gold
 	hero.gain_experience(experience)
+	var log_msg := "%s defeated %s!\n" % [hero.get_colored_name(), monster.get_colored_name()]
+	log_msg += "%s gains %d xp and %d gold.\n" % [hero.get_colored_name(), experience, gold]
+	if not loot.is_empty():
+		log_msg += _apply_loot(loot)
+	battle_log_updated.emit(log_msg)
 	hero_updated.emit(hero)
 	GameState.monster_killed.emit(monster.monster_id, location_id)
 	end_battle(true)
+
+func _apply_loot(loot: Dictionary) -> String:
+	var output := ""
+	for item_id in loot.get("potions", {}):
+		var count: int = loot["potions"][item_id]
+		hero.inventory.add_potion(item_id, count)
+		var item := ItemLoader.get_item(item_id)
+		output += "Found %dx %s!\n" % [count, item.name if item else item_id]
+	var weapon_id: String = loot.get("weapon_id", "")
+	if weapon_id != "":
+		if hero.inventory.has_weapon_in_stash(weapon_id):
+			var weapon := ItemLoader.get_item(weapon_id) as Weapon
+			var gold := weapon.value if weapon else 0
+			hero.inventory.gold += gold
+			output += "Already own %s — sold for %d gold!\n" % [
+				weapon.name if weapon else weapon_id, gold
+			]
+		else:
+			hero.inventory.add_weapon_to_stash(weapon_id)
+			var weapon := ItemLoader.get_item(weapon_id)
+			output += "Found %s!\n" % (weapon.name if weapon else weapon_id)
+	return output
 
 func enemy_turn() -> void:
 	battle_log_updated.emit("Enemy turn...\n")
