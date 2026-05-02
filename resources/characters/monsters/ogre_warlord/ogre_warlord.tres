@@ -77,9 +77,9 @@ metadata/_custom_type_script = "uid://b2o7w8q10stxo"
 [resource]
 script = ExtResource("8_7yyue")
 monster_id = 4
-gold = 50
 basic_attack = ExtResource("2_7dfqd")
 conditional_abilities = Array[ExtResource("12_ability")]([SubResource("Resource_co4bm"), SubResource("Resource_kbsnj")])
+gold = 50
 name = "Ogre Warlord"
 max_hp = 300
 current_hp = 300
