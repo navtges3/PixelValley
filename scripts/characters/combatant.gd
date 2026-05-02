@@ -7,7 +7,7 @@ const REST_CD := 5
 @export var portrait: Texture2D
 @export var battle_visual: BattleVisualData
 @export var world_visual: SpriteFrames
-@export var active_effects: Array[ActiveEffect] = []
+@export var active_effects: Array = []
 @export var stat_block: StatBlock
 var rest_cooldown = 0
 
