@@ -7,6 +7,7 @@ const BATTLE_CHARACTER = preload("res://scenes/ui/components/battle_character.ts
 @onready var battle_manager = $BattleManager
 
 @onready var battle_log: RichTextLabel = $MarginContainer/BattleLog
+@onready var reward_window: Window = $RewardWindow
 
 # Monster Info
 @onready var monster_health_bar: ProgressBar = $MarginContainer/VBoxContainer/MonsterHealthBar
@@ -133,7 +134,10 @@ func _on_monster_turn():
 	flee_button.disabled = true
 
 # --- End-of-battle ---
-func _on_battle_won() -> void:
+func _on_battle_won(entries: Array) -> void:
+	reward_window.show_rewards("Victory!", entries)
+
+func _on_rewards_collected() -> void:
 	ScreenManager.go_back()
 
 func _on_hero_defeated():

@@ -12,7 +12,7 @@ var state = BattleState.PLAYER_TURN
 signal new_monster(monster_ref: Monster)
 signal player_turn()
 signal monster_turn()
-signal battle_won()
+signal battle_won(entries: Array)
 signal hero_defeated()
 
 # UI updates
@@ -99,38 +99,31 @@ func _on_monster_killed() -> void:
 	var experience := monster.calculate_experience()
 	var gold := monster.calculate_gold()
 	var loot := monster.roll_loot(hero.hero_class)
-	hero.inventory.gold += gold
+	var entries: Array[RewardEntry] = []
+	entries.append(RewardEntry.experience(experience))
+	entries.append(RewardEntry.gold(gold))
 	hero.gain_experience(experience)
-	var log_msg := "%s defeated %s!\n" % [hero.get_colored_name(), monster.get_colored_name()]
-	log_msg += "%s gains %d xp and %d gold.\n" % [hero.get_colored_name(), experience, gold]
-	if not loot.is_empty():
-		log_msg += _apply_loot(loot)
-	battle_log_updated.emit(log_msg)
+	hero.inventory.gold += gold
+	_collect_loot(loot, entries)
 	hero_updated.emit(hero)
 	GameState.monster_killed.emit(monster.monster_id, location_id)
 	end_battle(true)
 
-func _apply_loot(loot: Dictionary) -> String:
-	var output := ""
+func _collect_loot(loot: Dictionary, entries: Array[RewardEntry]) -> void:
 	for item_id in loot.get("potions", {}):
 		var count: int = loot["potions"][item_id]
 		hero.inventory.add_potion(item_id, count)
-		var item := ItemLoader.get_item(item_id)
-		output += "Found %dx %s!\n" % [count, item.name if item else item_id]
+		entries.append(RewardEntry.potion(item_id, count))
 	var weapon_id: String = loot.get("weapon_id", "")
 	if weapon_id != "":
 		if hero.inventory.has_weapon_in_stash(weapon_id):
 			var weapon := ItemLoader.get_item(weapon_id) as Weapon
-			var gold := weapon.value if weapon else 0
-			hero.inventory.gold += gold
-			output += "Already own %s — sold for %d gold!\n" % [
-				weapon.name if weapon else weapon_id, gold
-			]
+			var sold_gold := weapon.value if weapon else 0
+			hero.inventory.gold += sold_gold
+			entries.append(RewardEntry.weapon_sold(weapon_id, sold_gold))
 		else:
 			hero.inventory.add_weapon_to_stash(weapon_id)
-			var weapon := ItemLoader.get_item(weapon_id)
-			output += "Found %s!\n" % (weapon.name if weapon else weapon_id)
-	return output
+			entries.append(RewardEntry.weapon(weapon_id))
 
 func enemy_turn() -> void:
 	battle_log_updated.emit("Enemy turn...\n")
@@ -152,13 +145,12 @@ func end_enemy_turn() -> void:
 	else:
 		end_battle(false)
 
-func end_battle(player_won: bool) -> void:
+func end_battle(player_won: bool, entries: Array[RewardEntry] = []) -> void:
 	state = BattleState.VICTORY if player_won else BattleState.DEFEAT
-	battle_log_updated.emit("%s wins!\n" % hero.get_colored_name() if player_won else "%s loses!\n" % hero.get_colored_name())
 	if player_won:
 		if spawn_point_id != "":
 			WorldManager.mark_spawner_defeated(location_id, spawn_point_id)
-		battle_won.emit()
+		battle_won.emit(entries)
 	else:
 		hero_defeated.emit()
 

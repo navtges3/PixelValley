@@ -10,6 +10,7 @@
 [ext_resource type="Theme" uid="uid://dqwm8agt87lsh" path="res://resources/ui/button_themes/regular/blue_button.tres" id="9_06vtu"]
 [ext_resource type="Theme" uid="uid://phfh7c5hwx1n" path="res://resources/ui/button_themes/regular/yellow_button.tres" id="10_c2ins"]
 [ext_resource type="Script" uid="uid://bgmcha5vrlqop" path="res://scripts/systems/battle_manager.gd" id="11_o00jr"]
+[ext_resource type="PackedScene" uid="uid://rs7udjvphx52" path="res://scenes/ui/windows/reward_window.tscn" id="11_xvgma"]
 
 [node name="BattleScreen" type="Control" unique_id=1921801911]
 layout_mode = 3
@@ -147,6 +148,9 @@ text = "This is an Ability"
 [node name="BattleManager" type="Node" parent="." unique_id=973972740]
 script = ExtResource("11_o00jr")
 
+[node name="RewardWindow" parent="." unique_id=1271341637 instance=ExtResource("11_xvgma")]
+visible = false
+
 [connection signal="toggled" from="MarginContainer/ActionPanel/ActionArea/LeftPanel/AbilityButton" to="." method="_on_ability_button_toggled"]
 [connection signal="toggled" from="MarginContainer/ActionPanel/ActionArea/LeftPanel/ItemButton" to="." method="_on_item_button_toggled"]
 [connection signal="pressed" from="MarginContainer/ActionPanel/ActionArea/LeftPanel/MeditateButton" to="." method="_on_meditate_button_pressed"]
@@ -163,3 +167,4 @@ script = ExtResource("11_o00jr")
 [connection signal="monster_updated" from="BattleManager" to="." method="_on_monster_updated"]
 [connection signal="new_monster" from="BattleManager" to="." method="_on_new_monster"]
 [connection signal="player_turn" from="BattleManager" to="." method="_on_player_turn"]
+[connection signal="rewards_collected" from="RewardWindow" to="." method="_on_rewards_collected"]
