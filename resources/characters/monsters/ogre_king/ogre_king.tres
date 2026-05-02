@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="Monster" format=3 uid="uid://dcwvon7sw5nst"]
 
+[ext_resource type="SpriteFrames" uid="uid://bi0hjkjhgixba" path="res://resources/characters/monsters/ogre_king/ogre_king_battle_sprite_frames.tres" id="2_38k3l"]
 [ext_resource type="Resource" uid="uid://butpfi06boe3d" path="res://resources/characters/abilities/kings_smash.tres" id="2_u1xk6"]
-[ext_resource type="Resource" uid="uid://vaoqe50vrr0g" path="res://resources/characters/monsters/ogre_king/ogre_king_battle_visual.tres" id="3_38k3l"]
 [ext_resource type="Script" uid="uid://cnso83bg7vodw" path="res://scripts/data/condition.gd" id="5_833pn"]
 [ext_resource type="Script" uid="uid://bd6ohffno5w7r" path="res://scripts/characters/monster.gd" id="8_85bo5"]
 [ext_resource type="Texture2D" uid="uid://dqyfb7invyhyx" path="res://assets/monsters/ogre_king/ogre_king.png" id="8_gb37p"]
@@ -74,6 +74,6 @@ magic = 20
 defense = 25
 resistance = 18
 portrait = ExtResource("8_gb37p")
-battle_visual = ExtResource("3_38k3l")
 world_visual = ExtResource("11_gb37p")
+battle_visual = ExtResource("2_38k3l")
 metadata/_custom_type_script = "uid://bd6ohffno5w7r"

@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="Monster" format=3 uid="uid://bxig3cedsllcl"]
 
+[ext_resource type="SpriteFrames" uid="uid://ghh4h01vpcng" path="res://resources/characters/monsters/ogre/ogre_battle_sprite_frames.tres" id="2_u5tp0"]
 [ext_resource type="Resource" uid="uid://waytpolwnsyp" path="res://resources/characters/abilities/smash.tres" id="2_xovwm"]
-[ext_resource type="Resource" uid="uid://c7yn6fv01vsey" path="res://resources/characters/monsters/ogre/ogre_battle_visual.tres" id="3_u5tp0"]
 [ext_resource type="Script" uid="uid://cnso83bg7vodw" path="res://scripts/data/condition.gd" id="5_1gn5i"]
 [ext_resource type="Texture2D" uid="uid://rvnloxwapjye" path="res://assets/monsters/ogre/ogre.png" id="7_8w1if"]
 [ext_resource type="Script" uid="uid://bd6ohffno5w7r" path="res://scripts/characters/monster.gd" id="7_18j1j"]
@@ -52,6 +52,6 @@ attack = 9
 defense = 5
 resistance = 2
 portrait = ExtResource("7_8w1if")
-battle_visual = ExtResource("3_u5tp0")
 world_visual = ExtResource("10_8w1if")
+battle_visual = ExtResource("2_u5tp0")
 metadata/_custom_type_script = "uid://bd6ohffno5w7r"

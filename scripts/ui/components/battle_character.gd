@@ -11,10 +11,10 @@ func set_frames(frames: SpriteFrames) -> void:
 	sprite.sprite_frames = frames
 	sprite.play("idle")
 
-func apply_visual(visual: BattleVisualData, flip_h := false) -> void:
-	sprite.sprite_frames = visual.frames
+func apply_visual(combatant: Combatant, flip_h := false) -> void:
+	sprite.sprite_frames = combatant.battle_visual
 	scale = SCALE
-	sprite.position.y -= (visual.sprite_height - Y_OFFSET)
+	sprite.position.y -= (combatant.battle_height - Y_OFFSET)
 	sprite.flip_h = flip_h
 	sprite.play("idle")
 
