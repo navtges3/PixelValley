@@ -1,12 +1,17 @@
 [gd_resource type="Resource" script_class="Quest" format=3 uid="uid://dhxmspsc22anp"]
 
-[ext_resource type="Script" uid="uid://bhsjswm1wnll8" path="res://scripts/quest/monster_requirement.gd" id="1_alwbf"]
-[ext_resource type="Script" uid="uid://xekqra2mjp3l" path="res://scripts/quest/quest_reward.gd" id="2_xljhf"]
-[ext_resource type="Script" uid="uid://xhl8p6y5w5e6" path="res://scripts/quest/quest.gd" id="3_trt7l"]
+[ext_resource type="Script" uid="uid://bhsjswm1wnll8" path="res://scripts/data/quest_objective.gd" id="1_alwbf"]
+[ext_resource type="Script" uid="uid://bra22kkvfpket" path="res://scripts/data/reward.gd" id="2_xljhf"]
+[ext_resource type="Script" uid="uid://xhl8p6y5w5e6" path="res://scripts/data/quest.gd" id="3_trt7l"]
+
+[sub_resource type="Resource" id="Resource_alwbf"]
+script = ExtResource("2_xljhf")
+metadata/_custom_type_script = "uid://bra22kkvfpket"
 
 [resource]
 script = ExtResource("3_trt7l")
 title = "Victory!"
 id = 11
 description = "Thank you for playing! I hope you enjoyed my game!"
+reward = SubResource("Resource_alwbf")
 metadata/_custom_type_script = "uid://xhl8p6y5w5e6"

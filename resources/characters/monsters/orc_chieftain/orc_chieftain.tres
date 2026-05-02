@@ -1,16 +1,21 @@
 [gd_resource type="Resource" script_class="Monster" format=3 uid="uid://defc2ss743h1d"]
 
-[ext_resource type="Script" uid="uid://blp0fv0xnajdb" path="res://scripts/data/active_effect.gd" id="1_o5knh"]
+[ext_resource type="SpriteFrames" uid="uid://c0eq7l4ijhmwd" path="res://resources/characters/monsters/orc_chieftain/orc_chieftain_battle_sprite_frames.tres" id="2_o5knh"]
 [ext_resource type="Resource" uid="uid://wdlsildxyd0p" path="res://resources/characters/abilities/cleave.tres" id="2_t544c"]
-[ext_resource type="Resource" uid="uid://px5md5kliryy" path="res://resources/characters/monsters/orc_chieftain/orc_chieftain_battle_visual.tres" id="3_slxg0"]
-[ext_resource type="Script" uid="uid://dxnu3vjlxl2pn" path="res://scripts/data/conditional_ability.gd" id="4_yrisj"]
-[ext_resource type="Resource" uid="uid://crgnqxkfk1fo7" path="res://resources/characters/abilities/execute.tres" id="5_w2vh6"]
 [ext_resource type="Script" uid="uid://cnso83bg7vodw" path="res://scripts/data/condition.gd" id="6_tp04t"]
-[ext_resource type="Resource" uid="uid://cst727hpy86fv" path="res://resources/characters/abilities/war_cry.tres" id="7_ykhm0"]
 [ext_resource type="Texture2D" uid="uid://dgbh3u78hhof6" path="res://assets/monsters/orc_chieftain/orc_chieftain.png" id="8_xqsrt"]
 [ext_resource type="Script" uid="uid://bd6ohffno5w7r" path="res://scripts/characters/monster.gd" id="9_77wwi"]
-[ext_resource type="Script" uid="uid://hxleldka7y06" path="res://scripts/characters/stat_block.gd" id="10_7xu3g"]
 [ext_resource type="SpriteFrames" uid="uid://csar6wm63v6f" path="res://resources/characters/monsters/orc_chieftain/orc_chieftain_world_sprite_frames.tres" id="11_t544c"]
+[ext_resource type="Script" uid="uid://b2o7w8q10stxo" path="res://scripts/data/ability.gd" id="12_ability"]
+[ext_resource type="Script" uid="uid://bo48scp6lbwrb" path="res://scripts/data/attack.gd" id="13_attack"]
+[ext_resource type="Script" uid="uid://bvuw0uyc36uxx" path="res://scripts/data/utility.gd" id="14_utility"]
+[ext_resource type="Script" uid="uid://c5deti4sb2k2j" path="res://scripts/data/effect.gd" id="15_effect"]
+
+[sub_resource type="Resource" id="Resource_execute_attack"]
+script = ExtResource("13_attack")
+min_damage = 20
+max_damage = 35
+metadata/_custom_type_script = "uid://bo48scp6lbwrb"
 
 [sub_resource type="Resource" id="Resource_3vdcj"]
 script = ExtResource("6_tp04t")
@@ -20,10 +25,13 @@ value = 0.3
 metadata/_custom_type_script = "uid://cnso83bg7vodw"
 
 [sub_resource type="Resource" id="Resource_sap3r"]
-script = ExtResource("4_yrisj")
-ability = ExtResource("5_w2vh6")
+script = ExtResource("12_ability")
+name = "Execute"
+energy_cost = 18
+cooldown = 3
+attack = SubResource("Resource_execute_attack")
 condition = SubResource("Resource_3vdcj")
-metadata/_custom_type_script = "uid://dxnu3vjlxl2pn"
+metadata/_custom_type_script = "uid://b2o7w8q10stxo"
 
 [sub_resource type="Resource" id="Resource_7fsos"]
 script = ExtResource("6_tp04t")
@@ -31,33 +39,43 @@ condition_type = 1
 value = 0.5
 metadata/_custom_type_script = "uid://cnso83bg7vodw"
 
-[sub_resource type="Resource" id="Resource_7hvvo"]
-script = ExtResource("4_yrisj")
-ability = ExtResource("7_ykhm0")
-condition = SubResource("Resource_7fsos")
-metadata/_custom_type_script = "uid://dxnu3vjlxl2pn"
+[sub_resource type="Resource" id="Resource_cry_effect"]
+script = ExtResource("15_effect")
+type = 3
+strength = 7
+duration = 3
+metadata/_custom_type_script = "uid://c5deti4sb2k2j"
 
-[sub_resource type="Resource" id="Resource_ryf8n"]
-script = ExtResource("10_7xu3g")
-current_hp = 180
-current_nrg = 60
-max_hp = 180
-max_nrg = 60
-attack = 15
-magic = 5
-defense = 12
-resistance = 8
-metadata/_custom_type_script = "uid://hxleldka7y06"
+[sub_resource type="Resource" id="Resource_cry_utility"]
+script = ExtResource("14_utility")
+effects = Array[ExtResource("15_effect")]([SubResource("Resource_cry_effect")])
+metadata/_custom_type_script = "uid://bvuw0uyc36uxx"
+
+[sub_resource type="Resource" id="Resource_7hvvo"]
+script = ExtResource("12_ability")
+name = "War Cry"
+energy_cost = 20
+cooldown = 4
+utilities = Array[ExtResource("14_utility")]([SubResource("Resource_cry_utility")])
+condition = SubResource("Resource_7fsos")
+metadata/_custom_type_script = "uid://b2o7w8q10stxo"
 
 [resource]
 script = ExtResource("9_77wwi")
 monster_id = 2
 gold = 20
 basic_attack = ExtResource("2_t544c")
-conditional_abilities = Array[ExtResource("4_yrisj")]([SubResource("Resource_sap3r"), SubResource("Resource_7hvvo")])
+conditional_abilities = Array[ExtResource("12_ability")]([SubResource("Resource_sap3r"), SubResource("Resource_7hvvo")])
 name = "Orc Cheiftain"
+max_hp = 180
+current_hp = 180
+max_nrg = 60
+current_nrg = 60
+attack = 15
+magic = 5
+defense = 12
+resistance = 8
 portrait = ExtResource("8_xqsrt")
-battle_visual = ExtResource("3_slxg0")
 world_visual = ExtResource("11_t544c")
-stat_block = SubResource("Resource_ryf8n")
+battle_visual = ExtResource("2_o5knh")
 metadata/_custom_type_script = "uid://bd6ohffno5w7r"

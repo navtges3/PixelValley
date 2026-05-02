@@ -5,6 +5,7 @@
 [ext_resource type="Theme" uid="uid://phfh7c5hwx1n" path="res://resources/ui/button_themes/regular/yellow_button.tres" id="2_u7xef"]
 [ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://resources/ui/button_themes/regular/green_button.tres" id="3_btxr8"]
 [ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://resources/ui/button_themes/regular/red_button.tres" id="4_4tgk3"]
+[ext_resource type="PackedScene" uid="uid://rs7udjvphx52" path="res://scenes/ui/windows/reward_window.tscn" id="6_fi7cj"]
 
 [node name="QuestScreen" type="Control" unique_id=2024311036]
 layout_mode = 3
@@ -78,7 +79,11 @@ size_flags_horizontal = 10
 theme = ExtResource("3_btxr8")
 text = "Complete Quest"
 
+[node name="RewardWindow" parent="." unique_id=1271341637 instance=ExtResource("6_fi7cj")]
+visible = false
+
 [connection signal="toggled" from="MarginContainer/PanelContainer/VBoxContainer/QuestTabs/AvailableButton" to="." method="_on_available_button_toggled"]
 [connection signal="toggled" from="MarginContainer/PanelContainer/VBoxContainer/QuestTabs/CompletedButton" to="." method="_on_completed_button_toggled"]
 [connection signal="pressed" from="MarginContainer/PanelContainer/VBoxContainer/BottomControls/BackButton" to="." method="_on_back_button_pressed"]
 [connection signal="pressed" from="MarginContainer/PanelContainer/VBoxContainer/BottomControls/TurnInButton" to="." method="_on_start_button_pressed"]
+[connection signal="rewards_collected" from="RewardWindow" to="." method="_on_rewards_collected"]

@@ -1,9 +1,0 @@
-[gd_resource type="Resource" script_class="BattleVisualData" format=3 uid="uid://v505fsseyxvh"]
-
-[ext_resource type="Script" uid="uid://c3t8kckce6hdk" path="res://scripts/characters/battle_visual_data.gd" id="1_3o6bu"]
-[ext_resource type="SpriteFrames" uid="uid://ck2mk7cedtckv" path="res://resources/characters/heroes/assassin/assassin_battle_sprite_frames.tres" id="1_qvx31"]
-
-[resource]
-script = ExtResource("1_3o6bu")
-frames = ExtResource("1_qvx31")
-metadata/_custom_type_script = "uid://c3t8kckce6hdk"

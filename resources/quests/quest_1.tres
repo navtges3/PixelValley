@@ -1,27 +1,26 @@
 [gd_resource type="Resource" script_class="Quest" format=3 uid="uid://drkcyni2tu7rv"]
 
-[ext_resource type="Script" uid="uid://bhsjswm1wnll8" path="res://scripts/quest/monster_requirement.gd" id="1_gm6gv"]
-[ext_resource type="Script" uid="uid://xekqra2mjp3l" path="res://scripts/quest/quest_reward.gd" id="3_ac10j"]
-[ext_resource type="Script" uid="uid://xhl8p6y5w5e6" path="res://scripts/quest/quest.gd" id="5_oknas"]
+[ext_resource type="Script" uid="uid://bhsjswm1wnll8" path="res://scripts/data/quest_objective.gd" id="1_yyq1p"]
+[ext_resource type="Script" uid="uid://xhl8p6y5w5e6" path="res://scripts/data/quest.gd" id="3_gm6gv"]
+[ext_resource type="Script" uid="uid://bra22kkvfpket" path="res://scripts/data/reward.gd" id="3_mwjs7"]
 
-[sub_resource type="Resource" id="Resource_f8h81"]
-script = ExtResource("1_gm6gv")
+[sub_resource type="Resource" id="Resource_mwjs7"]
+script = ExtResource("1_yyq1p")
 target_amount = 3
 location_id = "forest"
 metadata/_custom_type_script = "uid://bhsjswm1wnll8"
 
-[sub_resource type="Resource" id="Resource_g74nm"]
-script = ExtResource("3_ac10j")
-reward_type = 1
-amount = 50
-metadata/_custom_type_script = "uid://xekqra2mjp3l"
+[sub_resource type="Resource" id="Resource_yyq1p"]
+script = ExtResource("3_mwjs7")
+gold = 50
+metadata/_custom_type_script = "uid://bra22kkvfpket"
 
 [resource]
-script = ExtResource("5_oknas")
+script = ExtResource("3_gm6gv")
 title = "Clear the Path"
 id = 1
 description = "Goblins have been terrorizing travelers on the forest road. Drive them back."
-monster_objectives = Array[ExtResource("1_gm6gv")]([SubResource("Resource_f8h81")])
-reward = Array[ExtResource("3_ac10j")]([SubResource("Resource_g74nm")])
+objectives = Array[ExtResource("1_yyq1p")]([SubResource("Resource_mwjs7")])
+reward = SubResource("Resource_yyq1p")
 next_quests = Array[int]([2])
 metadata/_custom_type_script = "uid://xhl8p6y5w5e6"

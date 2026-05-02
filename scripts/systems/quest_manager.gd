@@ -1,18 +1,18 @@
 extends Resource
 class_name QuestManager
 
-const QUEST_LIST := [
-	preload("res://resources/quests/quest_1.tres"),
-	preload("res://resources/quests/quest_2.tres"),
-	preload("res://resources/quests/quest_3.tres"),
-	preload("res://resources/quests/quest_4.tres"),
-	preload("res://resources/quests/quest_5.tres"),
-	preload("res://resources/quests/quest_6.tres"),
-	preload("res://resources/quests/quest_7.tres"),
-	preload("res://resources/quests/quest_8.tres"),
-	preload("res://resources/quests/quest_9.tres"),
-	preload("res://resources/quests/quest_10.tres"),
-	preload("res://resources/quests/quest_11.tres"),
+const QUEST_PATHS := [
+	"res://resources/quests/quest_1.tres",
+	"res://resources/quests/quest_2.tres",
+	"res://resources/quests/quest_3.tres",
+	"res://resources/quests/quest_4.tres",
+	"res://resources/quests/quest_5.tres",
+	"res://resources/quests/quest_6.tres",
+	"res://resources/quests/quest_7.tres",
+	"res://resources/quests/quest_8.tres",
+	"res://resources/quests/quest_9.tres",
+	"res://resources/quests/quest_10.tres",
+	"res://resources/quests/quest_11.tres",
 ]
 
 const FIRST_QUEST_ID := 1
@@ -25,8 +25,9 @@ func new_game() -> void:
 	locked_quests = []
 	available_quests = []
 	completed_quests = []
-	for quest_res in QUEST_LIST:
-		locked_quests.append(quest_res.duplicate(true))
+	for path in QUEST_PATHS:
+		var quest := (load(path) as Quest).duplicate(true)
+		locked_quests.append(quest)
 	if locked_quests.size() > 0:
 		unlock_quest_by_id(FIRST_QUEST_ID)
 	_connect_signals()
@@ -44,40 +45,44 @@ func _on_monster_killed(monster_id: MonsterLoader.MonsterID, location_id: String
 			continue
 		quest.slay_monster(monster_id, location_id)
 
-func turn_in_quest(quest: Quest) -> void:
+func turn_in_quest(quest: Quest) -> Array[RewardEntry]:
 	if quest not in available_quests:
 		push_warning("QuestManager: quest '%s' not in available_quests" % quest.title)
-		return
+		return []
 	if not quest.all_objectives_met():
 		push_warning("QuestManager: quest '%s' objectives not met" % quest.title)
-		return
-	_apply_rewards(quest)
+		return []
+	var entries: Array[RewardEntry] = []
+	_apply_rewards(quest, entries)
 	_apply_location_unlocks(quest)
 	for next_id in quest.next_quests:
 		unlock_quest_by_id(next_id)
 	available_quests.erase(quest)
 	completed_quests.append(quest)
 	SaveManager.save_game()
+	return entries
 
-func _apply_rewards(quest: Quest) -> void:
-	for reward in quest.reward:
-		match reward.reward_type:
-			QuestReward.RewardType.ITEM:
-				GameState.hero.inventory.add_potion(reward.item, reward.amount)
-			QuestReward.RewardType.GOLD:
-				GameState.hero.inventory.gold += reward.amount
-			QuestReward.RewardType.EXPERIENCE:
-				GameState.hero.gain_experience(reward.amount)
-			QuestReward.RewardType.CLASS_WEAPON:
-				_apply_weapon_rewards(reward.weapon_rarity)
+func _apply_rewards(quest: Quest, entries: Array[RewardEntry]) -> void:
+	var hero := GameState.hero
+	hero.gain_experience(quest.reward.experience)
+	hero.inventory.gold += quest.reward.gold
+	entries.append(RewardEntry.experience(quest.reward.experience))
+	entries.append(RewardEntry.gold(quest.reward.gold))
+	for item_id in quest.reward.items:
+		hero.inventory.add_potion(item_id, 1)
+		entries.append(RewardEntry.potion(item_id, 1))
+	if quest.reward.random_weapon:
+		_apply_weapon_rewards(quest.reward.rarity, entries)
 
-func _apply_weapon_rewards(rarity: Item.Rarity) -> void:
-	var weapon = WeaponDatabase.get_random_unowned_weapon_for_class(GameState.hero.hero_class, rarity)
-	if weapon != null:
-		GameState.hero.inventory.add_weapon_to_stash(weapon)
+func _apply_weapon_rewards(rarity: Item.Rarity, entries: Array[RewardEntry]) -> void:
+	var weapon_id := WeaponDatabase.get_random_unowned_weapon_id_for_class(GameState.hero.hero_class, rarity)
+	if weapon_id != "":
+		GameState.hero.inventory.add_weapon_to_stash(weapon_id)
+		entries.append(RewardEntry.weapon(weapon_id))
 	else:
 		var gold := WeaponDatabase.get_gold_fallback_for_rarity(rarity)
 		GameState.hero.inventory.gold += gold
+		entries.append(RewardEntry.weapon_sold(weapon_id, gold))
 
 func _apply_location_unlocks(quest: Quest) -> void:
 	for location_id in quest.unlocks_locations:
@@ -93,7 +98,7 @@ func unlock_quest_by_id(quest_id: int) -> void:
 
 func _reset_spawners_for_quest(quest: Quest) -> void:
 	var locations_to_reset: Array[String] = []
-	for objective in quest.monster_objectives:
+	for objective in quest.objectives:
 		if objective.location_id != "" and objective.location_id not in locations_to_reset:
 			locations_to_reset.append(objective.location_id)
 	for location_id in locations_to_reset:

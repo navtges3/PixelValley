@@ -135,46 +135,43 @@ func _load_json(slot: int, filename: String) -> Dictionary:
 # ---------------------------------------------------------
 func _get_hero_data(hero: Hero) -> Dictionary:
 	return {
-		"hero_name": hero.name,
-		"portrait": hero.portrait.resource_path,
-		"battle_visual": hero.battle_visual.resource_path,
-		"world_visual": hero.world_visual.resource_path,
+		# Hero
 		"hero_class": hero.hero_class,
 		"level": hero.level,
 		"experience": hero.experience,
 		"skill_points": hero.skill_points,
 
+		# Combatant
+		"hero_name": hero.name,
+		"portrait": hero.portrait.resource_path,
+		"battle_visual": hero.battle_visual.resource_path,
+		"world_visual": hero.world_visual.resource_path,
+		"inventory": _get_inventory_data(hero.inventory),
 		"active_effects": _get_active_effects_data(hero),
-		"stat_block": _get_stat_block_data(hero.stat_block),
-		"inventory": _get_inventory_data(hero.inventory)
+		"stats": _get_stat_block_data(hero),
 	}
 
 func _load_hero(data: Dictionary) -> Hero:
 	var hero := Hero.new()
-
-	hero.name = data.get("hero_name", "Unnamed Hero")
-
-	var portrait_path = data.get("portrait", "")
-	if portrait_path != "":
-		hero.portrait = load(portrait_path)
-
-	var battle_visuals_path = data.get("battle_visual", "")
-	if battle_visuals_path != "":
-		hero.battle_visual = load(battle_visuals_path)
-
-	var world_visuals_path = data.get("world_visual", "")
-	if world_visuals_path != "":
-		hero.world_visual = load(world_visuals_path)
-
+	# Hero
 	hero.hero_class = data.get("hero_class", Hero.HeroClass.KNIGHT)
 	hero.level = data.get("level", 1)
 	hero.experience = data.get("experience", 0)
 	hero.skill_points = data.get("skill_points", 0)
-
-	hero.stat_block = _load_stat_block(data.get("stat_block", {}))
+	# Combatant
+	hero.name = data.get("hero_name", "Unnamed Hero")
+	var portrait_path = data.get("portrait", "")
+	if portrait_path != "":
+		hero.portrait = load(portrait_path)
+	var battle_visuals_path = data.get("battle_visual", "")
+	if battle_visuals_path != "":
+		hero.battle_visual = load(battle_visuals_path)
+	var world_visuals_path = data.get("world_visual", "")
+	if world_visuals_path != "":
+		hero.world_visual = load(world_visuals_path)
+	_load_stat_block(data.get("stats", {}), hero)
 	_load_active_effects(data.get("active_effects", []), hero)
 	hero.inventory = _load_inventory(data.get("inventory", {}))
-
 	return hero
 
 # ---------------------------------------------------------
@@ -204,51 +201,38 @@ func _load_active_effects(data: Array, combatant: Combatant) -> void:
 # ---------------------------------------------------------
 # STATS
 # ---------------------------------------------------------
-func _get_stat_block_data(stat_block: StatBlock) -> Dictionary:
+func _get_stat_block_data(combatant: Combatant) -> Dictionary:
 	return {
-		"current_hp": stat_block.current_hp,
-		"current_nrg": stat_block.current_nrg,
-		"max_hp": stat_block.max_hp,
-		"max_nrg": stat_block.max_nrg,
-		"attack": stat_block.attack,
-		"magic": stat_block.magic,
-		"defense": stat_block.defense,
-		"resistance": stat_block.resistance,
+		"current_hp": combatant.current_hp,
+		"current_nrg": combatant.current_nrg,
+		"max_hp": combatant.max_hp,
+		"max_nrg": combatant.max_nrg,
+		"attack": combatant.attack,
+		"magic": combatant.magic,
+		"defense": combatant.defense,
+		"resistance": combatant.resistance,
 	}
 
-func _load_stat_block(data: Dictionary) -> StatBlock:
-	var stat_block := StatBlock.new()
-	stat_block.current_hp = data.get("current_hp", 10)
-	stat_block.current_nrg = data.get("current_nrg", 5)
-	stat_block.max_hp = data.get("max_hp", 10)
-	stat_block.max_nrg = data.get("max_nrg", 5)
-	stat_block.attack = data.get("attack", 1)
-	stat_block.magic = data.get("magic", 1)
-	stat_block.defense = data.get("defense", 1)
-	stat_block.resistance = data.get("resistance", 1)
-	return stat_block
+func _load_stat_block(data: Dictionary, combatant: Combatant) -> void:
+	combatant.current_hp = data.get("current_hp", 10)
+	combatant.current_nrg = data.get("current_nrg", 5)
+	combatant.max_hp = data.get("max_hp", 10)
+	combatant.max_nrg = data.get("max_nrg", 5)
+	combatant.attack = data.get("attack", 1)
+	combatant.magic = data.get("magic", 1)
+	combatant.defense = data.get("defense", 1)
+	combatant.resistance = data.get("resistance", 1)
 
 # ---------------------------------------------------------
 # INVENTORY
 # ---------------------------------------------------------
 func _get_inventory_data(inventory: Inventory) -> Dictionary:
-	var data := {
+	return {
 		"gold": inventory.gold,
 		"equipped_weapon": ItemLoader.get_item_id(inventory.equipped_weapon),
-		"weapon_stash": [],
-		"potions": []
+		"weapon_stash": inventory.weapon_stash.duplicate(),
+		"potions": inventory.potions.duplicate()
 	}
-
-	for weapon in inventory.weapon_stash:
-		data["weapon_stash"].append(ItemLoader.get_item_id(weapon))
-
-	for item_stack in inventory.potions:
-		data["potions"].append({
-			"item_id": ItemLoader.get_item_id(item_stack.item),
-			"count": item_stack.count
-		})
-
-	return data
 
 func _load_inventory(data: Dictionary) -> Inventory:
 	var inv := Inventory.new()
@@ -261,30 +245,26 @@ func _load_inventory(data: Dictionary) -> Inventory:
 			inv.equipped_weapon = weapon
 
 	for wid in data.get("weapon_stash", []):
-		var weapon = ItemLoader.get_item(wid)
-		if weapon is Weapon:
-			inv.weapon_stash.append(weapon)
+		var resolved := _resolve_item_id(wid)
+		if resolved != "" and ItemLoader.has_item(resolved):
+			inv.weapon_stash.append(resolved)
+		else:
+			push_warning("SaveManager: unknown stash weapon '%s', skipping" % wid)
 
-	for item_data in data.get("potions", []):
-		var item: Item = null
-		if item_data.has("item_id"):
-			item = ItemLoader.get_item(item_data["item_id"])
-		elif item_data.has("potion_path"):
-			# Migration path for existing saves
-			var path: String = item_data["potion_path"]
-			var id := _path_to_item_id(path)
-			item = ItemLoader.get_item(id) if id != "" else load(path)
-		if item is Potion:
-			inv.potions.append(ItemStack.new(item, item_data.get("count", 1)))
+	for item_id in data.get("potions", {}):
+		var resolved := _resolve_item_id(item_id)
+		if resolved != "" and ItemLoader.has_item(resolved):
+			inv.potions[resolved] = data["potions"][item_id]
+		else:
+			push_warning("SaveManager: unknown potion '%s', skipping" % item_id)
 
 	return inv
 
-	# Migration helper — maps old resource paths to new IDs
-func _path_to_item_id(path: String) -> String:
-	var filename := path.get_file().get_basename()  # e.g. "lesser_healing_potion"
-	if ItemLoader.has_item(filename):
-		return filename
-	return ""
+# Consolidates the old migration path used in multiple places
+func _resolve_item_id(id: String) -> String:
+	if id.begins_with("res://"):
+		return id.get_file().get_basename()
+	return id
 
 # ---------------------------------------------------------
 # VILLAGE
@@ -307,34 +287,24 @@ func _load_village(data: Dictionary) -> Village:
 # SHOP
 # ---------------------------------------------------------
 func _get_shop_data(shop: Shop) -> Dictionary:
-	var data := {
+	return {
 		"name": shop.name,
-		"inventory": []
+		"inventory": shop.inventory.duplicate()
 	}
-
-	for item_stack in shop.inventory:
-		data["inventory"].append({
-			"item_id": ItemLoader.get_item_id(item_stack.item),
-			"count": item_stack.count
-		})
-
-	return data
 
 func _load_shop(data: Dictionary) -> Shop:
 	var shop := Shop.new()
 	shop.name = data.get("name", "Unnamed Shop")
 
-	for item_data in data.get("inventory", []):
-		var item: Item = null
-		if item_data.has("item_id"):
-			item = ItemLoader.get_item(item_data["item_id"])
-		elif item_data.has("item_path"):
-			var path = item_data.get("item_path", "")
-			var id := _path_to_item_id(path)
-			item = ItemLoader.get_item(id)
-		if item:
-			shop.add_item(item, item_data.get("count", 1))
-
+	var inv: Dictionary = data.get("inventory", {})
+	for item_id in inv:
+		var resolved_id = item_id
+		if (item_id as String).begins_with("res://"):
+			resolved_id = (item_id as String).get_file().get_basename()
+		if ItemLoader.has_item(resolved_id):
+			shop.inventory[resolved_id] = inv[item_id]
+		else:
+			push_warning("SaveManager: unknown shop item '%s', skipping" % item_id)
 	return shop
 
 # ---------------------------------------------------------
@@ -393,31 +363,25 @@ func _get_quest_data(quest: Quest) -> Dictionary:
 		"next_quests": quest.next_quests.duplicate(),
 		"completed": quest.completed,
 		"unlocks_locations": quest.unlocks_locations.duplicate(),
-		"monster_objectives": [],
+		"objectives": [],
 		"rewards": [],
 	}
-	# monster_objectives
-	for obj in quest.monster_objectives:
-		data["monster_objectives"].append({
+	# objectives
+	for obj in quest.objectives:
+		data["objectives"].append({
 			"monster_id": obj.monster_id,
 			"target_amount": obj.target_amount,
 			"current_amount": obj.current_amount,
 			"location_id": obj.location_id
 		})
-	# rewards
-	for reward in quest.reward:
-		var reward_data := {
-			"reward_type": reward.reward_type,
-		}
-		match reward.reward_type:
-			QuestReward.RewardType.ITEM:
-				reward_data["item_path"] = reward.item.resource_path
-				reward_data["amount"] = reward.amount
-			QuestReward.RewardType.GOLD, QuestReward.RewardType.EXPERIENCE:
-				reward_data["amount"] = reward.amount
-			QuestReward.RewardType.CLASS_WEAPON:
-				reward_data["weapon_rarity"] = reward.weapon_rarity
-		data["rewards"].append(reward_data)
+	# reward
+	data["reward"] = {
+		"experience": quest.reward.experience,
+		"gold": quest.reward.gold,
+		"items": quest.reward.items.duplicate(),
+		"random_weapon": quest.reward.random_weapon,
+		"rarity": quest.reward.rarity
+	}
 	return data
 
 func _load_quest(data: Dictionary) -> Quest:
@@ -431,25 +395,22 @@ func _load_quest(data: Dictionary) -> Quest:
 	quest.next_quests.assign(raw_next)
 	var raw_unlocks: Array = data.get("unlocks_locations", [])
 	quest.unlocks_locations.assign(raw_unlocks)
-	# monster_objectives
-	for obj_data in data.get("monster_objectives", []):
-		var obj := MonsterRequirement.new()
+	# objectives
+	for obj_data in data.get("objectives", []):
+		var obj := QuestObjective.new()
 		obj.monster_id = obj_data.get("monster_id", MonsterLoader.MonsterID.GOBLIN)
 		obj.target_amount = obj_data.get("target_amount", 1)
 		obj.current_amount = obj_data.get("current_amount", 0)
 		obj.location_id = obj_data.get("location_id", "")
-		quest.monster_objectives.append(obj)
-	# rewards
-	for reward_data in data.get("rewards", []):
-		var reward := QuestReward.new()
-		reward.reward_type = reward_data.get("reward_type", QuestReward.RewardType.ITEM)
-		match reward.reward_type:
-			QuestReward.RewardType.ITEM:
-				reward.item = load(reward_data.get("item_path", ""))
-				reward.amount = reward_data.get("amount", 1)
-			QuestReward.RewardType.GOLD, QuestReward.RewardType.EXPERIENCE:
-				reward.amount = reward_data.get("amount", 1)
-			QuestReward.RewardType.CLASS_WEAPON:
-				reward.weapon_rarity = reward_data.get("weapon_rarity", Item.Rarity.COMMON)
-		quest.reward.append(reward)
+		quest.objectives.append(obj)
+	# reward
+	var reward_data = data.get("reward", {})
+	var reward := Reward.new()
+	reward.experience = reward_data.get("experience", 0)
+	reward.gold = reward_data.get("gold", 0)
+	var items: Array = reward_data.get("items", [])
+	reward.items.assign(items)
+	reward.random_weapon = reward_data.get("random_weapon", false)
+	reward.rarity = reward_data.get("rarity", Item.Rarity.COMMON)
+	quest.reward = reward
 	return quest

@@ -12,7 +12,7 @@ var state = BattleState.PLAYER_TURN
 signal new_monster(monster_ref: Monster)
 signal player_turn()
 signal monster_turn()
-signal battle_won()
+signal battle_won(entries: Array)
 signal hero_defeated()
 
 # UI updates
@@ -26,21 +26,15 @@ signal hero_hurt()
 signal monster_attacking()
 signal monster_hurt()
 
-func setup_battle(config: BattleConfig) -> void:
-	hero = config.hero
-	spawn_point_id = config.spawn_point_id
-	location_id = config.location_id
-
-	var m: Monster = config.monster_override if config.monster_override \
-		else MonsterLoader.new_monster(config.monster_id)
-	if m == null:
-		push_error("BattleManager: could not load monster for monster_id '%s'" % config.monster_id)
-		return
-
-	monster = m
+func setup_battle(config: Dictionary) -> void:
+	hero = config.get("hero")
+	spawn_point_id = config.get("spawn_point_id", "")
+	location_id = config.get("location_id", "")
+	var monster_id: MonsterLoader.MonsterID = config.get("monster_id", MonsterLoader.MonsterID.GOBLIN)
+	monster = MonsterLoader.new_monster(monster_id)
 	hero_updated.emit(hero)
 	new_monster.emit(monster)
-	battle_log_updated.emit("A wild %s appears!\n" % monster.get_colored_name())
+	battle_log_updated.emit("A %s aproaches!\n" % monster.get_colored_name())
 	monster_updated.emit(monster)
 	start_player_turn()
 
@@ -64,13 +58,13 @@ func player_ability_selected(ability: Ability) -> void:
 		hero_updated.emit(hero)
 		end_player_turn()
 
-func get_hero_items() -> Array[ItemStack]:
+func get_hero_items() -> Dictionary:
 	return hero.inventory.potions
 
-func player_item_selected(item_stack: ItemStack) -> void:
+func player_item_selected(item_id: String) -> void:
 	if state != BattleState.PLAYER_TURN:
 		return
-	var result := hero.use_item(item_stack)
+	var result := hero.use_item(item_id)
 	battle_log_updated.emit(result)
 	hero_updated.emit(hero)
 	end_player_turn()
@@ -103,13 +97,33 @@ func end_player_turn() -> void:
 
 func _on_monster_killed() -> void:
 	var experience := monster.calculate_experience()
-	battle_log_updated.emit("%s defeated %s!\n" % [hero.get_colored_name(), monster.get_colored_name()])
-	battle_log_updated.emit("%s gains %d experience and %d gold.\n" % [hero.get_colored_name(), experience, monster.gold])
-	hero.inventory.gold += monster.gold
+	var gold := monster.calculate_gold()
+	var loot := monster.roll_loot(hero.hero_class)
+	var entries: Array[RewardEntry] = []
+	entries.append(RewardEntry.experience(experience))
+	entries.append(RewardEntry.gold(gold))
 	hero.gain_experience(experience)
+	hero.inventory.gold += gold
+	_collect_loot(loot, entries)
 	hero_updated.emit(hero)
 	GameState.monster_killed.emit(monster.monster_id, location_id)
 	end_battle(true)
+
+func _collect_loot(loot: Dictionary, entries: Array[RewardEntry]) -> void:
+	for item_id in loot.get("potions", {}):
+		var count: int = loot["potions"][item_id]
+		hero.inventory.add_potion(item_id, count)
+		entries.append(RewardEntry.potion(item_id, count))
+	var weapon_id: String = loot.get("weapon_id", "")
+	if weapon_id != "":
+		if hero.inventory.has_weapon_in_stash(weapon_id):
+			var weapon := ItemLoader.get_item(weapon_id) as Weapon
+			var sold_gold := weapon.value if weapon else 0
+			hero.inventory.gold += sold_gold
+			entries.append(RewardEntry.weapon_sold(weapon_id, sold_gold))
+		else:
+			hero.inventory.add_weapon_to_stash(weapon_id)
+			entries.append(RewardEntry.weapon(weapon_id))
 
 func enemy_turn() -> void:
 	battle_log_updated.emit("Enemy turn...\n")
@@ -131,13 +145,12 @@ func end_enemy_turn() -> void:
 	else:
 		end_battle(false)
 
-func end_battle(player_won: bool) -> void:
+func end_battle(player_won: bool, entries: Array[RewardEntry] = []) -> void:
 	state = BattleState.VICTORY if player_won else BattleState.DEFEAT
-	battle_log_updated.emit("%s wins!\n" % hero.get_colored_name() if player_won else "%s loses!\n" % hero.get_colored_name())
 	if player_won:
 		if spawn_point_id != "":
 			WorldManager.mark_spawner_defeated(location_id, spawn_point_id)
-		battle_won.emit()
+		battle_won.emit(entries)
 	else:
 		hero_defeated.emit()
 

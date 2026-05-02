@@ -7,6 +7,7 @@ const BATTLE_CHARACTER = preload("res://scenes/ui/components/battle_character.ts
 @onready var battle_manager = $BattleManager
 
 @onready var battle_log: RichTextLabel = $MarginContainer/BattleLog
+@onready var reward_window: Window = $RewardWindow
 
 # Monster Info
 @onready var monster_health_bar: ProgressBar = $MarginContainer/VBoxContainer/MonsterHealthBar
@@ -21,24 +22,24 @@ const BATTLE_CHARACTER = preload("res://scenes/ui/components/battle_character.ts
 @onready var flee_button: Button = $MarginContainer/ActionPanel/ActionArea/LeftPanel/FleeButton
 @onready var option_list: VBoxContainer = $MarginContainer/ActionPanel/ActionArea/MiddlePanel/OptionList
 
-var battle_config: BattleConfig
 var hero_visual: BattleCharacter
 var monster_visual: BattleCharacter
+var battle_config: Dictionary = {}
 
 func _ready() -> void:
 	_empty_option_list()
 
-func setup(config: BattleConfig) -> void:
+func setup(config: Dictionary) -> void:
 	battle_config = config
 	_spawn_hero()
-	battle_manager.setup_battle(battle_config)
+	battle_manager.setup_battle(config)
 
 # --- Hero ---
 func _spawn_hero() -> void:
 	hero_info.hero = battle_config.hero
 	hero_visual = BATTLE_CHARACTER.instantiate()
 	$HeroSlot.add_child(hero_visual)
-	hero_visual.apply_visual(battle_config.hero.battle_visual)
+	hero_visual.apply_visual(battle_config.hero)
 
 func _on_hero_updated(_hero_ref: Hero) -> void:
 	hero_info.refresh()
@@ -61,11 +62,11 @@ func _spawn_monster(monster_ref: Monster) -> void:
 		child.queue_free()
 	monster_visual = BATTLE_CHARACTER.instantiate()
 	$MonsterSlot.add_child(monster_visual)
-	monster_visual.apply_visual(monster_ref.battle_visual, true)
+	monster_visual.apply_visual(monster_ref, true)
 
 func _on_monster_updated(monster_ref: Monster) -> void:
-	var value = monster_ref.stat_block.current_hp
-	var max_value = monster_ref.stat_block.max_hp
+	var value = monster_ref.current_hp
+	var max_value = monster_ref.max_hp
 	monster_health_bar.max_value = max_value
 	monster_health_bar.value = value
 	monster_health_bar_label.text = "%d / %d" % [value, max_value]
@@ -98,8 +99,9 @@ func _on_item_button_toggled(button_pressed: bool):
 		ability_button.button_pressed = false
 		option_list.visible = true
 		_empty_option_list()
-		for item_stack: ItemStack in battle_manager.get_hero_items():
-			var btn = _create_item_button(item_stack)
+		for item_id in battle_manager.get_hero_items():
+			var count: int = battle_manager.get_hero_items()[item_id]
+			var btn = _create_item_button(item_id, count)
 			option_list.add_child(btn)
 	else:
 		option_list.visible = false
@@ -132,7 +134,10 @@ func _on_monster_turn():
 	flee_button.disabled = true
 
 # --- End-of-battle ---
-func _on_battle_won() -> void:
+func _on_battle_won(entries: Array) -> void:
+	reward_window.show_rewards("Victory!", entries)
+
+func _on_rewards_collected() -> void:
 	ScreenManager.go_back()
 
 func _on_hero_defeated():
@@ -148,18 +153,18 @@ func _on_ability_button_pressed(ability: Ability) -> void:
 func _create_ability_button(ability: Ability) -> Button:
 	var button := ABILITY_BUTTON.instantiate()
 	button.ability = ability
-	button.user_energy = battle_manager.hero.stat_block.current_nrg
+	button.user_energy = battle_manager.hero.current_nrg
 	button.connect("ability_pressed", Callable(self, "_on_ability_button_pressed"))
 	return button
 
-func _on_item_button_pressed(item_stack: ItemStack) -> void:
-	print("Item pressed: ", item_stack.item.name)
-	battle_manager.player_item_selected(item_stack)
+func _on_item_button_pressed(item_id: String) -> void:
+	battle_manager.player_item_selected(item_id)
 	item_button.button_pressed = false
 
-func _create_item_button(item_stack: ItemStack) -> Button:
+func _create_item_button(item_id: String, count: int) -> Button:
 	var button := ITEM_BUTTON.instantiate()
-	button.item_stack = item_stack
+	button.item_id = item_id
+	button.count = count
 	button.connect("item_pressed", Callable(self, "_on_item_button_pressed"))
 	return button
 

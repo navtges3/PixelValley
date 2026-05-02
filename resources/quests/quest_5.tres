@@ -1,28 +1,27 @@
 [gd_resource type="Resource" script_class="Quest" format=3 uid="uid://cfioyf3fh0iux"]
 
-[ext_resource type="Script" uid="uid://bhsjswm1wnll8" path="res://scripts/quest/monster_requirement.gd" id="1_sp1ti"]
-[ext_resource type="Script" uid="uid://xekqra2mjp3l" path="res://scripts/quest/quest_reward.gd" id="4_n4lo1"]
-[ext_resource type="Script" uid="uid://xhl8p6y5w5e6" path="res://scripts/quest/quest.gd" id="9_xpbrd"]
+[ext_resource type="Script" uid="uid://bhsjswm1wnll8" path="res://scripts/data/quest_objective.gd" id="1_ijq32"]
+[ext_resource type="Script" uid="uid://bra22kkvfpket" path="res://scripts/data/reward.gd" id="3_71rn4"]
+[ext_resource type="Script" uid="uid://xhl8p6y5w5e6" path="res://scripts/data/quest.gd" id="3_gl651"]
 
-[sub_resource type="Resource" id="Resource_f8h81"]
-script = ExtResource("1_sp1ti")
+[sub_resource type="Resource" id="Resource_71rn4"]
+script = ExtResource("1_ijq32")
 monster_id = 1
 target_amount = 5
 location_id = "war_camp"
 metadata/_custom_type_script = "uid://bhsjswm1wnll8"
 
-[sub_resource type="Resource" id="Resource_g74nm"]
-script = ExtResource("4_n4lo1")
-reward_type = 1
-amount = 50
-metadata/_custom_type_script = "uid://xekqra2mjp3l"
+[sub_resource type="Resource" id="Resource_ijq32"]
+script = ExtResource("3_71rn4")
+gold = 200
+metadata/_custom_type_script = "uid://bra22kkvfpket"
 
 [resource]
-script = ExtResource("9_xpbrd")
+script = ExtResource("3_gl651")
 title = "Crush the Warband"
 id = 5
 description = "The Orc warband must be broken. Leave no soldier standing."
-monster_objectives = Array[ExtResource("1_sp1ti")]([SubResource("Resource_f8h81")])
-reward = Array[ExtResource("4_n4lo1")]([SubResource("Resource_g74nm")])
+objectives = Array[ExtResource("1_ijq32")]([SubResource("Resource_71rn4")])
+reward = SubResource("Resource_ijq32")
 next_quests = Array[int]([6])
 metadata/_custom_type_script = "uid://xhl8p6y5w5e6"

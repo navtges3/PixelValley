@@ -33,12 +33,13 @@ func load_monsters():
 		monster_dropdown.add_item(MonsterLoader.get_monster_name(i))
 
 func _on_start_battle_pressed() -> void:
-	var config := BattleConfig.new()
-	config.monster_id = monster_resources[monster_dropdown.get_selected_id()]
-	config.hero = hero_resources[hero_dropdown.get_selected_id()].duplicate()
-	GameState.hero = config.hero
-	print("Hero selected: ", GameState.hero.name)
-	ScreenManager.go_to_screen(ScreenManager.ScreenName.BATTLE, "", config)
+	GameState.hero = hero_resources[hero_dropdown.get_selected_id()].duplicate()
+	ScreenManager.go_to_screen(ScreenManager.ScreenName.BATTLE, "", {
+		"hero": GameState.hero,
+		"monster_id": monster_resources[monster_dropdown.get_selected_id()],
+		"spawn_point_id": "",
+		"location_id": ""
+	})
 
 func _on_back_button_pressed() -> void:
 	get_tree().quit()
