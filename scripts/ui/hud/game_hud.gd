@@ -41,8 +41,11 @@ const COLOR_TAB_INACTIVE := Color(0.55, 0.50, 0.42, 1.0)
 const COLOR_TAB_BG_ACTIVE   := Color(0.22, 0.18, 0.14, 1.0)
 const COLOR_TAB_BG_INACTIVE := Color(0.12, 0.10, 0.08, 0.85)
 
+signal hud_closed
+
 func _ready() -> void:
 	_build_tab_buttons()
+	hide_hud()
 
 func is_open() -> bool:
 	return _is_open
@@ -55,6 +58,7 @@ func show_hud(start_tab: Tab = _current_tab) -> void:
 func hide_hud() -> void:
 	_is_open = false
 	visible = false
+	hud_closed.emit()
 
 func switch_tab(tab: Tab) -> void:
 	_current_tab = tab

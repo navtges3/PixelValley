@@ -11,7 +11,6 @@ script = ExtResource("1_worldh")
 
 [node name="GameHud" parent="." unique_id=956269644 instance=ExtResource("2_iek5v")]
 layer = 20
-visible = false
 
 [node name="HeroHUD" parent="." unique_id=1370001325 instance=ExtResource("2_heroh")]
 offset_left = 8.0
