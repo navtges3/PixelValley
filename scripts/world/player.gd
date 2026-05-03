@@ -7,8 +7,14 @@ const SPEED := 120.0
 
 var last_direction := Vector2.DOWN
 var _zone_cooldown := false
+var movement_blocked := false
 
 func _physics_process(_delta: float) -> void:
+	if movement_blocked:
+		velocity = Vector2.ZERO
+		move_and_slide()
+		return
+
 	var input := Vector2(
 		Input.get_axis("ui_left", "ui_right"),
 		Input.get_axis("ui_up", "ui_down")

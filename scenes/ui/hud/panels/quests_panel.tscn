@@ -1,0 +1,47 @@
+[gd_scene format=3 uid="uid://cw2srj46vgqyq"]
+
+[ext_resource type="Script" uid="uid://sk6youophdor" path="res://scripts/ui/hud/panels/quests_panel.gd" id="1_p8nos"]
+
+[node name="QuestsPanel" type="Control" unique_id=713236950]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_p8nos")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="." unique_id=1503795558]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+horizontal_scroll_mode = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer" unique_id=342475682]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="ActiveHeader" type="Label" parent="ScrollContainer/VBoxContainer" unique_id=711185992]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.92, 0.8, 1)
+theme_override_font_sizes/font_size = 14
+text = "Active Quests"
+
+[node name="ActiveList" type="VBoxContainer" parent="ScrollContainer/VBoxContainer" unique_id=501095510]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="HSeparator" type="HSeparator" parent="ScrollContainer/VBoxContainer" unique_id=1159161761]
+layout_mode = 2
+
+[node name="CompletedHeader" type="Label" parent="ScrollContainer/VBoxContainer" unique_id=839729027]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.25, 0.85, 0.35, 1)
+theme_override_font_sizes/font_size = 14
+text = "Copmleted Quests"
+
+[node name="CompletedList" type="VBoxContainer" parent="ScrollContainer/VBoxContainer" unique_id=284471394]
+layout_mode = 2

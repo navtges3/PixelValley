@@ -24,6 +24,7 @@ func buy_item(amount: int = 1) -> void:
 	if not can_buy_selected(amount):
 		return
 	var item := ItemLoader.get_item(selected_item_id)
+	hero.inventory.gold -= item.value * amount
 	if item is Potion:
 		hero.inventory.add_potion(selected_item_id, amount)
 	if item is Weapon:

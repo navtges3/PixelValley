@@ -1,0 +1,152 @@
+[gd_scene format=3 uid="uid://cg6a2qtqguwoy"]
+
+[ext_resource type="Script" uid="uid://bswfa2erovrs" path="res://scripts/ui/hud/panels/stats_panel.gd" id="1_wo8ka"]
+
+[node name="StatsPanel" type="Control" unique_id=1483468948]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_wo8ka")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="." unique_id=845703142]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+horizontal_scroll_mode = 0
+
+[node name="VBox" type="VBoxContainer" parent="ScrollContainer" unique_id=825937047]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 8
+
+[node name="NameRow" type="HBoxContainer" parent="ScrollContainer/VBox" unique_id=2089750966]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="NameLabel" type="Label" parent="ScrollContainer/VBox/NameRow" unique_id=2037315840]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 8
+theme_override_colors/font_color = Color(0.95, 0.92, 0.8, 1)
+theme_override_font_sizes/font_size = 18
+text = "Name"
+
+[node name="ClassLabel" type="Label" parent="ScrollContainer/VBox/NameRow" unique_id=1184391804]
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_colors/font_color = Color(0.72, 0.67, 0.57, 1)
+theme_override_font_sizes/font_size = 12
+text = "Class"
+
+[node name="LevelRow" type="HBoxContainer" parent="ScrollContainer/VBox" unique_id=1858417526]
+layout_mode = 2
+
+[node name="LevelLabel" type="Label" parent="ScrollContainer/VBox/LevelRow" unique_id=1301474713]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.95, 0.92, 0.8, 1)
+theme_override_font_sizes/font_size = 13
+text = "Level"
+
+[node name="SkillLabel" type="Label" parent="ScrollContainer/VBox/LevelRow" unique_id=1149914863]
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_colors/font_color = Color(0.95, 0.8, 0.25, 1)
+theme_override_font_sizes/font_size = 12
+text = "Skill"
+
+[node name="HPBar" type="ProgressBar" parent="ScrollContainer/VBox" unique_id=1625532358]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+show_percentage = false
+
+[node name="HPLabel" type="Label" parent="ScrollContainer/VBox/HPBar" unique_id=725217005]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "x / x HP"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="NRGBar" type="ProgressBar" parent="ScrollContainer/VBox" unique_id=1725134982]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+show_percentage = false
+
+[node name="NRGLabel" type="Label" parent="ScrollContainer/VBox/NRGBar" unique_id=1134750647]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "x / x NRG"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="XPBar" type="ProgressBar" parent="ScrollContainer/VBox" unique_id=1040610888]
+custom_minimum_size = Vector2(0, 14)
+layout_mode = 2
+show_percentage = false
+
+[node name="XPLabel" type="Label" parent="ScrollContainer/VBox/XPBar" unique_id=2088960144]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "x / x XP"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="ScrollContainer/VBox" unique_id=754311699]
+layout_mode = 2
+
+[node name="StatsGrid" type="GridContainer" parent="ScrollContainer/VBox" unique_id=480061373]
+layout_mode = 2
+theme_override_constants/h_separation = 24
+theme_override_constants/v_separation = 6
+columns = 2
+
+[node name="AttackLabel" type="Label" parent="ScrollContainer/VBox/StatsGrid" unique_id=632458035]
+layout_mode = 2
+text = "⚔ Attack: X"
+
+[node name="MagicLabel" type="Label" parent="ScrollContainer/VBox/StatsGrid" unique_id=1797053529]
+layout_mode = 2
+text = "✦ Magic: X"
+
+[node name="DefenseLabel" type="Label" parent="ScrollContainer/VBox/StatsGrid" unique_id=1605199381]
+layout_mode = 2
+text = "🛡 Defense: X"
+
+[node name="ResistLabel" type="Label" parent="ScrollContainer/VBox/StatsGrid" unique_id=142899259]
+layout_mode = 2
+text = "◈ Resist: X"
+
+[node name="GoldLabel" type="Label" parent="ScrollContainer/VBox/StatsGrid" unique_id=1858967257]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.8, 0.25, 1)
+text = "⬡ Gold: X"
+
+[node name="HSeparator2" type="HSeparator" parent="ScrollContainer/VBox" unique_id=1020973529]
+layout_mode = 2
+
+[node name="EffectsContainer" type="VBoxContainer" parent="ScrollContainer/VBox" unique_id=758573441]
+layout_mode = 2
+
+[node name="EffectsHeader" type="Label" parent="ScrollContainer/VBox/EffectsContainer" unique_id=1854491636]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.92, 0.8, 1)
+theme_override_font_sizes/font_size = 12
+text = "Active Effects"

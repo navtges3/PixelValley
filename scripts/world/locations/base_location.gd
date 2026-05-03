@@ -1,9 +1,6 @@
 extends Node2D
 class_name BaseLocation
 
-const WORLD_HUD = preload("res://scenes/ui/hud/world_hud.tscn")
-
-@onready var pause_window: Window = $PauseWindow
 @onready var player: Player = $Player
 
 var _pending_entraince_id: String = ""
@@ -19,7 +16,10 @@ func _ready() -> void:
 		place_player_at_entrance(_pending_entraince_id)
 	else:
 		GameState.set_player_location(_get_screen_name(), "")
-	add_child(WORLD_HUD.instantiate())
+		
+	var world_hud := ScreenManager.get_world_hud() as WorldHUD
+	if world_hud != null:
+		world_hud.game_hud.hud_closed.connect(_on_hud_closed)
 	_on_location_ready()
 
 # Override in subclasses for extra setup (e.g. spawn points, extra signals)
@@ -52,5 +52,28 @@ func place_player_at_entrance(entrance_id: String) -> void:
 	push_warning("Entrance not found: ", entrance_id)
 
 func _input(event: InputEvent) -> void:
-	if event.is_action_pressed("ui_cancel") and not pause_window.is_visible():
-		pause_window.popup_centered()
+	var world_hud := ScreenManager.get_world_hud() as WorldHUD
+	if world_hud == null:
+		return
+	var game_hud: GameHUD = world_hud.game_hud
+	if event.is_action_pressed("ui_cancel"):
+		if game_hud.is_open():
+			_close_hud(game_hud)
+		else:
+			_open_hud(game_hud, GameHUD.Tab.SYSTEM)
+	elif event.is_action_pressed("open_hud"):
+		if game_hud.is_open():
+			_close_hud(game_hud)
+		else:
+			_open_hud(game_hud)
+
+func _open_hud(game_hud: GameHUD, tab: GameHUD.Tab = GameHUD.Tab.STATS) -> void:
+	player.movement_blocked = true
+	game_hud.show_hud(tab)
+
+func _close_hud(game_hud: GameHUD) -> void:
+	game_hud.hide_hud()
+	player.movement_blocked = false
+
+func _on_hud_closed() -> void:
+	player.movement_blocked = false

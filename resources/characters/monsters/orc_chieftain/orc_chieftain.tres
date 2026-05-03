@@ -63,9 +63,9 @@ metadata/_custom_type_script = "uid://b2o7w8q10stxo"
 [resource]
 script = ExtResource("9_77wwi")
 monster_id = 2
-gold = 20
 basic_attack = ExtResource("2_t544c")
 conditional_abilities = Array[ExtResource("12_ability")]([SubResource("Resource_sap3r"), SubResource("Resource_7hvvo")])
+gold = 20
 name = "Orc Cheiftain"
 max_hp = 180
 current_hp = 180
