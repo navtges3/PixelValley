@@ -107,7 +107,9 @@ func _change_scene(path: String, entrance_id: String = "", data = null) -> void:
 		scene.place_player_at_entrance(entrance_id)
 
 	if _current_screen_name in WORLD_SCREENS:
-		_world_hud.show()
+		_world_hud.show_all()
+	else:
+		_world_hud.hide_all()
 
 	await get_tree().process_frame
 	await _fade(0.0)

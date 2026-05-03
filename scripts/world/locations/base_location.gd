@@ -1,7 +1,6 @@
 extends Node2D
 class_name BaseLocation
 
-@onready var pause_window: Window = $PauseWindow
 @onready var player: Player = $Player
 
 var _pending_entraince_id: String = ""
@@ -49,5 +48,17 @@ func place_player_at_entrance(entrance_id: String) -> void:
 	push_warning("Entrance not found: ", entrance_id)
 
 func _input(event: InputEvent) -> void:
-	if event.is_action_pressed("ui_cancel") and not pause_window.is_visible():
-		pause_window.popup_centered()
+	var world_hud := ScreenManager.get_world_hud() as WorldHUD
+	if world_hud == null:
+		return
+	var game_hud: GameHUD = world_hud.game_hud
+	if event.is_action_pressed("ui_cancel"):
+		if game_hud.is_open():
+			game_hud.hide_hud()
+		else:
+			game_hud.show_hud(GameHUD.Tab.SYSTEM)
+	elif event.is_action_pressed("open_hud"):
+		if game_hud.is_open():
+			game_hud.hide_hud()
+		else:
+			game_hud.show_hud()
