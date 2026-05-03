@@ -1,0 +1,61 @@
+[gd_scene format=3 uid="uid://brfqhf60i2qju"]
+
+[ext_resource type="Script" uid="uid://ca0qhvatb1wnh" path="res://scripts/ui/hud/panels/inventory_panel.gd" id="1_2f6ty"]
+
+[node name="InventoryPanel" type="Control" unique_id=1848494753]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_2f6ty")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="." unique_id=2137971146]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+horizontal_scroll_mode = 0
+
+[node name="VBox" type="VBoxContainer" parent="ScrollContainer" unique_id=604677432]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="PotionsSection" type="VBoxContainer" parent="ScrollContainer/VBox" unique_id=130522284]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="PotionsHeader" type="Label" parent="ScrollContainer/VBox/PotionsSection" unique_id=1842235871]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.92, 0.8, 1)
+theme_override_font_sizes/font_size = 14
+text = "Potions"
+
+[node name="PotionsList" type="VBoxContainer" parent="ScrollContainer/VBox/PotionsSection" unique_id=71047638]
+layout_mode = 2
+theme_override_constants/separation = 3
+
+[node name="HSeparator" type="HSeparator" parent="ScrollContainer/VBox" unique_id=705265213]
+layout_mode = 2
+
+[node name="WeaponsSection" type="VBoxContainer" parent="ScrollContainer/VBox" unique_id=1637696894]
+layout_mode = 2
+
+[node name="WeaponsHeader" type="Label" parent="ScrollContainer/VBox/WeaponsSection" unique_id=656440990]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.92, 0.8, 1)
+theme_override_font_sizes/font_size = 14
+text = "Weapons"
+
+[node name="EquippedLabel" type="Label" parent="ScrollContainer/VBox/WeaponsSection" unique_id=47526459]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.3, 0.9, 0.45, 1)
+theme_override_font_sizes/font_size = 14
+text = "Equipped"
+
+[node name="WeaponsList" type="VBoxContainer" parent="ScrollContainer/VBox/WeaponsSection" unique_id=368860737]
+layout_mode = 2
+theme_override_constants/separation = 3

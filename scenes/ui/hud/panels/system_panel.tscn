@@ -1,0 +1,63 @@
+[gd_scene format=3 uid="uid://cfkpdp82x2nsu"]
+
+[ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://resources/ui/button_themes/regular/green_button.tres" id="1_1g88r"]
+[ext_resource type="Script" uid="uid://dvadu7bib2whc" path="res://scripts/ui/hud/panels/system_panel.gd" id="1_xn1xt"]
+[ext_resource type="Theme" uid="uid://phfh7c5hwx1n" path="res://resources/ui/button_themes/regular/yellow_button.tres" id="2_xn1xt"]
+[ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://resources/ui/button_themes/regular/red_button.tres" id="3_1rj16"]
+[ext_resource type="PackedScene" uid="uid://bxmcs3dj7nfvs" path="res://scenes/ui/windows/options_window.tscn" id="4_w721p"]
+
+[node name="SystemPanel" type="Control" unique_id=1762561739]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_xn1xt")
+
+[node name="OptionsWindow" parent="." unique_id=101606992 instance=ExtResource("4_w721p")]
+visible = false
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=227881947]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SaveButton" type="Button" parent="VBoxContainer" unique_id=1452879496]
+custom_minimum_size = Vector2(96, 32)
+layout_mode = 2
+size_flags_horizontal = 4
+theme = ExtResource("1_1g88r")
+text = "Save Game"
+
+[node name="OptionsButton" type="Button" parent="VBoxContainer" unique_id=1716878666]
+custom_minimum_size = Vector2(96, 32)
+layout_mode = 2
+size_flags_horizontal = 4
+theme = ExtResource("2_xn1xt")
+text = "Options"
+
+[node name="MainMenuButton" type="Button" parent="VBoxContainer" unique_id=1541403863]
+custom_minimum_size = Vector2(96, 32)
+layout_mode = 2
+size_flags_horizontal = 4
+theme = ExtResource("3_1rj16")
+text = "Main Menu"
+
+[node name="StatusLabel" type="Label" parent="VBoxContainer" unique_id=795710093]
+layout_mode = 2
+size_flags_horizontal = 4
+horizontal_alignment = 1
+
+[connection signal="pressed" from="VBoxContainer/SaveButton" to="." method="_on_save_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/OptionsButton" to="." method="_on_options_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/MainMenuButton" to="." method="_on_main_menu_button_pressed"]

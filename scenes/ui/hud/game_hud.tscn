@@ -1,0 +1,76 @@
+[gd_scene format=3 uid="uid://dub7dt66aucti"]
+
+[ext_resource type="Script" uid="uid://bldcyb8gkj6iv" path="res://scripts/ui/hud/game_hud.gd" id="1_uhlhu"]
+[ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://resources/ui/button_themes/regular/red_button.tres" id="2_q2qrq"]
+[ext_resource type="PackedScene" uid="uid://cg6a2qtqguwoy" path="res://scenes/ui/hud/panels/stats_panel.tscn" id="3_b1c7m"]
+[ext_resource type="PackedScene" uid="uid://brfqhf60i2qju" path="res://scenes/ui/hud/panels/inventory_panel.tscn" id="4_au6ik"]
+[ext_resource type="PackedScene" uid="uid://cw2srj46vgqyq" path="res://scenes/ui/hud/panels/quests_panel.tscn" id="5_hb3v3"]
+[ext_resource type="PackedScene" uid="uid://cfkpdp82x2nsu" path="res://scenes/ui/hud/panels/system_panel.tscn" id="6_fde6m"]
+
+[node name="GameHud" type="CanvasLayer" unique_id=956269644]
+script = ExtResource("1_uhlhu")
+
+[node name="Overlay" type="ColorRect" parent="." unique_id=465211198]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(1, 1, 1, 0.6)
+
+[node name="Panel" type="PanelContainer" parent="." unique_id=1930052757]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -380.0
+offset_top = -280.0
+offset_right = 380.0
+offset_bottom = 280.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBox" type="VBoxContainer" parent="Panel" unique_id=210640722]
+layout_mode = 2
+
+[node name="TitleRow" type="HBoxContainer" parent="Panel/VBox" unique_id=1197605517]
+layout_mode = 2
+
+[node name="TitleLabel" type="Label" parent="Panel/VBox/TitleRow" unique_id=342444960]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Menu"
+
+[node name="CloseButton" type="Button" parent="Panel/VBox/TitleRow" unique_id=236587981]
+layout_mode = 2
+theme = ExtResource("2_q2qrq")
+text = "Close"
+
+[node name="TabBar" type="HBoxContainer" parent="Panel/VBox" unique_id=1274017641]
+custom_minimum_size = Vector2(0, 34)
+layout_mode = 2
+theme_override_constants/separation = 2
+
+[node name="ContentArea" type="Control" parent="Panel/VBox" unique_id=408898365]
+custom_minimum_size = Vector2(0, 480)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="StatsPanel" parent="Panel/VBox/ContentArea" unique_id=1483468948 instance=ExtResource("3_b1c7m")]
+layout_mode = 1
+
+[node name="InventoryPanel" parent="Panel/VBox/ContentArea" unique_id=1848494753 instance=ExtResource("4_au6ik")]
+visible = false
+layout_mode = 1
+
+[node name="QuestsPanel" parent="Panel/VBox/ContentArea" unique_id=713236950 instance=ExtResource("5_hb3v3")]
+visible = false
+layout_mode = 1
+
+[node name="SystemPanel" parent="Panel/VBox/ContentArea" unique_id=1762561739 instance=ExtResource("6_fde6m")]
+visible = false
+layout_mode = 1
+
+[connection signal="pressed" from="Panel/VBox/TitleRow/CloseButton" to="." method="hide_hud"]
