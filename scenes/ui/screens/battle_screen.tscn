@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://ch4xo4n02q3jw" path="res://assets/BattleBackground.png" id="2_e8mee"]
 [ext_resource type="PackedScene" uid="uid://bjx12sxd6xqme" path="res://scenes/ui/components/hero_info.tscn" id="3_e8mee"]
 [ext_resource type="Theme" uid="uid://cra87dj7simd8" path="res://resources/ui/progress_bar/red_bar.tres" id="3_pxpkm"]
+[ext_resource type="PackedScene" uid="uid://usjhwmauxj8n" path="res://scenes/ui/windows/death_window.tscn" id="3_yj4kj"]
 [ext_resource type="Theme" uid="uid://dq41s7i7v61gk" path="res://resources/ui/backgrounds/background_panel.tres" id="4_pxpkm"]
 [ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://resources/ui/button_themes/regular/red_button.tres" id="7_iw40k"]
 [ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://resources/ui/button_themes/regular/green_button.tres" id="8_qmdt6"]
@@ -20,6 +21,16 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_ihhiw")
+
+[node name="RewardWindow" parent="." unique_id=1271341637 instance=ExtResource("11_xvgma")]
+visible = false
+
+[node name="DeathWindow" parent="." unique_id=673119729 instance=ExtResource("3_yj4kj")]
+size = Vector2i(480, 557)
+visible = false
+
+[node name="BattleManager" type="Node" parent="." unique_id=973972740]
+script = ExtResource("11_o00jr")
 
 [node name="BackgroundTextureRect" type="TextureRect" parent="." unique_id=1181602262]
 layout_mode = 1
@@ -145,16 +156,8 @@ size_flags_vertical = 3
 layout_mode = 2
 text = "This is an Ability"
 
-[node name="BattleManager" type="Node" parent="." unique_id=973972740]
-script = ExtResource("11_o00jr")
-
-[node name="RewardWindow" parent="." unique_id=1271341637 instance=ExtResource("11_xvgma")]
-visible = false
-
-[connection signal="toggled" from="MarginContainer/ActionPanel/ActionArea/LeftPanel/AbilityButton" to="." method="_on_ability_button_toggled"]
-[connection signal="toggled" from="MarginContainer/ActionPanel/ActionArea/LeftPanel/ItemButton" to="." method="_on_item_button_toggled"]
-[connection signal="pressed" from="MarginContainer/ActionPanel/ActionArea/LeftPanel/MeditateButton" to="." method="_on_meditate_button_pressed"]
-[connection signal="pressed" from="MarginContainer/ActionPanel/ActionArea/LeftPanel/FleeButton" to="." method="_on_flee_button_pressed"]
+[connection signal="rewards_collected" from="RewardWindow" to="." method="_on_rewards_collected"]
+[connection signal="return_to_village" from="DeathWindow" to="." method="_on_death_window_dismissed"]
 [connection signal="battle_log_updated" from="BattleManager" to="." method="_on_battle_log_updated"]
 [connection signal="battle_won" from="BattleManager" to="." method="_on_battle_won"]
 [connection signal="hero_attacking" from="BattleManager" to="." method="_on_hero_attacking"]
@@ -167,4 +170,7 @@ visible = false
 [connection signal="monster_updated" from="BattleManager" to="." method="_on_monster_updated"]
 [connection signal="new_monster" from="BattleManager" to="." method="_on_new_monster"]
 [connection signal="player_turn" from="BattleManager" to="." method="_on_player_turn"]
-[connection signal="rewards_collected" from="RewardWindow" to="." method="_on_rewards_collected"]
+[connection signal="toggled" from="MarginContainer/ActionPanel/ActionArea/LeftPanel/AbilityButton" to="." method="_on_ability_button_toggled"]
+[connection signal="toggled" from="MarginContainer/ActionPanel/ActionArea/LeftPanel/ItemButton" to="." method="_on_item_button_toggled"]
+[connection signal="pressed" from="MarginContainer/ActionPanel/ActionArea/LeftPanel/MeditateButton" to="." method="_on_meditate_button_pressed"]
+[connection signal="pressed" from="MarginContainer/ActionPanel/ActionArea/LeftPanel/FleeButton" to="." method="_on_flee_button_pressed"]

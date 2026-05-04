@@ -5,11 +5,15 @@
 [ext_resource type="Script" uid="uid://8u7rkk8oorfu" path="res://scripts/ui/windows/reward_window.gd" id="1_y5ohc"]
 
 [node name="RewardWindow" type="Window" unique_id=1271341637]
+transparent_bg = true
 oversampling_override = 1.0
 position = Vector2i(0, 36)
 size = Vector2i(158, 154)
 wrap_controls = true
+exclusive = true
+unresizable = true
 borderless = true
+transparent = true
 script = ExtResource("1_y5ohc")
 
 [node name="PanelContainer" type="PanelContainer" parent="." unique_id=1731204455]
