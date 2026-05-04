@@ -6,8 +6,9 @@ const BATTLE_CHARACTER = preload("res://scenes/ui/components/battle_character.ts
 
 @onready var battle_manager = $BattleManager
 
-@onready var battle_log: RichTextLabel = $MarginContainer/BattleLog
 @onready var reward_window: Window = $RewardWindow
+@onready var death_window: Window = $DeathWindow
+@onready var battle_log: RichTextLabel = $MarginContainer/BattleLog
 
 # Monster Info
 @onready var monster_health_bar: ProgressBar = $MarginContainer/VBoxContainer/MonsterHealthBar
@@ -143,6 +144,9 @@ func _on_rewards_collected() -> void:
 func _on_hero_defeated():
 	GameState.hero.rest()
 	GameState.pre_combat_position = Vector2.ZERO
+	death_window.popup_centered()
+
+func _on_death_window_dismissed() -> void:
 	ScreenManager.go_to_screen(ScreenManager.ScreenName.VILLAGE, "village")
 
 # --- Button Factories ---
