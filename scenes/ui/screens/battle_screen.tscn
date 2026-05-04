@@ -26,7 +26,6 @@ script = ExtResource("1_ihhiw")
 visible = false
 
 [node name="DeathWindow" parent="." unique_id=673119729 instance=ExtResource("3_yj4kj")]
-size = Vector2i(480, 557)
 visible = false
 
 [node name="BattleManager" type="Node" parent="." unique_id=973972740]
