@@ -1,6 +1,7 @@
 extends Control
+class_name ArmoryScreen
 
-const LOCATION_ID := "armory"
+const ENTRANCE_ID := "armory"
 
 @onready var item_list: VBoxContainer = $HBoxContainer/LeftPanelContainer/LeftPanel/ItemList
 @onready var equip_button: Button = $HBoxContainer/LeftPanelContainer/LeftPanel/Buttons/EquipButton
@@ -62,7 +63,7 @@ func _on_equip_button_pressed() -> void:
 		_update_weapon_list()
 
 func _on_back_button_pressed() -> void:
-	ScreenManager.go_back(LOCATION_ID)
+	ScreenManager.go_back(ENTRANCE_ID)
 
 func _empty_ability_list() -> void:
 	for child in ability_container.get_children():

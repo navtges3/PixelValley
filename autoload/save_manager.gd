@@ -313,13 +313,11 @@ func _load_shop(data: Dictionary) -> Shop:
 func _get_inn_data(inn: Inn) -> Dictionary:
 	return {
 		"name": inn.name,
-		"rest_cost": inn.rest_cost
 	}
 
 func _load_inn(data: Dictionary) -> Inn:
 	var inn := Inn.new()
 	inn.name = data.get("name", "The Crooked Tusk")
-	inn.rest_cost = data.get("rest_cost", 10)
 	return inn
 
 # ---------------------------------------------------------
