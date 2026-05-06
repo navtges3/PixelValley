@@ -76,6 +76,7 @@ func load_game(slot: int = 1) -> void:
 	var entrance: String = meta_json.get("player_entrance", "")
 	GameState.player_location = { "scene": scene_int, "entrance_id": entrance }
 	GameState.quest_manager.reconnect_signals()
+	GameState.quest_manager_ready.emit()
 	print("SaveManager: Loading player location: %s, %s" % [GameState.player_location["scene"], GameState.player_location["entrance_id"]])
 	print("SaveManager: Loaded game from slot %d" % slot)
 
