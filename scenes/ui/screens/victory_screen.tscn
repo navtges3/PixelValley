@@ -2,17 +2,22 @@
 
 [ext_resource type="Script" uid="uid://4ufo4amitqna" path="res://scripts/ui/screens/victory_screen.gd" id="1_vdwas"]
 [ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://resources/ui/button_themes/regular/red_button.tres" id="2_3vk2n"]
+[ext_resource type="Theme" uid="uid://dq41s7i7v61gk" path="res://resources/ui/backgrounds/background_panel.tres" id="2_rwyuh"]
 
-[node name="VictoryScreen" type="Control"]
+[node name="VictoryScreen" type="Control" unique_id=1320085879]
 layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
 grow_horizontal = 2
 grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
 script = ExtResource("1_vdwas")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=1905961687]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -20,22 +25,34 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -86.0
-offset_top = -81.0
+offset_top = -98.0
 offset_right = 86.0
-offset_bottom = 81.0
+offset_bottom = 60.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("2_rwyuh")
 
-[node name="Label" type="Label" parent="VBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer" unique_id=1943251292]
 layout_mode = 2
-text = "VICTORY!
-All Quests Complete!
+size_flags_vertical = 4
+theme_override_constants/separation = 8
 
-Thank you for playing!
-"
+[node name="TitleLabel" type="Label" parent="PanelContainer/VBoxContainer" unique_id=1295904573]
+layout_mode = 2
+text = "VICTORY!"
 horizontal_alignment = 1
 
-[node name="MainMenuButton" type="Button" parent="VBoxContainer"]
+[node name="HSeparator" type="HSeparator" parent="PanelContainer/VBoxContainer" unique_id=744580166]
+layout_mode = 2
+
+[node name="HeroInfoLabel" type="Label" parent="PanelContainer/VBoxContainer" unique_id=2046898677]
+layout_mode = 2
+text = "All Quests Complete!
+
+Thank you for playing!"
+horizontal_alignment = 1
+
+[node name="MainMenuButton" type="Button" parent="PanelContainer/VBoxContainer" unique_id=312130979]
 custom_minimum_size = Vector2(96, 32)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -43,4 +60,4 @@ size_flags_vertical = 4
 theme = ExtResource("2_3vk2n")
 text = "Main Menu"
 
-[connection signal="pressed" from="VBoxContainer/MainMenuButton" to="." method="_on_main_menu_button_pressed"]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/MainMenuButton" to="." method="_on_main_menu_button_pressed"]

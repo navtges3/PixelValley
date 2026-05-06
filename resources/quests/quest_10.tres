@@ -21,5 +21,5 @@ id = 10
 description = "The Ogre king has risen! Protect the village!"
 objectives = Array[ExtResource("1_vmyfw")]([SubResource("Resource_dwfj8")])
 reward = SubResource("Resource_fi5yr")
-next_quests = Array[int]([11])
+final_quest = true
 metadata/_custom_type_script = "uid://xhl8p6y5w5e6"

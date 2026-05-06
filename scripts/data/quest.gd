@@ -9,6 +9,7 @@ class_name Quest
 @export var next_quests: Array[int]
 @export var unlocks_locations: Array[String] = []
 @export var completed: bool = false
+@export var final_quest: bool = false
 
 signal quest_completed(quest: Quest)
 
