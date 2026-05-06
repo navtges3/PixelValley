@@ -38,6 +38,14 @@ alignment = 1
 [node name="InnNameLabel" type="Label" parent="PanelContainer/VBoxContainer" unique_id=2082631827]
 layout_mode = 2
 text = "The Crooked Tusk"
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="PanelContainer/VBoxContainer" unique_id=430987354]
+layout_mode = 2
+
+[node name="RestFeedbackLabel" type="Label" parent="PanelContainer/VBoxContainer" unique_id=708193257]
+layout_mode = 2
+horizontal_alignment = 1
 
 [node name="RestButton" type="Button" parent="PanelContainer/VBoxContainer" unique_id=437353846]
 custom_minimum_size = Vector2(96, 32)

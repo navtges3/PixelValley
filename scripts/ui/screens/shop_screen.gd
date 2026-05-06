@@ -1,6 +1,7 @@
 extends Control
+class_name ShopScreen
 
-const LOCATION_ID := "shop"
+const ENTRANCE_ID := "shop"
 
 @onready var shop_manager = $ShopManager
 @onready var item_list: VBoxContainer = $HBoxContainer/ListPanelContainer/ScrollContainer/ItemList
@@ -101,4 +102,4 @@ func _on_purchase_button_pressed() -> void:
 	_update_item_list()
 
 func _on_exit_button_pressed() -> void:
-	ScreenManager.go_back(LOCATION_ID)
+	ScreenManager.go_back(ENTRANCE_ID)

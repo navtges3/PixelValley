@@ -1,4 +1,5 @@
 extends Control
+class_name BattleScreen
 
 const ABILITY_BUTTON = preload("res://scenes/ui/components/ability_button.tscn")
 const ITEM_BUTTON = preload("res://scenes/ui/components/item_button.tscn")
@@ -142,12 +143,12 @@ func _on_rewards_collected() -> void:
 	ScreenManager.go_back()
 
 func _on_hero_defeated():
-	GameState.hero.rest()
 	GameState.pre_combat_position = Vector2.ZERO
 	death_window.popup_centered()
 
 func _on_death_window_dismissed() -> void:
-	ScreenManager.go_to_screen(ScreenManager.ScreenName.VILLAGE, "village")
+	GameState.hero.rest()
+	ScreenManager.go_to_screen(ScreenManager.ScreenName.VILLAGE, InnScreen.ENTRANCE_ID)
 
 # --- Button Factories ---
 func _on_ability_button_pressed(ability: Ability) -> void:
