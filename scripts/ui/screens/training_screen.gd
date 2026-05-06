@@ -1,5 +1,5 @@
 extends Control
-class_name ShopScreen
+class_name TainingScreen
 
 const ENTRANCE_ID := "training"
 

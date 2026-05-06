@@ -360,6 +360,7 @@ func _get_quest_data(quest: Quest) -> Dictionary:
 		"description": quest.description,
 		"next_quests": quest.next_quests.duplicate(),
 		"completed": quest.completed,
+		"final_quest": quest.final_quest,
 		"unlocks_locations": quest.unlocks_locations.duplicate(),
 		"objectives": [],
 		"rewards": [],
@@ -388,6 +389,7 @@ func _load_quest(data: Dictionary) -> Quest:
 	quest.title = data.get("title", "")
 	quest.description = data.get("description", "")
 	quest.completed = data.get("completed", false)
+	quest.final_quest = data.get("final_quest", false)
 	# Restore next_quests so unlocking the follow-up works after a load.
 	var raw_next: Array = data.get("next_quests", [])
 	quest.next_quests.assign(raw_next)

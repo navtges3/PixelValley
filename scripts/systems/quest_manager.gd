@@ -60,6 +60,9 @@ func turn_in_quest(quest: Quest) -> Array[RewardEntry]:
 	available_quests.erase(quest)
 	completed_quests.append(quest)
 	SaveManager.save_game()
+	if quest.final_quest:
+		ScreenManager.go_to_screen(ScreenManager.ScreenName.VICTORY)
+		return []
 	return entries
 
 func _apply_rewards(quest: Quest, entries: Array[RewardEntry]) -> void:
