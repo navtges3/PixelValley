@@ -3,7 +3,6 @@
 [ext_resource type="Script" uid="uid://dsk1g6kwbqp8r" path="res://scripts/ui/hud/world_hud.gd" id="1_worldh"]
 [ext_resource type="PackedScene" uid="uid://ivm8a60yb0vx" path="res://scenes/ui/hud/hero_hud.tscn" id="2_heroh"]
 [ext_resource type="PackedScene" uid="uid://dub7dt66aucti" path="res://scenes/ui/hud/game_hud.tscn" id="2_iek5v"]
-[ext_resource type="PackedScene" uid="uid://dl2i02vg8x3eq" path="res://scenes/ui/hud/quest_hud.tscn" id="3_questh"]
 
 [node name="WorldHUD" type="CanvasLayer" unique_id=668864226]
 layer = 10
@@ -17,13 +16,3 @@ offset_left = 8.0
 offset_top = 8.0
 offset_right = 204.0
 offset_bottom = 118.0
-
-[node name="QuestHUD" parent="." unique_id=2112376953 instance=ExtResource("3_questh")]
-anchors_preset = 11
-anchor_bottom = 1.0
-offset_left = -188.0
-offset_top = 8.0
-offset_right = -8.0
-offset_bottom = -8.0
-grow_horizontal = 0
-grow_vertical = 2

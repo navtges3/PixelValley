@@ -44,7 +44,6 @@ func _on_slot_button_pressed(slot: int) -> void:
 	self.hide()
 	SaveManager.load_game(slot)
 	var loc := GameState.player_location
-	print("Scene: %s, Entrance: %s" % [loc["scene"], loc["entrance_id"]])
 	ScreenManager.go_to_screen(loc["scene"], loc["entrance_id"])
 
 func _on_delete_button_pressed(slot: int) -> void:

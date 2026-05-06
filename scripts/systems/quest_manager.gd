@@ -12,7 +12,6 @@ const QUEST_PATHS := [
 	"res://resources/quests/quest_8.tres",
 	"res://resources/quests/quest_9.tres",
 	"res://resources/quests/quest_10.tres",
-	"res://resources/quests/quest_11.tres",
 ]
 
 const FIRST_QUEST_ID := 1
@@ -60,6 +59,9 @@ func turn_in_quest(quest: Quest) -> Array[RewardEntry]:
 	available_quests.erase(quest)
 	completed_quests.append(quest)
 	SaveManager.save_game()
+	if quest.final_quest:
+		ScreenManager.go_to_screen(ScreenManager.ScreenName.VICTORY)
+		return []
 	return entries
 
 func _apply_rewards(quest: Quest, entries: Array[RewardEntry]) -> void:

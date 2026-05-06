@@ -107,7 +107,7 @@ func _on_monster_killed() -> void:
 	_collect_loot(loot, entries)
 	hero_updated.emit(hero)
 	GameState.monster_killed.emit(monster.monster_id, location_id)
-	end_battle(true)
+	end_battle(true, entries)
 
 func _collect_loot(loot: Dictionary, entries: Array[RewardEntry]) -> void:
 	for item_id in loot.get("potions", {}):

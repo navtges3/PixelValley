@@ -72,6 +72,7 @@ func _force_refresh() -> void:
 	_draw_data(hero)
 
 func _draw_data(hero: Hero) -> void:
+	name_label.text = hero.name
 	level_label.text = "Lv %d" % hero.level
 	skill_label.text = "Skill Points: %d" % hero.skill_points
 	gold_label.text = "⬡ %d" % hero.inventory.gold

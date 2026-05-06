@@ -1,6 +1,7 @@
 extends Control
+class_name TainingScreen
 
-const LOCATION_ID := "training"
+const ENTRANCE_ID := "training"
 
 @onready var hero = GameState.hero
 @onready var skill_points_label: Label = $PanelContainer/VBoxContainer/SkillPointsLabel
@@ -72,7 +73,7 @@ func _on_decrease(stat: String) -> void:
 		update_ui()
 
 func _on_back_button_pressed() -> void:
-	ScreenManager.go_back(LOCATION_ID)
+	ScreenManager.go_back(ENTRANCE_ID)
 
 func _on_confirm_button_pressed() -> void:
 	for stat in temp_allocations.keys():
@@ -80,7 +81,7 @@ func _on_confirm_button_pressed() -> void:
 		if increase > 0:
 			_set_stat(stat, _get_stat(stat) + increase)
 	hero.skill_points = available_points
-	ScreenManager.go_back(LOCATION_ID)
+	ScreenManager.go_back(ENTRANCE_ID)
 
 func _get_stat(stat: String) -> int:
 	match stat:
