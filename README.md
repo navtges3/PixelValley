@@ -1,6 +1,6 @@
 # Village Defense
 
-[![Download](https://img.shields.io/badge/⬇️_Download-Windows-blue?style=for-the-badge)](https://drive.google.com/uc?export=download&amp;id=1pqgvn15C7bhNAVS57PRTVXzRTVNdZSzz)
+[![Download](https://img.shields.io/badge/⬇️_Download-Windows-blue?style=for-the-badge)](https://fissionwizzard.itch.io/pixel-valley)
 [![Feedback](https://img.shields.io/badge/📝_Give-Feedback-green?style=for-the-badge)](https://docs.google.com/forms/d/e/1FAIpQLSfSQfVvR3tb8YQT35z_nKu22EymHAmQoNdFdEDBGPzVtnijzw/viewform?usp=sharing&ouid=110993499414547181758)
 
 A solo-developed fantasy RPG built with Godot 4.6. You pick a hero, take on quests, fight monsters, and try to keep your village standing.
