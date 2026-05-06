@@ -12,7 +12,6 @@ const QUEST_PATHS := [
 	"res://resources/quests/quest_8.tres",
 	"res://resources/quests/quest_9.tres",
 	"res://resources/quests/quest_10.tres",
-	"res://resources/quests/quest_11.tres",
 ]
 
 const FIRST_QUEST_ID := 1

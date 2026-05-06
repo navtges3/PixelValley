@@ -16,6 +16,7 @@ var player_location: Dictionary = {
 
 @warning_ignore("unused_signal")
 signal monster_killed(monster_id: MonsterLoader.MonsterID, location_id: String)
+signal quest_manager_ready
 
 # --- Game Start Flow ---
 func start_new_game(slot := 1) -> void:
@@ -27,6 +28,7 @@ func start_new_game(slot := 1) -> void:
 	quest_manager.new_game()
 	WorldManager.reset()
 	SaveManager.new_save(slot)
+	quest_manager_ready.emit()
 	print("GameState: New game started in slot %d" % slot)
 
 func _setup_default_shop(shop: Shop) -> void:

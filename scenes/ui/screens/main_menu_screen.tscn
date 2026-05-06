@@ -9,7 +9,8 @@
 [ext_resource type="PackedScene" uid="uid://bcurrites3af" path="res://scenes/ui/windows/load_window.tscn" id="7_pfh6i"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_l72w3"]
-font_size = 32
+font_size = 64
+font_color = Color(0.9490196, 0.92156863, 0.8, 1)
 
 [node name="MainMenuScreen" type="Control" unique_id=1003311715]
 layout_mode = 3
@@ -34,6 +35,8 @@ theme_override_constants/margin_bottom = 80
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=70003495]
 layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
 theme_override_constants/separation = 5
 alignment = 1
 
@@ -41,9 +44,12 @@ alignment = 1
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 size_flags_horizontal = 4
-text = "Welcome to Village Defense"
+text = "Pixel Valley"
 label_settings = SubResource("LabelSettings_l72w3")
 horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=1763046044]
+layout_mode = 2
 
 [node name="NewGameButton" type="Button" parent="MarginContainer/VBoxContainer" unique_id=75236504]
 custom_minimum_size = Vector2(96, 32)
@@ -79,10 +85,10 @@ size_flags_vertical = 4
 theme = ExtResource("5_bd2wy")
 text = "Exit Game"
 
-[node name="OptionsPopup" parent="." unique_id=666019018 instance=ExtResource("6_pqlu1")]
+[node name="LoadWindow" parent="." unique_id=1918541071 instance=ExtResource("7_pfh6i")]
 visible = false
 
-[node name="LoadWindow" parent="." unique_id=1918541071 instance=ExtResource("7_pfh6i")]
+[node name="OptionsWindow" parent="." unique_id=101606992 instance=ExtResource("6_pqlu1")]
 visible = false
 
 [connection signal="pressed" from="MarginContainer/VBoxContainer/NewGameButton" to="." method="_on_new_game_button_pressed"]

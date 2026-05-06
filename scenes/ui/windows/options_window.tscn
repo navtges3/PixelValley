@@ -7,7 +7,7 @@
 [node name="OptionsWindow" type="Window" unique_id=101606992]
 transparent_bg = true
 oversampling_override = 1.0
-size = Vector2i(294, 308)
+size = Vector2i(316, 326)
 wrap_controls = true
 exclusive = true
 borderless = true
@@ -35,6 +35,8 @@ theme_override_constants/separation = 10
 
 [node name="Label" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=1779415276]
 layout_mode = 2
+theme_override_colors/font_color = Color(0.9490196, 0.92156863, 0.8, 1)
+theme_override_font_sizes/font_size = 32
 text = "Game Options"
 horizontal_alignment = 1
 

@@ -21,6 +21,8 @@ func _ready() -> void:
 func _connect_signals() -> void:
 	if not GameState.monster_killed.is_connected(_on_monster_killed):
 		GameState.monster_killed.connect(_on_monster_killed)
+	if not GameState.quest_manager_ready.is_connected(_refresh):
+		GameState.quest_manager_ready.connect(_refresh)
 
 func _on_monster_killed(_monster_id: int, _location_id: String) -> void:
 	# Wait one frame so QuestManager processes the kill first

@@ -8,16 +8,22 @@
 [node name="LoadWindow" type="Window" unique_id=1918541071]
 transparent_bg = true
 oversampling_override = 1.0
-size = Vector2i(706, 1064)
+size = Vector2i(445, 624)
 wrap_controls = true
 borderless = true
 transparent = true
 script = ExtResource("1_svb4e")
 
 [node name="PanelContainer" type="PanelContainer" parent="." unique_id=1195771532]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -222.5
+offset_top = -312.0
+offset_right = 222.5
+offset_bottom = 312.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("2_xdcf0")
@@ -37,6 +43,8 @@ theme_override_constants/separation = 8
 
 [node name="TitleLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=1769944883]
 layout_mode = 2
+theme_override_colors/font_color = Color(0.9490196, 0.92156863, 0.8, 1)
+theme_override_font_sizes/font_size = 32
 text = "Load Game"
 horizontal_alignment = 1
 
