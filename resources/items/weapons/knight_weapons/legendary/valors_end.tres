@@ -6,6 +6,7 @@
 [ext_resource type="Script" uid="uid://c5deti4sb2k2j" path="res://scripts/data/effect.gd" id="4_1lioo"]
 [ext_resource type="Script" uid="uid://dgykeyxn7fefw" path="res://scripts/data/weapon.gd" id="5_x4e6i"]
 [ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://resources/ui/button_themes/regular/red_button.tres" id="6_aw4cb"]
+[ext_resource type="Texture2D" uid="uid://dxjtriagi1ts8" path="res://assets/items/weapons/LongswordSprite.png" id="6_ehgko"]
 
 [sub_resource type="Resource" id="Resource_46o23"]
 script = ExtResource("2_ehgko")
@@ -71,6 +72,8 @@ metadata/_custom_type_script = "uid://b2o7w8q10stxo"
 script = ExtResource("5_x4e6i")
 rarity = 2
 abilities = Array[ExtResource("1_0tyqb")]([SubResource("Resource_3v6b0"), SubResource("Resource_5fnv3"), SubResource("Resource_ytus0"), SubResource("Resource_2rppc")])
+sprite = ExtResource("6_ehgko")
+sprite_offset = Vector2(0, -16)
 item_id = "valors_end"
 name = "Valor's End"
 description = "The blade of an ancient champion."
