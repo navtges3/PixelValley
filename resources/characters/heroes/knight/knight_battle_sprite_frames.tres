@@ -63,6 +63,9 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_g6nrx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7afh7")
 }],
 "loop": false,
 "name": &"attack",

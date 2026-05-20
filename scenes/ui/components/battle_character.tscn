@@ -15,16 +15,17 @@ texture = ExtResource("2_stq27")
 offset = Vector2(0, -6)
 
 [node name="WeaponAnchor" type="Marker2D" parent="Visual" unique_id=106552498]
-position = Vector2(13, -21)
+position = Vector2(10, -14)
+rotation = 0.9948377
 
 [node name="WeaponSprite" type="Sprite2D" parent="Visual/WeaponAnchor" unique_id=1133877748]
-position = Vector2(0, -11)
 texture = ExtResource("3_4ej30")
+offset = Vector2(0, -11)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Visual" unique_id=1921383678]
 sprite_frames = ExtResource("3_stq27")
-animation = &"idle"
-frame = 2
+animation = &"attack"
+frame = 3
 centered = false
 offset = Vector2(-32, -64)
 

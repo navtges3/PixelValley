@@ -22,9 +22,7 @@ const REST_CD := 5
 @export var battle_visual: SpriteFrames
 @export var battle_height := 64
 @export var hand_positions: Dictionary = {}
-# Shape: { "idle": [Vector2, ...], "attack": [Vector2, ...], "hurt": [Vector2, ...] }
-# Array length must match frame count for the animation
-# Leave empty ({}) for combatants that don't use weapons (monsters)
+@export var hand_rotations: Dictionary = {}
 
 @export_group("Active Effects")
 @export var active_effects: Array = []
