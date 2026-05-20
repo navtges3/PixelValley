@@ -5,6 +5,7 @@
 [ext_resource type="Script" uid="uid://bvuw0uyc36uxx" path="res://scripts/data/utility.gd" id="3_f8513"]
 [ext_resource type="Script" uid="uid://c5deti4sb2k2j" path="res://scripts/data/effect.gd" id="4_3mka7"]
 [ext_resource type="Script" uid="uid://dgykeyxn7fefw" path="res://scripts/data/weapon.gd" id="5_qwuoh"]
+[ext_resource type="Texture2D" uid="uid://cmrhtvp8qtafo" path="res://assets/items/weapons/MaceSprite.png" id="6_3m1fe"]
 [ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://resources/ui/button_themes/regular/red_button.tres" id="6_vcvf6"]
 
 [sub_resource type="Resource" id="Resource_onqa7"]
@@ -79,6 +80,8 @@ metadata/_custom_type_script = "uid://b2o7w8q10stxo"
 script = ExtResource("5_qwuoh")
 rarity = 2
 abilities = Array[ExtResource("1_m5l2j")]([SubResource("Resource_rd418"), SubResource("Resource_ly784"), SubResource("Resource_5llse"), SubResource("Resource_507l5")])
+sprite = ExtResource("6_3m1fe")
+sprite_offset = Vector2(0, -11)
 item_id = "aegisbreaker"
 name = "Aegisbreaker"
 description = "A heroic greatsword carried by a fallen champion whose spirit lingers within."

@@ -46,6 +46,7 @@ func _spawn_hero() -> void:
 	var weapon: Weapon = battle_config.hero.inventory.equipped_weapon
 	if weapon and weapon.sprite:
 		hero_visual.equip_weapon(weapon.sprite, weapon.sprite_offset)
+	ability_button.text = weapon.name
 
 func _on_hero_updated(_hero_ref: Hero) -> void:
 	hero_info.refresh()
