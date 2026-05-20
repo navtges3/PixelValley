@@ -140,12 +140,7 @@ func _get_hero_data(hero: Hero) -> Dictionary:
 		"level": hero.level,
 		"experience": hero.experience,
 		"skill_points": hero.skill_points,
-
-		# Combatant
 		"hero_name": hero.name,
-		"portrait": hero.portrait.resource_path,
-		"battle_visual": hero.battle_visual.resource_path,
-		"world_visual": hero.world_visual.resource_path,
 		"inventory": _get_inventory_data(hero.inventory),
 		"active_effects": _get_active_effects_data(hero),
 		"stats": _get_stat_block_data(hero),
@@ -158,20 +153,11 @@ func _load_hero(data: Dictionary) -> Hero:
 	hero.level = data.get("level", 1)
 	hero.experience = data.get("experience", 0)
 	hero.skill_points = data.get("skill_points", 0)
-	# Combatant
 	hero.name = data.get("hero_name", "Unnamed Hero")
-	var portrait_path = data.get("portrait", "")
-	if portrait_path != "":
-		hero.portrait = load(portrait_path)
-	var battle_visuals_path = data.get("battle_visual", "")
-	if battle_visuals_path != "":
-		hero.battle_visual = load(battle_visuals_path)
-	var world_visuals_path = data.get("world_visual", "")
-	if world_visuals_path != "":
-		hero.world_visual = load(world_visuals_path)
 	_load_stat_block(data.get("stats", {}), hero)
 	_load_active_effects(data.get("active_effects", []), hero)
 	hero.inventory = _load_inventory(data.get("inventory", {}))
+	HeroLoader.apply_visual(hero)
 	return hero
 
 # ---------------------------------------------------------
