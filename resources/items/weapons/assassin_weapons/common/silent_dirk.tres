@@ -5,6 +5,7 @@
 [ext_resource type="Script" uid="uid://bvuw0uyc36uxx" path="res://scripts/data/utility.gd" id="3_3dqle"]
 [ext_resource type="Script" uid="uid://c5deti4sb2k2j" path="res://scripts/data/effect.gd" id="4_dbdax"]
 [ext_resource type="Script" uid="uid://dgykeyxn7fefw" path="res://scripts/data/weapon.gd" id="5_iylp1"]
+[ext_resource type="Texture2D" uid="uid://bge1h1b1xkniq" path="res://assets/items/weapons/DirkSprite.png" id="6_5flqd"]
 [ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://resources/ui/button_themes/regular/green_button.tres" id="6_7cthf"]
 
 [sub_resource type="Resource" id="Resource_lfnt3"]
@@ -49,6 +50,8 @@ metadata/_custom_type_script = "uid://b2o7w8q10stxo"
 [resource]
 script = ExtResource("5_iylp1")
 abilities = Array[ExtResource("1_6juse")]([SubResource("Resource_wf80y"), SubResource("Resource_pkfrm")])
+sprite = ExtResource("6_5flqd")
+sprite_offset = Vector2(0, -6)
 item_id = "silent_dirk"
 name = "Silent Dirk"
 description = "A narrow, shadow‑colored dagger designed for one purpose: silence."
