@@ -11,6 +11,7 @@ const SCALE := Vector2(3.0, 3.0)
 signal animation_done()
 
 var _hand_positions: Dictionary = {}
+var _hand_rotations: Dictionary = {}
 var _flip_h := false
 
 func set_frames(frames: SpriteFrames) -> void:
@@ -26,15 +27,16 @@ func apply_visual(combatant: Combatant, flip_h := false) -> void:
 	
 	_flip_h = flip_h
 	_hand_positions = combatant.hand_positions
-	
+	_hand_rotations = combatant.hand_rotations
 	weapon_anchor.scale.x = -1.0 if flip_h else 1.0
 	_update_weapon_anchor()
 
-func equip_weapon(weapon_texture: Texture2D) -> void:
+func equip_weapon(weapon_texture: Texture2D, offset: Vector2) -> void:
 	if weapon_texture == null or _hand_positions.is_empty():
 		weapon_sprite.visible = false
 		return
 	weapon_sprite.texture = weapon_texture
+	weapon_sprite.offset = offset
 	weapon_sprite.visible = true
 	_update_weapon_anchor()
 
@@ -61,20 +63,23 @@ func _update_weapon_anchor() -> void:
 	if _hand_positions.is_empty():
 		weapon_sprite.visible = false
 		return
-	
 	var anim := sprite.animation
 	var frame := sprite.frame
-	
 	if not _hand_positions.has(anim):
 		return
-	
 	var positions: Array = _hand_positions[anim]
-	
 	if frame >= positions.size():
 		push_warning("BattleCharacter: hand_positions[\"%s\"] has %d entries but frame %d was requested" % [anim, positions.size(), frame])
 		return
-	
 	weapon_anchor.position = positions[frame]
+	if _hand_rotations.has(anim):
+		var rotations: Array = _hand_rotations[anim]
+		if frame < rotations.size():
+			weapon_anchor.rotation = rotations[frame]
+		else:
+			weapon_anchor.rotation = 0.0
+	else:
+		weapon_anchor.rotation = 0.0
 
 func _on_animated_sprite_2d_animation_finished() -> void:
 	if sprite.animation != "idle" and sprite.animation != "death":
