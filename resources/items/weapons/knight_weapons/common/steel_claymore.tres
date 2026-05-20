@@ -4,6 +4,7 @@
 [ext_resource type="Script" uid="uid://bo48scp6lbwrb" path="res://scripts/data/attack.gd" id="2_in8j7"]
 [ext_resource type="Script" uid="uid://bvuw0uyc36uxx" path="res://scripts/data/utility.gd" id="3_fcy6n"]
 [ext_resource type="Script" uid="uid://dgykeyxn7fefw" path="res://scripts/data/weapon.gd" id="4_jd2ub"]
+[ext_resource type="Texture2D" uid="uid://d2i13e548m70p" path="res://assets/items/weapons/ClaymoreSprite.png" id="5_in8j7"]
 [ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://resources/ui/button_themes/regular/green_button.tres" id="5_v8j3w"]
 
 [sub_resource type="Resource" id="Resource_jskeh"]
@@ -35,6 +36,8 @@ metadata/_custom_type_script = "uid://b2o7w8q10stxo"
 [resource]
 script = ExtResource("4_jd2ub")
 abilities = Array[ExtResource("1_08gng")]([SubResource("Resource_nlyxl"), SubResource("Resource_5b7wv")])
+sprite = ExtResource("5_in8j7")
+sprite_offset = Vector2(0, -16)
 item_id = "steel_claymore"
 name = "Steel Claymore"
 description = "A massive two‑handed sword whose weight alone commands respect."
