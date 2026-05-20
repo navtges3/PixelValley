@@ -58,6 +58,7 @@ metadata/_custom_type_script = "uid://b2o7w8q10stxo"
 script = ExtResource("5_6pyyr")
 abilities = Array[ExtResource("1_w886c")]([SubResource("Resource_wl6y2"), SubResource("Resource_pl52e")])
 sprite = ExtResource("6_hf5da")
+sprite_offset = Vector2(0, -11)
 item_id = "wooden_shieldblade"
 name = "Wooden Shieldblade"
 description = "A short sword paired with a small wooden shield etched with faded heraldry."

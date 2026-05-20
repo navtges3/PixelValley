@@ -22,3 +22,4 @@ func apply_visual(hero: Hero) -> void:
 	hero.battle_visual = template.battle_visual
 	hero.battle_height = template.battle_height
 	hero.hand_positions = template.hand_positions
+	hero.hand_rotations = template.hand_rotations
