@@ -28,4 +28,12 @@ resistance = 2
 portrait = ExtResource("9_v2cp1")
 world_visual = ExtResource("12_yl6vl")
 battle_visual = ExtResource("1_j8m6y")
+hand_positions = {
+"attack": [Vector2(10, -19), Vector2(9, -19), Vector2(7, -19), Vector2(11, -19), Vector2(10, -19)]
+}
+hand_rotations = {
+"attack": [0.9, 1.4, 1.6, 1.4, 1.2],
+"hurt": [0.9, 0.9, 0.9, 0.9],
+"idle": [0.9, 0.9, 0.9, 0.9]
+}
 metadata/_custom_type_script = "uid://b1x8jfufxk3xv"
