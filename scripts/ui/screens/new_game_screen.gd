@@ -17,7 +17,8 @@ const HERO_DEFAULTS = [
 	"res://resources/characters/heroes/princess/princess.tres",
 ]
 
-var hero_selected: Hero = null
+var _selected_class: Hero.HeroClass
+var _class_selected := false
 
 func _ready() -> void:
 	hero_class.text = ""
@@ -34,20 +35,16 @@ func load_hero_previews() -> void:
 			class_selector.add_child(preview)
 
 func check_create_button_state():
-	if hero_class.text != "" and hero_name.text != "":
-		create_button.disabled = false
-	else:
-		create_button.disabled = true
+	create_button.disabled = not (_class_selected and hero_name.text != "")
 
-func _on_class_selected(selected_class: Hero) -> void:
-	if hero_selected == selected_class:
-		hero_selected = null
+func _on_class_selected(selected_hero: Hero) -> void:
+	if _class_selected and _selected_class == selected_hero.hero_class:
+		_class_selected = false
 		hero_class.text = ""
-		print("Deselected class")
 	else:
-		hero_selected = selected_class
-		hero_class.text = selected_class.get_class_name()
-		print("Selected class: ", hero_selected.get_class_name())
+		_class_selected = true
+		_selected_class = selected_hero.hero_class
+		hero_class.text = selected_hero.get_class_name()
 	check_create_button_state()
 
 func _on_back_button_pressed() -> void:
@@ -55,7 +52,7 @@ func _on_back_button_pressed() -> void:
 	ScreenManager.go_to_screen(ScreenManager.ScreenName.MAIN_MENU)
 
 func _on_create_button_pressed() -> void:
-	var new_hero = hero_selected.duplicate()
+	var new_hero := HeroLoader.new_hero(_selected_class)
 	new_hero.name = hero_name.text
 	GameState.hero = new_hero
 	new_game_window.popup_centered()

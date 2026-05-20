@@ -4,6 +4,7 @@ class_name Weapon
 
 @export var rarity: Rarity = Rarity.COMMON
 @export var abilities: Array[Ability] = []
+@export var sprite: Texture2D
 
 func update_cooldown() -> void:
 	for ability in abilities:
