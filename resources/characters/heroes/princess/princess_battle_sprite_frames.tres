@@ -2,63 +2,55 @@
 
 [ext_resource type="Texture2D" uid="uid://c62swn41h0k4c" path="res://assets/heroes/princess/princess_battle_spritesheet.png" id="1_hok78"]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_x2qxh"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_g0n0y"]
 atlas = ExtResource("1_hok78")
 region = Rect2(0, 0, 64, 64)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_2q4rl"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_20xhf"]
+atlas = ExtResource("1_hok78")
+region = Rect2(128, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mef1p"]
 atlas = ExtResource("1_hok78")
 region = Rect2(0, 64, 64, 64)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_bgbro"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_kfso7"]
+atlas = ExtResource("1_hok78")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_l5es6"]
 atlas = ExtResource("1_hok78")
 region = Rect2(64, 64, 64, 64)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_jm4gc"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_lbmvc"]
 atlas = ExtResource("1_hok78")
 region = Rect2(128, 64, 64, 64)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_o1bjl"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_knvom"]
 atlas = ExtResource("1_hok78")
 region = Rect2(0, 0, 64, 64)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_gst2a"]
-atlas = ExtResource("1_hok78")
-region = Rect2(64, 128, 64, 64)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_cj62w"]
-atlas = ExtResource("1_hok78")
-region = Rect2(128, 128, 64, 64)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_jmcet"]
-atlas = ExtResource("1_hok78")
-region = Rect2(0, 0, 64, 64)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_qw62t"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_xhaet"]
 atlas = ExtResource("1_hok78")
 region = Rect2(64, 0, 64, 64)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_km0su"]
-atlas = ExtResource("1_hok78")
-region = Rect2(128, 0, 64, 64)
 
 [resource]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_x2qxh")
+"texture": SubResource("AtlasTexture_g0n0y")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_2q4rl")
+"texture": SubResource("AtlasTexture_20xhf")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_bgbro")
+"texture": SubResource("AtlasTexture_mef1p")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_jm4gc")
+"texture": SubResource("AtlasTexture_mef1p")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_2q4rl")
+"texture": SubResource("AtlasTexture_20xhf")
 }],
 "loop": false,
 "name": &"attack",
@@ -66,16 +58,16 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_o1bjl")
+"texture": SubResource("AtlasTexture_kfso7")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_gst2a")
+"texture": SubResource("AtlasTexture_l5es6")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_cj62w")
+"texture": SubResource("AtlasTexture_lbmvc")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_gst2a")
+"texture": SubResource("AtlasTexture_l5es6")
 }],
 "loop": false,
 "name": &"hurt",
@@ -83,16 +75,16 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_jmcet")
+"texture": SubResource("AtlasTexture_knvom")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_qw62t")
+"texture": SubResource("AtlasTexture_xhaet")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_km0su")
+"texture": SubResource("AtlasTexture_xhaet")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_qw62t")
+"texture": SubResource("AtlasTexture_knvom")
 }],
 "loop": true,
 "name": &"idle",
