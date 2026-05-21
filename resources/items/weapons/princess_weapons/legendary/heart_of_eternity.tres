@@ -5,6 +5,7 @@
 [ext_resource type="Script" uid="uid://bvuw0uyc36uxx" path="res://scripts/data/utility.gd" id="3_kutlr"]
 [ext_resource type="Script" uid="uid://c5deti4sb2k2j" path="res://scripts/data/effect.gd" id="4_euknt"]
 [ext_resource type="Script" uid="uid://dgykeyxn7fefw" path="res://scripts/data/weapon.gd" id="5_31cju"]
+[ext_resource type="Texture2D" uid="uid://c6pwvsop3iy0p" path="res://assets/items/weapons/OrbSprite.png" id="6_l6c2x"]
 [ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://resources/ui/button_themes/regular/red_button.tres" id="6_rmc7d"]
 
 [sub_resource type="Resource" id="Resource_hded4"]
@@ -74,6 +75,8 @@ metadata/_custom_type_script = "uid://b2o7w8q10stxo"
 script = ExtResource("5_31cju")
 rarity = 2
 abilities = Array[ExtResource("1_pg6mu")]([SubResource("Resource_r5e10"), SubResource("Resource_y0w6j"), SubResource("Resource_hsqhk"), SubResource("Resource_8x86g")])
+sprite = ExtResource("6_l6c2x")
+sprite_offset = Vector2(3, -7)
 item_id = "heart_of_eternity"
 name = "Heart of Eternity"
 description = "A floating crystalline core pulsing with endless ancient energy."
