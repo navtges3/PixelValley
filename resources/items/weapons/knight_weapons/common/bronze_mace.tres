@@ -5,6 +5,7 @@
 [ext_resource type="Script" uid="uid://bvuw0uyc36uxx" path="res://scripts/data/utility.gd" id="3_t44pf"]
 [ext_resource type="Script" uid="uid://dgykeyxn7fefw" path="res://scripts/data/weapon.gd" id="4_ndbae"]
 [ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://resources/ui/button_themes/regular/green_button.tres" id="5_81iri"]
+[ext_resource type="Texture2D" uid="uid://cmrhtvp8qtafo" path="res://assets/items/weapons/MaceSprite.png" id="5_tq1xl"]
 
 [sub_resource type="Resource" id="Resource_frkjk"]
 script = ExtResource("2_tq1xl")
@@ -35,6 +36,8 @@ metadata/_custom_type_script = "uid://b2o7w8q10stxo"
 [resource]
 script = ExtResource("4_ndbae")
 abilities = Array[ExtResource("1_l0ulq")]([SubResource("Resource_7xty2"), SubResource("Resource_wmyjd")])
+sprite = ExtResource("5_tq1xl")
+sprite_offset = Vector2(0, -11)
 item_id = "bronze_mace"
 name = "Bronze Mace"
 description = "A dull bronze head mounted on a rough wooden haft, simple but dependable."

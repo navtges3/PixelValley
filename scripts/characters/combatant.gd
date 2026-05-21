@@ -21,6 +21,8 @@ const REST_CD := 5
 @export var world_visual: SpriteFrames
 @export var battle_visual: SpriteFrames
 @export var battle_height := 64
+@export var hand_positions: Dictionary = {}
+@export var hand_rotations: Dictionary = {}
 
 @export_group("Active Effects")
 @export var active_effects: Array = []
