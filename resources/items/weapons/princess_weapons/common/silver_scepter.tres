@@ -5,6 +5,7 @@
 [ext_resource type="Script" uid="uid://bvuw0uyc36uxx" path="res://scripts/data/utility.gd" id="3_3wogk"]
 [ext_resource type="Script" uid="uid://c5deti4sb2k2j" path="res://scripts/data/effect.gd" id="4_nw3g1"]
 [ext_resource type="Script" uid="uid://dgykeyxn7fefw" path="res://scripts/data/weapon.gd" id="5_6cf6l"]
+[ext_resource type="Texture2D" uid="uid://ob8wvdbidewv" path="res://assets/items/weapons/SceptreSprite.png" id="6_6usb4"]
 [ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://resources/ui/button_themes/regular/green_button.tres" id="6_buuea"]
 
 [sub_resource type="Resource" id="Resource_il6a2"]
@@ -51,6 +52,8 @@ metadata/_custom_type_script = "uid://b2o7w8q10stxo"
 [resource]
 script = ExtResource("5_6cf6l")
 abilities = Array[ExtResource("1_sigq7")]([SubResource("Resource_u3gri"), SubResource("Resource_m0u44")])
+sprite = ExtResource("6_6usb4")
+sprite_offset = Vector2(0, -8)
 item_id = "silver_scepter"
 name = "Silver Scepter"
 description = "A polished scepter adorned with small gemstones favored by young nobles."
