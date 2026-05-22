@@ -53,6 +53,7 @@ func _on_hero_updated(_hero_ref: Hero) -> void:
 
 func _on_hero_attacking() -> void:
 	hero_visual.play_attack()
+	AudioManager.play_sfx_by_id("sword_swing", 1.0, randf_range(0.9, 1.1))
 	await hero_visual.animation_done
 
 func _on_hero_hurt() -> void:
@@ -80,6 +81,7 @@ func _on_monster_updated(monster_ref: Monster) -> void:
 
 func _on_monster_attacking() -> void:
 	monster_visual.play_attack()
+	AudioManager.play_sfx_by_id("sword_swing", 1.0, randf_range(0.9, 1.1))
 	await monster_visual.animation_done
 
 func _on_monster_hurt() -> void:
@@ -143,6 +145,7 @@ func _on_monster_turn():
 # --- End-of-battle ---
 func _on_battle_won(entries: Array) -> void:
 	reward_window.show_rewards("Victory!", entries)
+	AudioManager.play_sfx_by_id("levelup")
 
 func _on_rewards_collected() -> void:
 	ScreenManager.go_back()

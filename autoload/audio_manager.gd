@@ -17,7 +17,14 @@ const MUSIC_PATHS := {
 	"background": "res://audio/background_music.mp3",
 }
 
+const SFX_PATHS := {
+	"bag_of_couns": "res://assets/audio/sfx/bag_of_coins.wav",
+	"levelup": "res://assets/audio/sfx/levelup.wav",
+	"sword_swing": "res://assets/audio/sfx/sword_swing.wav",
+}
+
 var _music_cache: Dictionary = {}
+var _sfx_cache: Dictionary = {}
 
 # ---------------------------------------------------------
 # INIT
@@ -116,7 +123,21 @@ func play_sfx(stream: AudioStream, volume := 1.0) -> void:
 	p.stream = stream
 	add_child(p)
 	p.play()
+	p.finished.connect(func(): p.queue_free())
 
+func play_sfx_by_id(id: String, volume := 1.0, pitch := 1.0) -> void:
+	if not SFX_PATHS.has(id):
+		push_warning("AudioManager: Unknown SFX id '%s'" % id)
+		return
+	if not _sfx_cache.has(id):
+		_sfx_cache[id] = load(SFX_PATHS[id])
+	var p := AudioStreamPlayer.new()
+	p.bus = SFX_BUS
+	p.volume_db = linear_to_db(clamp(volume, 0.0, 1.0))
+	p.pitch_scale = pitch
+	p.stream = _sfx_cache[id]
+	add_child(p)
+	p.play()
 	p.finished.connect(func(): p.queue_free())
 
 # ---------------------------------------------------------

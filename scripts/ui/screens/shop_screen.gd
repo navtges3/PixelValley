@@ -99,6 +99,7 @@ func _on_purchase_button_pressed() -> void:
 	if shop_manager.selected_item_id == "":
 		return
 	shop_manager.buy_item(int(quantity_spin_box.value))
+	AudioManager.play_sfx_by_id("back_of_coins")
 	_update_item_list()
 
 func _on_exit_button_pressed() -> void:
