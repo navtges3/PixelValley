@@ -34,6 +34,8 @@ func _ready() -> void:
 # ---------------------------------------------------------
 # MUSIC API
 # ---------------------------------------------------------
+var _player_volume_db: float = 0.0
+
 func play_music(stream: AudioStream, fade := true) -> void:
 	if stream == null:
 		return
@@ -44,7 +46,7 @@ func play_music(stream: AudioStream, fade := true) -> void:
 		_fade_out_then_play(stream)
 	else:
 		_music_player.stream = stream
-		_music_player.volume_db = 0.0
+		_music_player.volume_db = _player_volume_db
 		_music_player.play()
 
 func play_music_by_id(id: String, fade := true) -> void:
@@ -86,7 +88,7 @@ func _fade_out_then_play(stream: AudioStream) -> void:
 	_music_fade_tween.tween_callback(func():
 		_music_player.stop()
 		_music_player.stream = stream
-		_music_player.volume_db = 0.0
+		_music_player.volume_db = _player_volume_db
 		_music_player.play()
 	)
 
