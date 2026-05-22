@@ -24,5 +24,10 @@ func _on_sfx_volume_slider_value_changed(value) -> void:
 	SettingsManager.apply_settings()
 	SettingsManager.save_settings()
 
+func _on_fullscreen_button_toggled(toggled: bool) -> void:
+	SettingsManager.fullscreen = toggled
+	SettingsManager.apply_settings()
+	SettingsManager.save_settings()
+
 func _on_close_button_pressed() -> void:
 	self.hide()
