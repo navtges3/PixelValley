@@ -18,28 +18,35 @@ func _ready() -> void:
 func set_tip_offset(offset: Vector2) -> void:
 	_tip_offset = offset
 
+var _tween: Tween
+
 func activate() -> void:
+	if _tween:
+		_tween.kill()
+	line.width = trail_width
+	line.modulate.a = 1.0
 	_points.clear()
 	line.clear_points()
-	line.modulate.a = 1.0
 	set_process(true)
-	print("WeaponTrail: Activating")
+	print("WeaponTrail: Activate")
 
 func deactivate() -> void:
-	var tween := create_tween()
-	tween.tween_property(line, "modulate:a", 0.0, 0.1)
-	tween.tween_callback(func():
+	_tween = create_tween()
+	_tween.tween_property(line, "modulate:a", 0.0, 0.1)
+	_tween.tween_callback(func():
 		line.clear_points()
 		set_process(false)
-		print("WeaponTrail: Deactivating"))
+		print("WeaponTrail: Deactivate")
+	)
 
 func _process(_delta: float) -> void:
-	_points.push_front(_tip_offset)
+	var global_tip := global_position + _tip_offset.rotated(global_rotation)
+	_points.push_front(to_local(global_tip))
 	if _points.size() > max_points:
 		_points.pop_back()
 	line.clear_points()
-	for i in _points.size():
-		line.add_point(_points[i])
+	for p in _points:
+		line.add_point(p)
 	var gradient := Gradient.new()
 	gradient.set_color(0, Color(trail_color.r, trail_color.g, trail_color.b, 1.0))
 	gradient.set_color(1, Color(trail_color.r, trail_color.g, trail_color.b, 0.0))
