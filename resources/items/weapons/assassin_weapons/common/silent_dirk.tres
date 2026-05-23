@@ -52,6 +52,7 @@ script = ExtResource("5_iylp1")
 abilities = Array[ExtResource("1_6juse")]([SubResource("Resource_wf80y"), SubResource("Resource_pkfrm")])
 sprite = ExtResource("6_5flqd")
 sprite_offset = Vector2(0, -6)
+tip_offset = Vector2(0, -16)
 item_id = "silent_dirk"
 name = "Silent Dirk"
 description = "A narrow, shadow‑colored dagger designed for one purpose: silence."

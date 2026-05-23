@@ -38,6 +38,7 @@ script = ExtResource("4_n45eo")
 abilities = Array[ExtResource("1_eqkqm")]([SubResource("Resource_buh3f"), SubResource("Resource_lond5")])
 sprite = ExtResource("5_a7b3j")
 sprite_offset = Vector2(0, -6)
+tip_offset = Vector2(0, -16)
 item_id = "throwing_knives"
 name = "Throwing Knives"
 description = "Slim steel knives bearing blackened edges to reduce glint in the dark."
