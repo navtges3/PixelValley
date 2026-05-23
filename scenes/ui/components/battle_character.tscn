@@ -26,6 +26,7 @@ offset = Vector2(0, -11)
 position = Vector2(0, -31)
 
 [node name="WeaponTrail" type="Node2D" parent="Visual/WeaponAnchor" unique_id=1872321355]
+z_index = 1
 script = ExtResource("4_il1nn")
 
 [node name="Line2D" type="Line2D" parent="Visual/WeaponAnchor/WeaponTrail" unique_id=1640209012]

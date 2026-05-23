@@ -77,6 +77,7 @@ func play_death() -> void:
 
 func _on_frame_changed():
 	_update_weapon_anchor()
+	_update_trail()
 
 func _update_trail() -> void:
 	if weapon_trail == null:
