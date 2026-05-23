@@ -78,7 +78,6 @@ func play_death() -> void:
 		sprite.play("death")
 
 func _on_frame_changed():
-	print("anim: ", sprite.animation, " frame: ", sprite.frame)
 	_update_weapon_anchor()
 	_update_trail()
 

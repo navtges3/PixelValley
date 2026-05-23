@@ -28,16 +28,13 @@ func activate() -> void:
 	_points.clear()
 	line.clear_points()
 	set_process(true)
-	print("WeaponTrail: Activate")
 
 func deactivate() -> void:
 	_tween = create_tween()
 	_tween.tween_property(line, "modulate:a", 0.0, 0.1)
 	_tween.tween_callback(func():
 		line.clear_points()
-		set_process(false)
-		print("WeaponTrail: Deactivate")
-	)
+		set_process(false))
 
 func _process(_delta: float) -> void:
 	if _tip_point == null:
