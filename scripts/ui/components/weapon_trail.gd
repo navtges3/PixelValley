@@ -7,7 +7,7 @@ class_name WeaponTrail
 
 @onready var line: Line2D = $Line2D
 
-var _tip_offset: Vector2 = Vector2(0, -16)
+var _tip_point: Node2D = null
 var _points: Array[Vector2] = []
 
 func _ready() -> void:
@@ -15,8 +15,8 @@ func _ready() -> void:
 	line.default_color = trail_color
 	set_process(false)
 
-func set_tip_offset(offset: Vector2) -> void:
-	_tip_offset = offset
+func set_tip_offset(tip: Node2D) -> void:
+	_tip_point = tip
 
 var _tween: Tween
 
@@ -40,8 +40,9 @@ func deactivate() -> void:
 	)
 
 func _process(_delta: float) -> void:
-	var global_tip := global_position + _tip_offset.rotated(global_rotation)
-	_points.push_front(to_local(global_tip))
+	if _tip_point == null:
+		return
+	_points.push_front(to_local(_tip_point.global_position))
 	if _points.size() > max_points:
 		_points.pop_back()
 	line.clear_points()
@@ -51,3 +52,4 @@ func _process(_delta: float) -> void:
 	gradient.set_color(0, Color(trail_color.r, trail_color.g, trail_color.b, 1.0))
 	gradient.set_color(1, Color(trail_color.r, trail_color.g, trail_color.b, 0.0))
 	line.gradient = gradient
+	line.width = trail_width

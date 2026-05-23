@@ -7,10 +7,11 @@ const SCALE := Vector2(3.0, 3.0)
 @onready var sprite: AnimatedSprite2D = $Visual/AnimatedSprite2D
 @onready var weapon_anchor: Marker2D = $Visual/WeaponAnchor
 @onready var weapon_sprite: Sprite2D = $Visual/WeaponAnchor/WeaponSprite
-@onready var weapon_trail: WeaponTrail = $Visual/WeaponAnchor/WeaponTrail
+@onready var tip_point: Node2D = $Visual/WeaponAnchor/TipPoint
+@onready var weapon_trail: WeaponTrail = $Visual/WeaponTrail
 
 const TRAIL_FRAMES := {
-	"attack": [2, 3]
+	"attack": [1, 2]
 }
 
 signal animation_done()
@@ -43,7 +44,8 @@ func equip_weapon(weapon_texture: Texture2D, offset: Vector2, tip_offset: Vector
 	weapon_sprite.texture = weapon_texture
 	weapon_sprite.offset = offset
 	weapon_sprite.visible = true
-	weapon_trail.set_tip_offset(tip_offset)
+	tip_point.position = tip_offset
+	weapon_trail.set_tip_offset(tip_point)
 	_update_weapon_anchor()
 
 func configure_trail(hero_class: Hero.HeroClass) -> void:
@@ -76,6 +78,7 @@ func play_death() -> void:
 		sprite.play("death")
 
 func _on_frame_changed():
+	print("anim: ", sprite.animation, " frame: ", sprite.frame)
 	_update_weapon_anchor()
 	_update_trail()
 
