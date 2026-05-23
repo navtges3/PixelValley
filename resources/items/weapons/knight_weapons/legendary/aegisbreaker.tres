@@ -82,6 +82,7 @@ rarity = 2
 abilities = Array[ExtResource("1_m5l2j")]([SubResource("Resource_rd418"), SubResource("Resource_ly784"), SubResource("Resource_5llse"), SubResource("Resource_507l5")])
 sprite = ExtResource("6_3m1fe")
 sprite_offset = Vector2(0, -11)
+tip_offset = Vector2(0, -27)
 item_id = "aegisbreaker"
 name = "Aegisbreaker"
 description = "A heroic greatsword carried by a fallen champion whose spirit lingers within."

@@ -51,6 +51,7 @@ script = ExtResource("5_a0l43")
 abilities = Array[ExtResource("1_bk72t")]([SubResource("Resource_l4yvg"), SubResource("Resource_uc2qj")])
 sprite = ExtResource("6_56twx")
 sprite_offset = Vector2(0, -12)
+tip_offset = Vector2(-2, -24)
 item_id = "curved_scimitar"
 name = "Curved Scimitar"
 description = "A crescent blade with an exotic curve favored by roaming cutthroats."

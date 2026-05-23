@@ -82,6 +82,7 @@ rarity = 1
 abilities = Array[ExtResource("1_kcnn2")]([SubResource("Resource_kquh3"), SubResource("Resource_18xr5"), SubResource("Resource_u8vg7")])
 sprite = ExtResource("6_gdy70")
 sprite_offset = Vector2(0, -0.6)
+tip_offset = Vector2(0, -16)
 item_id = "venomfang_blades"
 name = "Venomfang Blades"
 description = "Twin daggers with serpent‑shaped hilts, their grooves designed to hold poison."
