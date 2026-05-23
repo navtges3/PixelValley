@@ -54,6 +54,7 @@ script = ExtResource("5_6cf6l")
 abilities = Array[ExtResource("1_sigq7")]([SubResource("Resource_u3gri"), SubResource("Resource_m0u44")])
 sprite = ExtResource("6_6usb4")
 sprite_offset = Vector2(0, -8)
+tip_offset = Vector2(0, -16)
 item_id = "silver_scepter"
 name = "Silver Scepter"
 description = "A polished scepter adorned with small gemstones favored by young nobles."

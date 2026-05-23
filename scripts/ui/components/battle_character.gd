@@ -7,18 +7,22 @@ const SCALE := Vector2(3.0, 3.0)
 @onready var sprite: AnimatedSprite2D = $Visual/AnimatedSprite2D
 @onready var weapon_anchor: Marker2D = $Visual/WeaponAnchor
 @onready var weapon_sprite: Sprite2D = $Visual/WeaponAnchor/WeaponSprite
+@onready var magic_glow: MagicGlow = $Visual/WeaponAnchor/MagicGlow
 @onready var tip_point: Node2D = $Visual/WeaponAnchor/TipPoint
 @onready var weapon_trail: WeaponTrail = $Visual/WeaponTrail
 
 const TRAIL_FRAMES := {
 	"attack": [1, 2]
 }
-
 signal animation_done()
 
 var _hand_positions: Dictionary = {}
 var _hand_rotations: Dictionary = {}
 var _flip_h := false
+
+func _ready() -> void:
+	weapon_trail.visible = false
+	magic_glow.visible = false
 
 func set_frames(frames: SpriteFrames) -> void:
 	sprite.sprite_frames = frames
@@ -46,20 +50,30 @@ func equip_weapon(weapon_texture: Texture2D, offset: Vector2, tip_offset: Vector
 	weapon_sprite.visible = true
 	tip_point.position = tip_offset
 	weapon_trail.set_tip_offset(tip_point)
+	magic_glow.set_tip_point(tip_point)
 	_update_weapon_anchor()
 
-func configure_trail(hero_class: Hero.HeroClass) -> void:
+func configure_vfx(hero_class: Hero.HeroClass) -> void:
 	match hero_class:
 		Hero.HeroClass.KNIGHT:
+			magic_glow.visible = false
+			weapon_trail.visible = true
 			weapon_trail.trail_color = Color(1.0, 0.95, 0.6)
 			weapon_trail.trail_width = 4.0
 			weapon_trail.max_points = 10
 		Hero.HeroClass.ASSASSIN:
+			magic_glow.visible = false
+			weapon_trail.visible = true
 			weapon_trail.trail_color = Color(0.7, 0.1, 0.9)
 			weapon_trail.trail_width = 2.0
 			weapon_trail.max_points = 5
+		Hero.HeroClass.PRINCESS:
+			weapon_trail.visible = false
+			magic_glow.visible = true
+			magic_glow.glow_color = Color(0.4, 0.8, 1.0)
 		_:
 			weapon_trail.visible = false
+			magic_glow.visible = false
 
 func play_idle() -> void:
 	if sprite.animation != "idle":
@@ -79,18 +93,24 @@ func play_death() -> void:
 
 func _on_frame_changed():
 	_update_weapon_anchor()
-	_update_trail()
+	_update_vfx()
 
-func _update_trail() -> void:
-	if weapon_trail == null:
-		return
+func _update_vfx() -> void:
 	var anim := sprite.animation
-	if TRAIL_FRAMES.has(anim) and sprite.frame in TRAIL_FRAMES[anim]:
+	var frame := sprite.frame
+	
+	if TRAIL_FRAMES.has(anim) and frame in TRAIL_FRAMES[anim]:
 		if not weapon_trail.is_processing():
 			weapon_trail.activate()
 	else:
 		if weapon_trail.is_processing():
 			weapon_trail.deactivate()
+	
+	if magic_glow.visible:
+		if anim == "attack" and not magic_glow.is_processing():
+			magic_glow.activate()
+		elif anim != "attack" and magic_glow.is_processing():
+			magic_glow.deactivate()
 
 func _update_weapon_anchor() -> void:
 	if _hand_positions.is_empty():

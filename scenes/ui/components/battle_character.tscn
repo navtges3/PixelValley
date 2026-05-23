@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://j5ackm5k12l4" path="res://assets/BattleFloor.png" id="2_stq27"]
 [ext_resource type="Texture2D" uid="uid://bi7j44i813t8w" path="res://assets/items/weapons/SwordSprite.png" id="3_il1nn"]
 [ext_resource type="SpriteFrames" uid="uid://haf5vhfyci3t" path="res://resources/characters/heroes/test_battle_sprite_frames.tres" id="4_4ej30"]
+[ext_resource type="Script" uid="uid://dob7sohiowffx" path="res://scripts/ui/components/magic_glow.gd" id="4_ej3rn"]
 [ext_resource type="Script" uid="uid://c37q15v1k0fmj" path="res://scripts/ui/components/weapon_trail.gd" id="4_il1nn"]
 
 [node name="BattleCharacter" type="Node2D" unique_id=2135240791]
@@ -24,6 +25,9 @@ offset = Vector2(0, -11)
 
 [node name="TipPoint" type="Node2D" parent="Visual/WeaponAnchor" unique_id=654856578]
 position = Vector2(0, -31)
+
+[node name="MagicGlow" type="Node2D" parent="Visual/WeaponAnchor" unique_id=78295855]
+script = ExtResource("4_ej3rn")
 
 [node name="WeaponTrail" type="Node2D" parent="Visual" unique_id=1872321355]
 z_index = 1
