@@ -53,6 +53,7 @@ rarity = 1
 abilities = Array[ExtResource("1_2s0cd")]([SubResource("Resource_gpskx"), SubResource("Resource_0i4sv"), SubResource("Resource_0nd0f")])
 sprite = ExtResource("5_ybjfe")
 sprite_offset = Vector2(0, -12)
+tip_offset = Vector2(0, -24)
 item_id = "shadowveil_katar"
 name = "Shadowveil Katar"
 description = "A pair of forearm blades hidden beneath dark cloth wraps."

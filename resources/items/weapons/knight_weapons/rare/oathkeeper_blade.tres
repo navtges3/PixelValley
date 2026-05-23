@@ -72,6 +72,7 @@ rarity = 1
 abilities = Array[ExtResource("1_e3y50")]([SubResource("Resource_5oggx"), SubResource("Resource_0f65f"), SubResource("Resource_t48fg")])
 sprite = ExtResource("6_vl4bw")
 sprite_offset = Vector2(0, -11)
+tip_offset = Vector2(0, -31)
 item_id = "oathkeeper_blade"
 name = "Oathkeeper Blade"
 description = "A ceremonial sword that glows softly whenever its wielder stands firm."

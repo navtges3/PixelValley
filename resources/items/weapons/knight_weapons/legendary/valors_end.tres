@@ -74,6 +74,7 @@ rarity = 2
 abilities = Array[ExtResource("1_0tyqb")]([SubResource("Resource_3v6b0"), SubResource("Resource_5fnv3"), SubResource("Resource_ytus0"), SubResource("Resource_2rppc")])
 sprite = ExtResource("6_ehgko")
 sprite_offset = Vector2(0, -16)
+tip_offset = Vector2(0, -40)
 item_id = "valors_end"
 name = "Valor's End"
 description = "The blade of an ancient champion."

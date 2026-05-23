@@ -38,6 +38,7 @@ script = ExtResource("4_ndbae")
 abilities = Array[ExtResource("1_l0ulq")]([SubResource("Resource_7xty2"), SubResource("Resource_wmyjd")])
 sprite = ExtResource("5_tq1xl")
 sprite_offset = Vector2(0, -11)
+tip_offset = Vector2(0, -27)
 item_id = "bronze_mace"
 name = "Bronze Mace"
 description = "A dull bronze head mounted on a rough wooden haft, simple but dependable."

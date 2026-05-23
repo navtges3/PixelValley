@@ -38,6 +38,7 @@ script = ExtResource("4_aon3y")
 abilities = Array[ExtResource("1_kp53j")]([SubResource("Resource_5u2n6"), SubResource("Resource_0cotu")])
 sprite = ExtResource("5_ifmx5")
 sprite_offset = Vector2(0, -12)
+tip_offset = Vector2(0, -24)
 item_id = "rusty_shortsword"
 name = "Rusty Shortsword"
 description = "A battered short blade showing the scars of rough back‑alley jobs."

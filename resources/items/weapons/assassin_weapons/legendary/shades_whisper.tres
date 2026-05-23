@@ -68,6 +68,7 @@ rarity = 2
 abilities = Array[ExtResource("1_edp5q")]([SubResource("Resource_f0x1o"), SubResource("Resource_3u0ce"), SubResource("Resource_2637p"), SubResource("Resource_aek06")])
 sprite = ExtResource("5_j03qa")
 sprite_offset = Vector2(0, -6)
+tip_offset = Vector2(0, -16)
 item_id = "shades_whisper"
 name = "Shade’s Whisper"
 description = "An ethereal blade that flickers like a lingering shadow."

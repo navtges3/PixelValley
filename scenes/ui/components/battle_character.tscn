@@ -2,8 +2,9 @@
 
 [ext_resource type="Script" uid="uid://kcysixmfxdo0" path="res://scripts/ui/components/battle_character.gd" id="1_il1nn"]
 [ext_resource type="Texture2D" uid="uid://j5ackm5k12l4" path="res://assets/BattleFloor.png" id="2_stq27"]
-[ext_resource type="Texture2D" uid="uid://qc2pp4gt2s0i" path="res://assets/items/weapons/WandSprite.png" id="3_4ej30"]
-[ext_resource type="SpriteFrames" uid="uid://pch4plbc12hl" path="res://resources/characters/heroes/princess/princess_battle_sprite_frames.tres" id="4_4ej30"]
+[ext_resource type="Texture2D" uid="uid://bi7j44i813t8w" path="res://assets/items/weapons/SwordSprite.png" id="3_il1nn"]
+[ext_resource type="SpriteFrames" uid="uid://haf5vhfyci3t" path="res://resources/characters/heroes/test_battle_sprite_frames.tres" id="4_4ej30"]
+[ext_resource type="Script" uid="uid://c37q15v1k0fmj" path="res://scripts/ui/components/weapon_trail.gd" id="4_il1nn"]
 
 [node name="BattleCharacter" type="Node2D" unique_id=2135240791]
 script = ExtResource("1_il1nn")
@@ -15,17 +16,23 @@ texture = ExtResource("2_stq27")
 offset = Vector2(0, -6)
 
 [node name="WeaponAnchor" type="Marker2D" parent="Visual" unique_id=106552498]
-position = Vector2(9, -20)
-rotation = 0.20071286
+position = Vector2(13, -19)
 
 [node name="WeaponSprite" type="Sprite2D" parent="Visual/WeaponAnchor" unique_id=1133877748]
-texture = ExtResource("3_4ej30")
-offset = Vector2(0, -8)
+texture = ExtResource("3_il1nn")
+offset = Vector2(0, -11)
+
+[node name="TipPoint" type="Node2D" parent="Visual/WeaponAnchor" unique_id=654856578]
+position = Vector2(0, -31)
+
+[node name="WeaponTrail" type="Node2D" parent="Visual/WeaponAnchor" unique_id=1872321355]
+script = ExtResource("4_il1nn")
+
+[node name="Line2D" type="Line2D" parent="Visual/WeaponAnchor/WeaponTrail" unique_id=1640209012]
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Visual" unique_id=1921383678]
 sprite_frames = ExtResource("4_4ej30")
-animation = &"idle"
-frame = 1
+animation = &"attack"
 centered = false
 offset = Vector2(-32, -64)
 

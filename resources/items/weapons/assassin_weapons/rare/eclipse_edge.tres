@@ -67,6 +67,7 @@ rarity = 1
 abilities = Array[ExtResource("1_nmxb1")]([SubResource("Resource_tk0ww"), SubResource("Resource_y6aqt"), SubResource("Resource_8nknr")])
 sprite = ExtResource("6_dmkw6")
 sprite_offset = Vector2(0, -12)
+tip_offset = Vector2(-2, -24)
 item_id = "eclipse_edge"
 name = "Eclipse Edge"
 description = "A blade forged of dusk‑colored steel that seems to dim the air around it."

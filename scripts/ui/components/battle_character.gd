@@ -7,6 +7,11 @@ const SCALE := Vector2(3.0, 3.0)
 @onready var sprite: AnimatedSprite2D = $Visual/AnimatedSprite2D
 @onready var weapon_anchor: Marker2D = $Visual/WeaponAnchor
 @onready var weapon_sprite: Sprite2D = $Visual/WeaponAnchor/WeaponSprite
+@onready var weapon_trail: WeaponTrail = $Visual/WeaponAnchor/WeaponTrail
+
+const TRAIL_FRAMES := {
+	"attack": [2, 3]
+}
 
 signal animation_done()
 
@@ -31,14 +36,28 @@ func apply_visual(combatant: Combatant, flip_h := false) -> void:
 	weapon_anchor.scale.x = -1.0 if flip_h else 1.0
 	_update_weapon_anchor()
 
-func equip_weapon(weapon_texture: Texture2D, offset: Vector2) -> void:
+func equip_weapon(weapon_texture: Texture2D, offset: Vector2, tip_offset: Vector2 = Vector2(0, -16)) -> void:
 	if weapon_texture == null or _hand_positions.is_empty():
 		weapon_sprite.visible = false
 		return
 	weapon_sprite.texture = weapon_texture
 	weapon_sprite.offset = offset
 	weapon_sprite.visible = true
+	weapon_trail.set_tip_offset(tip_offset)
 	_update_weapon_anchor()
+
+func configure_trail(hero_class: Hero.HeroClass) -> void:
+	match hero_class:
+		Hero.HeroClass.KNIGHT:
+			weapon_trail.trail_color = Color(1.0, 0.95, 0.6)
+			weapon_trail.trail_width = 4.0
+			weapon_trail.max_points = 10
+		Hero.HeroClass.ASSASSIN:
+			weapon_trail.trail_color = Color(0.7, 0.1, 0.9)
+			weapon_trail.trail_width = 2.0
+			weapon_trail.max_points = 5
+		_:
+			weapon_trail.visible = false
 
 func play_idle() -> void:
 	if sprite.animation != "idle":
@@ -58,6 +77,17 @@ func play_death() -> void:
 
 func _on_frame_changed():
 	_update_weapon_anchor()
+
+func _update_trail() -> void:
+	if weapon_trail == null:
+		return
+	var anim := sprite.animation
+	if TRAIL_FRAMES.has(anim) and sprite.frame in TRAIL_FRAMES[anim]:
+		if not weapon_trail.is_processing():
+			weapon_trail.activate()
+	else:
+		if weapon_trail.is_processing():
+			weapon_trail.deactivate()
 
 func _update_weapon_anchor() -> void:
 	if _hand_positions.is_empty():

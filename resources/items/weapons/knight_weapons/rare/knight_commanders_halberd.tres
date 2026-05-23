@@ -73,6 +73,7 @@ rarity = 1
 abilities = Array[ExtResource("1_61mcf")]([SubResource("Resource_0gtlg"), SubResource("Resource_bq87x"), SubResource("Resource_5dh36")])
 sprite = ExtResource("6_7jf51")
 sprite_offset = Vector2(0, -20)
+tip_offset = Vector2(0, -35)
 item_id = "knight_commanders_halberd"
 name = "Knight Commander’s Halberd"
 description = "An ornate polearm engraved with honors of past battlefield victories."

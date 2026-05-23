@@ -38,6 +38,7 @@ script = ExtResource("4_jd2ub")
 abilities = Array[ExtResource("1_08gng")]([SubResource("Resource_nlyxl"), SubResource("Resource_5b7wv")])
 sprite = ExtResource("5_in8j7")
 sprite_offset = Vector2(0, -16)
+tip_offset = Vector2(0, -40)
 item_id = "steel_claymore"
 name = "Steel Claymore"
 description = "A massive two‑handed sword whose weight alone commands respect."
