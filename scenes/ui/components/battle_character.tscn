@@ -25,11 +25,12 @@ offset = Vector2(0, -11)
 [node name="TipPoint" type="Node2D" parent="Visual/WeaponAnchor" unique_id=654856578]
 position = Vector2(0, -31)
 
-[node name="WeaponTrail" type="Node2D" parent="Visual/WeaponAnchor" unique_id=1872321355]
+[node name="WeaponTrail" type="Node2D" parent="Visual" unique_id=1872321355]
 z_index = 1
+position = Vector2(13, -19)
 script = ExtResource("4_il1nn")
 
-[node name="Line2D" type="Line2D" parent="Visual/WeaponAnchor/WeaponTrail" unique_id=1640209012]
+[node name="Line2D" type="Line2D" parent="Visual/WeaponTrail" unique_id=1640209012]
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Visual" unique_id=1921383678]
 sprite_frames = ExtResource("4_4ej30")
