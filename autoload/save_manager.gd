@@ -258,14 +258,16 @@ func _resolve_item_id(id: String) -> String:
 func _get_village_data(village: Village) -> Dictionary:
 	return {
 		"name": village.name,
-		"shop": _get_shop_data(village.shop),
+		"potion_shop": _get_shop_data(village.potion_shop),
+		"weapon_shop": _get_shop_data(village.weapon_shop),
 		"inn": _get_inn_data(village.inn)
 	}
 
 func _load_village(data: Dictionary) -> Village:
 	var village := Village.new()
 	village.name = data.get("name", "Unnamed Village")
-	village.shop = _load_shop(data.get("shop", {}))
+	village.potion_shop = _load_shop(data.get("potion_shop", {}))
+	village.weapon_shop = _load_shop(data.get("weapon_shop", {}))
 	village.inn = _load_inn(data.get("inn", {}))
 	return village
 

@@ -40,6 +40,7 @@ script = ExtResource("4_odvbb")
 abilities = Array[ExtResource("1_lnfkh")]([SubResource("Resource_7p1tg"), SubResource("Resource_nud7m")])
 sprite = ExtResource("5_ty5ub")
 sprite_offset = Vector2(3, -7)
+tip_offset = Vector2(3, -7)
 item_id = "focus_orb"
 name = "Focus Orb"
 description = "A palm‑sized crystal sphere swirling with faint pastel light."

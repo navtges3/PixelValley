@@ -38,6 +38,7 @@ metadata/_custom_type_script = "uid://b2o7w8q10stxo"
 script = ExtResource("4_4d2j1")
 abilities = Array[ExtResource("1_oolys")]([SubResource("Resource_frt2t"), SubResource("Resource_pq831")])
 sprite_offset = Vector2(0, -8)
+tip_offset = Vector2(0, -26)
 item_id = "runed_staff"
 name = "Runed Staff"
 description = "A wooden staff carved with glowing runes of old royal lineage."
