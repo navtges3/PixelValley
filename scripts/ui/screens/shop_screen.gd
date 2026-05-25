@@ -3,7 +3,10 @@ class_name ShopScreen
 
 enum ShopType { POTION, WEAPON }
 
-const ENTRANCE_ID := "shop"
+const ENTRANCE_ID := {
+	ShopType.POTION: "potion_shop",
+	ShopType.WEAPON: "weapon_shop"
+}
 
 @export var shop_type: ShopType = ShopType.POTION
 
@@ -28,12 +31,15 @@ var shop: Shop
 
 func _ready() -> void:
 	hero = GameState.hero
-	shop = _get_shop()
-	shop_name_label.text = shop.name
-	shop_manager.start_shop(hero, shop)
-	quantity_spin_box.visible = shop_type == ShopType.POTION
-	ability_container.visible = shop_type == ShopType.WEAPON
-	_update_item_list()
+
+func setup(data) -> void:
+	if data is ShopScreen.ShopType:
+		shop = _get_shop()
+		shop_name_label.text = shop.name
+		shop_manager.start_shop(hero, shop)
+		quantity_spin_box.visible = shop_type == ShopType.POTION
+		ability_container.visible = shop_type == ShopType.WEAPON
+		_update_item_list()
 
 func _get_shop() -> Shop:
 	match shop_type:
@@ -97,13 +103,13 @@ func _refresh_ability_list(weapon: Weapon) -> void:
 func _update_item_cost() -> void:
 	var item := ItemLoader.get_item(shop_manager.selected_item_id)
 	if item:
-		var qty := int(quantity_spin_box.value) if ShopType.POTION else 1
+		var qty := int(quantity_spin_box.value) if shop_type == ShopType.POTION else 1
 		item_cost_label.text = str(item.value * qty)
 
 func _update_purchase_button() -> void:
 	var item := ItemLoader.get_item(shop_manager.selected_item_id)
 	if item:
-		var qty := int(quantity_spin_box.value) if ShopType.POTION else 1
+		var qty := int(quantity_spin_box.value) if shop_type == ShopType.POTION else 1
 		purchase_button.disabled = item.value * qty > hero.inventory.gold
 	else:
 		purchase_button.disabled = true
