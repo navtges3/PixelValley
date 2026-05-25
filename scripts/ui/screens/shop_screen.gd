@@ -31,22 +31,29 @@ var shop: Shop
 
 func _ready() -> void:
 	hero = GameState.hero
+	# Default init for the potion shop (in case setup() is never called)
+	shop_type = ShopType.POTION
+	_init_shop()
 
 func setup(data) -> void:
-	if data is ShopScreen.ShopType:
-		shop = _get_shop()
-		shop_name_label.text = shop.name
-		shop_manager.start_shop(hero, shop)
-		quantity_spin_box.visible = shop_type == ShopType.POTION
-		ability_container.visible = shop_type == ShopType.WEAPON
-		_update_item_list()
+	if data is int and data < ShopType.size():
+		shop_type = data as ShopType
+	_init_shop()
+
+func _init_shop() -> void:
+	shop = _get_shop()
+	shop_name_label.text = shop.name
+	shop_manager.start_shop(hero, shop)
+	quantity_spin_box.visible = shop_type == ShopType.POTION
+	ability_container.visible = shop_type == ShopType.WEAPON
+	_update_item_list()
 
 func _get_shop() -> Shop:
 	match shop_type:
 		ShopType.WEAPON:
-			return GameState.village.weapons_shop
+			return GameState.village.weapon_shop
 		_:
-			return GameState.village.shop
+			return GameState.village.potion_shop
 
 # ─── List ────────────────────────────────────────────────────────────────────
 
@@ -166,4 +173,4 @@ func _on_purchase_button_pressed() -> void:
 	_update_item_list()
 
 func _on_exit_button_pressed() -> void:
-	ScreenManager.go_back(ENTRANCE_ID)
+	ScreenManager.go_back(ENTRANCE_ID[shop_type])

@@ -32,11 +32,12 @@ func _setup_village() -> void:
 	village.name = "Lexiton"
 	village.inn = Inn.new()
 	village.inn.name = "Crooked Tusk"
-	_setup_potion_shop(village.potion_shop)
-	_setup_weapon_shop(village.weapon_shop)
+	_setup_potion_shop()
+	_setup_weapon_shop()
 
-func _setup_potion_shop(shop: Shop) -> void:
-	shop.inventory.clear()
+func _setup_potion_shop() -> void:
+	var shop = Shop.new()
+	shop.name = "Willowroot Remedies"
 	shop.add_item("lesser_healing_potion", 5)
 	shop.add_item("greater_healing_potion", 3)
 	shop.add_item("attack_potion", 3)
@@ -44,12 +45,15 @@ func _setup_potion_shop(shop: Shop) -> void:
 	shop.add_item("defense_potion", 3)
 	shop.add_item("resistance_potion", 3)
 	shop.add_item("energy_potion", 3)
+	village.potion_shop = shop
 
-func _setup_weapon_shop(shop: Shop) -> void:
-	shop.inventory.clear()
+func _setup_weapon_shop() -> void:
+	var shop = Shop.new()
+	shop.name = "Oakshield Forge"
 	var common_weapons: Array = WeaponDatabase.CLASS_WEAPON_TABLE.get(hero.hero_class, {}).get(Item.Rarity.COMMON, [])
 	for weapon_id in common_weapons:
 		shop.add_item(weapon_id, 1)
+	village.weapon_shop = shop
 
 func _setup_hero_inv() -> void:
 	hero.inventory.potions.clear()
