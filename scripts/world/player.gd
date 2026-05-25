@@ -41,7 +41,8 @@ func on_zone_entered(zone: TriggerZone) -> void:
 		return
 	_zone_cooldown = true
 	await get_tree().process_frame
-	ScreenManager.go_to_screen(zone.screen_target, zone.entrance_id)
+	var data = zone.screen_data if zone.screen_data >= 0 else null
+	ScreenManager.go_to_screen(zone.screen_target, zone.entrance_id, data)
 	_zone_cooldown = false
 
 func place_at_entrance(entrance_node: Node2D) -> void:

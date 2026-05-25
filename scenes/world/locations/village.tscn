@@ -71,6 +71,7 @@ position = Vector2(672, 227)
 script = ExtResource("2_rt3mv")
 entrance_id = "potion_shop"
 screen_target = 5
+screen_data = 0
 metadata/_custom_type_script = "uid://c5sed60hjy0rk"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="TriggerZones/PotionShopTriggerZone" unique_id=531062253]
@@ -105,6 +106,7 @@ position = Vector2(512, 227)
 script = ExtResource("2_rt3mv")
 entrance_id = "weapon_shop"
 screen_target = 5
+screen_data = 1
 metadata/_custom_type_script = "uid://c5sed60hjy0rk"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="TriggerZones/WeaponShopTriggerZone" unique_id=696258203]
