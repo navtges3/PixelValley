@@ -74,6 +74,7 @@ rarity = 2
 abilities = Array[ExtResource("1_qgjck")]([SubResource("Resource_w68nx"), SubResource("Resource_s0gv6"), SubResource("Resource_5hw8h"), SubResource("Resource_td3vm")])
 sprite = ExtResource("6_e5x0j")
 sprite_offset = Vector2(0, -12)
+tip_offset = Vector2(-2, -24)
 item_id = "widowmaker"
 name = "The Widowmaker"
 description = "Cursed‑silver daggers whispered to have ended entire bloodlines."

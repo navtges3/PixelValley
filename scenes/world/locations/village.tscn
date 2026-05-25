@@ -66,25 +66,26 @@ offset_right = 69.0
 offset_bottom = 7.0
 text = "Exit"
 
-[node name="ShopTriggerZone" type="Area2D" parent="TriggerZones" unique_id=1214933235 groups=["trigger_zone"]]
+[node name="PotionShopTriggerZone" type="Area2D" parent="TriggerZones" unique_id=1214933235 groups=["trigger_zone"]]
 position = Vector2(672, 227)
 script = ExtResource("2_rt3mv")
-entrance_id = "shop"
+entrance_id = "potion_shop"
 screen_target = 5
+screen_data = 0
 metadata/_custom_type_script = "uid://c5sed60hjy0rk"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="TriggerZones/ShopTriggerZone" unique_id=531062253]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TriggerZones/PotionShopTriggerZone" unique_id=531062253]
 shape = SubResource("CircleShape2D_e7reh")
 
-[node name="Label" type="Label" parent="TriggerZones/ShopTriggerZone" unique_id=1059137505]
+[node name="Label" type="Label" parent="TriggerZones/PotionShopTriggerZone" unique_id=1059137505]
 offset_left = 29.0
 offset_top = -15.0
 offset_right = 68.0
 offset_bottom = 8.0
-text = "Shop"
+text = "Potions"
 
 [node name="TrainingTriggerZone" type="Area2D" parent="TriggerZones" unique_id=254792451 groups=["trigger_zone"]]
-position = Vector2(512, 227)
+position = Vector2(512, 547)
 script = ExtResource("2_rt3mv")
 entrance_id = "training"
 screen_target = 7
@@ -100,22 +101,23 @@ offset_right = -18.0
 offset_bottom = 11.0
 text = "Training"
 
-[node name="ArmoryTriggerZone" type="Area2D" parent="TriggerZones" unique_id=264463684 groups=["trigger_zone"]]
-position = Vector2(512, 547)
+[node name="WeaponShopTriggerZone" type="Area2D" parent="TriggerZones" unique_id=264463684 groups=["trigger_zone"]]
+position = Vector2(512, 227)
 script = ExtResource("2_rt3mv")
-entrance_id = "armory"
-screen_target = 6
+entrance_id = "weapon_shop"
+screen_target = 5
+screen_data = 1
 metadata/_custom_type_script = "uid://c5sed60hjy0rk"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="TriggerZones/ArmoryTriggerZone" unique_id=696258203]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TriggerZones/WeaponShopTriggerZone" unique_id=696258203]
 shape = SubResource("CircleShape2D_h8u16")
 
-[node name="Label" type="Label" parent="TriggerZones/ArmoryTriggerZone" unique_id=1065136552]
-offset_left = -81.0
+[node name="Label" type="Label" parent="TriggerZones/WeaponShopTriggerZone" unique_id=1065136552]
+offset_left = -90.0
 offset_top = -16.0
-offset_right = -20.0
+offset_right = -18.0
 offset_bottom = 7.0
-text = "Armory"
+text = "Weapons"
 
 [node name="InnTriggerZone" type="Area2D" parent="TriggerZones" unique_id=351930910 groups=["trigger_zone"]]
 position = Vector2(768, 547)

@@ -38,6 +38,7 @@ script = ExtResource("4_2kcii")
 abilities = Array[ExtResource("1_opcml")]([SubResource("Resource_whbbj"), SubResource("Resource_4r6gf")])
 sprite = ExtResource("5_rnii3")
 sprite_offset = Vector2(0, -6)
+tip_offset = Vector2(0, -16)
 item_id = "twin_daggers"
 name = "Twin Daggers"
 description = "Matched blades balanced perfectly for swift, fluid combat."

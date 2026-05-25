@@ -13,7 +13,7 @@ enum ScreenName {
 	NONE,
 	MAIN_MENU, NEW_GAME,
 	VILLAGE,
-	INN, SHOP, ARMORY, TRAINING, QUEST,
+	INN, POTION_SHOP, WEAPON_SHOP, TRAINING, QUEST,
 	VALLEY,
 	FOREST, WAR_CAMP, CAVE,
 	BATTLE,
@@ -34,8 +34,8 @@ const SCENE_PATHS := {
 	ScreenName.NEW_GAME: "res://scenes/ui/screens/new_game_screen.tscn",
 	ScreenName.VILLAGE: "res://scenes/world/locations/village.tscn",
 	ScreenName.INN: "res://scenes/ui/screens/inn_screen.tscn",
-	ScreenName.SHOP: "res://scenes/ui/screens/shop_screen.tscn",
-	ScreenName.ARMORY: "res://scenes/ui/screens/armory_screen.tscn",
+	ScreenName.POTION_SHOP: "res://scenes/ui/screens/shop_screen.tscn",
+	ScreenName.WEAPON_SHOP: "res://scenes/ui/screens/shop_screen.tscn",
 	ScreenName.TRAINING: "res://scenes/ui/screens/training_screen.tscn",
 	ScreenName.VALLEY: "res://scenes/world/locations/valley.tscn",
 	ScreenName.FOREST: "res://scenes/world/locations/forest.tscn",
@@ -93,9 +93,7 @@ func go_back(entrance_id: String = "", data = null) -> void:
 func _change_scene(path: String, entrance_id: String = "", data = null) -> void:
 	_is_transitioning = true
 	await _fade(1.0)
-	
 	_world_hud.hide()
-
 	var scene = load(path).instantiate()
 	get_tree().current_scene.free()
 	get_tree().root.add_child(scene)
@@ -105,12 +103,10 @@ func _change_scene(path: String, entrance_id: String = "", data = null) -> void:
 	if entrance_id != "" and scene.has_method("place_player_at_entrance"):
 		print("Placing player at entrance: %s" % entrance_id)
 		scene.place_player_at_entrance(entrance_id)
-
 	if _current_screen_name in WORLD_SCREENS:
 		_world_hud.show_all()
 	else:
 		_world_hud.hide_all()
-
 	await get_tree().process_frame
 	await _fade(0.0)
 	_is_transitioning = false

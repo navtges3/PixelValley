@@ -15,7 +15,7 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 [application]
 
 config/name="PixelValley"
-config/version="0.1.0"
+config/version="0.1.1"
 run/main_scene="uid://4w3ilq3htolk"
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://icon.svg"
@@ -26,11 +26,11 @@ buses/default_bus_layout="uid://crpk253ew4rsx"
 
 [autoload]
 
-GameState="*res://autoload/game_state.gd"
+SettingsManager="*uid://pbuy3m18awm"
 SaveManager="*uid://be6fxg7kvv6mj"
+GameState="*res://autoload/game_state.gd"
 WorldManager="*uid://cyqkyvbcp1b8e"
 ScreenManager="*uid://ci5rl1jgfmryi"
-SettingsManager="*uid://pbuy3m18awm"
 AudioManager="*res://autoload/audio_manager.gd"
 HeroLoader="*uid://bdbko8ym27fys"
 ItemLoader="*uid://c5scu6op4trrm"

@@ -35,7 +35,7 @@ hand_positions = {
 "idle": [Vector2(9, -19), Vector2(9, -20), Vector2(9, -20), Vector2(9, -19)]
 }
 hand_rotations = {
-"attack": [0.2, 0.2, 0.2, 0.2, 0.2],
+"attack": [0.2, 0.2, 0.3, 0.5, 0.4],
 "hurt": [0.2, 0.2, 0.2, 0.2],
 "idle": [0.2, 0.2, 0.2, 0.2]
 }
