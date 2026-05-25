@@ -15,6 +15,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_wjsap")
+shop_type = null
 
 [node name="ShopNameLabel" type="Label" parent="." unique_id=559161195]
 layout_mode = 1
