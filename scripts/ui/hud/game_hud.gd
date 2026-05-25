@@ -16,21 +16,21 @@ const TAB_LABELS := {
 }
 
 const PANELS_BY_TAB := {
-	Tab.STATS: "StatsPanel",
+	Tab.STATS:     "StatsPanel",
 	Tab.INVENTORY: "InventoryPanel",
-	Tab.QUESTS: "QuestsPanel",
-	Tab.SYSTEM: "SystemPanel",
+	Tab.QUESTS:    "QuestsPanel",
+	Tab.SYSTEM:    "SystemPanel",
 }
 
 @onready var overlay: ColorRect = $Overlay
 @onready var panel: PanelContainer = $Panel
-@onready var tab_bar: HBoxContainer = $Panel/VBox/TabBar
-@onready var content_area: Control = $Panel/VBox/ContentArea
+@onready var tab_bar: HBoxContainer = $Panel/MarginContainer/VBox/TabBar
+@onready var content_area: Control = $Panel/MarginContainer/VBox/MarginContainer/ContentArea
 
-@onready var stats_panel: Control = $Panel/VBox/ContentArea/StatsPanel
-@onready var inventory_panel: Control = $Panel/VBox/ContentArea/InventoryPanel
-@onready var quests_panel: Control = $Panel/VBox/ContentArea/QuestsPanel
-@onready var system_panel: Control = $Panel/VBox/ContentArea/SystemPanel
+@onready var stats_panel: StatsPanel = $Panel/MarginContainer/VBox/MarginContainer/ContentArea/StatsPanel
+@onready var inventory_panel: InventoryPanel = $Panel/MarginContainer/VBox/MarginContainer/ContentArea/InventoryPanel
+@onready var quests_panel: QuestsPanel = $Panel/MarginContainer/VBox/MarginContainer/ContentArea/QuestsPanel
+@onready var system_panel: SystemPanel = $Panel/MarginContainer/VBox/MarginContainer/ContentArea/SystemPanel
 
 var _is_open: bool = false
 var _current_tab: Tab = Tab.STATS
