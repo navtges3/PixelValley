@@ -15,94 +15,93 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_wjsap")
-shop_type = null
 
-[node name="ShopNameLabel" type="Label" parent="." unique_id=559161195]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.5
-anchor_top = 0.145
-anchor_right = 0.5
-anchor_bottom = 0.145
-grow_horizontal = 2
-text = "Shop Name"
+[node name="ShopManager" type="Node" parent="." unique_id=898180851]
+script = ExtResource("5_8niu3")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=979985274]
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=427555005]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -461.0
-offset_top = -320.0
-offset_right = 461.0
-offset_bottom = 320.0
+offset_left = -427.0
+offset_top = -333.0
+offset_right = 427.0
+offset_bottom = 333.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("4_vyyrr")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer" unique_id=1116611542]
+layout_mode = 2
+
+[node name="ShopNameLabel" type="Label" parent="PanelContainer/VBoxContainer" unique_id=559161195]
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "Shop Name"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="PanelContainer/VBoxContainer" unique_id=1824778853]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/VBoxContainer" unique_id=979985274]
+layout_mode = 2
 theme_override_constants/separation = 16
 alignment = 1
 
-[node name="ListPanelContainer" type="PanelContainer" parent="HBoxContainer" unique_id=127267311]
-custom_minimum_size = Vector2(0, 640)
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-theme = ExtResource("4_vyyrr")
-
-[node name="ScrollContainer" type="ScrollContainer" parent="HBoxContainer/ListPanelContainer" unique_id=1502094098]
+[node name="ScrollContainer" type="ScrollContainer" parent="PanelContainer/VBoxContainer/HBoxContainer" unique_id=1502094098]
 layout_mode = 2
 horizontal_scroll_mode = 0
 
-[node name="ItemList" type="VBoxContainer" parent="HBoxContainer/ListPanelContainer/ScrollContainer" unique_id=1345505191]
+[node name="ItemList" type="VBoxContainer" parent="PanelContainer/VBoxContainer/HBoxContainer/ScrollContainer" unique_id=1345505191]
 layout_mode = 2
 
-[node name="Button" type="Button" parent="HBoxContainer/ListPanelContainer/ScrollContainer/ItemList" unique_id=2030915421]
+[node name="Button" type="Button" parent="PanelContainer/VBoxContainer/HBoxContainer/ScrollContainer/ItemList" unique_id=2030915421]
 layout_mode = 2
 text = "Health Potion"
 
-[node name="InfoPanelContainer" type="PanelContainer" parent="HBoxContainer" unique_id=938038825]
-custom_minimum_size = Vector2(0, 640)
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-theme = ExtResource("4_vyyrr")
-
-[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/InfoPanelContainer" unique_id=1799574486]
+[node name="HSeparator" type="HSeparator" parent="PanelContainer/VBoxContainer/HBoxContainer/ScrollContainer/ItemList" unique_id=685240961]
 layout_mode = 2
 
-[node name="ItemNameLabel" type="Label" parent="HBoxContainer/InfoPanelContainer/VBoxContainer" unique_id=1409757400]
+[node name="VSeparator" type="VSeparator" parent="PanelContainer/VBoxContainer/HBoxContainer" unique_id=487013773]
+layout_mode = 2
+
+[node name="ItemContainer" type="VBoxContainer" parent="PanelContainer/VBoxContainer/HBoxContainer" unique_id=1799574486]
+layout_mode = 2
+
+[node name="ItemNameLabel" type="Label" parent="PanelContainer/VBoxContainer/HBoxContainer/ItemContainer" unique_id=1409757400]
 layout_mode = 2
 theme_override_font_sizes/font_size = 24
 text = "Item Name"
 
-[node name="ItemDescriptionLabel" type="Label" parent="HBoxContainer/InfoPanelContainer/VBoxContainer" unique_id=20343323]
+[node name="ItemDescriptionLabel" type="Label" parent="PanelContainer/VBoxContainer/HBoxContainer/ItemContainer" unique_id=20343323]
 custom_minimum_size = Vector2(320, 0)
 layout_mode = 2
 text = "Item Descripton: This item has a powerful effect that will help the hero defeat more monsters"
 autowrap_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/InfoPanelContainer/VBoxContainer" unique_id=602352072]
+[node name="CostContainer" type="HBoxContainer" parent="PanelContainer/VBoxContainer/HBoxContainer/ItemContainer" unique_id=602352072]
 layout_mode = 2
 
-[node name="ItemCostLabel" type="Label" parent="HBoxContainer/InfoPanelContainer/VBoxContainer/HBoxContainer" unique_id=2124260684]
+[node name="ItemCostLabel" type="Label" parent="PanelContainer/VBoxContainer/HBoxContainer/ItemContainer/CostContainer" unique_id=2124260684]
 layout_mode = 2
 text = "Item Gold"
 
-[node name="SpinBox" type="SpinBox" parent="HBoxContainer/InfoPanelContainer/VBoxContainer/HBoxContainer" unique_id=1426867500]
+[node name="QuantitySpinBox" type="SpinBox" parent="PanelContainer/VBoxContainer/HBoxContainer/ItemContainer/CostContainer" unique_id=1426867500]
 layout_mode = 2
 min_value = 1.0
 value = 1.0
 
-[node name="PurchaseButton" type="Button" parent="HBoxContainer/InfoPanelContainer/VBoxContainer" unique_id=296293788]
-custom_minimum_size = Vector2(96, 32)
+[node name="ability_container" type="VBoxContainer" parent="PanelContainer/VBoxContainer/HBoxContainer/ItemContainer" unique_id=1211328124]
 layout_mode = 2
-size_flags_horizontal = 0
-size_flags_vertical = 0
-theme = ExtResource("1_6epuk")
-text = "Purchase"
 
-[node name="ExitButton" type="Button" parent="HBoxContainer/InfoPanelContainer/VBoxContainer" unique_id=1691211180]
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/VBoxContainer/HBoxContainer/ItemContainer" unique_id=687292725]
+layout_mode = 2
+
+[node name="ExitButton" type="Button" parent="PanelContainer/VBoxContainer/HBoxContainer/ItemContainer/HBoxContainer" unique_id=1691211180]
 custom_minimum_size = Vector2(96, 32)
 layout_mode = 2
 size_flags_horizontal = 0
@@ -110,29 +109,34 @@ size_flags_vertical = 0
 theme = ExtResource("2_ec12o")
 text = "Exit Shop"
 
-[node name="ability_container" type="VBoxContainer" parent="HBoxContainer/InfoPanelContainer/VBoxContainer" unique_id=1211328124]
+[node name="PurchaseButton" type="Button" parent="PanelContainer/VBoxContainer/HBoxContainer/ItemContainer/HBoxContainer" unique_id=296293788]
+custom_minimum_size = Vector2(96, 32)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme = ExtResource("1_6epuk")
+text = "Purchase"
+
+[node name="HSeparator" type="HSeparator" parent="PanelContainer/VBoxContainer/HBoxContainer/ItemContainer" unique_id=1394894622]
 layout_mode = 2
 
-[node name="HeroPanelContainer" type="PanelContainer" parent="HBoxContainer" unique_id=483686062]
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-theme = ExtResource("4_vyyrr")
-
-[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/HeroPanelContainer" unique_id=1742232913]
+[node name="VSeparator2" type="VSeparator" parent="PanelContainer/VBoxContainer/HBoxContainer" unique_id=1596020135]
 layout_mode = 2
 
-[node name="HeroUI" parent="HBoxContainer/HeroPanelContainer/VBoxContainer" unique_id=1959400994 instance=ExtResource("3_ec12o")]
+[node name="HeroInfo" type="VBoxContainer" parent="PanelContainer/VBoxContainer/HBoxContainer" unique_id=1742232913]
 layout_mode = 2
 
-[node name="InventoryLabel" type="Label" parent="HBoxContainer/HeroPanelContainer/VBoxContainer" unique_id=734318880]
+[node name="HeroUI" parent="PanelContainer/VBoxContainer/HBoxContainer/HeroInfo" unique_id=1959400994 instance=ExtResource("3_ec12o")]
+layout_mode = 2
+
+[node name="InventoryLabel" type="Label" parent="PanelContainer/VBoxContainer/HBoxContainer/HeroInfo" unique_id=734318880]
 layout_mode = 2
 text = "Hero Inventory:"
 
-[node name="ShopManager" type="Node" parent="." unique_id=898180851]
-script = ExtResource("5_8niu3")
+[node name="HSeparator" type="HSeparator" parent="PanelContainer/VBoxContainer/HBoxContainer/HeroInfo" unique_id=476855945]
+layout_mode = 2
 
-[connection signal="value_changed" from="HBoxContainer/InfoPanelContainer/VBoxContainer/HBoxContainer/SpinBox" to="." method="_on_spin_box_value_changed"]
-[connection signal="pressed" from="HBoxContainer/InfoPanelContainer/VBoxContainer/PurchaseButton" to="." method="_on_purchase_button_pressed"]
-[connection signal="pressed" from="HBoxContainer/InfoPanelContainer/VBoxContainer/ExitButton" to="." method="_on_exit_button_pressed"]
 [connection signal="hero_updated" from="ShopManager" to="." method="_on_shop_manager_hero_updated"]
+[connection signal="value_changed" from="PanelContainer/VBoxContainer/HBoxContainer/ItemContainer/CostContainer/QuantitySpinBox" to="." method="_on_spin_box_value_changed"]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/HBoxContainer/ItemContainer/HBoxContainer/ExitButton" to="." method="_on_exit_button_pressed"]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/HBoxContainer/ItemContainer/HBoxContainer/PurchaseButton" to="." method="_on_purchase_button_pressed"]

@@ -11,18 +11,18 @@ const ENTRANCE_ID := {
 @export var shop_type: ShopType = ShopType.POTION
 
 @onready var shop_manager = $ShopManager
-@onready var item_list: VBoxContainer = $HBoxContainer/ListPanelContainer/ScrollContainer/ItemList
-@onready var shop_name_label: Label = $ShopNameLabel
+@onready var item_list: VBoxContainer = $PanelContainer/VBoxContainer/HBoxContainer/ScrollContainer/ItemList
+@onready var shop_name_label: Label = $PanelContainer/VBoxContainer/ShopNameLabel
 # Detail Panel
-@onready var item_name_label: Label = $HBoxContainer/InfoPanelContainer/VBoxContainer/ItemNameLabel
-@onready var item_description_label: Label = $HBoxContainer/InfoPanelContainer/VBoxContainer/ItemDescriptionLabel
-@onready var item_cost_label: Label = $HBoxContainer/InfoPanelContainer/VBoxContainer/HBoxContainer/ItemCostLabel
-@onready var quantity_spin_box: SpinBox = $HBoxContainer/InfoPanelContainer/VBoxContainer/HBoxContainer/SpinBox
-@onready var ability_container: VBoxContainer = $HBoxContainer/InfoPanelContainer/VBoxContainer/ability_container
-@onready var purchase_button: Button = $HBoxContainer/InfoPanelContainer/VBoxContainer/PurchaseButton
+@onready var item_name_label: Label = $PanelContainer/VBoxContainer/HBoxContainer/ItemContainer/ItemNameLabel
+@onready var item_description_label: Label = $PanelContainer/VBoxContainer/HBoxContainer/ItemContainer/ItemDescriptionLabel
+@onready var item_cost_label: Label = $PanelContainer/VBoxContainer/HBoxContainer/ItemContainer/CostContainer/ItemCostLabel
+@onready var quantity_spin_box: SpinBox = $PanelContainer/VBoxContainer/HBoxContainer/ItemContainer/CostContainer/QuantitySpinBox
+@onready var ability_container: VBoxContainer = $PanelContainer/VBoxContainer/HBoxContainer/ItemContainer/ability_container
+@onready var purchase_button: Button = $PanelContainer/VBoxContainer/HBoxContainer/ItemContainer/HBoxContainer/PurchaseButton
 # Hero Panel
-@onready var hero_ui: HeroInfo = $HBoxContainer/HeroPanelContainer/VBoxContainer/HeroUI
-@onready var inventory_label: Label = $HBoxContainer/HeroPanelContainer/VBoxContainer/InventoryLabel
+@onready var hero_ui: HeroInfo = $PanelContainer/VBoxContainer/HBoxContainer/HeroInfo/HeroUI
+@onready var inventory_label: Label = $PanelContainer/VBoxContainer/HBoxContainer/HeroInfo/InventoryLabel
 
 var ItemButton := preload("res://scenes/ui/components/item_button.tscn")
 
