@@ -40,6 +40,7 @@ script = ExtResource("4_f6g8r")
 abilities = Array[ExtResource("1_cb8k4")]([SubResource("Resource_iiwb8"), SubResource("Resource_uta35")])
 sprite = ExtResource("5_qcdtv")
 sprite_offset = Vector2(0, -8)
+tip_offset = Vector2(0, -13)
 item_id = "apprentices_wand"
 name = "Apprentice’s Wand"
 description = "A slim birch wand capped with a tiny crystal that hums with beginner’s magic."
