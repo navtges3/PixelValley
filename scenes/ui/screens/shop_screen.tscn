@@ -109,6 +109,9 @@ size_flags_vertical = 0
 theme = ExtResource("2_ec12o")
 text = "Exit Shop"
 
+[node name="ability_container" type="VBoxContainer" parent="HBoxContainer/InfoPanelContainer/VBoxContainer" unique_id=1211328124]
+layout_mode = 2
+
 [node name="HeroPanelContainer" type="PanelContainer" parent="HBoxContainer" unique_id=483686062]
 layout_mode = 2
 size_flags_horizontal = 4
