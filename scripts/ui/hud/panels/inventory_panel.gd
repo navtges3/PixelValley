@@ -1,6 +1,8 @@
 extends Control
 class_name InventoryPanel
 
+signal weapon_equipped(weapon_id: String)
+
 @onready var potions_list: VBoxContainer = $ScrollContainer/VBox/PotionsSection/PotionsList
 @onready var equipped_label: Label = $ScrollContainer/VBox/WeaponsSection/EquippedLabel
 @onready var weapons_list: VBoxContainer = $ScrollContainer/VBox/WeaponsSection/WeaponsList
@@ -47,29 +49,42 @@ func _refresh_potions(hero: Hero) -> void:
 func _refresh_weapons(hero: Hero) -> void:
 	for child in weapons_list.get_children():
 		child.queue_free()
-	
 	var equipped := hero.inventory.equipped_weapon
 	if equipped:
 		equipped_label.text = "Equipped: %s" % equipped.name
 		equipped_label.add_theme_color_override("font_color", COLOR_EQUIPPED)
-		var tip := equipped._to_string()
-		equipped_label.tooltip_text = tip
+		equipped_label.tooltip_text = equipped._to_string()
 	else:
 		equipped_label.text = "Equipped: None"
 		equipped_label.add_theme_color_override("font_color", COLOR_SUBTEXT)
-	
 	if hero.inventory.weapon_stash.is_empty():
 		weapons_list.add_child(_make_label("No weapons in stash", COLOR_SUBTEXT))
 		return
-	
 	for weapon_id in hero.inventory.weapon_stash:
 		var weapon := ItemLoader.get_item(weapon_id) as Weapon
 		if weapon == null:
 			continue
 		var color := _rarity_color(weapon.rarity)
+		var row := HBoxContainer.new()
 		var lbl := _make_label("• %s  [%s]" % [weapon.name, Item.rarity_to_string(weapon.rarity)], color)
+		lbl.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		lbl.tooltip_text = weapon._to_string()
-		weapons_list.add_child(lbl)
+		row.add_child(lbl)
+		var btn := _make_equip_button(weapon_id)
+		row.add_child(btn)
+		weapons_list.add_child(row)
+
+func _make_equip_button(weapon_id: String) -> Button:
+	var btn := Button.new()
+	btn.text = "Equip"
+	btn.add_theme_font_size_override("font_size", 11)
+	# Capture weapon_id in the closure; refresh reruns the whole panel after equipping.
+	btn.pressed.connect(func() -> void:
+		GameState.hero.inventory.equip_weapon(weapon_id)
+		weapon_equipped.emit(weapon_id)
+		refresh()
+	)
+	return btn
 
 func _rarity_color(rarity: Item.Rarity) -> Color:
 	match rarity:
