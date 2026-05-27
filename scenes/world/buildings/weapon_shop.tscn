@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://cfuiq4nuxxjhw"]
+
+[ext_resource type="Texture2D" uid="uid://cwn555px60mvx" path="res://assets/overworld/village_props/armory.png" id="1_bblfk"]
+
+[node name="WeaponShop" type="StaticBody2D" unique_id=1671380686]
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1650050496]
+texture_filter = 1
+texture = ExtResource("1_bblfk")
+offset = Vector2(0, -43)
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="." unique_id=538583642]
+polygon = PackedVector2Array(-65, 0, -52, 0, -52, 14, -50, 16, -46, 16, -42, 17, -38, 17, -34, 16, -30, 16, -26, 17, -22, 17, -17.740372, 16, -14, 16, -12, 14, -12, 0, 2, 0, 30, 0, 66, 0, 66, -56, -65, -56)
