@@ -1,8 +1,15 @@
 [gd_scene format=3 uid="uid://yj4vdyxkl61v"]
 
+[ext_resource type="Script" uid="uid://p643v63ydy3o" path="res://scripts/world/buildings/building.gd" id="1_saxo3"]
 [ext_resource type="Texture2D" uid="uid://k7tbm6c884df" path="res://assets/overworld/village_props/inn.png" id="1_v40nr"]
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_saxo3"]
+radius = 16.0
+
 [node name="Inn" type="StaticBody2D" unique_id=1671380686]
+script = ExtResource("1_saxo3")
+entrance_id = "inn"
+screen_target = 4
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1650050496]
 texture_filter = 1
@@ -11,3 +18,9 @@ offset = Vector2(0, -70)
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="." unique_id=538583642]
 polygon = PackedVector2Array(-98, 0, 66, 0, 66, -48, -98, -48)
+
+[node name="EntranceZone" type="Area2D" parent="." unique_id=2047799658]
+position = Vector2(-48, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EntranceZone" unique_id=693308414]
+shape = SubResource("CircleShape2D_saxo3")

@@ -11,9 +11,6 @@
 [sub_resource type="CircleShape2D" id="CircleShape2D_rt3mv"]
 radius = 16.0
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_e7reh"]
-radius = 16.0
-
 [sub_resource type="CircleShape2D" id="CircleShape2D_a16hn"]
 radius = 16.0
 
@@ -49,13 +46,13 @@ y_sort_enabled = true
 tile_map_data = PackedByteArray("AAAZAAcAAgAIAAgAAAAZAAgAAgAIAAkAAAAaAAcAAgAJAAgAAAAaAAgAAgAJAAkAAAAbAAcAAgAKAAgAAAAbAAgAAgAKAAkAAAA=")
 tile_set = ExtResource("2_h8u16")
 
-[node name="WeaponShop" parent="Buildings" unique_id=1671380686 instance=ExtResource("3_irc66")]
+[node name="WeaponShop" parent="Buildings" unique_id=1671380686 groups=["building"] instance=ExtResource("3_irc66")]
 position = Vector2(496, 241)
 
-[node name="Inn" parent="Buildings" unique_id=1381489631 instance=ExtResource("4_v5c8t")]
+[node name="Inn" parent="Buildings" unique_id=1381489631 groups=["building"] instance=ExtResource("4_v5c8t")]
 position = Vector2(816, 546)
 
-[node name="PotionShop" parent="Buildings" unique_id=408477813 instance=ExtResource("5_bn7ll")]
+[node name="PotionShop" parent="Buildings" unique_id=408477813 groups=["building"] instance=ExtResource("5_bn7ll")]
 position = Vector2(672, 240)
 
 [node name="Props" type="TileMapLayer" parent="." unique_id=1377801052]
@@ -84,17 +81,6 @@ offset_right = 69.0
 offset_bottom = 7.0
 text = "Exit"
 
-[node name="PotionShopTriggerZone" type="Area2D" parent="TriggerZones" unique_id=1214933235 groups=["trigger_zone"]]
-position = Vector2(672, 242)
-script = ExtResource("2_rt3mv")
-entrance_id = "potion_shop"
-screen_target = 5
-screen_data = 0
-metadata/_custom_type_script = "uid://c5sed60hjy0rk"
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="TriggerZones/PotionShopTriggerZone" unique_id=531062253]
-shape = SubResource("CircleShape2D_e7reh")
-
 [node name="TrainingTriggerZone" type="Area2D" parent="TriggerZones" unique_id=254792451 groups=["trigger_zone"]]
 position = Vector2(512, 547)
 script = ExtResource("2_rt3mv")
@@ -111,27 +97,6 @@ offset_top = -16.0
 offset_right = -18.0
 offset_bottom = 11.0
 text = "Training"
-
-[node name="WeaponShopTriggerZone" type="Area2D" parent="TriggerZones" unique_id=264463684 groups=["trigger_zone"]]
-position = Vector2(512, 242)
-script = ExtResource("2_rt3mv")
-entrance_id = "weapon_shop"
-screen_target = 5
-screen_data = 1
-metadata/_custom_type_script = "uid://c5sed60hjy0rk"
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="TriggerZones/WeaponShopTriggerZone" unique_id=696258203]
-shape = SubResource("CircleShape2D_h8u16")
-
-[node name="InnTriggerZone" type="Area2D" parent="TriggerZones" unique_id=351930910 groups=["trigger_zone"]]
-position = Vector2(768, 547)
-script = ExtResource("2_rt3mv")
-entrance_id = "inn"
-screen_target = 4
-metadata/_custom_type_script = "uid://c5sed60hjy0rk"
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="TriggerZones/InnTriggerZone" unique_id=2054555980]
-shape = SubResource("CircleShape2D_h8u16")
 
 [node name="QuestTriggerZone" type="Area2D" parent="TriggerZones" unique_id=902222772 groups=["trigger_zone"]]
 position = Vector2(848, 274)
