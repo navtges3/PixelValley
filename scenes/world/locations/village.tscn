@@ -51,9 +51,11 @@ position = Vector2(769, 549)
 
 [node name="PotionShop" parent="Buildings" unique_id=585430704 groups=["building"] instance=ExtResource("5_bn7ll")]
 position = Vector2(672, 231)
+screen_data = 0
 
 [node name="WeaponShop" parent="Buildings" unique_id=1099225507 groups=["building"] instance=ExtResource("3_irc66")]
 position = Vector2(511, 232)
+screen_data = 1
 
 [node name="Props" type="TileMapLayer" parent="." unique_id=1377801052]
 tile_map_data = PackedByteArray("AAAZAAcAAgAIAAgAAAAZAAgAAgAIAAkAAAAaAAcAAgAJAAgAAAAaAAgAAgAJAAkAAAAbAAcAAgAKAAgAAAAbAAgAAgAKAAkAAAA=")

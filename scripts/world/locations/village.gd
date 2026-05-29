@@ -10,4 +10,4 @@ func _on_location_ready() -> void:
 
 func _on_building_entered(building: Building) -> void:
 	GameState.set_player_location(ScreenManager.ScreenName.VILLAGE, building.entrance_id)
-	ScreenManager.go_to_screen(building.screen_target)
+	ScreenManager.go_to_screen(building.screen_target, building.entrance_id, building.screen_data)
