@@ -42,12 +42,12 @@ func place_player_at_entrance(entrance_id: String) -> void:
 	if not is_node_ready():
 		_pending_entraince_id = entrance_id
 		return
-	for zone in get_tree().get_nodes_in_group("trigger_zone"):
-		zone = zone as TriggerZone
-		if zone == null:
-			continue
-		if entrance_id == zone.entrance_id:
-			player.place_at_entrance(zone)
+	var candidates: Array[Node] = []
+	candidates.append_array(get_tree().get_nodes_in_group("trigger_zone"))
+	candidates.append_array(get_tree().get_nodes_in_group("building"))
+	for candidate in candidates:
+		if candidate.get("entrance_id") == entrance_id:
+			player.place_at_entrance(candidate)
 			return
 	push_warning("Entrance not found: ", entrance_id)
 
