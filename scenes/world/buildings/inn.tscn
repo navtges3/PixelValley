@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://yj4vdyxkl61v"]
+
+[ext_resource type="Texture2D" uid="uid://k7tbm6c884df" path="res://assets/overworld/village_props/inn.png" id="1_v40nr"]
+
+[node name="Inn" type="StaticBody2D" unique_id=1671380686]
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1650050496]
+texture_filter = 1
+texture = ExtResource("1_v40nr")
+offset = Vector2(0, -70)
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="." unique_id=538583642]
+polygon = PackedVector2Array(-98, 0, 66, 0, 66, -48, -98, -48)

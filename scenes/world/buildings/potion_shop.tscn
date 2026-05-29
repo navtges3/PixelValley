@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://704akrtr3vv2"]
+
+[ext_resource type="Texture2D" uid="uid://bset3h8xp36w7" path="res://assets/overworld/village_props/potion_shop.png" id="1_mxqkc"]
+
+[node name="PotionShop" type="StaticBody2D" unique_id=1671380686]
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1650050496]
+texture_filter = 1
+texture = ExtResource("1_mxqkc")
+offset = Vector2(0, -43)
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="." unique_id=538583642]
+polygon = PackedVector2Array(-65, 0, 66, 0, 66, -48, -65, -48)
