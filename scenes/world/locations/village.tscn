@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://cv120tmswg7xm" path="res://scenes/world/player.tscn" id="2_e7reh"]
 [ext_resource type="TileSet" uid="uid://4cg7ba3d6vqd" path="res://resources/world/tile_set.tres" id="2_h8u16"]
 [ext_resource type="Script" uid="uid://c5sed60hjy0rk" path="res://scripts/world/trigger_zone.gd" id="2_rt3mv"]
-[ext_resource type="PackedScene" uid="uid://cfuiq4nuxxjhw" path="res://scenes/world/buildings/weapon_shop.tscn" id="3_irc66"]
+[ext_resource type="PackedScene" uid="uid://cs87mrk0vnqod" path="res://scenes/world/buildings/weapon_shop.tscn" id="3_irc66"]
 [ext_resource type="PackedScene" uid="uid://yj4vdyxkl61v" path="res://scenes/world/buildings/inn.tscn" id="4_v5c8t"]
 [ext_resource type="PackedScene" uid="uid://704akrtr3vv2" path="res://scenes/world/buildings/potion_shop.tscn" id="5_bn7ll"]
 
@@ -46,14 +46,14 @@ y_sort_enabled = true
 tile_map_data = PackedByteArray("AAAZAAcAAgAIAAgAAAAZAAgAAgAIAAkAAAAaAAcAAgAJAAgAAAAaAAgAAgAJAAkAAAAbAAcAAgAKAAgAAAAbAAgAAgAKAAkAAAA=")
 tile_set = ExtResource("2_h8u16")
 
-[node name="WeaponShop" parent="Buildings" unique_id=1671380686 groups=["building"] instance=ExtResource("3_irc66")]
-position = Vector2(496, 241)
-
 [node name="Inn" parent="Buildings" unique_id=1381489631 groups=["building"] instance=ExtResource("4_v5c8t")]
-position = Vector2(816, 546)
+position = Vector2(769, 549)
 
-[node name="PotionShop" parent="Buildings" unique_id=408477813 groups=["building"] instance=ExtResource("5_bn7ll")]
-position = Vector2(672, 240)
+[node name="PotionShop" parent="Buildings" unique_id=585430704 groups=["building"] instance=ExtResource("5_bn7ll")]
+position = Vector2(672, 231)
+
+[node name="WeaponShop" parent="Buildings" unique_id=1099225507 groups=["building"] instance=ExtResource("3_irc66")]
+position = Vector2(511, 232)
 
 [node name="Props" type="TileMapLayer" parent="." unique_id=1377801052]
 tile_map_data = PackedByteArray("AAAZAAcAAgAIAAgAAAAZAAgAAgAIAAkAAAAaAAcAAgAJAAgAAAAaAAgAAgAJAAkAAAAbAAcAAgAKAAgAAAAbAAgAAgAKAAkAAAA=")

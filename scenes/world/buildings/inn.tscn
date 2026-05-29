@@ -14,13 +14,12 @@ screen_target = 4
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1650050496]
 texture_filter = 1
 texture = ExtResource("1_v40nr")
-offset = Vector2(0, -70)
+offset = Vector2(48, -70)
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="." unique_id=538583642]
-polygon = PackedVector2Array(-98, 0, 66, 0, 66, -48, -98, -48)
+polygon = PackedVector2Array(-50, 0, 114, 0, 114, -48, -50, -48)
 
 [node name="EntranceZone" type="Area2D" parent="." unique_id=2047799658]
-position = Vector2(-48, 1)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="EntranceZone" unique_id=693308414]
 shape = SubResource("CircleShape2D_saxo3")
