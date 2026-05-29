@@ -3,24 +3,23 @@
 [ext_resource type="Script" uid="uid://p643v63ydy3o" path="res://scripts/world/buildings/building.gd" id="1_hr72k"]
 [ext_resource type="Texture2D" uid="uid://bset3h8xp36w7" path="res://assets/overworld/village_props/potion_shop.png" id="1_mxqkc"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_mxqkc"]
+[sub_resource type="CircleShape2D" id="CircleShape2D_hr72k"]
 radius = 16.0
 
-[node name="PotionShop" type="StaticBody2D" unique_id=1671380686]
+[node name="PotionShop" type="StaticBody2D" unique_id=585430704]
 script = ExtResource("1_hr72k")
 entrance_id = "potion_shop"
 screen_target = 5
 
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1650050496]
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=454383907]
 texture_filter = 1
 texture = ExtResource("1_mxqkc")
 offset = Vector2(0, -43)
 
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="." unique_id=538583642]
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="." unique_id=1266673522]
 polygon = PackedVector2Array(-65, 0, 66, 0, 66, -48, -65, -48)
 
-[node name="EntranceZone" type="Area2D" parent="." unique_id=116835264]
-position = Vector2(0, 1)
+[node name="EntranceZone" type="Area2D" parent="." unique_id=330572127]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="EntranceZone" unique_id=34012358]
-shape = SubResource("CircleShape2D_mxqkc")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EntranceZone" unique_id=1728397118]
+shape = SubResource("CircleShape2D_hr72k")

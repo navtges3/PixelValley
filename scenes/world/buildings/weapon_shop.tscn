@@ -1,26 +1,25 @@
-[gd_scene format=3 uid="uid://cfuiq4nuxxjhw"]
+[gd_scene format=3 uid="uid://cs87mrk0vnqod"]
 
 [ext_resource type="Texture2D" uid="uid://cojl8vame767g" path="res://assets/overworld/village_props/weapon_shop.png" id="1_bblfk"]
 [ext_resource type="Script" uid="uid://p643v63ydy3o" path="res://scripts/world/buildings/building.gd" id="1_fpext"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_bblfk"]
+[sub_resource type="CircleShape2D" id="CircleShape2D_fpext"]
 radius = 16.0
 
-[node name="WeaponShop" type="StaticBody2D" unique_id=1671380686]
+[node name="WeaponShop" type="StaticBody2D" unique_id=1099225507]
 script = ExtResource("1_fpext")
 entrance_id = "weapon_shop"
 screen_target = 6
 
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1650050496]
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1206546786]
 texture_filter = 1
 texture = ExtResource("1_bblfk")
-offset = Vector2(0, -43)
+offset = Vector2(-16, -43)
 
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="." unique_id=538583642]
-polygon = PackedVector2Array(-65, 0, -52, 0, -52, 14, -50, 16, -46, 16, -42, 17, -38, 17, -34, 16, -30, 16, -26, 17, -22, 17, -17.740372, 16, -14, 16, -12, 14, -12, 0, 2, 0, 30, 0, 66, 0, 66, -48, -65, -48)
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="." unique_id=1002556148]
+polygon = PackedVector2Array(-81, 0, -68, 0, -68, 14, -66, 16, -62, 16, -61, 15, -60, 15, -58, 17, -54, 17, -52, 15, -51, 15, -50, 16, -46, 16, -45, 15, -44, 15, -42, 17, -38, 17, -36, 15, -35, 15, -34, 16, -30, 16, -28, 14, -27.826916, 0, 50, 0, 50, -48, -81, -48)
 
-[node name="EntranceZone" type="Area2D" parent="." unique_id=874808314]
-position = Vector2(16, 1)
+[node name="EntranceZone" type="Area2D" parent="." unique_id=1162155391]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="EntranceZone" unique_id=2142159316]
-shape = SubResource("CircleShape2D_bblfk")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EntranceZone" unique_id=1487148832]
+shape = SubResource("CircleShape2D_fpext")
