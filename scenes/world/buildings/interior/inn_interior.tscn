@@ -1,0 +1,22 @@
+[gd_scene format=3 uid="uid://cttyfmtb2fvj5"]
+
+[ext_resource type="Script" uid="uid://bm8uo2lhg2kg5" path="res://scripts/world/buildings/interior/inn_interior.gd" id="1_tlekw"]
+[ext_resource type="PackedScene" uid="uid://dp6qp05llks3o" path="res://scenes/ui/windows/inn_window.tscn" id="2_i6dxs"]
+[ext_resource type="PackedScene" uid="uid://k35wlbc0ho3o" path="res://scenes/ui/components/interact_area.tscn" id="3_tlekw"]
+[ext_resource type="PackedScene" uid="uid://cv120tmswg7xm" path="res://scenes/world/player.tscn" id="4_vofwt"]
+
+[node name="InnInterior" type="Node2D" unique_id=601251887]
+script = ExtResource("1_tlekw")
+metadata/_custom_type_script = "uid://bh050uh6e1a4v"
+
+[node name="InnWindow" parent="." unique_id=1834709062 instance=ExtResource("2_i6dxs")]
+
+[node name="InteractArea" parent="." unique_id=1105164537 instance=ExtResource("3_tlekw")]
+
+[node name="Floor" type="TileMapLayer" parent="." unique_id=7237375]
+
+[node name="Props" type="TileMapLayer" parent="." unique_id=941579065]
+
+[node name="Walls" type="TileMapLayer" parent="." unique_id=495843114]
+
+[node name="Player" parent="." unique_id=426329780 instance=ExtResource("4_vofwt")]

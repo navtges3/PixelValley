@@ -4,9 +4,9 @@
 [ext_resource type="PackedScene" uid="uid://cv120tmswg7xm" path="res://scenes/world/player.tscn" id="2_e7reh"]
 [ext_resource type="TileSet" uid="uid://4cg7ba3d6vqd" path="res://resources/world/tile_set.tres" id="2_h8u16"]
 [ext_resource type="Script" uid="uid://c5sed60hjy0rk" path="res://scripts/world/trigger_zone.gd" id="2_rt3mv"]
-[ext_resource type="PackedScene" uid="uid://cs87mrk0vnqod" path="res://scenes/world/buildings/weapon_shop.tscn" id="3_irc66"]
-[ext_resource type="PackedScene" uid="uid://yj4vdyxkl61v" path="res://scenes/world/buildings/inn.tscn" id="4_v5c8t"]
-[ext_resource type="PackedScene" uid="uid://704akrtr3vv2" path="res://scenes/world/buildings/potion_shop.tscn" id="5_bn7ll"]
+[ext_resource type="PackedScene" uid="uid://cs87mrk0vnqod" path="res://scenes/world/buildings/exterior/weapon_shop.tscn" id="3_irc66"]
+[ext_resource type="PackedScene" uid="uid://yj4vdyxkl61v" path="res://scenes/world/buildings/exterior/inn.tscn" id="4_v5c8t"]
+[ext_resource type="PackedScene" uid="uid://704akrtr3vv2" path="res://scenes/world/buildings/exterior/potion_shop.tscn" id="5_bn7ll"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_rt3mv"]
 radius = 16.0
