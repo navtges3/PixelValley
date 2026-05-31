@@ -1,18 +1,13 @@
 extends Control
-class_name ShopScreen
+class_name ShopWindow
+
+signal closed
 
 enum ShopType { POTION, WEAPON }
 
-const ENTRANCE_ID := {
-	ShopType.POTION: "potion_shop",
-	ShopType.WEAPON: "weapon_shop"
-}
-
-@export var shop_type: ShopType = ShopType.POTION
-
-@onready var shop_manager = $ShopManager
-@onready var item_list: VBoxContainer = $PanelContainer/VBoxContainer/HBoxContainer/ScrollContainer/ItemList
+@onready var shop_manager: ShopManager = $ShopManager
 @onready var shop_name_label: Label = $PanelContainer/VBoxContainer/ShopNameLabel
+@onready var item_list: VBoxContainer = $PanelContainer/VBoxContainer/HBoxContainer/ScrollContainer/ItemList
 # Detail Panel
 @onready var item_name_label: Label = $PanelContainer/VBoxContainer/HBoxContainer/ItemContainer/ItemNameLabel
 @onready var item_description_label: Label = $PanelContainer/VBoxContainer/HBoxContainer/ItemContainer/ItemDescriptionLabel
@@ -28,25 +23,21 @@ var ItemButton := preload("res://scenes/ui/components/item_button.tscn")
 
 var hero: Hero
 var shop: Shop
+var shop_type: ShopType
 
-func _ready() -> void:
+func open(type: ShopType) -> void:
+	shop_type = type
 	hero = GameState.hero
-	# Default init for the potion shop (in case setup() is never called)
-	shop_type = ShopType.POTION
-	_init_shop()
-
-func setup(data) -> void:
-	if data is int and data < ShopType.size():
-		shop_type = data as ShopType
-	_init_shop()
-
-func _init_shop() -> void:
 	shop = _get_shop()
 	shop_name_label.text = shop.name
-	shop_manager.start_shop(hero, shop)
 	quantity_spin_box.visible = shop_type == ShopType.POTION
-	ability_container.visible = shop_type == ShopType.WEAPON
+	quantity_spin_box.visible = shop_type == ShopType.WEAPON
 	_update_item_list()
+	show()
+
+func close() -> void:
+	hide()
+	closed.emit()
 
 func _get_shop() -> Shop:
 	match shop_type:
@@ -65,7 +56,7 @@ func create_item_button(item_id: String, count: int) -> Button:
 	var button := ItemButton.instantiate()
 	button.item_id = item_id
 	button.count = count
-	button.connect("item_pressed", Callable(self, "_on_item_pressed"))
+	button.connect("item_pressed", _on_item_pressed)
 	return button
 
 func _update_item_list() -> void:
@@ -112,7 +103,7 @@ func _update_item_cost() -> void:
 	if item:
 		var qty := int(quantity_spin_box.value) if shop_type == ShopType.POTION else 1
 		item_cost_label.text = str(item.value * qty)
-
+		
 func _update_purchase_button() -> void:
 	var item := ItemLoader.get_item(shop_manager.selected_item_id)
 	if item:
@@ -137,7 +128,7 @@ func _on_shop_manager_hero_updated(hero_ref: Hero) -> void:
 func _refresh_potion_inventory(hero_ref: Hero) -> void:
 	var text := "Hero Inventory:"
 	if hero_ref.inventory.potions.is_empty():
-		text += "\n  None"
+		text += "\n None"
 	else:
 		for item_id in hero_ref.inventory.potions:
 			var count: int = hero_ref.inventory.potions[item_id]
@@ -169,8 +160,8 @@ func _on_purchase_button_pressed() -> void:
 		return
 	var qty := int(quantity_spin_box.value) if shop_type == ShopType.POTION else 1
 	shop_manager.buy_item(qty)
-	AudioManager.play_sfx_by_id("back_of_coins")
+	AudioManager.play_sfx_by_id("bag_of_coins")
 	_update_item_list()
 
-func _on_exit_button_pressed() -> void:
-	ScreenManager.go_back(ENTRANCE_ID[shop_type])
+func _on_close_button_pressed() -> void:
+	close()

@@ -1,0 +1,128 @@
+[gd_scene format=3 uid="uid://barcl6is7t0uy"]
+
+[ext_resource type="Script" uid="uid://pg4to1h8kht3" path="res://scripts/ui/windows/shop_window.gd" id="1_7ddxr"]
+[ext_resource type="Script" uid="uid://hgt4ge7m4nn2" path="res://scripts/systems/shop_manager.gd" id="1_541c8"]
+[ext_resource type="Theme" uid="uid://dq41s7i7v61gk" path="res://resources/ui/backgrounds/background_panel.tres" id="2_7ddxr"]
+[ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://resources/ui/button_themes/regular/red_button.tres" id="3_r3f2a"]
+[ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://resources/ui/button_themes/regular/green_button.tres" id="4_pnchr"]
+[ext_resource type="PackedScene" uid="uid://bjx12sxd6xqme" path="res://scenes/ui/components/hero_info.tscn" id="5_imbx3"]
+
+[node name="ShopWindow" type="Control" unique_id=1917424634]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_7ddxr")
+
+[node name="ShopManager" type="Node" parent="." unique_id=681263017]
+script = ExtResource("1_541c8")
+
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=177150635]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -427.0
+offset_top = -333.0
+offset_right = 427.0
+offset_bottom = 333.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_7ddxr")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer" unique_id=1927230529]
+layout_mode = 2
+
+[node name="ShopNameLabel" type="Label" parent="PanelContainer/VBoxContainer" unique_id=1602856003]
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "Shop Name"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="PanelContainer/VBoxContainer" unique_id=753086325]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/VBoxContainer" unique_id=1818164396]
+layout_mode = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="ScrollContainer" type="ScrollContainer" parent="PanelContainer/VBoxContainer/HBoxContainer" unique_id=698413999]
+layout_mode = 2
+horizontal_scroll_mode = 0
+
+[node name="ItemList" type="VBoxContainer" parent="PanelContainer/VBoxContainer/HBoxContainer/ScrollContainer" unique_id=295772473]
+layout_mode = 2
+
+[node name="Button" type="Button" parent="PanelContainer/VBoxContainer/HBoxContainer/ScrollContainer/ItemList" unique_id=41802600]
+layout_mode = 2
+text = "Health Potion"
+
+[node name="VSeparator" type="VSeparator" parent="PanelContainer/VBoxContainer/HBoxContainer" unique_id=1505594472]
+layout_mode = 2
+
+[node name="ItemContainer" type="VBoxContainer" parent="PanelContainer/VBoxContainer/HBoxContainer" unique_id=613289631]
+layout_mode = 2
+
+[node name="ItemNameLabel" type="Label" parent="PanelContainer/VBoxContainer/HBoxContainer/ItemContainer" unique_id=1954342372]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Item Name"
+
+[node name="ItemDescriptionLabel" type="Label" parent="PanelContainer/VBoxContainer/HBoxContainer/ItemContainer" unique_id=1253183545]
+custom_minimum_size = Vector2(320, 0)
+layout_mode = 2
+text = "Item Descripton: This item has a powerful effect that will help the hero defeat more monsters"
+autowrap_mode = 2
+
+[node name="CostContainer" type="HBoxContainer" parent="PanelContainer/VBoxContainer/HBoxContainer/ItemContainer" unique_id=686123047]
+layout_mode = 2
+
+[node name="ItemCostLabel" type="Label" parent="PanelContainer/VBoxContainer/HBoxContainer/ItemContainer/CostContainer" unique_id=1608863671]
+layout_mode = 2
+text = "Item Gold"
+
+[node name="QuantitySpinBox" type="SpinBox" parent="PanelContainer/VBoxContainer/HBoxContainer/ItemContainer/CostContainer" unique_id=1826118746]
+layout_mode = 2
+min_value = 1.0
+value = 1.0
+
+[node name="ability_container" type="VBoxContainer" parent="PanelContainer/VBoxContainer/HBoxContainer/ItemContainer" unique_id=1776671303]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/VBoxContainer/HBoxContainer/ItemContainer" unique_id=508836984]
+layout_mode = 2
+
+[node name="CloseButton" type="Button" parent="PanelContainer/VBoxContainer/HBoxContainer/ItemContainer/HBoxContainer" unique_id=365499203]
+custom_minimum_size = Vector2(96, 32)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme = ExtResource("3_r3f2a")
+text = "Close Shop"
+
+[node name="PurchaseButton" type="Button" parent="PanelContainer/VBoxContainer/HBoxContainer/ItemContainer/HBoxContainer" unique_id=94203275]
+custom_minimum_size = Vector2(96, 32)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme = ExtResource("4_pnchr")
+text = "Purchase"
+
+[node name="VSeparator2" type="VSeparator" parent="PanelContainer/VBoxContainer/HBoxContainer" unique_id=1569569015]
+layout_mode = 2
+
+[node name="HeroInfo" type="VBoxContainer" parent="PanelContainer/VBoxContainer/HBoxContainer" unique_id=1929015838]
+layout_mode = 2
+
+[node name="HeroUI" parent="PanelContainer/VBoxContainer/HBoxContainer/HeroInfo" unique_id=571032287 instance=ExtResource("5_imbx3")]
+layout_mode = 2
+
+[node name="InventoryLabel" type="Label" parent="PanelContainer/VBoxContainer/HBoxContainer/HeroInfo" unique_id=1577124558]
+layout_mode = 2
+text = "Hero Inventory:"
+
+[connection signal="value_changed" from="PanelContainer/VBoxContainer/HBoxContainer/ItemContainer/CostContainer/QuantitySpinBox" to="." method="_on_spin_box_value_changed"]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/HBoxContainer/ItemContainer/HBoxContainer/CloseButton" to="." method="_on_close_button_pressed"]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/HBoxContainer/ItemContainer/HBoxContainer/PurchaseButton" to="." method="_on_purchase_button_pressed"]
