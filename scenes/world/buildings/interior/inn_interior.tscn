@@ -19,7 +19,10 @@ radius = 16.0
 script = ExtResource("1_tlekw")
 metadata/_custom_type_script = "uid://bh050uh6e1a4v"
 
-[node name="InnWindow" parent="." unique_id=1834709062 instance=ExtResource("2_i6dxs")]
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1979389996]
+layer = 10
+
+[node name="InnWindow" parent="CanvasLayer" unique_id=1834709062 instance=ExtResource("2_i6dxs")]
 z_index = 10
 
 [node name="Floor" type="TileMapLayer" parent="." unique_id=7237375]
