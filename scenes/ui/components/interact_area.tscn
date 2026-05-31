@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://k35wlbc0ho3o"]
+
+[ext_resource type="Script" uid="uid://dg061ckwq0spb" path="res://scripts/ui/components/interact_area.gd" id="1_w2hya"]
+
+[node name="InteractArea" type="Area2D" unique_id=1105164537]
+script = ExtResource("1_w2hya")
+
+[node name="PromptLabel" type="Label" parent="." unique_id=1893184235]
+offset_right = 40.0
+offset_bottom = 23.0
