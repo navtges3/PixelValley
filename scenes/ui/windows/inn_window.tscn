@@ -15,7 +15,6 @@ grow_vertical = 2
 script = ExtResource("1_ohuxi")
 
 [node name="PanelContainer" type="PanelContainer" parent="." unique_id=304806931]
-z_index = 10
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5

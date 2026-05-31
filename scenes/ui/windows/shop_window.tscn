@@ -8,7 +8,6 @@
 [ext_resource type="PackedScene" uid="uid://bjx12sxd6xqme" path="res://scenes/ui/components/hero_info.tscn" id="5_imbx3"]
 
 [node name="ShopWindow" type="Control" unique_id=1917424634]
-z_index = 10
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -50,6 +49,7 @@ layout_mode = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/VBoxContainer" unique_id=1818164396]
 layout_mode = 2
+size_flags_vertical = 3
 theme_override_constants/separation = 16
 alignment = 1
 
@@ -59,6 +59,7 @@ horizontal_scroll_mode = 0
 
 [node name="ItemList" type="VBoxContainer" parent="PanelContainer/VBoxContainer/HBoxContainer/ScrollContainer" unique_id=295772473]
 layout_mode = 2
+size_flags_vertical = 3
 
 [node name="Button" type="Button" parent="PanelContainer/VBoxContainer/HBoxContainer/ScrollContainer/ItemList" unique_id=41802600]
 layout_mode = 2

@@ -3,7 +3,7 @@ class_name InnInterior
 
 const SCREEN_NAME := ScreenManager.ScreenName.INN
 
-@onready var inn_window: InnWindow = $InnWindow
+@onready var inn_window: InnWindow = $CanvasLayer/InnWindow
 @onready var interact_area: InteractArea = $InteractArea
 
 func _get_screen_name() -> ScreenManager.ScreenName:
