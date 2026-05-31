@@ -1,0 +1,22 @@
+[gd_scene format=3 uid="uid://bsuo6i5yue65u"]
+
+[ext_resource type="Script" uid="uid://cdce1ey4ljwxe" path="res://scripts/world/buildings/interior/weapon_shop_interior.gd" id="1_mu2m6"]
+[ext_resource type="PackedScene" uid="uid://k35wlbc0ho3o" path="res://scenes/ui/components/interact_area.tscn" id="2_mmg14"]
+[ext_resource type="PackedScene" uid="uid://barcl6is7t0uy" path="res://scenes/ui/windows/shop_window.tscn" id="2_mu2m6"]
+[ext_resource type="PackedScene" uid="uid://cv120tmswg7xm" path="res://scenes/world/player.tscn" id="3_mu2m6"]
+
+[node name="WeaponShopInterior" type="Node2D" unique_id=257598855]
+script = ExtResource("1_mu2m6")
+metadata/_custom_type_script = "uid://bh050uh6e1a4v"
+
+[node name="ShopWindow" parent="." unique_id=1917424634 instance=ExtResource("2_mu2m6")]
+
+[node name="InteractArea" parent="." unique_id=1105164537 instance=ExtResource("2_mmg14")]
+
+[node name="Floor" type="TileMapLayer" parent="." unique_id=834417557]
+
+[node name="Props" type="TileMapLayer" parent="." unique_id=939113438]
+
+[node name="Walls" type="TileMapLayer" parent="." unique_id=1297800175]
+
+[node name="Player" parent="." unique_id=426329780 instance=ExtResource("3_mu2m6")]

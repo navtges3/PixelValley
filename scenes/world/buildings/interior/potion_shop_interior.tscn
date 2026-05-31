@@ -1,0 +1,22 @@
+[gd_scene format=3 uid="uid://so56mc6ewm0a"]
+
+[ext_resource type="Script" uid="uid://xy6lp0v5jq74" path="res://scripts/world/buildings/interior/potion_shop_interior.gd" id="1_kxhju"]
+[ext_resource type="PackedScene" uid="uid://barcl6is7t0uy" path="res://scenes/ui/windows/shop_window.tscn" id="2_kxhju"]
+[ext_resource type="PackedScene" uid="uid://k35wlbc0ho3o" path="res://scenes/ui/components/interact_area.tscn" id="3_d0mt5"]
+[ext_resource type="PackedScene" uid="uid://cv120tmswg7xm" path="res://scenes/world/player.tscn" id="4_sexfc"]
+
+[node name="PotionShopInterior" type="Node2D" unique_id=1148766487]
+script = ExtResource("1_kxhju")
+metadata/_custom_type_script = "uid://bh050uh6e1a4v"
+
+[node name="ShopWindow" parent="." unique_id=1917424634 instance=ExtResource("2_kxhju")]
+
+[node name="InteractArea" parent="." unique_id=1105164537 instance=ExtResource("3_d0mt5")]
+
+[node name="Floor" type="TileMapLayer" parent="." unique_id=150941925]
+
+[node name="Props" type="TileMapLayer" parent="." unique_id=997526731]
+
+[node name="Walls" type="TileMapLayer" parent="." unique_id=553853899]
+
+[node name="Player" parent="." unique_id=426329780 instance=ExtResource("4_sexfc")]
