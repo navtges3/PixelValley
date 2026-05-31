@@ -1,22 +1,60 @@
-[gd_scene format=3 uid="uid://cttyfmtb2fvj5"]
+[gd_scene format=4 uid="uid://cttyfmtb2fvj5"]
 
 [ext_resource type="Script" uid="uid://bm8uo2lhg2kg5" path="res://scripts/world/buildings/interior/inn_interior.gd" id="1_tlekw"]
 [ext_resource type="PackedScene" uid="uid://dp6qp05llks3o" path="res://scenes/ui/windows/inn_window.tscn" id="2_i6dxs"]
 [ext_resource type="PackedScene" uid="uid://k35wlbc0ho3o" path="res://scenes/ui/components/interact_area.tscn" id="3_tlekw"]
+[ext_resource type="TileSet" uid="uid://4cg7ba3d6vqd" path="res://resources/world/tile_set.tres" id="4_sc540"]
 [ext_resource type="PackedScene" uid="uid://cv120tmswg7xm" path="res://scenes/world/player.tscn" id="4_vofwt"]
+[ext_resource type="Script" uid="uid://c5sed60hjy0rk" path="res://scripts/world/trigger_zone.gd" id="6_eggvl"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_sc540"]
+size = Vector2(32, 32)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_akkv4"]
+radius = 16.0
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_eggvl"]
 
 [node name="InnInterior" type="Node2D" unique_id=601251887]
 script = ExtResource("1_tlekw")
 metadata/_custom_type_script = "uid://bh050uh6e1a4v"
 
 [node name="InnWindow" parent="." unique_id=1834709062 instance=ExtResource("2_i6dxs")]
-
-[node name="InteractArea" parent="." unique_id=1105164537 instance=ExtResource("3_tlekw")]
+z_index = 10
 
 [node name="Floor" type="TileMapLayer" parent="." unique_id=7237375]
+tile_map_data = PackedByteArray("AAAAAAAAAgAEAAsAAAAAAAEAAgAEAAsAAAAAAAIAAgAEAAsAAAAAAAMAAgAEAAsAAAAAAAQAAgAEAAsAAAAAAAUAAgAEAAsAAAAAAAYAAgAEAAsAAAAAAAcAAgAEAAsAAAAAAAgAAgAEAAsAAAABAAAAAgAEAAsAAAABAAEAAgAEAAsAAAABAAIAAgAEAAsAAAABAAMAAgAEAAsAAAABAAQAAgAEAAsAAAABAAUAAgAEAAsAAAABAAYAAgAEAAsAAAABAAcAAgAEAAsAAAABAAgAAgAEAAsAAAACAAAAAgAEAAsAAAACAAEAAgAEAAsAAAACAAIAAgAEAAsAAAACAAMAAgAEAAsAAAACAAQAAgAEAAsAAAACAAUAAgAEAAsAAAACAAYAAgAEAAsAAAACAAcAAgAEAAsAAAACAAgAAgAEAAsAAAADAAAAAgAEAAsAAAADAAEAAgAEAAsAAAADAAIAAgAEAAsAAAADAAMAAgAEAAsAAAADAAQAAgAEAAsAAAADAAUAAgAEAAsAAAADAAYAAgAEAAsAAAADAAcAAgAEAAsAAAADAAgAAgAEAAsAAAAEAAAAAgAEAAsAAAAEAAEAAgAEAAsAAAAEAAIAAgAEAAsAAAAEAAMAAgAEAAsAAAAEAAQAAgAEAAsAAAAEAAUAAgAEAAsAAAAEAAYAAgAEAAsAAAAEAAcAAgAEAAsAAAAEAAgAAgAEAAsAAAAFAAAAAgAEAAsAAAAFAAEAAgAEAAsAAAAFAAIAAgAEAAsAAAAFAAMAAgAEAAsAAAAFAAQAAgAEAAsAAAAFAAUAAgAEAAsAAAAFAAYAAgAEAAsAAAAFAAcAAgAEAAsAAAAFAAgAAgAEAAsAAAAGAAAAAgAEAAsAAAAGAAEAAgAEAAsAAAAGAAIAAgAEAAsAAAAGAAMAAgAEAAsAAAAGAAQAAgAEAAsAAAAGAAUAAgAEAAsAAAAGAAYAAgAEAAsAAAAGAAcAAgAEAAsAAAAGAAgAAgAEAAsAAAAHAAAAAgAEAAsAAAAHAAEAAgAEAAsAAAAHAAIAAgAEAAsAAAAHAAMAAgAEAAsAAAAHAAQAAgAEAAsAAAAHAAUAAgAEAAsAAAAHAAYAAgAEAAsAAAAHAAcAAgAEAAsAAAAHAAgAAgAEAAsAAAAIAAAAAgAEAAsAAAAIAAEAAgAEAAsAAAAIAAIAAgAEAAsAAAAIAAMAAgAEAAsAAAAIAAQAAgAEAAsAAAAIAAUAAgAEAAsAAAAIAAYAAgAEAAsAAAAIAAcAAgAEAAsAAAAIAAgAAgAEAAsAAAA=")
+tile_set = ExtResource("4_sc540")
 
 [node name="Props" type="TileMapLayer" parent="." unique_id=941579065]
+tile_map_data = PackedByteArray("AAAEAAMAAgADAAsAAAA=")
+tile_set = ExtResource("4_sc540")
 
 [node name="Walls" type="TileMapLayer" parent="." unique_id=495843114]
+tile_map_data = PackedByteArray("AAAAAAAAAgADAAgAAAAAAAEAAgADAAkAAAAIAAAAAgAFAAgAAAAIAAEAAgAFAAkAAAABAAAAAgAEAAgAAAABAAEAAgAEAAkAAAACAAAAAgAEAAgAAAACAAEAAgAEAAkAAAADAAAAAgAEAAgAAAADAAEAAgAEAAkAAAAEAAAAAgAEAAgAAAAEAAEAAgAEAAkAAAAFAAAAAgAEAAgAAAAFAAEAAgAEAAkAAAAGAAAAAgAEAAgAAAAGAAEAAgAEAAkAAAAHAAAAAgAEAAgAAAAHAAEAAgAEAAkAAAAAAAIAAgAAAAkAAAAAAAMAAgAAAAkAAAAAAAQAAgAAAAkAAAAAAAUAAgAAAAkAAAAAAAYAAgAAAAkAAAAAAAcAAgAAAAkAAAAIAAIAAgACAAkAAAAIAAMAAgACAAkAAAAIAAQAAgACAAkAAAAIAAUAAgACAAkAAAAIAAYAAgACAAkAAAAIAAcAAgACAAkAAAAAAAkAAgADAAoAAAAIAAkAAgAFAAoAAAAHAAkAAgAEAAoAAAAGAAkAAgAEAAoAAAAFAAkAAgAEAAoAAAADAAkAAgAEAAoAAAACAAkAAgAEAAoAAAABAAkAAgAEAAoAAAAAAAgAAgAAAAkAAAAIAAgAAgACAAkAAAA=")
+tile_set = ExtResource("4_sc540")
 
-[node name="Player" parent="." unique_id=426329780 instance=ExtResource("4_vofwt")]
+[node name="Player" parent="." unique_id=426329780 groups=["player"] instance=ExtResource("4_vofwt")]
+position = Vector2(151, 191)
+
+[node name="InteractArea" parent="." unique_id=1105164537 instance=ExtResource("3_tlekw")]
+position = Vector2(144, 112)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractArea" unique_id=1710756382]
+shape = SubResource("RectangleShape2D_sc540")
+
+[node name="TriggerZone" type="Area2D" parent="." unique_id=1600500424 groups=["trigger_zone"]]
+position = Vector2(144, 288)
+script = ExtResource("6_eggvl")
+entrance_id = "inn"
+screen_target = 3
+metadata/_custom_type_script = "uid://c5sed60hjy0rk"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TriggerZone" unique_id=61551921]
+shape = SubResource("CircleShape2D_akkv4")
+
+[node name="ExitBounds" type="StaticBody2D" parent="." unique_id=1062814458]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ExitBounds" unique_id=1661390111]
+position = Vector2(144, 296)
+shape = SubResource("WorldBoundaryShape2D_eggvl")

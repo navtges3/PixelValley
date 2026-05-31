@@ -1,9 +1,19 @@
-[gd_scene format=3 uid="uid://so56mc6ewm0a"]
+[gd_scene format=4 uid="uid://so56mc6ewm0a"]
 
 [ext_resource type="Script" uid="uid://xy6lp0v5jq74" path="res://scripts/world/buildings/interior/potion_shop_interior.gd" id="1_kxhju"]
 [ext_resource type="PackedScene" uid="uid://barcl6is7t0uy" path="res://scenes/ui/windows/shop_window.tscn" id="2_kxhju"]
 [ext_resource type="PackedScene" uid="uid://k35wlbc0ho3o" path="res://scenes/ui/components/interact_area.tscn" id="3_d0mt5"]
+[ext_resource type="TileSet" uid="uid://4cg7ba3d6vqd" path="res://resources/world/tile_set.tres" id="4_ljrrm"]
 [ext_resource type="PackedScene" uid="uid://cv120tmswg7xm" path="res://scenes/world/player.tscn" id="4_sexfc"]
+[ext_resource type="Script" uid="uid://c5sed60hjy0rk" path="res://scripts/world/trigger_zone.gd" id="5_d0mt5"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_sexfc"]
+size = Vector2(32, 32)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_sexfc"]
+radius = 16.0
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_ljrrm"]
 
 [node name="PotionShopInterior" type="Node2D" unique_id=1148766487]
 script = ExtResource("1_kxhju")
@@ -11,12 +21,39 @@ metadata/_custom_type_script = "uid://bh050uh6e1a4v"
 
 [node name="ShopWindow" parent="." unique_id=1917424634 instance=ExtResource("2_kxhju")]
 
+[node name="Floor" type="TileMapLayer" parent="." unique_id=1438138485]
+tile_map_data = PackedByteArray("AAAAAAAAAgAEAAsAAAAAAAEAAgAEAAsAAAAAAAIAAgAEAAsAAAAAAAMAAgAEAAsAAAAAAAQAAgAEAAsAAAAAAAUAAgAEAAsAAAAAAAYAAgAEAAsAAAAAAAcAAgAEAAsAAAAAAAgAAgAEAAsAAAABAAAAAgAEAAsAAAABAAEAAgAEAAsAAAABAAIAAgAEAAsAAAABAAMAAgAEAAsAAAABAAQAAgAEAAsAAAABAAUAAgAEAAsAAAABAAYAAgAEAAsAAAABAAcAAgAEAAsAAAABAAgAAgAEAAsAAAACAAAAAgAEAAsAAAACAAEAAgAEAAsAAAACAAIAAgAEAAsAAAACAAMAAgAEAAsAAAACAAQAAgAEAAsAAAACAAUAAgAEAAsAAAACAAYAAgAEAAsAAAACAAcAAgAEAAsAAAACAAgAAgAEAAsAAAADAAAAAgAEAAsAAAADAAEAAgAEAAsAAAADAAIAAgAEAAsAAAADAAMAAgAEAAsAAAADAAQAAgAEAAsAAAADAAUAAgAEAAsAAAADAAYAAgAEAAsAAAADAAcAAgAEAAsAAAADAAgAAgAEAAsAAAAEAAAAAgAEAAsAAAAEAAEAAgAEAAsAAAAEAAIAAgAEAAsAAAAEAAMAAgAEAAsAAAAEAAQAAgAEAAsAAAAEAAUAAgAEAAsAAAAEAAYAAgAEAAsAAAAEAAcAAgAEAAsAAAAEAAgAAgAEAAsAAAAFAAAAAgAEAAsAAAAFAAEAAgAEAAsAAAAFAAIAAgAEAAsAAAAFAAMAAgAEAAsAAAAFAAQAAgAEAAsAAAAFAAUAAgAEAAsAAAAFAAYAAgAEAAsAAAAFAAcAAgAEAAsAAAAFAAgAAgAEAAsAAAAGAAAAAgAEAAsAAAAGAAEAAgAEAAsAAAAGAAIAAgAEAAsAAAAGAAMAAgAEAAsAAAAGAAQAAgAEAAsAAAAGAAUAAgAEAAsAAAAGAAYAAgAEAAsAAAAGAAcAAgAEAAsAAAAGAAgAAgAEAAsAAAAHAAAAAgAEAAsAAAAHAAEAAgAEAAsAAAAHAAIAAgAEAAsAAAAHAAMAAgAEAAsAAAAHAAQAAgAEAAsAAAAHAAUAAgAEAAsAAAAHAAYAAgAEAAsAAAAHAAcAAgAEAAsAAAAHAAgAAgAEAAsAAAAIAAAAAgAEAAsAAAAIAAEAAgAEAAsAAAAIAAIAAgAEAAsAAAAIAAMAAgAEAAsAAAAIAAQAAgAEAAsAAAAIAAUAAgAEAAsAAAAIAAYAAgAEAAsAAAAIAAcAAgAEAAsAAAAIAAgAAgAEAAsAAAA=")
+tile_set = ExtResource("4_ljrrm")
+
+[node name="Props" type="TileMapLayer" parent="." unique_id=1634948278]
+tile_map_data = PackedByteArray("AAAEAAMAAgADAAsAAAA=")
+tile_set = ExtResource("4_ljrrm")
+
+[node name="Walls" type="TileMapLayer" parent="." unique_id=563687420]
+tile_map_data = PackedByteArray("AAAAAAAAAgADAAgAAAAAAAEAAgADAAkAAAAIAAAAAgAFAAgAAAAIAAEAAgAFAAkAAAABAAAAAgAEAAgAAAABAAEAAgAEAAkAAAACAAAAAgAEAAgAAAACAAEAAgAEAAkAAAADAAAAAgAEAAgAAAADAAEAAgAEAAkAAAAEAAAAAgAEAAgAAAAEAAEAAgAEAAkAAAAFAAAAAgAEAAgAAAAFAAEAAgAEAAkAAAAGAAAAAgAEAAgAAAAGAAEAAgAEAAkAAAAHAAAAAgAEAAgAAAAHAAEAAgAEAAkAAAAAAAIAAgAAAAkAAAAAAAMAAgAAAAkAAAAAAAQAAgAAAAkAAAAAAAUAAgAAAAkAAAAAAAYAAgAAAAkAAAAAAAcAAgAAAAkAAAAIAAIAAgACAAkAAAAIAAMAAgACAAkAAAAIAAQAAgACAAkAAAAIAAUAAgACAAkAAAAIAAYAAgACAAkAAAAIAAcAAgACAAkAAAAAAAkAAgADAAoAAAAIAAkAAgAFAAoAAAAHAAkAAgAEAAoAAAAGAAkAAgAEAAoAAAAFAAkAAgAEAAoAAAADAAkAAgAEAAoAAAACAAkAAgAEAAoAAAABAAkAAgAEAAoAAAAAAAgAAgAAAAkAAAAIAAgAAgACAAkAAAA=")
+tile_set = ExtResource("4_ljrrm")
+
+[node name="Player" parent="." unique_id=426329780 groups=["player"] instance=ExtResource("4_sexfc")]
+position = Vector2(144, 200)
+
 [node name="InteractArea" parent="." unique_id=1105164537 instance=ExtResource("3_d0mt5")]
+position = Vector2(144, 112)
 
-[node name="Floor" type="TileMapLayer" parent="." unique_id=150941925]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractArea" unique_id=835779669]
+shape = SubResource("RectangleShape2D_sexfc")
 
-[node name="Props" type="TileMapLayer" parent="." unique_id=997526731]
+[node name="TriggerZone" type="Area2D" parent="." unique_id=1057880694 groups=["trigger_zone"]]
+position = Vector2(144, 288)
+script = ExtResource("5_d0mt5")
+entrance_id = "potion_shop"
+screen_target = 3
+metadata/_custom_type_script = "uid://c5sed60hjy0rk"
 
-[node name="Walls" type="TileMapLayer" parent="." unique_id=553853899]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TriggerZone" unique_id=9921131]
+shape = SubResource("CircleShape2D_sexfc")
 
-[node name="Player" parent="." unique_id=426329780 instance=ExtResource("4_sexfc")]
+[node name="ExitBounds" type="StaticBody2D" parent="." unique_id=365820958]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ExitBounds" unique_id=1301131065]
+position = Vector2(144, 296)
+shape = SubResource("WorldBoundaryShape2D_ljrrm")

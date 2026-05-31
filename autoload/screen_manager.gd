@@ -24,6 +24,9 @@ enum ScreenName {
 const WORLD_SCREENS: Array = [
 	ScreenName.VALLEY,
 	ScreenName.VILLAGE,
+	ScreenName.INN,
+	ScreenName.WEAPON_SHOP,
+	ScreenName.POTION_SHOP,
 	ScreenName.FOREST,
 	ScreenName.WAR_CAMP,
 	ScreenName.CAVE,
