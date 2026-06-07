@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://cs87mrk0vnqod"]
 
-[ext_resource type="Texture2D" uid="uid://cojl8vame767g" path="res://assets/overworld/village_props/weapon_shop.png" id="1_bblfk"]
+[ext_resource type="Texture2D" uid="uid://cojl8vame767g" path="res://assets/overworld/village/weapon_shop/weapon_shop.png" id="1_bblfk"]
 [ext_resource type="Script" uid="uid://p643v63ydy3o" path="res://scripts/world/buildings/building.gd" id="1_fpext"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_fpext"]
@@ -17,7 +17,7 @@ texture = ExtResource("1_bblfk")
 offset = Vector2(-16, -43)
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="." unique_id=1002556148]
-polygon = PackedVector2Array(-81, 0, -68, 0, -68, 14, -66, 16, -62, 16, -61, 15, -60, 15, -58, 17, -54, 17, -52, 15, -51, 15, -50, 16, -46, 16, -45, 15, -44, 15, -42, 17, -38, 17, -36, 15, -35, 15, -34, 16, -30, 16, -28, 14, -27.826916, 0, 50, 0, 50, -48, -81, -48)
+polygon = PackedVector2Array(-81, 0, -68, 0, -68, 12, -28, 12, -27.826916, 0, 50, 0, 50, -48, -81, -48)
 
 [node name="EntranceZone" type="Area2D" parent="." unique_id=1162155391]
 
