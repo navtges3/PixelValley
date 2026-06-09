@@ -6,6 +6,7 @@
 [ext_resource type="TileSet" uid="uid://copnf68rrd2bo" path="res://resources/world/weapon_shop_tileset.tres" id="3_8swea"]
 [ext_resource type="PackedScene" uid="uid://cv120tmswg7xm" path="res://scenes/world/player.tscn" id="3_mu2m6"]
 [ext_resource type="Texture2D" uid="uid://qwxn1i5iokex" path="res://assets/overworld/village/weapon_shop/counter.png" id="4_awdw8"]
+[ext_resource type="Texture2D" uid="uid://croip7rq8o4us" path="res://assets/overworld/village/weapon_shop/pedistals.png" id="6_7mnpr"]
 [ext_resource type="Texture2D" uid="uid://cj8172nrt2peu" path="res://assets/overworld/village/weapon_shop/weapon_rack.png" id="6_8swea"]
 [ext_resource type="Script" uid="uid://c5sed60hjy0rk" path="res://scripts/world/trigger_zone.gd" id="6_awdw8"]
 [ext_resource type="Texture2D" uid="uid://b705ptrqeeou0" path="res://assets/overworld/village/weapon_shop/wall_rack.png" id="7_so5x8"]
@@ -15,6 +16,10 @@ size = Vector2(94, 13)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_awdw8"]
 radius = 16.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_7mnpr"]
+radius = 6.0
+height = 16.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_8swea"]
 radius = 16.0
@@ -44,7 +49,7 @@ y_sort_enabled = true
 
 [node name="Counter" type="StaticBody2D" parent="Props" unique_id=575961433]
 y_sort_enabled = true
-position = Vector2(265, 145)
+position = Vector2(55, 145)
 
 [node name="Sprite2D" type="Sprite2D" parent="Props/Counter" unique_id=1590558295]
 position = Vector2(0, -12)
@@ -58,6 +63,38 @@ shape = SubResource("RectangleShape2D_awdw8")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Props/Counter/InteractArea" unique_id=1669272328]
 shape = SubResource("CircleShape2D_awdw8")
+
+[node name="FanPedistal" type="StaticBody2D" parent="Props" unique_id=787812692]
+y_sort_enabled = true
+position = Vector2(271, 121)
+
+[node name="Sprite2D" type="Sprite2D" parent="Props/FanPedistal" unique_id=796209420]
+position = Vector2(0, -12)
+texture = ExtResource("6_7mnpr")
+offset = Vector2(0, -11)
+region_enabled = true
+region_rect = Rect2(32, 0, 32, 48)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Props/FanPedistal" unique_id=1654433397]
+position = Vector2(0, -6.5)
+rotation = 1.5707964
+shape = SubResource("CapsuleShape2D_7mnpr")
+
+[node name="OrbPedistal" type="StaticBody2D" parent="Props" unique_id=537181489]
+y_sort_enabled = true
+position = Vector2(271, 57)
+
+[node name="Sprite2D" type="Sprite2D" parent="Props/OrbPedistal" unique_id=1958116255]
+position = Vector2(0, -12)
+texture = ExtResource("6_7mnpr")
+offset = Vector2(0, -11)
+region_enabled = true
+region_rect = Rect2(0, 0, 32, 48)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Props/OrbPedistal" unique_id=1797633087]
+position = Vector2(0, -6.5)
+rotation = 1.5707964
+shape = SubResource("CapsuleShape2D_7mnpr")
 
 [node name="WeaponRack" type="Sprite2D" parent="Props" unique_id=336658583]
 position = Vector2(192, -17)
