@@ -27,6 +27,7 @@ radius = 16.0
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_so5x8"]
 
 [node name="WeaponShopInterior" type="Node2D" unique_id=257598855]
+y_sort_enabled = true
 script = ExtResource("1_mu2m6")
 metadata/_custom_type_script = "uid://bh050uh6e1a4v"
 
@@ -44,73 +45,72 @@ tile_set = ExtResource("3_8swea")
 tile_map_data = PackedByteArray("AAAGAAcAAAADAAAAAAAHAAcAAAAEAAAAAAAJAAcAAAACAAIAAAAIAAcAAAABAAIAAAAFAAcAAAABAAIAAAAEAAcAAAABAAIAAAADAAcAAAABAAIAAAACAAcAAAABAAIAAAABAAcAAAABAAIAAAAAAAcAAAAAAAIAAAAAAAYAAAADAAEAAAAAAAUAAAADAAEAAAAAAAQAAAADAAEAAAAAAAMAAAADAAEAAAAAAAIAAAADAAEAAAAAAAEAAAADAAEAAAAAAAAAAAADAAEAAAAJAAYAAAAEAAEAAAAJAAUAAAAEAAEAAAAJAAQAAAAEAAEAAAAJAAMAAAAEAAEAAAAJAAIAAAAEAAEAAAAJAAEAAAAEAAEAAAAJAAAAAAAEAAEAAAAAAP7/AAAAAAAAAAAAAP//AAAAAAEAAAAJAP7/AAACAAAAAAAJAP//AAACAAEAAAAIAP7/AAABAAAAAAAIAP//AAABAAEAAAAHAP7/AAABAAAAAAAHAP//AAABAAEAAAAGAP7/AAABAAAAAAAGAP//AAABAAEAAAAFAP7/AAABAAAAAAAFAP//AAABAAEAAAAEAP7/AAABAAAAAAAEAP//AAABAAEAAAADAP7/AAABAAAAAAADAP//AAABAAEAAAACAP7/AAABAAAAAAACAP//AAABAAEAAAABAP7/AAABAAAAAAABAP//AAABAAEAAAA=")
 tile_set = ExtResource("3_8swea")
 
-[node name="Props" type="TileMapLayer" parent="." unique_id=1750225817]
+[node name="WallProps" type="Node2D" parent="." unique_id=214688240]
+
+[node name="WeaponRack" type="Sprite2D" parent="WallProps" unique_id=336658583]
+position = Vector2(192, -17)
+texture = ExtResource("6_8swea")
+
+[node name="WallSwords" type="Sprite2D" parent="WallProps" unique_id=1058144414]
+position = Vector2(112, -24)
+texture = ExtResource("7_so5x8")
+region_enabled = true
+region_rect = Rect2(0, 0, 64, 32)
+
+[node name="WallSpears" type="Sprite2D" parent="WallProps" unique_id=1981055275]
+position = Vector2(272, -24)
+texture = ExtResource("7_so5x8")
+region_enabled = true
+region_rect = Rect2(0, 32, 64, 32)
+
+[node name="FloorProps" type="Node2D" parent="." unique_id=492778774]
 y_sort_enabled = true
 
-[node name="Counter" type="StaticBody2D" parent="Props" unique_id=575961433]
-y_sort_enabled = true
+[node name="Counter" type="StaticBody2D" parent="FloorProps" unique_id=575961433]
 position = Vector2(55, 145)
 
-[node name="Sprite2D" type="Sprite2D" parent="Props/Counter" unique_id=1590558295]
+[node name="Sprite2D" type="Sprite2D" parent="FloorProps/Counter" unique_id=1590558295]
 position = Vector2(0, -12)
 texture = ExtResource("4_awdw8")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Props/Counter" unique_id=1746586823]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FloorProps/Counter" unique_id=1746586823]
 position = Vector2(0, -6.5)
 shape = SubResource("RectangleShape2D_awdw8")
 
-[node name="InteractArea" parent="Props/Counter" unique_id=1105164537 instance=ExtResource("2_mmg14")]
+[node name="InteractArea" parent="FloorProps/Counter" unique_id=1105164537 instance=ExtResource("2_mmg14")]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Props/Counter/InteractArea" unique_id=1669272328]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FloorProps/Counter/InteractArea" unique_id=1669272328]
 shape = SubResource("CircleShape2D_awdw8")
 
-[node name="FanPedistal" type="StaticBody2D" parent="Props" unique_id=787812692]
-y_sort_enabled = true
+[node name="FanPedistal" type="StaticBody2D" parent="FloorProps" unique_id=787812692]
 position = Vector2(271, 121)
 
-[node name="Sprite2D" type="Sprite2D" parent="Props/FanPedistal" unique_id=796209420]
+[node name="Sprite2D" type="Sprite2D" parent="FloorProps/FanPedistal" unique_id=796209420]
 position = Vector2(0, -12)
 texture = ExtResource("6_7mnpr")
 offset = Vector2(0, -11)
 region_enabled = true
 region_rect = Rect2(32, 0, 32, 48)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Props/FanPedistal" unique_id=1654433397]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FloorProps/FanPedistal" unique_id=1654433397]
 position = Vector2(0, -6.5)
 rotation = 1.5707964
 shape = SubResource("CapsuleShape2D_7mnpr")
 
-[node name="OrbPedistal" type="StaticBody2D" parent="Props" unique_id=537181489]
-y_sort_enabled = true
+[node name="OrbPedistal" type="StaticBody2D" parent="FloorProps" unique_id=537181489]
 position = Vector2(271, 57)
 
-[node name="Sprite2D" type="Sprite2D" parent="Props/OrbPedistal" unique_id=1958116255]
+[node name="Sprite2D" type="Sprite2D" parent="FloorProps/OrbPedistal" unique_id=1958116255]
 position = Vector2(0, -12)
 texture = ExtResource("6_7mnpr")
 offset = Vector2(0, -11)
 region_enabled = true
 region_rect = Rect2(0, 0, 32, 48)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Props/OrbPedistal" unique_id=1797633087]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FloorProps/OrbPedistal" unique_id=1797633087]
 position = Vector2(0, -6.5)
 rotation = 1.5707964
 shape = SubResource("CapsuleShape2D_7mnpr")
-
-[node name="WeaponRack" type="Sprite2D" parent="Props" unique_id=336658583]
-position = Vector2(192, -17)
-texture = ExtResource("6_8swea")
-
-[node name="WallSwords" type="Sprite2D" parent="Props" unique_id=1058144414]
-position = Vector2(112, -24)
-texture = ExtResource("7_so5x8")
-region_enabled = true
-region_rect = Rect2(0, 0, 64, 32)
-
-[node name="WallSpears" type="Sprite2D" parent="Props" unique_id=1981055275]
-position = Vector2(272, -24)
-texture = ExtResource("7_so5x8")
-region_enabled = true
-region_rect = Rect2(0, 32, 64, 32)
 
 [node name="Player" parent="." unique_id=426329780 groups=["player"] instance=ExtResource("3_mu2m6")]
 position = Vector2(160, 116)
