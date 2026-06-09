@@ -1,6 +1,7 @@
 [gd_scene format=4 uid="uid://c3ac7jkbic7ke"]
 
 [ext_resource type="Script" uid="uid://cyquwyd75dwet" path="res://scripts/world/locations/cave.gd" id="1_2ei2r"]
+[ext_resource type="Texture2D" uid="uid://cepsgtjrpgoun" path="res://assets/overworld/cave_props.png" id="3_2ei2r"]
 [ext_resource type="TileSet" uid="uid://4cg7ba3d6vqd" path="res://resources/world/tile_set.tres" id="3_fh3a3"]
 [ext_resource type="PackedScene" uid="uid://cv120tmswg7xm" path="res://scenes/world/player.tscn" id="4_ebp66"]
 [ext_resource type="Script" uid="uid://c5sed60hjy0rk" path="res://scripts/world/trigger_zone.gd" id="5_k2nj3"]
@@ -31,8 +32,11 @@ tile_map_data = PackedByteArray("AAAHABUABQAAAAAAAAAFABUABQACAAAAAAAHABYABQAAAAE
 tile_set = ExtResource("3_fh3a3")
 
 [node name="Props" type="TileMapLayer" parent="." unique_id=975516857]
-tile_map_data = PackedByteArray("AAAFAPr/BgAAAAAAAAAFAPv/BgAAAAEAAAA=")
 tile_set = ExtResource("3_fh3a3")
+
+[node name="Thrown" type="Sprite2D" parent="Props" unique_id=981739759]
+position = Vector2(176, -148)
+texture = ExtResource("3_2ei2r")
 
 [node name="Player" parent="." unique_id=426329780 groups=["player"] instance=ExtResource("4_ebp66")]
 position = Vector2(513, 441)
