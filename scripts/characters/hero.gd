@@ -31,7 +31,7 @@ func get_class_name() -> String:
 
 func gain_experience(amount: int) -> void:
 	experience += amount
-	if experience >= level * LEVEL_UP_MULT:
+	while experience >= level * LEVEL_UP_MULT:
 		experience -= level * LEVEL_UP_MULT
 		level_up()
 
