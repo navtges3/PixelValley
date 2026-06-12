@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://bm8uo2lhg2kg5" path="res://scripts/world/buildings/interior/inn_interior.gd" id="1_tlekw"]
 [ext_resource type="PackedScene" uid="uid://dp6qp05llks3o" path="res://scenes/ui/windows/inn_window.tscn" id="2_i6dxs"]
-[ext_resource type="TileSet" uid="uid://c3ib8w4j0mx7n" path="res://resources/world/potion_shop_tileset.tres" id="3_eggvl"]
+[ext_resource type="TileSet" uid="uid://c3ib8w4j0mx7n" path="res://resources/world/building_interior_tileset.tres" id="3_eggvl"]
 [ext_resource type="PackedScene" uid="uid://k35wlbc0ho3o" path="res://scenes/ui/components/interact_area.tscn" id="3_tlekw"]
 [ext_resource type="Texture2D" uid="uid://qwxn1i5iokex" path="res://assets/overworld/village/weapon_shop/counter.png" id="4_akkv4"]
 [ext_resource type="PackedScene" uid="uid://cv120tmswg7xm" path="res://scenes/world/player.tscn" id="4_vofwt"]

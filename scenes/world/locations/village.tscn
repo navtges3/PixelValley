@@ -7,6 +7,10 @@
 [ext_resource type="PackedScene" uid="uid://cs87mrk0vnqod" path="res://scenes/world/buildings/exterior/weapon_shop.tscn" id="3_irc66"]
 [ext_resource type="PackedScene" uid="uid://yj4vdyxkl61v" path="res://scenes/world/buildings/exterior/inn.tscn" id="4_v5c8t"]
 [ext_resource type="PackedScene" uid="uid://704akrtr3vv2" path="res://scenes/world/buildings/exterior/potion_shop.tscn" id="5_bn7ll"]
+[ext_resource type="Texture2D" uid="uid://blhw78q8gb6pr" path="res://assets/overworld/village/weapon_shop/wood_pile.png" id="6_bn7ll"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bn7ll"]
+size = Vector2(38, 18)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_rt3mv"]
 radius = 16.0
@@ -55,6 +59,18 @@ position = Vector2(672, 231)
 position = Vector2(511, 232)
 
 [node name="Props" type="Node2D" parent="." unique_id=1876496813]
+y_sort_enabled = true
+
+[node name="WoodPile" type="StaticBody2D" parent="Props" unique_id=1513548600]
+position = Vector2(440, 256)
+
+[node name="Sprite2D" type="Sprite2D" parent="Props/WoodPile" unique_id=276090347]
+texture = ExtResource("6_bn7ll")
+offset = Vector2(0, -24)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Props/WoodPile" unique_id=272159717]
+position = Vector2(-1, -13)
+shape = SubResource("RectangleShape2D_bn7ll")
 
 [node name="Player" parent="." unique_id=426329780 groups=["player"] instance=ExtResource("2_e7reh")]
 position = Vector2(753, 367)
