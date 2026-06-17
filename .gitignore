@@ -1,29 +1,32 @@
-# Godot Engine
+# Godot
 .import/
-addons/
+.godot/
+
 export.cfg
 export_presets.cfg
+
 *.import
 *.tmp
 *.translation
 
-# Godot hidden folders
-.godot/
-
-# System files
-.DS_Store
-Thumbs.db
-
-# VS Code
+# Editor settings
 .vscode/
 .history/
 
-# Build files (optional — add if you're exporting builds locally)
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Local exports
+/builds/
+exports/
+
 *.exe
 *.pck
 *.apk
-*.zip
+*.aab
 *.dmg
-
-# Logs (optional)
-*.log
+*.app

@@ -51,9 +51,11 @@ version_control/autoload_on_startup=true
 [file_customization]
 
 folder_colors={
+"res://addons/": "gray",
 "res://assets/": "red",
 "res://audio/": "orange",
 "res://autoload/": "yellow",
+"res://exports/": "gray",
 "res://resources/": "green",
 "res://scenes/": "teal",
 "res://scripts/": "blue"
