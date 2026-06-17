@@ -1,5 +1,6 @@
 # Godot Engine
 .import/
+addons/
 export.cfg
 export_presets.cfg
 *.import
