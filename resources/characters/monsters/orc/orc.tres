@@ -5,7 +5,7 @@
 [ext_resource type="Script" uid="uid://cnso83bg7vodw" path="res://scripts/data/condition.gd" id="5_iwbsi"]
 [ext_resource type="Script" uid="uid://bd6ohffno5w7r" path="res://scripts/characters/monster.gd" id="6_b8a46"]
 [ext_resource type="Script" uid="uid://buxlf5aagrtgf" path="res://scripts/data/drop_entry.gd" id="7_b8a46"]
-[ext_resource type="Texture2D" uid="uid://b668r1wauqf0a" path="res://assets/monsters/orc/orc.png" id="7_iwbsi"]
+[ext_resource type="Texture2D" uid="uid://b668r1wauqf0a" path="res://assets/characters/monsters/orc/orc.png" id="7_iwbsi"]
 [ext_resource type="Script" uid="uid://birbqcxvye2x5" path="res://scripts/data/drop_table.gd" id="8_as0tk"]
 [ext_resource type="SpriteFrames" uid="uid://tt7ulvh24n6g" path="res://resources/characters/monsters/orc/orc_world_sprite_frames.tres" id="10_6vel4"]
 [ext_resource type="Script" uid="uid://b2o7w8q10stxo" path="res://scripts/data/ability.gd" id="11_ability"]

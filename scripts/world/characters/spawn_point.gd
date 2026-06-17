@@ -1,7 +1,7 @@
 extends Marker2D
 class_name SpawnPoint
 
-const enemy_scene = preload("res://scenes/world/enemy.tscn")
+const enemy_scene = preload("res://scenes/world/characters/enemy.tscn")
 
 @export var monster_id: MonsterLoader.MonsterID = MonsterLoader.MonsterID.GOBLIN
 @export var spawn_count: int = 1

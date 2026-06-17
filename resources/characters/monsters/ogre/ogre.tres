@@ -3,7 +3,7 @@
 [ext_resource type="SpriteFrames" uid="uid://ghh4h01vpcng" path="res://resources/characters/monsters/ogre/ogre_battle_sprite_frames.tres" id="2_u5tp0"]
 [ext_resource type="Resource" uid="uid://waytpolwnsyp" path="res://resources/characters/abilities/smash.tres" id="2_xovwm"]
 [ext_resource type="Script" uid="uid://cnso83bg7vodw" path="res://scripts/data/condition.gd" id="5_1gn5i"]
-[ext_resource type="Texture2D" uid="uid://rvnloxwapjye" path="res://assets/monsters/ogre/ogre.png" id="7_8w1if"]
+[ext_resource type="Texture2D" uid="uid://rvnloxwapjye" path="res://assets/characters/monsters/ogre/ogre.png" id="7_8w1if"]
 [ext_resource type="Script" uid="uid://bd6ohffno5w7r" path="res://scripts/characters/monster.gd" id="7_18j1j"]
 [ext_resource type="Script" uid="uid://buxlf5aagrtgf" path="res://scripts/data/drop_entry.gd" id="7_nkkoy"]
 [ext_resource type="Script" uid="uid://birbqcxvye2x5" path="res://scripts/data/drop_table.gd" id="8_fquq1"]

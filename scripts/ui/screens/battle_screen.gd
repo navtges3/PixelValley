@@ -156,7 +156,7 @@ func _on_hero_defeated():
 
 func _on_death_window_dismissed() -> void:
 	GameState.hero.rest()
-	ScreenManager.go_to_screen(ScreenManager.ScreenName.VILLAGE, InnScreen.ENTRANCE_ID)
+	ScreenManager.go_to_screen(ScreenManager.ScreenName.VILLAGE, InnInterior.ENTRANCE_ID)
 
 # --- Button Factories ---
 func _on_ability_button_pressed(ability: Ability) -> void:

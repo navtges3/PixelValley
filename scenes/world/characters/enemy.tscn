@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://bbuw3kio461fn"]
 
-[ext_resource type="Script" uid="uid://cgpdwrbt7m6l0" path="res://scripts/world/enemy.gd" id="1_xdryk"]
+[ext_resource type="Script" uid="uid://cgpdwrbt7m6l0" path="res://scripts/world/characters/enemy.gd" id="1_xdryk"]
 [ext_resource type="SpriteFrames" uid="uid://2sjuet18mpdk" path="res://resources/characters/monsters/goblin/goblin_world_sprite_frames.tres" id="2_xdryk"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_01swt"]
