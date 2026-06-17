@@ -18,7 +18,6 @@ enum ScreenName {
 	FOREST, WAR_CAMP, CAVE,
 	BATTLE,
 	VICTORY,
-	TEST,
 }
 
 const WORLD_SCREENS: Array = [
@@ -47,7 +46,6 @@ const SCENE_PATHS := {
 	ScreenName.BATTLE: "res://scenes/ui/screens/battle_screen.tscn",
 	ScreenName.QUEST: "res://scenes/ui/screens/quest_screen.tscn",
 	ScreenName.VICTORY: "res://scenes/ui/screens/victory_screen.tscn",
-	ScreenName.TEST: "res://scenes/test/battle_tester.tscn",
 }
 
 func _ready() -> void:

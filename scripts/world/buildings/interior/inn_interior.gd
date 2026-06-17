@@ -2,6 +2,7 @@ extends BaseLocation
 class_name InnInterior
 
 const SCREEN_NAME := ScreenManager.ScreenName.INN
+const ENTRANCE_ID := "inn"
 
 @onready var inn_window: InnWindow = $CanvasLayer/InnWindow
 @onready var interact_area: InteractArea = $Props/Counter/InteractArea

@@ -2,6 +2,7 @@ extends BaseLocation
 class_name PotionShopInterior
 
 const SCREEN_NAME := ScreenManager.ScreenName.POTION_SHOP
+const ENTRANCE_ID := "potion_shop"
 
 @onready var shop_window: ShopWindow = $CanvasLayer/ShopWindow
 @onready var interact_area: InteractArea = $Props/Counter/InteractArea

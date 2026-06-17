@@ -1,16 +1,20 @@
 [gd_scene format=4 uid="uid://b0g3svmx36aba"]
 
 [ext_resource type="Script" uid="uid://c11sud53o45be" path="res://scripts/world/locations/village.gd" id="1_a16hn"]
-[ext_resource type="PackedScene" uid="uid://cv120tmswg7xm" path="res://scenes/world/player.tscn" id="2_e7reh"]
+[ext_resource type="PackedScene" uid="uid://cv120tmswg7xm" path="res://scenes/world/characters/player.tscn" id="2_e7reh"]
 [ext_resource type="TileSet" uid="uid://4cg7ba3d6vqd" path="res://resources/world/tile_set.tres" id="2_h8u16"]
 [ext_resource type="Script" uid="uid://c5sed60hjy0rk" path="res://scripts/world/trigger_zone.gd" id="2_rt3mv"]
 [ext_resource type="PackedScene" uid="uid://cs87mrk0vnqod" path="res://scenes/world/buildings/exterior/weapon_shop.tscn" id="3_irc66"]
 [ext_resource type="PackedScene" uid="uid://yj4vdyxkl61v" path="res://scenes/world/buildings/exterior/inn.tscn" id="4_v5c8t"]
 [ext_resource type="PackedScene" uid="uid://704akrtr3vv2" path="res://scenes/world/buildings/exterior/potion_shop.tscn" id="5_bn7ll"]
-[ext_resource type="Texture2D" uid="uid://blhw78q8gb6pr" path="res://assets/overworld/village/weapon_shop/wood_pile.png" id="6_bn7ll"]
+[ext_resource type="Texture2D" uid="uid://blhw78q8gb6pr" path="res://assets/world/village/weapon_shop/wood_pile.png" id="6_bn7ll"]
+[ext_resource type="Texture2D" uid="uid://bgmovr504ia1y" path="res://assets/world/village/village_tileset.png" id="7_fp2bn"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fp2bn"]
+size = Vector2(38, 20)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_bn7ll"]
-size = Vector2(38, 18)
+size = Vector2(46, 5)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_rt3mv"]
 radius = 16.0
@@ -69,7 +73,20 @@ texture = ExtResource("6_bn7ll")
 offset = Vector2(0, -24)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Props/WoodPile" unique_id=272159717]
-position = Vector2(-1, -13)
+position = Vector2(-1, -14)
+shape = SubResource("RectangleShape2D_fp2bn")
+
+[node name="QuestBoard" type="StaticBody2D" parent="Props" unique_id=645708781]
+position = Vector2(848, 270)
+
+[node name="Sprite2D" type="Sprite2D" parent="Props/QuestBoard" unique_id=727703847]
+texture = ExtResource("7_fp2bn")
+offset = Vector2(0, -24)
+region_enabled = true
+region_rect = Rect2(272, 272, 64, 48)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Props/QuestBoard" unique_id=1494734809]
+position = Vector2(0, -2.5)
 shape = SubResource("RectangleShape2D_bn7ll")
 
 [node name="Player" parent="." unique_id=426329780 groups=["player"] instance=ExtResource("2_e7reh")]
@@ -112,7 +129,7 @@ offset_bottom = 11.0
 text = "Training"
 
 [node name="QuestTriggerZone" type="Area2D" parent="TriggerZones" unique_id=902222772 groups=["trigger_zone"]]
-position = Vector2(848, 274)
+position = Vector2(848, 272)
 script = ExtResource("2_rt3mv")
 entrance_id = "quest"
 screen_target = 8
@@ -120,10 +137,3 @@ metadata/_custom_type_script = "uid://c5sed60hjy0rk"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="TriggerZones/QuestTriggerZone" unique_id=1682679215]
 shape = SubResource("CircleShape2D_h8u16")
-
-[node name="Label" type="Label" parent="TriggerZones/QuestTriggerZone" unique_id=290022809]
-offset_left = -29.0
-offset_top = -57.0
-offset_right = 32.0
-offset_bottom = -34.0
-text = "Quests"

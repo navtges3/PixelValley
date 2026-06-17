@@ -2,9 +2,9 @@
 
 [ext_resource type="Script" uid="uid://bjib22xupqply" path="res://scripts/world/locations/valley.gd" id="1_xwbyh"]
 [ext_resource type="TileSet" uid="uid://4cg7ba3d6vqd" path="res://resources/world/tile_set.tres" id="3_4rieo"]
-[ext_resource type="Texture2D" uid="uid://c3ccdutx4ki46" path="res://assets/overworld/war_camp_tileset.png" id="4_gbuke"]
-[ext_resource type="Texture2D" uid="uid://cy4m7bj55wc1b" path="res://assets/overworld/cave_tileset.png" id="5_otlcx"]
-[ext_resource type="PackedScene" uid="uid://cv120tmswg7xm" path="res://scenes/world/player.tscn" id="6_6nwor"]
+[ext_resource type="Texture2D" uid="uid://c3ccdutx4ki46" path="res://assets/world/war_camp/war_camp_tileset.png" id="4_gbuke"]
+[ext_resource type="Texture2D" uid="uid://cy4m7bj55wc1b" path="res://assets/world/cave/cave_tileset.png" id="5_otlcx"]
+[ext_resource type="PackedScene" uid="uid://cv120tmswg7xm" path="res://scenes/world/characters/player.tscn" id="6_6nwor"]
 [ext_resource type="PackedScene" uid="uid://be34gw2t63gdo" path="res://scenes/world/zone_message_label.tscn" id="7_qi8v7"]
 [ext_resource type="Script" uid="uid://c5sed60hjy0rk" path="res://scripts/world/trigger_zone.gd" id="8_uphwf"]
 

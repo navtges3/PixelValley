@@ -1,6 +1,6 @@
 [gd_resource type="TileSet" format=3 uid="uid://c3ib8w4j0mx7n"]
 
-[ext_resource type="Texture2D" uid="uid://baxi4qlxc7flq" path="res://assets/overworld/village/potion_shop/potion_shop_tileset.png" id="1_7tryu"]
+[ext_resource type="Texture2D" uid="uid://baxi4qlxc7flq" path="res://assets/world/village/shop_interior_tileset.png" id="1_7tryu"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_7tryu"]
 resource_name = "Interior"

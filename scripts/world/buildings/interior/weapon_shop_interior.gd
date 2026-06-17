@@ -2,6 +2,7 @@ extends BaseLocation
 class_name WeaponShopInterior
 
 const SCREEN_NAME := ScreenManager.ScreenName.WEAPON_SHOP
+const ENTRANCE_ID := "weapon_shop"
 
 @onready var shop_window: ShopWindow = $CanvasLayer/ShopWindow
 @onready var interact_area: InteractArea = $FloorProps/Counter/InteractArea
