@@ -2,15 +2,15 @@ extends Resource
 class_name QuestManager
 
 const QUEST_PATHS := [
-	"res://resources/quests/quest_1.tres",
-	"res://resources/quests/quest_2.tres",
-	"res://resources/quests/quest_3.tres",
-	"res://resources/quests/quest_4.tres",
-	"res://resources/quests/quest_5.tres",
-	"res://resources/quests/quest_6.tres",
-	"res://resources/quests/quest_7.tres",
-	"res://resources/quests/quest_8.tres",
-	"res://resources/quests/quest_9.tres",
+	"res://resources/quests/quest_01.tres",
+	"res://resources/quests/quest_02.tres",
+	"res://resources/quests/quest_03.tres",
+	"res://resources/quests/quest_04.tres",
+	"res://resources/quests/quest_05.tres",
+	"res://resources/quests/quest_06.tres",
+	"res://resources/quests/quest_07.tres",
+	"res://resources/quests/quest_08.tres",
+	"res://resources/quests/quest_09.tres",
 	"res://resources/quests/quest_10.tres",
 ]
 

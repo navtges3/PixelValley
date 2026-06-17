@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://bsh4xy5omgwej"]
 
 [ext_resource type="Script" uid="uid://kcysixmfxdo0" path="res://scripts/ui/components/battle_character.gd" id="1_il1nn"]
-[ext_resource type="Texture2D" uid="uid://j5ackm5k12l4" path="res://assets/BattleFloor.png" id="2_stq27"]
-[ext_resource type="Texture2D" uid="uid://ob8wvdbidewv" path="res://assets/items/weapons/SceptreSprite.png" id="3_ej3rn"]
+[ext_resource type="Texture2D" uid="uid://j5ackm5k12l4" path="res://assets/battle/BattleFloor.png" id="2_stq27"]
+[ext_resource type="Texture2D" uid="uid://ob8wvdbidewv" path="res://assets/items/weapons/silver_scepter.png" id="3_ej3rn"]
 [ext_resource type="Script" uid="uid://dob7sohiowffx" path="res://scripts/ui/components/magic_glow.gd" id="4_ej3rn"]
 [ext_resource type="Script" uid="uid://c37q15v1k0fmj" path="res://scripts/ui/components/weapon_trail.gd" id="4_il1nn"]
 [ext_resource type="SpriteFrames" uid="uid://pch4plbc12hl" path="res://resources/characters/heroes/princess/princess_battle_sprite_frames.tres" id="6_igjgp"]

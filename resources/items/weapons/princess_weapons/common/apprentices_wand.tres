@@ -5,7 +5,7 @@
 [ext_resource type="Script" uid="uid://bvuw0uyc36uxx" path="res://scripts/data/utility.gd" id="3_stuxt"]
 [ext_resource type="Script" uid="uid://dgykeyxn7fefw" path="res://scripts/data/weapon.gd" id="4_f6g8r"]
 [ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://resources/ui/button_themes/regular/green_button.tres" id="5_kcig1"]
-[ext_resource type="Texture2D" uid="uid://qc2pp4gt2s0i" path="res://assets/items/weapons/WandSprite.png" id="5_qcdtv"]
+[ext_resource type="Texture2D" uid="uid://qc2pp4gt2s0i" path="res://assets/items/weapons/wand.png" id="5_qcdtv"]
 
 [sub_resource type="Resource" id="Resource_ks0gs"]
 script = ExtResource("2_qcdtv")

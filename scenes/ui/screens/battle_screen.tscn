@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://wy2cht7kkgmh"]
 
 [ext_resource type="Script" uid="uid://cqc6b58dnjxis" path="res://scripts/ui/screens/battle_screen.gd" id="1_ihhiw"]
-[ext_resource type="Texture2D" uid="uid://ch4xo4n02q3jw" path="res://assets/BattleBackground.png" id="2_e8mee"]
+[ext_resource type="Texture2D" uid="uid://ch4xo4n02q3jw" path="res://assets/battle/BattleBackground.png" id="2_e8mee"]
 [ext_resource type="PackedScene" uid="uid://bjx12sxd6xqme" path="res://scenes/ui/components/hero_info.tscn" id="3_e8mee"]
 [ext_resource type="Theme" uid="uid://cra87dj7simd8" path="res://resources/ui/progress_bar/red_bar.tres" id="3_pxpkm"]
 [ext_resource type="PackedScene" uid="uid://usjhwmauxj8n" path="res://scenes/ui/windows/death_window.tscn" id="3_yj4kj"]
