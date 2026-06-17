@@ -5,7 +5,7 @@
 [ext_resource type="Script" uid="uid://bvuw0uyc36uxx" path="res://scripts/data/utility.gd" id="3_f8513"]
 [ext_resource type="Script" uid="uid://c5deti4sb2k2j" path="res://scripts/data/effect.gd" id="4_3mka7"]
 [ext_resource type="Script" uid="uid://dgykeyxn7fefw" path="res://scripts/data/weapon.gd" id="5_qwuoh"]
-[ext_resource type="Texture2D" uid="uid://cmrhtvp8qtafo" path="res://assets/items/weapons/MaceSprite.png" id="6_3m1fe"]
+[ext_resource type="Texture2D" uid="uid://cmrhtvp8qtafo" path="res://assets/items/weapons/mace.png" id="6_3m1fe"]
 [ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://resources/ui/button_themes/regular/red_button.tres" id="6_vcvf6"]
 
 [sub_resource type="Resource" id="Resource_onqa7"]

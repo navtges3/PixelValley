@@ -18,9 +18,9 @@ const MUSIC_PATHS := {
 }
 
 const SFX_PATHS := {
-	"bag_of_couns": "res://assets/audio/sfx/bag_of_coins.wav",
-	"levelup": "res://assets/audio/sfx/levelup.wav",
-	"sword_swing": "res://assets/audio/sfx/sword_swing.wav",
+	"bag_of_couns": "res://audio/sfx/bag_of_coins.wav",
+	"levelup": "res://audio/sfx/levelup.wav",
+	"sword_swing": "res://audio/sfx/sword_swing.wav",
 }
 
 var _music_cache: Dictionary = {}

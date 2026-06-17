@@ -5,7 +5,7 @@
 [ext_resource type="Script" uid="uid://bvuw0uyc36uxx" path="res://scripts/data/utility.gd" id="3_to5jp"]
 [ext_resource type="Script" uid="uid://dgykeyxn7fefw" path="res://scripts/data/weapon.gd" id="4_aon3y"]
 [ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://resources/ui/button_themes/regular/green_button.tres" id="5_hrvtg"]
-[ext_resource type="Texture2D" uid="uid://dcku6gi8yvfu0" path="res://assets/items/weapons/Shortsword.png" id="5_ifmx5"]
+[ext_resource type="Texture2D" uid="uid://dcku6gi8yvfu0" path="res://assets/items/weapons/shortsword.png" id="5_ifmx5"]
 
 [sub_resource type="Resource" id="Resource_yjfna"]
 script = ExtResource("2_ifmx5")
