@@ -5,9 +5,17 @@ class_name ValleyLocation
 @onready var camp_gate_closed: StaticBody2D = $WoodWalls/CampGateClosed
 @onready var camp_gate_open: StaticBody2D = $WoodWalls/CampGateOpen
 @onready var cave_closed: StaticBody2D = $CaveWalls/CaveClosed
+@onready var village_trigger_zone: TriggerZone = $TriggerZones/VillageTriggerZone
+@onready var forest_trigger_zone: TriggerZone = $TriggerZones/ForestTriggerZone
+@onready var war_camp_trigger_zone: TriggerZone = $TriggerZones/WarCampTriggerZone
+@onready var cave_trigger_zone: TriggerZone = $TriggerZones/CaveTriggerZone
 
 func _ready() -> void:
 	super._ready()
+	village_trigger_zone.screen_target = ScreenManager.ScreenName.VILLAGE
+	forest_trigger_zone.screen_target = ScreenManager.ScreenName.FOREST
+	war_camp_trigger_zone.screen_target = ScreenManager.ScreenName.WAR_CAMP
+	cave_trigger_zone.screen_target = ScreenManager.ScreenName.CAVE
 	var war_camp_unlocked := WorldManager.is_unlocked(WarCampLocation.LOCATION_ID)
 	camp_gate_closed.visible = !war_camp_unlocked
 	camp_gate_open.visible = war_camp_unlocked
