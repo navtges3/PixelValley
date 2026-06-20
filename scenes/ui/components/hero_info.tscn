@@ -1,9 +1,6 @@
 [gd_scene format=3 uid="uid://bjx12sxd6xqme"]
 
 [ext_resource type="Script" uid="uid://bhcbpl5f7iy2h" path="res://scripts/ui/components/hero_info.gd" id="1_65tph"]
-[ext_resource type="Theme" uid="uid://cra87dj7simd8" path="res://resources/ui/progress_bar/red_bar.tres" id="1_gupx4"]
-[ext_resource type="Theme" uid="uid://c70dcpx1conb6" path="res://resources/ui/progress_bar/blue_bar.tres" id="2_x6d6m"]
-[ext_resource type="Theme" uid="uid://ckmtiaybiiuaw" path="res://resources/ui/progress_bar/green_bar.tres" id="3_vut8i"]
 
 [node name="HeroInfo" type="VBoxContainer" unique_id=571032287]
 offset_right = 119.0
@@ -26,7 +23,6 @@ horizontal_alignment = 2
 [node name="HealthBar" type="ProgressBar" parent="HeroBars" unique_id=1417861012]
 custom_minimum_size = Vector2(256, 24)
 layout_mode = 2
-theme = ExtResource("1_gupx4")
 value = 75.0
 show_percentage = false
 
@@ -43,7 +39,6 @@ offset_right = 26.0
 offset_bottom = 11.5
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "75/100"
 
 [node name="EnergyLabel" type="Label" parent="HeroBars" unique_id=1712989395]
@@ -54,7 +49,6 @@ horizontal_alignment = 2
 [node name="EnergyBar" type="ProgressBar" parent="HeroBars" unique_id=1168189246]
 custom_minimum_size = Vector2(256, 24)
 layout_mode = 2
-theme = ExtResource("2_x6d6m")
 value = 25.0
 show_percentage = false
 
@@ -71,7 +65,6 @@ offset_right = 26.0
 offset_bottom = 11.5
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "25/100"
 
 [node name="LevelLabel" type="Label" parent="HeroBars" unique_id=510535556]
@@ -83,7 +76,6 @@ horizontal_alignment = 2
 [node name="XPBar" type="ProgressBar" parent="HeroBars" unique_id=1163130065]
 custom_minimum_size = Vector2(256, 16)
 layout_mode = 2
-theme = ExtResource("3_vut8i")
 value = 25.0
 show_percentage = false
 
