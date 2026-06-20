@@ -1,20 +1,20 @@
 [gd_scene format=3 uid="uid://bbuw3kio461fn"]
 
 [ext_resource type="Script" uid="uid://cgpdwrbt7m6l0" path="res://scripts/world/characters/enemy.gd" id="1_xdryk"]
-[ext_resource type="SpriteFrames" uid="uid://2sjuet18mpdk" path="res://resources/characters/monsters/goblin/goblin_world_sprite_frames.tres" id="2_xdryk"]
+[ext_resource type="SpriteFrames" uid="uid://dp6xg6vwbi7yo" path="res://resources/characters/monsters/ogre_king/ogre_king_world_sprite_frames.tres" id="2_yu5fk"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_01swt"]
-size = Vector2(10, 14)
+[sub_resource type="CircleShape2D" id="CircleShape2D_yu5fk"]
+radius = 5.0
 
 [node name="Enemy" type="CharacterBody2D" unique_id=1051783051]
 script = ExtResource("1_xdryk")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=211209122]
-sprite_frames = ExtResource("2_xdryk")
+sprite_frames = ExtResource("2_yu5fk")
 animation = &"idle"
+offset = Vector2(0, -10)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=967894431]
-position = Vector2(0, 6)
-shape = SubResource("RectangleShape2D_01swt")
+shape = SubResource("CircleShape2D_yu5fk")
 
 [node name="DetectionArea" type="Area2D" parent="." unique_id=783883924]
