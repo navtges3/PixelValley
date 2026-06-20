@@ -18,11 +18,11 @@ var _last_level: int = -1
 var _last_skill: int = -1
 var _last_gold: int = -1
 
-const COLOR_HP_HIGH  := Color(0.25, 0.78, 0.35)   # green
-const COLOR_HP_MID   := Color(0.9,  0.72, 0.15)   # yellow
-const COLOR_HP_LOW   := Color(0.85, 0.22, 0.18)   # red
-const COLOR_XP       := Color(0.35, 0.55, 0.9)    # blue
-const COLOR_GOLD     := Color(0.95, 0.80, 0.25)   # gold
+const COLOR_HP_HIGH  := Color(0.25, 0.78, 0.35)
+const COLOR_HP_MID   := Color(0.9,  0.72, 0.15)
+const COLOR_HP_LOW   := Color(0.85, 0.22, 0.18)
+const COLOR_XP       := Color(0.55, 0.35, 0.85)
+const COLOR_GOLD     := Color(0.95, 0.80, 0.25)
 const COLOR_NAME     := Color(0.95, 0.92, 0.80)
 const COLOR_CLASS    := Color(0.70, 0.65, 0.55)
 const COLOR_LEVEL    := Color(0.95, 0.92, 0.80)
