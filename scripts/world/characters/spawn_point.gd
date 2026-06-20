@@ -1,7 +1,7 @@
 extends Marker2D
 class_name SpawnPoint
 
-const enemy_scene = preload("res://scenes/world/characters/enemy.tscn")
+const ENEMY_SCENE := preload("res://scenes/world/characters/enemy.tscn")
 
 @export var monster_id: MonsterLoader.MonsterID = MonsterLoader.MonsterID.GOBLIN
 @export var spawn_count: int = 1
@@ -16,7 +16,7 @@ const enemy_scene = preload("res://scenes/world/characters/enemy.tscn")
 var spawned_enemies: Array[Enemy] = []
 
 func spawn(parent: Node, combat_handler: Callable, location_id: String) -> void:
-	var path = str(get_path())
+	var path := str(get_path())
 	if quest_id > 0:
 		if not _is_quest_active(quest_id):
 			return
@@ -30,7 +30,7 @@ func spawn(parent: Node, combat_handler: Callable, location_id: String) -> void:
 		wander_bounds_local.size
 	)
 	for i in spawn_count:
-		var enemy: Enemy = enemy_scene.instantiate() as Enemy
+		var enemy: Enemy = ENEMY_SCENE.instantiate() as Enemy
 		enemy.monster_id = monster_id
 		enemy.spawn_point_id = path
 		enemy.behavior = behavior
@@ -41,7 +41,7 @@ func spawn(parent: Node, combat_handler: Callable, location_id: String) -> void:
 		enemy.combat_initiated.connect(combat_handler)
 
 func _wire_existing_children(combat_handler: Callable) -> void:
-	var path = str(get_path())
+	var path := str(get_path())
 	for child in get_children():
 		var enemy := child as Enemy
 		if enemy == null:

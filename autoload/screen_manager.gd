@@ -58,7 +58,7 @@ func _ready() -> void:
 	canvas.add_child(_overlay)
 	_overlay.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	_overlay.modulate = Color(1, 1, 1, 0)
-	
+
 	_world_hud = WORLD_HUD.instantiate()
 	add_child(_world_hud)
 	_world_hud.hide()
@@ -72,7 +72,7 @@ func _fade(target_alpha: float) -> void:
 		.set_ease(Tween.EASE_IN_OUT)
 	await tween.finished
 
-func go_to_screen(screen_name: ScreenName, entrance_id: String = "", data = null) -> void:
+func go_to_screen(screen_name: ScreenName, entrance_id: String = "", data: Variant = null) -> void:
 	if _is_transitioning:
 		return
 	if not SCENE_PATHS.has(screen_name):
@@ -83,14 +83,14 @@ func go_to_screen(screen_name: ScreenName, entrance_id: String = "", data = null
 	_current_screen_name = screen_name
 	_change_scene.call_deferred(SCENE_PATHS[screen_name], entrance_id, data)
 
-func go_back(entrance_id: String = "", data = null) -> void:
+func go_back(entrance_id: String = "", data: Variant = null) -> void:
 	if _history.is_empty():
 		return
 	var previous: ScreenName = _history.pop_back()
 	_current_screen_name = previous
 	_change_scene.call_deferred(SCENE_PATHS[previous], entrance_id, data)
 
-func _change_scene(path: String, entrance_id: String = "", data = null) -> void:
+func _change_scene(path: String, entrance_id: String = "", data: Variant = null) -> void:
 	_is_transitioning = true
 	await _fade(1.0)
 	_world_hud.hide()
@@ -101,7 +101,6 @@ func _change_scene(path: String, entrance_id: String = "", data = null) -> void:
 	if data != null and scene.has_method("setup"):
 		scene.setup(data)
 	if entrance_id != "" and scene.has_method("place_player_at_entrance"):
-		print("Placing player at entrance: %s" % entrance_id)
 		scene.place_player_at_entrance(entrance_id)
 	if _current_screen_name in WORLD_SCREENS:
 		_world_hud.show_all()

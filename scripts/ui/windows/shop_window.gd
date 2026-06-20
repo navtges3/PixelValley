@@ -19,7 +19,7 @@ enum ShopType { POTION, WEAPON }
 @onready var hero_ui: HeroInfo = $PanelContainer/VBoxContainer/HBoxContainer/HeroInfo/HeroUI
 @onready var inventory_label: Label = $PanelContainer/VBoxContainer/HBoxContainer/HeroInfo/InventoryLabel
 
-var ItemButton := preload("res://scenes/ui/components/item_button.tscn")
+const ITEM_BUTTON := preload("res://scenes/ui/components/item_button.tscn")
 
 var hero: Hero
 var shop: Shop
@@ -31,7 +31,6 @@ func open(type: ShopType) -> void:
 	shop = _get_shop()
 	shop_name_label.text = shop.name
 	quantity_spin_box.visible = shop_type == ShopType.POTION
-	quantity_spin_box.visible = shop_type == ShopType.WEAPON
 	_update_item_list()
 	show()
 
@@ -53,7 +52,7 @@ func empty_item_list() -> void:
 		child.queue_free()
 
 func create_item_button(item_id: String, count: int) -> Button:
-	var button := ItemButton.instantiate()
+	var button := ITEM_BUTTON.instantiate()
 	button.item_id = item_id
 	button.count = count
 	button.connect("item_pressed", _on_item_pressed)
@@ -63,7 +62,7 @@ func _update_item_list() -> void:
 	empty_item_list()
 	for item_id in shop.inventory:
 		var count: int = shop.inventory[item_id]
-		var button = create_item_button(item_id, count)
+		var button := create_item_button(item_id, count)
 		item_list.add_child(button)
 	if shop_manager.selected_item_id != "":
 		_on_item_pressed(shop_manager.selected_item_id)

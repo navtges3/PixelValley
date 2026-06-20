@@ -5,16 +5,16 @@ const SETTINGS_PATH := "user://settings.json"
 # ----------------------------
 # AUDIO
 # ----------------------------
-var master_volume := 1.0
-var music_volume := 0.8
-var sfx_volume := 0.8
+var master_volume: float = 1.0
+var music_volume: float = 0.8
+var sfx_volume: float = 0.8
 
 # ----------------------------
 # VIDEO
 # ----------------------------
-var fullscreen := false
-var maximized := false
-var vsync := true
+var fullscreen: bool = false
+var maximized: bool = false
+var vsync: bool = true
 
 func _ready() -> void:
 	load_settings()
@@ -54,12 +54,12 @@ func load_settings() -> void:
 	if typeof(data) != TYPE_DICTIONARY:
 		return
 
-	var audio = data.get("audio", {})
+	var audio: Dictionary = data.get("audio", {})
 	master_volume = audio.get("master", master_volume)
 	music_volume = audio.get("music", music_volume)
 	sfx_volume = audio.get("sfx", sfx_volume)
 
-	var video = data.get("video", {})
+	var video: Dictionary = data.get("video", {})
 	fullscreen = video.get("fullscreen", fullscreen)
 	maximized = video.get("maximized", maximized)
 	vsync = video.get("vsync", vsync)
@@ -82,16 +82,13 @@ func apply_settings() -> void:
 	)
 
 func _set_bus_volume(bus_name: String, volume: float) -> void:
-	var bus_index = AudioServer.get_bus_index(bus_name)
+	var bus_index := AudioServer.get_bus_index(bus_name)
 	if bus_index >= 0:
 		AudioServer.set_bus_volume_db(bus_index, linear_to_db(clamp(volume, 0.0, 1.0)))
 
 func _on_window_size_changed() -> void:
 	var mode := DisplayServer.window_get_mode()
-	print("Window mode changed: ", mode)
 	if mode == DisplayServer.WINDOW_MODE_MAXIMIZED:
-		print("Window is now maximized")
 		maximized = true
 	elif mode == DisplayServer.WINDOW_MODE_WINDOWED:
-		print("Window is now in windowed mode")
 		maximized = false

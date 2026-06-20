@@ -3,7 +3,7 @@ class_name BaseLocation
 
 @onready var player: Player = $Player
 
-var _pending_entraince_id: String = ""
+var _pending_entrance_id: String = ""
 
 func _ready() -> void:
 	for zone in get_tree().get_nodes_in_group("trigger_zone"):
@@ -12,8 +12,8 @@ func _ready() -> void:
 			continue
 		_connect_zone(zone)
 	player.set_sprite_frames(GameState.hero.world_visual)
-	if _pending_entraince_id != "":
-		place_player_at_entrance(_pending_entraince_id)
+	if _pending_entrance_id != "":
+		place_player_at_entrance(_pending_entrance_id)
 	else:
 		GameState.set_player_location(_get_screen_name(), "")
 		
@@ -40,7 +40,7 @@ func _on_zone_entered(zone: TriggerZone) -> void:
 func place_player_at_entrance(entrance_id: String) -> void:
 	GameState.set_player_location(_get_screen_name(), entrance_id)
 	if not is_node_ready():
-		_pending_entraince_id = entrance_id
+		_pending_entrance_id = entrance_id
 		return
 	var candidates: Array[Node] = []
 	candidates.append_array(get_tree().get_nodes_in_group("trigger_zone"))
@@ -49,7 +49,7 @@ func place_player_at_entrance(entrance_id: String) -> void:
 		if candidate.get("entrance_id") == entrance_id:
 			player.place_at_entrance(candidate)
 			return
-	push_warning("Entrance not found: ", entrance_id)
+	push_warning("Entrance not found: %s" % entrance_id)
 
 func _input(event: InputEvent) -> void:
 	var world_hud := ScreenManager.get_world_hud() as WorldHUD

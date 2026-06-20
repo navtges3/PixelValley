@@ -11,7 +11,7 @@ const ENTRANCE_ID := "quest"
 @onready var reward_window: Window = $RewardWindow
 
 var selected_quest: QuestButton = null
-var current_tab = "available"
+var current_tab: String = "available"
 
 func _ready() -> void:
 	load_quests(current_tab)
@@ -58,7 +58,7 @@ func _on_start_button_pressed() -> void:
 func _on_rewards_collected() -> void:
 	load_quests(current_tab)
 
-func _on_quest_selected(selected_button: QuestButton):
+func _on_quest_selected(selected_button: QuestButton) -> void:
 	if selected_quest == selected_button:
 		selected_quest = null
 		_update_complete_button()
@@ -79,15 +79,15 @@ func _update_complete_button() -> void:
 		turn_in_button.disabled = true
 		turn_in_button.text = "Locked"
 
-func clear_quest_list():
+func clear_quest_list() -> void:
 	for child in quest_list_v_box.get_children():
 		child.queue_free()
 
-func load_quests(type: String):
+func load_quests(type: String) -> void:
 	clear_quest_list()
-	var quests = GameState.quest_manager.available_quests if type == "available" else GameState.quest_manager.completed_quests
-	for quest in quests:
-		var quest_button = preload("res://scenes/ui/components/quest_button.tscn").instantiate()
+	var quests: Array[Quest] = GameState.quest_manager.available_quests if type == "available" else GameState.quest_manager.completed_quests
+	for quest: Quest in quests:
+		var quest_button := preload("res://scenes/ui/components/quest_button.tscn").instantiate() as QuestButton
 		quest_button.quest = quest
-		quest_button.connect("quest_selected", _on_quest_selected)
+		quest_button.quest_selected.connect(_on_quest_selected)
 		quest_list_v_box.add_child(quest_button)

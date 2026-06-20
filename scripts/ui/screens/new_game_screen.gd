@@ -5,7 +5,7 @@ extends Control
 @onready var hero_name: LineEdit = $VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/HeroInfoContainer/HeroName
 @onready var hero_class: Label = $VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/HeroInfoContainer/HeroClassLabel
 
-@onready var class_selector = $VBoxContainer/ClassSelector
+@onready var class_selector: HBoxContainer = $VBoxContainer/ClassSelector
 
 @onready var create_button: Button = $VBoxContainer/PanelContainer/VBoxContainer/ButtonContainer/CreateButton
 
@@ -26,15 +26,15 @@ func _ready() -> void:
 	load_hero_previews()
 
 func load_hero_previews() -> void:
-	for path in HERO_DEFAULTS:
-		var hero_preview = load(path) as Hero
+	for path: String in HERO_DEFAULTS:
+		var hero_preview := load(path) as Hero
 		if hero_preview:
-			var preview = PREVIEW_SCENE.instantiate()
+			var preview := PREVIEW_SCENE.instantiate()
 			preview.hero = hero_preview
 			preview.class_selected.connect(_on_class_selected)
 			class_selector.add_child(preview)
 
-func check_create_button_state():
+func check_create_button_state() -> void:
 	create_button.disabled = not (_class_selected and hero_name.text != "")
 
 func _on_class_selected(selected_hero: Hero) -> void:

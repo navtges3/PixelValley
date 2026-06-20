@@ -14,13 +14,13 @@ class_name Quest
 signal quest_completed(quest: Quest)
 
 func get_monster() -> Monster:
-	var available_ids := []
+	var available_ids: Array[MonsterLoader.MonsterID] = []
 	for objective in objectives:
 		if objective.current_amount < objective.target_amount:
 			available_ids.append(objective.monster_id)
 	if available_ids.size() == 0:
 		return null
-	var monster_id = available_ids[randi() % available_ids.size()]
+	var monster_id: MonsterLoader.MonsterID = available_ids[randi() % available_ids.size()]
 	return MonsterLoader.new_monster(monster_id)
 
 func get_monster_count() -> int:

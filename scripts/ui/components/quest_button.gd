@@ -24,7 +24,7 @@ func _update_quest() -> void:
 func get_quest() -> Quest:
 	return self.quest
 
-func _update_size():
+func _update_size() -> void:
 	custom_minimum_size.y = $VBoxContainer.get_combined_minimum_size().y + Y_OFFSET
 
 func _pressed() -> void:

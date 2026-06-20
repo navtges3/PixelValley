@@ -33,9 +33,9 @@ func setup_empty_slot(button: Button) -> void:
 	button.theme = RED_BUTTON
 
 func setup_filled_slot(button: Button, meta: Dictionary) -> void:
-	var hero_name = meta.get("hero_name", "Unknown")
-	var level = meta.get("level", 1)
-	var last_played = meta.get("time", "Unknown")
+	var hero_name: String = meta.get("hero_name", "Unknown")
+	var level: int = meta.get("level", 1)
+	var last_played: String = meta.get("time", "Unknown")
 
 	button.text = "%s\nLevel: %d\nLast Played: %s" % [hero_name, level, last_played]
 	button.alignment = HORIZONTAL_ALIGNMENT_LEFT

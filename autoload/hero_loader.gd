@@ -14,7 +14,7 @@ func new_hero(hero_class: Hero.HeroClass) -> Hero:
 
 func apply_visual(hero: Hero) -> void:
 	if not HERO_PATHS.has(hero.hero_class):
-		push_error("HeroLoader: unknown hero class %d", hero.hero_class)
+		push_error("HeroLoader: unknown hero class %d" % hero.hero_class)
 		return
 	var template := load(HERO_PATHS[hero.hero_class]) as Hero
 	hero.portrait = template.portrait

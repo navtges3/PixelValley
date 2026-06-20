@@ -50,8 +50,6 @@ func save_game() -> void:
 		"player_scene": GameState.player_location["scene"],
 		"player_entrance": GameState.player_location["entrance_id"]
 	})
-	print("SaveManager: Saving player location: %s, %s" % [GameState.player_location["scene"], GameState.player_location["entrance_id"]])
-	print("SaveManager: Saved game to slot %d" % save_slot)
 
 func load_game(slot: int = 1) -> void:
 	if not has_save_data(slot):
@@ -76,8 +74,6 @@ func load_game(slot: int = 1) -> void:
 	var entrance: String = meta_json.get("player_entrance", "")
 	GameState.player_location = { "scene": scene_int, "entrance_id": entrance }
 	GameState.quest_manager.reconnect_signals()
-	print("SaveManager: Loading player location: %s, %s" % [GameState.player_location["scene"], GameState.player_location["entrance_id"]])
-	print("SaveManager: Loaded game from slot %d" % slot)
 
 func get_meta_data(slot: int = 1) -> Dictionary:
 	var meta_json := _load_json(slot, "meta.json")
@@ -95,7 +91,6 @@ func delete_slot(slot: int = 1) -> void:
 		if FileAccess.file_exists(path):
 			DirAccess.remove_absolute(path)
 	DirAccess.remove_absolute(dir)
-	print("SaveManager: Deleted slot %d" % slot)
 
 # ---------------------------------------------------------
 # LOW-LEVEL JSON HANDLING
@@ -181,7 +176,7 @@ func _load_active_effects(data: Array, combatant: Combatant) -> void:
 		effect.strength = effect_data.get("strength", 0)
 		effect.duration = effect_data.get("duration", 0)
 
-		var remaining = effect_data.get("remaining_turns", 0)
+		var remaining: int = effect_data.get("remaining_turns", 0)
 		combatant.apply_effect(effect, null, remaining)
 
 # ---------------------------------------------------------
@@ -224,9 +219,9 @@ func _load_inventory(data: Dictionary) -> Inventory:
 	var inv := Inventory.new()
 	inv.gold = data.get("gold", 0)
 
-	var weapon_id = data.get("equipped_weapon", "")
+	var weapon_id: String = data.get("equipped_weapon", "")
 	if weapon_id != "":
-		var weapon = ItemLoader.get_item(weapon_id)
+		var weapon := ItemLoader.get_item(weapon_id)
 		if weapon is Weapon:
 			inv.equipped_weapon = weapon
 
@@ -286,7 +281,7 @@ func _load_shop(data: Dictionary) -> Shop:
 
 	var inv: Dictionary = data.get("inventory", {})
 	for item_id in inv:
-		var resolved_id = item_id
+		var resolved_id: String = item_id
 		if (item_id as String).begins_with("res://"):
 			resolved_id = (item_id as String).get_file().get_basename()
 		if ItemLoader.has_item(resolved_id):
@@ -328,13 +323,13 @@ func _get_quests_data(quest_manager: QuestManager) -> Dictionary:
 func _load_quests(data: Dictionary) -> QuestManager:
 	var manager := QuestManager.new()
 	for quest_data in data.get("locked_quests", []):
-		var quest = _load_quest(quest_data)
+		var quest := _load_quest(quest_data)
 		manager.locked_quests.append(quest)
 	for quest_data in data.get("available_quests", []):
-		var quest = _load_quest(quest_data)
+		var quest := _load_quest(quest_data)
 		manager.add_available_quest(quest)
 	for quest_data in data.get("completed_quests", []):
-		var quest = _load_quest(quest_data)
+		var quest := _load_quest(quest_data)
 		manager.completed_quests.append(quest)
 	return manager
 
@@ -392,7 +387,7 @@ func _load_quest(data: Dictionary) -> Quest:
 		obj.location_id = obj_data.get("location_id", "")
 		quest.objectives.append(obj)
 	# reward
-	var reward_data = data.get("reward", {})
+	var reward_data: Dictionary = data.get("reward", {})
 	var reward := Reward.new()
 	reward.experience = reward_data.get("experience", 0)
 	reward.gold = reward_data.get("gold", 0)
