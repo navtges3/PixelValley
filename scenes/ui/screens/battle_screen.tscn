@@ -3,7 +3,6 @@
 [ext_resource type="Script" uid="uid://cqc6b58dnjxis" path="res://scripts/ui/screens/battle_screen.gd" id="1_ihhiw"]
 [ext_resource type="Texture2D" uid="uid://ch4xo4n02q3jw" path="res://assets/battle/BattleBackground.png" id="2_e8mee"]
 [ext_resource type="PackedScene" uid="uid://bjx12sxd6xqme" path="res://scenes/ui/components/hero_info.tscn" id="3_e8mee"]
-[ext_resource type="Theme" uid="uid://cra87dj7simd8" path="res://resources/ui/progress_bar/red_bar.tres" id="3_pxpkm"]
 [ext_resource type="PackedScene" uid="uid://usjhwmauxj8n" path="res://scenes/ui/windows/death_window.tscn" id="3_yj4kj"]
 [ext_resource type="Theme" uid="uid://dq41s7i7v61gk" path="res://resources/ui/backgrounds/background_panel.tres" id="4_pxpkm"]
 [ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://resources/ui/button_themes/regular/red_button.tres" id="7_iw40k"]
@@ -73,7 +72,6 @@ size_flags_vertical = 0
 [node name="MonsterHealthBar" type="ProgressBar" parent="MarginContainer/VBoxContainer" unique_id=520036926]
 custom_minimum_size = Vector2(360, 32)
 layout_mode = 2
-theme = ExtResource("3_pxpkm")
 value = 75.0
 show_percentage = false
 
@@ -90,7 +88,6 @@ offset_right = 26.0
 offset_bottom = 11.5
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "75/100"
 
 [node name="MonsterLabel" type="Label" parent="MarginContainer/VBoxContainer" unique_id=420102121]
