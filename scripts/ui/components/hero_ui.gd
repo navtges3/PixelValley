@@ -13,7 +13,7 @@ class_name HeroUI
 @onready var attack_label: Label = $HeroInfo/GridContainer/AttackLabel
 @onready var magic_label: Label = $HeroInfo/GridContainer/MagicLabel
 @onready var defense_label: Label = $HeroInfo/GridContainer/DefenseLabel
-@onready var resistance_label: Label = $HeroInfo/GridContainer/ResistanceLabel
+@onready var resist_label: Label = $HeroInfo/GridContainer/ResistLabel
 
 @onready var gold_label = $HeroInfo/GoldLabel
 @onready var weapon_label = $HeroInfo/WeaponLabel
@@ -39,7 +39,7 @@ func _update_text() -> void:
 	attack_label.text = "Atk: " + str(hero.attack)
 	magic_label.text = "Mag: " + str(hero.magic)
 	defense_label.text = "Def: " + str(hero.defense)
-	resistance_label.text = "Res: " + str(hero.resistance)
+	resist_label.text = "Res: " + str(hero.resist)
 	gold_label.text = "Gold: " + str(hero.inventory.gold)
 	weapon_label.text = hero.inventory.equipped_weapon.name
 

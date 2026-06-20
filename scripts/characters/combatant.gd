@@ -14,7 +14,7 @@ const REST_CD := 5
 @export var attack := 0		# modifies physical attacks
 @export var magic := 0		# modifies magical attacks
 @export var defense := 0	# modifies physical defense
-@export var resistance := 0	# Modifies magical defense
+@export var resist := 0		# Modifies magical defense
 
 @export_group("Visuals")
 @export var portrait: Texture2D
@@ -45,9 +45,9 @@ func meditate() -> void:
 	var base_nrg = 5
 	var magic_scale = 1.3
 	var defense_scale = 1.5
-	var resistance_scale = 1.5
+	var resist_scale = 1.5
 	self.rest_cooldown = REST_CD
-	self.heal(base_hp + (defense * defense_scale) + (resistance * resistance_scale))
+	self.heal(base_hp + (defense * defense_scale) + (resist * resist_scale))
 	self.recover_energy(base_nrg + (magic * magic_scale))
 
 func take_damage(amount: int, type: Attack.AttackType) -> String:
@@ -94,5 +94,5 @@ func _calculate_damage(amount: int, type: Attack.AttackType) -> int:
 		Attack.AttackType.PHYSICAL:
 			damage = max(damage - defense, 0)
 		Attack.AttackType.MAGICAL:
-			damage = max(damage - resistance, 0)
+			damage = max(damage - resist, 0)
 	return damage

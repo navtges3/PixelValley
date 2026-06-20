@@ -50,7 +50,7 @@ var _temp_allocations := {
 	"attack": 0,
 	"magic": 0,
 	"defense": 0,
-	"resistance": 0,
+	"resist": 0,
 }
 var _available_points := 0
 
@@ -59,19 +59,19 @@ func _ready() -> void:
 		"attack": attack_up,
 		"magic": magic_up,
 		"defense": defense_up,
-		"resistance": resist_up,
+		"resist": resist_up,
 	}
 	_down_buttons = {
 		"attack": attack_down,
 		"magic": magic_down,
 		"defense": defense_down,
-		"resistance": resist_down,
+		"resist": resist_down,
 	}
 	_stat_labels = {
 		"attack": attack_label,
 		"magic": magic_label,
 		"defense": defense_label,
-		"resistance": resist_label,
+		"resist": resist_label,
 	}
 	
 	for stat in _up_buttons:
@@ -84,7 +84,7 @@ func refresh() -> void:
 	if GameState.hero == null:
 		return
 	# Reset pending allocations every time the panel is refreshed (HUD opened)
-	_temp_allocations = { "attack": 0, "magic": 0, "defense": 0, "resistance": 0 }
+	_temp_allocations = { "attack": 0, "magic": 0, "defense": 0, "resist": 0 }
 	_available_points = GameState.hero.skill_points
  
 	_refresh_identity()
@@ -122,7 +122,7 @@ func _refresh_stats() -> void:
 	_refresh_stat_label("attack", "Attack", hero.attack)
 	_refresh_stat_label("magic", "Magic", hero.magic)
 	_refresh_stat_label("defense", "Defense", hero.defense)
-	_refresh_stat_label("resistance", "Resist", hero.resistance)
+	_refresh_stat_label("resist", "Resist", hero.resist)
 	
 	for stat in _up_buttons:
 		_up_buttons[stat].disabled = no_points
@@ -185,7 +185,7 @@ func _on_confirm_pressed() -> void:
 			"attack": hero.attack += increase
 			"magic": hero.magic += increase
 			"defense": hero.defense += increase
-			"resistance": hero.resistance += increase
+			"resist": hero.resist += increase
 	hero.skill_points = _available_points
 	refresh()
 

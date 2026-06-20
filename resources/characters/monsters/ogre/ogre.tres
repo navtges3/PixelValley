@@ -47,7 +47,7 @@ metadata/_custom_type_script = "uid://buxlf5aagrtgf"
 
 [sub_resource type="Resource" id="Resource_tjjtm"]
 script = ExtResource("7_nkkoy")
-item_id = "resistance_potion"
+item_id = "resist_potion"
 chance = 0.25
 metadata/_custom_type_script = "uid://buxlf5aagrtgf"
 
@@ -72,7 +72,7 @@ max_nrg = 40
 current_nrg = 40
 attack = 9
 defense = 5
-resistance = 2
+resist = 2
 portrait = ExtResource("7_8w1if")
 world_visual = ExtResource("10_8w1if")
 battle_visual = ExtResource("2_u5tp0")

@@ -14,9 +14,9 @@ metadata/_custom_type_script = "uid://c5deti4sb2k2j"
 [resource]
 script = ExtResource("2_kvgos")
 effects = Array[ExtResource("1_4rigo")]([SubResource("Resource_olsek")])
-item_id = "resistance_potion"
-name = "Resistance Potion"
-description = "A bubbling concoction that burns going down and burns even more coming out.Temporarily increases the user's attack power, allowing them to deal greater damage for 3 turns. Popular among hot-headed adventurers and berserkers with no regard for moderation."
+item_id = "resist_potion"
+name = "Resist Potion"
+description = "A bubbling concoction that burns going down and burns even more coming out. Temporarily increases the user's resist, helping blunt magical damage for 3 turns."
 theme = ExtResource("3_1b5f5")
 value = 20
 metadata/_custom_type_script = "uid://dvmhh34nbwxaq"

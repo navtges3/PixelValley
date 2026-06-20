@@ -27,10 +27,10 @@ func on_apply():
 			target.defense += effect.strength
 		Effect.EffectType.DEBUFF_DEFENSE:
 			target.defense -= effect.strength
-		Effect.EffectType.BUFF_RESISTANCE:
-			target.resistance += effect.strength
-		Effect.EffectType.DEBUFF_RESISTANCE:
-			target.resistance -= effect.strength
+		Effect.EffectType.BUFF_RESIST:
+			target.resist += effect.strength
+		Effect.EffectType.DEBUFF_RESIST:
+			target.resist -= effect.strength
 
 func on_tick() -> String:
 	remaining_turns -= 1
@@ -70,12 +70,12 @@ func on_expire() -> String:
 		Effect.EffectType.DEBUFF_DEFENSE:
 			target.defense += effect.strength
 			output = "%s's Defense penalty wore off.\n" % target.get_colored_name()
-		Effect.EffectType.BUFF_RESISTANCE:
-			target.resistance -= effect.strength
-			output = "%s's Resistance boost wore off.\n" % target.get_colored_name()
-		Effect.EffectType.DEBUFF_RESISTANCE:
-			target.resistance += effect.strength
-			output = "%s's Resistance penalty wore off.\n" % target.get_colored_name()
+		Effect.EffectType.BUFF_RESIST:
+			target.resist -= effect.strength
+			output = "%s's Resist boost wore off.\n" % target.get_colored_name()
+		Effect.EffectType.DEBUFF_RESIST:
+			target.resist += effect.strength
+			output = "%s's Resist penalty wore off.\n" % target.get_colored_name()
 	return output
 
 func _to_string() -> String:

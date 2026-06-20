@@ -14,7 +14,7 @@ func _register_potions() -> void:
 	_register("attack_potion", "res://resources/items/potions/attack_potion.tres")
 	_register("magic_potion", "res://resources/items/potions/magic_potion.tres")
 	_register("defense_potion", "res://resources/items/potions/defense_potion.tres")
-	_register("resistance_potion", "res://resources/items/potions/resistance_potion.tres")
+	_register("resist_potion", "res://resources/items/potions/resist_potion.tres")
 	_register("energy_potion", "res://resources/items/potions/energy_potion.tres")
 	_register("stonehide_tonic", "res://resources/items/potions/stonehide_tonic.tres")
 

@@ -112,9 +112,9 @@ mouse_filter = 0
 text = "Defence: 1"
 horizontal_alignment = 2
 
-[node name="ResistanceLabel" type="Label" parent="HeroStats" unique_id=1319160702]
+[node name="ResistLabel" type="Label" parent="HeroStats" unique_id=1319160702]
 layout_mode = 2
-tooltip_text = "Resistance increases magic protection."
+tooltip_text = "Resist increases magic protection."
 mouse_filter = 0
 text = "Resist: 1"
 
