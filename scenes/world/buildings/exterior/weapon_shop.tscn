@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://cs87mrk0vnqod"]
 
-[ext_resource type="Texture2D" uid="uid://cq33dc5l1rtod" path="res://assets/overworld/village/weapon_shop/weapon_shop.png" id="1_bblfk"]
+[ext_resource type="Texture2D" uid="uid://cq33dc5l1rtod" path="res://assets/world/village/weapon_shop/weapon_shop.png" id="1_bblfk"]
 [ext_resource type="Script" uid="uid://p643v63ydy3o" path="res://scripts/world/buildings/building.gd" id="1_fpext"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_fpext"]
