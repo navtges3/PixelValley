@@ -7,14 +7,14 @@ class_name VictoryScreen
 func _ready() -> void:
 	var hero := GameState.hero
 	if hero:
-		hero_info_label.text = "%s\nLevel %d %s\n\nAttack: %d  Magic: %d\nDefense: %d  Resistance: %d\nGold: %d" % [
+		hero_info_label.text = "%s\nLevel %d %s\n\nAttack: %d  Magic: %d\nDefense: %d  Resist: %d\nGold: %d" % [
 			hero.name,
 			hero.level,
 			hero.get_class_name(),
 			hero.attack,
 			hero.magic,
 			hero.defense,
-			hero.resistance,
+			hero.resist,
 			hero.inventory.gold
 		]
 

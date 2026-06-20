@@ -196,7 +196,7 @@ func _get_stat_block_data(combatant: Combatant) -> Dictionary:
 		"attack": combatant.attack,
 		"magic": combatant.magic,
 		"defense": combatant.defense,
-		"resistance": combatant.resistance,
+		"resist": combatant.resist,
 	}
 
 func _load_stat_block(data: Dictionary, combatant: Combatant) -> void:
@@ -207,7 +207,7 @@ func _load_stat_block(data: Dictionary, combatant: Combatant) -> void:
 	combatant.attack = data.get("attack", 1)
 	combatant.magic = data.get("magic", 1)
 	combatant.defense = data.get("defense", 1)
-	combatant.resistance = data.get("resistance", 1)
+	combatant.resist = data.get("resist", 1)
 
 # ---------------------------------------------------------
 # INVENTORY

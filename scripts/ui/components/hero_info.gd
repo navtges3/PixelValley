@@ -16,7 +16,7 @@ class_name HeroInfo
 @onready var attack_label: Label = $HeroStats/AttackLabel
 @onready var magic_label: Label = $HeroStats/MagicLabel
 @onready var defense_label: Label = $HeroStats/DefenseLabel
-@onready var resistance_label: Label = $HeroStats/ResistanceLabel
+@onready var resist_label: Label = $HeroStats/ResistLabel
 @onready var gold_label: Label = $HeroStats/GoldLabel
 
 @export var hero: Hero:
@@ -36,7 +36,7 @@ func _update_text() -> void:
 	attack_label.text = "Atk: " + str(hero.attack)
 	magic_label.text = "Mag: " + str(hero.magic)
 	defense_label.text = "Def: " + str(hero.defense)
-	resistance_label.text = "Res: " + str(hero.resistance)
+	resist_label.text = "Res: " + str(hero.resist)
 	gold_label.text = "Gold: " + str(hero.inventory.gold)
 
 func _update_health_bar():

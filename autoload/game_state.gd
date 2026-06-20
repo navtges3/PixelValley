@@ -43,7 +43,7 @@ func _setup_potion_shop() -> void:
 	shop.add_item("attack_potion", 3)
 	shop.add_item("magic_potion", 3)
 	shop.add_item("defense_potion", 3)
-	shop.add_item("resistance_potion", 3)
+	shop.add_item("resist_potion", 3)
 	shop.add_item("energy_potion", 3)
 	village.potion_shop = shop
 

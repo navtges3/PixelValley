@@ -2,8 +2,8 @@ extends Resource
 class_name Effect
 
 enum EffectType { HEAL, ENERGY, POISON,
-					BUFF_ATTACK, BUFF_MAGIC, BUFF_DEFENSE, BUFF_RESISTANCE,
-					DEBUFF_ATTACK, DEBUFF_MAGIC, DEBUFF_DEFENSE, DEBUFF_RESISTANCE }
+					BUFF_ATTACK, BUFF_MAGIC, BUFF_DEFENSE, BUFF_RESIST,
+					DEBUFF_ATTACK, DEBUFF_MAGIC, DEBUFF_DEFENSE, DEBUFF_RESIST }
 
 const THEME_PATHS: Dictionary = {
 	Effect.EffectType.HEAL:             "res://resources/ui/button_themes/regular/green_button.tres",
@@ -12,11 +12,11 @@ const THEME_PATHS: Dictionary = {
 	Effect.EffectType.BUFF_ATTACK:      "res://resources/ui/button_themes/regular/red_button.tres",
 	Effect.EffectType.BUFF_MAGIC:       "res://resources/ui/button_themes/regular/red_button.tres",
 	Effect.EffectType.BUFF_DEFENSE:     "res://resources/ui/button_themes/regular/blue_button.tres",
-	Effect.EffectType.BUFF_RESISTANCE:  "res://resources/ui/button_themes/regular/blue_button.tres",
+	Effect.EffectType.BUFF_RESIST:      "res://resources/ui/button_themes/regular/blue_button.tres",
 	Effect.EffectType.DEBUFF_ATTACK:    "res://resources/ui/button_themes/regular/red_button.tres",
 	Effect.EffectType.DEBUFF_MAGIC:     "res://resources/ui/button_themes/regular/red_button.tres",
 	Effect.EffectType.DEBUFF_DEFENSE:   "res://resources/ui/button_themes/regular/blue_button.tres",
-	Effect.EffectType.DEBUFF_RESISTANCE:"res://resources/ui/button_themes/regular/blue_button.tres",
+	Effect.EffectType.DEBUFF_RESIST:    "res://resources/ui/button_themes/regular/blue_button.tres",
 }
 
 @export var type: EffectType
@@ -24,10 +24,10 @@ const THEME_PATHS: Dictionary = {
 @export var duration: int = 1
 
 func is_buff() -> bool:
-	return type in [Effect.EffectType.BUFF_ATTACK, Effect.EffectType.BUFF_MAGIC, Effect.EffectType.BUFF_DEFENSE, Effect.EffectType.BUFF_RESISTANCE]
+	return type in [Effect.EffectType.BUFF_ATTACK, Effect.EffectType.BUFF_MAGIC, Effect.EffectType.BUFF_DEFENSE, Effect.EffectType.BUFF_RESIST]
 
 func is_debuff() -> bool:
-	return type in [Effect.EffectType.DEBUFF_ATTACK, Effect.EffectType.DEBUFF_MAGIC, Effect.EffectType.DEBUFF_DEFENSE, Effect.EffectType.DEBUFF_RESISTANCE]
+	return type in [Effect.EffectType.DEBUFF_ATTACK, Effect.EffectType.DEBUFF_MAGIC, Effect.EffectType.DEBUFF_DEFENSE, Effect.EffectType.DEBUFF_RESIST]
 
 func _to_string(turns_remaining := duration) -> String:
 	var turn_text = "turn" if turns_remaining == 1 else "turns"
@@ -45,16 +45,16 @@ func _to_string(turns_remaining := duration) -> String:
 			type_text = "Magic +%d" % strength
 		Effect.EffectType.BUFF_DEFENSE:
 			type_text = "Defense +%d" % strength
-		Effect.EffectType.BUFF_RESISTANCE:
-			type_text = "Resistance +%d" % strength
+		Effect.EffectType.BUFF_RESIST:
+			type_text = "Resist +%d" % strength
 		Effect.EffectType.DEBUFF_ATTACK:
 			type_text = "Attack -%d" % strength
 		Effect.EffectType.DEBUFF_MAGIC:
 			type_text = "Magic -%d" % strength
 		Effect.EffectType.DEBUFF_DEFENSE:
 			type_text = "Defense -%d" % strength
-		Effect.EffectType.DEBUFF_RESISTANCE:
-			type_text = "Resistance -%d" % strength
+		Effect.EffectType.DEBUFF_RESIST:
+			type_text = "Resist -%d" % strength
 	if type_text == "":
 		type_text = "Unknown"
 	return "%s (%d %s)" % [type_text, turns_remaining, turn_text]
