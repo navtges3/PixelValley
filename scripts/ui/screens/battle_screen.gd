@@ -28,6 +28,11 @@ var hero_visual: BattleCharacter
 var monster_visual: BattleCharacter
 var battle_config: Dictionary = {}
 
+const COLOR_HP_HIGH := Color(0.25, 0.78, 0.35)
+const COLOR_HP_MID := Color(0.9, 0.72, 0.15)
+const COLOR_HP_LOW := Color(0.85, 0.22, 0.18)
+const COLOR_BAR_BG := Color(0.12, 0.10, 0.08, 0.8)
+
 func _ready() -> void:
 	_empty_option_list()
 
@@ -73,11 +78,38 @@ func _spawn_monster(monster_ref: Monster) -> void:
 	monster_visual.apply_visual(monster_ref, true)
 
 func _on_monster_updated(monster_ref: Monster) -> void:
-	var value = monster_ref.current_hp
-	var max_value = monster_ref.max_hp
+	var value: int = monster_ref.current_hp
+	var max_value: int = monster_ref.max_hp
 	monster_health_bar.max_value = max_value
 	monster_health_bar.value = value
 	monster_health_bar_label.text = "%d / %d" % [value, max_value]
+	_set_bar_color(monster_health_bar, _hp_color(value, max_value))
+
+func _hp_color(current: int, maximum: int) -> Color:
+	if maximum <= 0:
+		return COLOR_HP_HIGH
+	var ratio := float(current) / float(maximum)
+	if ratio > 0.5:
+		return COLOR_HP_HIGH
+	elif ratio > 0.25:
+		return COLOR_HP_MID
+	return COLOR_HP_LOW
+
+func _set_bar_color(bar: ProgressBar, color: Color) -> void:
+	var fill := StyleBoxFlat.new()
+	fill.bg_color = color
+	fill.corner_radius_top_left = 3
+	fill.corner_radius_top_right = 3
+	fill.corner_radius_bottom_left = 3
+	fill.corner_radius_bottom_right = 3
+	bar.add_theme_stylebox_override("fill", fill)
+	var bg := StyleBoxFlat.new()
+	bg.bg_color = COLOR_BAR_BG
+	bg.corner_radius_top_left = 3
+	bg.corner_radius_top_right = 3
+	bg.corner_radius_bottom_left = 3
+	bg.corner_radius_bottom_right = 3
+	bar.add_theme_stylebox_override("background", bg)
 
 func _on_monster_attacking() -> void:
 	monster_visual.play_attack()
