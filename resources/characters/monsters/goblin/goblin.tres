@@ -1,6 +1,5 @@
 [gd_resource type="Resource" script_class="Monster" format=3 uid="uid://dm48acoifufc0"]
 
-[ext_resource type="Resource" uid="uid://nav1377jn0pa" path="res://resources/characters/abilities/stab.tres" id="2_7quqt"]
 [ext_resource type="SpriteFrames" uid="uid://4ywebwliybf7" path="res://resources/characters/monsters/goblin/goblin_battle_sprite_frames.tres" id="2_ehlpm"]
 [ext_resource type="Script" uid="uid://bvuw0uyc36uxx" path="res://scripts/data/utility.gd" id="5_ehlpm"]
 [ext_resource type="Script" uid="uid://c5deti4sb2k2j" path="res://scripts/data/effect.gd" id="6_7quqt"]
@@ -11,6 +10,19 @@
 [ext_resource type="Script" uid="uid://birbqcxvye2x5" path="res://scripts/data/drop_table.gd" id="8_lygd1"]
 [ext_resource type="SpriteFrames" uid="uid://2sjuet18mpdk" path="res://resources/characters/monsters/goblin/goblin_world_sprite_frames.tres" id="10_7quqt"]
 [ext_resource type="Script" uid="uid://b2o7w8q10stxo" path="res://scripts/data/ability.gd" id="11_ability"]
+[ext_resource type="Script" uid="uid://bo48scp6lbwrb" path="res://scripts/data/attack.gd" id="12_attack"]
+
+[sub_resource type="Resource" id="Resource_stab_attack"]
+script = ExtResource("12_attack")
+min_damage = 5
+max_damage = 10
+metadata/_custom_type_script = "uid://bo48scp6lbwrb"
+
+[sub_resource type="Resource" id="Resource_stab_ability"]
+script = ExtResource("11_ability")
+name = "Stab"
+attack = SubResource("Resource_stab_attack")
+metadata/_custom_type_script = "uid://b2o7w8q10stxo"
 
 [sub_resource type="Resource" id="Resource_nb4d4"]
 script = ExtResource("6_w4m2s")
@@ -61,7 +73,7 @@ metadata/_custom_type_script = "uid://birbqcxvye2x5"
 
 [resource]
 script = ExtResource("8_li32v")
-basic_attack = ExtResource("2_7quqt")
+basic_attack = SubResource("Resource_stab_ability")
 conditional_abilities = Array[ExtResource("11_ability")]([SubResource("Resource_sgp6s")])
 gold = 5
 loot = SubResource("Resource_0ojpk")

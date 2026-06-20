@@ -1,7 +1,6 @@
 [gd_resource type="Resource" script_class="Monster" format=3 uid="uid://bxig3cedsllcl"]
 
 [ext_resource type="SpriteFrames" uid="uid://ghh4h01vpcng" path="res://resources/characters/monsters/ogre/ogre_battle_sprite_frames.tres" id="2_u5tp0"]
-[ext_resource type="Resource" uid="uid://waytpolwnsyp" path="res://resources/characters/abilities/smash.tres" id="2_xovwm"]
 [ext_resource type="Script" uid="uid://cnso83bg7vodw" path="res://scripts/data/condition.gd" id="5_1gn5i"]
 [ext_resource type="Texture2D" uid="uid://rvnloxwapjye" path="res://assets/characters/monsters/ogre/ogre.png" id="7_8w1if"]
 [ext_resource type="Script" uid="uid://bd6ohffno5w7r" path="res://scripts/characters/monster.gd" id="7_18j1j"]
@@ -11,6 +10,19 @@
 [ext_resource type="Script" uid="uid://b2o7w8q10stxo" path="res://scripts/data/ability.gd" id="11_ability"]
 [ext_resource type="Script" uid="uid://bvuw0uyc36uxx" path="res://scripts/data/utility.gd" id="12_utility"]
 [ext_resource type="Script" uid="uid://c5deti4sb2k2j" path="res://scripts/data/effect.gd" id="13_effect"]
+[ext_resource type="Script" uid="uid://bo48scp6lbwrb" path="res://scripts/data/attack.gd" id="14_attack"]
+
+[sub_resource type="Resource" id="Resource_smash_attack"]
+script = ExtResource("14_attack")
+min_damage = 12
+max_damage = 25
+metadata/_custom_type_script = "uid://bo48scp6lbwrb"
+
+[sub_resource type="Resource" id="Resource_smash_ability"]
+script = ExtResource("11_ability")
+name = "Smash"
+attack = SubResource("Resource_smash_attack")
+metadata/_custom_type_script = "uid://b2o7w8q10stxo"
 
 [sub_resource type="Resource" id="Resource_a8dng"]
 script = ExtResource("5_1gn5i")
@@ -61,7 +73,7 @@ metadata/_custom_type_script = "uid://birbqcxvye2x5"
 [resource]
 script = ExtResource("7_18j1j")
 monster_id = 3
-basic_attack = ExtResource("2_xovwm")
+basic_attack = SubResource("Resource_smash_ability")
 conditional_abilities = Array[ExtResource("11_ability")]([SubResource("Resource_s8n6s")])
 gold = 20
 loot = SubResource("Resource_o3ew8")

@@ -1,6 +1,5 @@
 [gd_resource type="Resource" script_class="Monster" format=3 uid="uid://yrw5qgu7qwe0"]
 
-[ext_resource type="Resource" uid="uid://5gj0qi86ux23" path="res://resources/characters/abilities/slash.tres" id="2_5w78i"]
 [ext_resource type="SpriteFrames" uid="uid://bn15t6nu6n6nf" path="res://resources/characters/monsters/orc/orc_battle_sprite_frames.tres" id="2_htada"]
 [ext_resource type="Script" uid="uid://cnso83bg7vodw" path="res://scripts/data/condition.gd" id="5_iwbsi"]
 [ext_resource type="Script" uid="uid://bd6ohffno5w7r" path="res://scripts/characters/monster.gd" id="6_b8a46"]
@@ -11,6 +10,19 @@
 [ext_resource type="Script" uid="uid://b2o7w8q10stxo" path="res://scripts/data/ability.gd" id="11_ability"]
 [ext_resource type="Script" uid="uid://bvuw0uyc36uxx" path="res://scripts/data/utility.gd" id="12_utility"]
 [ext_resource type="Script" uid="uid://c5deti4sb2k2j" path="res://scripts/data/effect.gd" id="13_effect"]
+[ext_resource type="Script" uid="uid://bo48scp6lbwrb" path="res://scripts/data/attack.gd" id="14_attack"]
+
+[sub_resource type="Resource" id="Resource_slash_attack"]
+script = ExtResource("14_attack")
+min_damage = 8
+max_damage = 12
+metadata/_custom_type_script = "uid://bo48scp6lbwrb"
+
+[sub_resource type="Resource" id="Resource_slash_ability"]
+script = ExtResource("11_ability")
+name = "Slash"
+attack = SubResource("Resource_slash_attack")
+metadata/_custom_type_script = "uid://b2o7w8q10stxo"
 
 [sub_resource type="Resource" id="Resource_1rq5t"]
 script = ExtResource("5_iwbsi")
@@ -66,7 +78,7 @@ metadata/_custom_type_script = "uid://birbqcxvye2x5"
 [resource]
 script = ExtResource("6_b8a46")
 monster_id = 1
-basic_attack = ExtResource("2_5w78i")
+basic_attack = SubResource("Resource_slash_ability")
 conditional_abilities = Array[ExtResource("11_ability")]([SubResource("Resource_63lsj")])
 gold = 12
 loot = SubResource("Resource_dmiw0")
