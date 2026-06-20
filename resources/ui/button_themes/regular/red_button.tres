@@ -1063,34 +1063,34 @@ cache/0/37/0/glyphs/69/texture_idx = 0
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_tetbq"]
 texture = ExtResource("1_jb0yb")
 texture_margin_left = 4.0
-texture_margin_top = 4.0
+texture_margin_top = 9.0
 texture_margin_right = 4.0
-texture_margin_bottom = 9.0
-region_rect = Rect2(336, 0, 96, 32)
+texture_margin_bottom = 4.0
+region_rect = Rect2(0, 96, 32, 32)
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_xi7vc"]
 texture = ExtResource("1_jb0yb")
 texture_margin_left = 4.0
 texture_margin_top = 4.0
 texture_margin_right = 4.0
-texture_margin_bottom = 8.0
-region_rect = Rect2(224, 34, 96, 32)
+texture_margin_bottom = 9.0
+region_rect = Rect2(64, 32, 32, 32)
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_d7ecd"]
 texture = ExtResource("1_jb0yb")
 texture_margin_left = 4.0
 texture_margin_top = 4.0
 texture_margin_right = 4.0
-texture_margin_bottom = 8.0
-region_rect = Rect2(224, 0, 96, 32)
+texture_margin_bottom = 9.0
+region_rect = Rect2(64, 0, 32, 32)
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_4cr1k"]
 texture = ExtResource("1_jb0yb")
 texture_margin_left = 4.0
-texture_margin_top = 8.0
+texture_margin_top = 9.0
 texture_margin_right = 4.0
 texture_margin_bottom = 4.0
-region_rect = Rect2(224, 68, 96, 32)
+region_rect = Rect2(64, 64, 32, 32)
 
 [resource]
 Button/colors/font_color = Color(0, 0, 0, 1)
