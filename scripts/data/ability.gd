@@ -18,7 +18,7 @@ func is_ready(caster: Combatant = null, target: Combatant = null) -> bool:
 	return true
 
 func use(caster: Combatant, target: Combatant) -> String:
-	var output = "%s used %s!\n" % [caster.get_colored_name(), self.name]
+	var output := "%s used %s!\n" % [caster.get_colored_name(), self.name]
 	if is_ready(caster, target) and caster.current_nrg >= self.energy_cost:
 		if attack != null:
 			output += attack.apply_attack(caster, target)
@@ -32,12 +32,11 @@ func use(caster: Combatant, target: Combatant) -> String:
 
 func update_cooldown() -> void:
 	if self.current_cooldown > 0:
-		print(" - Ability %s is on cooldown for %d turns." % [self.name, self.current_cooldown])
 		self.current_cooldown -= 1
 
 func _to_string(combatant: Combatant = null) -> String:
-	var attack_string = ""
-	var utility_string = ""
+	var attack_string := ""
+	var utility_string := ""
 	if attack != null:
 		attack_string = attack._to_string(combatant) + "\n"
 	for utility in utilities:

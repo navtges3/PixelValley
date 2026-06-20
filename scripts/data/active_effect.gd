@@ -3,16 +3,16 @@ class_name ActiveEffect
 
 var effect: Effect
 var remaining_turns: int
-var source
-var target
+var source: Combatant = null
+var target: Combatant = null
 
-func _init(_effect: Effect, _target, _source = null):
+func _init(_effect: Effect, _target: Combatant, _source: Combatant = null) -> void:
 	effect = _effect
 	target = _target
 	source = _source
 	remaining_turns = effect.duration
 
-func on_apply():
+func on_apply() -> void:
 	# Apply immediate stat changes for buffs/debuffs
 	match effect.type:
 		Effect.EffectType.BUFF_ATTACK:
@@ -43,7 +43,7 @@ func on_tick() -> String:
 			target.recover_energy(effect.strength)
 			output = "%s recovers %d energy.\n" % [target.get_colored_name(), effect.strength]
 		Effect.EffectType.POISON:
-			var dmg_msg = target.take_damage(effect.strength, Attack.AttackType.MAGICAL)
+			var dmg_msg := target.take_damage(effect.strength, Attack.AttackType.MAGICAL)
 			output = "[color=purple]Poison[/color]: %s" % dmg_msg
 	if remaining_turns <= 0:
 		output += on_expire()

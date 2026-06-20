@@ -19,13 +19,6 @@ class_name HeroInfo
 @onready var resist_label: Label = $HeroStats/ResistLabel
 @onready var gold_label: Label = $HeroStats/GoldLabel
 
-const COLOR_HP_HIGH := Color(0.25, 0.78, 0.35)
-const COLOR_HP_MID := Color(0.9, 0.72, 0.15)
-const COLOR_HP_LOW := Color(0.85, 0.22, 0.18)
-const COLOR_NRG := Color(0.35, 0.55, 0.9)
-const COLOR_XP := Color(0.55, 0.35, 0.85)
-const COLOR_BAR_BG := Color(0.12, 0.10, 0.08, 0.8)
-
 @export var hero: Hero:
 	set(value):
 		hero = value
@@ -51,17 +44,17 @@ func _update_text() -> void:
 func _update_health_bar() -> void:
 	var value: int = hero.current_hp
 	var max_value: int = hero.max_hp
-	_refresh_labeled_bar(health_bar, health_bar_label, value, max_value, "%d / %d", _hp_color(value, max_value))
+	_refresh_labeled_bar(health_bar, health_bar_label, value, max_value, "%d / %d", HudBarStyle.hp_color(value, max_value))
 
 func _update_energy_bar() -> void:
 	var value: int = hero.current_nrg
 	var max_value: int = hero.max_nrg
-	_refresh_labeled_bar(energy_bar, energy_bar_label, value, max_value, "%d / %d", COLOR_NRG)
+	_refresh_labeled_bar(energy_bar, energy_bar_label, value, max_value, "%d / %d", HudBarStyle.COLOR_NRG)
 
 func _update_xp_bar() -> void:
 	var value: int = hero.experience
 	var max_value: int = hero.level * hero.LEVEL_UP_MULT
-	_refresh_bar(xp_bar, value, max_value, COLOR_XP)
+	_refresh_bar(xp_bar, value, max_value, HudBarStyle.COLOR_XP)
 
 func _refresh_labeled_bar(bar: ProgressBar, label: Label, value: int, max_value: int, fmt: String, color: Color) -> void:
 	_refresh_bar(bar, value, max_value, color)
@@ -72,28 +65,5 @@ func _refresh_bar(bar: ProgressBar, value: int, max_value: int, color: Color) ->
 	bar.value = value
 	_set_bar_color(bar, color)
 
-func _hp_color(current: int, maximum: int) -> Color:
-	if maximum <= 0:
-		return COLOR_HP_HIGH
-	var ratio := float(current) / float(maximum)
-	if ratio > 0.5:
-		return COLOR_HP_HIGH
-	elif ratio > 0.25:
-		return COLOR_HP_MID
-	return COLOR_HP_LOW
-
 func _set_bar_color(bar: ProgressBar, color: Color) -> void:
-	var fill := StyleBoxFlat.new()
-	fill.bg_color = color
-	fill.corner_radius_top_left = 3
-	fill.corner_radius_top_right = 3
-	fill.corner_radius_bottom_left = 3
-	fill.corner_radius_bottom_right = 3
-	bar.add_theme_stylebox_override("fill", fill)
-	var bg := StyleBoxFlat.new()
-	bg.bg_color = COLOR_BAR_BG
-	bg.corner_radius_top_left = 3
-	bg.corner_radius_top_right = 3
-	bg.corner_radius_bottom_left = 3
-	bg.corner_radius_bottom_right = 3
-	bar.add_theme_stylebox_override("background", bg)
+	HudBarStyle.apply(bar, color)

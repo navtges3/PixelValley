@@ -1,4 +1,5 @@
 extends Node
+class_name BattleManager
 
 enum BattleState { PLAYER_TURN, MONSTER_TURN, RESOLVING, VICTORY, DEFEAT }
 
@@ -7,7 +8,7 @@ var monster: Monster
 var spawn_point_id: String = ""
 var location_id: String = ""
 
-var state = BattleState.PLAYER_TURN
+var state: BattleState = BattleState.PLAYER_TURN
 
 signal new_monster(monster_ref: Monster)
 signal player_turn()
@@ -50,7 +51,7 @@ func player_ability_selected(ability: Ability) -> void:
 	if state != BattleState.PLAYER_TURN:
 		return
 	hero_attacking.emit()
-	var output = ability.use(hero, monster)
+	var output := ability.use(hero, monster)
 	if output:
 		battle_log_updated.emit(output)
 		monster_hurt.emit()
@@ -128,8 +129,8 @@ func _collect_loot(loot: Dictionary, entries: Array[RewardEntry]) -> void:
 func enemy_turn() -> void:
 	battle_log_updated.emit("Enemy turn...\n")
 	monster_attacking.emit()
-	var monster_ability = monster.choose_ability(hero)
-	var output = monster_ability.use(monster, hero)
+	var monster_ability := monster.choose_ability(hero)
+	var output := monster_ability.use(monster, hero)
 	battle_log_updated.emit(output)
 	hero_hurt.emit()
 	hero_updated.emit(hero)

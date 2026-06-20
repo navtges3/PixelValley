@@ -22,7 +22,7 @@ const RED_BUTTON = preload("uid://130ubmqd1h3b")
 func _ready() -> void:
 	exclusive = true
 	for i in slot_buttons.size():
-		var slot_index = i + 1
+		var slot_index := i + 1
 		slot_buttons[i].pressed.connect(func(): _on_slot_button_pressed(slot_index))
 		delete_buttons[i].pressed.connect(func(): _on_delete_button_pressed(slot_index))
 	populate_slots()
@@ -56,12 +56,12 @@ func setup_empty_slot(button: Button) -> void:
 	button.theme = RED_BUTTON
 
 func setup_filled_slot(button: Button, meta: Dictionary) -> void:
-	var hero_name = meta.get("hero_name", "Unknown")
-	var level = meta.get("level", 1)
-	var last_played = meta.get("time", "Unknown")
+	var hero_name: String = meta.get("hero_name", "Unknown")
+	var level: int = meta.get("level", 1)
+	var last_played: String = meta.get("time", "Unknown")
 	button.text = "%s\nLevel: %d\nLast Played: %s" % [hero_name, level, last_played]
 	button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 	button.theme = GREEN_BUTTON
 
-func _on_back_button_pressed():
+func _on_back_button_pressed() -> void:
 	self.hide()

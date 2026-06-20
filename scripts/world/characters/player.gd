@@ -41,7 +41,7 @@ func on_zone_entered(zone: TriggerZone) -> void:
 		return
 	_zone_cooldown = true
 	await get_tree().process_frame
-	var data = null
+	var data: Variant = null
 	if zone.screen_data >= 0:
 		data = zone.screen_data 
 	ScreenManager.go_to_screen(zone.screen_target, zone.entrance_id, data)

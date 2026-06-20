@@ -11,14 +11,14 @@ func _ready() -> void:
 	GameState.reset_state()
 	AudioManager.play_music_by_id("background")
 
-func _on_new_game_button_pressed():
+func _on_new_game_button_pressed() -> void:
 	ScreenManager.go_to_screen(ScreenManager.ScreenName.NEW_GAME)
 
-func _on_load_game_button_pressed():
+func _on_load_game_button_pressed() -> void:
 	load_window.popup_centered()
 
-func _on_options_button_pressed():
+func _on_options_button_pressed() -> void:
 	options_window.popup_centered()
 
-func _on_exit_button_pressed():
+func _on_exit_button_pressed() -> void:
 	get_tree().quit()

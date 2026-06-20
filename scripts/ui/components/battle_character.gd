@@ -91,7 +91,7 @@ func play_death() -> void:
 	if sprite.animation != "death":
 		sprite.play("death")
 
-func _on_frame_changed():
+func _on_frame_changed() -> void:
 	_update_weapon_anchor()
 	_update_vfx()
 

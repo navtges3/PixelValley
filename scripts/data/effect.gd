@@ -29,9 +29,9 @@ func is_buff() -> bool:
 func is_debuff() -> bool:
 	return type in [Effect.EffectType.DEBUFF_ATTACK, Effect.EffectType.DEBUFF_MAGIC, Effect.EffectType.DEBUFF_DEFENSE, Effect.EffectType.DEBUFF_RESIST]
 
-func _to_string(turns_remaining := duration) -> String:
-	var turn_text = "turn" if turns_remaining == 1 else "turns"
-	var type_text = ""
+func _to_string(turns_remaining: int = duration) -> String:
+	var turn_text := "turn" if turns_remaining == 1 else "turns"
+	var type_text := ""
 	match type:
 		Effect.EffectType.HEAL:
 			type_text = "Heal %d" % strength
@@ -60,5 +60,5 @@ func _to_string(turns_remaining := duration) -> String:
 	return "%s (%d %s)" % [type_text, turns_remaining, turn_text]
 
 func get_button_theme() -> Theme:
-	var path = THEME_PATHS.get(type, "res://resources/ui/button_themes/regular/gray_button.tres")
+	var path: String = THEME_PATHS.get(type, "res://resources/ui/button_themes/regular/gray_button.tres")
 	return load(path) as Theme

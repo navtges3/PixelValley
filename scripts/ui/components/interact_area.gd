@@ -18,13 +18,11 @@ func _unhandled_input(event: InputEvent) -> void:
 		interacted.emit()
 
 func _on_body_entered(body: Node2D) -> void:
-	print("Player has entered")
 	if body is Player:
 		_player_inside = true
 		prompt_label.show()
 
 func _on_body_exited(body: Node2D) -> void:
-	print("Player has exited")
 	if body is Player:
 		_player_inside = false
 		prompt_label.hide()

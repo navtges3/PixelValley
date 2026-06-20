@@ -17,8 +17,8 @@ func apply_utility(caster: Combatant, target: Combatant) -> String:
 	return output
 
 func _to_string() -> String:
-	var output = ""
-	var targets = ""
+	var output := ""
+	var targets := ""
 	match subject:
 		UtilitySubject.CASTER:
 			targets += "Self: "

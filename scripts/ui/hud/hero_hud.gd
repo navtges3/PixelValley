@@ -18,10 +18,6 @@ var _last_level: int = -1
 var _last_skill: int = -1
 var _last_gold: int = -1
 
-const COLOR_HP_HIGH  := Color(0.25, 0.78, 0.35)
-const COLOR_HP_MID   := Color(0.9,  0.72, 0.15)
-const COLOR_HP_LOW   := Color(0.85, 0.22, 0.18)
-const COLOR_XP       := Color(0.55, 0.35, 0.85)
 const COLOR_GOLD     := Color(0.95, 0.80, 0.25)
 const COLOR_NAME     := Color(0.95, 0.92, 0.80)
 const COLOR_CLASS    := Color(0.70, 0.65, 0.55)
@@ -83,65 +79,20 @@ func _draw_data(hero: Hero) -> void:
 	hp_bar.max_value = hero.max_hp
 	hp_bar.value = hero.current_hp
 	hp_label.text = "%d / %d" % [hero.current_hp, hero.max_hp]
-	_set_bar_color(hp_bar, _hp_color(hero.current_hp, hero.max_hp))
+	_set_bar_color(hp_bar, HudBarStyle.hp_color(hero.current_hp, hero.max_hp))
 	
 	var xp_needed: int = hero.level * Hero.LEVEL_UP_MULT
 	xp_bar.max_value = xp_needed
 	xp_bar.value = hero.experience
 	xp_label.text = "%d / %d xp" % [hero.experience, xp_needed]
 
-func _hp_color(current: int, maximum: int) -> Color:
-	if maximum <= 0:
-		return COLOR_HP_HIGH
-	var ratio := float(current) / float(maximum)
-	if ratio > 0.5:
-		return COLOR_HP_HIGH
-	elif ratio > 0.25:
-		return COLOR_HP_MID
-	else:
-		return COLOR_HP_LOW
-
 func _set_bar_color(bar: ProgressBar, color: Color) -> void:
-	var style := bar.get_theme_stylebox("fill") as StyleBoxFlat
-	if style:
-		style = style.duplicate()
-		style.bg_color = color
-		bar.add_theme_stylebox_override("fill", style)
+	HudBarStyle.apply_fill(bar, color)
 
 
 func _apply_bar_styles() -> void:
 	# HP bar fill
-	var hp_fill := StyleBoxFlat.new()
-	hp_fill.bg_color = COLOR_HP_HIGH
-	hp_fill.corner_radius_top_left    = 3
-	hp_fill.corner_radius_top_right   = 3
-	hp_fill.corner_radius_bottom_left = 3
-	hp_fill.corner_radius_bottom_right = 3
-	hp_bar.add_theme_stylebox_override("fill", hp_fill)
- 
-	# HP bar background
-	var hp_bg := StyleBoxFlat.new()
-	hp_bg.bg_color = Color(0.15, 0.12, 0.10, 0.8)
-	hp_bg.corner_radius_top_left    = 3
-	hp_bg.corner_radius_top_right   = 3
-	hp_bg.corner_radius_bottom_left = 3
-	hp_bg.corner_radius_bottom_right = 3
-	hp_bar.add_theme_stylebox_override("background", hp_bg)
- 
+	HudBarStyle.apply(hp_bar, HudBarStyle.COLOR_HP_HIGH)
+
 	# XP bar fill
-	var xp_fill := StyleBoxFlat.new()
-	xp_fill.bg_color = COLOR_XP
-	xp_fill.corner_radius_top_left    = 3
-	xp_fill.corner_radius_top_right   = 3
-	xp_fill.corner_radius_bottom_left = 3
-	xp_fill.corner_radius_bottom_right = 3
-	xp_bar.add_theme_stylebox_override("fill", xp_fill)
- 
-	# XP bar background
-	var xp_bg := StyleBoxFlat.new()
-	xp_bg.bg_color = Color(0.15, 0.12, 0.10, 0.8)
-	xp_bg.corner_radius_top_left    = 3
-	xp_bg.corner_radius_top_right   = 3
-	xp_bg.corner_radius_bottom_left = 3
-	xp_bg.corner_radius_bottom_right = 3
-	xp_bar.add_theme_stylebox_override("background", xp_bg)
+	HudBarStyle.apply(xp_bar, HudBarStyle.COLOR_XP)

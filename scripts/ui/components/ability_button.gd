@@ -12,7 +12,7 @@ signal ability_pressed(ability: Ability)
 		user_energy = value
 		_refresh()
 
-func _on_pressed():
+func _on_pressed() -> void:
 	emit_signal("ability_pressed", ability)
 
 func _refresh() -> void:

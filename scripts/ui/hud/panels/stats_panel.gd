@@ -32,11 +32,6 @@ class_name StatsPanel
 
 @onready var effects_container: VBoxContainer = $ScrollContainer/VBox/EffectsContainer
 
-const COLOR_HP_HIGH  := Color(0.25, 0.78, 0.35)
-const COLOR_HP_MID   := Color(0.9,  0.72, 0.15)
-const COLOR_HP_LOW   := Color(0.85, 0.22, 0.18)
-const COLOR_NRG      := Color(0.35, 0.55, 0.9)
-const COLOR_XP       := Color(0.55, 0.35, 0.85)
 const COLOR_GOLD     := Color(0.95, 0.80, 0.25)
 const COLOR_HEADER   := Color(0.95, 0.92, 0.80)
 const COLOR_SUBTEXT  := Color(0.72, 0.67, 0.57)
@@ -105,9 +100,9 @@ func _refresh_identity() -> void:
 
 func _refresh_bars() -> void:
 	var hero := GameState.hero
-	_refresh_bar(hp_bar, hp_label, hero.current_hp, hero.max_hp,"%d / %d HP", _hp_color(hero.current_hp, hero.max_hp))
-	_refresh_bar(nrg_bar, nrg_label, hero.current_nrg, hero.max_nrg,"%d / %d NRG", COLOR_NRG)
-	_refresh_bar(xp_bar, xp_label, hero.experience, hero.level * Hero.LEVEL_UP_MULT,"%d / %d XP", COLOR_XP)
+	_refresh_bar(hp_bar, hp_label, hero.current_hp, hero.max_hp, "%d / %d HP", HudBarStyle.hp_color(hero.current_hp, hero.max_hp))
+	_refresh_bar(nrg_bar, nrg_label, hero.current_nrg, hero.max_nrg, "%d / %d NRG", HudBarStyle.COLOR_NRG)
+	_refresh_bar(xp_bar, xp_label, hero.experience, hero.level * Hero.LEVEL_UP_MULT, "%d / %d XP", HudBarStyle.COLOR_XP)
 
 func _refresh_bar(bar: ProgressBar, label: Label, value: int, max_val: int, fmt: String, color: Color) -> void:
 	bar.max_value = max(max_val, 1)
@@ -189,31 +184,8 @@ func _on_confirm_pressed() -> void:
 	hero.skill_points = _available_points
 	refresh()
 
-func _hp_color(current: int, maximum: int) -> Color:
-	if maximum <= 0:
-		return COLOR_HP_HIGH
-	var ratio := float(current) / float(maximum)
-	if ratio > 0.5:
-		return COLOR_HP_HIGH
-	elif ratio > 0.25:
-		return COLOR_HP_MID
-	return COLOR_HP_LOW
-
 func _set_bar_color(bar: ProgressBar, color: Color) -> void:
-	var style := StyleBoxFlat.new()
-	style.bg_color = color
-	style.corner_radius_top_left = 3
-	style.corner_radius_top_right = 3
-	style.corner_radius_bottom_left = 3
-	style.corner_radius_bottom_right = 3
-	bar.add_theme_stylebox_override("fill", style)
-	var bg := StyleBoxFlat.new()
-	bg.bg_color = Color(0.12, 0.10, 0.08, 0.8)
-	bg.corner_radius_top_left = 3
-	bg.corner_radius_top_right = 3
-	bg.corner_radius_bottom_left = 3
-	bg.corner_radius_bottom_right = 3
-	bar.add_theme_stylebox_override("background", bg)
+	HudBarStyle.apply(bar, color)
 
 func _make_label(txt: String, color: Color, font_size: int = 12) -> Label:
 	var lbl := Label.new()
