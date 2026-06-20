@@ -129,7 +129,7 @@ position = Vector2(272, 60)
 script = ExtResource("8_uphwf")
 entrance_id = "forest"
 locked_message = "The forest is blocked."
-screen_target = 10
+screen_target = 9
 metadata/_custom_type_script = "uid://c5sed60hjy0rk"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="TriggerZones/ForestTriggerZone" unique_id=1840918726]
@@ -141,7 +141,7 @@ script = ExtResource("8_uphwf")
 locked = true
 entrance_id = "war_camp"
 locked_message = "The war camp is blocked."
-screen_target = 11
+screen_target = 10
 metadata/_custom_type_script = "uid://c5sed60hjy0rk"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="TriggerZones/WarCampTriggerZone" unique_id=596380109]
@@ -153,7 +153,7 @@ script = ExtResource("8_uphwf")
 locked = true
 entrance_id = "cave"
 locked_message = "The cave is blocked."
-screen_target = 12
+screen_target = 11
 metadata/_custom_type_script = "uid://c5sed60hjy0rk"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="TriggerZones/CaveTriggerZone" unique_id=155573026]

@@ -78,7 +78,7 @@ position = Vector2(642, 1107)
 position = Vector2(640, 1264)
 script = ExtResource("5_c621e")
 entrance_id = "war_camp"
-screen_target = 9
+screen_target = 8
 metadata/_custom_type_script = "uid://c5sed60hjy0rk"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="TriggerZones/ExitTriggerZone" unique_id=496789199]
