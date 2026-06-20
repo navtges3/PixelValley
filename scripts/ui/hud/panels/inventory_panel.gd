@@ -66,12 +66,12 @@ func _refresh_weapons(hero: Hero) -> void:
 			continue
 		var color := _rarity_color(weapon.rarity)
 		var row := HBoxContainer.new()
+		var btn := _make_equip_button(weapon_id)
+		row.add_child(btn)
 		var lbl := _make_label("• %s  [%s]" % [weapon.name, Item.rarity_to_string(weapon.rarity)], color)
 		lbl.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		lbl.tooltip_text = weapon._to_string()
 		row.add_child(lbl)
-		var btn := _make_equip_button(weapon_id)
-		row.add_child(btn)
 		weapons_list.add_child(row)
 
 func _make_equip_button(weapon_id: String) -> Button:

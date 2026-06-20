@@ -22,6 +22,7 @@ horizontal_scroll_mode = 0
 
 [node name="VBox" type="VBoxContainer" parent="ScrollContainer" unique_id=604677432]
 layout_mode = 2
+size_flags_horizontal = 3
 theme_override_constants/separation = 10
 
 [node name="PotionsSection" type="VBoxContainer" parent="ScrollContainer/VBox" unique_id=130522284]
