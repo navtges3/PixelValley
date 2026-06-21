@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://704akrtr3vv2" path="res://scenes/world/buildings/exterior/potion_shop.tscn" id="5_bn7ll"]
 [ext_resource type="Texture2D" uid="uid://blhw78q8gb6pr" path="res://assets/world/village/weapon_shop/wood_pile.png" id="6_bn7ll"]
 [ext_resource type="Texture2D" uid="uid://bgmovr504ia1y" path="res://assets/world/village/village_tileset.png" id="7_fp2bn"]
+[ext_resource type="Texture2D" uid="uid://ch6mx3h7prhud" path="res://assets/world/village/fountain.png" id="7_vlb0o"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_fp2bn"]
 size = Vector2(38, 20)
@@ -72,6 +73,17 @@ offset = Vector2(0, -24)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Props/WoodPile" unique_id=272159717]
 position = Vector2(-1, -14)
 shape = SubResource("RectangleShape2D_fp2bn")
+
+[node name="Fountain" type="StaticBody2D" parent="Props" unique_id=1440502317]
+position = Vector2(388, 374)
+
+[node name="Sprite2D" type="Sprite2D" parent="Props/Fountain" unique_id=276469592]
+texture = ExtResource("7_vlb0o")
+offset = Vector2(0, -24)
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Props/Fountain" unique_id=267475475]
+position = Vector2(0, 23)
+polygon = PackedVector2Array(0, 0, -41, -7, -63, -29, -41, -51, 0, -58, 41, -51, 63, -29, 41, -7)
 
 [node name="QuestBoard" type="StaticBody2D" parent="Props" unique_id=645708781]
 position = Vector2(848, 270)
