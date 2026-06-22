@@ -3,7 +3,6 @@ class_name ValleyLocation
 
 @onready var zone_message_label: ZoneMessageLabel = $ZoneMessageLabel
 @onready var camp_gate_closed: StaticBody2D = $WoodWalls/CampGateClosed
-@onready var camp_gate_open: StaticBody2D = $WoodWalls/CampGateOpen
 @onready var cave_closed: StaticBody2D = $CaveWalls/CaveClosed
 @onready var village_trigger_zone: TriggerZone = $TriggerZones/VillageTriggerZone
 @onready var forest_trigger_zone: TriggerZone = $TriggerZones/ForestTriggerZone
@@ -18,9 +17,8 @@ func _ready() -> void:
 	cave_trigger_zone.screen_target = ScreenManager.ScreenName.CAVE
 	var war_camp_unlocked := WorldManager.is_unlocked(WarCampLocation.LOCATION_ID)
 	camp_gate_closed.visible = !war_camp_unlocked
-	camp_gate_open.visible = war_camp_unlocked
 	var cave_unlocked := WorldManager.is_unlocked(CaveLocation.LOCATION_ID)
-	cave_closed.visible = ! cave_unlocked
+	cave_closed.visible = !cave_unlocked
 
 func _get_screen_name() -> ScreenManager.ScreenName:
 	return ScreenManager.ScreenName.VALLEY
