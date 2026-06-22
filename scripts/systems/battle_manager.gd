@@ -7,6 +7,7 @@ var hero: Hero
 var monster: Monster
 var spawn_point_id: String = ""
 var location_id: String = ""
+var flee_position: Vector2 = Vector2.ZERO
 
 var state: BattleState = BattleState.PLAYER_TURN
 
@@ -31,6 +32,7 @@ func setup_battle(config: Dictionary) -> void:
 	hero = config.get("hero")
 	spawn_point_id = config.get("spawn_point_id", "")
 	location_id = config.get("location_id", "")
+	flee_position = config.get("flee_position", Vector2.ZERO)
 	var monster_id: MonsterLoader.MonsterID = config.get("monster_id", MonsterLoader.MonsterID.GOBLIN)
 	monster = MonsterLoader.new_monster(monster_id)
 	hero_updated.emit(hero)
@@ -156,4 +158,6 @@ func end_battle(player_won: bool, entries: Array[RewardEntry] = []) -> void:
 		hero_defeated.emit()
 
 func player_fled() -> void:
-	pass
+	state = BattleState.RESOLVING
+	if flee_position != Vector2.ZERO:
+		GameState.pre_combat_position = flee_position

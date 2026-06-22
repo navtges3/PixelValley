@@ -38,6 +38,8 @@ func is_alive() -> bool:
 func rest() -> void:
 	current_hp = max_hp
 	current_nrg = max_nrg
+	for ae in active_effects:
+		ae.on_expire()
 	active_effects.clear()
 
 func meditate() -> void:

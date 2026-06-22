@@ -29,6 +29,7 @@ func open(type: ShopType) -> void:
 	shop_type = type
 	hero = GameState.hero
 	shop = _get_shop()
+	shop_manager.start_shop(hero, shop)
 	shop_name_label.text = shop.name
 	quantity_spin_box.visible = shop_type == ShopType.POTION
 	_update_item_list()
@@ -64,8 +65,10 @@ func _update_item_list() -> void:
 		var count: int = shop.inventory[item_id]
 		var button := create_item_button(item_id, count)
 		item_list.add_child(button)
-	if shop_manager.selected_item_id != "":
+	if shop_manager.selected_item_id != "" and shop.inventory.has(shop_manager.selected_item_id):
 		_on_item_pressed(shop_manager.selected_item_id)
+	else:
+		_clear_detail_panel()
 
 # ─── Detail Panel ─────────────────────────────────────────────────────────────
 
@@ -76,6 +79,7 @@ func _on_item_pressed(item_id: String) -> void:
 func _refresh_detail_panel(item_id: String) -> void:
 	var item := ItemLoader.get_item(item_id)
 	if item == null:
+		_clear_detail_panel()
 		return
 	item_name_label.text = item.name
 	item_description_label.text = item.description
@@ -86,6 +90,14 @@ func _refresh_detail_panel(item_id: String) -> void:
 		_refresh_ability_list(item as Weapon)
 	_update_item_cost()
 	_update_purchase_button()
+
+func _clear_detail_panel() -> void:
+	item_name_label.text = ""
+	item_description_label.text = ""
+	item_cost_label.text = ""
+	purchase_button.disabled = true
+	for child in ability_container.get_children():
+		child.queue_free()
 
 func _refresh_ability_list(weapon: Weapon) -> void:
 	for child in ability_container.get_children():
@@ -107,7 +119,7 @@ func _update_purchase_button() -> void:
 	var item := ItemLoader.get_item(shop_manager.selected_item_id)
 	if item:
 		var qty := int(quantity_spin_box.value) if shop_type == ShopType.POTION else 1
-		purchase_button.disabled = item.value * qty > hero.inventory.gold
+		purchase_button.disabled = not shop_manager.can_buy_selected(qty)
 	else:
 		purchase_button.disabled = true
 
