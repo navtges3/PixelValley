@@ -13,7 +13,7 @@ enum ScreenName {
 	NONE,
 	MAIN_MENU, NEW_GAME,
 	VILLAGE,
-	INN, POTION_SHOP, WEAPON_SHOP, QUEST,
+	INN, POTION_SHOP, WEAPON_SHOP,
 	VALLEY,
 	FOREST, WAR_CAMP, CAVE,
 	BATTLE,
@@ -43,7 +43,6 @@ const SCENE_PATHS := {
 	ScreenName.WAR_CAMP: "res://scenes/world/locations/war_camp.tscn",
 	ScreenName.CAVE: "res://scenes/world/locations/cave.tscn",
 	ScreenName.BATTLE: "res://scenes/ui/screens/battle_screen.tscn",
-	ScreenName.QUEST: "res://scenes/ui/screens/quest_screen.tscn",
 	ScreenName.VICTORY: "res://scenes/ui/screens/victory_screen.tscn",
 }
 

@@ -1,4 +1,5 @@
 extends Window
+class_name RewardWindow
 
 signal rewards_collected()
 
