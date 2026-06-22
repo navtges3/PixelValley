@@ -135,6 +135,7 @@ func _get_hero_data(hero: Hero) -> Dictionary:
 		"level": hero.level,
 		"experience": hero.experience,
 		"skill_points": hero.skill_points,
+		"rest_cooldown": hero.rest_cooldown,
 		"hero_name": hero.name,
 		"inventory": _get_inventory_data(hero.inventory),
 		"active_effects": _get_active_effects_data(hero),
@@ -148,6 +149,7 @@ func _load_hero(data: Dictionary) -> Hero:
 	hero.level = data.get("level", 1)
 	hero.experience = data.get("experience", 0)
 	hero.skill_points = data.get("skill_points", 0)
+	hero.rest_cooldown = data.get("rest_cooldown", 0)
 	hero.name = data.get("hero_name", "Unnamed Hero")
 	_load_stat_block(data.get("stats", {}), hero)
 	_load_active_effects(data.get("active_effects", []), hero)
@@ -177,7 +179,10 @@ func _load_active_effects(data: Array, combatant: Combatant) -> void:
 		effect.duration = effect_data.get("duration", 0)
 
 		var remaining: int = effect_data.get("remaining_turns", 0)
-		combatant.apply_effect(effect, null, remaining)
+		var active_effect := ActiveEffect.new(effect, combatant)
+		if remaining > 0:
+			active_effect.remaining_turns = remaining
+		combatant.active_effects.append(active_effect)
 
 # ---------------------------------------------------------
 # STATS
@@ -211,6 +216,7 @@ func _get_inventory_data(inventory: Inventory) -> Dictionary:
 	return {
 		"gold": inventory.gold,
 		"equipped_weapon": ItemLoader.get_item_id(inventory.equipped_weapon),
+		"equipped_weapon_cooldowns": _get_ability_cooldowns(inventory.equipped_weapon),
 		"weapon_stash": inventory.weapon_stash.duplicate(),
 		"potions": inventory.potions.duplicate()
 	}
@@ -223,7 +229,8 @@ func _load_inventory(data: Dictionary) -> Inventory:
 	if weapon_id != "":
 		var weapon := ItemLoader.get_item(weapon_id)
 		if weapon is Weapon:
-			inv.equipped_weapon = weapon
+			inv.equipped_weapon = weapon.duplicate(true)
+			_load_ability_cooldowns(inv.equipped_weapon, data.get("equipped_weapon_cooldowns", []))
 
 	for wid in data.get("weapon_stash", []):
 		var resolved := _resolve_item_id(wid)
@@ -240,6 +247,20 @@ func _load_inventory(data: Dictionary) -> Inventory:
 			push_warning("SaveManager: unknown potion '%s', skipping" % item_id)
 
 	return inv
+
+func _get_ability_cooldowns(weapon: Weapon) -> Array[int]:
+	var cooldowns: Array[int] = []
+	if weapon == null:
+		return cooldowns
+	for ability in weapon.abilities:
+		cooldowns.append(ability.current_cooldown)
+	return cooldowns
+
+func _load_ability_cooldowns(weapon: Weapon, cooldowns: Array) -> void:
+	if weapon == null:
+		return
+	for i in min(weapon.abilities.size(), cooldowns.size()):
+		weapon.abilities[i].current_cooldown = int(cooldowns[i])
 
 # Consolidates the old migration path used in multiple places
 func _resolve_item_id(id: String) -> String:

@@ -24,10 +24,14 @@ func _activate_spawn_points() -> void:
 
 func _on_combat_initiated(enemy: Enemy) -> void:
 	enemy.set_physics_process(false)
+	var retreat_dir := player.global_position - enemy.global_position
+	if retreat_dir == Vector2.ZERO:
+		retreat_dir = Vector2.DOWN
 	GameState.pre_combat_position = player.global_position
 	ScreenManager.go_to_screen(ScreenManager.ScreenName.BATTLE, "", {
 		"hero": GameState.hero,
 		"monster_id": enemy.monster_id,
 		"spawn_point_id": enemy.spawn_point_id,
-		"location_id": _get_location_id()
+		"location_id": _get_location_id(),
+		"flee_position": player.global_position + retreat_dir.normalized() * 96.0
 	})

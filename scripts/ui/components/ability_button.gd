@@ -50,7 +50,7 @@ func _update_theme() -> void:
 		theme = preload("res://resources/ui/button_themes/regular/gray_button.tres")
 
 func _update_disabled() -> void:
-	if ability and user_energy:
+	if ability:
 		disabled = not ability.is_ready() or ability.energy_cost > user_energy
 	else:
 		disabled = true

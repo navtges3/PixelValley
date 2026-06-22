@@ -66,6 +66,11 @@ func reset_state() -> void:
 	village = null
 	current_quest = null
 	quest_manager = null
+	pre_combat_position = Vector2.ZERO
+	player_location = {
+		"scene": ScreenManager.ScreenName.VALLEY,
+		"entrance_id": ""
+	}
 
 func set_player_location(scene: ScreenManager.ScreenName, entrance_id: String = "") -> void:
 	player_location["scene"] = scene

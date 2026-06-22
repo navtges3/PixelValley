@@ -12,9 +12,20 @@ const RED_BUTTON = preload("uid://130ubmqd1h3b")
 	$PanelContainer/MarginContainer/VBoxContainer/SlotButton5,
 ]
 
+var _overwrite_dialog: ConfirmationDialog
+var _pending_slot_index: int = 0
+
 func _ready() -> void:
 	exclusive = true
+	_create_overwrite_dialog()
 	populate_slots()
+
+func _create_overwrite_dialog() -> void:
+	_overwrite_dialog = ConfirmationDialog.new()
+	_overwrite_dialog.title = "Overwrite Save?"
+	_overwrite_dialog.dialog_text = "This slot already has save data. Start a new game here and overwrite it?"
+	_overwrite_dialog.confirmed.connect(_confirm_overwrite)
+	add_child(_overwrite_dialog)
 
 func populate_slots() -> void:
 	for i in slot_buttons.size():
@@ -42,6 +53,19 @@ func setup_filled_slot(button: Button, meta: Dictionary) -> void:
 	button.theme = GREEN_BUTTON
 
 func _slot_button_pressed(slot_index: int) -> void:
+	if SaveManager.has_save_data(slot_index):
+		_pending_slot_index = slot_index
+		_overwrite_dialog.popup_centered()
+		return
+	_start_new_game_in_slot(slot_index)
+
+func _confirm_overwrite() -> void:
+	if _pending_slot_index <= 0:
+		return
+	_start_new_game_in_slot(_pending_slot_index)
+	_pending_slot_index = 0
+
+func _start_new_game_in_slot(slot_index: int) -> void:
 	self.hide()
 	GameState.start_new_game(slot_index)
 	ScreenManager.go_to_screen(ScreenManager.ScreenName.VILLAGE)
