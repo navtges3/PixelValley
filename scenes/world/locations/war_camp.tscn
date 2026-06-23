@@ -1,7 +1,7 @@
 [gd_scene format=4 uid="uid://b2jdlkn0lijhj"]
 
 [ext_resource type="Script" uid="uid://b57wjgyub8qa0" path="res://scripts/world/locations/war_camp.gd" id="1_5dlgs"]
-[ext_resource type="Texture2D" uid="uid://dkd1237bon64n" path="res://assets/world/war_camp/big_tent.png" id="3_5dlgs"]
+[ext_resource type="Texture2D" uid="uid://ifjhxh56fm4w" path="res://assets/world/war_camp/big_tent.png" id="3_5dlgs"]
 [ext_resource type="TileSet" uid="uid://4cg7ba3d6vqd" path="res://resources/world/tile_set.tres" id="3_6uyqa"]
 [ext_resource type="PackedScene" uid="uid://cv120tmswg7xm" path="res://scenes/world/characters/player.tscn" id="4_crxma"]
 [ext_resource type="Script" uid="uid://c5sed60hjy0rk" path="res://scripts/world/trigger_zone.gd" id="5_c621e"]

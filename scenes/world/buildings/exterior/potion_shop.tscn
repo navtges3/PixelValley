@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://704akrtr3vv2"]
 
 [ext_resource type="Script" uid="uid://p643v63ydy3o" path="res://scripts/world/buildings/building.gd" id="1_hr72k"]
-[ext_resource type="Texture2D" uid="uid://bset3h8xp36w7" path="res://assets/world/village/potion_shop/potion_shop.png" id="1_mxqkc"]
+[ext_resource type="Texture2D" uid="uid://c4wcdo75hjkps" path="res://assets/world/village/potion_shop/potion_shop.png" id="1_mxqkc"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_hr72k"]
 radius = 16.0
