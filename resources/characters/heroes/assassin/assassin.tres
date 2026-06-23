@@ -3,7 +3,7 @@
 [ext_resource type="SpriteFrames" uid="uid://ck2mk7cedtckv" path="res://resources/characters/heroes/assassin/assassin_battle_sprite_frames.tres" id="1_j8m6y"]
 [ext_resource type="Resource" uid="uid://dxambea5c1r2r" path="res://resources/items/weapons/assassin_weapons/common/twin_daggers.tres" id="3_fisov"]
 [ext_resource type="Script" uid="uid://4rm24oomjap7" path="res://scripts/characters/inventory.gd" id="7_w01e8"]
-[ext_resource type="Texture2D" uid="uid://onvyq0o8uo1i" path="res://assets/characters/heroes/assassin/assassin.png" id="9_v2cp1"]
+[ext_resource type="Texture2D" uid="uid://3osyu7swb40b" path="res://assets/characters/heroes/assassin/assassin.png" id="9_v2cp1"]
 [ext_resource type="Script" uid="uid://b1x8jfufxk3xv" path="res://scripts/characters/hero.gd" id="10_bn4q3"]
 [ext_resource type="SpriteFrames" uid="uid://eavowwne1r5i" path="res://resources/characters/heroes/assassin/assassin_world_sprite_frames.tres" id="12_yl6vl"]
 

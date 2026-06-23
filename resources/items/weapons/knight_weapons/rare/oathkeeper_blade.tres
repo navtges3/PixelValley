@@ -6,7 +6,7 @@
 [ext_resource type="Script" uid="uid://c5deti4sb2k2j" path="res://scripts/data/effect.gd" id="4_34dai"]
 [ext_resource type="Script" uid="uid://dgykeyxn7fefw" path="res://scripts/data/weapon.gd" id="5_wcerd"]
 [ext_resource type="Theme" uid="uid://dqwm8agt87lsh" path="res://resources/themes/buttons/regular/blue_button.tres" id="6_e6cjl"]
-[ext_resource type="Texture2D" uid="uid://bi7j44i813t8w" path="res://assets/items/weapons/sword.png" id="6_vl4bw"]
+[ext_resource type="Texture2D" uid="uid://o80jcv0cctax" path="res://assets/items/weapons/sword.png" id="6_vl4bw"]
 
 [sub_resource type="Resource" id="Resource_q8m5m"]
 script = ExtResource("2_vl4bw")

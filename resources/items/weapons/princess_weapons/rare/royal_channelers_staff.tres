@@ -5,7 +5,7 @@
 [ext_resource type="Script" uid="uid://bvuw0uyc36uxx" path="res://scripts/data/utility.gd" id="3_re3g3"]
 [ext_resource type="Script" uid="uid://c5deti4sb2k2j" path="res://scripts/data/effect.gd" id="4_i2cq2"]
 [ext_resource type="Script" uid="uid://dgykeyxn7fefw" path="res://scripts/data/weapon.gd" id="5_3pp53"]
-[ext_resource type="Texture2D" uid="uid://doqvserbnpbgf" path="res://assets/items/weapons/staff.png" id="6_imtcy"]
+[ext_resource type="Texture2D" uid="uid://dadesxhpqd4vp" path="res://assets/items/weapons/staff.png" id="6_imtcy"]
 [ext_resource type="Theme" uid="uid://dqwm8agt87lsh" path="res://resources/themes/buttons/regular/blue_button.tres" id="6_odv22"]
 
 [sub_resource type="Resource" id="Resource_y4640"]

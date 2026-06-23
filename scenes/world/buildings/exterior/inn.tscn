@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://yj4vdyxkl61v"]
 
 [ext_resource type="Script" uid="uid://p643v63ydy3o" path="res://scripts/world/buildings/building.gd" id="1_saxo3"]
-[ext_resource type="Texture2D" uid="uid://k7tbm6c884df" path="res://assets/world/village/inn/inn.png" id="1_v40nr"]
+[ext_resource type="Texture2D" uid="uid://dis2d06ndrc1g" path="res://assets/world/village/inn/inn.png" id="1_v40nr"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_saxo3"]
 radius = 16.0

@@ -21,3 +21,11 @@ shape = SubResource("CircleShape2D_hqqc5")
 [node name="Camera2D" type="Camera2D" parent="." unique_id=955191571]
 zoom = Vector2(2, 2)
 script = ExtResource("3_hqqc5")
+
+[node name="PromptLabel" type="Label" parent="." unique_id=1452258667]
+visible = false
+offset_right = 40.0
+offset_bottom = 23.0
+size_flags_horizontal = 4
+horizontal_alignment = 1
+vertical_alignment = 1

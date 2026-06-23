@@ -3,7 +3,7 @@
 [ext_resource type="SpriteFrames" uid="uid://bi0hjkjhgixba" path="res://resources/characters/monsters/ogre_king/ogre_king_battle_sprite_frames.tres" id="2_38k3l"]
 [ext_resource type="Script" uid="uid://cnso83bg7vodw" path="res://scripts/data/condition.gd" id="5_833pn"]
 [ext_resource type="Script" uid="uid://bd6ohffno5w7r" path="res://scripts/characters/monster.gd" id="8_85bo5"]
-[ext_resource type="Texture2D" uid="uid://dqyfb7invyhyx" path="res://assets/characters/monsters/ogre_king/ogre_king.png" id="8_gb37p"]
+[ext_resource type="Texture2D" uid="uid://ruf1d6uj0u05" path="res://assets/characters/monsters/ogre_king/ogre_king.png" id="8_gb37p"]
 [ext_resource type="SpriteFrames" uid="uid://dp6xg6vwbi7yo" path="res://resources/characters/monsters/ogre_king/ogre_king_world_sprite_frames.tres" id="11_gb37p"]
 [ext_resource type="Script" uid="uid://b2o7w8q10stxo" path="res://scripts/data/ability.gd" id="12_ability"]
 [ext_resource type="Script" uid="uid://bvuw0uyc36uxx" path="res://scripts/data/utility.gd" id="13_utility"]

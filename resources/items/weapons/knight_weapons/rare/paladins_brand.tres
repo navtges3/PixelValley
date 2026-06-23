@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://bo48scp6lbwrb" path="res://scripts/data/attack.gd" id="2_0lphe"]
 [ext_resource type="Script" uid="uid://bvuw0uyc36uxx" path="res://scripts/data/utility.gd" id="3_aoovg"]
 [ext_resource type="Script" uid="uid://dgykeyxn7fefw" path="res://scripts/data/weapon.gd" id="4_v7ma4"]
-[ext_resource type="Texture2D" uid="uid://cmrhtvp8qtafo" path="res://assets/items/weapons/mace.png" id="5_0lphe"]
+[ext_resource type="Texture2D" uid="uid://dtgv72smxwdib" path="res://assets/items/weapons/mace.png" id="5_0lphe"]
 [ext_resource type="Theme" uid="uid://dqwm8agt87lsh" path="res://resources/themes/buttons/regular/blue_button.tres" id="5_tuts3"]
 
 [sub_resource type="Resource" id="Resource_nfjb4"]

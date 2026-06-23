@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://bvuw0uyc36uxx" path="res://scripts/data/utility.gd" id="5_ehlpm"]
 [ext_resource type="Script" uid="uid://c5deti4sb2k2j" path="res://scripts/data/effect.gd" id="6_7quqt"]
 [ext_resource type="Script" uid="uid://cnso83bg7vodw" path="res://scripts/data/condition.gd" id="6_w4m2s"]
-[ext_resource type="Texture2D" uid="uid://vdpvmy1cvfnu" path="res://assets/characters/monsters/goblin/goblin.png" id="7_0ojpk"]
+[ext_resource type="Texture2D" uid="uid://5ruk6t3rbyd5" path="res://assets/characters/monsters/goblin/goblin.png" id="7_0ojpk"]
 [ext_resource type="Script" uid="uid://buxlf5aagrtgf" path="res://scripts/data/drop_entry.gd" id="7_lwmax"]
 [ext_resource type="Script" uid="uid://bd6ohffno5w7r" path="res://scripts/characters/monster.gd" id="8_li32v"]
 [ext_resource type="Script" uid="uid://birbqcxvye2x5" path="res://scripts/data/drop_table.gd" id="8_lygd1"]
