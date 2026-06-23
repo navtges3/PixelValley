@@ -23,9 +23,10 @@ zoom = Vector2(2, 2)
 script = ExtResource("3_hqqc5")
 
 [node name="PromptLabel" type="Label" parent="." unique_id=1452258667]
-visible = false
-offset_right = 40.0
-offset_bottom = 23.0
+offset_left = -80.0
+offset_top = -44.0
+offset_right = 80.0
+offset_bottom = -21.0
 size_flags_horizontal = 4
 horizontal_alignment = 1
 vertical_alignment = 1

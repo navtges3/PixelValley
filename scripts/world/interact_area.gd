@@ -8,9 +8,9 @@ signal interacted
 @onready var prompt_label: Label = $PromptLabel
 
 var _player_inside: bool = false
+var _player: Player = null
 
 func _ready() -> void:
-	prompt_label.text = prompt_text
 	prompt_label.hide()
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -20,9 +20,12 @@ func _unhandled_input(event: InputEvent) -> void:
 func _on_body_entered(body: Node2D) -> void:
 	if body is Player:
 		_player_inside = true
-		prompt_label.show()
+		_player = body
+		_player.show_prompt(prompt_text)
 
 func _on_body_exited(body: Node2D) -> void:
 	if body is Player:
 		_player_inside = false
-		prompt_label.hide()
+		if _player != null:
+			_player.clear_prompt(prompt_text)
+		_player = null
