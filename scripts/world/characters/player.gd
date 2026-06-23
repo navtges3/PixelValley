@@ -4,10 +4,14 @@ class_name Player
 const SPEED := 120.0
 
 @onready var anim: AnimatedSprite2D = $AnimatedSprite2D
+@onready var prompt_label: Label = $PromptLabel
 
 var last_direction := Vector2.DOWN
 var _zone_cooldown := false
 var movement_blocked := false
+
+func _ready() -> void:
+	prompt_label.hide()
 
 func _physics_process(_delta: float) -> void:
 	if movement_blocked:
@@ -39,6 +43,7 @@ func _update_animation(input: Vector2) -> void:
 func on_zone_entered(zone: TriggerZone) -> void:
 	if _zone_cooldown or zone.locked:
 		return
+	clear_prompt()
 	_zone_cooldown = true
 	await get_tree().process_frame
 	var data: Variant = null
@@ -53,3 +58,15 @@ func place_at_entrance(entrance_node: Node2D) -> void:
 func set_sprite_frames(frames: SpriteFrames) -> void:
 	if frames:
 		anim.sprite_frames = frames
+
+func show_prompt(message: String) -> void:
+	if message.is_empty():
+		return
+	prompt_label.text = message
+	prompt_label.show()
+
+func clear_prompt(message: String = "") -> void:
+	if not message.is_empty() and prompt_label.text != message:
+		return
+	prompt_label.text = ""
+	prompt_label.hide()

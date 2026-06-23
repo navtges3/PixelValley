@@ -17,7 +17,7 @@ size = Vector2(32, 20)
 size = Vector2(34, 20)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_h0wcu"]
-radius = 20.0
+radius = 24.0
 
 [node name="Valley" type="Node2D" unique_id=962620458]
 y_sort_enabled = true
@@ -49,16 +49,17 @@ tile_map_data = PackedByteArray("AAAlAAQAAwABAAQAAAAkAAQAAwABAAQAAAAjAAQAAwABAAQ
 tile_set = ExtResource("3_4rieo")
 
 [node name="CampGateClosed" type="StaticBody2D" parent="WoodWalls" unique_id=1669783611]
-z_index = 1
-position = Vector2(1248, 144)
+y_sort_enabled = true
+position = Vector2(1248, 168)
 
 [node name="Sprite2D" type="Sprite2D" parent="WoodWalls/CampGateClosed" unique_id=1434543212]
 texture = ExtResource("4_gbuke")
+offset = Vector2(0, -24)
 region_enabled = true
 region_rect = Rect2(128, 64, 64, 64)
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="WoodWalls/CampGateClosed" unique_id=2129345321]
-position = Vector2(1248, 168)
+position = Vector2(1248, 144)
 polygon = PackedVector2Array(-1280, -177, -1280, -144, -1216, -144, -1216, -177)
 
 [node name="GateBounds" type="Area2D" parent="WoodWalls" unique_id=166395544]
@@ -88,15 +89,17 @@ tile_map_data = PackedByteArray("AAAJABQAAgACAAsAAAAJABMAAgACAAoAAAAJABIAAgACAAk
 tile_set = ExtResource("3_4rieo")
 
 [node name="CaveClosed" type="StaticBody2D" parent="CaveWalls" unique_id=537926742]
-z_index = 1
-position = Vector2(1406, 419)
+y_sort_enabled = true
+position = Vector2(1406, 449)
 
 [node name="Sprite2D" type="Sprite2D" parent="CaveWalls/CaveClosed" unique_id=349577954]
 texture = ExtResource("5_otlcx")
+offset = Vector2(0, -32)
 region_enabled = true
 region_rect = Rect2(256, 0, 64, 64)
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="CaveWalls/CaveClosed" unique_id=439870590]
+position = Vector2(0, -32)
 polygon = PackedVector2Array(-19, 9, -19, 24, -14, 29, 23, 29, 23, 17, 19, 7, -16, 7)
 
 [node name="StoneWalls" type="TileMapLayer" parent="." unique_id=411159765]
@@ -150,7 +153,7 @@ metadata/_custom_type_script = "uid://c5sed60hjy0rk"
 shape = SubResource("CircleShape2D_h0wcu")
 
 [node name="CaveTriggerZone" type="Area2D" parent="TriggerZones" unique_id=1938208711 groups=["trigger_zone"]]
-position = Vector2(1406, 421)
+position = Vector2(1406, 429)
 script = ExtResource("8_uphwf")
 locked = true
 entrance_id = "cave"
