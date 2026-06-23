@@ -6,7 +6,7 @@
 [ext_resource type="Script" uid="uid://c5deti4sb2k2j" path="res://scripts/data/effect.gd" id="4_5aee0"]
 [ext_resource type="Script" uid="uid://dgykeyxn7fefw" path="res://scripts/data/weapon.gd" id="5_qfyur"]
 [ext_resource type="Texture2D" uid="uid://bc4141opo74i3" path="res://assets/items/weapons/scimitar.png" id="6_dmkw6"]
-[ext_resource type="Theme" uid="uid://dqwm8agt87lsh" path="res://resources/ui/button_themes/regular/blue_button.tres" id="6_vp1o4"]
+[ext_resource type="Theme" uid="uid://dqwm8agt87lsh" path="res://resources/themes/buttons/regular/blue_button.tres" id="6_vp1o4"]
 
 [sub_resource type="Resource" id="Resource_fqxsf"]
 script = ExtResource("2_dmkw6")

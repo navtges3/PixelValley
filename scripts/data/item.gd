@@ -10,7 +10,7 @@ enum Rarity {
 @export var item_id: String = ""
 @export var name: String
 @export var description: String
-@export var theme: Theme = preload("res://resources/ui/button_themes/regular/gray_button.tres")
+@export var theme: Theme = preload("res://resources/themes/buttons/regular/gray_button.tres")
 @export var value: int
 
 static func rarity_to_string(rarity: Rarity) -> String:

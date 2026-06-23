@@ -1,9 +1,9 @@
 [gd_scene format=3 uid="uid://dp6qp05llks3o"]
 
-[ext_resource type="Theme" uid="uid://dq41s7i7v61gk" path="res://resources/ui/backgrounds/background_panel.tres" id="1_7lghs"]
+[ext_resource type="Theme" uid="uid://dq41s7i7v61gk" path="res://resources/themes/backgrounds/background.tres" id="1_7lghs"]
 [ext_resource type="Script" uid="uid://wx5bhekxdtrm" path="res://scripts/ui/windows/inn_window.gd" id="1_ohuxi"]
-[ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://resources/ui/button_themes/regular/green_button.tres" id="2_ohuxi"]
-[ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://resources/ui/button_themes/regular/red_button.tres" id="3_rwbq2"]
+[ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://resources/themes/buttons/regular/green_button.tres" id="2_ohuxi"]
+[ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://resources/themes/buttons/regular/red_button.tres" id="3_rwbq2"]
 
 [node name="InnWindow" type="Control" unique_id=1834709062]
 layout_mode = 3

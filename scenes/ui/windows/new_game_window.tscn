@@ -1,9 +1,9 @@
 [gd_scene format=3 uid="uid://cw4dm1x3j5e12"]
 
 [ext_resource type="Script" uid="uid://bfiqtcx4e3s5r" path="res://scripts/ui/windows/new_game_window.gd" id="1_1unjh"]
-[ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://resources/ui/button_themes/regular/green_button.tres" id="2_tqaw0"]
-[ext_resource type="Theme" uid="uid://dq41s7i7v61gk" path="res://resources/ui/backgrounds/background_panel.tres" id="2_ycxpi"]
-[ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://resources/ui/button_themes/regular/red_button.tres" id="3_l77w7"]
+[ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://resources/themes/buttons/regular/green_button.tres" id="2_tqaw0"]
+[ext_resource type="Theme" uid="uid://dq41s7i7v61gk" path="res://resources/themes/backgrounds/background.tres" id="2_ycxpi"]
+[ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://resources/themes/buttons/regular/red_button.tres" id="3_l77w7"]
 
 [node name="NewGameWindow" type="Window" unique_id=1924150137]
 transparent_bg = true
@@ -91,5 +91,11 @@ size_flags_vertical = 4
 theme = ExtResource("3_l77w7")
 text = "Back
 "
+
+[node name="OverwriteDialog" type="ConfirmationDialog" parent="." unique_id=425625124]
+transparent_bg = true
+oversampling_override = 1.0
+borderless = true
+transparent = true
 
 [connection signal="pressed" from="PanelContainer/MarginContainer/VBoxContainer/BackButton" to="." method="_on_back_button_pressed"]

@@ -1,9 +1,9 @@
 [gd_scene format=3 uid="uid://cg6a2qtqguwoy"]
 
 [ext_resource type="Script" uid="uid://bswfa2erovrs" path="res://scripts/ui/hud/panels/stats_panel.gd" id="1_wo8ka"]
-[ext_resource type="Theme" uid="uid://2ndfu8fhjpfk" path="res://resources/ui/button_themes/specialty/down_button.tres" id="2_gpt1x"]
-[ext_resource type="Theme" uid="uid://bbar60f48j34k" path="res://resources/ui/button_themes/specialty/up_button.tres" id="3_hi3ie"]
-[ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://resources/ui/button_themes/regular/green_button.tres" id="4_hi3ie"]
+[ext_resource type="Theme" uid="uid://2ndfu8fhjpfk" path="res://resources/themes/buttons/specialty/down_button.tres" id="2_gpt1x"]
+[ext_resource type="Theme" uid="uid://bbar60f48j34k" path="res://resources/themes/buttons/specialty/up_button.tres" id="3_hi3ie"]
+[ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://resources/themes/buttons/regular/green_button.tres" id="4_hi3ie"]
 
 [node name="StatsPanel" type="Control" unique_id=1483468948]
 layout_mode = 3
