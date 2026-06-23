@@ -1,9 +1,9 @@
 [gd_scene format=3 uid="uid://bcurrites3af"]
 
-[ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://resources/ui/button_themes/regular/green_button.tres" id="1_mciuq"]
+[ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://resources/themes/buttons/regular/green_button.tres" id="1_mciuq"]
 [ext_resource type="Script" uid="uid://cv56v1xyoucqs" path="res://scripts/ui/windows/load_window.gd" id="1_svb4e"]
-[ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://resources/ui/button_themes/regular/red_button.tres" id="2_svb4e"]
-[ext_resource type="Theme" uid="uid://dq41s7i7v61gk" path="res://resources/ui/backgrounds/background_panel.tres" id="2_xdcf0"]
+[ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://resources/themes/buttons/regular/red_button.tres" id="2_svb4e"]
+[ext_resource type="Theme" uid="uid://dq41s7i7v61gk" path="res://resources/themes/backgrounds/background.tres" id="2_xdcf0"]
 
 [node name="LoadWindow" type="Window" unique_id=1918541071]
 transparent_bg = true

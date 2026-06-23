@@ -21,7 +21,7 @@ func _refresh() -> void:
 	else:
 		text = ""
 		tooltip_text = ""
-		theme = preload("res://resources/ui/button_themes/regular/gray_button.tres")
+		theme = preload("res://resources/themes/buttons/regular/gray_button.tres")
 
 func _on_pressed() -> void:
 	item_pressed.emit(item_id)

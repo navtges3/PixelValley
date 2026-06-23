@@ -1,9 +1,9 @@
 [gd_scene format=3 uid="uid://cfkpdp82x2nsu"]
 
-[ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://resources/ui/button_themes/regular/green_button.tres" id="1_1g88r"]
+[ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://resources/themes/buttons/regular/green_button.tres" id="1_1g88r"]
 [ext_resource type="Script" uid="uid://dvadu7bib2whc" path="res://scripts/ui/hud/panels/system_panel.gd" id="1_xn1xt"]
-[ext_resource type="Theme" uid="uid://phfh7c5hwx1n" path="res://resources/ui/button_themes/regular/yellow_button.tres" id="2_xn1xt"]
-[ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://resources/ui/button_themes/regular/red_button.tres" id="3_1rj16"]
+[ext_resource type="Theme" uid="uid://phfh7c5hwx1n" path="res://resources/themes/buttons/regular/yellow_button.tres" id="2_xn1xt"]
+[ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://resources/themes/buttons/regular/red_button.tres" id="3_1rj16"]
 [ext_resource type="PackedScene" uid="uid://bxmcs3dj7nfvs" path="res://scenes/ui/windows/options_window.tscn" id="4_w721p"]
 
 [node name="SystemPanel" type="Control" unique_id=1762561739]

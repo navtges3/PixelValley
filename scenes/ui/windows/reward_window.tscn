@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://rs7udjvphx52"]
 
-[ext_resource type="Theme" uid="uid://dq41s7i7v61gk" path="res://resources/ui/backgrounds/background_panel.tres" id="1_b7i7h"]
-[ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://resources/ui/button_themes/regular/green_button.tres" id="1_o1yme"]
+[ext_resource type="Theme" uid="uid://dq41s7i7v61gk" path="res://resources/themes/backgrounds/background.tres" id="1_b7i7h"]
+[ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://resources/themes/buttons/regular/green_button.tres" id="1_o1yme"]
 [ext_resource type="Script" uid="uid://8u7rkk8oorfu" path="res://scripts/ui/windows/reward_window.gd" id="1_y5ohc"]
 
 [node name="RewardWindow" type="Window" unique_id=1271341637]

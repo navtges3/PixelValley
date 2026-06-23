@@ -1,0 +1,33 @@
+[gd_resource type="Theme" format=3 uid="uid://dq41s7i7v61gk"]
+
+[ext_resource type="Texture2D" uid="uid://bo58k2c2a3ivd" path="res://assets/ui/window_background.png" id="1_gxlck"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_cunwo"]
+texture = ExtResource("1_gxlck")
+texture_margin_left = 13.0
+texture_margin_top = 14.0
+texture_margin_right = 13.0
+texture_margin_bottom = 14.0
+region_rect = Rect2(2, 2, 28, 29)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_gxlck"]
+texture = ExtResource("1_gxlck")
+texture_margin_left = 13.0
+texture_margin_top = 14.0
+texture_margin_right = 13.0
+texture_margin_bottom = 14.0
+region_rect = Rect2(2, 2, 28, 29)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_cnduy"]
+texture = ExtResource("1_gxlck")
+texture_margin_left = 13.0
+texture_margin_top = 14.0
+texture_margin_right = 13.0
+texture_margin_bottom = 14.0
+region_rect = Rect2(2, 2, 28, 29)
+
+[resource]
+AcceptDialog/constants/buttons_separation = 10
+AcceptDialog/styles/panel = SubResource("StyleBoxTexture_cunwo")
+Panel/styles/panel = SubResource("StyleBoxTexture_gxlck")
+PanelContainer/styles/panel = SubResource("StyleBoxTexture_cnduy")

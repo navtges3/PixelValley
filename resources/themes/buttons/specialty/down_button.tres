@@ -1,6 +1,6 @@
-[gd_resource type="Theme" format=4 uid="uid://bbar60f48j34k"]
+[gd_resource type="Theme" format=4 uid="uid://2ndfu8fhjpfk"]
 
-[ext_resource type="Texture2D" uid="uid://dlvuhts4gwhx1" path="res://assets/ui/button_sheet.png" id="1_i8i3h"]
+[ext_resource type="Texture2D" uid="uid://dlvuhts4gwhx1" path="res://assets/ui/button_sheet.png" id="1_23hp6"]
 
 [sub_resource type="Image" id="Image_3v4eq"]
 data = {
@@ -925,36 +925,36 @@ cache/0/32/0/glyphs/86/uv_rect = Rect2(229, 1, 16, 20)
 cache/0/32/0/glyphs/86/texture_idx = 0
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_tetbq"]
-texture = ExtResource("1_i8i3h")
+texture = ExtResource("1_23hp6")
 texture_margin_left = 3.0
 texture_margin_top = 6.0
 texture_margin_right = 3.0
 texture_margin_bottom = 3.0
-region_rect = Rect2(64, 144, 32, 16)
+region_rect = Rect2(32, 144, 32, 16)
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_xi7vc"]
-texture = ExtResource("1_i8i3h")
+texture = ExtResource("1_23hp6")
 texture_margin_left = 3.0
 texture_margin_top = 3.0
 texture_margin_right = 3.0
 texture_margin_bottom = 6.0
-region_rect = Rect2(64, 112, 32, 16)
+region_rect = Rect2(32, 112, 32, 16)
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_d7ecd"]
-texture = ExtResource("1_i8i3h")
+texture = ExtResource("1_23hp6")
 texture_margin_left = 3.0
 texture_margin_top = 3.0
 texture_margin_right = 3.0
 texture_margin_bottom = 6.0
-region_rect = Rect2(64, 96, 32, 16)
+region_rect = Rect2(32, 96, 32, 16)
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_4cr1k"]
-texture = ExtResource("1_i8i3h")
+texture = ExtResource("1_23hp6")
 texture_margin_left = 3.0
 texture_margin_top = 6.0
 texture_margin_right = 3.0
 texture_margin_bottom = 3.0
-region_rect = Rect2(64, 128, 32, 16)
+region_rect = Rect2(32, 128, 32, 16)
 
 [resource]
 Button/colors/font_color = Color(0.875, 0.875, 0.875, 1)
@@ -977,7 +977,6 @@ Button/constants/outline_size = 0
 Button/font_sizes/font_size = 16
 Button/fonts/font = SubResource("FontFile_uxwtt")
 Button/styles/disabled = SubResource("StyleBoxTexture_tetbq")
-Button/styles/focus = null
 Button/styles/hover = SubResource("StyleBoxTexture_xi7vc")
 Button/styles/normal = SubResource("StyleBoxTexture_d7ecd")
 Button/styles/pressed = SubResource("StyleBoxTexture_4cr1k")

@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://dub7dt66aucti"]
 
 [ext_resource type="Script" uid="uid://bldcyb8gkj6iv" path="res://scripts/ui/hud/game_hud.gd" id="1_uhlhu"]
-[ext_resource type="Theme" uid="uid://dq41s7i7v61gk" path="res://resources/ui/backgrounds/background_panel.tres" id="2_hb3v3"]
-[ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://resources/ui/button_themes/regular/red_button.tres" id="2_q2qrq"]
+[ext_resource type="Theme" uid="uid://dq41s7i7v61gk" path="res://resources/themes/backgrounds/background.tres" id="2_hb3v3"]
+[ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://resources/themes/buttons/regular/red_button.tres" id="2_q2qrq"]
 [ext_resource type="PackedScene" uid="uid://cg6a2qtqguwoy" path="res://scenes/ui/hud/panels/stats_panel.tscn" id="3_b1c7m"]
 [ext_resource type="PackedScene" uid="uid://brfqhf60i2qju" path="res://scenes/ui/hud/panels/inventory_panel.tscn" id="4_au6ik"]
 [ext_resource type="PackedScene" uid="uid://cw2srj46vgqyq" path="res://scenes/ui/hud/panels/quests_panel.tscn" id="5_hb3v3"]

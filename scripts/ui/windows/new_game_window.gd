@@ -1,8 +1,10 @@
 extends Window
 
-const GREEN_BUTTON = preload("uid://cgbnpl6hlm7s2")
-const RED_BUTTON = preload("uid://130ubmqd1h3b")
+const GREEN_BUTTON = preload("res://resources/themes/buttons/regular/green_button.tres")
+const RED_BUTTON = preload("res://resources/themes/buttons/regular/red_button.tres")
+const BACKGROUND = preload("res://resources/themes/backgrounds/background.tres")
 
+@onready var overwrite_dialog: ConfirmationDialog = $OverwriteDialog
 @onready var back_button: Button = $PanelContainer/MarginContainer/VBoxContainer/BackButton
 @onready var slot_buttons: Array[Button] = [
 	$PanelContainer/MarginContainer/VBoxContainer/SlotButton1,
@@ -12,7 +14,6 @@ const RED_BUTTON = preload("uid://130ubmqd1h3b")
 	$PanelContainer/MarginContainer/VBoxContainer/SlotButton5,
 ]
 
-var _overwrite_dialog: ConfirmationDialog
 var _pending_slot_index: int = 0
 
 func _ready() -> void:
@@ -21,11 +22,12 @@ func _ready() -> void:
 	populate_slots()
 
 func _create_overwrite_dialog() -> void:
-	_overwrite_dialog = ConfirmationDialog.new()
-	_overwrite_dialog.title = "Overwrite Save?"
-	_overwrite_dialog.dialog_text = "This slot already has save data. Start a new game here and overwrite it?"
-	_overwrite_dialog.confirmed.connect(_confirm_overwrite)
-	add_child(_overwrite_dialog)
+	overwrite_dialog.title = "Overwrite Save?"
+	overwrite_dialog.dialog_text = "This slot already has save data. Start a new game here and overwrite it?"
+	overwrite_dialog.theme = BACKGROUND
+	overwrite_dialog.get_ok_button().theme = GREEN_BUTTON
+	overwrite_dialog.get_cancel_button().theme = RED_BUTTON
+	overwrite_dialog.confirmed.connect(_confirm_overwrite)
 
 func populate_slots() -> void:
 	for i in slot_buttons.size():
@@ -55,7 +57,7 @@ func setup_filled_slot(button: Button, meta: Dictionary) -> void:
 func _slot_button_pressed(slot_index: int) -> void:
 	if SaveManager.has_save_data(slot_index):
 		_pending_slot_index = slot_index
-		_overwrite_dialog.popup_centered()
+		overwrite_dialog.popup_centered()
 		return
 	_start_new_game_in_slot(slot_index)
 

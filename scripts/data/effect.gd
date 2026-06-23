@@ -6,17 +6,17 @@ enum EffectType { HEAL, ENERGY, POISON,
 					DEBUFF_ATTACK, DEBUFF_MAGIC, DEBUFF_DEFENSE, DEBUFF_RESIST }
 
 const THEME_PATHS: Dictionary = {
-	Effect.EffectType.HEAL:             "res://resources/ui/button_themes/regular/green_button.tres",
-	Effect.EffectType.ENERGY:           "res://resources/ui/button_themes/regular/yellow_button.tres",
-	Effect.EffectType.POISON:           "res://resources/ui/button_themes/regular/green_button.tres",
-	Effect.EffectType.BUFF_ATTACK:      "res://resources/ui/button_themes/regular/red_button.tres",
-	Effect.EffectType.BUFF_MAGIC:       "res://resources/ui/button_themes/regular/red_button.tres",
-	Effect.EffectType.BUFF_DEFENSE:     "res://resources/ui/button_themes/regular/blue_button.tres",
-	Effect.EffectType.BUFF_RESIST:      "res://resources/ui/button_themes/regular/blue_button.tres",
-	Effect.EffectType.DEBUFF_ATTACK:    "res://resources/ui/button_themes/regular/red_button.tres",
-	Effect.EffectType.DEBUFF_MAGIC:     "res://resources/ui/button_themes/regular/red_button.tres",
-	Effect.EffectType.DEBUFF_DEFENSE:   "res://resources/ui/button_themes/regular/blue_button.tres",
-	Effect.EffectType.DEBUFF_RESIST:    "res://resources/ui/button_themes/regular/blue_button.tres",
+	Effect.EffectType.HEAL:             "res://resources/themes/buttons/regular/green_button.tres",
+	Effect.EffectType.ENERGY:           "res://resources/themes/buttons/regular/yellow_button.tres",
+	Effect.EffectType.POISON:           "res://resources/themes/buttons/regular/green_button.tres",
+	Effect.EffectType.BUFF_ATTACK:      "res://resources/themes/buttons/regular/red_button.tres",
+	Effect.EffectType.BUFF_MAGIC:       "res://resources/themes/buttons/regular/red_button.tres",
+	Effect.EffectType.BUFF_DEFENSE:     "res://resources/themes/buttons/regular/blue_button.tres",
+	Effect.EffectType.BUFF_RESIST:      "res://resources/themes/buttons/regular/blue_button.tres",
+	Effect.EffectType.DEBUFF_ATTACK:    "res://resources/themes/buttons/regular/red_button.tres",
+	Effect.EffectType.DEBUFF_MAGIC:     "res://resources/themes/buttons/regular/red_button.tres",
+	Effect.EffectType.DEBUFF_DEFENSE:   "res://resources/themes/buttons/regular/blue_button.tres",
+	Effect.EffectType.DEBUFF_RESIST:    "res://resources/themes/buttons/regular/blue_button.tres",
 }
 
 @export var type: EffectType
@@ -60,5 +60,5 @@ func _to_string(turns_remaining: int = duration) -> String:
 	return "%s (%d %s)" % [type_text, turns_remaining, turn_text]
 
 func get_button_theme() -> Theme:
-	var path: String = THEME_PATHS.get(type, "res://resources/ui/button_themes/regular/gray_button.tres")
+	var path: String = THEME_PATHS.get(type, "res://resources/themes/buttons/regular/gray_button.tres")
 	return load(path) as Theme
