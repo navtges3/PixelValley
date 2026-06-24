@@ -1,34 +1,34 @@
 extends Control
 class_name StatsPanel
 
-@onready var name_label: Label = $ScrollContainer/VBox/NameRow/NameLabel
-@onready var class_label: Label = $ScrollContainer/VBox/NameRow/ClassLabel
-@onready var level_label: Label = $ScrollContainer/VBox/LevelRow/LevelLabel
-@onready var skill_label: Label = $ScrollContainer/VBox/LevelRow/SkillLabel
+@onready var name_label: Label = $ScrollContainer/VBox/StatsRow/StatsBars/NameRow/NameLabel
+@onready var class_label: Label = $ScrollContainer/VBox/StatsRow/StatsBars/NameRow/ClassLabel
+@onready var level_label: Label = $ScrollContainer/VBox/StatsRow/StatsBars/LevelRow/LevelLabel
+@onready var skill_label: Label = $ScrollContainer/VBox/StatsRow/StatsBars/LevelRow/SkillLabel
 
-@onready var hp_bar: ProgressBar = $ScrollContainer/VBox/HPBar
-@onready var hp_label: Label = $ScrollContainer/VBox/HPBar/HPLabel
-@onready var nrg_bar: ProgressBar = $ScrollContainer/VBox/NRGBar
-@onready var nrg_label: Label = $ScrollContainer/VBox/NRGBar/NRGLabel
-@onready var xp_bar: ProgressBar = $ScrollContainer/VBox/XPBar
-@onready var xp_label: Label = $ScrollContainer/VBox/XPBar/XPLabel
+@onready var hp_bar: ProgressBar = $ScrollContainer/VBox/StatsRow/StatsBars/HPBar
+@onready var hp_label: Label = $ScrollContainer/VBox/StatsRow/StatsBars/HPBar/HPLabel
+@onready var nrg_bar: ProgressBar = $ScrollContainer/VBox/StatsRow/StatsBars/NRGBar
+@onready var nrg_label: Label = $ScrollContainer/VBox/StatsRow/StatsBars/NRGBar/NRGLabel
+@onready var xp_bar: ProgressBar = $ScrollContainer/VBox/StatsRow/StatsBars/XPBar
+@onready var xp_label: Label = $ScrollContainer/VBox/StatsRow/StatsBars/XPBar/XPLabel
 
-@onready var attack_label: Label = $ScrollContainer/VBox/StatsGrid/AttackLabel
-@onready var magic_label: Label = $ScrollContainer/VBox/StatsGrid/MagicLabel
-@onready var defense_label: Label = $ScrollContainer/VBox/StatsGrid/DefenseLabel
-@onready var resist_label: Label = $ScrollContainer/VBox/StatsGrid/ResistLabel
-@onready var gold_label: Label = $ScrollContainer/VBox/StatsGrid/GoldLabel
+@onready var attack_label: Label = $ScrollContainer/VBox/StatsRow/StatsGrid/AttackLabel
+@onready var magic_label: Label = $ScrollContainer/VBox/StatsRow/StatsGrid/MagicLabel
+@onready var defense_label: Label = $ScrollContainer/VBox/StatsRow/StatsGrid/DefenseLabel
+@onready var resist_label: Label = $ScrollContainer/VBox/StatsRow/StatsGrid/ResistLabel
+@onready var gold_label: Label = $ScrollContainer/VBox/StatsRow/StatsBars/GoldLabel
 
-@onready var attack_up: Button = $ScrollContainer/VBox/StatsGrid/AttackMod/AttackUp
-@onready var attack_down: Button = $ScrollContainer/VBox/StatsGrid/AttackMod/AttackDown
-@onready var magic_up: Button = $ScrollContainer/VBox/StatsGrid/MagicMod/MagicUp
-@onready var magic_down: Button = $ScrollContainer/VBox/StatsGrid/MagicMod/MagicDown
-@onready var defense_up: Button = $ScrollContainer/VBox/StatsGrid/DefenseMod/DefenseUp
-@onready var defense_down: Button = $ScrollContainer/VBox/StatsGrid/DefenseMod/DefenseDown
-@onready var resist_up: Button = $ScrollContainer/VBox/StatsGrid/ResistMod/ResistUp
-@onready var resist_down: Button = $ScrollContainer/VBox/StatsGrid/ResistMod/ResistDown
+@onready var attack_up: Button = $ScrollContainer/VBox/StatsRow/StatsGrid/AttackMod/AttackUp
+@onready var attack_down: Button = $ScrollContainer/VBox/StatsRow/StatsGrid/AttackMod/AttackDown
+@onready var magic_up: Button = $ScrollContainer/VBox/StatsRow/StatsGrid/MagicMod/MagicUp
+@onready var magic_down: Button = $ScrollContainer/VBox/StatsRow/StatsGrid/MagicMod/MagicDown
+@onready var defense_up: Button = $ScrollContainer/VBox/StatsRow/StatsGrid/DefenseMod/DefenseUp
+@onready var defense_down: Button = $ScrollContainer/VBox/StatsRow/StatsGrid/DefenseMod/DefenseDown
+@onready var resist_up: Button = $ScrollContainer/VBox/StatsRow/StatsGrid/ResistMod/ResistUp
+@onready var resist_down: Button = $ScrollContainer/VBox/StatsRow/StatsGrid/ResistMod/ResistDown
 
-@onready var confirm_button: Button = $ScrollContainer/VBox/ConfirmButton
+@onready var confirm_button: Button = $ScrollContainer/VBox/StatsRow/StatsGrid/ConfirmButton
 
 @onready var effects_container: VBoxContainer = $ScrollContainer/VBox/EffectsContainer
 
