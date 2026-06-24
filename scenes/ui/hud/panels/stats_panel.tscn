@@ -28,11 +28,22 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 8
 
-[node name="NameRow" type="HBoxContainer" parent="ScrollContainer/VBox" unique_id=2089750966]
+[node name="HSeparator" type="HSeparator" parent="ScrollContainer/VBox" unique_id=754311699]
+layout_mode = 2
+
+[node name="StatsRow" type="HBoxContainer" parent="ScrollContainer/VBox" unique_id=1131841924]
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="NameLabel" type="Label" parent="ScrollContainer/VBox/NameRow" unique_id=2037315840]
+[node name="StatsBars" type="VBoxContainer" parent="ScrollContainer/VBox/StatsRow" unique_id=2104113638]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="NameRow" type="HBoxContainer" parent="ScrollContainer/VBox/StatsRow/StatsBars" unique_id=2089750966]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="NameLabel" type="Label" parent="ScrollContainer/VBox/StatsRow/StatsBars/NameRow" unique_id=2037315840]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 8
@@ -40,36 +51,36 @@ theme_override_colors/font_color = Color(0.95, 0.92, 0.8, 1)
 theme_override_font_sizes/font_size = 18
 text = "Name"
 
-[node name="ClassLabel" type="Label" parent="ScrollContainer/VBox/NameRow" unique_id=1184391804]
+[node name="ClassLabel" type="Label" parent="ScrollContainer/VBox/StatsRow/StatsBars/NameRow" unique_id=1184391804]
 layout_mode = 2
 size_flags_vertical = 8
 theme_override_colors/font_color = Color(0.72, 0.67, 0.57, 1)
 theme_override_font_sizes/font_size = 12
 text = "Class"
 
-[node name="LevelRow" type="HBoxContainer" parent="ScrollContainer/VBox" unique_id=1858417526]
+[node name="LevelRow" type="HBoxContainer" parent="ScrollContainer/VBox/StatsRow/StatsBars" unique_id=1858417526]
 layout_mode = 2
 
-[node name="LevelLabel" type="Label" parent="ScrollContainer/VBox/LevelRow" unique_id=1301474713]
+[node name="LevelLabel" type="Label" parent="ScrollContainer/VBox/StatsRow/StatsBars/LevelRow" unique_id=1301474713]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.95, 0.92, 0.8, 1)
 theme_override_font_sizes/font_size = 13
 text = "Level"
 
-[node name="SkillLabel" type="Label" parent="ScrollContainer/VBox/LevelRow" unique_id=1149914863]
+[node name="SkillLabel" type="Label" parent="ScrollContainer/VBox/StatsRow/StatsBars/LevelRow" unique_id=1149914863]
 layout_mode = 2
 size_flags_vertical = 8
 theme_override_colors/font_color = Color(0.95, 0.8, 0.25, 1)
 theme_override_font_sizes/font_size = 12
 text = "Skill"
 
-[node name="HPBar" type="ProgressBar" parent="ScrollContainer/VBox" unique_id=1625532358]
+[node name="HPBar" type="ProgressBar" parent="ScrollContainer/VBox/StatsRow/StatsBars" unique_id=1625532358]
 custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
 show_percentage = false
 
-[node name="HPLabel" type="Label" parent="ScrollContainer/VBox/HPBar" unique_id=725217005]
+[node name="HPLabel" type="Label" parent="ScrollContainer/VBox/StatsRow/StatsBars/HPBar" unique_id=725217005]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -80,12 +91,12 @@ text = "x / x HP"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="NRGBar" type="ProgressBar" parent="ScrollContainer/VBox" unique_id=1725134982]
+[node name="NRGBar" type="ProgressBar" parent="ScrollContainer/VBox/StatsRow/StatsBars" unique_id=1725134982]
 custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
 show_percentage = false
 
-[node name="NRGLabel" type="Label" parent="ScrollContainer/VBox/NRGBar" unique_id=1134750647]
+[node name="NRGLabel" type="Label" parent="ScrollContainer/VBox/StatsRow/StatsBars/NRGBar" unique_id=1134750647]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -96,12 +107,12 @@ text = "x / x NRG"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="XPBar" type="ProgressBar" parent="ScrollContainer/VBox" unique_id=1040610888]
+[node name="XPBar" type="ProgressBar" parent="ScrollContainer/VBox/StatsRow/StatsBars" unique_id=1040610888]
 custom_minimum_size = Vector2(0, 14)
 layout_mode = 2
 show_percentage = false
 
-[node name="XPLabel" type="Label" parent="ScrollContainer/VBox/XPBar" unique_id=2088960144]
+[node name="XPLabel" type="Label" parent="ScrollContainer/VBox/StatsRow/StatsBars/XPBar" unique_id=2088960144]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -112,121 +123,122 @@ text = "x / x XP"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="HSeparator" type="HSeparator" parent="ScrollContainer/VBox" unique_id=754311699]
+[node name="GoldLabel" type="Label" parent="ScrollContainer/VBox/StatsRow/StatsBars" unique_id=1858967257]
 layout_mode = 2
-
-[node name="StatsGrid" type="GridContainer" parent="ScrollContainer/VBox" unique_id=480061373]
-layout_mode = 2
-theme_override_constants/v_separation = 6
-columns = 2
-
-[node name="AttackLabel" type="Label" parent="ScrollContainer/VBox/StatsGrid" unique_id=632458035]
-layout_mode = 2
-theme_override_font_sizes/font_size = 20
-text = "Attack: X"
-horizontal_alignment = 2
-
-[node name="AttackMod" type="VBoxContainer" parent="ScrollContainer/VBox/StatsGrid" unique_id=226940150]
-layout_mode = 2
-theme_override_constants/separation = 1
-
-[node name="AttackUp" type="Button" parent="ScrollContainer/VBox/StatsGrid/AttackMod" unique_id=1959128791]
-custom_minimum_size = Vector2(32, 16)
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-theme = ExtResource("3_hi3ie")
-
-[node name="AttackDown" type="Button" parent="ScrollContainer/VBox/StatsGrid/AttackMod" unique_id=1269705903]
-custom_minimum_size = Vector2(32, 16)
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-theme = ExtResource("2_gpt1x")
-
-[node name="MagicLabel" type="Label" parent="ScrollContainer/VBox/StatsGrid" unique_id=1797053529]
-layout_mode = 2
-theme_override_font_sizes/font_size = 20
-text = "Magic: X"
-horizontal_alignment = 2
-
-[node name="MagicMod" type="VBoxContainer" parent="ScrollContainer/VBox/StatsGrid" unique_id=1299469983]
-layout_mode = 2
-theme_override_constants/separation = 1
-
-[node name="MagicUp" type="Button" parent="ScrollContainer/VBox/StatsGrid/MagicMod" unique_id=1557585106]
-custom_minimum_size = Vector2(32, 16)
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-theme = ExtResource("3_hi3ie")
-
-[node name="MagicDown" type="Button" parent="ScrollContainer/VBox/StatsGrid/MagicMod" unique_id=680971332]
-custom_minimum_size = Vector2(32, 16)
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-theme = ExtResource("2_gpt1x")
-
-[node name="DefenseLabel" type="Label" parent="ScrollContainer/VBox/StatsGrid" unique_id=1605199381]
-layout_mode = 2
-theme_override_font_sizes/font_size = 20
-text = "Defense: X"
-horizontal_alignment = 2
-
-[node name="DefenseMod" type="VBoxContainer" parent="ScrollContainer/VBox/StatsGrid" unique_id=179135144]
-layout_mode = 2
-theme_override_constants/separation = 1
-
-[node name="DefenseUp" type="Button" parent="ScrollContainer/VBox/StatsGrid/DefenseMod" unique_id=1078530466]
-custom_minimum_size = Vector2(32, 16)
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-theme = ExtResource("3_hi3ie")
-
-[node name="DefenseDown" type="Button" parent="ScrollContainer/VBox/StatsGrid/DefenseMod" unique_id=1362825217]
-custom_minimum_size = Vector2(32, 16)
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-theme = ExtResource("2_gpt1x")
-
-[node name="ResistLabel" type="Label" parent="ScrollContainer/VBox/StatsGrid" unique_id=142899259]
-layout_mode = 2
-theme_override_font_sizes/font_size = 20
-text = "Resist: X"
-horizontal_alignment = 2
-
-[node name="ResistMod" type="VBoxContainer" parent="ScrollContainer/VBox/StatsGrid" unique_id=85949025]
-layout_mode = 2
-theme_override_constants/separation = 1
-
-[node name="ResistUp" type="Button" parent="ScrollContainer/VBox/StatsGrid/ResistMod" unique_id=1384178367]
-custom_minimum_size = Vector2(32, 16)
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-theme = ExtResource("3_hi3ie")
-
-[node name="ResistDown" type="Button" parent="ScrollContainer/VBox/StatsGrid/ResistMod" unique_id=1986981044]
-custom_minimum_size = Vector2(32, 16)
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-theme = ExtResource("2_gpt1x")
-
-[node name="GoldLabel" type="Label" parent="ScrollContainer/VBox/StatsGrid" unique_id=1858967257]
-layout_mode = 2
+size_flags_vertical = 3
 theme_override_colors/font_color = Color(0.95, 0.8, 0.25, 1)
 theme_override_font_sizes/font_size = 20
 text = "Gold: X"
 horizontal_alignment = 2
 
-[node name="ConfirmButton" type="Button" parent="ScrollContainer/VBox" unique_id=1357275446]
-custom_minimum_size = Vector2(96, 32)
+[node name="VSeparator" type="VSeparator" parent="ScrollContainer/VBox/StatsRow" unique_id=1761850923]
 layout_mode = 2
-size_flags_horizontal = 0
+
+[node name="StatsGrid" type="GridContainer" parent="ScrollContainer/VBox/StatsRow" unique_id=480061373]
+layout_mode = 2
+size_flags_horizontal = 2
+theme_override_constants/v_separation = 6
+columns = 2
+
+[node name="AttackLabel" type="Label" parent="ScrollContainer/VBox/StatsRow/StatsGrid" unique_id=632458035]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Attack: X"
+horizontal_alignment = 2
+
+[node name="AttackMod" type="VBoxContainer" parent="ScrollContainer/VBox/StatsRow/StatsGrid" unique_id=226940150]
+layout_mode = 2
+theme_override_constants/separation = 1
+
+[node name="AttackUp" type="Button" parent="ScrollContainer/VBox/StatsRow/StatsGrid/AttackMod" unique_id=1959128791]
+custom_minimum_size = Vector2(32, 16)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("3_hi3ie")
+
+[node name="AttackDown" type="Button" parent="ScrollContainer/VBox/StatsRow/StatsGrid/AttackMod" unique_id=1269705903]
+custom_minimum_size = Vector2(32, 16)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("2_gpt1x")
+
+[node name="MagicLabel" type="Label" parent="ScrollContainer/VBox/StatsRow/StatsGrid" unique_id=1797053529]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Magic: X"
+horizontal_alignment = 2
+
+[node name="MagicMod" type="VBoxContainer" parent="ScrollContainer/VBox/StatsRow/StatsGrid" unique_id=1299469983]
+layout_mode = 2
+theme_override_constants/separation = 1
+
+[node name="MagicUp" type="Button" parent="ScrollContainer/VBox/StatsRow/StatsGrid/MagicMod" unique_id=1557585106]
+custom_minimum_size = Vector2(32, 16)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("3_hi3ie")
+
+[node name="MagicDown" type="Button" parent="ScrollContainer/VBox/StatsRow/StatsGrid/MagicMod" unique_id=680971332]
+custom_minimum_size = Vector2(32, 16)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("2_gpt1x")
+
+[node name="DefenseLabel" type="Label" parent="ScrollContainer/VBox/StatsRow/StatsGrid" unique_id=1605199381]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Defense: X"
+horizontal_alignment = 2
+
+[node name="DefenseMod" type="VBoxContainer" parent="ScrollContainer/VBox/StatsRow/StatsGrid" unique_id=179135144]
+layout_mode = 2
+theme_override_constants/separation = 1
+
+[node name="DefenseUp" type="Button" parent="ScrollContainer/VBox/StatsRow/StatsGrid/DefenseMod" unique_id=1078530466]
+custom_minimum_size = Vector2(32, 16)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("3_hi3ie")
+
+[node name="DefenseDown" type="Button" parent="ScrollContainer/VBox/StatsRow/StatsGrid/DefenseMod" unique_id=1362825217]
+custom_minimum_size = Vector2(32, 16)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("2_gpt1x")
+
+[node name="ResistLabel" type="Label" parent="ScrollContainer/VBox/StatsRow/StatsGrid" unique_id=142899259]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Resist: X"
+horizontal_alignment = 2
+
+[node name="ResistMod" type="VBoxContainer" parent="ScrollContainer/VBox/StatsRow/StatsGrid" unique_id=85949025]
+layout_mode = 2
+theme_override_constants/separation = 1
+
+[node name="ResistUp" type="Button" parent="ScrollContainer/VBox/StatsRow/StatsGrid/ResistMod" unique_id=1384178367]
+custom_minimum_size = Vector2(32, 16)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("3_hi3ie")
+
+[node name="ResistDown" type="Button" parent="ScrollContainer/VBox/StatsRow/StatsGrid/ResistMod" unique_id=1986981044]
+custom_minimum_size = Vector2(32, 16)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("2_gpt1x")
+
+[node name="ConfirmButton" type="Button" parent="ScrollContainer/VBox/StatsRow/StatsGrid" unique_id=1357275446]
+layout_mode = 2
+size_flags_horizontal = 8
 theme = ExtResource("4_hi3ie")
 text = "Confirm"
 
