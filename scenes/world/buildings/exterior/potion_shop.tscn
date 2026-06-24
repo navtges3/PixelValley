@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://p643v63ydy3o" path="res://scripts/world/buildings/building.gd" id="1_hr72k"]
 [ext_resource type="Texture2D" uid="uid://c4wcdo75hjkps" path="res://assets/world/village/potion_shop/potion_shop.png" id="1_mxqkc"]
+[ext_resource type="PackedScene" uid="uid://b0tdph7ofmv7r" path="res://scenes/world/trigger_zone.tscn" id="3_f2sjs"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_hr72k"]
 radius = 16.0
@@ -19,7 +20,9 @@ offset = Vector2(0, -43)
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="." unique_id=1266673522]
 polygon = PackedVector2Array(-65, 0, 66, 0, 66, -48, -65, -48)
 
-[node name="EntranceZone" type="Area2D" parent="." unique_id=330572127]
+[node name="TriggerZone" parent="." unique_id=528423832 instance=ExtResource("3_f2sjs")]
+entrance_id = "potion_shop"
+screen_target = 5
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="EntranceZone" unique_id=1728397118]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TriggerZone" unique_id=1728397118]
 shape = SubResource("CircleShape2D_hr72k")

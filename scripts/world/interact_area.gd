@@ -5,13 +5,8 @@ signal interacted
 
 @export var prompt_text: String = "Press E to Interact"
 
-@onready var prompt_label: Label = $PromptLabel
-
 var _player_inside: bool = false
 var _player: Player = null
-
-func _ready() -> void:
-	prompt_label.hide()
 
 func _unhandled_input(event: InputEvent) -> void:
 	if _player_inside and event.is_action_pressed("interact"):

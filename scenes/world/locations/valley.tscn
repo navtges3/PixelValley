@@ -6,7 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://dh7ukilah1cch" path="res://assets/world/cave/cave_tileset.png" id="5_otlcx"]
 [ext_resource type="PackedScene" uid="uid://cv120tmswg7xm" path="res://scenes/world/characters/player.tscn" id="6_6nwor"]
 [ext_resource type="PackedScene" uid="uid://be34gw2t63gdo" path="res://scenes/world/zone_message_label.tscn" id="7_qi8v7"]
-[ext_resource type="Script" uid="uid://c5sed60hjy0rk" path="res://scripts/world/trigger_zone.gd" id="8_uphwf"]
+[ext_resource type="PackedScene" uid="uid://b0tdph7ofmv7r" path="res://scenes/world/trigger_zone.tscn" id="8_xwbyh"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xwbyh"]
 size = Vector2(32, 20)
@@ -62,7 +62,7 @@ region_rect = Rect2(128, 64, 64, 64)
 position = Vector2(1248, 144)
 polygon = PackedVector2Array(-1280, -177, -1280, -144, -1216, -144, -1216, -177)
 
-[node name="GateBounds" type="Area2D" parent="WoodWalls" unique_id=166395544]
+[node name="GateBounds" type="StaticBody2D" parent="WoodWalls" unique_id=208975726]
 position = Vector2(1248, 132)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WoodWalls/GateBounds" unique_id=403615962]
@@ -106,7 +106,7 @@ polygon = PackedVector2Array(-19, 9, -19, 24, -14, 29, 23, 29, 23, 17, 19, 7, -1
 tile_map_data = PackedByteArray("AAAJABMAAgACAAoAAAAJABIAAgACAAkAAAAJABEAAgACAAgAAAAIABMAAgAGAAoAAAAHABMAAgAHAAgAAAAGABMAAgAGAAgAAAAFABMAAgAGAAoAAAAEABMAAgABAAoAAAADABMAAgABAAoAAAACABMAAgABAAoAAAABABMAAgABAAoAAAAAABMAAgADAAgAAAAAAA8AAgAAAAkAAAAAABkAAgAAAAsAAAAAABgAAgAAAAoAAAAAABcAAgAAAAkAAAAAABYAAgAAAAkAAAAAABUAAgAAAAkAAAAvABkAAgACAAsAAAAvABgAAgACAAoAAAAuABkAAgABAAsAAAAuABgAAgABAAoAAAAtABkAAgABAAsAAAAtABgAAgABAAoAAAAsABkAAgABAAsAAAAsABgAAgABAAoAAAArABkAAgABAAsAAAArABgAAgABAAoAAAAqABkAAgABAAsAAAAqABgAAgABAAoAAAApABkAAgABAAsAAAApABgAAgABAAoAAAAoABkAAgABAAsAAAAoABgAAgABAAoAAAAnABkAAgABAAsAAAAnABgAAgABAAoAAAAmABkAAgABAAsAAAAmABgAAgABAAoAAAAlABkAAgABAAsAAAAlABgAAgABAAoAAAAkABkAAgABAAsAAAAkABgAAgABAAoAAAAjABkAAgABAAsAAAAjABgAAgABAAoAAAAiABkAAgABAAsAAAAiABgAAgABAAoAAAAhABkAAgABAAsAAAAhABgAAgABAAoAAAAgABkAAgABAAsAAAAgABgAAgABAAoAAAAfABkAAgABAAsAAAAfABgAAgABAAoAAAAeABkAAgABAAsAAAAeABgAAgABAAoAAAAdABkAAgABAAsAAAAdABgAAgABAAoAAAAcABkAAgABAAsAAAAcABgAAgABAAoAAAAbABkAAgABAAsAAAAbABgAAgABAAoAAAAaABkAAgABAAsAAAAaABgAAgABAAoAAAAZABkAAgABAAsAAAAZABgAAgABAAoAAAAYABkAAgABAAsAAAAYABgAAgABAAoAAAAXABkAAgABAAsAAAAXABgAAgABAAoAAAAWABkAAgABAAsAAAAWABgAAgABAAoAAAAVABkAAgABAAsAAAAVABgAAgABAAoAAAAUABkAAgABAAsAAAAUABgAAgABAAoAAAATABkAAgABAAsAAAATABgAAgABAAoAAAASABkAAgABAAsAAAASABgAAgABAAoAAAARABkAAgABAAsAAAARABgAAgABAAoAAAAQABkAAgABAAsAAAAQABgAAgABAAoAAAAPABkAAgABAAsAAAAPABgAAgABAAoAAAAOABkAAgABAAsAAAAOABgAAgABAAoAAAANABkAAgABAAsAAAANABgAAgABAAoAAAAMABkAAgABAAsAAAAMABgAAgABAAoAAAALABkAAgABAAsAAAALABgAAgABAAoAAAAKABkAAgABAAsAAAAKABgAAgABAAoAAAAJABkAAgABAAsAAAAJABgAAgABAAoAAAAIABkAAgABAAsAAAAIABgAAgABAAoAAAAHABkAAgABAAsAAAAHABgAAgABAAoAAAAGABkAAgABAAsAAAAGABgAAgABAAoAAAAFABkAAgABAAsAAAAFABgAAgABAAoAAAAEABkAAgABAAsAAAAEABgAAgABAAoAAAADABkAAgABAAsAAAADABgAAgABAAoAAAACABkAAgABAAsAAAACABgAAgABAAoAAAABABkAAgABAAsAAAABABgAAgABAAoAAAAvABcAAgACAAkAAAAvABYAAgACAAkAAAAvABUAAgACAAkAAAAvABQAAgACAAkAAAAAAA4AAgAAAAkAAAAAAA0AAgAAAAkAAAAAAAwAAgAAAAkAAAAAABAAAgAAAAkAAAAIABEAAgABAAgAAAAHABEAAgABAAgAAAAGABEAAgABAAgAAAAFABEAAgABAAgAAAAEABEAAgABAAgAAAADABEAAgABAAgAAAACABEAAgABAAgAAAABABEAAgABAAgAAAAAABEAAgADAAoAAAAAAAsAAgAAAAkAAAAvABMAAgACAAkAAAAAABQAAgAAAAkAAAA=")
 tile_set = ExtResource("3_4rieo")
 
-[node name="Area2D" type="Area2D" parent="StoneWalls" unique_id=104931132]
+[node name="Area2D" type="StaticBody2D" parent="StoneWalls" unique_id=93567364]
 position = Vector2(224, 608)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StoneWalls/Area2D" unique_id=1892554714]
@@ -119,47 +119,39 @@ position = Vector2(485, 560)
 
 [node name="TriggerZones" type="Node2D" parent="." unique_id=1819620231]
 
-[node name="VillageTriggerZone" type="Area2D" parent="TriggerZones" unique_id=1114760361 groups=["trigger_zone"]]
+[node name="VillageTriggerZone" parent="TriggerZones" unique_id=528423832 instance=ExtResource("8_xwbyh")]
 position = Vector2(224, 623)
-script = ExtResource("8_uphwf")
 entrance_id = "village"
 screen_target = 3
-metadata/_custom_type_script = "uid://c5sed60hjy0rk"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="TriggerZones/VillageTriggerZone" unique_id=1719229153]
 shape = SubResource("CircleShape2D_h0wcu")
 
-[node name="ForestTriggerZone" type="Area2D" parent="TriggerZones" unique_id=1917125163 groups=["trigger_zone"]]
+[node name="ForestTriggerZone" parent="TriggerZones" unique_id=1656450611 instance=ExtResource("8_xwbyh")]
 position = Vector2(256, 4)
-script = ExtResource("8_uphwf")
 entrance_id = "forest"
 locked_message = "The forest is blocked."
 screen_target = 8
-metadata/_custom_type_script = "uid://c5sed60hjy0rk"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="TriggerZones/ForestTriggerZone" unique_id=1840918726]
 shape = SubResource("CircleShape2D_h0wcu")
 
-[node name="WarCampTriggerZone" type="Area2D" parent="TriggerZones" unique_id=964257522 groups=["trigger_zone"]]
+[node name="WarCampTriggerZone" parent="TriggerZones" unique_id=2145460384 instance=ExtResource("8_xwbyh")]
 position = Vector2(1248, 152)
-script = ExtResource("8_uphwf")
 locked = true
 entrance_id = "war_camp"
 locked_message = "The war camp is blocked."
 screen_target = 9
-metadata/_custom_type_script = "uid://c5sed60hjy0rk"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="TriggerZones/WarCampTriggerZone" unique_id=596380109]
 shape = SubResource("CircleShape2D_h0wcu")
 
-[node name="CaveTriggerZone" type="Area2D" parent="TriggerZones" unique_id=1938208711 groups=["trigger_zone"]]
+[node name="CaveTriggerZone" parent="TriggerZones" unique_id=1209995373 instance=ExtResource("8_xwbyh")]
 position = Vector2(1406, 429)
-script = ExtResource("8_uphwf")
 locked = true
 entrance_id = "cave"
 locked_message = "The cave is blocked."
 screen_target = 10
-metadata/_custom_type_script = "uid://c5sed60hjy0rk"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="TriggerZones/CaveTriggerZone" unique_id=155573026]
 shape = SubResource("CircleShape2D_h0wcu")

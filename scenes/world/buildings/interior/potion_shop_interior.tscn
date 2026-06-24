@@ -2,11 +2,11 @@
 
 [ext_resource type="Script" uid="uid://xy6lp0v5jq74" path="res://scripts/world/buildings/interior/potion_shop_interior.gd" id="1_kxhju"]
 [ext_resource type="PackedScene" uid="uid://barcl6is7t0uy" path="res://scenes/ui/windows/shop_window.tscn" id="2_kxhju"]
-[ext_resource type="PackedScene" uid="uid://k35wlbc0ho3o" path="res://scenes/ui/components/interact_area.tscn" id="3_d0mt5"]
+[ext_resource type="PackedScene" uid="uid://k35wlbc0ho3o" path="res://scenes/world/interact_area.tscn" id="3_d0mt5"]
 [ext_resource type="TileSet" uid="uid://c3ib8w4j0mx7n" path="res://resources/world/building_interior_tileset.tres" id="3_ljrrm"]
 [ext_resource type="Texture2D" uid="uid://don3grn24yqj5" path="res://assets/world/village/weapon_shop/counter.png" id="4_ljrrm"]
 [ext_resource type="PackedScene" uid="uid://cv120tmswg7xm" path="res://scenes/world/characters/player.tscn" id="4_sexfc"]
-[ext_resource type="Script" uid="uid://c5sed60hjy0rk" path="res://scripts/world/trigger_zone.gd" id="5_d0mt5"]
+[ext_resource type="PackedScene" uid="uid://b0tdph7ofmv7r" path="res://scenes/world/trigger_zone.tscn" id="8_u32er"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_u32er"]
 size = Vector2(94, 13)
@@ -14,10 +14,10 @@ size = Vector2(94, 13)
 [sub_resource type="CircleShape2D" id="CircleShape2D_jo5y3"]
 radius = 16.0
 
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_ljrrm"]
+
 [sub_resource type="CircleShape2D" id="CircleShape2D_sexfc"]
 radius = 16.0
-
-[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_ljrrm"]
 
 [node name="PotionShopInterior" type="Node2D" unique_id=1148766487]
 y_sort_enabled = true
@@ -60,19 +60,17 @@ shape = SubResource("CircleShape2D_jo5y3")
 [node name="Player" parent="." unique_id=426329780 groups=["player"] instance=ExtResource("4_sexfc")]
 position = Vector2(159, 128)
 
-[node name="ExitTriggerArea" type="Area2D" parent="." unique_id=1057880694 groups=["trigger_zone"]]
+[node name="ExitTriggerZone" parent="." unique_id=528423832 instance=ExtResource("8_u32er")]
 position = Vector2(160, 224)
-script = ExtResource("5_d0mt5")
 entrance_id = "potion_shop"
 screen_target = 3
-metadata/_custom_type_script = "uid://c5sed60hjy0rk"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="ExitTriggerArea" unique_id=9921131]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ExitTriggerZone" unique_id=9921131]
 shape = SubResource("CircleShape2D_sexfc")
 
-[node name="ExitBounds" type="StaticBody2D" parent="." unique_id=365820958]
-position = Vector2(16, -64)
+[node name="WorldBounds" type="StaticBody2D" parent="."]
+position = Vector2(160, 224)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="ExitBounds" unique_id=1301131065]
-position = Vector2(144, 296)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WorldBounds" unique_id=1301131065]
+position = Vector2(0, 8)
 shape = SubResource("WorldBoundaryShape2D_ljrrm")

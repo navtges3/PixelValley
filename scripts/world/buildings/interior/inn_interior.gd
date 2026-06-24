@@ -1,14 +1,13 @@
 extends BaseLocation
 class_name InnInterior
 
-const SCREEN_NAME := ScreenManager.ScreenName.INN
 const ENTRANCE_ID := "inn"
 
 @onready var inn_window: InnWindow = $CanvasLayer/InnWindow
 @onready var interact_area: InteractArea = $Props/Counter/InteractArea
 
 func _get_screen_name() -> ScreenManager.ScreenName:
-	return SCREEN_NAME
+	return ScreenManager.ScreenName.INN
 
 func _on_location_ready() -> void:
 	interact_area.interacted.connect(_on_counter_interacted)

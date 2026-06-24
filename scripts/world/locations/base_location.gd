@@ -6,17 +6,12 @@ class_name BaseLocation
 var _pending_entrance_id: String = ""
 
 func _ready() -> void:
-	for zone in get_tree().get_nodes_in_group("trigger_zone"):
-		zone = zone as TriggerZone
-		if zone == null:
-			continue
-		_connect_zone(zone)
 	player.set_sprite_frames(GameState.hero.world_visual)
 	if _pending_entrance_id != "":
 		place_player_at_entrance(_pending_entrance_id)
 	else:
 		GameState.set_player_location(_get_screen_name(), "")
-		
+
 	var world_hud := ScreenManager.get_world_hud() as WorldHUD
 	if world_hud != null:
 		world_hud.game_hud.hud_closed.connect(_on_hud_closed)
@@ -29,24 +24,6 @@ func _on_location_ready() -> void:
 # Override to provide the correct ScreenName for set_player_location
 func _get_screen_name() -> ScreenManager.ScreenName:
 	return ScreenManager.ScreenName.VALLEY
-
-# Override to add extra zone signal connections (e.g. zone_locked in valley)
-func _connect_zone(zone: TriggerZone) -> void:
-	zone.zone_entered.connect(_on_zone_entered)
-	zone.zone_prompted.connect(_on_zone_prompted)
-	zone.zone_exited.connect(_on_zone_exited)
-
-func _on_zone_entered(zone: TriggerZone) -> void:
-	player.on_zone_entered(zone)
-
-func _on_zone_prompted(message: String) -> void:
-	player.show_prompt(message)
-
-func _on_zone_exited(zone: TriggerZone) -> void:
-	if zone.locked:
-		player.clear_prompt(zone.locked_message)
-	else:
-		player.clear_prompt(zone.prompt_text)
 
 func place_player_at_entrance(entrance_id: String) -> void:
 	GameState.set_player_location(_get_screen_name(), entrance_id)

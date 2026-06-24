@@ -2,7 +2,8 @@
 
 [ext_resource type="Script" uid="uid://c5sed60hjy0rk" path="res://scripts/world/trigger_zone.gd" id="1_1420r"]
 
-[node name="TriggerZone" type="Area2D" unique_id=528423832 groups=["player"]]
+[node name="TriggerZone" type="Area2D" unique_id=528423832 groups=["trigger_zone"]]
 script = ExtResource("1_1420r")
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="body_exited" from="." to="." method="_on_body_exited"]

@@ -2,6 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://de17vtmcigke2" path="res://assets/world/village/weapon_shop/weapon_shop.png" id="1_bblfk"]
 [ext_resource type="Script" uid="uid://p643v63ydy3o" path="res://scripts/world/buildings/building.gd" id="1_fpext"]
+[ext_resource type="PackedScene" uid="uid://b0tdph7ofmv7r" path="res://scenes/world/trigger_zone.tscn" id="3_rv1o6"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_fpext"]
 radius = 16.0
@@ -19,7 +20,9 @@ offset = Vector2(-16, -43)
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="." unique_id=1002556148]
 polygon = PackedVector2Array(-81, 0, -68, 0, -27.826916, 0, 50, 0, 50, -48, -81, -48)
 
-[node name="EntranceZone" type="Area2D" parent="." unique_id=1162155391]
+[node name="TriggerZone" parent="." unique_id=528423832 instance=ExtResource("3_rv1o6")]
+entrance_id = "weapon_shop"
+screen_target = 6
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="EntranceZone" unique_id=1487148832]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TriggerZone" unique_id=1487148832]
 shape = SubResource("CircleShape2D_fpext")

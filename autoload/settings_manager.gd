@@ -69,6 +69,8 @@ func apply_settings() -> void:
 	_set_bus_volume("Music", music_volume)
 	_set_bus_volume("SFX", sfx_volume)
 
+	DisplayServer.window_set_flag(DisplayServer.WINDOW_FLAG_RESIZE_DISABLED, false)
+
 	if fullscreen:
 		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
 	elif maximized:
@@ -88,7 +90,12 @@ func _set_bus_volume(bus_name: String, volume: float) -> void:
 
 func _on_window_size_changed() -> void:
 	var mode := DisplayServer.window_get_mode()
+	var was_maximized := maximized
+
 	if mode == DisplayServer.WINDOW_MODE_MAXIMIZED:
 		maximized = true
 	elif mode == DisplayServer.WINDOW_MODE_WINDOWED:
 		maximized = false
+
+	if maximized != was_maximized:
+		save_settings()
