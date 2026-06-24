@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://p643v63ydy3o" path="res://scripts/world/buildings/building.gd" id="1_saxo3"]
 [ext_resource type="Texture2D" uid="uid://dis2d06ndrc1g" path="res://assets/world/village/inn/inn.png" id="1_v40nr"]
+[ext_resource type="PackedScene" uid="uid://b0tdph7ofmv7r" path="res://scenes/world/trigger_zone.tscn" id="3_32ldc"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_saxo3"]
 radius = 16.0
@@ -19,7 +20,9 @@ offset = Vector2(48, -70)
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="." unique_id=538583642]
 polygon = PackedVector2Array(-50, 0, 114, 0, 114, -48, -50, -48)
 
-[node name="EntranceZone" type="Area2D" parent="." unique_id=2047799658]
+[node name="TriggerZone" parent="." unique_id=528423832 instance=ExtResource("3_32ldc")]
+entrance_id = "inn"
+screen_target = 4
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="EntranceZone" unique_id=693308414]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TriggerZone" unique_id=693308414]
 shape = SubResource("CircleShape2D_saxo3")

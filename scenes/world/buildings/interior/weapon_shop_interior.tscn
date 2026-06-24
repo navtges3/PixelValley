@@ -1,17 +1,17 @@
 [gd_scene format=4 uid="uid://bsuo6i5yue65u"]
 
 [ext_resource type="Script" uid="uid://cdce1ey4ljwxe" path="res://scripts/world/buildings/interior/weapon_shop_interior.gd" id="1_mu2m6"]
-[ext_resource type="PackedScene" uid="uid://k35wlbc0ho3o" path="res://scenes/ui/components/interact_area.tscn" id="2_mmg14"]
+[ext_resource type="PackedScene" uid="uid://k35wlbc0ho3o" path="res://scenes/world/interact_area.tscn" id="2_mmg14"]
 [ext_resource type="PackedScene" uid="uid://barcl6is7t0uy" path="res://scenes/ui/windows/shop_window.tscn" id="2_mu2m6"]
 [ext_resource type="PackedScene" uid="uid://cv120tmswg7xm" path="res://scenes/world/characters/player.tscn" id="3_mu2m6"]
 [ext_resource type="TileSet" uid="uid://c3ib8w4j0mx7n" path="res://resources/world/building_interior_tileset.tres" id="4_422ht"]
 [ext_resource type="Texture2D" uid="uid://don3grn24yqj5" path="res://assets/world/village/weapon_shop/counter.png" id="4_awdw8"]
 [ext_resource type="Texture2D" uid="uid://bx5y76f6omoqi" path="res://assets/world/village/weapon_shop/pedistals.png" id="6_7mnpr"]
 [ext_resource type="Texture2D" uid="uid://cknn387jys76r" path="res://assets/world/village/weapon_shop/weapon_rack.png" id="6_8swea"]
-[ext_resource type="Script" uid="uid://c5sed60hjy0rk" path="res://scripts/world/trigger_zone.gd" id="6_awdw8"]
 [ext_resource type="Texture2D" uid="uid://cs6xdko54rvuy" path="res://assets/world/village/weapon_shop/wall_rack.png" id="7_so5x8"]
 [ext_resource type="Texture2D" uid="uid://bqsfhmwu4yrw0" path="res://assets/world/village/weapon_shop/forge.png" id="9_422ht"]
 [ext_resource type="Texture2D" uid="uid://cpjxp1gfs0dve" path="res://assets/world/village/weapon_shop/anvil.png" id="10_5xyi6"]
+[ext_resource type="PackedScene" uid="uid://b0tdph7ofmv7r" path="res://scenes/world/trigger_zone.tscn" id="13_6f06l"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_awdw8"]
 size = Vector2(94, 13)
@@ -141,18 +141,17 @@ shape = SubResource("CapsuleShape2D_5xyi6")
 [node name="Player" parent="." unique_id=426329780 groups=["player"] instance=ExtResource("3_mu2m6")]
 position = Vector2(160, 116)
 
-[node name="ExitTriggerZone" type="Area2D" parent="." unique_id=392686169 groups=["trigger_zone"]]
+[node name="ExitTriggerZone" parent="." unique_id=528423832 instance=ExtResource("13_6f06l")]
 position = Vector2(224, 224)
-script = ExtResource("6_awdw8")
 entrance_id = "weapon_shop"
 screen_target = 3
-metadata/_custom_type_script = "uid://c5sed60hjy0rk"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ExitTriggerZone" unique_id=537060940]
 shape = SubResource("CircleShape2D_8swea")
 
-[node name="ExitBounds" type="StaticBody2D" parent="." unique_id=292996258]
-position = Vector2(224, 232)
+[node name="WorldBounds" type="StaticBody2D" parent="."]
+position = Vector2(224, 224)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="ExitBounds" unique_id=2080831519]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WorldBounds" unique_id=2080831519]
+position = Vector2(0, 8)
 shape = SubResource("WorldBoundaryShape2D_so5x8")

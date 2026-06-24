@@ -3,10 +3,10 @@ class_name ValleyLocation
 
 @onready var camp_gate_closed: StaticBody2D = $WoodWalls/CampGateClosed
 @onready var cave_closed: StaticBody2D = $CaveWalls/CaveClosed
-@onready var village_trigger_zone: TriggerZone = $TriggerZones/VillageTriggerZone
-@onready var forest_trigger_zone: TriggerZone = $TriggerZones/ForestTriggerZone
-@onready var war_camp_trigger_zone: TriggerZone = $TriggerZones/WarCampTriggerZone
-@onready var cave_trigger_zone: TriggerZone = $TriggerZones/CaveTriggerZone
+@onready var village_trigger_zone = $TriggerZones/VillageTriggerZone
+@onready var forest_trigger_zone = $TriggerZones/ForestTriggerZone
+@onready var war_camp_trigger_zone = $TriggerZones/WarCampTriggerZone
+@onready var cave_trigger_zone = $TriggerZones/CaveTriggerZone
 
 func _ready() -> void:
 	super._ready()
@@ -14,9 +14,9 @@ func _ready() -> void:
 	forest_trigger_zone.screen_target = ScreenManager.ScreenName.FOREST
 	war_camp_trigger_zone.screen_target = ScreenManager.ScreenName.WAR_CAMP
 	cave_trigger_zone.screen_target = ScreenManager.ScreenName.CAVE
-	var war_camp_unlocked := WorldManager.is_unlocked(WarCampLocation.LOCATION_ID)
+	var war_camp_unlocked = WorldManager.is_unlocked(WarCampLocation.LOCATION_ID)
 	camp_gate_closed.visible = !war_camp_unlocked
-	var cave_unlocked := WorldManager.is_unlocked(CaveLocation.LOCATION_ID)
+	var cave_unlocked = WorldManager.is_unlocked(CaveLocation.LOCATION_ID)
 	cave_closed.visible = !cave_unlocked
 
 func _get_screen_name() -> ScreenManager.ScreenName:

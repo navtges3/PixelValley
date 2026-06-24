@@ -13,12 +13,6 @@ func _on_location_ready() -> void:
 	quest_interact_area.interacted.connect(_on_quest_board_interacted)
 	quest_window.closed.connect(_on_window_closed)
 	quest_window.hide()
-	for building in get_tree().get_nodes_in_group("building"):
-		(building as Building).building_entered.connect(_on_building_entered)
-
-func _on_building_entered(building: Building) -> void:
-	GameState.set_player_location(ScreenManager.ScreenName.VILLAGE, building.entrance_id)
-	ScreenManager.go_to_screen(building.screen_target, building.entrance_id)
 
 func _on_quest_board_interacted() -> void:
 	player.movement_blocked = true

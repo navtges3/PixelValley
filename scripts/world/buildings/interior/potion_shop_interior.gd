@@ -1,14 +1,13 @@
 extends BaseLocation
 class_name PotionShopInterior
 
-const SCREEN_NAME := ScreenManager.ScreenName.POTION_SHOP
 const ENTRANCE_ID := "potion_shop"
 
 @onready var shop_window: ShopWindow = $CanvasLayer/ShopWindow
 @onready var interact_area: InteractArea = $Props/Counter/InteractArea
 
 func _get_screen_name() -> ScreenManager.ScreenName:
-	return SCREEN_NAME
+	return ScreenManager.ScreenName.POTION_SHOP
 
 func _on_location_ready() -> void:
 	interact_area.interacted.connect(_on_counter_interacted)
