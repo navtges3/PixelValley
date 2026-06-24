@@ -4,8 +4,11 @@
 [ext_resource type="Theme" uid="uid://dq41s7i7v61gk" path="res://resources/themes/backgrounds/background.tres" id="2_hb3v3"]
 [ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://resources/themes/buttons/regular/red_button.tres" id="2_q2qrq"]
 [ext_resource type="PackedScene" uid="uid://cg6a2qtqguwoy" path="res://scenes/ui/hud/panels/stats_panel.tscn" id="3_b1c7m"]
+[ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://resources/themes/buttons/regular/green_button.tres" id="4_4co4c"]
 [ext_resource type="PackedScene" uid="uid://brfqhf60i2qju" path="res://scenes/ui/hud/panels/inventory_panel.tscn" id="4_au6ik"]
+[ext_resource type="Theme" uid="uid://phfh7c5hwx1n" path="res://resources/themes/buttons/regular/yellow_button.tres" id="5_0h4j1"]
 [ext_resource type="PackedScene" uid="uid://cw2srj46vgqyq" path="res://scenes/ui/hud/panels/quests_panel.tscn" id="5_hb3v3"]
+[ext_resource type="Theme" uid="uid://dqwm8agt87lsh" path="res://resources/themes/buttons/regular/blue_button.tres" id="6_11vu1"]
 [ext_resource type="PackedScene" uid="uid://cfkpdp82x2nsu" path="res://scenes/ui/hud/panels/system_panel.tscn" id="6_fde6m"]
 
 [node name="GameHud" type="CanvasLayer" unique_id=956269644]
@@ -61,6 +64,34 @@ text = "Close"
 custom_minimum_size = Vector2(0, 34)
 layout_mode = 2
 theme_override_constants/separation = 2
+
+[node name="StatsButton" type="Button" parent="Panel/MarginContainer/VBox/TabBar" unique_id=1882271212]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("4_4co4c")
+toggle_mode = true
+text = "Stats"
+
+[node name="InventoryButton" type="Button" parent="Panel/MarginContainer/VBox/TabBar" unique_id=1716018902]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_q2qrq")
+toggle_mode = true
+text = "Inventory"
+
+[node name="QuestsButton" type="Button" parent="Panel/MarginContainer/VBox/TabBar" unique_id=5476063]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("6_11vu1")
+toggle_mode = true
+text = "Quests"
+
+[node name="SystemButton" type="Button" parent="Panel/MarginContainer/VBox/TabBar" unique_id=1866902854]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("5_0h4j1")
+toggle_mode = true
+text = "System"
 
 [node name="MarginContainer" type="MarginContainer" parent="Panel/MarginContainer/VBox" unique_id=1679137219]
 layout_mode = 2
