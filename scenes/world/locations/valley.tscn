@@ -5,7 +5,6 @@
 [ext_resource type="Texture2D" uid="uid://bn7ut6nmque8y" path="res://assets/world/war_camp/war_camp_tileset.png" id="4_gbuke"]
 [ext_resource type="Texture2D" uid="uid://dh7ukilah1cch" path="res://assets/world/cave/cave_tileset.png" id="5_otlcx"]
 [ext_resource type="PackedScene" uid="uid://cv120tmswg7xm" path="res://scenes/world/characters/player.tscn" id="6_6nwor"]
-[ext_resource type="PackedScene" uid="uid://be34gw2t63gdo" path="res://scenes/world/zone_message_label.tscn" id="7_qi8v7"]
 [ext_resource type="PackedScene" uid="uid://b0tdph7ofmv7r" path="res://scenes/world/trigger_zone.tscn" id="8_xwbyh"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xwbyh"]
@@ -114,8 +113,6 @@ shape = SubResource("RectangleShape2D_rf3nj")
 
 [node name="Player" parent="." unique_id=426329780 groups=["player"] instance=ExtResource("6_6nwor")]
 position = Vector2(485, 560)
-
-[node name="ZoneMessageLabel" parent="." unique_id=1327906442 instance=ExtResource("7_qi8v7")]
 
 [node name="TriggerZones" type="Node2D" parent="." unique_id=1819620231]
 
