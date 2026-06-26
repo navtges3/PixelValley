@@ -1,4 +1,5 @@
 extends Control
+class_name HeroPreview
 
 @onready var class_name_label: Label = $VBoxContainer/ClassNameLabel
 @onready var portrait: TextureRect = $VBoxContainer/Portrait

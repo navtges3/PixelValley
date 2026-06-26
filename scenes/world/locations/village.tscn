@@ -1,6 +1,6 @@
 [gd_scene format=4 uid="uid://b0g3svmx36aba"]
 
-[ext_resource type="Script" uid="uid://c11sud53o45be" path="res://scripts/world/locations/village.gd" id="1_a16hn"]
+[ext_resource type="Script" uid="uid://c11sud53o45be" path="res://scripts/world/locations/village_location.gd" id="1_a16hn"]
 [ext_resource type="PackedScene" uid="uid://cv120tmswg7xm" path="res://scenes/world/characters/player.tscn" id="2_e7reh"]
 [ext_resource type="TileSet" uid="uid://4cg7ba3d6vqd" path="res://resources/world/tile_set.tres" id="2_h8u16"]
 [ext_resource type="PackedScene" uid="uid://cs87mrk0vnqod" path="res://scenes/world/buildings/exterior/weapon_shop.tscn" id="3_irc66"]

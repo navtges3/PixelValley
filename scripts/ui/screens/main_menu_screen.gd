@@ -1,4 +1,5 @@
 extends Control
+class_name MainMenuScreen
 
 @onready var options_window: Window = $OptionsWindow
 @onready var load_window: Window = $LoadWindow

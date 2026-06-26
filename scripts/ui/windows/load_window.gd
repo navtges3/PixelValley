@@ -1,4 +1,5 @@
 extends Window
+class_name LoadWindow
 
 const GREEN_BUTTON = preload("uid://cgbnpl6hlm7s2")
 const RED_BUTTON = preload("uid://130ubmqd1h3b")
@@ -7,7 +8,7 @@ const RED_BUTTON = preload("uid://130ubmqd1h3b")
 	$PanelContainer/MarginContainer/VBoxContainer/GridContainer/SlotButton1,
 	$PanelContainer/MarginContainer/VBoxContainer/GridContainer/SlotButton2,
 	$PanelContainer/MarginContainer/VBoxContainer/GridContainer/SlotButton3,
-	$PanelContainer/MarginContainer/VBoxContainer/GridContainer/SlotButton4, 
+	$PanelContainer/MarginContainer/VBoxContainer/GridContainer/SlotButton4,
 	$PanelContainer/MarginContainer/VBoxContainer/GridContainer/SlotButton5
 ]
 @onready var delete_buttons: Array[Button] = [
