@@ -1,4 +1,5 @@
 extends Button
+class_name ItemButton
 
 signal item_pressed(item_id: String)
 

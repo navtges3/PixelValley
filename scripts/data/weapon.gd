@@ -1,5 +1,4 @@
 extends Item
-
 class_name Weapon
 
 @export var rarity: Rarity = Rarity.COMMON

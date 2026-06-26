@@ -1,4 +1,5 @@
 extends Button
+class_name AbilityButton
 
 signal ability_pressed(ability: Ability)
 

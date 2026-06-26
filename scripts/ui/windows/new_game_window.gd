@@ -1,4 +1,5 @@
 extends Window
+class_name NewGameWindow
 
 const GREEN_BUTTON = preload("res://resources/themes/buttons/regular/green_button.tres")
 const RED_BUTTON = preload("res://resources/themes/buttons/regular/red_button.tres")

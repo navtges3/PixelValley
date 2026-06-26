@@ -1,6 +1,6 @@
 [gd_scene format=4 uid="uid://c84xgt2j4i5ix"]
 
-[ext_resource type="Script" uid="uid://bearvy32v502w" path="res://scripts/world/locations/forest.gd" id="1_tvyim"]
+[ext_resource type="Script" uid="uid://bearvy32v502w" path="res://scripts/world/locations/forest_location.gd" id="1_tvyim"]
 [ext_resource type="TileSet" uid="uid://4cg7ba3d6vqd" path="res://resources/world/tile_set.tres" id="2_1da0x"]
 [ext_resource type="PackedScene" uid="uid://cv120tmswg7xm" path="res://scenes/world/characters/player.tscn" id="2_ftutg"]
 [ext_resource type="PackedScene" uid="uid://b0tdph7ofmv7r" path="res://scenes/world/trigger_zone.tscn" id="5_cfnsm"]

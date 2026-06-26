@@ -1,4 +1,5 @@
 extends Control
+class_name NewGameScreen
 
 @onready var new_game_window: Window = $NewGameWindow
 

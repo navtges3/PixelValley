@@ -1,6 +1,6 @@
 [gd_scene format=4 uid="uid://nykwxs7ltjyo"]
 
-[ext_resource type="Script" uid="uid://bjib22xupqply" path="res://scripts/world/locations/valley.gd" id="1_xwbyh"]
+[ext_resource type="Script" uid="uid://bjib22xupqply" path="res://scripts/world/locations/valley_location.gd" id="1_xwbyh"]
 [ext_resource type="TileSet" uid="uid://4cg7ba3d6vqd" path="res://resources/world/tile_set.tres" id="3_4rieo"]
 [ext_resource type="Texture2D" uid="uid://bn7ut6nmque8y" path="res://assets/world/war_camp/war_camp_tileset.png" id="4_gbuke"]
 [ext_resource type="Texture2D" uid="uid://dh7ukilah1cch" path="res://assets/world/cave/cave_tileset.png" id="5_otlcx"]

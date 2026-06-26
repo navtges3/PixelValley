@@ -1,4 +1,5 @@
 extends Window
+class_name OptionsWindow
 
 @onready var master_volume_slider: HSlider = $PanelContainer/MarginContainer/VBoxContainer/MasterVolumeSlider
 @onready var music_volume_slider: HSlider = $PanelContainer/MarginContainer/VBoxContainer/MusicVolumeSlider
