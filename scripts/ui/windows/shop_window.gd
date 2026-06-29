@@ -25,6 +25,10 @@ var hero: Hero
 var shop: Shop
 var shop_type: ShopType
 
+func _ready() -> void:
+	if not shop_manager.hero_updated.is_connected(_on_shop_manager_hero_updated):
+		shop_manager.hero_updated.connect(_on_shop_manager_hero_updated)
+
 func open(type: ShopType) -> void:
 	shop_type = type
 	hero = GameState.hero
