@@ -6,7 +6,10 @@
 [ext_resource type="TileSet" uid="uid://c3ib8w4j0mx7n" path="res://resources/world/building_interior_tileset.tres" id="3_ljrrm"]
 [ext_resource type="Texture2D" uid="uid://don3grn24yqj5" path="res://assets/world/village/weapon_shop/counter.png" id="4_ljrrm"]
 [ext_resource type="PackedScene" uid="uid://cv120tmswg7xm" path="res://scenes/world/characters/player.tscn" id="4_sexfc"]
+[ext_resource type="Texture2D" uid="uid://b24uivtcartxx" path="res://assets/world/village/potion_shop/shelf_a.png" id="6_u32er"]
+[ext_resource type="Texture2D" uid="uid://dijc1ux6a2j8b" path="res://assets/world/village/potion_shop/shelf_b.png" id="7_jo5y3"]
 [ext_resource type="PackedScene" uid="uid://b0tdph7ofmv7r" path="res://scenes/world/trigger_zone.tscn" id="8_u32er"]
+[ext_resource type="Texture2D" uid="uid://d3cdi3r3y5kx" path="res://assets/world/village/potion_shop/cauldron.png" id="8_y0o1b"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_u32er"]
 size = Vector2(94, 13)
@@ -14,10 +17,20 @@ size = Vector2(94, 13)
 [sub_resource type="CircleShape2D" id="CircleShape2D_jo5y3"]
 radius = 16.0
 
-[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_ljrrm"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jo5y3"]
+size = Vector2(62, 10)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_y0o1b"]
+size = Vector2(62, 10)
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_y0o1b"]
+radius = 5.0
+height = 18.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_sexfc"]
 radius = 16.0
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_ljrrm"]
 
 [node name="PotionShopInterior" type="Node2D" unique_id=1148766487]
 y_sort_enabled = true
@@ -42,7 +55,7 @@ tile_set = ExtResource("3_ljrrm")
 y_sort_enabled = true
 
 [node name="Counter" type="StaticBody2D" parent="Props" unique_id=1442682244]
-position = Vector2(55, 145)
+position = Vector2(264, 124)
 
 [node name="Sprite2D" type="Sprite2D" parent="Props/Counter" unique_id=1763826858]
 position = Vector2(0, -12)
@@ -57,6 +70,40 @@ shape = SubResource("RectangleShape2D_u32er")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Props/Counter/InteractArea" unique_id=1006435846]
 shape = SubResource("CircleShape2D_jo5y3")
 
+[node name="ShelfA" type="StaticBody2D" parent="Props" unique_id=1597384271]
+position = Vector2(40, 12)
+
+[node name="Sprite2D" type="Sprite2D" parent="Props/ShelfA" unique_id=1496831952]
+texture = ExtResource("6_u32er")
+offset = Vector2(0, -32)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Props/ShelfA" unique_id=870976822]
+position = Vector2(0, -7)
+shape = SubResource("RectangleShape2D_jo5y3")
+
+[node name="ShelfB" type="StaticBody2D" parent="Props" unique_id=1814209323]
+position = Vector2(104, 12)
+
+[node name="Sprite2D" type="Sprite2D" parent="Props/ShelfB" unique_id=1610849224]
+texture = ExtResource("7_jo5y3")
+offset = Vector2(0, -32)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Props/ShelfB" unique_id=1580797731]
+position = Vector2(0, -7)
+shape = SubResource("RectangleShape2D_y0o1b")
+
+[node name="Cauldron" type="StaticBody2D" parent="Props" unique_id=1660348914]
+position = Vector2(80, 88)
+
+[node name="Sprite2D" type="Sprite2D" parent="Props/Cauldron" unique_id=973765420]
+texture = ExtResource("8_y0o1b")
+offset = Vector2(0, -12)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Props/Cauldron" unique_id=340616937]
+position = Vector2(0, -6)
+rotation = 1.5707964
+shape = SubResource("CapsuleShape2D_y0o1b")
+
 [node name="Player" parent="." unique_id=426329780 groups=["player"] instance=ExtResource("4_sexfc")]
 position = Vector2(159, 128)
 
@@ -68,7 +115,7 @@ screen_target = 3
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ExitTriggerZone" unique_id=9921131]
 shape = SubResource("CircleShape2D_sexfc")
 
-[node name="WorldBounds" type="StaticBody2D" parent="."]
+[node name="WorldBounds" type="StaticBody2D" parent="." unique_id=1813557841]
 position = Vector2(160, 224)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WorldBounds" unique_id=1301131065]
