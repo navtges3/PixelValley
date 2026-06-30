@@ -129,6 +129,7 @@ layout_mode = 2
 layout_mode = 2
 text = "Hero Inventory:"
 
+[connection signal="hero_updated" from="ShopManager" to="." method="_on_shop_manager_hero_updated"]
 [connection signal="value_changed" from="PanelContainer/VBoxContainer/HBoxContainer/ItemContainer/CostContainer/QuantitySpinBox" to="." method="_on_spin_box_value_changed"]
 [connection signal="pressed" from="PanelContainer/VBoxContainer/HBoxContainer/ItemContainer/HBoxContainer/CloseButton" to="." method="_on_close_button_pressed"]
 [connection signal="pressed" from="PanelContainer/VBoxContainer/HBoxContainer/ItemContainer/HBoxContainer/PurchaseButton" to="." method="_on_purchase_button_pressed"]
