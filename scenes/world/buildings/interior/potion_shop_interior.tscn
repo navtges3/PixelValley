@@ -8,9 +8,9 @@
 [ext_resource type="Texture2D" uid="uid://don3grn24yqj5" path="res://assets/world/village/weapon_shop/counter.png" id="4_ljrrm"]
 [ext_resource type="PackedScene" uid="uid://cv120tmswg7xm" path="res://scenes/world/characters/player.tscn" id="4_sexfc"]
 [ext_resource type="Texture2D" uid="uid://d3cdi3r3y5kx" path="res://assets/world/village/potion_shop/cauldron.png" id="6_u32er"]
-[ext_resource type="Texture2D" uid="uid://kgl6tcli75t3" path="res://assets/world/village/potion_shop/shelf_a.png" id="7_jo5y3"]
+[ext_resource type="Texture2D" uid="uid://crppd138omvaa" path="res://assets/world/village/potion_shop/shelf_a.png" id="7_jo5y3"]
 [ext_resource type="PackedScene" uid="uid://b0tdph7ofmv7r" path="res://scenes/world/trigger_zone.tscn" id="8_u32er"]
-[ext_resource type="Texture2D" uid="uid://dtg8xkqaw0lmi" path="res://assets/world/village/potion_shop/shelf_b.png" id="8_y0o1b"]
+[ext_resource type="Texture2D" uid="uid://baqgm81vbs0cl" path="res://assets/world/village/potion_shop/shelf_b.png" id="8_y0o1b"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_xuear"]
 radius = 5.0
