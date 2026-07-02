@@ -4,6 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://barcl6is7t0uy" path="res://scenes/ui/windows/shop_window.tscn" id="2_kxhju"]
 [ext_resource type="PackedScene" uid="uid://k35wlbc0ho3o" path="res://scenes/world/interact_area.tscn" id="3_d0mt5"]
 [ext_resource type="TileSet" uid="uid://c3ib8w4j0mx7n" path="res://resources/world/building_interior_tileset.tres" id="3_ljrrm"]
+[ext_resource type="Texture2D" uid="uid://dg387lc85bt2q" path="res://assets/characters/npcs/potion_shopkeep.png" id="4_230t1"]
 [ext_resource type="Texture2D" uid="uid://don3grn24yqj5" path="res://assets/world/village/weapon_shop/counter.png" id="4_ljrrm"]
 [ext_resource type="PackedScene" uid="uid://cv120tmswg7xm" path="res://scenes/world/characters/player.tscn" id="4_sexfc"]
 [ext_resource type="Texture2D" uid="uid://d3cdi3r3y5kx" path="res://assets/world/village/potion_shop/cauldron.png" id="6_u32er"]
@@ -11,15 +12,8 @@
 [ext_resource type="PackedScene" uid="uid://b0tdph7ofmv7r" path="res://scenes/world/trigger_zone.tscn" id="8_u32er"]
 [ext_resource type="Texture2D" uid="uid://dtg8xkqaw0lmi" path="res://assets/world/village/potion_shop/shelf_b.png" id="8_y0o1b"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_u32er"]
-size = Vector2(94, 13)
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_jo5y3"]
-radius = 16.0
-
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_y0o1b"]
+[sub_resource type="CircleShape2D" id="CircleShape2D_xuear"]
 radius = 5.0
-height = 18.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_230t1"]
 size = Vector2(62, 11)
@@ -32,6 +26,16 @@ size = Vector2(62, 11)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_33xkn"]
 size = Vector2(62, 11)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_u32er"]
+size = Vector2(94, 13)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_jo5y3"]
+radius = 16.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_y0o1b"]
+radius = 5.0
+height = 18.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_sexfc"]
 radius = 16.0
@@ -57,81 +61,94 @@ tile_set = ExtResource("3_ljrrm")
 tile_map_data = PackedByteArray("AAAAAP7/AQAAAAAAAAAAAP//AQAAAAEAAAAJAP7/AQACAAAAAAAJAP//AQACAAEAAAAIAP7/AQABAAAAAAAIAP//AQABAAEAAAAHAP7/AQABAAAAAAAHAP//AQABAAEAAAAGAP7/AQABAAAAAAAGAP//AQABAAEAAAAFAP7/AQABAAAAAAAFAP//AQABAAEAAAAEAP7/AQABAAAAAAAEAP//AQABAAEAAAADAP7/AQABAAAAAAADAP//AQABAAEAAAACAP7/AQABAAAAAAACAP//AQABAAEAAAABAP7/AQABAAAAAAABAP//AQABAAEAAAAAAAAAAQADAAEAAAAAAAEAAQADAAEAAAAAAAIAAQADAAEAAAAAAAMAAQADAAEAAAAAAAQAAQADAAEAAAAAAAUAAQADAAEAAAAAAAYAAQADAAEAAAAJAAAAAQAEAAEAAAAJAAEAAQAEAAEAAAAJAAIAAQAEAAEAAAAJAAMAAQAEAAEAAAAJAAQAAQAEAAEAAAAJAAUAAQAEAAEAAAAJAAYAAQAEAAEAAAAJAAcAAQACAAIAAAAAAAcAAQAAAAIAAAABAAcAAQABAAIAAAACAAcAAQABAAIAAAAIAAcAAQABAAIAAAAHAAcAAQABAAIAAAAEAAcAAQADAAAAAAAFAAcAAQAEAAAAAAAGAAcAAQABAAIAAAADAAcAAQABAAIAAAA=")
 tile_set = ExtResource("3_ljrrm")
 
-[node name="Props" type="Node2D" parent="." unique_id=1654573664]
+[node name="Shopkeeper" type="CharacterBody2D" parent="." unique_id=309295007]
+y_sort_enabled = true
+position = Vector2(255, 123)
+
+[node name="Sprite2D" type="Sprite2D" parent="Shopkeeper" unique_id=397470808]
+texture = ExtResource("4_230t1")
+offset = Vector2(0, -10)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Shopkeeper" unique_id=514172550]
+shape = SubResource("CircleShape2D_xuear")
+
+[node name="WallProps" type="Node2D" parent="." unique_id=1056169244]
+
+[node name="ShelfA" type="StaticBody2D" parent="WallProps" unique_id=675666732]
+position = Vector2(64, 6)
+
+[node name="Sprite2D" type="Sprite2D" parent="WallProps/ShelfA" unique_id=2044590977]
+texture = ExtResource("7_jo5y3")
+offset = Vector2(0, -24)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WallProps/ShelfA" unique_id=72230307]
+position = Vector2(0, -0.5)
+shape = SubResource("RectangleShape2D_230t1")
+
+[node name="ShelfA2" type="StaticBody2D" parent="WallProps" unique_id=1594264225]
+position = Vector2(128, 6)
+
+[node name="Sprite2D" type="Sprite2D" parent="WallProps/ShelfA2" unique_id=138756478]
+texture = ExtResource("7_jo5y3")
+offset = Vector2(0, -24)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WallProps/ShelfA2" unique_id=416258887]
+position = Vector2(0, -0.5)
+shape = SubResource("RectangleShape2D_xuear")
+
+[node name="ShelfB" type="StaticBody2D" parent="WallProps" unique_id=426082286]
+position = Vector2(192, 6)
+
+[node name="Sprite2D" type="Sprite2D" parent="WallProps/ShelfB" unique_id=1828443843]
+texture = ExtResource("8_y0o1b")
+offset = Vector2(0, -24)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WallProps/ShelfB" unique_id=506166234]
+position = Vector2(0, -0.5)
+shape = SubResource("RectangleShape2D_61jxo")
+
+[node name="ShelfB2" type="StaticBody2D" parent="WallProps" unique_id=1626100072]
+position = Vector2(256, 6)
+
+[node name="Sprite2D" type="Sprite2D" parent="WallProps/ShelfB2" unique_id=332913246]
+texture = ExtResource("8_y0o1b")
+offset = Vector2(0, -24)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WallProps/ShelfB2" unique_id=1535304522]
+position = Vector2(0, -0.5)
+shape = SubResource("RectangleShape2D_33xkn")
+
+[node name="FloorProps" type="Node2D" parent="." unique_id=1654573664]
 y_sort_enabled = true
 
-[node name="Counter" type="StaticBody2D" parent="Props" unique_id=1442682244]
+[node name="Counter" type="StaticBody2D" parent="FloorProps" unique_id=1442682244]
 position = Vector2(264, 145)
 
-[node name="Sprite2D" type="Sprite2D" parent="Props/Counter" unique_id=1763826858]
+[node name="Sprite2D" type="Sprite2D" parent="FloorProps/Counter" unique_id=1763826858]
 position = Vector2(0, -12)
 texture = ExtResource("4_ljrrm")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Props/Counter" unique_id=2099248071]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FloorProps/Counter" unique_id=2099248071]
 position = Vector2(0, -6.5)
 shape = SubResource("RectangleShape2D_u32er")
 
-[node name="InteractArea" parent="Props/Counter" unique_id=1105164537 instance=ExtResource("3_d0mt5")]
+[node name="InteractArea" parent="FloorProps/Counter" unique_id=1105164537 instance=ExtResource("3_d0mt5")]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Props/Counter/InteractArea" unique_id=1006435846]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FloorProps/Counter/InteractArea" unique_id=1006435846]
 shape = SubResource("CircleShape2D_jo5y3")
 
-[node name="Cauldron" type="StaticBody2D" parent="Props" unique_id=1415701295]
+[node name="Cauldron" type="StaticBody2D" parent="FloorProps" unique_id=1415701295]
 position = Vector2(80, 88)
 
-[node name="Sprite2D" type="Sprite2D" parent="Props/Cauldron" unique_id=967654177]
+[node name="Sprite2D" type="Sprite2D" parent="FloorProps/Cauldron" unique_id=967654177]
 position = Vector2(0, -2)
 texture = ExtResource("6_u32er")
 offset = Vector2(0, -4)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Props/Cauldron" unique_id=158732177]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FloorProps/Cauldron" unique_id=158732177]
 position = Vector2(0, -1)
 rotation = 1.5707964
 shape = SubResource("CapsuleShape2D_y0o1b")
-
-[node name="ShelfA" type="StaticBody2D" parent="Props" unique_id=675666732]
-position = Vector2(64, 6)
-
-[node name="Sprite2D" type="Sprite2D" parent="Props/ShelfA" unique_id=2044590977]
-texture = ExtResource("7_jo5y3")
-offset = Vector2(0, -24)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Props/ShelfA" unique_id=72230307]
-position = Vector2(0, -0.5)
-shape = SubResource("RectangleShape2D_230t1")
-
-[node name="ShelfA2" type="StaticBody2D" parent="Props" unique_id=1594264225]
-position = Vector2(128, 6)
-
-[node name="Sprite2D" type="Sprite2D" parent="Props/ShelfA2" unique_id=138756478]
-texture = ExtResource("7_jo5y3")
-offset = Vector2(0, -24)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Props/ShelfA2" unique_id=416258887]
-position = Vector2(0, -0.5)
-shape = SubResource("RectangleShape2D_xuear")
-
-[node name="ShelfB" type="StaticBody2D" parent="Props" unique_id=426082286]
-position = Vector2(192, 6)
-
-[node name="Sprite2D" type="Sprite2D" parent="Props/ShelfB" unique_id=1828443843]
-texture = ExtResource("8_y0o1b")
-offset = Vector2(0, -24)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Props/ShelfB" unique_id=506166234]
-position = Vector2(0, -0.5)
-shape = SubResource("RectangleShape2D_61jxo")
-
-[node name="ShelfB2" type="StaticBody2D" parent="Props" unique_id=1626100072]
-position = Vector2(256, 6)
-
-[node name="Sprite2D" type="Sprite2D" parent="Props/ShelfB2" unique_id=332913246]
-texture = ExtResource("8_y0o1b")
-offset = Vector2(0, -24)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Props/ShelfB2" unique_id=1535304522]
-position = Vector2(0, -0.5)
-shape = SubResource("RectangleShape2D_33xkn")
 
 [node name="Player" parent="." unique_id=426329780 groups=["player"] instance=ExtResource("4_sexfc")]
 position = Vector2(159, 128)

@@ -5,8 +5,12 @@
 [ext_resource type="TileSet" uid="uid://c3ib8w4j0mx7n" path="res://resources/world/building_interior_tileset.tres" id="3_eggvl"]
 [ext_resource type="PackedScene" uid="uid://k35wlbc0ho3o" path="res://scenes/world/interact_area.tscn" id="3_tlekw"]
 [ext_resource type="Texture2D" uid="uid://don3grn24yqj5" path="res://assets/world/village/weapon_shop/counter.png" id="4_akkv4"]
+[ext_resource type="Texture2D" uid="uid://dutpghl7y0fri" path="res://assets/characters/npcs/inn_shopkeep.png" id="4_d6ujm"]
 [ext_resource type="PackedScene" uid="uid://cv120tmswg7xm" path="res://scenes/world/characters/player.tscn" id="4_vofwt"]
 [ext_resource type="PackedScene" uid="uid://b0tdph7ofmv7r" path="res://scenes/world/trigger_zone.tscn" id="8_d6ujm"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_oqisc"]
+radius = 5.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_d6ujm"]
 size = Vector2(94, 13)
@@ -14,10 +18,10 @@ size = Vector2(94, 13)
 [sub_resource type="CircleShape2D" id="CircleShape2D_42aiy"]
 radius = 16.0
 
-[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_eggvl"]
-
 [sub_resource type="CircleShape2D" id="CircleShape2D_akkv4"]
 radius = 16.0
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_eggvl"]
 
 [node name="InnInterior" type="Node2D" unique_id=601251887]
 y_sort_enabled = true
@@ -38,6 +42,17 @@ tile_set = ExtResource("3_eggvl")
 [node name="Walls" type="TileMapLayer" parent="." unique_id=495843114]
 tile_map_data = PackedByteArray("AAAAAP7/AQAAAAAAAAAAAP//AQAAAAEAAAAIAP7/AQABAAAAAAAIAP//AQABAAEAAAAJAP7/AQACAAAAAAAJAP//AQACAAEAAAAHAP7/AQABAAAAAAAHAP//AQABAAEAAAAGAP7/AQABAAAAAAAGAP//AQABAAEAAAAFAP7/AQABAAAAAAAFAP//AQABAAEAAAAEAP7/AQABAAAAAAAEAP//AQABAAEAAAADAP7/AQABAAAAAAADAP//AQABAAEAAAACAP7/AQABAAAAAAACAP//AQABAAEAAAABAP7/AQABAAAAAAABAP//AQABAAEAAAAAAAAAAQADAAEAAAAAAAEAAQADAAEAAAAAAAIAAQADAAEAAAAAAAMAAQADAAEAAAAAAAQAAQADAAEAAAAAAAUAAQADAAEAAAAAAAYAAQADAAEAAAAJAAAAAQAEAAEAAAAJAAEAAQAEAAEAAAAJAAIAAQAEAAEAAAAJAAMAAQAEAAEAAAAJAAQAAQAEAAEAAAAJAAUAAQAEAAEAAAAJAAYAAQAEAAEAAAAAAAcAAQAAAAIAAAAJAAcAAQACAAIAAAABAAcAAQADAAAAAAACAAcAAQAEAAAAAAADAAcAAQABAAIAAAAEAAcAAQABAAIAAAAFAAcAAQABAAIAAAAGAAcAAQABAAIAAAAHAAcAAQABAAIAAAAIAAcAAQABAAIAAAA=")
 tile_set = ExtResource("3_eggvl")
+
+[node name="Shopkeeper" type="CharacterBody2D" parent="." unique_id=1260958259]
+y_sort_enabled = true
+position = Vector2(56, 101)
+
+[node name="Sprite2D" type="Sprite2D" parent="Shopkeeper" unique_id=1130051326]
+texture = ExtResource("4_d6ujm")
+offset = Vector2(0, -10)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Shopkeeper" unique_id=1056949789]
+shape = SubResource("CircleShape2D_oqisc")
 
 [node name="Props" type="Node2D" parent="." unique_id=1520411425]
 y_sort_enabled = true
@@ -69,7 +84,7 @@ screen_target = 3
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ExitTriggerZone" unique_id=61551921]
 shape = SubResource("CircleShape2D_akkv4")
 
-[node name="WorldBounds" type="StaticBody2D" parent="."]
+[node name="WorldBounds" type="StaticBody2D" parent="." unique_id=1107124213]
 position = Vector2(64, 224)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WorldBounds" unique_id=1661390111]

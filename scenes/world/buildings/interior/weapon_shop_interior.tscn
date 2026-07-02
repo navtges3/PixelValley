@@ -11,6 +11,7 @@
 [ext_resource type="Texture2D" uid="uid://cs6xdko54rvuy" path="res://assets/world/village/weapon_shop/wall_rack.png" id="7_so5x8"]
 [ext_resource type="Texture2D" uid="uid://bqsfhmwu4yrw0" path="res://assets/world/village/weapon_shop/forge.png" id="9_422ht"]
 [ext_resource type="Texture2D" uid="uid://cpjxp1gfs0dve" path="res://assets/world/village/weapon_shop/anvil.png" id="10_5xyi6"]
+[ext_resource type="Texture2D" uid="uid://lygp75a7owqn" path="res://assets/characters/npcs/weapon_shopkeep.png" id="11_6f06l"]
 [ext_resource type="PackedScene" uid="uid://b0tdph7ofmv7r" path="res://scenes/world/trigger_zone.tscn" id="13_6f06l"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_awdw8"]
@@ -26,6 +27,9 @@ height = 16.0
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_5xyi6"]
 radius = 4.0
 height = 28.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_3aciw"]
+radius = 5.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_8swea"]
 radius = 16.0
@@ -135,6 +139,17 @@ offset = Vector2(0, -4)
 position = Vector2(3, 0)
 rotation = 1.5707964
 shape = SubResource("CapsuleShape2D_5xyi6")
+
+[node name="Shopkeeper" type="CharacterBody2D" parent="." unique_id=1324543982]
+y_sort_enabled = true
+position = Vector2(47, 121)
+
+[node name="Sprite2D" type="Sprite2D" parent="Shopkeeper" unique_id=378448553]
+texture = ExtResource("11_6f06l")
+offset = Vector2(0, -10)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Shopkeeper" unique_id=1252113781]
+shape = SubResource("CircleShape2D_3aciw")
 
 [node name="Player" parent="." unique_id=426329780 groups=["player"] instance=ExtResource("3_mu2m6")]
 position = Vector2(208, 145)
