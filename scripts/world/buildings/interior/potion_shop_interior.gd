@@ -4,7 +4,7 @@ class_name PotionShopInterior
 const ENTRANCE_ID := "potion_shop"
 
 @onready var shop_window: ShopWindow = $CanvasLayer/ShopWindow
-@onready var interact_area: InteractArea = $Props/Counter/InteractArea
+@onready var interact_area: InteractArea = $FloorProps/Counter/InteractArea
 
 func _get_screen_name() -> ScreenManager.ScreenName:
 	return ScreenManager.ScreenName.POTION_SHOP
