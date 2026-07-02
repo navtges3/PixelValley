@@ -7,15 +7,31 @@
 [ext_resource type="Texture2D" uid="uid://don3grn24yqj5" path="res://assets/world/village/weapon_shop/counter.png" id="4_ljrrm"]
 [ext_resource type="PackedScene" uid="uid://cv120tmswg7xm" path="res://scenes/world/characters/player.tscn" id="4_sexfc"]
 [ext_resource type="Texture2D" uid="uid://d3cdi3r3y5kx" path="res://assets/world/village/potion_shop/cauldron.png" id="6_u32er"]
-[ext_resource type="Texture2D" uid="uid://crppd138omvaa" path="res://assets/world/village/potion_shop/shelf_a.png" id="7_jo5y3"]
+[ext_resource type="Texture2D" uid="uid://kgl6tcli75t3" path="res://assets/world/village/potion_shop/shelf_a.png" id="7_jo5y3"]
 [ext_resource type="PackedScene" uid="uid://b0tdph7ofmv7r" path="res://scenes/world/trigger_zone.tscn" id="8_u32er"]
-[ext_resource type="Texture2D" uid="uid://baqgm81vbs0cl" path="res://assets/world/village/potion_shop/shelf_b.png" id="8_y0o1b"]
+[ext_resource type="Texture2D" uid="uid://dtg8xkqaw0lmi" path="res://assets/world/village/potion_shop/shelf_b.png" id="8_y0o1b"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_u32er"]
 size = Vector2(94, 13)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_jo5y3"]
 radius = 16.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_y0o1b"]
+radius = 5.0
+height = 18.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_230t1"]
+size = Vector2(62, 11)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_xuear"]
+size = Vector2(62, 11)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_61jxo"]
+size = Vector2(62, 11)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_33xkn"]
+size = Vector2(62, 11)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_sexfc"]
 radius = 16.0
@@ -66,49 +82,56 @@ position = Vector2(80, 88)
 [node name="Sprite2D" type="Sprite2D" parent="Props/Cauldron" unique_id=967654177]
 position = Vector2(0, -2)
 texture = ExtResource("6_u32er")
-offset = Vector2(0, -10)
+offset = Vector2(0, -4)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Props/Cauldron" unique_id=158732177]
+position = Vector2(0, -1)
+rotation = 1.5707964
+shape = SubResource("CapsuleShape2D_y0o1b")
 
 [node name="ShelfA" type="StaticBody2D" parent="Props" unique_id=675666732]
-position = Vector2(64, 16)
+position = Vector2(64, 6)
 
 [node name="Sprite2D" type="Sprite2D" parent="Props/ShelfA" unique_id=2044590977]
-position = Vector2(0, -2)
 texture = ExtResource("7_jo5y3")
-offset = Vector2(0, -32)
+offset = Vector2(0, -24)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Props/ShelfA" unique_id=72230307]
+position = Vector2(0, -0.5)
+shape = SubResource("RectangleShape2D_230t1")
 
 [node name="ShelfA2" type="StaticBody2D" parent="Props" unique_id=1594264225]
-position = Vector2(128, 16)
+position = Vector2(128, 6)
 
 [node name="Sprite2D" type="Sprite2D" parent="Props/ShelfA2" unique_id=138756478]
-position = Vector2(0, -2)
 texture = ExtResource("7_jo5y3")
-offset = Vector2(0, -32)
+offset = Vector2(0, -24)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Props/ShelfA2" unique_id=416258887]
+position = Vector2(0, -0.5)
+shape = SubResource("RectangleShape2D_xuear")
 
 [node name="ShelfB" type="StaticBody2D" parent="Props" unique_id=426082286]
-position = Vector2(192, 16)
+position = Vector2(192, 6)
 
 [node name="Sprite2D" type="Sprite2D" parent="Props/ShelfB" unique_id=1828443843]
-position = Vector2(0, -2)
 texture = ExtResource("8_y0o1b")
-offset = Vector2(0, -32)
+offset = Vector2(0, -24)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Props/ShelfB" unique_id=506166234]
+position = Vector2(0, -0.5)
+shape = SubResource("RectangleShape2D_61jxo")
 
 [node name="ShelfB2" type="StaticBody2D" parent="Props" unique_id=1626100072]
-position = Vector2(256, 16)
+position = Vector2(256, 6)
 
 [node name="Sprite2D" type="Sprite2D" parent="Props/ShelfB2" unique_id=332913246]
-position = Vector2(0, -2)
 texture = ExtResource("8_y0o1b")
-offset = Vector2(0, -32)
+offset = Vector2(0, -24)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Props/ShelfB2" unique_id=1535304522]
+position = Vector2(0, -0.5)
+shape = SubResource("RectangleShape2D_33xkn")
 
 [node name="Player" parent="." unique_id=426329780 groups=["player"] instance=ExtResource("4_sexfc")]
 position = Vector2(159, 128)
