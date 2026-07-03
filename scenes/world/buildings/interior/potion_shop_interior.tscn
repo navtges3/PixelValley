@@ -151,7 +151,7 @@ rotation = 1.5707964
 shape = SubResource("CapsuleShape2D_y0o1b")
 
 [node name="Player" parent="." unique_id=426329780 groups=["player"] instance=ExtResource("4_sexfc")]
-position = Vector2(159, 128)
+position = Vector2(160, 216)
 
 [node name="ExitTriggerZone" parent="." unique_id=528423832 instance=ExtResource("8_u32er")]
 position = Vector2(160, 224)
