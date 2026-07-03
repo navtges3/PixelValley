@@ -92,7 +92,7 @@ polygon = PackedVector2Array(-18, 0, -24, -5, -24, -26, 24, -26, 24, -5, 18, 0)
 y_sort_enabled = true
 
 [node name="Counter" type="StaticBody2D" parent="FloorProps" unique_id=575961433]
-position = Vector2(55, 145)
+position = Vector2(57, 145)
 
 [node name="Sprite2D" type="Sprite2D" parent="FloorProps/Counter" unique_id=1590558295]
 position = Vector2(0, -12)
@@ -134,7 +134,7 @@ rotation = 1.5707964
 shape = SubResource("CapsuleShape2D_7mnpr")
 
 [node name="Anvil" type="StaticBody2D" parent="FloorProps" unique_id=45279076]
-position = Vector2(109, 52)
+position = Vector2(77, 84)
 
 [node name="Sprite2D" type="Sprite2D" parent="FloorProps/Anvil" unique_id=300896808]
 texture = ExtResource("10_5xyi6")
@@ -145,20 +145,20 @@ position = Vector2(3, 0)
 rotation = 1.5707964
 shape = SubResource("CapsuleShape2D_5xyi6")
 
-[node name="StaticBody2D" type="StaticBody2D" parent="FloorProps" unique_id=547141005]
-position = Vector2(31, 64)
+[node name="QuenchBarrel" type="StaticBody2D" parent="FloorProps" unique_id=547141005]
+position = Vector2(111, 48)
 
-[node name="Sprite2D" type="Sprite2D" parent="FloorProps/StaticBody2D" unique_id=900083966]
+[node name="Sprite2D" type="Sprite2D" parent="FloorProps/QuenchBarrel" unique_id=900083966]
 texture = ExtResource("11_3aciw")
 offset = Vector2(0, -10)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="FloorProps/StaticBody2D" unique_id=1853471677]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FloorProps/QuenchBarrel" unique_id=1853471677]
 rotation = 1.5707964
 shape = SubResource("CapsuleShape2D_3aciw")
 
 [node name="Shopkeeper" type="CharacterBody2D" parent="." unique_id=1324543982]
 y_sort_enabled = true
-position = Vector2(47, 121)
+position = Vector2(49, 121)
 
 [node name="Sprite2D" type="Sprite2D" parent="Shopkeeper" unique_id=378448553]
 texture = ExtResource("11_6f06l")
