@@ -2,6 +2,7 @@ extends CanvasLayer
 class_name WorldHUD
 
 @onready var game_hud: GameHUD = $GameHud
+@onready var hero_hud: HeroHUD = $HeroHUD
 
 func hide_all() -> void:
 	hide()
@@ -21,3 +22,6 @@ func open_game_hud(tab: GameHUD.Tab = GameHUD.Tab.STATS) -> void:
 
 func close_game_hud() -> void:
 	game_hud.hide_hud()
+
+func set_hero_hud_visible(is_visible: bool) -> void:
+	hero_hud.visible = is_visible
