@@ -26,6 +26,7 @@ buses/default_bus_layout="uid://crpk253ew4rsx"
 
 [autoload]
 
+ThemeManager="*uid://dd4ig5vl2ulw7"
 SettingsManager="*uid://pbuy3m18awm"
 SaveManager="*uid://be6fxg7kvv6mj"
 GameState="*res://autoload/game_state.gd"
@@ -36,7 +37,6 @@ HeroLoader="*uid://bdbko8ym27fys"
 ItemLoader="*uid://c5scu6op4trrm"
 MonsterLoader="*res://autoload/monster_loader.gd"
 WeaponDatabase="*res://autoload/weapon_database.gd"
-ThemeManager="*uid://dd4ig5vl2ulw7"
 
 [display]
 
