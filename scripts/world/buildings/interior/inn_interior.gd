@@ -4,7 +4,7 @@ class_name InnInterior
 const ENTRANCE_ID := "inn"
 
 @onready var inn_window: InnWindow = $CanvasLayer/InnWindow
-@onready var interact_area: InteractArea = $Props/Counter/InteractArea
+@onready var interact_area: InteractArea = $FloorProps/Counter/InteractArea
 
 func _get_screen_name() -> ScreenManager.ScreenName:
 	return ScreenManager.ScreenName.INN
