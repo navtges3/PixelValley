@@ -103,6 +103,7 @@ position = Vector2(0, -6.5)
 shape = SubResource("RectangleShape2D_awdw8")
 
 [node name="InteractArea" parent="FloorProps/Counter" unique_id=1105164537 instance=ExtResource("2_mmg14")]
+prompt_text = "Press E to Shop"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="FloorProps/Counter/InteractArea" unique_id=1669272328]
 shape = SubResource("CircleShape2D_awdw8")
