@@ -22,8 +22,7 @@ func _on_window_closed() -> void:
 	player.movement_blocked = false
 
 func _input(event: InputEvent) -> void:
-	if shop_window.is_visible_in_tree():
-		if event.is_action_pressed("open_hud") or event.is_action_pressed("ui_cancel"):
-			shop_window.close()
+	if _handle_open_window_input(event, shop_window):
+		return
 	else:
 		super._input(event)
