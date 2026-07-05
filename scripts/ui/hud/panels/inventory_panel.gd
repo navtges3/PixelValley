@@ -7,8 +7,6 @@ signal weapon_equipped(weapon_id: String)
 @onready var equipped_label: Label = $ScrollContainer/VBox/WeaponsSection/EquippedLabel
 @onready var weapons_list: VBoxContainer = $ScrollContainer/VBox/WeaponsSection/WeaponsList
 
-const GREEN_BUTTON = preload("res://resources/themes/buttons/regular/green_button.tres")
-
 const COLOR_HEADER    := Color(0.95, 0.92, 0.80)
 const COLOR_SUBTEXT   := Color(0.72, 0.67, 0.57)
 const COLOR_GOLD      := Color(0.95, 0.80, 0.25)
@@ -79,7 +77,7 @@ func _refresh_weapons(hero: Hero) -> void:
 func _make_equip_button(weapon_id: String) -> Button:
 	var btn := Button.new()
 	btn.text = "Equip"
-	btn.theme = GREEN_BUTTON
+	btn.theme = ThemeManager.GREEN_BUTTON
 	btn.add_theme_font_size_override("font_size", 11) 
 	btn.pressed.connect(func() -> void:
 		GameState.hero.inventory.equip_weapon(weapon_id)

@@ -36,6 +36,7 @@ HeroLoader="*uid://bdbko8ym27fys"
 ItemLoader="*uid://c5scu6op4trrm"
 MonsterLoader="*res://autoload/monster_loader.gd"
 WeaponDatabase="*res://autoload/weapon_database.gd"
+ThemeManager="*uid://dd4ig5vl2ulw7"
 
 [display]
 
