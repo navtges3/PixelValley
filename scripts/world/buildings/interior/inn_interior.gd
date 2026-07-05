@@ -4,7 +4,7 @@ class_name InnInterior
 const ENTRANCE_ID := "inn"
 
 @onready var inn_window: InnWindow = $CanvasLayer/InnWindow
-@onready var interact_area: InteractArea = $Props/Counter/InteractArea
+@onready var interact_area: InteractArea = $FloorProps/Counter/InteractArea
 
 func _get_screen_name() -> ScreenManager.ScreenName:
 	return ScreenManager.ScreenName.INN
@@ -20,3 +20,9 @@ func _on_counter_interacted() -> void:
 
 func _on_window_closed() -> void:
 	player.movement_blocked = false
+
+func _input(event: InputEvent) -> void:
+	if _handle_open_window_input(event, inn_window):
+		return
+	else:
+		super._input(event)

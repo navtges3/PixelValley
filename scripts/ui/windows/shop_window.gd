@@ -33,10 +33,16 @@ func open(type: ShopType) -> void:
 	shop_name_label.text = shop.name
 	quantity_spin_box.visible = shop_type == ShopType.POTION
 	_update_item_list()
+	var world_hud := ScreenManager.get_world_hud() as WorldHUD
+	if world_hud != null:
+		world_hud.set_hero_hud_visible(false)
 	show()
 
 func close() -> void:
 	hide()
+	var world_hud := ScreenManager.get_world_hud() as WorldHUD
+	if world_hud != null:
+		world_hud.set_hero_hud_visible(true)
 	closed.emit()
 
 func _get_shop() -> Shop:
