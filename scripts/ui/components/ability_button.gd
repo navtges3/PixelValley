@@ -44,11 +44,11 @@ func _update_tooltip() -> void:
 func _update_theme() -> void:
 	if ability:
 		if ability.attack != null:
-			theme = preload("res://resources/themes/buttons/regular/red_button.tres")
+			theme = ThemeManager.RED_BUTTON
 		else:
-			theme = preload("res://resources/themes/buttons/regular/green_button.tres")
+			theme = ThemeManager.GREEN_BUTTON
 	else:
-		theme = preload("res://resources/themes/buttons/regular/gray_button.tres")
+		theme = ThemeManager.GRAY_BUTTON
 
 func _update_disabled() -> void:
 	if ability:

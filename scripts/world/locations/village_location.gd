@@ -20,3 +20,9 @@ func _on_quest_board_interacted() -> void:
 
 func _on_window_closed() -> void:
 	player.movement_blocked = false
+
+func _input(event: InputEvent) -> void:
+	if _handle_open_window_input(event, quest_window):
+		return
+	else:
+		super._input(event)

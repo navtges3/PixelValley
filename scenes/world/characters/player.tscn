@@ -19,7 +19,7 @@ offset = Vector2(0, -10)
 shape = SubResource("CircleShape2D_hqqc5")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=955191571]
-zoom = Vector2(2, 2)
+zoom = Vector2(2.5, 2.5)
 script = ExtResource("3_hqqc5")
 
 [node name="PromptLabel" type="Label" parent="." unique_id=1452258667]

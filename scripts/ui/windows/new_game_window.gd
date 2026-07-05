@@ -1,8 +1,6 @@
 extends Window
 class_name NewGameWindow
 
-const GREEN_BUTTON = preload("res://resources/themes/buttons/regular/green_button.tres")
-const RED_BUTTON = preload("res://resources/themes/buttons/regular/red_button.tres")
 const BACKGROUND = preload("res://resources/themes/backgrounds/background.tres")
 
 @onready var overwrite_dialog: ConfirmationDialog = $OverwriteDialog
@@ -26,8 +24,8 @@ func _create_overwrite_dialog() -> void:
 	overwrite_dialog.title = "Overwrite Save?"
 	overwrite_dialog.dialog_text = "This slot already has save data. Start a new game here and overwrite it?"
 	overwrite_dialog.theme = BACKGROUND
-	overwrite_dialog.get_ok_button().theme = GREEN_BUTTON
-	overwrite_dialog.get_cancel_button().theme = RED_BUTTON
+	overwrite_dialog.get_ok_button().theme = ThemeManager.GREEN_BUTTON
+	overwrite_dialog.get_cancel_button().theme = ThemeManager.RED_BUTTON
 	overwrite_dialog.confirmed.connect(_confirm_overwrite)
 
 func populate_slots() -> void:
@@ -44,7 +42,7 @@ func populate_slots() -> void:
 func setup_empty_slot(button: Button) -> void:
 	button.text = "Empty Slot"
 	button.alignment = HORIZONTAL_ALIGNMENT_CENTER
-	button.theme = RED_BUTTON
+	button.theme = ThemeManager.RED_BUTTON
 
 func setup_filled_slot(button: Button, meta: Dictionary) -> void:
 	var hero_name: String = meta.get("hero_name", "Unknown")
@@ -53,7 +51,7 @@ func setup_filled_slot(button: Button, meta: Dictionary) -> void:
 
 	button.text = "%s\nLevel: %d\nLast Played: %s" % [hero_name, level, last_played]
 	button.alignment = HORIZONTAL_ALIGNMENT_LEFT
-	button.theme = GREEN_BUTTON
+	button.theme = ThemeManager.GREEN_BUTTON
 
 func _slot_button_pressed(slot_index: int) -> void:
 	if SaveManager.has_save_data(slot_index):

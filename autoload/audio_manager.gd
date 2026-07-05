@@ -18,7 +18,7 @@ const MUSIC_PATHS := {
 }
 
 const SFX_PATHS := {
-	"bag_of_couns": "res://audio/sfx/bag_of_coins.wav",
+	"bag_of_coins": "res://audio/sfx/bag_of_coins.wav",
 	"levelup": "res://audio/sfx/levelup.wav",
 	"sword_swing": "res://audio/sfx/sword_swing.wav",
 }

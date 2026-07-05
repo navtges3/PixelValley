@@ -39,6 +39,17 @@ func place_player_at_entrance(entrance_id: String) -> void:
 			return
 	push_warning("Entrance not found: %s" % entrance_id)
 
+func _is_close_window_input(event: InputEvent) -> bool:
+	return event.is_action_pressed("open_hud") or event.is_action_pressed("ui_cancel")
+
+func _handle_open_window_input(event: InputEvent, window: Control) -> bool:
+	if window == null or not window.is_visible_in_tree():
+		return false
+	if _is_close_window_input(event):
+		window.call("close")
+		get_viewport().set_input_as_handled()
+	return true
+
 func _input(event: InputEvent) -> void:
 	var world_hud := ScreenManager.get_world_hud() as WorldHUD
 	if world_hud == null:

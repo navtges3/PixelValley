@@ -77,8 +77,8 @@ func _refresh_weapons(hero: Hero) -> void:
 func _make_equip_button(weapon_id: String) -> Button:
 	var btn := Button.new()
 	btn.text = "Equip"
-	btn.add_theme_font_size_override("font_size", 11)
-	# Capture weapon_id in the closure; refresh reruns the whole panel after equipping.
+	btn.theme = ThemeManager.GREEN_BUTTON
+	btn.add_theme_font_size_override("font_size", 11) 
 	btn.pressed.connect(func() -> void:
 		GameState.hero.inventory.equip_weapon(weapon_id)
 		weapon_equipped.emit(weapon_id)
