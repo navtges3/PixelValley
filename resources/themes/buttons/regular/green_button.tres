@@ -590,8 +590,8 @@ texture = ExtResource("1_6ddih")
 texture_margin_left = 4.0
 texture_margin_top = 9.0
 texture_margin_right = 4.0
-texture_margin_bottom = 9.0
-region_rect = Rect2(0, 96, 32, 32)
+texture_margin_bottom = 4.0
+region_rect = Rect2(0, 64, 32, 32)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_o5d73"]
 content_margin_left = 4.0
