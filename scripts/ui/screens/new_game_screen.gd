@@ -46,7 +46,13 @@ func _on_class_selected(selected_hero: Hero) -> void:
 		_class_selected = true
 		_selected_class = selected_hero.hero_class
 		hero_class.text = selected_hero.get_class_name()
+	_update_preview_selection()
 	check_create_button_state()
+
+func _update_preview_selection() -> void:
+	for child in class_selector.get_children():
+		if child is HeroPreview:
+			child.selected = _class_selected and child.hero.hero_class == _selected_class
 
 func _on_back_button_pressed() -> void:
 	GameState.hero = null
