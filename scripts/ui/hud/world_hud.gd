@@ -23,5 +23,5 @@ func open_game_hud(tab: GameHUD.Tab = GameHUD.Tab.STATS) -> void:
 func close_game_hud() -> void:
 	game_hud.hide_hud()
 
-func set_hero_hud_visible(is_visible: bool) -> void:
-	hero_hud.visible = is_visible
+func set_hero_hud_visible(vis: bool) -> void:
+	hero_hud.visible = vis
