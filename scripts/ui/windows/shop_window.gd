@@ -1,7 +1,5 @@
-extends Control
+extends GameWindow
 class_name ShopWindow
-
-signal closed
 
 enum ShopType { POTION, WEAPON }
 
@@ -25,25 +23,26 @@ var hero: Hero
 var shop: Shop
 var shop_type: ShopType
 
-func open(type: ShopType) -> void:
-	shop_type = type
-	hero = GameState.hero
-	shop = _get_shop()
-	shop_manager.start_shop(hero, shop)
-	shop_name_label.text = shop.name
-	quantity_spin_box.visible = shop_type == ShopType.POTION
+func open() -> void:
 	_update_item_list()
 	var world_hud := ScreenManager.get_world_hud() as WorldHUD
 	if world_hud != null:
 		world_hud.set_hero_hud_visible(false)
-	show()
+	super.open()
 
 func close() -> void:
-	hide()
 	var world_hud := ScreenManager.get_world_hud() as WorldHUD
 	if world_hud != null:
 		world_hud.set_hero_hud_visible(true)
-	closed.emit()
+	super.close()
+
+func setup_shop(type: ShopType) -> void:
+	shop_type = type
+	shop = _get_shop()
+	hero = GameState.hero
+	shop_manager.start_shop(hero, shop)
+	shop_name_label.text = shop.name
+	quantity_spin_box.visible = shop_type == ShopType.POTION
 
 func _get_shop() -> Shop:
 	match shop_type:

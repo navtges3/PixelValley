@@ -12,7 +12,7 @@ func _get_screen_name() -> ScreenManager.ScreenName:
 func _on_location_ready() -> void:
 	interact_area.interacted.connect(_on_counter_interacted)
 	inn_window.closed.connect(_on_window_closed)
-	inn_window.hide()
+	inn_window.close()
 
 func _on_counter_interacted() -> void:
 	player.movement_blocked = true
@@ -22,7 +22,7 @@ func _on_window_closed() -> void:
 	player.movement_blocked = false
 
 func _input(event: InputEvent) -> void:
-	if _handle_open_window_input(event, inn_window):
+	if _handle_window_input(event, inn_window):
 		return
 	else:
 		super._input(event)

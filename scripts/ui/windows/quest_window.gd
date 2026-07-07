@@ -1,7 +1,5 @@
-extends Control
+extends GameWindow
 class_name QuestWindow
-
-signal closed
 
 @onready var available_button: Button = $PanelContainer/VBoxContainer/QuestTabs/AvailableButton
 @onready var completed_button: Button = $PanelContainer/VBoxContainer/QuestTabs/CompletedButton
@@ -21,11 +19,10 @@ func open() -> void:
 	completed_button.button_pressed = false
 	_update_complete_button()
 	load_quests(current_tab)
-	show()
+	super.open()
 
 func close() -> void:
-	hide()
-	closed.emit()
+	super.close()
 
 func _on_close_button_pressed() -> void:
 	close()
