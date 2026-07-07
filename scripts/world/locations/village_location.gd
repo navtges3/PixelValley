@@ -22,7 +22,7 @@ func _on_window_closed() -> void:
 	player.movement_blocked = false
 
 func _input(event: InputEvent) -> void:
-	if _handle_open_window_input(event, quest_window):
+	if _handle_window_input(event, quest_window):
 		return
 	else:
 		super._input(event)
