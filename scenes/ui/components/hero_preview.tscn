@@ -4,51 +4,50 @@
 [ext_resource type="Theme" uid="uid://e6xnt81pte22" path="res://resources/themes/buttons/regular/gray_button.tres" id="2_bgug4"]
 [ext_resource type="SpriteFrames" uid="uid://haf5vhfyci3t" path="res://resources/characters/heroes/knight/knight_battle_sprite_frames.tres" id="3_bgug4"]
 
-[node name="HeroPreview" type="Control" unique_id=305838926]
+[node name="HeroPreview" type="Button" unique_id=305838926]
 custom_minimum_size = Vector2(132, 188)
-layout_mode = 3
-anchors_preset = 0
 offset_right = 132.0
 offset_bottom = 188.0
 size_flags_horizontal = 6
+theme = ExtResource("2_bgug4")
+toggle_mode = true
 script = ExtResource("1_bgug4")
 
-[node name="ClickArea" type="Button" parent="." unique_id=1403479010]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1624911170]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme = ExtResource("2_bgug4")
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_bottom = 8
 
-[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=23648047]
-layout_mode = 0
-offset_left = 2.0
-offset_right = 130.0
-offset_bottom = 159.0
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=23648047]
+layout_mode = 2
 mouse_filter = 2
 alignment = 1
 
-[node name="ClassNameLabel" type="Label" parent="VBoxContainer" unique_id=101399005]
+[node name="ClassNameLabel" type="Label" parent="MarginContainer/VBoxContainer" unique_id=101399005]
 layout_mode = 2
 size_flags_horizontal = 4
 text = "Class Name"
 horizontal_alignment = 1
 
-[node name="PreviewContainer" type="Control" parent="VBoxContainer" unique_id=1289749879]
+[node name="PreviewContainer" type="Control" parent="MarginContainer/VBoxContainer" unique_id=1289749879]
+custom_minimum_size = Vector2(124, 112)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 6
+mouse_filter = 2
 
-[node name="PreviewSprite" type="AnimatedSprite2D" parent="VBoxContainer/PreviewContainer" unique_id=829646474]
+[node name="PreviewSprite" type="AnimatedSprite2D" parent="MarginContainer/VBoxContainer/PreviewContainer" unique_id=829646474]
+position = Vector2(62, 58)
 scale = Vector2(2, 2)
 sprite_frames = ExtResource("3_bgug4")
 animation = &"idle"
-frame_progress = 0.94147855
 
-[node name="WeaponLabel" type="Label" parent="VBoxContainer" unique_id=912171976]
+[node name="WeaponLabel" type="Label" parent="MarginContainer/VBoxContainer" unique_id=912171976]
 custom_minimum_size = Vector2(124, 0)
 layout_mode = 2
 size_flags_vertical = 0
@@ -56,4 +55,4 @@ text = "Weapon Name"
 horizontal_alignment = 1
 autowrap_mode = 2
 
-[connection signal="pressed" from="ClickArea" to="." method="_on_click_area_pressed"]
+[connection signal="pressed" from="." to="." method="_on_pressed"]
