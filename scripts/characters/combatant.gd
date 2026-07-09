@@ -25,7 +25,7 @@ const REST_CD := 5
 @export var hand_rotations: Dictionary = {}
 
 @export_group("Active Effects")
-@export var active_effects: Array = []
+var active_effects: Array[ActiveEffect] = []
 
 var rest_cooldown: int = 0
 
@@ -78,8 +78,8 @@ func apply_effect(effect: Effect, source: Combatant = null, remaining_turns: int
 	if remaining_turns > 0:
 		ae.remaining_turns = remaining_turns
 	active_effects.append(ae)
-	ae.on_apply()
-	return "%s applied.\n" % effect._to_string()
+	var output := "%s applied to %s.\n" % [effect._to_string(ae.remaining_turns), get_colored_name()]
+	return output + ae.on_apply()
 
 func process_active_effects() -> String:
 	var output := ""

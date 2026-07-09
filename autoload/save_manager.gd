@@ -2,6 +2,20 @@ extends Node
 
 const SAVE_DIR := "user://saves"
 
+const LEGACY_EFFECT_SPECS: Dictionary = {
+	0: { "name": "Regeneration", "stat": Effect.EffectStat.CURRENT_HP, "timing": Effect.EffectTiming.ON_TICK, "operation": Effect.EffectOperation.ADD },
+	1: { "name": "Focus", "stat": Effect.EffectStat.CURRENT_NRG, "timing": Effect.EffectTiming.ON_TICK, "operation": Effect.EffectOperation.ADD },
+	2: { "name": "Poison", "stat": Effect.EffectStat.CURRENT_HP, "timing": Effect.EffectTiming.ON_TICK, "operation": Effect.EffectOperation.SUBTRACT },
+	3: { "name": "Might", "stat": Effect.EffectStat.ATTACK, "timing": Effect.EffectTiming.ON_APPLY, "operation": Effect.EffectOperation.ADD },
+	4: { "name": "Arcane Focus", "stat": Effect.EffectStat.MAGIC, "timing": Effect.EffectTiming.ON_APPLY, "operation": Effect.EffectOperation.ADD },
+	5: { "name": "Stonehide", "stat": Effect.EffectStat.DEFENSE, "timing": Effect.EffectTiming.ON_APPLY, "operation": Effect.EffectOperation.ADD },
+	6: { "name": "Warding", "stat": Effect.EffectStat.RESIST, "timing": Effect.EffectTiming.ON_APPLY, "operation": Effect.EffectOperation.ADD },
+	7: { "name": "Weaken", "stat": Effect.EffectStat.ATTACK, "timing": Effect.EffectTiming.ON_APPLY, "operation": Effect.EffectOperation.SUBTRACT },
+	8: { "name": "Dull Magic", "stat": Effect.EffectStat.MAGIC, "timing": Effect.EffectTiming.ON_APPLY, "operation": Effect.EffectOperation.SUBTRACT },
+	9: { "name": "Shatter Armor", "stat": Effect.EffectStat.DEFENSE, "timing": Effect.EffectTiming.ON_APPLY, "operation": Effect.EffectOperation.SUBTRACT },
+	10: { "name": "Expose", "stat": Effect.EffectStat.RESIST, "timing": Effect.EffectTiming.ON_APPLY, "operation": Effect.EffectOperation.SUBTRACT },
+}
+
 var save_slot: int = 1
 
 # ---------------------------------------------------------
@@ -160,29 +174,79 @@ func _load_hero(data: Dictionary) -> Hero:
 # ---------------------------------------------------------
 # ACTIVE EFFECTS
 # ---------------------------------------------------------
-func _get_active_effects_data(combatant: Combatant) -> Array:
-	var result := []
+func _get_active_effects_data(combatant: Combatant) -> Array[Dictionary]:
+	var result: Array[Dictionary] = []
 	for ae in combatant.active_effects:
 		result.append({
-			"type": ae.effect.type,
-			"strength": ae.effect.strength,
-			"duration": ae.effect.duration,
+			"effect": _get_effect_data(ae.effect),
 			"remaining_turns": ae.remaining_turns
 		})
 	return result
 
 func _load_active_effects(data: Array, combatant: Combatant) -> void:
-	for effect_data in data:
-		var effect := Effect.new()
-		effect.type = effect_data.get("type", Effect.EffectType.HEAL)
-		effect.strength = effect_data.get("strength", 0)
-		effect.duration = effect_data.get("duration", 0)
-
-		var remaining: int = effect_data.get("remaining_turns", 0)
+	for active_effect_data: Dictionary in data:
+		var effect_data: Dictionary = active_effect_data.get("effect", {})
+		var effect: Effect = _load_effect(effect_data) if not effect_data.is_empty() else _load_legacy_effect(active_effect_data)
+		var remaining: int = active_effect_data.get("remaining_turns", effect.get_duration())
 		var active_effect := ActiveEffect.new(effect, combatant)
 		if remaining > 0:
 			active_effect.remaining_turns = remaining
 		combatant.active_effects.append(active_effect)
+
+func _get_effect_data(effect: Effect) -> Dictionary:
+	var stat_changes: Array[Dictionary] = []
+	for stat_change in effect.stat_changes:
+		stat_changes.append({
+			"stat": stat_change.stat,
+			"timing": stat_change.timing,
+			"operation": stat_change.operation,
+			"base_amount": stat_change.base_amount,
+			"amount_per_level": stat_change.amount_per_level,
+			"scales_with_level": stat_change.scales_with_level,
+		})
+	return {
+		"effect_name": effect.effect_name,
+		"level": effect.level,
+		"base_duration": effect.base_duration,
+		"duration_per_level": effect.duration_per_level,
+		"stat_changes": stat_changes,
+	}
+
+func _load_effect(data: Dictionary) -> Effect:
+	var effect := Effect.new()
+	effect.effect_name = str(data.get("effect_name", "Effect"))
+	effect.level = max(int(data.get("level", 1)), 1)
+	effect.base_duration = max(int(data.get("base_duration", 1)), 1)
+	effect.duration_per_level = int(data.get("duration_per_level", 0))
+	for stat_change_data: Dictionary in data.get("stat_changes", []):
+		var stat_change := EffectStatChange.new()
+		stat_change.stat = stat_change_data.get("stat", Effect.EffectStat.CURRENT_HP)
+		stat_change.timing = stat_change_data.get("timing", Effect.EffectTiming.ON_TICK)
+		stat_change.operation = stat_change_data.get("operation", Effect.EffectOperation.ADD)
+		stat_change.base_amount = int(stat_change_data.get("base_amount", 0))
+		stat_change.amount_per_level = int(stat_change_data.get("amount_per_level", 0))
+		stat_change.scales_with_level = bool(stat_change_data.get("scales_with_level", false))
+		effect.stat_changes.append(stat_change)
+	return effect
+
+func _load_legacy_effect(data: Dictionary) -> Effect:
+	var legacy_type: int = int(data.get("type", 0))
+	var spec: Dictionary = LEGACY_EFFECT_SPECS.get(legacy_type, LEGACY_EFFECT_SPECS[0])
+	var effect := Effect.new()
+	effect.effect_name = str(spec["name"])
+	effect.base_duration = max(int(data.get("duration", 1)), 1)
+	var stat_change := EffectStatChange.new()
+	stat_change.stat = spec["stat"]
+	stat_change.timing = spec["timing"]
+	stat_change.operation = spec["operation"]
+	stat_change.base_amount = int(data.get("strength", 0))
+	effect.stat_changes.append(stat_change)
+	if stat_change.timing == Effect.EffectTiming.ON_APPLY:
+		var expiration_change: EffectStatChange = stat_change.duplicate() as EffectStatChange
+		expiration_change.timing = Effect.EffectTiming.ON_EXPIRE
+		expiration_change.operation = Effect.EffectOperation.SUBTRACT if stat_change.operation == Effect.EffectOperation.ADD else Effect.EffectOperation.ADD
+		effect.stat_changes.append(expiration_change)
+	return effect
 
 # ---------------------------------------------------------
 # STATS
