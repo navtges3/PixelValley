@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="Effect" format=3 uid="uid://go84rkxp1f5x"]
+
+[ext_resource type="Script" uid="uid://c5deti4sb2k2j" path="res://scripts/data/effect.gd" id="1_wither"]
+[ext_resource type="Script" uid="uid://hw30jan7sjfb" path="res://scripts/data/effect_stat_change.gd" id="2_wither"]
+
+[sub_resource type="Resource" id="Resource_wither"]
+script = ExtResource("2_wither")
+operation = 1
+base_amount = 50
+amount_per_level = 50
+metadata/_custom_type_script = "uid://hw30jan7sjfb"
+
+[resource]
+script = ExtResource("1_wither")
+effect_name = "Wither"
+stat_changes = Array[ExtResource("2_wither")]([SubResource("Resource_wither")])
+metadata/_custom_type_script = "uid://c5deti4sb2k2j"

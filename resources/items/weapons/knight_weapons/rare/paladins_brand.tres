@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://dtgv72smxwdib" path="res://assets/items/weapons/mace.png" id="5_0lphe"]
 [ext_resource type="Theme" uid="uid://dqwm8agt87lsh" path="res://resources/themes/buttons/regular/blue_button.tres" id="5_tuts3"]
 
+
 [sub_resource type="Resource" id="Resource_nfjb4"]
 script = ExtResource("2_0lphe")
 min_damage = 1

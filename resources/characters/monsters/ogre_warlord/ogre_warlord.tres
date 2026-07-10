@@ -10,6 +10,7 @@
 [ext_resource type="Script" uid="uid://c5deti4sb2k2j" path="res://scripts/data/effect.gd" id="14_effect"]
 [ext_resource type="Script" uid="uid://bo48scp6lbwrb" path="res://scripts/data/attack.gd" id="15_attack"]
 
+
 [sub_resource type="Resource" id="Resource_crushing_blow_attack"]
 script = ExtResource("15_attack")
 min_damage = 20
