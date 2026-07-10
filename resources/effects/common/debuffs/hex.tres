@@ -1,0 +1,28 @@
+[gd_resource type="Resource" script_class="Effect" format=3 uid="uid://ckkbemxl2x7h"]
+
+[ext_resource type="Script" uid="uid://c5deti4sb2k2j" path="res://scripts/data/effect.gd" id="1_hex"]
+[ext_resource type="Script" uid="uid://hw30jan7sjfb" path="res://scripts/data/effect_stat_change.gd" id="2_hex"]
+
+[sub_resource type="Resource" id="Resource_hex_apply"]
+script = ExtResource("2_hex")
+stat = 7
+operation = 1
+base_amount = 5
+amount_per_level = 3
+metadata/_custom_type_script = "uid://hw30jan7sjfb"
+
+[sub_resource type="Resource" id="Resource_hex_expire"]
+script = ExtResource("2_hex")
+stat = 7
+timing = 2
+base_amount = 5
+amount_per_level = 3
+metadata/_custom_type_script = "uid://hw30jan7sjfb"
+
+[resource]
+script = ExtResource("1_hex")
+effect_name = "Hex"
+base_duration = 3
+duration_per_level = 2
+stat_changes = Array[ExtResource("2_hex")]([SubResource("Resource_hex_apply"), SubResource("Resource_hex_expire")])
+metadata/_custom_type_script = "uid://c5deti4sb2k2j"

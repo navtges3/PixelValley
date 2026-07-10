@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="Potion" format=3 uid="uid://bcox8swspcsyg"]
 
 [ext_resource type="Script" uid="uid://c5deti4sb2k2j" path="res://scripts/data/effect.gd" id="1_4rigo"]
-[ext_resource type="Resource" uid="uid://1iipmfn4doq0" path="res://resources/effects/common/warding.tres" id="2_ctqnl"]
+[ext_resource type="Resource" uid="uid://1iipmfn4doq0" path="res://resources/effects/common/buffs/warding.tres" id="2_ctqnl"]
 [ext_resource type="Script" uid="uid://dvmhh34nbwxaq" path="res://scripts/data/potion.gd" id="2_kvgos"]
 [ext_resource type="Theme" uid="uid://dqwm8agt87lsh" path="res://resources/themes/buttons/regular/blue_button.tres" id="3_1b5f5"]
 
