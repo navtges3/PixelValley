@@ -1,0 +1,28 @@
+[gd_resource type="Resource" script_class="Effect" format=3 uid="uid://1iipmfn4doq0"]
+
+[ext_resource type="Script" uid="uid://c5deti4sb2k2j" path="res://scripts/data/effect.gd" id="1_7skor"]
+[ext_resource type="Script" uid="uid://hw30jan7sjfb" path="res://scripts/data/effect_stat_change.gd" id="2_gionp"]
+
+[sub_resource type="Resource" id="Resource_7skor"]
+script = ExtResource("2_gionp")
+stat = 7
+base_amount = 5
+amount_per_level = 3
+metadata/_custom_type_script = "uid://hw30jan7sjfb"
+
+[sub_resource type="Resource" id="Resource_gionp"]
+script = ExtResource("2_gionp")
+stat = 7
+timing = 2
+operation = 1
+base_amount = 5
+amount_per_level = 3
+metadata/_custom_type_script = "uid://hw30jan7sjfb"
+
+[resource]
+script = ExtResource("1_7skor")
+effect_name = "Warding"
+base_duration = 3
+duration_per_level = 2
+stat_changes = Array[ExtResource("2_gionp")]([SubResource("Resource_7skor"), SubResource("Resource_gionp")])
+metadata/_custom_type_script = "uid://c5deti4sb2k2j"
