@@ -2,11 +2,11 @@
 
 [ext_resource type="Script" uid="uid://b2o7w8q10stxo" path="res://scripts/data/ability.gd" id="1_w886c"]
 [ext_resource type="Script" uid="uid://bo48scp6lbwrb" path="res://scripts/data/attack.gd" id="2_hf5da"]
-[ext_resource type="Script" uid="uid://bvuw0uyc36uxx" path="res://scripts/data/utility.gd" id="3_kf2se"]
+[ext_resource type="Script" path="res://scripts/data/utility.gd" id="3_kf2se"]
 [ext_resource type="Script" uid="uid://c5deti4sb2k2j" path="res://scripts/data/effect.gd" id="4_7ykdc"]
 [ext_resource type="Script" uid="uid://dgykeyxn7fefw" path="res://scripts/data/weapon.gd" id="5_6pyyr"]
 [ext_resource type="Resource" uid="uid://biyt6u2pxfvqp" path="res://resources/effects/common/buffs/fortify.tres" id="5_7ykdc"]
-[ext_resource type="Resource" uid="uid://1iipmfn4doq0" path="res://resources/effects/common/buffs/warding.tres" id="6_6pyyr"]
+[ext_resource type="Resource" uid="uid://1iipmfn4doq0" path="res://resources/effects/common/buffs/ward.tres" id="6_6pyyr"]
 [ext_resource type="Texture2D" uid="uid://o80jcv0cctax" path="res://assets/items/weapons/sword.png" id="6_hf5da"]
 [ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://resources/themes/buttons/regular/green_button.tres" id="6_jr0cu"]
 
@@ -40,6 +40,7 @@ energy_cost = 7
 cooldown = 3
 attack = SubResource("Resource_vwtgm")
 utilities = Array[ExtResource("3_kf2se")]([SubResource("Resource_xu8gp")])
+caster_effects = Array[ExtResource("4_7ykdc")]([ExtResource("5_7ykdc")])
 metadata/_custom_type_script = "uid://b2o7w8q10stxo"
 
 [resource]

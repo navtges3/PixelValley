@@ -4,10 +4,10 @@
 [ext_resource type="Script" uid="uid://bo48scp6lbwrb" path="res://scripts/data/attack.gd" id="2_dmkw6"]
 [ext_resource type="Script" uid="uid://bvuw0uyc36uxx" path="res://scripts/data/utility.gd" id="3_vwih8"]
 [ext_resource type="Script" uid="uid://c5deti4sb2k2j" path="res://scripts/data/effect.gd" id="4_5aee0"]
+[ext_resource type="Resource" uid="uid://cfa7xxtpn73y8" path="res://resources/effects/common/debuffs/weaken.tres" id="5_5aee0"]
 [ext_resource type="Script" uid="uid://dgykeyxn7fefw" path="res://scripts/data/weapon.gd" id="5_qfyur"]
 [ext_resource type="Texture2D" uid="uid://bay74h6rg08eq" path="res://assets/items/weapons/scimitar.png" id="6_dmkw6"]
 [ext_resource type="Theme" uid="uid://dqwm8agt87lsh" path="res://resources/themes/buttons/regular/blue_button.tres" id="6_vp1o4"]
-
 
 [sub_resource type="Resource" id="Resource_fqxsf"]
 script = ExtResource("2_dmkw6")
@@ -41,25 +41,13 @@ min_damage = 8
 max_damage = 16
 metadata/_custom_type_script = "uid://bo48scp6lbwrb"
 
-[sub_resource type="Resource" id="Resource_2bjnq"]
-script = ExtResource("4_5aee0")
-type = 6
-strength = 5
-duration = 4
-metadata/_custom_type_script = "uid://c5deti4sb2k2j"
-
-[sub_resource type="Resource" id="Resource_vswhq"]
-script = ExtResource("3_vwih8")
-effects = Array[ExtResource("4_5aee0")]([SubResource("Resource_2bjnq")])
-metadata/_custom_type_script = "uid://bvuw0uyc36uxx"
-
 [sub_resource type="Resource" id="Resource_8nknr"]
 script = ExtResource("1_nmxb1")
 name = "Darkfall Edge"
 energy_cost = 10
 cooldown = 6
 attack = SubResource("Resource_06etg")
-utilities = Array[ExtResource("3_vwih8")]([SubResource("Resource_vswhq")])
+target_effects = Array[ExtResource("4_5aee0")]([ExtResource("5_5aee0")])
 metadata/_custom_type_script = "uid://b2o7w8q10stxo"
 
 [resource]

@@ -5,7 +5,6 @@ class_name Ability
 @export var energy_cost: int
 @export var cooldown: int
 @export var attack: Attack = null
-@export var utilities: Array[Utility] = []
 @export var caster_effects: Array[Effect] = []
 @export var target_effects: Array[Effect] = []
 @export var condition: Condition = null

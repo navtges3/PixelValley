@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="Effect" format=3 uid="uid://fsdk7wjjyqb7"]
+
+[ext_resource type="Script" uid="uid://c5deti4sb2k2j" path="res://scripts/data/effect.gd" id="1_g4g5s"]
+[ext_resource type="Script" uid="uid://hw30jan7sjfb" path="res://scripts/data/effect_stat_change.gd" id="2_0x4eh"]
+
+[sub_resource type="Resource" id="Resource_1ft4j"]
+script = ExtResource("2_0x4eh")
+base_amount = 25
+amount_per_level = 25
+metadata/_custom_type_script = "uid://hw30jan7sjfb"
+
+[resource]
+script = ExtResource("1_g4g5s")
+effect_name = "Regenerate"
+base_duration = 3
+duration_per_level = 2
+stat_changes = Array[ExtResource("2_0x4eh")]([SubResource("Resource_1ft4j")])
+metadata/_custom_type_script = "uid://c5deti4sb2k2j"
