@@ -4,7 +4,6 @@ class_name StatsPanel
 @onready var name_label: Label = $ScrollContainer/VBox/StatsRow/StatsBars/NameRow/NameLabel
 @onready var class_label: Label = $ScrollContainer/VBox/StatsRow/StatsBars/NameRow/ClassLabel
 @onready var level_label: Label = $ScrollContainer/VBox/StatsRow/StatsBars/LevelRow/LevelLabel
-@onready var skill_label: Label = $ScrollContainer/VBox/StatsRow/StatsBars/LevelRow/SkillLabel
 
 @onready var hp_bar: ProgressBar = $ScrollContainer/VBox/StatsRow/StatsBars/HPBar
 @onready var hp_label: Label = $ScrollContainer/VBox/StatsRow/StatsBars/HPBar/HPLabel
@@ -29,6 +28,7 @@ class_name StatsPanel
 @onready var resist_down: Button = $ScrollContainer/VBox/StatsRow/StatsGrid/ResistMod/ResistDown
 
 @onready var confirm_button: Button = $ScrollContainer/VBox/StatsRow/StatsGrid/ConfirmButton
+@onready var skill_label: Label = $ScrollContainer/VBox/StatsRow/StatsGrid/SkillLabel
 
 @onready var effects_container: VBoxContainer = $ScrollContainer/VBox/EffectsContainer
 

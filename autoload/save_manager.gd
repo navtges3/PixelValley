@@ -202,7 +202,6 @@ func _get_effect_data(effect: Effect) -> Dictionary:
 			"operation": stat_change.operation,
 			"base_amount": stat_change.base_amount,
 			"amount_per_level": stat_change.amount_per_level,
-			"scales_with_level": stat_change.scales_with_level,
 		})
 	return {
 		"effect_name": effect.effect_name,
@@ -225,7 +224,6 @@ func _load_effect(data: Dictionary) -> Effect:
 		stat_change.operation = stat_change_data.get("operation", Effect.EffectOperation.ADD)
 		stat_change.base_amount = int(stat_change_data.get("base_amount", 0))
 		stat_change.amount_per_level = int(stat_change_data.get("amount_per_level", 0))
-		stat_change.scales_with_level = bool(stat_change_data.get("scales_with_level", false))
 		effect.stat_changes.append(stat_change)
 	return effect
 

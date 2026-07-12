@@ -7,7 +7,6 @@ signal closed
 func open() -> void:
 	show()
 	opened.emit()
-	grab_focus()
 
 func close() -> void:
 	hide()

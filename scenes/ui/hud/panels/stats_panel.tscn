@@ -68,13 +68,6 @@ theme_override_colors/font_color = Color(0.95, 0.92, 0.8, 1)
 theme_override_font_sizes/font_size = 13
 text = "Level"
 
-[node name="SkillLabel" type="Label" parent="ScrollContainer/VBox/StatsRow/StatsBars/LevelRow" unique_id=1149914863]
-layout_mode = 2
-size_flags_vertical = 8
-theme_override_colors/font_color = Color(0.95, 0.8, 0.25, 1)
-theme_override_font_sizes/font_size = 12
-text = "Skill"
-
 [node name="HPBar" type="ProgressBar" parent="ScrollContainer/VBox/StatsRow/StatsBars" unique_id=1625532358]
 custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
@@ -136,7 +129,7 @@ layout_mode = 2
 
 [node name="StatsGrid" type="GridContainer" parent="ScrollContainer/VBox/StatsRow" unique_id=480061373]
 layout_mode = 2
-size_flags_horizontal = 2
+size_flags_horizontal = 6
 theme_override_constants/v_separation = 6
 columns = 2
 
@@ -148,6 +141,7 @@ horizontal_alignment = 2
 
 [node name="AttackMod" type="VBoxContainer" parent="ScrollContainer/VBox/StatsRow/StatsGrid" unique_id=226940150]
 layout_mode = 2
+size_flags_horizontal = 0
 theme_override_constants/separation = 1
 
 [node name="AttackUp" type="Button" parent="ScrollContainer/VBox/StatsRow/StatsGrid/AttackMod" unique_id=1959128791]
@@ -172,6 +166,7 @@ horizontal_alignment = 2
 
 [node name="MagicMod" type="VBoxContainer" parent="ScrollContainer/VBox/StatsRow/StatsGrid" unique_id=1299469983]
 layout_mode = 2
+size_flags_horizontal = 0
 theme_override_constants/separation = 1
 
 [node name="MagicUp" type="Button" parent="ScrollContainer/VBox/StatsRow/StatsGrid/MagicMod" unique_id=1557585106]
@@ -196,6 +191,7 @@ horizontal_alignment = 2
 
 [node name="DefenseMod" type="VBoxContainer" parent="ScrollContainer/VBox/StatsRow/StatsGrid" unique_id=179135144]
 layout_mode = 2
+size_flags_horizontal = 0
 theme_override_constants/separation = 1
 
 [node name="DefenseUp" type="Button" parent="ScrollContainer/VBox/StatsRow/StatsGrid/DefenseMod" unique_id=1078530466]
@@ -220,6 +216,7 @@ horizontal_alignment = 2
 
 [node name="ResistMod" type="VBoxContainer" parent="ScrollContainer/VBox/StatsRow/StatsGrid" unique_id=85949025]
 layout_mode = 2
+size_flags_horizontal = 0
 theme_override_constants/separation = 1
 
 [node name="ResistUp" type="Button" parent="ScrollContainer/VBox/StatsRow/StatsGrid/ResistMod" unique_id=1384178367]
@@ -236,9 +233,16 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 theme = ExtResource("2_gpt1x")
 
+[node name="SkillLabel" type="Label" parent="ScrollContainer/VBox/StatsRow/StatsGrid" unique_id=1149914863]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.8, 0.25, 1)
+theme_override_font_sizes/font_size = 16
+text = "Skill Points X"
+horizontal_alignment = 2
+
 [node name="ConfirmButton" type="Button" parent="ScrollContainer/VBox/StatsRow/StatsGrid" unique_id=1357275446]
 layout_mode = 2
-size_flags_horizontal = 8
+size_flags_horizontal = 0
 theme = ExtResource("4_hi3ie")
 text = "Confirm"
 
