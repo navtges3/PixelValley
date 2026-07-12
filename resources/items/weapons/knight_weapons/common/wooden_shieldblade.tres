@@ -5,7 +5,6 @@
 [ext_resource type="Script" uid="uid://c5deti4sb2k2j" path="res://scripts/data/effect.gd" id="4_7ykdc"]
 [ext_resource type="Script" uid="uid://dgykeyxn7fefw" path="res://scripts/data/weapon.gd" id="5_6pyyr"]
 [ext_resource type="Resource" uid="uid://biyt6u2pxfvqp" path="res://resources/effects/common/buffs/fortify.tres" id="5_7ykdc"]
-[ext_resource type="Resource" uid="uid://1iipmfn4doq0" path="res://resources/effects/common/buffs/ward.tres" id="6_6pyyr"]
 [ext_resource type="Texture2D" uid="uid://o80jcv0cctax" path="res://assets/items/weapons/sword.png" id="6_hf5da"]
 [ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://resources/themes/buttons/regular/green_button.tres" id="6_jr0cu"]
 
