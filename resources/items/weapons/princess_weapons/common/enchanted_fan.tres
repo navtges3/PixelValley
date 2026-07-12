@@ -2,7 +2,6 @@
 
 [ext_resource type="Script" uid="uid://b2o7w8q10stxo" path="res://scripts/data/ability.gd" id="1_04odt"]
 [ext_resource type="Script" uid="uid://bo48scp6lbwrb" path="res://scripts/data/attack.gd" id="2_2toch"]
-[ext_resource type="Script" uid="uid://bvuw0uyc36uxx" path="res://scripts/data/utility.gd" id="3_m0fcn"]
 [ext_resource type="Script" uid="uid://c5deti4sb2k2j" path="res://scripts/data/effect.gd" id="4_sqbjv"]
 [ext_resource type="Script" uid="uid://dgykeyxn7fefw" path="res://scripts/data/weapon.gd" id="5_gdhwr"]
 [ext_resource type="Resource" uid="uid://cfa7xxtpn73y8" path="res://resources/effects/common/debuffs/weaken.tres" id="5_sqbjv"]
@@ -34,18 +33,12 @@ metadata/_custom_type_script = "uid://bo48scp6lbwrb"
 script = ExtResource("4_sqbjv")
 metadata/_custom_type_script = "uid://c5deti4sb2k2j"
 
-[sub_resource type="Resource" id="Resource_xrs7d"]
-script = ExtResource("3_m0fcn")
-effects = Array[ExtResource("4_sqbjv")]([SubResource("Resource_3sc0l")])
-metadata/_custom_type_script = "uid://bvuw0uyc36uxx"
-
 [sub_resource type="Resource" id="Resource_o0bg8"]
 script = ExtResource("1_04odt")
 name = "Gale Twist"
 energy_cost = 5
 cooldown = 3
 attack = SubResource("Resource_nasdu")
-utilities = Array[ExtResource("3_m0fcn")]([SubResource("Resource_xrs7d")])
 target_effects = Array[ExtResource("4_sqbjv")]([ExtResource("5_sqbjv")])
 metadata/_custom_type_script = "uid://b2o7w8q10stxo"
 

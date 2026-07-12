@@ -17,7 +17,6 @@ func apply_visual(hero: Hero) -> void:
 		push_error("HeroLoader: unknown hero class %d" % hero.hero_class)
 		return
 	var template := load(HERO_PATHS[hero.hero_class]) as Hero
-	hero.portrait = template.portrait
 	hero.world_visual = template.world_visual
 	hero.battle_visual = template.battle_visual
 	hero.battle_height = template.battle_height

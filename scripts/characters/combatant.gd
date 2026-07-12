@@ -17,7 +17,6 @@ const REST_CD := 5
 @export var resist: int = 0		# Modifies magical defense
 
 @export_group("Visuals")
-@export var portrait: Texture2D
 @export var world_visual: SpriteFrames
 @export var battle_visual: SpriteFrames
 @export var battle_height: int = 64
