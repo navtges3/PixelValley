@@ -175,8 +175,8 @@ func end_battle(player_won: bool, entries: Array[RewardEntry] = []) -> void:
 		hero_defeated.emit()
 
 func _cleanup_battle_effects() -> void:
-	hero.clear_active_effects(false)
-	monster.clear_active_effects(true)
+	hero.clear_active_effects(ActiveEffect.RemovalReason.BATTLE_ENDED, false)
+	monster.clear_active_effects(ActiveEffect.RemovalReason.BATTLE_ENDED, true)
 	_hero_effects_at_turn_start.clear()
 	_monster_effects_at_turn_start.clear()
 	hero_updated.emit(hero)

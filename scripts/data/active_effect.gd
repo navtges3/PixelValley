@@ -1,6 +1,8 @@
 extends RefCounted
 class_name ActiveEffect
 
+enum RemovalReason { NATURAL, CLEANSED, RESTED, BATTLE_ENDED, REPLACED }
+
 var effect: Effect
 var remaining_turns: int
 var source: Combatant = null
@@ -19,22 +21,23 @@ func on_tick() -> String:
 	remaining_turns -= 1
 	var output := _apply_changes(Effect.EffectTiming.ON_TICK)
 	if remaining_turns <= 0:
-		output += on_expire()
+		output += remove(RemovalReason.NATURAL)
 	return output
 
-func on_expire() -> String:
-	var output := _apply_changes(Effect.EffectTiming.ON_EXPIRE)
-	output += on_remove()
-	return output + "%s wore off on %s.\n" % [effect.effect_name, target.get_colored_name()]
-
-func on_remove() -> String:
-	return _apply_changes(Effect.EffectTiming.ON_REMOVE)
+func remove(reason: RemovalReason) -> String:
+	var output := ""
+	if reason == RemovalReason.NATURAL:
+		output += _apply_changes(Effect.EffectTiming.ON_EXPIRE)
+	output += _apply_changes(Effect.EffectTiming.ON_REMOVE)
+	if reason == RemovalReason.NATURAL:
+		output += "%s wore off on %s.\n" % [effect.effect_name, target.get_colored_name()]
+	return output
 
 func refresh_duration() -> void:
 	remaining_turns = effect.get_duration()
 
 func upgrade_to(new_effect: Effect, new_source: Combatant) -> String:
-	var output := on_remove()
+	var output := remove(RemovalReason.REPLACED)
 	effect = new_effect
 	source = new_source
 	remaining_turns = effect.get_duration()

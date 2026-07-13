@@ -35,7 +35,7 @@ func is_alive() -> bool:
 	return current_hp > 0
 
 func rest() -> void:
-	clear_active_effects(true)
+	clear_active_effects(ActiveEffect.RemovalReason.RESTED, true)
 	current_hp = max_hp
 	current_nrg = max_nrg
 	active_effects.clear()
@@ -111,11 +111,20 @@ func process_active_effects(effects_to_tick: Array[ActiveEffect]) -> String:
 	
 	return output
 
-func clear_active_effects(include_persistent: bool = false) -> void:
+func remove_effect(effect_identity: StringName, reason: ActiveEffect.RemovalReason = ActiveEffect.RemovalReason.CLEANSED) -> String:
+	for active_effect: ActiveEffect in active_effects:
+		if active_effect.effect.get_identity() != effect_identity:
+			continue
+		var output := active_effect.remove(reason)
+		active_effects.erase(active_effect)
+		return output
+	return ""
+
+func clear_active_effects(reason: ActiveEffect.RemovalReason, include_persistent: bool = false) -> void:
 	for active_effect: ActiveEffect in active_effects.duplicate():
 		if not include_persistent and active_effect.effect.persistence == Effect.Persistence.PERSISTENT:
 			continue
-		active_effect.on_remove()
+		active_effect.remove(reason)
 		active_effects.erase(active_effect)
 
 func _calculate_damage(amount: int, type: Attack.AttackType) -> int:
