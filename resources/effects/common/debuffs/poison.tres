@@ -15,6 +15,7 @@ metadata/_custom_type_script = "uid://hw30jan7sjfb"
 [resource]
 script = ExtResource("1_poison")
 effect_name = "Poison"
+effect_id = &"poison"
 image = ExtResource("1_6eg2n")
 base_duration = 3
 duration_per_level = 2

@@ -13,5 +13,6 @@ metadata/_custom_type_script = "uid://hw30jan7sjfb"
 [resource]
 script = ExtResource("1_u3tn3")
 effect_name = "Energize"
+effect_id = &"energize"
 stat_changes = Array[ExtResource("2_sucxq")]([SubResource("Resource_u3tn3")])
 metadata/_custom_type_script = "uid://c5deti4sb2k2j"

@@ -6,11 +6,17 @@ enum EffectOperation { ADD, SUBTRACT }
 enum EffectStat { CURRENT_HP, CURRENT_NRG, MAX_HP, MAX_NRG, ATTACK, MAGIC, DEFENSE, RESIST }
 
 @export var effect_name: String = "Effect"
+@export var effect_id: StringName = &""
 @export var image: Texture2D
 @export_range(1, 99) var level: int = 1
 @export_range(1, 99) var base_duration: int = 1
 @export var duration_per_level: int = 0
 @export var stat_changes: Array[EffectStatChange] = []
+
+func get_identity() -> StringName:
+	if effect_id != &"":
+		return effect_id
+	return StringName(effect_name)
 
 func get_duration() -> int:
 	return max(base_duration + ((level - 1) * duration_per_level), 1)

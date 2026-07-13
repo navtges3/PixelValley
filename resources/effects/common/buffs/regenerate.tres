@@ -13,6 +13,7 @@ metadata/_custom_type_script = "uid://hw30jan7sjfb"
 [resource]
 script = ExtResource("1_g4g5s")
 effect_name = "Regenerate"
+effect_id = &"regenerate"
 image = ExtResource("1_0x4eh")
 base_duration = 3
 duration_per_level = 2

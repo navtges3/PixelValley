@@ -14,6 +14,7 @@ metadata/_custom_type_script = "uid://hw30jan7sjfb"
 [resource]
 script = ExtResource("1_i0d5n")
 effect_name = "Invigorate"
+effect_id = &"invigorate"
 image = ExtResource("1_ln8jy")
 base_duration = 3
 duration_per_level = 2
