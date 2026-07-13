@@ -1,5 +1,6 @@
 [gd_resource type="Resource" script_class="Effect" format=3 uid="uid://cfa7xxtpn73y8"]
 
+[ext_resource type="Texture2D" uid="uid://cpvlb82jp14gx" path="res://assets/effects/debuffs/weaken.png" id="1_3po4y"]
 [ext_resource type="Script" uid="uid://c5deti4sb2k2j" path="res://scripts/data/effect.gd" id="1_3ta3e"]
 [ext_resource type="Script" uid="uid://hw30jan7sjfb" path="res://scripts/data/effect_stat_change.gd" id="2_36sda"]
 
@@ -22,6 +23,7 @@ metadata/_custom_type_script = "uid://hw30jan7sjfb"
 [resource]
 script = ExtResource("1_3ta3e")
 effect_name = "Weaken"
+image = ExtResource("1_3po4y")
 base_duration = 3
 duration_per_level = 2
 stat_changes = Array[ExtResource("2_36sda")]([SubResource("Resource_3ta3e"), SubResource("Resource_36sda")])

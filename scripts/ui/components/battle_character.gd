@@ -3,6 +3,7 @@ class_name BattleCharacter
 
 const Y_OFFSET := 64
 const SCALE := Vector2(3.0, 3.0)
+const EFFECT_ICON_SIZE := Vector2(16.0, 16.0)
 
 @onready var sprite: AnimatedSprite2D = $Visual/AnimatedSprite2D
 @onready var weapon_anchor: Marker2D = $Visual/WeaponAnchor
@@ -10,6 +11,7 @@ const SCALE := Vector2(3.0, 3.0)
 @onready var magic_glow: MagicGlow = $Visual/WeaponAnchor/MagicGlow
 @onready var tip_point: Node2D = $Visual/WeaponAnchor/TipPoint
 @onready var weapon_trail: WeaponTrail = $Visual/WeaponTrail
+@onready var effects_container: HBoxContainer = $EffectsCenter/EffectsContainer
 
 const TRAIL_FRAMES := {
 	"attack": [1, 2]
@@ -40,6 +42,22 @@ func apply_visual(combatant: Combatant, flip_h := false) -> void:
 	_hand_rotations = combatant.hand_rotations
 	weapon_anchor.scale.x = -1.0 if flip_h else 1.0
 	_update_weapon_anchor()
+
+func refresh_effects(combatant: Combatant) -> void:
+	for child: Node in effects_container.get_children():
+		child.free()
+
+	for active_effect: ActiveEffect in combatant.active_effects:
+		if active_effect.effect.image == null:
+			continue
+		var icon := TextureRect.new()
+		icon.custom_minimum_size = EFFECT_ICON_SIZE
+		icon.texture = active_effect.effect.image
+		icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		icon.mouse_filter = Control.MOUSE_FILTER_STOP
+		icon.tooltip_text = active_effect._to_string()
+		effects_container.add_child(icon)
 
 func equip_weapon(weapon_texture: Texture2D, offset: Vector2, tip_offset: Vector2 = Vector2(0, -16)) -> void:
 	if weapon_texture == null or _hand_positions.is_empty():

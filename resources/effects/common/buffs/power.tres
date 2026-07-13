@@ -1,5 +1,6 @@
 [gd_resource type="Resource" script_class="Effect" format=3 uid="uid://cjtbqoo60022b"]
 
+[ext_resource type="Texture2D" uid="uid://dacxr4gn482yo" path="res://assets/effects/buffs/power.png" id="1_dwrbv"]
 [ext_resource type="Script" uid="uid://c5deti4sb2k2j" path="res://scripts/data/effect.gd" id="1_h213n"]
 [ext_resource type="Script" uid="uid://hw30jan7sjfb" path="res://scripts/data/effect_stat_change.gd" id="2_02kl8"]
 
@@ -21,6 +22,7 @@ metadata/_custom_type_script = "uid://hw30jan7sjfb"
 [resource]
 script = ExtResource("1_h213n")
 effect_name = "Power"
+image = ExtResource("1_dwrbv")
 base_duration = 3
 duration_per_level = 2
 stat_changes = Array[ExtResource("2_02kl8")]([SubResource("Resource_h213n"), SubResource("Resource_02kl8")])
