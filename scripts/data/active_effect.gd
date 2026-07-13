@@ -33,13 +33,16 @@ func remove(reason: RemovalReason) -> String:
 		output += "%s wore off on %s.\n" % [effect.effect_name, target.get_colored_name()]
 	return output
 
-func refresh_duration() -> void:
+func refresh_duration(new_source: Combatant = null) -> void:
 	remaining_turns = effect.get_duration()
+	if new_source != null:
+		source = new_source
 
-func upgrade_to(new_effect: Effect, new_source: Combatant) -> String:
+func upgrade_to(new_effect: Effect, new_source: Combatant = null) -> String:
 	var output := remove(RemovalReason.REPLACED)
 	effect = new_effect
-	source = new_source
+	if new_source != null:
+		source = new_source
 	remaining_turns = effect.get_duration()
 	output += on_apply()
 	return output

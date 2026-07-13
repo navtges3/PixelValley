@@ -90,7 +90,7 @@ func apply_effect(effect: Effect, source: Combatant = null, remaining_turns: int
 		if effect.level < ae.effect.level:
 			return "%s level %d had no effect; level %d is already active.\n" % [effect.effect_name, effect.level, ae.effect.level]
 		elif effect.level == ae.effect.level:
-			ae.refresh_duration()
+			ae.refresh_duration(source)
 			return "%s %d refreshed on %s (%d turns).\n" % [effect.effect_name, effect.level, get_colored_name(), ae.remaining_turns]
 		else:
 			var output := ae.upgrade_to(effect, source)

@@ -53,7 +53,7 @@ func use_item(item_id: String) -> String:
 	var effects := inventory.use_potion(item_id)
 	var output := "%s drank %s.\n" % [get_colored_name(), potion.name]
 	for effect in effects:
-		output += " " + apply_effect(effect.duplicate())
+		output += " " + apply_effect(effect.duplicate(), self)
 	return output
 
 func update_cooldown() -> void:
