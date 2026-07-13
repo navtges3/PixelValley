@@ -1,6 +1,7 @@
 [gd_resource type="Resource" script_class="Effect" format=3 uid="uid://w6qbmd4tfbhe"]
 
 [ext_resource type="Script" uid="uid://c5deti4sb2k2j" path="res://scripts/data/effect.gd" id="1_expose"]
+[ext_resource type="Texture2D" uid="uid://cuo4pcw7if54d" path="res://assets/effects/debuffs/expose.png" id="1_rtjfm"]
 [ext_resource type="Script" uid="uid://hw30jan7sjfb" path="res://scripts/data/effect_stat_change.gd" id="2_expose"]
 
 [sub_resource type="Resource" id="Resource_expose_apply"]
@@ -22,6 +23,7 @@ metadata/_custom_type_script = "uid://hw30jan7sjfb"
 [resource]
 script = ExtResource("1_expose")
 effect_name = "Expose"
+image = ExtResource("1_rtjfm")
 base_duration = 3
 duration_per_level = 2
 stat_changes = Array[ExtResource("2_expose")]([SubResource("Resource_expose_apply"), SubResource("Resource_expose_expire")])

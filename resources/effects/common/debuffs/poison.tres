@@ -1,5 +1,6 @@
 [gd_resource type="Resource" script_class="Effect" format=3 uid="uid://67rh3fh1efyh"]
 
+[ext_resource type="Texture2D" uid="uid://c7ifenfq1ftgm" path="res://assets/effects/debuffs/poison.png" id="1_6eg2n"]
 [ext_resource type="Script" uid="uid://c5deti4sb2k2j" path="res://scripts/data/effect.gd" id="1_poison"]
 [ext_resource type="Script" uid="uid://hw30jan7sjfb" path="res://scripts/data/effect_stat_change.gd" id="2_poison"]
 
@@ -7,13 +8,14 @@
 script = ExtResource("2_poison")
 timing = 1
 operation = 1
-base_amount = 25
-amount_per_level = 25
+base_amount = 10
+amount_per_level = 10
 metadata/_custom_type_script = "uid://hw30jan7sjfb"
 
 [resource]
 script = ExtResource("1_poison")
 effect_name = "Poison"
+image = ExtResource("1_6eg2n")
 base_duration = 3
 duration_per_level = 2
 stat_changes = Array[ExtResource("2_poison")]([SubResource("Resource_poison")])

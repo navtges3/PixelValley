@@ -1,5 +1,6 @@
 [gd_resource type="Resource" script_class="Effect" format=3 uid="uid://cd7w74eiakwbi"]
 
+[ext_resource type="Texture2D" uid="uid://dsv70c83rkemf" path="res://assets/effects/debuffs/falter.png" id="1_0n7do"]
 [ext_resource type="Script" uid="uid://c5deti4sb2k2j" path="res://scripts/data/effect.gd" id="1_falter"]
 [ext_resource type="Script" uid="uid://hw30jan7sjfb" path="res://scripts/data/effect_stat_change.gd" id="2_falter"]
 
@@ -22,6 +23,7 @@ metadata/_custom_type_script = "uid://hw30jan7sjfb"
 [resource]
 script = ExtResource("1_falter")
 effect_name = "Falter"
+image = ExtResource("1_0n7do")
 base_duration = 3
 duration_per_level = 2
 stat_changes = Array[ExtResource("2_falter")]([SubResource("Resource_falter_apply"), SubResource("Resource_falter_expire")])

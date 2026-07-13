@@ -6,6 +6,7 @@ enum EffectOperation { ADD, SUBTRACT }
 enum EffectStat { CURRENT_HP, CURRENT_NRG, MAX_HP, MAX_NRG, ATTACK, MAGIC, DEFENSE, RESIST }
 
 @export var effect_name: String = "Effect"
+@export var image: Texture2D
 @export_range(1, 99) var level: int = 1
 @export_range(1, 99) var base_duration: int = 1
 @export var duration_per_level: int = 0

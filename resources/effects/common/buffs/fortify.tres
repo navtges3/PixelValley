@@ -1,5 +1,6 @@
 [gd_resource type="Resource" script_class="Effect" format=3 uid="uid://biyt6u2pxfvqp"]
 
+[ext_resource type="Texture2D" uid="uid://yhx3f73ida73" path="res://assets/effects/buffs/fortify.png" id="1_nu361"]
 [ext_resource type="Script" uid="uid://c5deti4sb2k2j" path="res://scripts/data/effect.gd" id="1_uxqdy"]
 [ext_resource type="Script" uid="uid://hw30jan7sjfb" path="res://scripts/data/effect_stat_change.gd" id="2_r7ahq"]
 
@@ -22,6 +23,7 @@ metadata/_custom_type_script = "uid://hw30jan7sjfb"
 [resource]
 script = ExtResource("1_uxqdy")
 effect_name = "Fortify"
+image = ExtResource("1_nu361")
 base_duration = 3
 duration_per_level = 2
 stat_changes = Array[ExtResource("2_r7ahq")]([SubResource("Resource_uxqdy"), SubResource("Resource_r7ahq")])

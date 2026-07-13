@@ -10,6 +10,18 @@
 [node name="BattleCharacter" type="Node2D" unique_id=2135240791]
 script = ExtResource("1_il1nn")
 
+[node name="EffectsCenter" type="CenterContainer" parent="."]
+offset_left = -40.0
+offset_top = -84.0
+offset_right = 40.0
+offset_bottom = -68.0
+mouse_filter = 2
+
+[node name="EffectsContainer" type="HBoxContainer" parent="EffectsCenter"]
+layout_mode = 2
+theme_override_constants/separation = 2
+mouse_filter = 2
+
 [node name="Visual" type="Node2D" parent="." unique_id=1615905558]
 
 [node name="Sprite2D" type="Sprite2D" parent="Visual" unique_id=1053423451]
