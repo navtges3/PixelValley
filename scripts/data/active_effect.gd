@@ -26,6 +26,18 @@ func on_expire() -> String:
 	var output := _apply_changes(Effect.EffectTiming.ON_EXPIRE)
 	return output + "%s wore off on %s.\n" % [effect.effect_name, target.get_colored_name()]
 
+func refresh_duration() -> void:
+	remaining_turns = effect.get_duration()
+
+func upgrade_to(new_effect: Effect, new_source: Combatant) -> String:
+	var output := ""
+	output += _apply_changes(Effect.EffectTiming.ON_EXPIRE)
+	effect = new_effect
+	source = new_source
+	remaining_turns = effect.get_duration()
+	output += on_apply()
+	return output
+
 func _apply_changes(timing: Effect.EffectTiming) -> String:
 	var output := ""
 	for stat_change in effect.stat_changes:
