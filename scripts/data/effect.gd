@@ -1,13 +1,15 @@
 extends Resource
 class_name Effect
 
-enum EffectTiming { ON_APPLY, ON_TICK, ON_EXPIRE }
+enum EffectTiming { ON_APPLY, ON_TICK, ON_EXPIRE, ON_REMOVE }
+enum Persistence { COMBAT_ONLY, PERSISTENT }
 enum EffectOperation { ADD, SUBTRACT }
 enum EffectStat { CURRENT_HP, CURRENT_NRG, MAX_HP, MAX_NRG, ATTACK, MAGIC, DEFENSE, RESIST }
 
 @export var effect_name: String = "Effect"
 @export var effect_id: StringName = &""
 @export var image: Texture2D
+@export var persistence: Persistence = Persistence.COMBAT_ONLY
 @export_range(1, 99) var level: int = 1
 @export_range(1, 99) var base_duration: int = 1
 @export var duration_per_level: int = 0

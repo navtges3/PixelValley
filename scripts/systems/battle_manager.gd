@@ -166,6 +166,7 @@ func end_battle(player_won: bool, entries: Array[RewardEntry] = []) -> void:
 	if state in [BattleState.VICTORY, BattleState.DEFEAT]:
 		return
 	state = BattleState.VICTORY if player_won else BattleState.DEFEAT
+	_cleanup_battle_effects()
 	if player_won:
 		if spawn_point_id != "":
 			WorldManager.mark_spawner_defeated(location_id, spawn_point_id)
@@ -173,7 +174,18 @@ func end_battle(player_won: bool, entries: Array[RewardEntry] = []) -> void:
 	else:
 		hero_defeated.emit()
 
+func _cleanup_battle_effects() -> void:
+	hero.clear_active_effects(false)
+	monster.clear_active_effects(true)
+	_hero_effects_at_turn_start.clear()
+	_monster_effects_at_turn_start.clear()
+	hero_updated.emit(hero)
+	monster_updated.emit(monster)
+
 func player_fled() -> void:
+	if state != BattleState.PLAYER_TURN:
+		return
 	state = BattleState.RESOLVING
+	_cleanup_battle_effects()
 	if flee_position != Vector2.ZERO:
 		GameState.pre_combat_position = flee_position

@@ -15,7 +15,7 @@ metadata/_custom_type_script = "uid://hw30jan7sjfb"
 [sub_resource type="Resource" id="Resource_falter_expire"]
 script = ExtResource("2_falter")
 stat = 5
-timing = 2
+timing = 3
 base_amount = 5
 amount_per_level = 5
 metadata/_custom_type_script = "uid://hw30jan7sjfb"

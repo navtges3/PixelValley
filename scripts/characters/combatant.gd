@@ -35,10 +35,9 @@ func is_alive() -> bool:
 	return current_hp > 0
 
 func rest() -> void:
+	clear_active_effects(true)
 	current_hp = max_hp
 	current_nrg = max_nrg
-	for ae in active_effects:
-		ae.on_expire()
 	active_effects.clear()
 
 func meditate() -> void:
@@ -111,6 +110,13 @@ func process_active_effects(effects_to_tick: Array[ActiveEffect]) -> String:
 			active_effects.erase(effect)
 	
 	return output
+
+func clear_active_effects(include_persistent: bool = false) -> void:
+	for active_effect: ActiveEffect in active_effects.duplicate():
+		if not include_persistent and active_effect.effect.persistence == Effect.Persistence.PERSISTENT:
+			continue
+		active_effect.on_remove()
+		active_effects.erase(active_effect)
 
 func _calculate_damage(amount: int, type: Attack.AttackType) -> int:
 	var damage := amount
