@@ -24,14 +24,17 @@ func on_tick() -> String:
 
 func on_expire() -> String:
 	var output := _apply_changes(Effect.EffectTiming.ON_EXPIRE)
+	output += on_remove()
 	return output + "%s wore off on %s.\n" % [effect.effect_name, target.get_colored_name()]
+
+func on_remove() -> String:
+	return _apply_changes(Effect.EffectTiming.ON_REMOVE)
 
 func refresh_duration() -> void:
 	remaining_turns = effect.get_duration()
 
 func upgrade_to(new_effect: Effect, new_source: Combatant) -> String:
-	var output := ""
-	output += _apply_changes(Effect.EffectTiming.ON_EXPIRE)
+	var output := on_remove()
 	effect = new_effect
 	source = new_source
 	remaining_turns = effect.get_duration()

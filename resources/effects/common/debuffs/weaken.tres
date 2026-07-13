@@ -15,7 +15,7 @@ metadata/_custom_type_script = "uid://hw30jan7sjfb"
 [sub_resource type="Resource" id="Resource_36sda"]
 script = ExtResource("2_36sda")
 stat = 4
-timing = 2
+timing = 3
 base_amount = 5
 amount_per_level = 3
 metadata/_custom_type_script = "uid://hw30jan7sjfb"
