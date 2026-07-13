@@ -89,13 +89,14 @@ func apply_effect(effect: Effect, source: Combatant = null, remaining_turns: int
 		return output + ae.on_apply()
 	else:
 		if effect.level < ae.effect.level:
-			return "%s level %d had not effect; level %d is already active.\n" % [effect.effect_name, effect.level, ae.effect.level]
+			return "%s level %d had no effect; level %d is already active.\n" % [effect.effect_name, effect.level, ae.effect.level]
 		elif effect.level == ae.effect.level:
-			ae.remaining_turns = remaining_turns
+			ae.refresh_duration()
 			return "%s %d refreshed on %s (%d turns).\n" % [effect.effect_name, effect.level, get_colored_name(), ae.remaining_turns]
-		else: # effect.level > ae.effect.level
-			print(ae.upgrade_to(effect, source))
-			return "%s upgraded to level %d on %s (%d turns)." % [effect.effect_name, effect.level, get_colored_name(), ae.remaining_turns]
+		else:
+			var output := ae.upgrade_to(effect, source)
+			output += "%s upgraded to level %d on %s (%d turns).\n" % [effect.effect_name, effect.level, get_colored_name(), ae.remaining_turns]
+			return output
 
 func process_active_effects() -> String:
 	var output := ""
