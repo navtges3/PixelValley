@@ -24,9 +24,9 @@ func use(caster: Combatant, target: Combatant) -> String:
 		if attack != null:
 			output += attack.apply_attack(caster, target)
 		for effect: Effect in caster_effects:
-			output += caster.apply_effect(effect.duplicate())
+			output += caster.apply_effect(effect.duplicate(), caster)
 		for effect: Effect in target_effects:
-			output += target.apply_effect(effect.duplicate())
+			output += target.apply_effect(effect.duplicate(), caster)
 		self.current_cooldown = self.cooldown + 1
 		caster.current_nrg -= self.energy_cost
 		return output
