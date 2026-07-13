@@ -72,13 +72,30 @@ func use_energy(amount: int) -> bool:
 func recover_energy(amount: int) -> void:
 	current_nrg = min(current_nrg + amount, max_nrg)
 
+func _find_active_effect(effect: Effect) -> ActiveEffect:
+	for active_effect: ActiveEffect in active_effects:
+		if active_effect.effect.get_identity() == effect.get_identity():
+			return active_effect
+	return null
+
 func apply_effect(effect: Effect, source: Combatant = null, remaining_turns: int = 0) -> String:
-	var ae := ActiveEffect.new(effect, self, source)
-	if remaining_turns > 0:
-		ae.remaining_turns = remaining_turns
-	active_effects.append(ae)
-	var output := "%s applied to %s.\n" % [effect._to_string(ae.remaining_turns), get_colored_name()]
-	return output + ae.on_apply()
+	var ae := _find_active_effect(effect)
+	if ae == null:
+		ae = ActiveEffect.new(effect, self, source)
+		if remaining_turns > 0:
+			ae.remaining_turns = remaining_turns
+		active_effects.append(ae)
+		var output := "%s applied to %s.\n" % [effect._to_string(ae.remaining_turns), get_colored_name()]
+		return output + ae.on_apply()
+	else:
+		if effect.level < ae.effect.level:
+			return "%s level %d had not effect; level %d is already active.\n" % [effect.effect_name, effect.level, ae.effect.level]
+		elif effect.level == ae.effect.level:
+			ae.remaining_turns = remaining_turns
+			return "%s %d refreshed on %s (%d turns).\n" % [effect.effect_name, effect.level, get_colored_name(), ae.remaining_turns]
+		else: # effect.level > ae.effect.level
+			print(ae.upgrade_to(effect, source))
+			return "%s upgraded to level %d on %s (%d turns)." % [effect.effect_name, effect.level, get_colored_name(), ae.remaining_turns]
 
 func process_active_effects() -> String:
 	var output := ""
