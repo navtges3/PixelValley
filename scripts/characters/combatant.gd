@@ -98,13 +98,18 @@ func apply_effect(effect: Effect, source: Combatant = null, remaining_turns: int
 			output += "%s upgraded to level %d on %s (%d turns).\n" % [effect.effect_name, effect.level, get_colored_name(), ae.remaining_turns]
 			return output
 
-func process_active_effects() -> String:
+func process_active_effects(effects_to_tick: Array[ActiveEffect]) -> String:
 	var output := ""
-	for ae in active_effects:
-		output += ae.on_tick()
-	for ae in active_effects.duplicate():
-		if ae.remaining_turns <= 0:
-			active_effects.erase(ae)
+	
+	for effect: ActiveEffect in effects_to_tick:
+		if effect not in active_effects:
+			continue
+		output += effect.on_tick()
+	
+	for effect: ActiveEffect in active_effects.duplicate():
+		if effect.remaining_turns <= 0:
+			active_effects.erase(effect)
+	
 	return output
 
 func _calculate_damage(amount: int, type: Attack.AttackType) -> int:
