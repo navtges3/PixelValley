@@ -93,17 +93,23 @@ func end_player_turn() -> void:
 	var effect_output := hero.process_active_effects(_hero_effects_at_turn_start)
 	battle_log_updated.emit(effect_output)
 	hero_updated.emit(hero)
-
-	if monster.is_alive():
-		state = BattleState.MONSTER_TURN
-		_monster_effects_at_turn_start = monster.active_effects.duplicate()
-		monster_turn.emit()
-		await get_tree().create_timer(0.5).timeout
-		enemy_turn()
+	if hero.is_alive():
+		if monster.is_alive():
+			state = BattleState.MONSTER_TURN
+			_monster_effects_at_turn_start = monster.active_effects.duplicate()
+			monster_turn.emit()
+			await get_tree().create_timer(0.5).timeout
+			enemy_turn()
+		else:
+			_on_monster_killed()
 	else:
-		_on_monster_killed()
+		# Hero has been slain
+		end_battle(false)
 
 func _on_monster_killed() -> void:
+	if state in [BattleState.RESOLVING, BattleState.VICTORY, BattleState.DEFEAT]:
+		return
+	state = BattleState.RESOLVING
 	var experience := monster.calculate_experience()
 	var gold := monster.calculate_gold()
 	var loot := monster.roll_loot(hero.hero_class)
@@ -148,12 +154,17 @@ func end_enemy_turn() -> void:
 	var effect_output := monster.process_active_effects(_monster_effects_at_turn_start)
 	battle_log_updated.emit(effect_output)
 	monster_updated.emit(monster)
-	if hero.is_alive():
-		start_player_turn()
-	else:
+	
+	if not hero.is_alive():
 		end_battle(false)
+	elif not monster.is_alive():
+		_on_monster_killed()
+	else:
+		start_player_turn()
 
 func end_battle(player_won: bool, entries: Array[RewardEntry] = []) -> void:
+	if state in [BattleState.VICTORY, BattleState.DEFEAT]:
+		return
 	state = BattleState.VICTORY if player_won else BattleState.DEFEAT
 	if player_won:
 		if spawn_point_id != "":
