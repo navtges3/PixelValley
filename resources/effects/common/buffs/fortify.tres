@@ -23,6 +23,7 @@ metadata/_custom_type_script = "uid://hw30jan7sjfb"
 [resource]
 script = ExtResource("1_uxqdy")
 effect_name = "Fortify"
+effect_id = &"fortify"
 image = ExtResource("1_nu361")
 base_duration = 3
 duration_per_level = 2

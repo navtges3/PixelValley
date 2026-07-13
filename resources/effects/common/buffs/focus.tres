@@ -23,6 +23,7 @@ metadata/_custom_type_script = "uid://hw30jan7sjfb"
 [resource]
 script = ExtResource("1_mf47s")
 effect_name = "Focus"
+effect_id = &"focus"
 image = ExtResource("1_5qr82")
 base_duration = 3
 duration_per_level = 2

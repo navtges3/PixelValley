@@ -23,6 +23,7 @@ metadata/_custom_type_script = "uid://hw30jan7sjfb"
 [resource]
 script = ExtResource("1_falter")
 effect_name = "Falter"
+effect_id = &"falter"
 image = ExtResource("1_0n7do")
 base_duration = 3
 duration_per_level = 2

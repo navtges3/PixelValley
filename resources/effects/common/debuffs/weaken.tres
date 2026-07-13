@@ -23,6 +23,7 @@ metadata/_custom_type_script = "uid://hw30jan7sjfb"
 [resource]
 script = ExtResource("1_3ta3e")
 effect_name = "Weaken"
+effect_id = &"weaken"
 image = ExtResource("1_3po4y")
 base_duration = 3
 duration_per_level = 2

@@ -14,5 +14,6 @@ metadata/_custom_type_script = "uid://hw30jan7sjfb"
 [resource]
 script = ExtResource("1_fatigue")
 effect_name = "Fatigue"
+effect_id = &"fatigue"
 stat_changes = Array[ExtResource("2_fatigue")]([SubResource("Resource_fatigue")])
 metadata/_custom_type_script = "uid://c5deti4sb2k2j"

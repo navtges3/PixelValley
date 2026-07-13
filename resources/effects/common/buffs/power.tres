@@ -22,6 +22,7 @@ metadata/_custom_type_script = "uid://hw30jan7sjfb"
 [resource]
 script = ExtResource("1_h213n")
 effect_name = "Power"
+effect_id = &"power"
 image = ExtResource("1_dwrbv")
 base_duration = 3
 duration_per_level = 2

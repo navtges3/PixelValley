@@ -23,6 +23,7 @@ metadata/_custom_type_script = "uid://hw30jan7sjfb"
 [resource]
 script = ExtResource("1_7skor")
 effect_name = "Ward"
+effect_id = &"ward"
 image = ExtResource("1_yyqkm")
 base_duration = 3
 duration_per_level = 2
