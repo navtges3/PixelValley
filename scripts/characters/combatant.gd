@@ -70,14 +70,10 @@ func use_energy(amount: int) -> bool:
 func recover_energy(amount: int) -> void:
 	current_nrg = min(current_nrg + amount, max_nrg)
 
-func _find_active_effect(effect: Effect) -> ActiveEffect:
-	for active_effect: ActiveEffect in active_effects:
-		if active_effect.effect.get_identity() == effect.get_identity():
-			return active_effect
-	return null
-
 func apply_effect(effect: Effect, source: Combatant = null, remaining_turns: int = 0) -> String:
-	var ae := _find_active_effect(effect)
+	assert(effect != null, "Cannot apply a null Effect.")
+	assert(effect.effect_id != &"", 'Effect "%s" must have a non-empty effect_id.' % effect.effect_name)
+	var ae := EffectManager.find_active_effect(self, effect.effect_id)
 	if ae == null:
 		ae = ActiveEffect.new(effect, self, source)
 		if remaining_turns > 0:
@@ -110,14 +106,13 @@ func process_active_effects(effects_to_tick: Array[ActiveEffect]) -> String:
 	
 	return output
 
-func remove_effect(effect_identity: StringName, reason: ActiveEffect.RemovalReason = ActiveEffect.RemovalReason.CLEANSED) -> String:
-	for active_effect: ActiveEffect in active_effects:
-		if active_effect.effect.get_identity() != effect_identity:
-			continue
-		var output := active_effect.remove(reason)
-		active_effects.erase(active_effect)
-		return output
-	return ""
+func remove_effect(effect_id: StringName, reason: ActiveEffect.RemovalReason = ActiveEffect.RemovalReason.CLEANSED) -> String:
+	var active_effect := EffectManager.find_active_effect(self, effect_id)
+	if active_effect == null:
+		return ""
+	var output := active_effect.remove(reason)
+	active_effects.erase(active_effect)
+	return output
 
 func clear_active_effects(reason: ActiveEffect.RemovalReason, include_persistent: bool = false) -> void:
 	for active_effect: ActiveEffect in active_effects.duplicate():
