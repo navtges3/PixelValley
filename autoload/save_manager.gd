@@ -179,7 +179,8 @@ func _get_active_effects_data(combatant: Combatant) -> Array[Dictionary]:
 	for ae in combatant.active_effects:
 		result.append({
 			"effect": _get_effect_data(ae.effect),
-			"remaining_turns": ae.remaining_turns
+			"remaining_turns": ae.remaining_turns,
+			"applied_stat_deltas": ae.get_applied_stat_deltas_data(),
 		})
 	return result
 
@@ -191,6 +192,10 @@ func _load_active_effects(data: Array, combatant: Combatant) -> void:
 		var active_effect := ActiveEffect.new(effect, combatant)
 		if remaining > 0:
 			active_effect.remaining_turns = remaining
+		if active_effect_data.has("applied_stat_deltas"):
+			active_effect.restore_applied_stat_deltas(active_effect_data.get("applied_stat_deltas", []))
+		else:
+			active_effect.restore_legacy_applied_stat_deltas()
 		combatant.active_effects.append(active_effect)
 
 func _get_effect_data(effect: Effect) -> Dictionary:
@@ -205,6 +210,8 @@ func _get_effect_data(effect: Effect) -> Dictionary:
 		})
 	return {
 		"effect_name": effect.effect_name,
+		"effect_id": String(effect.effect_id),
+		"persistence": effect.persistence,
 		"level": effect.level,
 		"base_duration": effect.base_duration,
 		"duration_per_level": effect.duration_per_level,
@@ -214,6 +221,8 @@ func _get_effect_data(effect: Effect) -> Dictionary:
 func _load_effect(data: Dictionary) -> Effect:
 	var effect := Effect.new()
 	effect.effect_name = str(data.get("effect_name", "Effect"))
+	effect.effect_id = StringName(data.get("effect_id", ""))
+	effect.persistence = data.get("persistence", Effect.Persistence.COMBAT_ONLY)
 	effect.level = max(int(data.get("level", 1)), 1)
 	effect.base_duration = max(int(data.get("base_duration", 1)), 1)
 	effect.duration_per_level = int(data.get("duration_per_level", 0))
@@ -239,11 +248,6 @@ func _load_legacy_effect(data: Dictionary) -> Effect:
 	stat_change.operation = spec["operation"]
 	stat_change.base_amount = int(data.get("strength", 0))
 	effect.stat_changes.append(stat_change)
-	if stat_change.timing == Effect.EffectTiming.ON_APPLY:
-		var expiration_change: EffectStatChange = stat_change.duplicate() as EffectStatChange
-		expiration_change.timing = Effect.EffectTiming.ON_EXPIRE
-		expiration_change.operation = Effect.EffectOperation.SUBTRACT if stat_change.operation == Effect.EffectOperation.ADD else Effect.EffectOperation.ADD
-		effect.stat_changes.append(expiration_change)
 	return effect
 
 # ---------------------------------------------------------

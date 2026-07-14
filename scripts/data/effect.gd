@@ -23,6 +23,9 @@ func get_identity() -> StringName:
 func get_duration() -> int:
 	return max(base_duration + ((level - 1) * duration_per_level), 1)
 
+static func is_modifier_stat(stat: EffectStat) -> bool:
+	return stat not in [EffectStat.CURRENT_HP, EffectStat.CURRENT_NRG]
+
 func _to_string(turns_remaining: int = get_duration()) -> String:
 	var turn_text := "turn" if turns_remaining == 1 else "turns"
 	return "%s %d (%d %s)" % [effect_name, level, turns_remaining, turn_text]

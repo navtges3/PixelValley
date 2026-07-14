@@ -12,14 +12,6 @@ base_amount = 5
 amount_per_level = 3
 metadata/_custom_type_script = "uid://hw30jan7sjfb"
 
-[sub_resource type="Resource" id="Resource_36sda"]
-script = ExtResource("2_36sda")
-stat = 4
-timing = 3
-base_amount = 5
-amount_per_level = 3
-metadata/_custom_type_script = "uid://hw30jan7sjfb"
-
 [resource]
 script = ExtResource("1_3ta3e")
 effect_name = "Weaken"
@@ -27,5 +19,5 @@ effect_id = &"weaken"
 image = ExtResource("1_3po4y")
 base_duration = 3
 duration_per_level = 2
-stat_changes = Array[ExtResource("2_36sda")]([SubResource("Resource_3ta3e"), SubResource("Resource_36sda")])
+stat_changes = Array[ExtResource("2_36sda")]([SubResource("Resource_3ta3e")])
 metadata/_custom_type_script = "uid://c5deti4sb2k2j"

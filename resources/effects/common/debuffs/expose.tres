@@ -12,14 +12,6 @@ base_amount = 5
 amount_per_level = 3
 metadata/_custom_type_script = "uid://hw30jan7sjfb"
 
-[sub_resource type="Resource" id="Resource_expose_expire"]
-script = ExtResource("2_expose")
-stat = 6
-timing = 3
-base_amount = 5
-amount_per_level = 3
-metadata/_custom_type_script = "uid://hw30jan7sjfb"
-
 [resource]
 script = ExtResource("1_expose")
 effect_name = "Expose"
@@ -27,5 +19,5 @@ effect_id = &"expose"
 image = ExtResource("1_rtjfm")
 base_duration = 3
 duration_per_level = 2
-stat_changes = Array[ExtResource("2_expose")]([SubResource("Resource_expose_apply"), SubResource("Resource_expose_expire")])
+stat_changes = Array[ExtResource("2_expose")]([SubResource("Resource_expose_apply")])
 metadata/_custom_type_script = "uid://c5deti4sb2k2j"
