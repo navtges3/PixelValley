@@ -11,6 +11,12 @@ func _ready() -> void:
 	_test_mismatched_removal_data_is_ignored()
 	_test_save_round_trip_preserves_applied_deltas()
 	_test_legacy_save_reconstructs_applied_deltas()
+	
+	_test_effect_manager_lookup()
+	_test_effect_manager_missing_effect()
+	_test_effect_manager_get_active_effects_returns_copy()
+	_test_duplicate_effect_id_validation()
+	_test_empty_effect_id_validation()
 
 	if _failures == 0:
 		print("Active effect lifecycle tests passed.")
@@ -157,6 +163,43 @@ func _test_legacy_save_reconstructs_applied_deltas() -> void:
 	loaded.remove_effect(&"legacy_attack")
 	_expect_equal(loaded.attack, 10, "legacy save reconstructs modifier ledger")
 
+func _test_effect_manager_lookup() -> void:
+	var combatant := _make_combatant()
+	var poison := _make_effect("poison", Effect.EffectStat.CURRENT_HP, Effect.EffectOperation.SUBTRACT, 5)
+	combatant.active_effects.append(ActiveEffect.new(poison, combatant))
+	var found := EffectManager.find_active_effect(combatant, &"poison")
+	_expect_equal(found, combatant.active_effects[0], "effect manager finds an active effect by stable ID")
+	_expect_equal(EffectManager.has_effect(combatant, &"poison"), true, "effect manager reports an existing effect")
+
+func _test_effect_manager_missing_effect() -> void:
+	var combatant := _make_combatant()
+	_expect_equal(EffectManager.find_active_effect(combatant, &"missing"), null, "effect manager returns null for a missing effect")
+	_expect_equal(EffectManager.has_effect(combatant, &"missing"), false, "effect manager reports a missing effect")
+
+func _test_effect_manager_get_active_effects_returns_copy() -> void:
+	var combatant := _make_combatant()
+	var effect := _make_effect("fortify", Effect.EffectStat.DEFENSE, Effect.EffectOperation.ADD, 5)
+	combatant.active_effects.append(ActiveEffect.new(effect, combatant))
+	var returned_effects := EffectManager.get_active_effects(combatant)
+	returned_effects.clear()
+	_expect_equal(combatant.active_effects.size(), 1, "clearing returned effects does not modify the combatant")
+
+func _test_duplicate_effect_id_validation() -> void:
+	var first := _make_effect("poison", Effect.EffectStat.CURRENT_HP, Effect.EffectOperation.SUBTRACT, 5)
+	var dupe := _make_effect("poison", Effect.EffectStat.CURRENT_HP, Effect.EffectOperation.SUBTRACT, 10)
+	dupe.effect_name = "Greater Poison"
+	var effects: Array[Effect] = [first, dupe]
+	var errors := EffectManager.validate_unique_effect_ids(effects)
+	_expect_equal(errors.size(), 1, "duplicate effect IDs are detected")
+
+func _test_empty_effect_id_validation() -> void:
+	var effect := Effect.new()
+	effect.effect_name = "Invalid Effect"
+	var effects: Array[Effect] = [effect]
+	var errors := EffectManager.validate_unique_effect_ids(effects)
+	_expect_equal(errors.size(), 1, "empty effect IDs are detected")
+
+# Helpers
 func _make_combatant() -> Combatant:
 	var combatant := Combatant.new()
 	combatant.name = "Test Combatant"
@@ -170,14 +213,8 @@ func _make_combatant() -> Combatant:
 	combatant.resist = 10
 	return combatant
 
-func _make_effect(
-	identity: String,
-	stat: Effect.EffectStat,
-	operation: Effect.EffectOperation,
-	base_amount: int,
-	level: int = 1,
-	amount_per_level: int = 0
-) -> Effect:
+func _make_effect(identity: String, stat: Effect.EffectStat, operation: Effect.EffectOperation,
+	base_amount: int, level: int = 1, amount_per_level: int = 0) -> Effect:
 	var effect := Effect.new()
 	effect.effect_name = identity.capitalize()
 	effect.effect_id = StringName(identity)

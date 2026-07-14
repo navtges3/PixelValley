@@ -1,4 +1,4 @@
-extends Node
+extends RefCounted
 class_name EffectManager
 
 static func find_active_effect(target: Combatant, effect_id: StringName) -> ActiveEffect:
