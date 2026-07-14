@@ -34,7 +34,7 @@ func _test_reversible_modifier_stats() -> void:
 		var buff := _make_effect("buff_%d" % stat, stat, Effect.EffectOperation.ADD, 7)
 		combatant.apply_effect(buff)
 		_expect_equal(_get_stat_value(combatant, stat), original_value + 7, "positive modifier applies for stat %d" % stat)
-		combatant.remove_effect(buff.get_identity())
+		combatant.remove_effect(buff.effect_id)
 		_expect_equal(_get_stat_value(combatant, stat), original_value, "positive modifier reverses for stat %d" % stat)
 
 		var debuff := _make_effect("debuff_%d" % stat, stat, Effect.EffectOperation.SUBTRACT, 30)
@@ -42,14 +42,14 @@ func _test_reversible_modifier_stats() -> void:
 		var minimum := 1 if stat == Effect.EffectStat.MAX_HP else 0
 		if stat in [Effect.EffectStat.MAX_HP, Effect.EffectStat.MAX_NRG]:
 			_expect_equal(_get_stat_value(combatant, stat), minimum, "bounded max modifier records actual delta for stat %d" % stat)
-		combatant.remove_effect(debuff.get_identity())
+		combatant.remove_effect(debuff.effect_id)
 		_expect_equal(_get_stat_value(combatant, stat), original_value, "bounded or negative modifier reverses for stat %d" % stat)
 
 	var hp_target := _make_combatant()
 	var max_hp_debuff := _make_effect("max_hp_clamp", Effect.EffectStat.MAX_HP, Effect.EffectOperation.SUBTRACT, 30)
 	hp_target.apply_effect(max_hp_debuff)
 	_expect_equal(hp_target.current_hp, 1, "current HP clamps when max HP falls")
-	hp_target.remove_effect(max_hp_debuff.get_identity())
+	hp_target.remove_effect(max_hp_debuff.effect_id)
 	_expect_equal(hp_target.max_hp, 20, "max HP restores after clamped application")
 	_expect_equal(hp_target.current_hp, 1, "reversing max HP does not manufacture healing")
 
@@ -68,7 +68,7 @@ func _test_refresh_upgrade_and_idempotent_removal() -> void:
 	_expect_equal(combatant.defense, 18, "upgrade replaces the old modifier")
 
 	var active_effect: ActiveEffect = combatant.active_effects[0]
-	combatant.remove_effect(upgraded.get_identity())
+	combatant.remove_effect(upgraded.effect_id)
 	_expect_equal(combatant.defense, 10, "cleanse reverses upgraded modifier")
 	active_effect.remove(ActiveEffect.RemovalReason.BATTLE_ENDED)
 	_expect_equal(combatant.defense, 10, "removed effect cannot reverse twice")
@@ -126,7 +126,7 @@ func _test_mismatched_removal_data_is_ignored() -> void:
 	mismatched_change.base_amount = 99
 	effect.stat_changes.append(mismatched_change)
 	combatant.apply_effect(effect)
-	combatant.remove_effect(effect.get_identity())
+	combatant.remove_effect(effect.effect_id)
 	_expect_equal(combatant.attack, 10, "authored removal mismatch cannot corrupt modifier stat")
 
 func _test_save_round_trip_preserves_applied_deltas() -> void:
@@ -140,7 +140,7 @@ func _test_save_round_trip_preserves_applied_deltas() -> void:
 	loaded.defense = original.defense
 	SaveManager._load_active_effects(saved_effects, loaded)
 	_expect_equal(loaded.active_effects[0].effect.persistence, Effect.Persistence.PERSISTENT, "save preserves effect persistence")
-	_expect_equal(loaded.active_effects[0].effect.get_identity(), &"saved_defense", "save preserves effect identity")
+	_expect_equal(loaded.active_effects[0].effect.effect_id, &"saved_defense", "save preserves effect identity")
 	loaded.remove_effect(&"saved_defense")
 	_expect_equal(loaded.defense, 10, "loaded ledger reverses without reapplying modifier")
 

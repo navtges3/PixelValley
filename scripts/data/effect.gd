@@ -15,11 +15,6 @@ enum EffectStat { CURRENT_HP, CURRENT_NRG, MAX_HP, MAX_NRG, ATTACK, MAGIC, DEFEN
 @export var duration_per_level: int = 0
 @export var stat_changes: Array[EffectStatChange] = []
 
-func get_identity() -> StringName:
-	if effect_id != &"":
-		return effect_id
-	return StringName(effect_name)
-
 func get_duration() -> int:
 	return max(base_duration + ((level - 1) * duration_per_level), 1)
 
