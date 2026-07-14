@@ -11,15 +11,6 @@ base_amount = 5
 amount_per_level = 3
 metadata/_custom_type_script = "uid://hw30jan7sjfb"
 
-[sub_resource type="Resource" id="Resource_r7ahq"]
-script = ExtResource("2_r7ahq")
-stat = 6
-timing = 3
-operation = 1
-base_amount = 5
-amount_per_level = 3
-metadata/_custom_type_script = "uid://hw30jan7sjfb"
-
 [resource]
 script = ExtResource("1_uxqdy")
 effect_name = "Fortify"
@@ -27,5 +18,5 @@ effect_id = &"fortify"
 image = ExtResource("1_nu361")
 base_duration = 3
 duration_per_level = 2
-stat_changes = Array[ExtResource("2_r7ahq")]([SubResource("Resource_uxqdy"), SubResource("Resource_r7ahq")])
+stat_changes = Array[ExtResource("2_r7ahq")]([SubResource("Resource_uxqdy")])
 metadata/_custom_type_script = "uid://c5deti4sb2k2j"

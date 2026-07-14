@@ -38,7 +38,6 @@ func rest() -> void:
 	clear_active_effects(ActiveEffect.RemovalReason.RESTED, true)
 	current_hp = max_hp
 	current_nrg = max_nrg
-	active_effects.clear()
 
 func meditate() -> void:
 	var base_hp := 8

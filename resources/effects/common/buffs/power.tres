@@ -11,14 +11,6 @@ base_amount = 5
 amount_per_level = 3
 metadata/_custom_type_script = "uid://hw30jan7sjfb"
 
-[sub_resource type="Resource" id="Resource_02kl8"]
-script = ExtResource("2_02kl8")
-timing = 3
-operation = 1
-base_amount = 5
-amount_per_level = 3
-metadata/_custom_type_script = "uid://hw30jan7sjfb"
-
 [resource]
 script = ExtResource("1_h213n")
 effect_name = "Power"
@@ -26,5 +18,5 @@ effect_id = &"power"
 image = ExtResource("1_dwrbv")
 base_duration = 3
 duration_per_level = 2
-stat_changes = Array[ExtResource("2_02kl8")]([SubResource("Resource_h213n"), SubResource("Resource_02kl8")])
+stat_changes = Array[ExtResource("2_02kl8")]([SubResource("Resource_h213n")])
 metadata/_custom_type_script = "uid://c5deti4sb2k2j"

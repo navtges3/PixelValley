@@ -12,14 +12,6 @@ base_amount = 5
 amount_per_level = 3
 metadata/_custom_type_script = "uid://hw30jan7sjfb"
 
-[sub_resource type="Resource" id="Resource_hex_expire"]
-script = ExtResource("2_hex")
-stat = 7
-timing = 3
-base_amount = 5
-amount_per_level = 3
-metadata/_custom_type_script = "uid://hw30jan7sjfb"
-
 [resource]
 script = ExtResource("1_hex")
 effect_name = "Hex"
@@ -27,5 +19,5 @@ effect_id = &"hex"
 image = ExtResource("1_7fsbf")
 base_duration = 3
 duration_per_level = 2
-stat_changes = Array[ExtResource("2_hex")]([SubResource("Resource_hex_apply"), SubResource("Resource_hex_expire")])
+stat_changes = Array[ExtResource("2_hex")]([SubResource("Resource_hex_apply")])
 metadata/_custom_type_script = "uid://c5deti4sb2k2j"

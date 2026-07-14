@@ -12,14 +12,6 @@ base_amount = 5
 amount_per_level = 5
 metadata/_custom_type_script = "uid://hw30jan7sjfb"
 
-[sub_resource type="Resource" id="Resource_falter_expire"]
-script = ExtResource("2_falter")
-stat = 5
-timing = 3
-base_amount = 5
-amount_per_level = 5
-metadata/_custom_type_script = "uid://hw30jan7sjfb"
-
 [resource]
 script = ExtResource("1_falter")
 effect_name = "Falter"
@@ -27,5 +19,5 @@ effect_id = &"falter"
 image = ExtResource("1_0n7do")
 base_duration = 3
 duration_per_level = 2
-stat_changes = Array[ExtResource("2_falter")]([SubResource("Resource_falter_apply"), SubResource("Resource_falter_expire")])
+stat_changes = Array[ExtResource("2_falter")]([SubResource("Resource_falter_apply")])
 metadata/_custom_type_script = "uid://c5deti4sb2k2j"
