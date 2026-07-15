@@ -1,7 +1,6 @@
 extends Node2D
 class_name BattleCharacter
 
-const Y_OFFSET := 64
 const SCALE := Vector2(3.0, 3.0)
 const EFFECT_ICON_SIZE := Vector2(16.0, 16.0)
 
@@ -33,7 +32,8 @@ func set_frames(frames: SpriteFrames) -> void:
 func apply_visual(combatant: Combatant, flip_h := false) -> void:
 	sprite.sprite_frames = combatant.battle_visual
 	scale = SCALE
-	sprite.position.y -= (combatant.battle_height - Y_OFFSET)
+	sprite.offset.y = -combatant.battle_height
+	sprite.offset.x = -combatant.battle_x_offset
 	sprite.flip_h = flip_h
 	sprite.play("idle")
 	

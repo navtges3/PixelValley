@@ -20,6 +20,7 @@ const REST_CD := 5
 @export var world_visual: SpriteFrames
 @export var battle_visual: SpriteFrames
 @export var battle_height: int = 64
+@export var battle_x_offset: int = 32
 @export var hand_positions: Dictionary = {}
 @export var hand_rotations: Dictionary = {}
 
