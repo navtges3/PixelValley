@@ -72,10 +72,6 @@ static func validate_unique_effect_ids(effects: Array[Effect]) -> PackedStringAr
 		seen_ids[effect.effect_id] = effect
 	return errors
 
-# I think I should just use get_active_effects() I will leave this here just in case
-static func capture_turn_start(combatant: Combatant) -> Array[ActiveEffect]:
-	return get_active_effects(combatant)
-
 static func process_turn_end(combatant: Combatant, effects_at_turn_start: Array[ActiveEffect]) -> String:
 	if combatant == null:
 		return ""
@@ -118,6 +114,7 @@ static func remove_all_effects(combatant: Combatant, reason: ActiveEffect.Remova
 		output += remove_effect(active_effect, reason)
 	return output
 
+# This feels like a very specific instance of remove_all_effects I might not keep this
 static func cleanup_after_battle(combatant: Combatant, include_persistent: bool = false) -> String:
 	return remove_all_effects(combatant, ActiveEffect.RemovalReason.BATTLE_ENDED, include_persistent)
 

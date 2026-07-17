@@ -45,7 +45,7 @@ func setup_battle(config: Dictionary) -> void:
 	start_player_turn()
 
 func start_player_turn() -> void:
-	_hero_effects_at_turn_start = hero.active_effects.duplicate()
+	_hero_effects_at_turn_start = EffectManager.get_active_effects(hero)
 	state = BattleState.PLAYER_TURN
 	battle_log_updated.emit("%s's turn!\n" % hero.get_colored_name())
 	player_turn.emit()
@@ -90,13 +90,13 @@ func end_player_turn() -> void:
 	if state != BattleState.PLAYER_TURN:
 		return
 	hero.update_cooldown()
-	var effect_output := hero.process_active_effects(_hero_effects_at_turn_start)
+	var effect_output := EffectManager.process_turn_end(hero, _hero_effects_at_turn_start)
 	battle_log_updated.emit(effect_output)
 	hero_updated.emit(hero)
 	if hero.is_alive():
 		if monster.is_alive():
 			state = BattleState.MONSTER_TURN
-			_monster_effects_at_turn_start = monster.active_effects.duplicate()
+			_monster_effects_at_turn_start = EffectManager.get_active_effects(monster)
 			monster_turn.emit()
 			await get_tree().create_timer(0.5).timeout
 			enemy_turn()
@@ -151,7 +151,7 @@ func enemy_turn() -> void:
 
 func end_enemy_turn() -> void:
 	monster.update_cooldown()
-	var effect_output := monster.process_active_effects(_monster_effects_at_turn_start)
+	var effect_output := EffectManager.process_turn_end(monster, _monster_effects_at_turn_start)
 	battle_log_updated.emit(effect_output)
 	monster_updated.emit(monster)
 	
@@ -175,8 +175,8 @@ func end_battle(player_won: bool, entries: Array[RewardEntry] = []) -> void:
 		hero_defeated.emit()
 
 func _cleanup_battle_effects() -> void:
-	hero.clear_active_effects(ActiveEffect.RemovalReason.BATTLE_ENDED, false)
-	monster.clear_active_effects(ActiveEffect.RemovalReason.BATTLE_ENDED, true)
+	EffectManager.cleanup_after_battle(hero, false)
+	EffectManager.cleanup_after_battle(monster, true)
 	_hero_effects_at_turn_start.clear()
 	_monster_effects_at_turn_start.clear()
 	hero_updated.emit(hero)
