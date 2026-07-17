@@ -121,31 +121,8 @@ static func process_turn_end(combatant: Combatant, effects_at_turn_start: Array[
 			output += remove_effect(active_effect, ActiveEffect.RemovalReason.NATURAL)
 	return output
 
-static func remove_effect(active_effect: ActiveEffect, reason: ActiveEffect.RemovalReason) -> String:
-	if active_effect == null or active_effect.target == null:
-		return ""
-	var target := active_effect.target
-	var output := active_effect.remove(reason)
-	if active_effect in target.active_effects:
-		target.active_effects.erase(active_effect)
-	output += _get_removal_output(active_effect, reason)
-	return output
-
-static func _get_removal_output(active_effect: ActiveEffect, reason: ActiveEffect.RemovalReason) -> String:
-	var effect_name := active_effect.effect.effect_name
-	var target_name := active_effect.target.get_colored_name()
-	match reason:
-		ActiveEffect.RemovalReason.NATURAL:
-			return "%s wore off on %s.\n" % [effect_name, target_name]
-		ActiveEffect.RemovalReason.CLEANSED:
-			return "%s was cleansed from %s.\n" % [effect_name, target_name]
-		ActiveEffect.RemovalReason.RESTED:
-			return "%s was removed from %s by resting.\n" % [effect_name, target_name]
-		ActiveEffect.RemovalReason.BATTLE_ENDED:
-			return "%s ended on %s when the battle ended.\n" % [effect_name, target_name]
-		ActiveEffect.RemovalReason.REPLACED:
-			return "%s was replaced on %s.\n" % [effect_name, target_name]
-	return ""
+static func remove_effect(active_effect: ActiveEffect, reason: ActiveEffect.RemovalReason, dispatcher: EffectEventDispatcher = null) -> String:
+	return _remove_effect_instance(active_effect, reason, dispatcher, true)
 
 static func remove_effect_by_id(combatant: Combatant, effect_id: StringName, reason: ActiveEffect.RemovalReason = ActiveEffect.RemovalReason.CLEANSED) -> String:
 	var active_effect := find_active_effect(combatant, effect_id)
@@ -163,7 +140,6 @@ static func remove_all_effects(combatant: Combatant, reason: ActiveEffect.Remova
 		output += remove_effect(active_effect, reason)
 	return output
 
-# This feels like a very specific instance of remove_all_effects I might not keep this
 static func cleanup_after_battle(combatant: Combatant, include_persistent: bool = false) -> String:
 	return remove_all_effects(combatant, ActiveEffect.RemovalReason.BATTLE_ENDED, include_persistent)
 
@@ -186,6 +162,18 @@ static func _add_effect(effect: Effect, source: Combatant, target: Combatant, re
 	var result := ApplicationResult.new(ApplicationStatus.ADDED, active_effect, effect.level, 0, output)
 	_dispatch(dispatcher, EffectLifecycleEvent.new(EffectLifecycleEvent.EventType.ADDED, active_effect, 0, effect.level))
 	return result
+
+static func _remove_effect_instance(active_effect: ActiveEffect, reason: ActiveEffect.RemovalReason, dispatcher: EffectEventDispatcher = null, emit_event: bool = true) -> String:
+	if active_effect == null or active_effect.effect == null:
+		return ""
+	var target := active_effect.target
+	var output := active_effect.remove(reason)
+	if active_effect in target.active_effects:
+		target.active_effects.erase(active_effect)
+	output += _get_removal_output(active_effect, reason)
+	if emit_event:
+		_dispatch(dispatcher, EffectLifecycleEvent.new(EffectLifecycleEvent.EventType.REMOVED, active_effect, active_effect.effect.level, 0, reason))
+	return output
 
 static func _get_active_effect_instances(target: Combatant) -> Array[ActiveEffect]:
 	if target == null:
@@ -211,7 +199,7 @@ static func _upgrade_effect(effect: Effect, source: Combatant, target: Combatant
 	 active_effect: ActiveEffect, remaining_turns: int, dispatcher: EffectEventDispatcher = null) -> ApplicationResult:
 	var previous_level := active_effect.effect.level
 	var replacement_source: Combatant = source if source != null else active_effect.source
-	var output := remove_effect(active_effect, ActiveEffect.RemovalReason.REPLACED)
+	var output := _remove_effect_instance(active_effect, ActiveEffect.RemovalReason.REPLACED, dispatcher, false)
 	var replacement := ActiveEffect.new(effect, target, replacement_source)
 	if remaining_turns > 0:
 		replacement.remaining_turns = remaining_turns
@@ -238,3 +226,19 @@ static func _reject_weaker_effect(effect: Effect, target: Combatant, active_effe
 	var result := ApplicationResult.new(ApplicationStatus.REJECTED_WEAKER, active_effect, effect.level, active_effect.effect.level, output)
 	_dispatch(dispatcher, EffectLifecycleEvent.new(EffectLifecycleEvent.EventType.REJECTED_WEAKER, active_effect, active_effect.effect.level, effect.level))
 	return result
+
+static func _get_removal_output(active_effect: ActiveEffect, reason: ActiveEffect.RemovalReason) -> String:
+	var effect_name := active_effect.effect.effect_name
+	var target_name := active_effect.target.get_colored_name()
+	match reason:
+		ActiveEffect.RemovalReason.NATURAL:
+			return "%s wore off on %s.\n" % [effect_name, target_name]
+		ActiveEffect.RemovalReason.CLEANSED:
+			return "%s was cleansed from %s.\n" % [effect_name, target_name]
+		ActiveEffect.RemovalReason.RESTED:
+			return "%s was removed from %s by resting.\n" % [effect_name, target_name]
+		ActiveEffect.RemovalReason.BATTLE_ENDED:
+			return "%s ended on %s when the battle ended.\n" % [effect_name, target_name]
+		ActiveEffect.RemovalReason.REPLACED:
+			return "%s was replaced on %s.\n" % [effect_name, target_name]
+	return ""
