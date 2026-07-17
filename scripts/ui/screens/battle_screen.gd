@@ -36,6 +36,22 @@ func setup(config: Dictionary) -> void:
 	_spawn_hero()
 	battle_manager.setup_battle(config)
 
+# --- Effect Icons ---
+func _on_effect_lifecycle_changed(event: EffectLifecycleEvent) -> void:
+	if event.target == battle_manager.hero:
+		_refresh_hero_effect_icons()
+	elif event.target == battle_manager.monster:
+		_refresh_monster_effect_icons()
+
+func _refresh_hero_effect_icons() -> void:
+	var effects := EffectManager.get_active_effects(battle_manager.hero)
+	# TODO: Add set_effects for battle_character
+	#       set_effects should accept an array of EffectView
+
+func _refresh_monster_effect_icons() -> void:
+	var effects := EffectManager.get_active_effects(battle_manager.monster)
+	# TODO: Add set_effects for battle_character
+
 # --- Hero ---
 func _spawn_hero() -> void:
 	hero_info.hero = battle_config.hero
