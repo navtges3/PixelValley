@@ -26,7 +26,7 @@ class TurnEffectSnapshot:
 		active_effect = _active_effect
 		lifecycle_revision = _lifecycle_revision
 
-static func apply_effect(effect: Effect, source: Combatant, target: Combatant, remaining_turns: int = 0) -> ApplicationResult:
+static func apply_effect(effect: Effect, source: Combatant, target: Combatant, remaining_turns: int = 0, dispatcher: EffectEventDispatcher = null) -> ApplicationResult:
 	assert(effect != null, "Cannot apply a null Effect.")
 	assert(target != null, "Cannot apply an Effect to a null target.")
 	assert(effect.effect_id != &"", 'Effect "%s" must have a non-empty effect_id.' % effect.effect_name)
@@ -166,6 +166,10 @@ static func remove_all_effects(combatant: Combatant, reason: ActiveEffect.Remova
 # This feels like a very specific instance of remove_all_effects I might not keep this
 static func cleanup_after_battle(combatant: Combatant, include_persistent: bool = false) -> String:
 	return remove_all_effects(combatant, ActiveEffect.RemovalReason.BATTLE_ENDED, include_persistent)
+
+static func _dispatch(dispatcher: EffectEventDispatcher, event: EffectLifecycleEvent) -> void:
+	if dispatcher != null:
+		dispatcher.dispatch(event)
 
 static func _add_effect(effect: Effect, source: Combatant, target: Combatant, remaining_turns: int) -> ApplicationResult:
 	assert(find_active_effect(target, effect.effect_id) == null,
