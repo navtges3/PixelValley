@@ -23,7 +23,7 @@ static func apply_effect(effect: Effect, source: Combatant, target: Combatant, r
 	assert(target != null, "Cannot apply an Effect to a null target.")
 	assert(effect.effect_id != &"", 'Effect "%s" must have a non-empty effect_id.' % effect.effect_name)
 	
-	var active_effect := find_active_effect(target, effect.effect_name)
+	var active_effect := find_active_effect(target, effect.effect_id)
 	if active_effect == null:
 		return _add_effect(effect, source, target, remaining_turns)
 	if effect.level < active_effect.effect.level:
