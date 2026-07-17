@@ -36,7 +36,7 @@ func is_alive() -> bool:
 	return current_hp > 0
 
 func rest() -> void:
-	clear_active_effects(ActiveEffect.RemovalReason.RESTED, true)
+	EffectManager.remove_all_effects(self, ActiveEffect.RemovalReason.RESTED, true)
 	current_hp = max_hp
 	current_nrg = max_nrg
 
@@ -76,33 +76,13 @@ func apply_effect(effect: Effect, source: Combatant = null, remaining_turns: int
 	return result.output
 
 func process_active_effects(effects_to_tick: Array[ActiveEffect]) -> String:
-	var output := ""
-	
-	for effect: ActiveEffect in effects_to_tick:
-		if effect not in active_effects:
-			continue
-		output += effect.on_tick()
-	
-	for effect: ActiveEffect in active_effects.duplicate():
-		if effect.remaining_turns <= 0:
-			active_effects.erase(effect)
-	
-	return output
+	return EffectManager.process_turn_end(self, effects_to_tick)
 
 func remove_effect(effect_id: StringName, reason: ActiveEffect.RemovalReason = ActiveEffect.RemovalReason.CLEANSED) -> String:
-	var active_effect := EffectManager.find_active_effect(self, effect_id)
-	if active_effect == null:
-		return ""
-	var output := active_effect.remove(reason)
-	active_effects.erase(active_effect)
-	return output
+	return EffectManager.remove_effect_by_id(self, effect_id, reason)
 
 func clear_active_effects(reason: ActiveEffect.RemovalReason, include_persistent: bool = false) -> void:
-	for active_effect: ActiveEffect in active_effects.duplicate():
-		if not include_persistent and active_effect.effect.persistence == Effect.Persistence.PERSISTENT:
-			continue
-		active_effect.remove(reason)
-		active_effects.erase(active_effect)
+	EffectManager.remove_all_effects(self, reason, include_persistent)
 
 func _calculate_damage(amount: int, type: Attack.AttackType) -> int:
 	var damage := amount
