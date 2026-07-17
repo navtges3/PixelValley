@@ -18,6 +18,14 @@ class ApplicationResult:
 			previous_level = _previous_level
 			output = _output
 
+class TurnEffectSnapshot:
+	var active_effect: ActiveEffect
+	var lifecycle_revision: int
+
+	func _init(_active_effect: ActiveEffect, _lifecycle_revision: int) -> void:
+		active_effect = _active_effect
+		lifecycle_revision = _lifecycle_revision
+
 static func apply_effect(effect: Effect, source: Combatant, target: Combatant, remaining_turns: int = 0) -> ApplicationResult:
 	assert(effect != null, "Cannot apply a null Effect.")
 	assert(target != null, "Cannot apply an Effect to a null target.")
@@ -72,16 +80,29 @@ static func validate_unique_effect_ids(effects: Array[Effect]) -> PackedStringAr
 		seen_ids[effect.effect_id] = effect
 	return errors
 
-static func process_turn_end(combatant: Combatant, effects_at_turn_start: Array[ActiveEffect]) -> String:
+static func capture_turn_start(combatant: Combatant) -> Array[TurnEffectSnapshot]:
+	var snapshot: Array[TurnEffectSnapshot] = []
+	if combatant == null:
+		return snapshot
+	for active_effect: ActiveEffect in get_active_effects(combatant):
+		snapshot.append(TurnEffectSnapshot.new(active_effect, active_effect.lifecycle_revision))
+	return snapshot
+
+static func process_turn_end(combatant: Combatant, effects_at_turn_start: Array[TurnEffectSnapshot]) -> String:
 	if combatant == null:
 		return ""
 	var output := ""
-	for active_effect: ActiveEffect in effects_at_turn_start:
+	for snapshot: TurnEffectSnapshot in effects_at_turn_start:
+		if snapshot == null:
+			continue
+		var active_effect := snapshot.active_effect
 		if active_effect == null:
 			continue
 		if active_effect not in combatant.active_effects:
 			continue
 		if active_effect.target != combatant:
+			continue
+		if active_effect.lifecycle_revision != snapshot.lifecycle_revision:
 			continue
 		output += active_effect.apply_tick()
 		active_effect.remaining_turns -= 1
@@ -146,17 +167,21 @@ static func _refresh_effect(effect: Effect, source: Combatant, target: Combatant
 
 static func _upgrade_effect(effect: Effect, source: Combatant, target: Combatant, active_effect: ActiveEffect, remaining_turns: int) -> ApplicationResult:
 	var previous_level := active_effect.effect.level
-	var output := active_effect.upgrade_to(effect, source)
+	var replacement_source: Combatant = source if source != null else active_effect.source
+	var output := remove_effect(active_effect, ActiveEffect.RemovalReason.REPLACED)
+	var replacement := ActiveEffect.new(effect, target, replacement_source)
 	if remaining_turns > 0:
-		active_effect.remaining_turns = remaining_turns
+		replacement.remaining_turns = remaining_turns
+	target.active_effects.append(replacement)
+	output += replacement.on_apply()
 	output += "%s upgraded from level %d to level %d on %s (%d turns).\n" % [
 		effect.effect_name,
 		previous_level,
 		effect.level,
 		target.get_colored_name(),
-		active_effect.remaining_turns
+		replacement.remaining_turns,
 	]
-	return ApplicationResult.new(ApplicationStatus.UPGRADED, active_effect, effect.level, previous_level, output)
+	return ApplicationResult.new(ApplicationStatus.UPGRADED, replacement, effect.level, previous_level, output)
 
 static func _reject_weaker_effect(effect: Effect, target: Combatant, active_effect: ActiveEffect) -> ApplicationResult:
 	var output := "%s level %d had no effect on %s; level %d is already active.\n" % [
