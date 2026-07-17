@@ -31,8 +31,6 @@ func remove(reason: RemovalReason) -> String:
 	if reason == RemovalReason.NATURAL:
 		output += _apply_changes(Effect.EffectTiming.ON_EXPIRE)
 	output += _apply_changes(Effect.EffectTiming.ON_REMOVE)
-	if reason == RemovalReason.NATURAL:
-		output += "%s wore off on %s.\n" % [effect.effect_name, target.get_colored_name()]
 	return output
 
 func refresh_duration(new_source: Combatant = null) -> void:
@@ -68,8 +66,6 @@ func _apply_changes(timing: Effect.EffectTiming) -> String:
 	for stat_change in effect.stat_changes:
 		if stat_change.timing != timing:
 			continue
-		# Modifier cleanup is ledger-driven. Authored expiry/removal modifiers are
-		# ignored so stale or mismatched effect data cannot corrupt base stats.
 		if stat_change.is_modifier() and timing != Effect.EffectTiming.ON_APPLY:
 			continue
 		var applied_amount := _apply_stat_change(stat_change.stat, stat_change.get_signed_amount(effect.level))

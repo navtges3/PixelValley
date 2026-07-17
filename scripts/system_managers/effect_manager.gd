@@ -117,7 +117,24 @@ static func remove_effect(active_effect: ActiveEffect, reason: ActiveEffect.Remo
 	var output := active_effect.remove(reason)
 	if active_effect in target.active_effects:
 		target.active_effects.erase(active_effect)
+	output += _get_removal_output(active_effect, reason)
 	return output
+
+static func _get_removal_output(active_effect: ActiveEffect, reason: ActiveEffect.RemovalReason) -> String:
+	var effect_name := active_effect.effect.effect_name
+	var target_name := active_effect.target.get_colored_name()
+	match reason:
+		ActiveEffect.RemovalReason.NATURAL:
+			return "%s wore off on %s.\n" % [effect_name, target_name]
+		ActiveEffect.RemovalReason.CLEANSED:
+			return "%s was cleansed from %s.\n" % [effect_name, target_name]
+		ActiveEffect.RemovalReason.RESTED:
+			return "%s was removed from %s by resting.\n" % [effect_name, target_name]
+		ActiveEffect.RemovalReason.BATTLE_ENDED:
+			return "%s ended on %s when the battle ended.\n" % [effect_name, target_name]
+		ActiveEffect.RemovalReason.REPLACED:
+			return "%s was replaced on %s.\n" % [effect_name, target_name]
+	return ""
 
 static func remove_effect_by_id(combatant: Combatant, effect_id: StringName, reason: ActiveEffect.RemovalReason = ActiveEffect.RemovalReason.CLEANSED) -> String:
 	var active_effect := find_active_effect(combatant, effect_id)
