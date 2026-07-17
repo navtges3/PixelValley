@@ -35,10 +35,11 @@ func get_colored_name() -> String:
 func is_alive() -> bool:
 	return current_hp > 0
 
-func rest() -> void:
-	EffectManager.remove_all_effects(self, ActiveEffect.RemovalReason.RESTED, true)
+func rest() -> String:
+	var output := EffectManager.remove_all_effects(self, ActiveEffect.RemovalReason.RESTED, true)
 	current_hp = max_hp
 	current_nrg = max_nrg
+	return output
 
 func meditate() -> void:
 	var base_hp := 8
