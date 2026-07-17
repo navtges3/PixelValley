@@ -125,24 +125,24 @@ static func process_turn_end(combatant: Combatant, effects_at_turn_start: Array[
 static func remove_effect(active_effect: ActiveEffect, reason: ActiveEffect.RemovalReason, dispatcher: EffectEventDispatcher = null) -> String:
 	return _remove_effect_instance(active_effect, reason, dispatcher, true)
 
-static func remove_effect_by_id(combatant: Combatant, effect_id: StringName, reason: ActiveEffect.RemovalReason = ActiveEffect.RemovalReason.CLEANSED) -> String:
+static func remove_effect_by_id(combatant: Combatant, effect_id: StringName, reason: ActiveEffect.RemovalReason = ActiveEffect.RemovalReason.CLEANSED, dispatcher: EffectEventDispatcher = null) -> String:
 	var active_effect := find_active_effect(combatant, effect_id)
 	if active_effect == null:
 		return ""
-	return remove_effect(active_effect, reason)
+	return remove_effect(active_effect, reason, dispatcher)
 
-static func remove_all_effects(combatant: Combatant, reason: ActiveEffect.RemovalReason, include_persistent: bool = false) -> String:
+static func remove_all_effects(combatant: Combatant, reason: ActiveEffect.RemovalReason, include_persistent: bool = false, dispatcher: EffectEventDispatcher = null) -> String:
 	if combatant == null:
 		return ""
 	var output := ""
 	for active_effect: ActiveEffect in _get_active_effect_instances(combatant):
 		if not include_persistent and active_effect.effect.persistence == Effect.Persistence.PERSISTENT:
 			continue
-		output += remove_effect(active_effect, reason)
+		output += remove_effect(active_effect, reason, dispatcher)
 	return output
 
-static func cleanup_after_battle(combatant: Combatant, include_persistent: bool = false) -> String:
-	return remove_all_effects(combatant, ActiveEffect.RemovalReason.BATTLE_ENDED, include_persistent)
+static func cleanup_after_battle(combatant: Combatant, include_persistent: bool = false, dispatcher: EffectEventDispatcher = null) -> String:
+	return remove_all_effects(combatant, ActiveEffect.RemovalReason.BATTLE_ENDED, include_persistent, dispatcher)
 
 static func _dispatch(dispatcher: EffectEventDispatcher, event: EffectLifecycleEvent) -> void:
 	if dispatcher != null:
