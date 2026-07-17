@@ -157,6 +157,7 @@ text = "This is an Ability"
 [connection signal="return_to_village" from="DeathWindow" to="." method="_on_death_window_dismissed"]
 [connection signal="battle_log_updated" from="BattleManager" to="." method="_on_battle_log_updated"]
 [connection signal="battle_won" from="BattleManager" to="." method="_on_battle_won"]
+[connection signal="effect_lifecycle_changed" from="BattleManager" to="." method="_on_effect_lifecycle_changed"]
 [connection signal="hero_attacking" from="BattleManager" to="." method="_on_hero_attacking"]
 [connection signal="hero_defeated" from="BattleManager" to="." method="_on_hero_defeated"]
 [connection signal="hero_hurt" from="BattleManager" to="." method="_on_hero_hurt"]
