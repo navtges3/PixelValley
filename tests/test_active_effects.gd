@@ -35,7 +35,7 @@ func _ready() -> void:
 	_test_effect_manager_preserves_source_when_refresh_source_is_null()
 	_test_effect_manager_preserves_source_when_upgrade_source_is_null()
 	_test_effect_manager_prevents_duplicates()
-	_test_combatant_apply_effect_delegates_to_manager()
+	_test_effect_manager_application_integration()
 
 	if _failures == 0:
 		print("Active effect lifecycle and EffectManager tests passed.")
@@ -69,7 +69,7 @@ func _test_reversible_modifier_stats() -> void:
 			7
 		)
 
-		combatant.apply_effect(buff)
+		EffectManager.apply_effect(buff, null, combatant)
 
 		_expect_equal(
 			_get_stat_value(combatant, stat),
@@ -77,7 +77,7 @@ func _test_reversible_modifier_stats() -> void:
 			"positive modifier applies for stat %d" % stat
 		)
 
-		combatant.remove_effect(buff.effect_id)
+		EffectManager.remove_effect_by_id(combatant, buff.effect_id)
 
 		_expect_equal(
 			_get_stat_value(combatant, stat),
@@ -92,7 +92,7 @@ func _test_reversible_modifier_stats() -> void:
 			30
 		)
 
-		combatant.apply_effect(debuff)
+		EffectManager.apply_effect(debuff, null, combatant)
 
 		var minimum := 1 if stat == Effect.EffectStat.MAX_HP else 0
 
@@ -107,7 +107,7 @@ func _test_reversible_modifier_stats() -> void:
 				% stat
 			)
 
-		combatant.remove_effect(debuff.effect_id)
+		EffectManager.remove_effect_by_id(combatant, debuff.effect_id)
 
 		_expect_equal(
 			_get_stat_value(combatant, stat),
@@ -124,7 +124,7 @@ func _test_reversible_modifier_stats() -> void:
 		30
 	)
 
-	hp_target.apply_effect(max_hp_debuff)
+	EffectManager.apply_effect(max_hp_debuff, null, hp_target)
 
 	_expect_equal(
 		hp_target.current_hp,
@@ -132,7 +132,7 @@ func _test_reversible_modifier_stats() -> void:
 		"current HP clamps when max HP falls"
 	)
 
-	hp_target.remove_effect(max_hp_debuff.effect_id)
+	EffectManager.remove_effect_by_id(hp_target, max_hp_debuff.effect_id)
 
 	_expect_equal(
 		hp_target.max_hp,
@@ -159,7 +159,7 @@ func _test_refresh_upgrade_and_idempotent_removal() -> void:
 		3
 	)
 
-	combatant.apply_effect(level_one)
+	EffectManager.apply_effect(level_one, null, combatant)
 
 	_expect_equal(
 		combatant.defense,
@@ -176,7 +176,7 @@ func _test_refresh_upgrade_and_idempotent_removal() -> void:
 		3
 	)
 
-	combatant.apply_effect(refreshed)
+	EffectManager.apply_effect(refreshed, null, combatant)
 
 	_expect_equal(
 		combatant.defense,
@@ -193,7 +193,7 @@ func _test_refresh_upgrade_and_idempotent_removal() -> void:
 		3
 	)
 
-	combatant.apply_effect(upgraded)
+	EffectManager.apply_effect(upgraded, null, combatant)
 
 	_expect_equal(
 		combatant.defense,
@@ -203,7 +203,7 @@ func _test_refresh_upgrade_and_idempotent_removal() -> void:
 
 	var active_effect: ActiveEffect = combatant.active_effects[0]
 
-	combatant.remove_effect(upgraded.effect_id)
+	EffectManager.remove_effect_by_id(combatant, upgraded.effect_id)
 
 	_expect_equal(
 		combatant.defense,
@@ -235,7 +235,7 @@ func _test_natural_expiration_and_cleanup() -> void:
 
 	effect.base_duration = 1
 
-	combatant.apply_effect(effect)
+	EffectManager.apply_effect(effect, null, combatant)
 
 	var active_effect: ActiveEffect = combatant.active_effects[0]
 	var effects_to_tick := EffectManager.capture_turn_start(combatant)
@@ -281,7 +281,7 @@ func _test_duration_one_receives_one_future_tick() -> void:
 
 	var application_turn := EffectManager.capture_turn_start(combatant)
 
-	combatant.apply_effect(poison)
+	EffectManager.apply_effect(poison, null, combatant)
 	EffectManager.process_turn_end(combatant, application_turn)
 
 	_expect_equal(
@@ -328,7 +328,7 @@ func _test_duration_three_receives_three_future_ticks() -> void:
 
 	var application_turn := EffectManager.capture_turn_start(combatant)
 
-	combatant.apply_effect(poison)
+	EffectManager.apply_effect(poison, null, combatant)
 	EffectManager.process_turn_end(combatant, application_turn)
 
 	_expect_equal(
@@ -375,7 +375,7 @@ func _test_refresh_does_not_tick_immediately() -> void:
 	poison.stat_changes[0].timing = Effect.EffectTiming.ON_TICK
 	poison.base_duration = 3
 
-	combatant.apply_effect(poison)
+	EffectManager.apply_effect(poison, null, combatant)
 
 	var active_effect := combatant.active_effects[0]
 
@@ -383,7 +383,7 @@ func _test_refresh_does_not_tick_immediately() -> void:
 
 	var refresh_turn := EffectManager.capture_turn_start(combatant)
 
-	combatant.apply_effect(poison)
+	EffectManager.apply_effect(poison, null, combatant)
 	EffectManager.process_turn_end(combatant, refresh_turn)
 
 	_expect_equal(
@@ -438,8 +438,8 @@ func _test_multiple_effects_expire_safely() -> void:
 	fatigue.stat_changes[0].timing = Effect.EffectTiming.ON_TICK
 	fatigue.base_duration = 1
 
-	combatant.apply_effect(poison)
-	combatant.apply_effect(fatigue)
+	EffectManager.apply_effect(poison, null, combatant)
+	EffectManager.apply_effect(fatigue, null, combatant)
 
 	var turn_snapshot := EffectManager.capture_turn_start(combatant)
 
@@ -479,7 +479,7 @@ func _test_forced_removal_skips_natural_expiration() -> void:
 	cleansed_effect.stat_changes[0].timing = Effect.EffectTiming.ON_EXPIRE
 	cleansed_effect.base_duration = 1
 
-	cleansed_target.apply_effect(cleansed_effect)
+	EffectManager.apply_effect(cleansed_effect, null, cleansed_target)
 	EffectManager.remove_effect_by_id(
 		cleansed_target,
 		cleansed_effect.effect_id,
@@ -506,7 +506,7 @@ func _test_forced_removal_skips_natural_expiration() -> void:
 	expired_effect.stat_changes[0].timing = Effect.EffectTiming.ON_EXPIRE
 	expired_effect.base_duration = 1
 
-	expired_target.apply_effect(expired_effect)
+	EffectManager.apply_effect(expired_effect, null, expired_target)
 
 	var expiration_turn := EffectManager.capture_turn_start(expired_target)
 
@@ -538,10 +538,11 @@ func _test_cleanse_rest_and_battle_cleanup() -> void:
 
 	persistent_effect.persistence = Effect.Persistence.PERSISTENT
 
-	combatant.apply_effect(combat_effect)
-	combatant.apply_effect(persistent_effect)
+	EffectManager.apply_effect(combat_effect, null, combatant)
+	EffectManager.apply_effect(persistent_effect, null, combatant)
 
-	combatant.clear_active_effects(
+	EffectManager.remove_all_effects(
+		combatant,
 		ActiveEffect.RemovalReason.BATTLE_ENDED,
 		false
 	)
@@ -606,7 +607,7 @@ func _test_current_values_are_not_reversed() -> void:
 	poison.stat_changes[0].timing = Effect.EffectTiming.ON_TICK
 	poison.base_duration = 1
 
-	combatant.apply_effect(poison)
+	EffectManager.apply_effect(poison, null, combatant)
 
 	var effects_to_tick := EffectManager.capture_turn_start(combatant)
 
@@ -638,8 +639,8 @@ func _test_mismatched_removal_data_is_ignored() -> void:
 
 	effect.stat_changes.append(mismatched_change)
 
-	combatant.apply_effect(effect)
-	combatant.remove_effect(effect.effect_id)
+	EffectManager.apply_effect(effect, null, combatant)
+	EffectManager.remove_effect_by_id(combatant, effect.effect_id)
 
 	_expect_equal(
 		combatant.attack,
@@ -660,7 +661,7 @@ func _test_save_round_trip_preserves_applied_deltas() -> void:
 
 	effect.persistence = Effect.Persistence.PERSISTENT
 
-	original.apply_effect(effect)
+	EffectManager.apply_effect(effect, null, original)
 
 	var saved_effects: Array[Dictionary] = (
 		SaveManager._get_active_effects_data(original)
@@ -683,7 +684,7 @@ func _test_save_round_trip_preserves_applied_deltas() -> void:
 		"save preserves effect identity"
 	)
 
-	loaded.remove_effect(&"saved_defense")
+	EffectManager.remove_effect_by_id(loaded, &"saved_defense")
 
 	_expect_equal(
 		loaded.defense,
@@ -702,7 +703,7 @@ func _test_legacy_save_reconstructs_applied_deltas() -> void:
 		5
 	)
 
-	original.apply_effect(effect)
+	EffectManager.apply_effect(effect, null, original)
 
 	var saved_effects: Array[Dictionary] = (
 		SaveManager._get_active_effects_data(original)
@@ -714,7 +715,7 @@ func _test_legacy_save_reconstructs_applied_deltas() -> void:
 	loaded.attack = original.attack
 
 	SaveManager._load_active_effects(saved_effects, loaded)
-	loaded.remove_effect(&"legacy_attack")
+	EffectManager.remove_effect_by_id(loaded, &"legacy_attack")
 
 	_expect_equal(
 		loaded.attack,
@@ -1132,7 +1133,7 @@ func _test_effect_manager_upgrades_stronger_effect() -> void:
 		"upgrade reports the incoming level"
 	)
 
-	target.remove_effect(level_two.effect_id)
+	EffectManager.remove_effect_by_id(target, level_two.effect_id)
 
 	_expect_equal(
 		target.defense,
@@ -1387,7 +1388,7 @@ func _test_effect_manager_prevents_duplicates() -> void:
 	)
 
 
-func _test_combatant_apply_effect_delegates_to_manager() -> void:
+func _test_effect_manager_application_integration() -> void:
 	var source := _make_combatant()
 	var target := _make_combatant()
 
@@ -1398,36 +1399,36 @@ func _test_combatant_apply_effect_delegates_to_manager() -> void:
 		5
 	)
 
-	var output := target.apply_effect(effect, source)
+	var result := EffectManager.apply_effect(effect, source, target)
 
 	_expect_equal(
 		target.active_effects.size(),
 		1,
-		"Combatant compatibility wrapper still applies an effect"
+		"EffectManager applies an effect"
 	)
 
 	_expect_equal(
 		target.active_effects[0].source,
 		source,
-		"Combatant compatibility wrapper forwards the source"
+		"EffectManager preserves the source"
 	)
 
 	_expect_equal(
 		target.active_effects[0].target,
 		target,
-		"Combatant compatibility wrapper forwards the target"
+		"EffectManager preserves the target"
 	)
 
 	_expect_equal(
 		target.defense,
 		15,
-		"Combatant compatibility wrapper applies effect mechanics"
+		"EffectManager applies effect mechanics"
 	)
 
 	_expect_equal(
-		output.is_empty(),
+		result.output.is_empty(),
 		false,
-		"Combatant compatibility wrapper returns result output"
+		"EffectManager returns application output"
 	)
 
 
