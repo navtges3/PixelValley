@@ -24,9 +24,13 @@ func use(caster: Combatant, target: Combatant) -> String:
 		if attack != null:
 			output += attack.apply_attack(caster, target)
 		for effect: Effect in caster_effects:
-			output += caster.apply_effect(effect.duplicate(), caster)
+			var effect_copy: Effect = effect.duplicate() as Effect
+			var result: EffectManager.ApplicationResult = EffectManager.apply_effect(effect_copy, caster, caster)
+			output += result.output
 		for effect: Effect in target_effects:
-			output += target.apply_effect(effect.duplicate(), caster)
+			var effect_copy: Effect = effect.duplicate() as Effect
+			var result: EffectManager.ApplicationResult = EffectManager.apply_effect(effect_copy, caster, target)
+			output += result.output
 		self.current_cooldown = self.cooldown + 1
 		caster.current_nrg -= self.energy_cost
 		return output
