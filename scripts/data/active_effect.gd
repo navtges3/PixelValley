@@ -20,11 +20,7 @@ func on_apply() -> String:
 	return _apply_changes(Effect.EffectTiming.ON_APPLY)
 
 func on_tick() -> String:
-	remaining_turns -= 1
-	var output := _apply_changes(Effect.EffectTiming.ON_TICK)
-	if remaining_turns <= 0:
-		output += remove(RemovalReason.NATURAL)
-	return output
+	return _apply_changes(Effect.EffectTiming.ON_TICK)
 
 func remove(reason: RemovalReason) -> String:
 	if _is_removed:
