@@ -53,10 +53,21 @@ static func find_active_effect(target: Combatant, effect_id: StringName) -> Acti
 static func has_effect(target: Combatant, effect_id: StringName) -> bool:
 	return find_active_effect(target, effect_id) != null
 
-static func get_active_effects(target: Combatant) -> Array[ActiveEffect]:
+static func get_active_effects(target: Combatant) -> Array[EffectView]:
+	var views: Array[EffectView] = []
 	if target == null:
-		return []
-	return target.active_effects.duplicate()
+		return views
+	for active_effect: ActiveEffect in target.active_effects:
+		if active_effect == null or active_effect.effect == null:
+			continue
+		views.append(EffectView.new(active_effect))
+	return views
+
+static func get_effect_remaining_turns(target: Combatant, effect_id: StringName) -> int:
+	var active_effect := find_active_effect(target, effect_id)
+	if active_effect == null:
+		return 0
+	return active_effect.remaining_turns
 
 static func validate_unique_effect_ids(effects: Array[Effect]) -> PackedStringArray:
 	var errors := PackedStringArray()
@@ -84,7 +95,7 @@ static func capture_turn_start(combatant: Combatant) -> Array[TurnEffectSnapshot
 	var snapshot: Array[TurnEffectSnapshot] = []
 	if combatant == null:
 		return snapshot
-	for active_effect: ActiveEffect in get_active_effects(combatant):
+	for active_effect: ActiveEffect in _get_active_effect_instances(combatant):
 		snapshot.append(TurnEffectSnapshot.new(active_effect, active_effect.lifecycle_revision))
 	return snapshot
 
@@ -146,7 +157,7 @@ static func remove_all_effects(combatant: Combatant, reason: ActiveEffect.Remova
 	if combatant == null:
 		return ""
 	var output := ""
-	for active_effect: ActiveEffect in get_active_effects(combatant):
+	for active_effect: ActiveEffect in _get_active_effect_instances(combatant):
 		if not include_persistent and active_effect.effect.persistence == Effect.Persistence.PERSISTENT:
 			continue
 		output += remove_effect(active_effect, reason)
@@ -169,6 +180,11 @@ static func _add_effect(effect: Effect, source: Combatant, target: Combatant, re
 	]
 	output += active_effect.on_apply()
 	return ApplicationResult.new(ApplicationStatus.ADDED, active_effect, effect.level, 0, output)
+
+static func _get_active_effect_instances(target: Combatant) -> Array[ActiveEffect]:
+	if target == null:
+		return []
+	return target.active_effects.duplicate()
 
 static func _refresh_effect(effect: Effect, source: Combatant, target: Combatant, active_effect: ActiveEffect, remaining_turns: int) -> ApplicationResult:
 	active_effect.refresh_duration(source)
