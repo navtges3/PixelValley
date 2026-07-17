@@ -99,7 +99,7 @@ static func capture_turn_start(combatant: Combatant) -> Array[TurnEffectSnapshot
 		snapshot.append(TurnEffectSnapshot.new(active_effect, active_effect.lifecycle_revision))
 	return snapshot
 
-static func process_turn_end(combatant: Combatant, effects_at_turn_start: Array[TurnEffectSnapshot]) -> String:
+static func process_turn_end(combatant: Combatant, effects_at_turn_start: Array[TurnEffectSnapshot], dispatcher: EffectEventDispatcher = null) -> String:
 	if combatant == null:
 		return ""
 	var output := ""
@@ -117,8 +117,9 @@ static func process_turn_end(combatant: Combatant, effects_at_turn_start: Array[
 			continue
 		output += active_effect.apply_tick()
 		active_effect.remaining_turns -= 1
+		_dispatch(dispatcher, EffectLifecycleEvent.new(EffectLifecycleEvent.EventType.TICKED, active_effect))
 		if active_effect.remaining_turns <= 0:
-			output += remove_effect(active_effect, ActiveEffect.RemovalReason.NATURAL)
+			output += remove_effect(active_effect, ActiveEffect.RemovalReason.NATURAL, dispatcher)
 	return output
 
 static func remove_effect(active_effect: ActiveEffect, reason: ActiveEffect.RemovalReason, dispatcher: EffectEventDispatcher = null) -> String:
