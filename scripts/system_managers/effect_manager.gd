@@ -72,6 +72,55 @@ static func validate_unique_effect_ids(effects: Array[Effect]) -> PackedStringAr
 		seen_ids[effect.effect_id] = effect
 	return errors
 
+# I think I should just use get_active_effects() I will leave this here just in case
+static func capture_turn_start(combatant: Combatant) -> Array[ActiveEffect]:
+	return get_active_effects(combatant)
+
+static func process_turn_end(combatant: Combatant, effects_at_turn_start: Array[ActiveEffect]) -> String:
+	if combatant == null:
+		return ""
+	var output := ""
+	for active_effect: ActiveEffect in effects_at_turn_start:
+		if active_effect == null:
+			continue
+		if active_effect not in combatant.active_effects:
+			continue
+		if active_effect.target != combatant:
+			continue
+		output += active_effect.apply_tick()
+		active_effect.remaining_turns -= 1
+		if active_effect.remaining_turns <= 0:
+			output += remove_effect(active_effect, ActiveEffect.RemovalReason.NATURAL)
+	return output
+
+static func remove_effect(active_effect: ActiveEffect, reason: ActiveEffect.RemovalReason) -> String:
+	if active_effect == null or active_effect.target == null:
+		return ""
+	var target := active_effect.target
+	var output := active_effect.remove(reason)
+	if active_effect in target.active_effects:
+		target.active_effects.erase(active_effect)
+	return output
+
+static func remove_effect_by_id(combatant: Combatant, effect_id: StringName, reason: ActiveEffect.RemovalReason = ActiveEffect.RemovalReason.CLEANSED) -> String:
+	var active_effect := find_active_effect(combatant, effect_id)
+	if active_effect == null:
+		return ""
+	return remove_effect(active_effect, reason)
+
+static func remove_all_effects(combatant: Combatant, reason: ActiveEffect.RemovalReason, include_persistent: bool = false) -> String:
+	if combatant == null:
+		return ""
+	var output := ""
+	for active_effect: ActiveEffect in get_active_effects(combatant):
+		if not include_persistent and active_effect.effect.persistence == Effect.Persistence.PERSISTENT:
+			continue
+		output += remove_effect(active_effect, reason)
+	return output
+
+static func cleanup_after_battle(combatant: Combatant, include_persistent: bool = false) -> String:
+	return remove_all_effects(combatant, ActiveEffect.RemovalReason.BATTLE_ENDED, include_persistent)
+
 static func _add_effect(effect: Effect, source: Combatant, target: Combatant, remaining_turns: int) -> ApplicationResult:
 	assert(find_active_effect(target, effect.effect_id) == null,
 		'Effect "%s" is already active on the target.' % effect.effect_id)
