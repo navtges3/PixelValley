@@ -91,20 +91,78 @@ func end_player_turn() -> void:
 		return
 	hero.update_cooldown()
 	var effect_output := EffectManager.process_turn_end(hero, _hero_effects_at_turn_start)
-	battle_log_updated.emit(effect_output)
+	if not effect_output.is_empty():
+		battle_log_updated.emit(effect_output)
 	hero_updated.emit(hero)
-	if hero.is_alive():
-		if monster.is_alive():
-			state = BattleState.MONSTER_TURN
-			_monster_effects_at_turn_start = EffectManager.capture_turn_start(monster)
-			monster_turn.emit()
-			await get_tree().create_timer(0.5).timeout
-			enemy_turn()
-		else:
-			_on_monster_killed()
+	if _resolve_deaths_after_effects():
+		return
+	state = BattleState.MONSTER_TURN
+	_monster_effects_at_turn_start = EffectManager.capture_turn_start(monster)
+	monster_turn.emit()
+	await get_tree().create_timer(0.5).timeout
+	enemy_turn()
+	
+func enemy_turn() -> void:
+	battle_log_updated.emit("Enemy turn...\n")
+	monster_attacking.emit()
+	var monster_ability := monster.choose_ability(hero)
+	var output := monster_ability.use(monster, hero)
+	battle_log_updated.emit(output)
+	hero_hurt.emit()
+	hero_updated.emit(hero)
+	end_enemy_turn()
+
+func end_enemy_turn() -> void:
+	monster.update_cooldown()
+	var effect_output := EffectManager.process_turn_end(monster, _monster_effects_at_turn_start)
+	if not effect_output.is_empty():
+		battle_log_updated.emit(effect_output)
+	monster_updated.emit(monster)
+	if _resolve_deaths_after_effects():
+		return
+	start_player_turn()
+
+func end_battle(player_won: bool, entries: Array[RewardEntry] = []) -> void:
+	if state in [BattleState.VICTORY, BattleState.DEFEAT]:
+		return
+	state = BattleState.VICTORY if player_won else BattleState.DEFEAT
+	var cleanup_output := _cleanup_battle_effects()
+	if not cleanup_output.is_empty():
+		battle_log_updated.emit(cleanup_output)
+	if player_won:
+		if spawn_point_id != "":
+			WorldManager.mark_spawner_defeated(location_id, spawn_point_id)
+		battle_won.emit(entries)
 	else:
-		# Hero has been slain
+		hero_defeated.emit()
+
+func player_fled() -> void:
+	if state != BattleState.PLAYER_TURN:
+		return
+	state = BattleState.RESOLVING
+	var cleanup_output := _cleanup_battle_effects()
+	if not cleanup_output.is_empty():
+		battle_log_updated.emit(cleanup_output)
+	if flee_position != Vector2.ZERO:
+		GameState.pre_combat_position = flee_position
+
+func _cleanup_battle_effects() -> String:
+	var output := EffectManager.cleanup_after_battle(hero, false)
+	output += EffectManager.cleanup_after_battle(monster, true)
+	_hero_effects_at_turn_start.clear()
+	_monster_effects_at_turn_start.clear()
+	hero_updated.emit(hero)
+	monster_updated.emit(monster)
+	return output
+
+func _resolve_deaths_after_effects() -> bool:
+	if not hero.is_alive():
 		end_battle(false)
+		return true
+	if not monster.is_alive():
+		_on_monster_killed()
+		return true
+	return false
 
 func _on_monster_killed() -> void:
 	if state in [BattleState.RESOLVING, BattleState.VICTORY, BattleState.DEFEAT]:
@@ -138,59 +196,3 @@ func _collect_loot(loot: Dictionary, entries: Array[RewardEntry]) -> void:
 		else:
 			hero.inventory.add_weapon_to_stash(weapon_id)
 			entries.append(RewardEntry.weapon(weapon_id))
-
-func enemy_turn() -> void:
-	battle_log_updated.emit("Enemy turn...\n")
-	monster_attacking.emit()
-	var monster_ability := monster.choose_ability(hero)
-	var output := monster_ability.use(monster, hero)
-	battle_log_updated.emit(output)
-	hero_hurt.emit()
-	hero_updated.emit(hero)
-	end_enemy_turn()
-
-func end_enemy_turn() -> void:
-	monster.update_cooldown()
-	var effect_output := EffectManager.process_turn_end(monster, _monster_effects_at_turn_start)
-	battle_log_updated.emit(effect_output)
-	monster_updated.emit(monster)
-	
-	if not hero.is_alive():
-		end_battle(false)
-	elif not monster.is_alive():
-		_on_monster_killed()
-	else:
-		start_player_turn()
-
-func _cleanup_battle_effects() -> String:
-	var output := EffectManager.cleanup_after_battle(hero, false)
-	output += EffectManager.cleanup_after_battle(monster, true)
-	_hero_effects_at_turn_start.clear()
-	_monster_effects_at_turn_start.clear()
-	hero_updated.emit(hero)
-	monster_updated.emit(monster)
-	return output
-
-func end_battle(player_won: bool, entries: Array[RewardEntry] = []) -> void:
-	if state in [BattleState.VICTORY, BattleState.DEFEAT]:
-		return
-	state = BattleState.VICTORY if player_won else BattleState.DEFEAT
-	var cleanup_output := _cleanup_battle_effects()
-	if not cleanup_output.is_empty():
-		battle_log_updated.emit(cleanup_output)
-	if player_won:
-		if spawn_point_id != "":
-			WorldManager.mark_spawner_defeated(location_id, spawn_point_id)
-		battle_won.emit(entries)
-	else:
-		hero_defeated.emit()
-
-func player_fled() -> void:
-	if state != BattleState.PLAYER_TURN:
-		return
-	state = BattleState.RESOLVING
-	var cleanup_output := _cleanup_battle_effects()
-	if not cleanup_output.is_empty():
-		battle_log_updated.emit(cleanup_output)
-	if flee_position != Vector2.ZERO:
-		GameState.pre_combat_position = flee_position
