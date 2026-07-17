@@ -72,19 +72,6 @@ func use_energy(amount: int) -> bool:
 func recover_energy(amount: int) -> void:
 	current_nrg = min(current_nrg + amount, max_nrg)
 
-func apply_effect(effect: Effect, source: Combatant = null, remaining_turns: int = 0) -> String:
-	var result := EffectManager.apply_effect(effect, source, self, remaining_turns)
-	return result.output
-
-func process_active_effects(effects_to_tick: Array[EffectManager.TurnEffectSnapshot]) -> String:
-	return EffectManager.process_turn_end(self, effects_to_tick)
-
-func remove_effect(effect_id: StringName, reason: ActiveEffect.RemovalReason = ActiveEffect.RemovalReason.CLEANSED) -> String:
-	return EffectManager.remove_effect_by_id(self, effect_id, reason)
-
-func clear_active_effects(reason: ActiveEffect.RemovalReason, include_persistent: bool = false) -> void:
-	EffectManager.remove_all_effects(self, reason, include_persistent)
-
 func _calculate_damage(amount: int, type: Attack.AttackType) -> int:
 	var damage := amount
 	match type:
