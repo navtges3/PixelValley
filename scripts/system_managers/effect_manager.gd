@@ -33,7 +33,7 @@ static func apply_effect(effect: Effect, source: Combatant, target: Combatant, r
 	
 	var active_effect := find_active_effect(target, effect.effect_id)
 	if active_effect == null:
-		return _add_effect(effect, source, target, remaining_turns)
+		return _add_effect(effect, source, target, remaining_turns, dispatcher)
 	if effect.level < active_effect.effect.level:
 		return _reject_weaker_effect(effect, target, active_effect)
 	if effect.level == active_effect.effect.level:
@@ -171,7 +171,7 @@ static func _dispatch(dispatcher: EffectEventDispatcher, event: EffectLifecycleE
 	if dispatcher != null:
 		dispatcher.dispatch(event)
 
-static func _add_effect(effect: Effect, source: Combatant, target: Combatant, remaining_turns: int) -> ApplicationResult:
+static func _add_effect(effect: Effect, source: Combatant, target: Combatant, remaining_turns: int, dispatcher: EffectEventDispatcher = null) -> ApplicationResult:
 	assert(find_active_effect(target, effect.effect_id) == null,
 		'Effect "%s" is already active on the target.' % effect.effect_id)
 	var active_effect := ActiveEffect.new(effect, target, source)
@@ -183,14 +183,17 @@ static func _add_effect(effect: Effect, source: Combatant, target: Combatant, re
 		target.get_colored_name()
 	]
 	output += active_effect.on_apply()
-	return ApplicationResult.new(ApplicationStatus.ADDED, active_effect, effect.level, 0, output)
+	var result := ApplicationResult.new(ApplicationStatus.ADDED, active_effect, effect.level, 0, output)
+	_dispatch(dispatcher, EffectLifecycleEvent.new(EffectLifecycleEvent.EventType.ADDED, active_effect, 0, effect.level))
+	return result
 
 static func _get_active_effect_instances(target: Combatant) -> Array[ActiveEffect]:
 	if target == null:
 		return []
 	return target.active_effects.duplicate()
 
-static func _refresh_effect(effect: Effect, source: Combatant, target: Combatant, active_effect: ActiveEffect, remaining_turns: int) -> ApplicationResult:
+static func _refresh_effect(effect: Effect, source: Combatant, target: Combatant, 
+	active_effect: ActiveEffect, remaining_turns: int, dispatcher: EffectEventDispatcher = null) -> ApplicationResult:
 	active_effect.refresh_duration(source)
 	if remaining_turns > 0:
 		active_effect.remaining_turns = remaining_turns
@@ -200,9 +203,12 @@ static func _refresh_effect(effect: Effect, source: Combatant, target: Combatant
 		target.get_colored_name(),
 		active_effect.remaining_turns
 	]
-	return ApplicationResult.new(ApplicationStatus.REFRESHED, active_effect, effect.level, active_effect.effect.level, output)
+	var result := ApplicationResult.new(ApplicationStatus.REFRESHED, active_effect, effect.level, active_effect.effect.level, output)
+	_dispatch(dispatcher, EffectLifecycleEvent.new(EffectLifecycleEvent.EventType.REFRESHED, active_effect, active_effect.effect.level, effect.level))
+	return result
 
-static func _upgrade_effect(effect: Effect, source: Combatant, target: Combatant, active_effect: ActiveEffect, remaining_turns: int) -> ApplicationResult:
+static func _upgrade_effect(effect: Effect, source: Combatant, target: Combatant,
+	 active_effect: ActiveEffect, remaining_turns: int, dispatcher: EffectEventDispatcher = null) -> ApplicationResult:
 	var previous_level := active_effect.effect.level
 	var replacement_source: Combatant = source if source != null else active_effect.source
 	var output := remove_effect(active_effect, ActiveEffect.RemovalReason.REPLACED)
@@ -218,13 +224,17 @@ static func _upgrade_effect(effect: Effect, source: Combatant, target: Combatant
 		target.get_colored_name(),
 		replacement.remaining_turns,
 	]
-	return ApplicationResult.new(ApplicationStatus.UPGRADED, replacement, effect.level, previous_level, output)
+	var result := ApplicationResult.new(ApplicationStatus.UPGRADED, replacement, effect.level, previous_level, output)
+	_dispatch(dispatcher, EffectLifecycleEvent.new(EffectLifecycleEvent.EventType.UPGRADED, active_effect, previous_level, effect.level))
+	return result
 
-static func _reject_weaker_effect(effect: Effect, target: Combatant, active_effect: ActiveEffect) -> ApplicationResult:
+static func _reject_weaker_effect(effect: Effect, target: Combatant, active_effect: ActiveEffect, dispatcher: EffectEventDispatcher = null) -> ApplicationResult:
 	var output := "%s level %d had no effect on %s; level %d is already active.\n" % [
 		effect.effect_name,
 		effect.level,
 		target.get_colored_name(),
 		active_effect.effect.level
 	]
-	return ApplicationResult.new(ApplicationStatus.REJECTED_WEAKER, active_effect, effect.level, active_effect.effect.level, output)
+	var result := ApplicationResult.new(ApplicationStatus.REJECTED_WEAKER, active_effect, effect.level, active_effect.effect.level, output)
+	_dispatch(dispatcher, EffectLifecycleEvent.new(EffectLifecycleEvent.EventType.REJECTED_WEAKER, active_effect, active_effect.effect.level, effect.level))
+	return result
