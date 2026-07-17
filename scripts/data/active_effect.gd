@@ -3,8 +3,9 @@ class_name ActiveEffect
 
 enum RemovalReason { NATURAL, CLEANSED, RESTED, BATTLE_ENDED, REPLACED }
 
-var effect: Effect
-var remaining_turns: int
+var effect: Effect = null
+var remaining_turns: int = 0
+var lifecycle_revision: int = 0
 var source: Combatant = null
 var target: Combatant = null
 var _applied_stat_deltas: Array[Dictionary] = []
@@ -19,7 +20,7 @@ func _init(_effect: Effect, _target: Combatant, _source: Combatant = null) -> vo
 func on_apply() -> String:
 	return _apply_changes(Effect.EffectTiming.ON_APPLY)
 
-func on_tick() -> String:
+func apply_tick() -> String:
 	return _apply_changes(Effect.EffectTiming.ON_TICK)
 
 func remove(reason: RemovalReason) -> String:
@@ -36,18 +37,9 @@ func remove(reason: RemovalReason) -> String:
 
 func refresh_duration(new_source: Combatant = null) -> void:
 	remaining_turns = effect.get_duration()
+	lifecycle_revision += 1
 	if new_source != null:
 		source = new_source
-
-func upgrade_to(new_effect: Effect, new_source: Combatant = null) -> String:
-	var output := remove(RemovalReason.REPLACED)
-	effect = new_effect
-	if new_source != null:
-		source = new_source
-	remaining_turns = effect.get_duration()
-	_is_removed = false
-	output += on_apply()
-	return output
 
 func get_applied_stat_deltas_data() -> Array[Dictionary]:
 	return _applied_stat_deltas.duplicate(true)

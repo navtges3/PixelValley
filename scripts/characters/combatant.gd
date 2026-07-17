@@ -75,7 +75,7 @@ func apply_effect(effect: Effect, source: Combatant = null, remaining_turns: int
 	var result := EffectManager.apply_effect(effect, source, self, remaining_turns)
 	return result.output
 
-func process_active_effects(effects_to_tick: Array[ActiveEffect]) -> String:
+func process_active_effects(effects_to_tick: Array[EffectManager.TurnEffectSnapshot]) -> String:
 	return EffectManager.process_turn_end(self, effects_to_tick)
 
 func remove_effect(effect_id: StringName, reason: ActiveEffect.RemovalReason = ActiveEffect.RemovalReason.CLEANSED) -> String:

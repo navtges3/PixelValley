@@ -9,6 +9,11 @@ func _ready() -> void:
 	_test_reversible_modifier_stats()
 	_test_refresh_upgrade_and_idempotent_removal()
 	_test_natural_expiration_and_cleanup()
+	_test_duration_one_receives_one_future_tick()
+	_test_duration_three_receives_three_future_ticks()
+	_test_refresh_does_not_tick_immediately()
+	_test_multiple_effects_expire_safely()
+	_test_forced_removal_skips_natural_expiration()
 	_test_cleanse_rest_and_battle_cleanup()
 	_test_current_values_are_not_reversed()
 	_test_mismatched_removal_data_is_ignored()
@@ -206,7 +211,10 @@ func _test_refresh_upgrade_and_idempotent_removal() -> void:
 		"cleanse reverses upgraded modifier"
 	)
 
-	active_effect.remove(ActiveEffect.RemovalReason.BATTLE_ENDED)
+	EffectManager.remove_effect(
+		active_effect,
+		ActiveEffect.RemovalReason.BATTLE_ENDED
+	)
 
 	_expect_equal(
 		combatant.defense,
@@ -230,9 +238,9 @@ func _test_natural_expiration_and_cleanup() -> void:
 	combatant.apply_effect(effect)
 
 	var active_effect: ActiveEffect = combatant.active_effects[0]
-	var effects_to_tick: Array[ActiveEffect] = combatant.active_effects.duplicate()
+	var effects_to_tick := EffectManager.capture_turn_start(combatant)
 
-	combatant.process_active_effects(effects_to_tick)
+	EffectManager.process_turn_end(combatant, effects_to_tick)
 
 	_expect_equal(
 		combatant.attack,
@@ -246,12 +254,268 @@ func _test_natural_expiration_and_cleanup() -> void:
 		"naturally expired effect leaves active list"
 	)
 
-	active_effect.remove(ActiveEffect.RemovalReason.BATTLE_ENDED)
+	EffectManager.remove_effect(
+		active_effect,
+		ActiveEffect.RemovalReason.BATTLE_ENDED
+	)
 
 	_expect_equal(
 		combatant.attack,
 		10,
 		"battle cleanup after expiration cannot double-reverse"
+	)
+
+
+func _test_duration_one_receives_one_future_tick() -> void:
+	var combatant := _make_combatant()
+
+	var poison := _make_effect(
+		"short_poison",
+		Effect.EffectStat.CURRENT_HP,
+		Effect.EffectOperation.SUBTRACT,
+		2
+	)
+
+	poison.stat_changes[0].timing = Effect.EffectTiming.ON_TICK
+	poison.base_duration = 1
+
+	var application_turn := EffectManager.capture_turn_start(combatant)
+
+	combatant.apply_effect(poison)
+	EffectManager.process_turn_end(combatant, application_turn)
+
+	_expect_equal(
+		combatant.current_hp,
+		15,
+		"duration-one effect does not tick on its application turn"
+	)
+
+	_expect_equal(
+		combatant.active_effects[0].remaining_turns,
+		1,
+		"application turn does not consume duration"
+	)
+
+	var first_future_turn := EffectManager.capture_turn_start(combatant)
+
+	EffectManager.process_turn_end(combatant, first_future_turn)
+
+	_expect_equal(
+		combatant.current_hp,
+		13,
+		"duration-one effect receives one future tick"
+	)
+
+	_expect_equal(
+		combatant.active_effects.size(),
+		0,
+		"duration-one effect expires after its future tick"
+	)
+
+
+func _test_duration_three_receives_three_future_ticks() -> void:
+	var combatant := _make_combatant()
+
+	var poison := _make_effect(
+		"long_poison",
+		Effect.EffectStat.CURRENT_HP,
+		Effect.EffectOperation.SUBTRACT,
+		2
+	)
+
+	poison.stat_changes[0].timing = Effect.EffectTiming.ON_TICK
+	poison.base_duration = 3
+
+	var application_turn := EffectManager.capture_turn_start(combatant)
+
+	combatant.apply_effect(poison)
+	EffectManager.process_turn_end(combatant, application_turn)
+
+	_expect_equal(
+		combatant.current_hp,
+		15,
+		"duration-three effect skips its application turn"
+	)
+
+	for turn_number: int in range(1, 4):
+		var turn_snapshot := EffectManager.capture_turn_start(combatant)
+
+		EffectManager.process_turn_end(combatant, turn_snapshot)
+
+		_expect_equal(
+			combatant.current_hp,
+			15 - (turn_number * 2),
+			"duration-three effect applies future tick %d" % turn_number
+		)
+
+		if turn_number < 3:
+			_expect_equal(
+				combatant.active_effects[0].remaining_turns,
+				3 - turn_number,
+				"duration-three effect tracks remaining future ticks"
+			)
+
+	_expect_equal(
+		combatant.active_effects.size(),
+		0,
+		"duration-three effect expires after exactly three future ticks"
+	)
+
+
+func _test_refresh_does_not_tick_immediately() -> void:
+	var combatant := _make_combatant()
+
+	var poison := _make_effect(
+		"refresh_poison",
+		Effect.EffectStat.CURRENT_HP,
+		Effect.EffectOperation.SUBTRACT,
+		2
+	)
+
+	poison.stat_changes[0].timing = Effect.EffectTiming.ON_TICK
+	poison.base_duration = 3
+
+	combatant.apply_effect(poison)
+
+	var active_effect := combatant.active_effects[0]
+
+	active_effect.remaining_turns = 1
+
+	var refresh_turn := EffectManager.capture_turn_start(combatant)
+
+	combatant.apply_effect(poison)
+	EffectManager.process_turn_end(combatant, refresh_turn)
+
+	_expect_equal(
+		combatant.current_hp,
+		15,
+		"refreshed effect does not tick on the turn it was refreshed"
+	)
+
+	_expect_equal(
+		active_effect.remaining_turns,
+		3,
+		"refresh restores duration without immediately consuming it"
+	)
+
+	var next_turn := EffectManager.capture_turn_start(combatant)
+
+	EffectManager.process_turn_end(combatant, next_turn)
+
+	_expect_equal(
+		combatant.current_hp,
+		13,
+		"refreshed effect ticks on the next eligible turn"
+	)
+
+	_expect_equal(
+		active_effect.remaining_turns,
+		2,
+		"next eligible tick consumes one refreshed turn"
+	)
+
+
+func _test_multiple_effects_expire_safely() -> void:
+	var combatant := _make_combatant()
+
+	var poison := _make_effect(
+		"simultaneous_poison",
+		Effect.EffectStat.CURRENT_HP,
+		Effect.EffectOperation.SUBTRACT,
+		2
+	)
+
+	poison.stat_changes[0].timing = Effect.EffectTiming.ON_TICK
+	poison.base_duration = 1
+
+	var fatigue := _make_effect(
+		"simultaneous_fatigue",
+		Effect.EffectStat.CURRENT_NRG,
+		Effect.EffectOperation.SUBTRACT,
+		3
+	)
+
+	fatigue.stat_changes[0].timing = Effect.EffectTiming.ON_TICK
+	fatigue.base_duration = 1
+
+	combatant.apply_effect(poison)
+	combatant.apply_effect(fatigue)
+
+	var turn_snapshot := EffectManager.capture_turn_start(combatant)
+
+	EffectManager.process_turn_end(combatant, turn_snapshot)
+
+	_expect_equal(
+		combatant.current_hp,
+		13,
+		"first simultaneous effect applies its final tick"
+	)
+
+	_expect_equal(
+		combatant.current_nrg,
+		12,
+		"second simultaneous effect applies its final tick"
+	)
+
+	_expect_equal(
+		combatant.active_effects.size(),
+		0,
+		"multiple expiring effects are all removed safely"
+	)
+
+
+func _test_forced_removal_skips_natural_expiration() -> void:
+	var cleansed_target := _make_combatant()
+
+	cleansed_target.current_hp = 10
+
+	var cleansed_effect := _make_effect(
+		"cleansed_expiration_heal",
+		Effect.EffectStat.CURRENT_HP,
+		Effect.EffectOperation.ADD,
+		4
+	)
+
+	cleansed_effect.stat_changes[0].timing = Effect.EffectTiming.ON_EXPIRE
+	cleansed_effect.base_duration = 1
+
+	cleansed_target.apply_effect(cleansed_effect)
+	EffectManager.remove_effect_by_id(
+		cleansed_target,
+		cleansed_effect.effect_id,
+		ActiveEffect.RemovalReason.CLEANSED
+	)
+
+	_expect_equal(
+		cleansed_target.current_hp,
+		10,
+		"cleanse does not execute natural-expiration payloads"
+	)
+
+	var expired_target := _make_combatant()
+
+	expired_target.current_hp = 10
+
+	var expired_effect := _make_effect(
+		"natural_expiration_heal",
+		Effect.EffectStat.CURRENT_HP,
+		Effect.EffectOperation.ADD,
+		4
+	)
+
+	expired_effect.stat_changes[0].timing = Effect.EffectTiming.ON_EXPIRE
+	expired_effect.base_duration = 1
+
+	expired_target.apply_effect(expired_effect)
+
+	var expiration_turn := EffectManager.capture_turn_start(expired_target)
+
+	EffectManager.process_turn_end(expired_target, expiration_turn)
+
+	_expect_equal(
+		expired_target.current_hp,
+		14,
+		"natural expiration executes its expiration payload"
 	)
 
 
@@ -344,9 +608,9 @@ func _test_current_values_are_not_reversed() -> void:
 
 	combatant.apply_effect(poison)
 
-	var effects_to_tick: Array[ActiveEffect] = combatant.active_effects.duplicate()
+	var effects_to_tick := EffectManager.capture_turn_start(combatant)
 
-	combatant.process_active_effects(effects_to_tick)
+	EffectManager.process_turn_end(combatant, effects_to_tick)
 
 	_expect_equal(
 		combatant.current_hp,
@@ -536,18 +800,18 @@ func _test_duplicate_effect_id_validation() -> void:
 		5
 	)
 
-	var duplicate := _make_effect(
+	var copy := _make_effect(
 		"poison",
 		Effect.EffectStat.CURRENT_HP,
 		Effect.EffectOperation.SUBTRACT,
 		10
 	)
 
-	duplicate.effect_name = "Greater Poison"
+	copy.effect_name = "Greater Poison"
 
 	var effects: Array[Effect] = [
 		first,
-		duplicate,
+		copy,
 	]
 
 	var errors := EffectManager.validate_unique_effect_ids(effects)
@@ -815,33 +1079,45 @@ func _test_effect_manager_upgrades_stronger_effect() -> void:
 	)
 
 	_expect_equal(
-		result.active_effect,
-		original_active_effect,
-		"upgrade reuses the existing ActiveEffect"
+		result.active_effect == original_active_effect,
+		false,
+		"upgrade replaces the old ActiveEffect instance"
 	)
 
 	_expect_equal(
-		original_active_effect.effect,
+		target.active_effects[0],
+		result.active_effect,
+		"target stores the replacement ActiveEffect"
+	)
+
+	_expect_equal(
+		original_active_effect in target.active_effects,
+		false,
+		"old ActiveEffect leaves the target collection"
+	)
+
+	_expect_equal(
+		result.active_effect.effect,
 		level_two,
-		"upgrade stores the stronger Effect resource"
+		"replacement stores the stronger Effect resource"
+	)
+
+	_expect_equal(
+		result.active_effect.remaining_turns,
+		level_two.get_duration(),
+		"replacement receives the stronger effect duration"
+	)
+
+	_expect_equal(
+		result.active_effect.source,
+		second_source,
+		"replacement receives the new source attribution"
 	)
 
 	_expect_equal(
 		target.defense,
 		18,
 		"upgrade reverses the old modifier before applying the new modifier"
-	)
-
-	_expect_equal(
-		original_active_effect.remaining_turns,
-		level_two.get_duration(),
-		"upgrade refreshes duration using the stronger effect"
-	)
-
-	_expect_equal(
-		original_active_effect.source,
-		second_source,
-		"upgrade replaces source attribution"
 	)
 
 	_expect_equal(
@@ -978,7 +1254,7 @@ func _test_effect_manager_preserves_source_when_refresh_source_is_null() -> void
 		5
 	)
 
-	var first_result := EffectManager.apply_effect(
+	EffectManager.apply_effect(
 		effect,
 		original_source,
 		target
@@ -1004,7 +1280,7 @@ func _test_effect_manager_preserves_source_when_refresh_source_is_null() -> void
 	)
 
 	_expect_equal(
-		first_result.active_effect.source,
+		result.active_effect.source,
 		original_source,
 		"null refresh source preserves existing attribution"
 	)
@@ -1034,7 +1310,7 @@ func _test_effect_manager_preserves_source_when_upgrade_source_is_null() -> void
 		3
 	)
 
-	var first_result := EffectManager.apply_effect(
+	EffectManager.apply_effect(
 		level_one,
 		original_source,
 		target
@@ -1053,7 +1329,7 @@ func _test_effect_manager_preserves_source_when_upgrade_source_is_null() -> void
 	)
 
 	_expect_equal(
-		first_result.active_effect.source,
+		result.active_effect.source,
 		original_source,
 		"null upgrade source preserves existing attribution"
 	)

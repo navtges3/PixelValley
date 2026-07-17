@@ -11,8 +11,8 @@ var flee_position: Vector2 = Vector2.ZERO
 
 var state: BattleState = BattleState.PLAYER_TURN
 
-var _hero_effects_at_turn_start: Array[ActiveEffect] = []
-var _monster_effects_at_turn_start: Array[ActiveEffect] = []
+var _hero_effects_at_turn_start: Array[EffectManager.TurnEffectSnapshot] = []
+var _monster_effects_at_turn_start: Array[EffectManager.TurnEffectSnapshot] = []
 
 signal new_monster(monster_ref: Monster)
 signal player_turn()
@@ -45,7 +45,7 @@ func setup_battle(config: Dictionary) -> void:
 	start_player_turn()
 
 func start_player_turn() -> void:
-	_hero_effects_at_turn_start = EffectManager.get_active_effects(hero)
+	_hero_effects_at_turn_start = EffectManager.capture_turn_start(hero)
 	state = BattleState.PLAYER_TURN
 	battle_log_updated.emit("%s's turn!\n" % hero.get_colored_name())
 	player_turn.emit()
@@ -96,7 +96,7 @@ func end_player_turn() -> void:
 	if hero.is_alive():
 		if monster.is_alive():
 			state = BattleState.MONSTER_TURN
-			_monster_effects_at_turn_start = EffectManager.get_active_effects(monster)
+			_monster_effects_at_turn_start = EffectManager.capture_turn_start(monster)
 			monster_turn.emit()
 			await get_tree().create_timer(0.5).timeout
 			enemy_turn()
