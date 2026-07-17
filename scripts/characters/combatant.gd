@@ -72,26 +72,8 @@ func recover_energy(amount: int) -> void:
 	current_nrg = min(current_nrg + amount, max_nrg)
 
 func apply_effect(effect: Effect, source: Combatant = null, remaining_turns: int = 0) -> String:
-	assert(effect != null, "Cannot apply a null Effect.")
-	assert(effect.effect_id != &"", 'Effect "%s" must have a non-empty effect_id.' % effect.effect_name)
-	var ae := EffectManager.find_active_effect(self, effect.effect_id)
-	if ae == null:
-		ae = ActiveEffect.new(effect, self, source)
-		if remaining_turns > 0:
-			ae.remaining_turns = remaining_turns
-		active_effects.append(ae)
-		var output := "%s applied to %s.\n" % [effect._to_string(ae.remaining_turns), get_colored_name()]
-		return output + ae.on_apply()
-	else:
-		if effect.level < ae.effect.level:
-			return "%s level %d had no effect; level %d is already active.\n" % [effect.effect_name, effect.level, ae.effect.level]
-		elif effect.level == ae.effect.level:
-			ae.refresh_duration(source)
-			return "%s %d refreshed on %s (%d turns).\n" % [effect.effect_name, effect.level, get_colored_name(), ae.remaining_turns]
-		else:
-			var output := ae.upgrade_to(effect, source)
-			output += "%s upgraded to level %d on %s (%d turns).\n" % [effect.effect_name, effect.level, get_colored_name(), ae.remaining_turns]
-			return output
+	var result := EffectManager.apply_effect(effect, source, self, remaining_turns)
+	return result.output
 
 func process_active_effects(effects_to_tick: Array[ActiveEffect]) -> String:
 	var output := ""

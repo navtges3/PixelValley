@@ -1,6 +1,37 @@
 extends RefCounted
 class_name EffectManager
 
+enum ApplicationStatus { ADDED, REFRESHED, UPGRADED, REJECTED_WEAKER }
+
+class ApplicationResult:
+	var status: ApplicationStatus
+	var active_effect: ActiveEffect
+	var previous_level: int = 0
+	var incoming_level: int = 0
+	var output: String = ""
+	
+	func _init(_status: ApplicationStatus, _active_effect:ActiveEffect,
+		_incoming_level: int, _previous_level: int = 0, _output: String = "") -> void:
+			status = _status
+			active_effect = _active_effect
+			incoming_level = _incoming_level
+			previous_level = _previous_level
+			output = _output
+
+static func apply_effect(effect: Effect, source: Combatant, target: Combatant, remaining_turns: int = 0) -> ApplicationResult:
+	assert(effect != null, "Cannot apply a null Effect.")
+	assert(target != null, "Cannot apply an Effect to a null target.")
+	assert(effect.effect_id != &"", 'Effect "%s" must have a non-empty effect_id.' % effect.effect_name)
+	
+	var active_effect := find_active_effect(target, effect.effect_name)
+	if active_effect == null:
+		return _add_effect(effect, source, target, remaining_turns)
+	if effect.level < active_effect.effect.level:
+		return _reject_weaker_effect(effect, target, active_effect)
+	if effect.level == active_effect.effect.level:
+		return _refresh_effect(effect, source, target, active_effect, remaining_turns)
+	return _upgrade_effect(effect, source, target, active_effect, remaining_turns)
+
 static func find_active_effect(target: Combatant, effect_id: StringName) -> ActiveEffect:
 	if target == null or effect_id == &"":
 		return null
@@ -40,3 +71,52 @@ static func validate_unique_effect_ids(effects: Array[Effect]) -> PackedStringAr
 			continue
 		seen_ids[effect.effect_id] = effect
 	return errors
+
+static func _add_effect(effect: Effect, source: Combatant, target: Combatant, remaining_turns: int) -> ApplicationResult:
+	assert(find_active_effect(target, effect.effect_id) == null,
+		'Effect "%s" is already active on the target.' % effect.effect_id)
+	var active_effect := ActiveEffect.new(effect, target, source)
+	if remaining_turns > 0:
+		active_effect.remaining_turns = remaining_turns
+	target.active_effects.append(active_effect)
+	var output := "%s applied to %s.\n" % [
+		effect._to_string(active_effect.remaining_turns),
+		target.get_colored_name()
+	]
+	output += active_effect.on_apply()
+	return ApplicationResult.new(ApplicationStatus.ADDED, active_effect, effect.level, 0, output)
+
+static func _refresh_effect(effect: Effect, source: Combatant, target: Combatant, active_effect: ActiveEffect, remaining_turns: int) -> ApplicationResult:
+	active_effect.refresh_duration(source)
+	if remaining_turns > 0:
+		active_effect.remaining_turns = remaining_turns
+	var output := "%s %d refreshed on %s (%d turns).\n" % [
+		effect.effect_name,
+		effect.level,
+		target.get_colored_name(),
+		active_effect.remaining_turns
+	]
+	return ApplicationResult.new(ApplicationStatus.REFRESHED, active_effect, effect.level, active_effect.effect.level, output)
+
+static func _upgrade_effect(effect: Effect, source: Combatant, target: Combatant, active_effect: ActiveEffect, remaining_turns: int) -> ApplicationResult:
+	var previous_level := active_effect.effect.level
+	var output := active_effect.upgrade_to(effect, source)
+	if remaining_turns > 0:
+		active_effect.remaining_turns = remaining_turns
+	output += "%s upgraded from level %d to level %d on %s (%d turns).\n" % [
+		effect.effect_name,
+		previous_level,
+		effect.level,
+		target.get_colored_name(),
+		active_effect.remaining_turns
+	]
+	return ApplicationResult.new(ApplicationStatus.UPGRADED, active_effect, effect.level, previous_level, output)
+
+static func _reject_weaker_effect(effect: Effect, target: Combatant, active_effect: ActiveEffect) -> ApplicationResult:
+	var output := "%s level %d had no effect on %s; level %d is already active.\n" % [
+		effect.effect_name,
+		effect.level,
+		target.get_colored_name(),
+		active_effect.effect.level
+	]
+	return ApplicationResult.new(ApplicationStatus.REJECTED_WEAKER, active_effect, effect.level, active_effect.effect.level, output)
