@@ -80,7 +80,7 @@ func get_hero_items() -> Dictionary:
 func player_item_selected(item_id: String) -> void:
 	if state != BattleState.PLAYER_TURN:
 		return
-	var result := hero.use_item(item_id)
+	var result := hero.use_item(item_id, effect_events)
 	battle_log_updated.emit(result)
 	hero_updated.emit(hero)
 	end_player_turn()
