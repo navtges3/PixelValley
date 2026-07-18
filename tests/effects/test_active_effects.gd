@@ -1,10 +1,8 @@
-extends Node
+extends TestCase
 
 
-var _failures: int = 0
-
-
-func _ready() -> void:
+func run_tests() -> int:
+	_begin_test_run()
 	# Existing ActiveEffect lifecycle tests.
 	_test_reversible_modifier_stats()
 	_test_refresh_upgrade_and_idempotent_removal()
@@ -37,15 +35,7 @@ func _ready() -> void:
 	_test_effect_manager_prevents_duplicates()
 	_test_effect_manager_application_integration()
 
-	if _failures == 0:
-		print("Active effect lifecycle and EffectManager tests passed.")
-		get_tree().quit(0)
-	else:
-		printerr(
-			"Active effect lifecycle and EffectManager tests failed: %d"
-			% _failures
-		)
-		get_tree().quit(1)
+	return _finish_test_run("Active effect lifecycle and EffectManager tests")
 
 
 func _test_reversible_modifier_stats() -> void:
@@ -1501,19 +1491,3 @@ func _get_stat_value(
 			return combatant.resist
 
 	return 0
-
-
-func _expect_equal(
-	actual: Variant,
-	expected: Variant,
-	message: String
-) -> void:
-	if actual == expected:
-		return
-
-	_failures += 1
-
-	printerr(
-		"FAIL: %s (expected %s, got %s)"
-		% [message, expected, actual]
-	)

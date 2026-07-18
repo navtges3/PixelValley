@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://g54os5c1o7dt"]
+
+[ext_resource type="PackedScene" uid="uid://b444axe4enf14" path="res://tests/effects/test_active_effects.tscn" id="1_1wc5c"]
+[ext_resource type="PackedScene" path="res://tests/effects/test_effect_integration.tscn" id="2_28f2g"]
+[ext_resource type="PackedScene" path="res://tests/effects/test_effect_lifecycle_events.tscn" id="3_pe5y4"]
+[ext_resource type="Script" uid="uid://ccfwxvdvq6via" path="res://tests/test_suite.gd" id="4_suite"]
+
+[node name="TestSuite" type="Node" unique_id=783793299]
+script = ExtResource("4_suite")
+
+[node name="ActiveEffectTests" parent="." unique_id=509975379 instance=ExtResource("1_1wc5c")]
+
+[node name="EffectIntegrationTests" parent="." unique_id=2146928627 instance=ExtResource("2_28f2g")]
+
+[node name="EffectLifecycleEventTests" parent="." unique_id=636950766 instance=ExtResource("3_pe5y4")]
