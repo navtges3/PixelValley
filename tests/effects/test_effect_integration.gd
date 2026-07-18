@@ -1,7 +1,6 @@
-extends Node
+extends TestCase
 
 
-var _failures: int = 0
 var _battle_log: String = ""
 var _battle_won_count: int = 0
 var _hero_defeated_count: int = 0
@@ -9,7 +8,8 @@ var _hero_updated_count: int = 0
 var _monster_updated_count: int = 0
 
 
-func _ready() -> void:
+func run_tests() -> int:
+	_begin_test_run()
 	_test_hero_ability_applies_caster_and_target_effects()
 	_test_monster_ability_preserves_source()
 	_test_potion_uses_hero_as_source()
@@ -22,12 +22,7 @@ func _ready() -> void:
 	_test_defeat_cleanup_preserves_persistent_hero_effects()
 	_test_flee_cleanup_preserves_persistent_hero_effects()
 
-	if _failures == 0:
-		print("Effect integration tests passed.")
-		get_tree().quit(0)
-	else:
-		printerr("Effect integration tests failed: %d" % _failures)
-		get_tree().quit(1)
+	return _finish_test_run("Effect integration tests")
 
 
 func _test_hero_ability_applies_caster_and_target_effects() -> void:
@@ -440,37 +435,3 @@ func _on_hero_updated(_hero: Hero) -> void:
 
 func _on_monster_updated(_monster: Monster) -> void:
 	_monster_updated_count += 1
-
-
-func _expect_not_null(value: Variant, message: String) -> void:
-	if value != null:
-		return
-	_failures += 1
-	printerr("FAIL: %s (value was null)" % message)
-
-
-func _expect_true(value: bool, message: String) -> void:
-	if value:
-		return
-	_failures += 1
-	printerr("FAIL: %s" % message)
-
-
-func _expect_contains(actual: String, expected: String, message: String) -> void:
-	if actual.to_lower().contains(expected.to_lower()):
-		return
-	_failures += 1
-	printerr(
-		'FAIL: %s (expected "%s" in "%s")'
-		% [message, expected, actual]
-	)
-
-
-func _expect_equal(actual: Variant, expected: Variant, message: String) -> void:
-	if actual == expected:
-		return
-	_failures += 1
-	printerr(
-		"FAIL: %s (expected %s, got %s)"
-		% [message, expected, actual]
-	)
