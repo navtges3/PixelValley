@@ -6,6 +6,7 @@ var _battle_won_count: int = 0
 var _hero_defeated_count: int = 0
 var _hero_updated_count: int = 0
 var _monster_updated_count: int = 0
+var _last_reward_entries: Array = []
 
 
 func run_tests() -> int:
@@ -18,6 +19,7 @@ func run_tests() -> int:
 	_test_effect_outcomes_are_logged()
 	_test_player_turn_effect_death_resolves_defeat_once()
 	_test_monster_turn_effect_death_resolves_victory_once()
+	_test_simultaneous_death_prefers_defeat_without_rewards()
 	_test_victory_cleanup_preserves_persistent_hero_effects()
 	_test_defeat_cleanup_preserves_persistent_hero_effects()
 	_test_flee_cleanup_preserves_persistent_hero_effects()
@@ -230,6 +232,10 @@ func _test_monster_turn_effect_death_resolves_victory_once() -> void:
 	_reset_signal_observations()
 	var manager := _make_battle_manager()
 	manager.monster.current_hp = 3
+	manager.monster.gold = 100
+	manager.monster.gold_variance = 0.0
+	var starting_experience := manager.hero.experience
+	var starting_gold := manager.hero.inventory.gold
 	var lethal_dot := _make_effect(
 		"monster_lethal_dot",
 		Effect.EffectStat.CURRENT_HP,
@@ -248,7 +254,51 @@ func _test_monster_turn_effect_death_resolves_victory_once() -> void:
 	_expect_equal(manager.state, BattleManager.BattleState.VICTORY, "monster DOT death resolves victory")
 	_expect_equal(_battle_won_count, 1, "victory signal is emitted exactly once")
 	_expect_equal(_hero_defeated_count, 0, "monster DOT death does not emit defeat")
+	_expect_equal(
+		manager.hero.experience,
+		starting_experience + manager.monster.calculate_experience(),
+		"effect victory grants experience exactly once"
+	)
+	_expect_equal(
+		manager.hero.inventory.gold,
+		starting_gold + manager.monster.calculate_gold(),
+		"effect victory grants gold exactly once"
+	)
+	_expect_equal(_last_reward_entries.size(), 2, "effect victory reports one experience and one gold reward")
 	_expect_true(_monster_updated_count > 0, "monster UI updates after the effect tick")
+	_free_battle_manager(manager)
+
+
+func _test_simultaneous_death_prefers_defeat_without_rewards() -> void:
+	_reset_signal_observations()
+	var manager := _make_battle_manager()
+	manager.hero.current_hp = 3
+	manager.monster.current_hp = 0
+	manager.monster.gold = 100
+	manager.monster.gold_variance = 0.0
+	var starting_experience := manager.hero.experience
+	var starting_gold := manager.hero.inventory.gold
+	var lethal_dot := _make_effect(
+		"simultaneous_hero_dot",
+		Effect.EffectStat.CURRENT_HP,
+		Effect.EffectOperation.SUBTRACT,
+		5,
+		Effect.EffectTiming.ON_TICK,
+		1
+	)
+	EffectManager.apply_effect(lethal_dot, manager.monster, manager.hero)
+	manager._hero_effects_at_turn_start = EffectManager.capture_turn_start(manager.hero)
+	manager.state = BattleManager.BattleState.PLAYER_TURN
+
+	manager.end_player_turn()
+
+	_expect_equal(manager.hero.current_hp, 0, "end-of-turn damage defeats the hero")
+	_expect_equal(manager.state, BattleManager.BattleState.DEFEAT, "simultaneous death uses defeat precedence")
+	_expect_equal(_hero_defeated_count, 1, "simultaneous death emits defeat exactly once")
+	_expect_equal(_battle_won_count, 0, "simultaneous death does not emit victory")
+	_expect_equal(manager.hero.experience, starting_experience, "simultaneous death grants no experience")
+	_expect_equal(manager.hero.inventory.gold, starting_gold, "simultaneous death grants no gold")
+	_expect_equal(_last_reward_entries.is_empty(), true, "simultaneous death produces no rewards")
 	_free_battle_manager(manager)
 
 
@@ -415,14 +465,16 @@ func _reset_signal_observations() -> void:
 	_hero_defeated_count = 0
 	_hero_updated_count = 0
 	_monster_updated_count = 0
+	_last_reward_entries.clear()
 
 
 func _on_battle_log_updated(message: String) -> void:
 	_battle_log += message
 
 
-func _on_battle_won(_entries: Array) -> void:
+func _on_battle_won(entries: Array) -> void:
 	_battle_won_count += 1
+	_last_reward_entries = entries.duplicate()
 
 
 func _on_hero_defeated() -> void:
