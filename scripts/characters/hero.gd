@@ -46,7 +46,7 @@ func level_up() -> void:
 	else:
 		skill_points += 2
 
-func use_item(item_id: String) -> String:
+func use_item(item_id: String, dispatcher: EffectEventDispatcher = null) -> String:
 	var potion := ItemLoader.get_item(item_id) as Potion
 	if potion == null:
 		return "%s can't use this item.\n" % get_colored_name()
@@ -54,7 +54,7 @@ func use_item(item_id: String) -> String:
 	var output := "%s drank %s.\n" % [get_colored_name(), potion.name]
 	for effect: Effect in effects:
 		var effect_copy: Effect = effect.duplicate() as Effect
-		var result: EffectManager.ApplicationResult = EffectManager.apply_effect(effect_copy, self, self)
+		var result: EffectManager.ApplicationResult = EffectManager.apply_effect(effect_copy, self, self, 0, dispatcher)
 		output += result.output
 	return output
 
