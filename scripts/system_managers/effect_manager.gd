@@ -71,24 +71,28 @@ static func get_effect_remaining_turns(target: Combatant, effect_id: StringName)
 
 static func validate_unique_effect_ids(effects: Array[Effect]) -> PackedStringArray:
 	var errors := PackedStringArray()
-	var seen_ids: Dictionary[StringName, Effect] = {}
+	var seen_effect_levels: Dictionary[StringName, Dictionary] = {}
 	for effect: Effect in effects:
 		if effect == null:
 			continue
 		if effect.effect_id == &"":
-			errors.append('Effect "%s" has an empty effect_id' % effect.effect_name)
+			errors.append('Effect "%s" has an empty effect_id.' % effect.effect_name)
 			continue
-		if seen_ids.has(effect.effect_id):
-			var first_effect: Effect = seen_ids[effect.effect_id]
+		if not seen_effect_levels.has(effect.effect_id):
+			seen_effect_levels[effect.effect_id] = {}
+		var levels: Dictionary = seen_effect_levels[effect.effect_id]
+		if levels.has(effect.level):
+			var first_effect: Effect = levels[effect.level]
 			errors.append(
-				'Duplicate effect_id "%s" used by "%s" and "%s".' % [
+				'Duplicate effect_id "%s" at level %d used by "%s" and "%s".' % [
 					effect.effect_id,
+					effect.level,
 					first_effect.effect_name,
 					effect.effect_name,
 				]
 			)
 			continue
-		seen_ids[effect.effect_id] = effect
+		levels[effect.level] = effect
 	return errors
 
 static func capture_turn_start(combatant: Combatant) -> Array[TurnEffectSnapshot]:
