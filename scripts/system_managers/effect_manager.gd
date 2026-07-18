@@ -35,10 +35,10 @@ static func apply_effect(effect: Effect, source: Combatant, target: Combatant, r
 	if active_effect == null:
 		return _add_effect(effect, source, target, remaining_turns, dispatcher)
 	if effect.level < active_effect.effect.level:
-		return _reject_weaker_effect(effect, target, active_effect)
+		return _reject_weaker_effect(effect, target, active_effect, dispatcher)
 	if effect.level == active_effect.effect.level:
-		return _refresh_effect(effect, source, target, active_effect, remaining_turns)
-	return _upgrade_effect(effect, source, target, active_effect, remaining_turns)
+		return _refresh_effect(effect, source, target, active_effect, remaining_turns, dispatcher)
+	return _upgrade_effect(effect, source, target, active_effect, remaining_turns, dispatcher)
 
 static func find_active_effect(target: Combatant, effect_id: StringName) -> ActiveEffect:
 	if target == null or effect_id == &"":
@@ -214,7 +214,7 @@ static func _upgrade_effect(effect: Effect, source: Combatant, target: Combatant
 		replacement.remaining_turns,
 	]
 	var result := ApplicationResult.new(ApplicationStatus.UPGRADED, replacement, effect.level, previous_level, output)
-	_dispatch(dispatcher, EffectLifecycleEvent.new(EffectLifecycleEvent.EventType.UPGRADED, active_effect, previous_level, effect.level))
+	_dispatch(dispatcher, EffectLifecycleEvent.new(EffectLifecycleEvent.EventType.UPGRADED, replacement, previous_level, effect.level))
 	return result
 
 static func _reject_weaker_effect(effect: Effect, target: Combatant, active_effect: ActiveEffect, dispatcher: EffectEventDispatcher = null) -> ApplicationResult:
