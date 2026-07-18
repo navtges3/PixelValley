@@ -22,7 +22,8 @@ func run_tests() -> int:
 	_test_effect_manager_lookup()
 	_test_effect_manager_missing_effect()
 	_test_effect_manager_get_active_effects_returns_copy()
-	_test_duplicate_effect_id_validation()
+	_test_shared_effect_id_across_levels_is_valid()
+	_test_duplicate_effect_id_and_level_validation()
 	_test_empty_effect_id_validation()
 
 	# EffectManager application tests.
@@ -783,22 +784,57 @@ func _test_effect_manager_get_active_effects_returns_copy() -> void:
 	)
 
 
-func _test_duplicate_effect_id_validation() -> void:
+func _test_shared_effect_id_across_levels_is_valid() -> void:
+	var level_one := _make_effect(
+		"poison",
+		Effect.EffectStat.CURRENT_HP,
+		Effect.EffectOperation.SUBTRACT,
+		5,
+		1
+	)
+
+	var level_two := _make_effect(
+		"poison",
+		Effect.EffectStat.CURRENT_HP,
+		Effect.EffectOperation.SUBTRACT,
+		10,
+		2
+	)
+
+	level_two.effect_name = "Greater Poison"
+
+	var effects: Array[Effect] = [
+		level_one,
+		level_two,
+	]
+
+	var errors := EffectManager.validate_unique_effect_ids(effects)
+
+	_expect_equal(
+		errors.size(),
+		0,
+		"different levels of the same logical effect may share an effect ID"
+	)
+
+
+func _test_duplicate_effect_id_and_level_validation() -> void:
 	var first := _make_effect(
 		"poison",
 		Effect.EffectStat.CURRENT_HP,
 		Effect.EffectOperation.SUBTRACT,
-		5
+		5,
+		1
 	)
 
 	var copy := _make_effect(
 		"poison",
 		Effect.EffectStat.CURRENT_HP,
 		Effect.EffectOperation.SUBTRACT,
-		10
+		10,
+		1
 	)
 
-	copy.effect_name = "Greater Poison"
+	copy.effect_name = "Duplicate Poison"
 
 	var effects: Array[Effect] = [
 		first,
@@ -810,7 +846,7 @@ func _test_duplicate_effect_id_validation() -> void:
 	_expect_equal(
 		errors.size(),
 		1,
-		"duplicate effect IDs are detected"
+		"duplicate effect IDs at the same level are detected"
 	)
 
 
