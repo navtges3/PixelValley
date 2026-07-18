@@ -113,6 +113,7 @@ Core patterns:
 - `BattleManager` emits signals consumed by `BattleScreen` and battle UI components.
 - `QuestManager` is a `Resource` owned by `GameState`, not an autoload.
 - Shops and rewards use item IDs resolved through `ItemLoader` and `WeaponDatabase`.
+- Effect application, future-turn duration, cleanup, events, and contributor guidance are documented in [`docs/effect_system.md`](docs/effect_system.md).
 
 ---
 

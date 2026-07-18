@@ -20,6 +20,7 @@ const REST_CD := 5
 @export var world_visual: SpriteFrames
 @export var battle_visual: SpriteFrames
 @export var battle_height: int = 64
+@export var battle_x_offset: int = 32
 @export var hand_positions: Dictionary = {}
 @export var hand_rotations: Dictionary = {}
 
@@ -34,10 +35,11 @@ func get_colored_name() -> String:
 func is_alive() -> bool:
 	return current_hp > 0
 
-func rest() -> void:
-	clear_active_effects(ActiveEffect.RemovalReason.RESTED, true)
+func rest() -> String:
+	var output := EffectManager.remove_all_effects(self, ActiveEffect.RemovalReason.RESTED, true)
 	current_hp = max_hp
 	current_nrg = max_nrg
+	return output
 
 func meditate() -> void:
 	var base_hp := 8
@@ -69,62 +71,6 @@ func use_energy(amount: int) -> bool:
 
 func recover_energy(amount: int) -> void:
 	current_nrg = min(current_nrg + amount, max_nrg)
-
-func _find_active_effect(effect: Effect) -> ActiveEffect:
-	for active_effect: ActiveEffect in active_effects:
-		if active_effect.effect.get_identity() == effect.get_identity():
-			return active_effect
-	return null
-
-func apply_effect(effect: Effect, source: Combatant = null, remaining_turns: int = 0) -> String:
-	var ae := _find_active_effect(effect)
-	if ae == null:
-		ae = ActiveEffect.new(effect, self, source)
-		if remaining_turns > 0:
-			ae.remaining_turns = remaining_turns
-		active_effects.append(ae)
-		var output := "%s applied to %s.\n" % [effect._to_string(ae.remaining_turns), get_colored_name()]
-		return output + ae.on_apply()
-	else:
-		if effect.level < ae.effect.level:
-			return "%s level %d had no effect; level %d is already active.\n" % [effect.effect_name, effect.level, ae.effect.level]
-		elif effect.level == ae.effect.level:
-			ae.refresh_duration(source)
-			return "%s %d refreshed on %s (%d turns).\n" % [effect.effect_name, effect.level, get_colored_name(), ae.remaining_turns]
-		else:
-			var output := ae.upgrade_to(effect, source)
-			output += "%s upgraded to level %d on %s (%d turns).\n" % [effect.effect_name, effect.level, get_colored_name(), ae.remaining_turns]
-			return output
-
-func process_active_effects(effects_to_tick: Array[ActiveEffect]) -> String:
-	var output := ""
-	
-	for effect: ActiveEffect in effects_to_tick:
-		if effect not in active_effects:
-			continue
-		output += effect.on_tick()
-	
-	for effect: ActiveEffect in active_effects.duplicate():
-		if effect.remaining_turns <= 0:
-			active_effects.erase(effect)
-	
-	return output
-
-func remove_effect(effect_identity: StringName, reason: ActiveEffect.RemovalReason = ActiveEffect.RemovalReason.CLEANSED) -> String:
-	for active_effect: ActiveEffect in active_effects:
-		if active_effect.effect.get_identity() != effect_identity:
-			continue
-		var output := active_effect.remove(reason)
-		active_effects.erase(active_effect)
-		return output
-	return ""
-
-func clear_active_effects(reason: ActiveEffect.RemovalReason, include_persistent: bool = false) -> void:
-	for active_effect: ActiveEffect in active_effects.duplicate():
-		if not include_persistent and active_effect.effect.persistence == Effect.Persistence.PERSISTENT:
-			continue
-		active_effect.remove(reason)
-		active_effects.erase(active_effect)
 
 func _calculate_damage(amount: int, type: Attack.AttackType) -> int:
 	var damage := amount

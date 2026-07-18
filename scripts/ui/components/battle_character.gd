@@ -1,7 +1,6 @@
 extends Node2D
 class_name BattleCharacter
 
-const Y_OFFSET := 64
 const SCALE := Vector2(3.0, 3.0)
 const EFFECT_ICON_SIZE := Vector2(16.0, 16.0)
 
@@ -33,7 +32,8 @@ func set_frames(frames: SpriteFrames) -> void:
 func apply_visual(combatant: Combatant, flip_h := false) -> void:
 	sprite.sprite_frames = combatant.battle_visual
 	scale = SCALE
-	sprite.position.y -= (combatant.battle_height - Y_OFFSET)
+	sprite.offset.y = -combatant.battle_height
+	sprite.offset.x = -combatant.battle_x_offset
 	sprite.flip_h = flip_h
 	sprite.play("idle")
 	
@@ -43,21 +43,29 @@ func apply_visual(combatant: Combatant, flip_h := false) -> void:
 	weapon_anchor.scale.x = -1.0 if flip_h else 1.0
 	_update_weapon_anchor()
 
-func refresh_effects(combatant: Combatant) -> void:
+func set_effects(effects: Array[EffectView]) -> void:
+	_clear_effect_icons()
+	for effect_view: EffectView in effects:
+		if effect_view == null:
+			continue
+		if effect_view.image == null:
+			continue
+		var icon := _create_effect_icon(effect_view)
+		effects_container.add_child(icon)
+
+func _clear_effect_icons() -> void:
 	for child: Node in effects_container.get_children():
 		child.free()
 
-	for active_effect: ActiveEffect in combatant.active_effects:
-		if active_effect.effect.image == null:
-			continue
-		var icon := TextureRect.new()
-		icon.custom_minimum_size = EFFECT_ICON_SIZE
-		icon.texture = active_effect.effect.image
-		icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-		icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-		icon.mouse_filter = Control.MOUSE_FILTER_STOP
-		icon.tooltip_text = active_effect._to_string()
-		effects_container.add_child(icon)
+func _create_effect_icon(effect_view: EffectView) -> TextureRect:
+	var icon := TextureRect.new()
+	icon.custom_minimum_size = EFFECT_ICON_SIZE
+	icon.texture = effect_view.image
+	icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	icon.mouse_filter = Control.MOUSE_FILTER_STOP
+	icon.tooltip_text = effect_view.tooltip_text
+	return icon
 
 func equip_weapon(weapon_texture: Texture2D, offset: Vector2, tip_offset: Vector2 = Vector2(0, -16)) -> void:
 	if weapon_texture == null or _hand_positions.is_empty():

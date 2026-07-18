@@ -3,7 +3,6 @@
 [ext_resource type="SpriteFrames" uid="uid://ghh4h01vpcng" path="res://resources/characters/monsters/ogre/ogre_battle_sprite_frames.tres" id="2_u5tp0"]
 [ext_resource type="Script" uid="uid://cnso83bg7vodw" path="res://scripts/data/condition.gd" id="5_1gn5i"]
 [ext_resource type="Resource" uid="uid://cjtbqoo60022b" path="res://resources/effects/common/buffs/power.tres" id="5_nkkoy"]
-[ext_resource type="Texture2D" uid="uid://j5x0oa343503" path="res://assets/characters/monsters/ogre/ogre.png" id="7_8w1if"]
 [ext_resource type="Script" uid="uid://bd6ohffno5w7r" path="res://scripts/characters/monster.gd" id="7_18j1j"]
 [ext_resource type="Script" uid="uid://buxlf5aagrtgf" path="res://scripts/data/drop_entry.gd" id="7_nkkoy"]
 [ext_resource type="Script" uid="uid://birbqcxvye2x5" path="res://scripts/data/drop_table.gd" id="8_fquq1"]
@@ -73,7 +72,8 @@ current_nrg = 40
 attack = 9
 defense = 5
 resist = 2
-portrait = ExtResource("7_8w1if")
 world_visual = ExtResource("10_8w1if")
 battle_visual = ExtResource("2_u5tp0")
+battle_height = 96
+battle_x_offset = 64
 metadata/_custom_type_script = "uid://bd6ohffno5w7r"

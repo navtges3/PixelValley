@@ -9,7 +9,7 @@
 [ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://resources/themes/buttons/regular/green_button.tres" id="8_qmdt6"]
 [ext_resource type="Theme" uid="uid://dqwm8agt87lsh" path="res://resources/themes/buttons/regular/blue_button.tres" id="9_06vtu"]
 [ext_resource type="Theme" uid="uid://phfh7c5hwx1n" path="res://resources/themes/buttons/regular/yellow_button.tres" id="10_c2ins"]
-[ext_resource type="Script" uid="uid://bgmcha5vrlqop" path="res://scripts/systems/battle_manager.gd" id="11_o00jr"]
+[ext_resource type="Script" uid="uid://bgmcha5vrlqop" path="res://scripts/system_managers/battle_manager.gd" id="11_o00jr"]
 [ext_resource type="PackedScene" uid="uid://rs7udjvphx52" path="res://scenes/ui/windows/reward_window.tscn" id="11_xvgma"]
 
 [node name="BattleScreen" type="Control" unique_id=1921801911]
@@ -157,6 +157,7 @@ text = "This is an Ability"
 [connection signal="return_to_village" from="DeathWindow" to="." method="_on_death_window_dismissed"]
 [connection signal="battle_log_updated" from="BattleManager" to="." method="_on_battle_log_updated"]
 [connection signal="battle_won" from="BattleManager" to="." method="_on_battle_won"]
+[connection signal="effect_lifecycle_changed" from="BattleManager" to="." method="_on_effect_lifecycle_changed"]
 [connection signal="hero_attacking" from="BattleManager" to="." method="_on_hero_attacking"]
 [connection signal="hero_defeated" from="BattleManager" to="." method="_on_hero_defeated"]
 [connection signal="hero_hurt" from="BattleManager" to="." method="_on_hero_hurt"]
