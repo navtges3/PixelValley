@@ -20,6 +20,11 @@ const FIRST_QUEST_ID := 1
 @export var available_quests: Array[Quest] = []
 @export var completed_quests: Array[Quest] = []
 
+signal quest_activated(quest: Quest)
+signal quest_progress_updated(quest: Quest)
+signal quest_ready_to_turn_in(quest: Quest)
+signal quest_turned_in(quest: Quest, rewards: Array[RewardEntry])
+
 func new_game() -> void:
 	locked_quests = []
 	available_quests = []
@@ -39,10 +44,14 @@ func _connect_signals() -> void:
 		GameState.monster_killed.connect(_on_monster_killed)
 
 func _on_monster_killed(monster_id: MonsterLoader.MonsterID, location_id: String) -> void:
-	for quest in available_quests:
-		if quest.completed:
-			continue
+	for quest in get_active_quests():
+		var previous_progress := quest.get_slain_count()
+		var was_ready := quest.all_objectives_met()
 		quest.slay_monster(monster_id, location_id)
+		if quest.get_slain_count() != previous_progress:
+			quest_progress_updated.emit(quest)
+		if not was_ready and quest.all_objectives_met():
+			quest_ready_to_turn_in.emit(quest)
 
 func turn_in_quest(quest: Quest) -> Array[RewardEntry]:
 	if quest not in available_quests:
@@ -58,6 +67,7 @@ func turn_in_quest(quest: Quest) -> Array[RewardEntry]:
 		unlock_quest_by_id(next_id)
 	available_quests.erase(quest)
 	completed_quests.append(quest)
+	quest_turned_in.emit(quest, entries)
 	SaveManager.save_game()
 	if quest.final_quest:
 		ScreenManager.go_to_screen(ScreenManager.ScreenName.VICTORY)
@@ -107,12 +117,43 @@ func _reset_spawners_for_quest(quest: Quest) -> void:
 		WorldManager.reset_location_spawners(location_id)
 
 func add_available_quest(quest: Quest) -> void:
-	if quest in available_quests or quest in completed_quests:
+	if quest == null:
+		push_warning("QuestManager: cannot add a null quest")
+		return
+	if has_quest_id(quest.id):
+		push_warning("QuestManager: quest id %d is already tracked" % quest.id)
 		return
 	available_quests.append(quest)
+	quest_activated.emit(quest)
 
-func has_completable_quests() -> bool:
+func get_active_quests() -> Array[Quest]:
+	var active: Array[Quest] = []
+	for quest in available_quests:
+		if not quest.completed:
+			active.append(quest)
+	return active
+
+func get_completable_quests() -> Array[Quest]:
+	var completable: Array[Quest] = []
 	for quest in available_quests:
 		if quest.all_objectives_met():
-			return true
-	return false
+			completable.append(quest)
+	return completable
+
+func get_quest_by_id(quest_id: int) -> Quest:
+	for quest in locked_quests:
+		if quest.id == quest_id:
+			return quest
+	for quest in available_quests:
+		if quest.id == quest_id:
+			return quest
+	for quest in completed_quests:
+		if quest.id == quest_id:
+			return quest
+	return null
+
+func has_quest_id(quest_id: int) -> bool:
+	return get_quest_by_id(quest_id) != null
+
+func has_completable_quests() -> bool:
+	return not get_completable_quests().is_empty()
