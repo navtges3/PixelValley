@@ -1,4 +1,4 @@
-extends Resource
+extends RefCounted
 class_name QuestManager
 
 const QUEST_PATHS := [
