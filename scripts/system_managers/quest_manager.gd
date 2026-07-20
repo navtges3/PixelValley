@@ -39,6 +39,10 @@ func new_game() -> void:
 func reconnect_signals() -> void:
 	_connect_signals()
 
+func disconnect_signals() -> void:
+	if GameState.monster_killed.is_connected(_on_monster_killed):
+		GameState.monster_killed.disconnect(_on_monster_killed)
+
 func _connect_signals() -> void:
 	if not GameState.monster_killed.is_connected(_on_monster_killed):
 		GameState.monster_killed.connect(_on_monster_killed)

@@ -78,6 +78,8 @@ func load_game(slot: int = 1) -> void:
 	GameState.village = _load_village(village_json.get("data", {}))
 
 	var quest_json := _load_json(slot, "quests.json")
+	if GameState.quest_manager != null:
+		GameState.quest_manager.disconnect_signals()
 	GameState.quest_manager = _load_quests(quest_json.get("data", {}))
 
 	var world_json := _load_json(slot, "world_state.json")

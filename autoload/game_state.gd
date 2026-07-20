@@ -20,6 +20,8 @@ signal monster_killed(monster_id: MonsterLoader.MonsterID, location_id: String)
 func start_new_game(slot: int = 1) -> void:
 	_setup_hero_inv()
 	_setup_village()
+	if quest_manager != null:
+		quest_manager.disconnect_signals()
 	quest_manager = QuestManager.new()
 	pre_combat_position = Vector2.ZERO
 	quest_manager.new_game()
@@ -62,6 +64,8 @@ func _setup_hero_inv() -> void:
 	hero.inventory.add_potion("energy_potion", 3)
 
 func reset_state() -> void:
+	if quest_manager != null:
+		quest_manager.disconnect_signals()
 	hero = null
 	village = null
 	current_quest = null
