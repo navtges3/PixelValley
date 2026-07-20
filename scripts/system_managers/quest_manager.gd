@@ -16,6 +16,15 @@ const QUEST_PATHS := [
 
 const FIRST_QUEST_ID := 1
 
+
+static func get_defined_quest_ids() -> Array[int]:
+	var ids: Array[int] = []
+	for path: String in QUEST_PATHS:
+		var quest := load(path) as Quest
+		if quest != null:
+			ids.append(quest.id)
+	return ids
+
 @export var locked_quests: Array[Quest] = []
 @export var available_quests: Array[Quest] = []
 @export var completed_quests: Array[Quest] = []

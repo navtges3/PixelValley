@@ -1,6 +1,7 @@
 extends Node
 
 const SAVE_DIR := "user://saves"
+const QUEST_SAVE_MIGRATOR := preload("res://scripts/save/quest_save_migrator.gd")
 
 const LEGACY_EFFECT_SPECS: Dictionary = {
 	0: { "name": "Regeneration", "stat": Effect.EffectStat.CURRENT_HP, "timing": Effect.EffectTiming.ON_TICK, "operation": Effect.EffectOperation.ADD },
@@ -50,6 +51,7 @@ func save_game() -> void:
 	})
 
 	_save_json(save_slot, "quests.json", {
+		"schema_version": QUEST_SAVE_MIGRATOR.CURRENT_SCHEMA_VERSION,
 		"data": _get_quests_data(GameState.quest_manager)
 	})
 
@@ -78,6 +80,7 @@ func load_game(slot: int = 1) -> void:
 	GameState.village = _load_village(village_json.get("data", {}))
 
 	var quest_json := _load_json(slot, "quests.json")
+	quest_json = QUEST_SAVE_MIGRATOR.migrate(quest_json, QuestManager.get_defined_quest_ids())
 	if GameState.quest_manager != null:
 		GameState.quest_manager.disconnect_signals()
 	GameState.quest_manager = _load_quests(quest_json.get("data", {}))
@@ -443,6 +446,7 @@ func _get_quest_data(quest: Quest) -> Dictionary:
 	# objectives
 	for obj in quest.objectives:
 		data["objectives"].append({
+			"type": "kill",
 			"monster_id": obj.monster_id,
 			"target_amount": obj.target_amount,
 			"current_amount": obj.current_amount,
@@ -475,6 +479,13 @@ func _load_quest(data: Dictionary) -> Quest:
 	quest.unlocks_locations.assign(raw_unlocks)
 	# objectives
 	for obj_data in data.get("objectives", []):
+		var objective_type: String = str(obj_data.get("type", "kill"))
+		if objective_type != "kill":
+			push_warning(
+				"SaveManager: quest ID %d has unsupported objective type '%s'; skipping"
+				% [quest.id, objective_type]
+			)
+			continue
 		var obj := QuestObjective.new()
 		obj.monster_id = obj_data.get("monster_id", MonsterLoader.MonsterID.GOBLIN)
 		obj.target_amount = obj_data.get("target_amount", 1)
