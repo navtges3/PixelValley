@@ -1,17 +1,16 @@
 extends TestCase
 
 const TEST_SAVE_SLOT := 999999
+const QUEST_SAVE_MIGRATOR := preload("res://scripts/save/quest_save_migrator.gd")
 
 var _progress_counts: Dictionary[int, int] = {}
 var _ready_counts: Dictionary[int, int] = {}
-var _completion_counts: Dictionary[int, int] = {}
 var _turn_in_counts: Dictionary[int, int] = {}
 
 func run_tests() -> int:
 	_begin_test_run()
 	_progress_counts.clear()
 	_ready_counts.clear()
-	_completion_counts.clear()
 	_turn_in_counts.clear()
 	_prepare_game_state()
 	_test_concurrent_quests_and_save_load()
@@ -48,12 +47,9 @@ func _test_concurrent_quests_and_save_load() -> void:
 	quick_quest.category = Quest.Category.SIDE
 	quick_quest.source_type = Quest.SourceType.QUEST_BOARD
 	quick_quest.source_id = "valley_board"
-	quick_quest.quest_completed.connect(_on_quest_completed)
-	long_quest.quest_completed.connect(_on_quest_completed)
-	unrelated_quest.quest_completed.connect(_on_quest_completed)
-	manager.add_available_quest(quick_quest)
-	manager.add_available_quest(long_quest)
-	manager.add_available_quest(unrelated_quest)
+	manager.activate_quest(quick_quest)
+	manager.activate_quest(long_quest)
+	manager.activate_quest(unrelated_quest)
 
 	GameState.monster_killed.emit(MonsterLoader.MonsterID.GOBLIN, "forest")
 	_expect_equal(quick_quest.get_slain_count(), 1, "one kill progresses the first matching quest")
@@ -63,31 +59,34 @@ func _test_concurrent_quests_and_save_load() -> void:
 	_expect_equal(_progress_counts.get(2, 0), 1, "second matching quest emits one progress event")
 	_expect_equal(_progress_counts.get(3, 0), 0, "unrelated quest emits no progress event")
 	_expect_equal(_ready_counts.get(1, 0), 1, "ready event emits when the quick quest completes")
-	_expect_equal(_completion_counts.get(1, 0), 1, "completion event emits when the quick quest completes")
+	_expect_true(quick_quest in manager.ready_quests, "completed objectives move the quick quest to ready")
+	_expect_true(quick_quest not in manager.active_quests, "ready quest stops receiving progress")
 
 	GameState.monster_killed.emit(MonsterLoader.MonsterID.GOBLIN, "forest")
 	_expect_equal(_progress_counts.get(1, 0), 1, "completed quest does not emit duplicate progress")
 	_expect_equal(_ready_counts.get(1, 0), 1, "completed quest does not emit duplicate readiness")
-	_expect_equal(_completion_counts.get(1, 0), 1, "completed quest does not emit duplicate completion")
 	_expect_equal(long_quest.get_slain_count(), 2, "other active quest keeps progressing")
 
 	manager.turn_in_quest(quick_quest)
 	_expect_equal(_turn_in_counts.get(1, 0), 1, "turn-in event emits once")
 	_expect_true(quick_quest in manager.completed_quests, "turned-in quest moves to completed quests")
-	_expect_true(long_quest in manager.available_quests, "turning in one quest keeps the other available")
+	_expect_true(long_quest in manager.active_quests, "turning in one quest keeps the other active")
 	_expect_equal(long_quest.get_slain_count(), 2, "turning in one quest preserves other quest progress")
 	_expect_true(not long_quest.completed, "turning in one quest does not complete the other")
 
 	SaveManager.save_game()
 	var quest_document: Dictionary = SaveManager._load_json(TEST_SAVE_SLOT, "quests.json")
-	_expect_equal(quest_document.get("schema_version", 0), 1, "quest saves include the current schema version")
+	_expect_equal(
+		quest_document.get("schema_version", 0),
+		QUEST_SAVE_MIGRATOR.CURRENT_SCHEMA_VERSION,
+		"quest saves include the current schema version"
+	)
 	SaveManager.load_game(TEST_SAVE_SLOT)
 	var loaded_manager := GameState.quest_manager
 	_connect_manager_counters(loaded_manager)
 	var loaded_quick := loaded_manager.get_quest_by_id(1)
 	var loaded_long := loaded_manager.get_quest_by_id(2)
 	var loaded_unrelated := loaded_manager.get_quest_by_id(3)
-	loaded_long.quest_completed.connect(_on_quest_completed)
 	_expect_true(loaded_quick in loaded_manager.completed_quests, "save/load preserves the turned-in quest")
 	_expect_equal(loaded_quick.category, Quest.Category.SIDE, "save/load preserves quest category")
 	_expect_equal(loaded_quick.source_type, Quest.SourceType.QUEST_BOARD, "save/load preserves quest source type")
@@ -100,12 +99,11 @@ func _test_concurrent_quests_and_save_load() -> void:
 	_expect_equal(loaded_long.get_slain_count(), 3, "loaded active quest continues progressing")
 	_expect_equal(_progress_counts.get(2, 0), stale_progress_count + 1, "only the loaded manager emits progress")
 	_expect_equal(_ready_counts.get(2, 0), 1, "loaded quest emits readiness once")
-	_expect_equal(_completion_counts.get(2, 0), 1, "loaded quest emits completion once")
+	_expect_true(loaded_long in loaded_manager.ready_quests, "loaded quest moves to ready after its final kill")
 
 	GameState.monster_killed.emit(MonsterLoader.MonsterID.GOBLIN, "forest")
 	_expect_equal(_progress_counts.get(2, 0), stale_progress_count + 1, "loaded completed quest emits no duplicate progress")
 	_expect_equal(_ready_counts.get(2, 0), 1, "loaded completed quest emits no duplicate readiness")
-	_expect_equal(_completion_counts.get(2, 0), 1, "loaded completed quest emits no duplicate completion")
 
 func _test_main_quest_progression() -> void:
 	GameState.quest_manager.disconnect_signals()
@@ -115,7 +113,7 @@ func _test_main_quest_progression() -> void:
 	_connect_manager_counters(manager)
 	var first_quest := manager.get_quest_by_id(QuestManager.FIRST_QUEST_ID)
 	_expect_not_null(first_quest, "new game loads the first main quest")
-	_expect_true(first_quest in manager.available_quests, "first main quest starts available")
+	_expect_true(first_quest in manager.active_quests, "first automatic main quest starts active")
 	_expect_equal(first_quest.category, Quest.Category.MAIN, "existing quest resources default to main")
 	_expect_equal(first_quest.source_type, Quest.SourceType.AUTOMATIC, "existing quest resources default to automatic activation")
 	var previous_progress := first_quest.get_slain_count()
@@ -137,17 +135,19 @@ func _test_quest_metadata_defaults_and_queries() -> void:
 	npc_side_quest.source_type = Quest.SourceType.NPC
 	npc_side_quest.source_id = "npc_blacksmith"
 
-	manager.add_available_quest(main_quest)
-	manager.add_available_quest(board_side_quest)
-	manager.add_available_quest(npc_side_quest)
+	manager.activate_quest(main_quest)
+	manager.offer_quest(board_side_quest)
+	manager.offer_quest(npc_side_quest)
 
 	_expect_equal(main_quest.category, Quest.Category.MAIN, "new quests default to the main category")
 	_expect_equal(main_quest.source_type, Quest.SourceType.AUTOMATIC, "new quests default to automatic activation")
 
-	var side_quests := manager.filter_quests_by_category(manager.available_quests, Quest.Category.SIDE)
+	var side_quests := manager.filter_quests_by_category(manager.get_offered_quests(), Quest.Category.SIDE)
 	_expect_equal(side_quests.size(), 2, "category query returns both side quests")
 
-	var board_quests := manager.filter_quests_by_source(manager.available_quests, Quest.SourceType.QUEST_BOARD, "valley_board")
+	var board_quests := manager.filter_quests_by_source(
+		manager.get_offered_quests(), Quest.SourceType.QUEST_BOARD, "valley_board"
+	)
 	_expect_equal(board_quests.size(), 1, "source query can identify a specific quest board")
 	_expect_true(board_side_quest in board_quests, "source query returns the matching board quest")
 
@@ -184,9 +184,6 @@ func _on_quest_progress_updated(quest: Quest) -> void:
 
 func _on_quest_ready_to_turn_in(quest: Quest) -> void:
 	_ready_counts[quest.id] = _ready_counts.get(quest.id, 0) + 1
-
-func _on_quest_completed(quest: Quest) -> void:
-	_completion_counts[quest.id] = _completion_counts.get(quest.id, 0) + 1
 
 func _on_quest_turned_in(quest: Quest, _rewards: Array[RewardEntry]) -> void:
 	_turn_in_counts[quest.id] = _turn_in_counts.get(quest.id, 0) + 1

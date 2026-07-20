@@ -19,8 +19,6 @@ enum SourceType { AUTOMATIC, QUEST_BOARD, NPC, SCRIPTED_EVENT }
 @export var completed: bool = false
 @export var final_quest: bool = false
 
-signal quest_completed(quest: Quest)
-
 func get_monster() -> Monster:
 	var available_ids: Array[MonsterLoader.MonsterID] = []
 	for objective in objectives:
@@ -51,18 +49,10 @@ func slay_monster(monster_id: MonsterLoader.MonsterID, location_id: String = "")
 			continue
 		if objective.current_amount < objective.target_amount:
 			objective.current_amount += 1
-	return check_completion()
+	return objectives_met()
 
-func all_objectives_met() -> bool:
+func objectives_met() -> bool:
 	for objective in objectives:
 		if objective.current_amount < objective.target_amount:
 			return false
-	return true
-
-func check_completion() -> bool:
-	if not all_objectives_met():
-		return false
-	if not completed:
-		completed = true
-		quest_completed.emit(self)
 	return true

@@ -6,10 +6,29 @@ const QUEST_SAVE_MIGRATOR := preload("res://scripts/save/quest_save_migrator.gd"
 func run_tests() -> int:
 	_begin_test_run()
 	_test_legacy_save_migrates_with_safe_defaults()
+	_test_malformed_legacy_available_list_recovers()
 	_test_current_save_preserves_all_quest_state()
 	_test_malformed_records_are_skipped_safely()
 	_test_newer_schema_recovers_recognized_fields()
 	return _finish_test_run("Quest save migration tests")
+
+
+func _test_malformed_legacy_available_list_recovers() -> void:
+	var malformed_document := {
+		"schema_version": 1,
+		"data": {
+			"available_quests": "not an array",
+		}
+	}
+	var migrated: Dictionary = QUEST_SAVE_MIGRATOR.migrate(malformed_document, [], false)
+	var data: Dictionary = migrated["data"]
+
+	_expect_equal(
+		migrated["schema_version"],
+		QUEST_SAVE_MIGRATOR.CURRENT_SCHEMA_VERSION,
+		"malformed schema 1 saves still migrate to the current schema"
+	)
+	_expect_equal(data["active_quests"], [], "malformed legacy available quests recover as empty")
 
 
 func _test_legacy_save_migrates_with_safe_defaults() -> void:
@@ -31,13 +50,15 @@ func _test_legacy_save_migrates_with_safe_defaults() -> void:
 	}
 	var migrated: Dictionary = QUEST_SAVE_MIGRATOR.migrate(legacy_document, [1])
 	var data: Dictionary = migrated["data"]
-	var quest: Dictionary = data["available_quests"][0]
+	var quest: Dictionary = data["active_quests"][0]
 	var objective: Dictionary = quest["objectives"][0]
 	var loaded_manager: QuestManager = SaveManager._load_quests(data)
 	var loaded_quest: Quest = loaded_manager.get_quest_by_id(1)
 
 	_expect_equal(migrated["schema_version"], QUEST_SAVE_MIGRATOR.CURRENT_SCHEMA_VERSION, "legacy saves migrate to the current schema")
 	_expect_equal(data["locked_quests"], [], "legacy saves default missing locked quests to an empty list")
+	_expect_equal(data["offered_quests"], [], "legacy saves default missing offered quests to an empty list")
+	_expect_equal(data["ready_quests"], [], "legacy saves default missing ready quests to an empty list")
 	_expect_equal(data["completed_quests"], [], "legacy saves default missing completed quests to an empty list")
 	_expect_equal(quest["category"], Quest.Category.MAIN, "legacy quests default to the main category")
 	_expect_equal(quest["source_type"], Quest.SourceType.AUTOMATIC, "legacy quests default to automatic activation")
@@ -55,7 +76,9 @@ func _test_current_save_preserves_all_quest_state() -> void:
 		"schema_version": QUEST_SAVE_MIGRATOR.CURRENT_SCHEMA_VERSION,
 		"data": {
 			"locked_quests": [],
-			"available_quests": [],
+			"offered_quests": [],
+			"active_quests": [],
+			"ready_quests": [],
 			"completed_quests": [{
 				"id": 9001,
 				"title": "Embedded Quest",
@@ -111,20 +134,20 @@ func _test_malformed_records_are_skipped_safely() -> void:
 	var data: Dictionary = migrated["data"]
 
 	_expect_equal(data["locked_quests"].size(), 0, "malformed quest lists recover as empty")
-	_expect_equal(data["available_quests"].size(), 1, "only a valid quest record is retained")
+	_expect_equal(data["active_quests"].size(), 1, "only a valid active quest record is retained")
 	_expect_equal(data["completed_quests"].size(), 0, "duplicate quest IDs are skipped across lifecycle lists")
-	_expect_equal(data["available_quests"][0]["objectives"], [], "malformed objectives are skipped")
-	_expect_equal(data["available_quests"][0]["reward"]["gold"], 0, "malformed rewards use safe defaults")
+	_expect_equal(data["active_quests"][0]["objectives"], [], "malformed objectives are skipped")
+	_expect_equal(data["active_quests"][0]["reward"]["gold"], 0, "malformed rewards use safe defaults")
 
 
 func _test_newer_schema_recovers_recognized_fields() -> void:
 	var future_document := {
 		"schema_version": QUEST_SAVE_MIGRATOR.CURRENT_SCHEMA_VERSION + 1,
 		"data": {
-			"available_quests": [{"id": 1, "title": "Future Quest"}],
+			"active_quests": [{"id": 1, "title": "Future Quest"}],
 		}
 	}
 	var migrated: Dictionary = QUEST_SAVE_MIGRATOR.migrate(future_document, [1], false)
 
 	_expect_equal(migrated["schema_version"], QUEST_SAVE_MIGRATOR.CURRENT_SCHEMA_VERSION + 1, "newer schema markers are not silently downgraded")
-	_expect_equal(migrated["data"]["available_quests"][0]["title"], "Future Quest", "recognized data from a newer schema remains loadable")
+	_expect_equal(migrated["data"]["active_quests"][0]["title"], "Future Quest", "recognized data from a newer schema remains loadable")

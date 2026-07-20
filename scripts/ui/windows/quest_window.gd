@@ -55,7 +55,7 @@ func _on_turn_in_button_pressed() -> void:
 	if selected_quest == null:
 		return
 	var quest: Quest = selected_quest.get_quest()
-	if quest.all_objectives_met():
+	if quest.objectives_met():
 		var entries: Array[RewardEntry] = GameState.quest_manager.turn_in_quest(quest)
 		reward_window.show_rewards("Quest Complete!", entries)
 		selected_quest = null
@@ -78,7 +78,7 @@ func _on_quest_selected(selected_button: QuestButton) -> void:
 
 func _update_complete_button() -> void:
 	if selected_quest:
-		var objectives_met: bool = selected_quest.get_quest().all_objectives_met()
+		var objectives_met: bool = selected_quest.get_quest().objectives_met()
 		turn_in_button.disabled = not objectives_met
 		turn_in_button.text = "Turn In" if objectives_met else "In Progress"
 	else:
@@ -91,7 +91,12 @@ func clear_quest_list() -> void:
 
 func load_quests(type: String) -> void:
 	clear_quest_list()
-	var quests: Array[Quest] = GameState.quest_manager.available_quests if type == "available" else GameState.quest_manager.completed_quests
+	var quests: Array[Quest] = []
+	if type == "available":
+		quests.append_array(GameState.quest_manager.get_active_quests())
+		quests.append_array(GameState.quest_manager.get_ready_quests())
+	else:
+		quests.append_array(GameState.quest_manager.get_completed_quests())
 	for quest: Quest in quests:
 		var quest_button := QUEST_BUTTON.instantiate() as QuestButton
 		quest_button.quest = quest
