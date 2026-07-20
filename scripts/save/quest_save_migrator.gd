@@ -1,45 +1,35 @@
 extends RefCounted
 
-const CURRENT_SCHEMA_VERSION: int = 1
+const CURRENT_SCHEMA_VERSION: int = 2
 const LEGACY_SCHEMA_VERSION: int = 0
 
 const QUEST_LIST_KEYS: Array[String] = [
 	"locked_quests",
-	"available_quests",
+	"offered_quests",
+	"active_quests",
+	"ready_quests",
 	"completed_quests",
 ]
 
-
-static func migrate(
-	document: Dictionary,
-	known_quest_ids: Array[int] = [],
-	emit_warnings: bool = true
-) -> Dictionary:
+static func migrate(document: Dictionary, known_quest_ids: Array[int] = [], emit_warnings: bool = true) -> Dictionary:
 	var migrated: Dictionary = document.duplicate(true)
 	var version: int = int(migrated.get("schema_version", LEGACY_SCHEMA_VERSION))
 	if version > CURRENT_SCHEMA_VERSION:
-		_report_warning(
-			(
-				"QuestSaveMigrator: quest save schema %d is newer than supported schema %d; "
-				+ "loading recognized fields only"
-			)
-			% [version, CURRENT_SCHEMA_VERSION],
-			emit_warnings
-		)
+		_report_warning(("QuestSaveMigrator: quest save schema %d is newer than supported schema %d; "
+				+ "loading recognized fields only") % [version, CURRENT_SCHEMA_VERSION], emit_warnings)
 		return _normalize_document(migrated, known_quest_ids, emit_warnings)
-
 	while version < CURRENT_SCHEMA_VERSION:
 		match version:
 			LEGACY_SCHEMA_VERSION:
 				migrated = _migrate_v0_to_v1(migrated)
+			1:
+				migrated = _migrate_v1_to_v2(migrated)
 			_:
 				push_error("QuestSaveMigrator: no migration registered for schema %d" % version)
 				return _normalize_document(migrated, known_quest_ids, emit_warnings)
 		version += 1
-
 	migrated["schema_version"] = CURRENT_SCHEMA_VERSION
 	return _normalize_document(migrated, known_quest_ids, emit_warnings)
-
 
 static func _migrate_v0_to_v1(document: Dictionary) -> Dictionary:
 	var migrated: Dictionary = document.duplicate(true)
@@ -48,12 +38,36 @@ static func _migrate_v0_to_v1(document: Dictionary) -> Dictionary:
 		migrated["data"] = {}
 	return migrated
 
+static func _migrate_v1_to_v2(document: Dictionary) -> Dictionary:
+	var migrated: Dictionary = document.duplicate(true)
+	var raw_data: Variant = migrated.get("data", {})
+	var data: Dictionary = ((raw_data as Dictionary).duplicate(true)
+		if typeof(raw_data) == TYPE_DICTIONARY
+		else {}
+	)
+	var legacy_available: Variant = data.get("available_quests", [])
+	data.erase("available_quests")
+	data["offered_quests"] = []
+	data["active_quests"] = []
+	data["ready_quests"] = []
+	if typeof(legacy_available) == TYPE_ARRAY:
+		for raw_quest: Variant in legacy_available as Array:
+			if typeof(raw_quest) != TYPE_DICTIONARY:
+				continue
+			var quest_data := raw_quest as Dictionary
+			if bool(quest_data.get("completed", false)):
+				data["ready_quests"].append(quest_data)
+			else:
+				data["active_quests"].append(quest_data)
+	else:
+		data["active_quests"] = legacy_available
+	data["locked_quests"] = data.get("locked_quests", [])
+	data["completed_quests"] = data.get("completed_quests", [])
+	migrated["data"] = data
+	migrated["schema_version"] = 2
+	return migrated
 
-static func _normalize_document(
-	document: Dictionary,
-	known_quest_ids: Array[int],
-	emit_warnings: bool
-) -> Dictionary:
+static func _normalize_document(document: Dictionary, known_quest_ids: Array[int], emit_warnings: bool) -> Dictionary:
 	var normalized: Dictionary = document.duplicate(true)
 	var raw_data: Variant = normalized.get("data", {})
 	if typeof(raw_data) != TYPE_DICTIONARY:
@@ -62,20 +76,12 @@ static func _normalize_document(
 	var data: Dictionary = (raw_data as Dictionary).duplicate(true)
 	var seen_ids: Dictionary[int, bool] = {}
 	for list_key: String in QUEST_LIST_KEYS:
-		data[list_key] = _normalize_quest_list(
-			data.get(list_key, []), list_key, known_quest_ids, seen_ids, emit_warnings
-		)
+		data[list_key] = _normalize_quest_list(data.get(list_key, []), list_key, known_quest_ids, seen_ids, emit_warnings)
 	normalized["data"] = data
 	return normalized
 
-
-static func _normalize_quest_list(
-	raw_list: Variant,
-	list_key: String,
-	known_quest_ids: Array[int],
-	seen_ids: Dictionary[int, bool],
-	emit_warnings: bool
-) -> Array[Dictionary]:
+static func _normalize_quest_list(raw_list: Variant, list_key: String, known_quest_ids: Array[int],
+	seen_ids: Dictionary[int, bool], emit_warnings: bool) -> Array[Dictionary]:
 	var quests: Array[Dictionary] = []
 	if typeof(raw_list) != TYPE_ARRAY:
 		_report_warning("QuestSaveMigrator: malformed '%s'; using an empty list" % list_key, emit_warnings)
@@ -83,37 +89,25 @@ static func _normalize_quest_list(
 	for record_index: int in (raw_list as Array).size():
 		var raw_record: Variant = (raw_list as Array)[record_index]
 		if typeof(raw_record) != TYPE_DICTIONARY:
-			_report_warning(
-				"QuestSaveMigrator: malformed quest record at %s[%d]; skipping"
-				% [list_key, record_index],
-				emit_warnings
-			)
+			_report_warning("QuestSaveMigrator: malformed quest record at %s[%d]; skipping"
+				% [list_key, record_index], emit_warnings)
 			continue
 		var quest: Dictionary = _normalize_quest_record(raw_record as Dictionary, emit_warnings)
 		var quest_id: int = int(quest["id"])
 		if quest_id <= 0:
-			_report_warning(
-				"QuestSaveMigrator: quest record at %s[%d] has an invalid ID; skipping"
-				% [list_key, record_index],
-				emit_warnings
-			)
+			_report_warning("QuestSaveMigrator: quest record at %s[%d] has an invalid ID; skipping"
+				% [list_key, record_index], emit_warnings)
 			continue
 		if seen_ids.has(quest_id):
-			_report_warning(
-				"QuestSaveMigrator: duplicate quest ID %d; skipping later record" % quest_id,
-				emit_warnings
-			)
+			_report_warning("QuestSaveMigrator: duplicate quest ID %d; skipping later record"
+				% quest_id, emit_warnings)
 			continue
 		seen_ids[quest_id] = true
 		if not known_quest_ids.is_empty() and quest_id not in known_quest_ids:
-			_report_warning(
-				"QuestSaveMigrator: unknown quest ID %d; recovering from its embedded save data"
-				% quest_id,
-				emit_warnings
-			)
+			_report_warning("QuestSaveMigrator: unknown quest ID %d; recovering from its embedded save data"
+				% quest_id, emit_warnings)
 		quests.append(quest)
 	return quests
-
 
 static func _normalize_quest_record(raw_record: Dictionary, emit_warnings: bool) -> Dictionary:
 	var quest: Dictionary = raw_record.duplicate(true)
@@ -135,25 +129,16 @@ static func _normalize_quest_record(raw_record: Dictionary, emit_warnings: bool)
 	quest["reward"] = _normalize_reward(quest.get("reward", {}), int(quest["id"]), emit_warnings)
 	return quest
 
-
-static func _normalize_objectives(
-	raw_objectives: Variant,
-	quest_id: int,
-	emit_warnings: bool
-) -> Array[Dictionary]:
+static func _normalize_objectives(raw_objectives: Variant, quest_id: int, emit_warnings: bool) -> Array[Dictionary]:
 	var objectives: Array[Dictionary] = []
 	if typeof(raw_objectives) != TYPE_ARRAY:
-		_report_warning(
-			"QuestSaveMigrator: quest ID %d has malformed objectives; using none" % quest_id,
-			emit_warnings
-		)
+		_report_warning("QuestSaveMigrator: quest ID %d has malformed objectives; using none"
+			% quest_id, emit_warnings)
 		return objectives
 	for raw_objective: Variant in raw_objectives as Array:
 		if typeof(raw_objective) != TYPE_DICTIONARY:
-			_report_warning(
-				"QuestSaveMigrator: quest ID %d has a malformed objective; skipping" % quest_id,
-				emit_warnings
-			)
+			_report_warning("QuestSaveMigrator: quest ID %d has a malformed objective; skipping"
+				% quest_id, emit_warnings)
 			continue
 		var objective: Dictionary = (raw_objective as Dictionary).duplicate(true)
 		objective["type"] = str(objective.get("type", "kill"))
@@ -165,13 +150,10 @@ static func _normalize_objectives(
 		objectives.append(objective)
 	return objectives
 
-
 static func _normalize_reward(raw_reward: Variant, quest_id: int, emit_warnings: bool) -> Dictionary:
 	if typeof(raw_reward) != TYPE_DICTIONARY:
-		_report_warning(
-			"QuestSaveMigrator: quest ID %d has a malformed reward; using defaults" % quest_id,
-			emit_warnings
-		)
+		_report_warning("QuestSaveMigrator: quest ID %d has a malformed reward; using defaults"
+			% quest_id, emit_warnings)
 		raw_reward = {}
 	var reward: Dictionary = (raw_reward as Dictionary).duplicate(true)
 	reward["experience"] = int(reward.get("experience", 0))
@@ -182,7 +164,6 @@ static func _normalize_reward(raw_reward: Variant, quest_id: int, emit_warnings:
 	reward["rarity"] = rarity if rarity in Item.Rarity.values() else Item.Rarity.COMMON
 	return reward
 
-
 static func _normalize_int_array(value: Variant) -> Array[int]:
 	var result: Array[int] = []
 	if typeof(value) != TYPE_ARRAY:
@@ -192,7 +173,6 @@ static func _normalize_int_array(value: Variant) -> Array[int]:
 			result.append(int(entry))
 	return result
 
-
 static func _normalize_string_array(value: Variant) -> Array[String]:
 	var result: Array[String] = []
 	if typeof(value) != TYPE_ARRAY:
@@ -201,7 +181,6 @@ static func _normalize_string_array(value: Variant) -> Array[String]:
 		if typeof(entry) == TYPE_STRING or typeof(entry) == TYPE_STRING_NAME:
 			result.append(str(entry))
 	return result
-
 
 static func _report_warning(message: String, emit_warnings: bool) -> void:
 	if emit_warnings:

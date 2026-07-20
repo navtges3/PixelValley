@@ -21,43 +21,36 @@ func refresh() -> void:
 func _refresh_active() -> void:
 	for child in active_list.get_children():
 		child.queue_free()
-	
-	var quests := GameState.quest_manager.available_quests
+	var quests := GameState.quest_manager.get_active_quests()
+	quests.append_array(GameState.quest_manager.get_ready_quests())
 	if quests.is_empty():
 		active_list.add_child(_make_label("No active quests.", COLOR_OBJECTIVE_PEND, 11))
 		return
-	
 	for i in quests.size():
 		active_list.add_child(_build_quest_entry(quests[i], i < quests.size() - 1))
 
 func _refresh_completed() -> void:
 	for child in completed_list.get_children():
 		child.queue_free()
-	
 	var quests := GameState.quest_manager.completed_quests
 	completed_header.text = "Completed Quests (%d)" % quests.size()
 	completed_header.add_theme_color_override("font_color", COLOR_COMPLETE)
-	
 	if quests.is_empty():
 		completed_list.add_child(_make_label("None yet.", COLOR_OBJECTIVE_PEND, 11))
 		return
-	
 	for quest in quests:
 		var lbl := _make_label("✓ %s" % quest.title, COLOR_COMPLETE, 11)
 		completed_list.add_child(lbl)
 
 func _build_quest_entry(quest: Quest, add_separator: bool) -> Control:
-	var complete := quest.all_objectives_met()
+	var complete := quest.objectives_met()
 	var container := VBoxContainer.new()
 	container.add_theme_constant_override("separation", 2)
-	
 	var title := _make_label(quest.title, COLOR_COMPLETE if complete else COLOR_IN_PROGRESS, 13)
 	container.add_child(title)
-	
 	var desc := _make_label(quest.description, COLOR_OBJECTIVE_PEND, 10)
 	desc.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	container.add_child(desc)
-	
 	for objective in quest.objectives:
 		var done := objective.current_amount >= objective.target_amount
 		var hint := ""
@@ -69,16 +62,13 @@ func _build_quest_entry(quest: Quest, add_separator: bool) -> Control:
 		]
 		var obj_lbl := _make_label(obj_text, COLOR_OBJECTIVE_DONE if done else COLOR_OBJECTIVE_PEND, 11)
 		container.add_child(obj_lbl)
-	
 	if complete:
 		var badge := _make_label("  ✓ Ready to turn in at the village!", COLOR_COMPLETE, 10)
 		container.add_child(badge)
- 
 	if add_separator:
 		var sep := HSeparator.new()
 		sep.add_theme_color_override("color", COLOR_SEPARATOR)
 		container.add_child(sep)
- 
 	return container
 
 func _monster_name(monster_id: int) -> String:

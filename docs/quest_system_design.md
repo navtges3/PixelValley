@@ -2,7 +2,7 @@
 
 ## Current state
 
-The existing `QuestManager` can already update more than one kill quest at a time because monster-kill events are forwarded to every tracked quest in `available_quests`. The main limitation is that `available_quests` currently represents several lifecycle concepts at once: unlocked, accepted, active, and ready to turn in.
+`QuestManager` supports multiple simultaneous kill quests and tracks each quest in one explicit lifecycle list: `locked_quests`, `offered_quests`, `active_quests`, `ready_quests`, or `completed_quests`. Monster-kill events are forwarded only to active quests. When the final objective is met, the manager moves the quest to `ready_quests`; rewards and follow-up unlocks are applied only during turn-in.
 
 ## Goals
 
@@ -15,12 +15,12 @@ The existing `QuestManager` can already update more than one kill quest at a tim
 ## Proposed lifecycle
 
 - **Locked**: prerequisites are not met.
-- **Available**: the quest can be accepted from a board, NPC, or world interaction.
+- **Offered**: the quest can be accepted from a board, NPC, or world interaction.
 - **Active**: the player accepted the quest and objectives receive progress events.
 - **Ready**: every required objective is complete, but rewards have not been claimed.
 - **Completed**: rewards were delivered and follow-up quests were unlocked.
 
-The first implementation slice keeps the existing arrays for compatibility and adds lifecycle signals and query methods. A later slice will separate available quests from active quests after save migration support is in place.
+Automatic main quests move directly from locked to active. Other quest sources move from locked to offered and must be accepted before they receive progress. Abandoning an active side quest resets its progress and returns it to offered; main quests cannot be abandoned.
 
 ## Objective architecture
 
@@ -51,7 +51,9 @@ Gameplay systems emit domain events through `GameState` or a future quest event 
 
 `QuestManager` forwards relevant events only to active quests. It emits:
 
-- `quest_activated`
+- `quest_offered`
+- `quest_accepted`
+- `quest_abandoned`
 - `quest_progress_updated`
 - `quest_ready_to_turn_in`
 - `quest_turned_in`
@@ -64,7 +66,7 @@ Keep reward application centralized in `QuestManager.turn_in_quest()`. Expand th
 
 ## Save migration
 
-Before splitting `available_quests` and `active_quests`, add a quest save schema version. Existing saves should interpret the current `available_quests` list as active quests so no progress is lost.
+Quest saves currently use schema version 2. Schema 1 saves migrate the legacy `available_quests` list into `active_quests`, or into `ready_quests` when the saved quest had already met its completion state, so existing progress is preserved.
 
 Quest save compatibility is centralized in `scripts/save/quest_save_migrator.gd`. `quests.json` stores a top-level `schema_version`; files without it are schema 0 and migrate forward one version at a time before `SaveManager` constructs runtime resources.
 
@@ -79,10 +81,10 @@ Migration policy for future objective and lifecycle changes:
 
 ## Implementation order
 
-1. Add lifecycle signals, query methods, and duplicate-ID protection.
-2. Add tests or a debug harness for multiple simultaneous kill quests.
-3. Add quest category and source metadata: main/side, board/NPC/world.
-4. Add save schema version and split available versus active quests.
+1. Add lifecycle signals, query methods, and duplicate-ID protection. **Complete.**
+2. Add tests or a debug harness for multiple simultaneous kill quests. **Complete.**
+3. Add quest category and source metadata: main/side, board/NPC/world. **Complete.**
+4. Add save schema version and split offered, active, and ready quests. **Complete.**
 5. Refactor the current kill objective behind the shared objective API.
 6. Add collect objectives and inventory progress events.
 7. Add interaction/delivery objectives and NPC quest givers.

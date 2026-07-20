@@ -401,28 +401,35 @@ func _load_inn(data: Dictionary) -> Inn:
 func _get_quests_data(quest_manager: QuestManager) -> Dictionary:
 	var data := {
 		"locked_quests": [],
-		"available_quests": [],
-		"completed_quests": []
+		"offered_quests": [],
+		"active_quests": [],
+		"ready_quests": [],
+		"completed_quests": [],
 	}
-	for quest in quest_manager.locked_quests:
+	for quest: Quest in quest_manager.locked_quests:
 		data["locked_quests"].append(_get_quest_data(quest))
-	for quest in quest_manager.available_quests:
-		data["available_quests"].append(_get_quest_data(quest))
-	for quest in quest_manager.completed_quests:
+	for quest: Quest in quest_manager.offered_quests:
+		data["offered_quests"].append(_get_quest_data(quest))
+	for quest: Quest in quest_manager.active_quests:
+		data["active_quests"].append(_get_quest_data(quest))
+	for quest: Quest in quest_manager.ready_quests:
+		data["ready_quests"].append(_get_quest_data(quest))
+	for quest: Quest in quest_manager.completed_quests:
 		data["completed_quests"].append(_get_quest_data(quest))
 	return data
 
 func _load_quests(data: Dictionary) -> QuestManager:
 	var manager := QuestManager.new()
-	for quest_data in data.get("locked_quests", []):
-		var quest := _load_quest(quest_data)
-		manager.locked_quests.append(quest)
-	for quest_data in data.get("available_quests", []):
-		var quest := _load_quest(quest_data)
-		manager.add_available_quest(quest)
-	for quest_data in data.get("completed_quests", []):
-		var quest := _load_quest(quest_data)
-		manager.completed_quests.append(quest)
+	for quest_data: Dictionary in data.get("locked_quests", []):
+		manager.locked_quests.append(_load_quest(quest_data))
+	for quest_data: Dictionary in data.get("offered_quests", []):
+		manager.offered_quests.append(_load_quest(quest_data))
+	for quest_data: Dictionary in data.get("active_quests", []):
+		manager.active_quests.append(_load_quest(quest_data))
+	for quest_data: Dictionary in data.get("ready_quests", []):
+		manager.ready_quests.append(_load_quest(quest_data))
+	for quest_data: Dictionary in data.get("completed_quests", []):
+		manager.completed_quests.append(_load_quest(quest_data))
 	return manager
 
 # ---------------------------------------------------------

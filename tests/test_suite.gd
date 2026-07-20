@@ -9,6 +9,7 @@ extends Node
 
 @onready var _quest_test_cases: Array[TestCase] = [
 	$Quests/QuestManagerMultiQuestTests,
+	$Quests/QuestManagerLifecycleTests,
 	$Quests/QuestSaveMigrationTests,
 ]
 
