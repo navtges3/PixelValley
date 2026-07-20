@@ -156,6 +156,23 @@ func get_quest_by_id(quest_id: int) -> Quest:
 			return quest
 	return null
 
+func filter_quests_by_category(quests: Array[Quest], category: Quest.Category) -> Array[Quest]:
+	var matches: Array[Quest] = []
+	for quest in quests:
+		if quest.category == category:
+			matches.append(quest)
+	return matches
+
+func filter_quests_by_source(quests: Array[Quest], source_type: Quest.SourceType, source_id = "") -> Array[Quest]:
+	var matches: Array[Quest] = []
+	for quest in quests:
+		if quest.source_type != source_type:
+			continue
+		if not source_id.is_empty() and quest.source_id != source_id:
+			continue
+		matches.append(quest)
+	return matches
+
 func has_quest_id(quest_id: int) -> bool:
 	return get_quest_by_id(quest_id) != null
 
