@@ -1,9 +1,17 @@
 extends Resource
 class_name Quest
 
+enum Category { MAIN, SIDE }
+enum SourceType { AUTOMATIC, QUEST_BOARD, NPC, SCRIPTED_EVENT }
+
 @export var title: String
 @export var id: int
 @export var description: String
+@export_category("Classification")
+@export var category: Category = Category.MAIN
+@export var source_type: SourceType = SourceType.AUTOMATIC
+@export var source_id: String = ""
+@export_category("Progression")
 @export var objectives: Array[QuestObjective]
 @export var reward: Reward = Reward.new()
 @export var next_quests: Array[int]
