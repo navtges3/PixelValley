@@ -295,7 +295,7 @@ func _load_inventory(data: Dictionary) -> Inventory:
 
 	var weapon_id: String = data.get("equipped_weapon", "")
 	if weapon_id != "":
-		var weapon := ItemLoader.get_item(weapon_id)
+		var weapon = ItemLoader.get_item(weapon_id)
 		if weapon is Weapon:
 			inv.equipped_weapon = weapon.duplicate(true)
 			_load_ability_cooldowns(inv.equipped_weapon, data.get("equipped_weapon_cooldowns", []))
