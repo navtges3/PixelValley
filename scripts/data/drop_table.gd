@@ -5,7 +5,7 @@ class_name DropTable
 @export var weapon_chance: float = 0.0
 @export var weapon_rarity: Item.Rarity = Item.Rarity.COMMON
 
-func roll(hero_class: Hero.HeroClass) -> Dictionary:
+func roll(hero_class: Hero.HeroClass, inventory: Inventory) -> Dictionary:
 	var results := {
 		"potions": {},
 		"weapon_id": "",
@@ -24,7 +24,7 @@ func roll(hero_class: Hero.HeroClass) -> Dictionary:
 			if results["weapon_id"] == "":
 				results["weapon_id"] = item_id
 	if weapon_chance > 0.0 and randf() <= weapon_chance:
-		var weapon_id := WeaponDatabase.get_random_unowned_weapon_id_for_class(hero_class, weapon_rarity)
+		var weapon_id := WeaponDatabase.get_random_unowned_weapon_id_for_class(hero_class, weapon_rarity, inventory)
 		if weapon_id != "" and results["weapon_id"] == "":
 			results["weapon_id"] = weapon_id
 	return results

@@ -66,7 +66,6 @@ func offer_quest(quest: Quest) -> bool:
 		return true
 	var tracked_quest: Quest = get_quest_by_id(quest.id)
 	if tracked_quest != null and tracked_quest != quest:
-		push_warning("QuestManager: quest id %d is already tracked" % quest.id)
 		return false
 	if quest in active_quests or quest in ready_quests or quest in completed_quests:
 		push_warning("QuestManager: quest '%s' cannot be offered from its current state" % quest.title)
@@ -115,7 +114,6 @@ func abandon_quest(quest: Quest) -> bool:
 		push_warning("QuestManager: quest '%s' is not active" % quest.title)
 		return false
 	if quest.category == Quest.Category.MAIN:
-		push_warning("QuestManager: main quest '%s' cannot be abandoned" % quest.title)
 		return false
 	_reset_quest_progress(quest)
 	_remove_from_lifecycle_lists(quest)
@@ -132,7 +130,6 @@ func mark_quest_ready(quest: Quest) -> bool:
 		push_warning("QuestManager: quest '%s' is not active" % quest.title)
 		return false
 	if not quest.objectives_met():
-		push_warning("QuestManager: not all quest objectives met")
 		return false
 	_remove_from_lifecycle_lists(quest)
 	ready_quests.append(quest)
@@ -142,23 +139,22 @@ func mark_quest_ready(quest: Quest) -> bool:
 
 func turn_in_quest(quest: Quest) -> Array[RewardEntry]:
 	if quest == null:
+		push_warning("QuestManager: cannot turn in a null quest")
 		return []
 	if quest not in ready_quests:
-		push_warning("QuestManager: quest '%s' is not ready to turn in" % quest.title)
 		return []
-	var entries: Array[RewardEntry] = []
 	_remove_from_lifecycle_lists(quest)
 	quest.completed = true
 	completed_quests.append(quest)
-	_apply_rewards(quest, entries)
+	var rewards: Array[RewardEntry] = RewardService.grant(quest.reward, GameState.hero)
 	_apply_location_unlocks(quest)
 	for next_id: int in quest.next_quests:
 		unlock_quest_by_id(next_id)
-	quest_turned_in.emit(quest, entries)
+	quest_turned_in.emit(quest, rewards)
 	SaveManager.save_game()
 	if quest.final_quest:
 		ScreenManager.go_to_screen(ScreenManager.ScreenName.VICTORY)
-	return entries
+	return rewards
 
 func unlock_quest_by_id(quest_id: int) -> bool:
 	for quest in locked_quests.duplicate():
@@ -269,28 +265,6 @@ func _on_monster_killed(monster_id: MonsterLoader.MonsterID, location_id: String
 			quest_progress_updated.emit(quest)
 		if not was_ready and quest.objectives_met():
 			mark_quest_ready(quest)
-
-func _apply_rewards(quest: Quest, entries: Array[RewardEntry]) -> void:
-	var hero := GameState.hero
-	hero.gain_experience(quest.reward.experience)
-	hero.inventory.gold += quest.reward.gold
-	entries.append(RewardEntry.experience(quest.reward.experience))
-	entries.append(RewardEntry.gold(quest.reward.gold))
-	for item_id in quest.reward.items:
-		hero.inventory.add_potion(item_id, 1)
-		entries.append(RewardEntry.potion(item_id, 1))
-	if quest.reward.random_weapon:
-		_apply_weapon_rewards(quest.reward.rarity, entries)
-
-func _apply_weapon_rewards(rarity: Item.Rarity, entries: Array[RewardEntry]) -> void:
-	var weapon_id := WeaponDatabase.get_random_unowned_weapon_id_for_class(GameState.hero.hero_class, rarity)
-	if weapon_id != "":
-		GameState.hero.inventory.add_weapon_to_stash(weapon_id)
-		entries.append(RewardEntry.weapon(weapon_id))
-	else:
-		var gold := WeaponDatabase.get_gold_fallback_for_rarity(rarity)
-		GameState.hero.inventory.gold += gold
-		entries.append(RewardEntry.weapon_sold(weapon_id, gold))
 
 func _apply_location_unlocks(quest: Quest) -> void:
 	for location_id in quest.unlocks_locations:

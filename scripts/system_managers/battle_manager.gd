@@ -177,31 +177,28 @@ func _on_monster_killed() -> void:
 	if state in [BattleState.RESOLVING, BattleState.VICTORY, BattleState.DEFEAT]:
 		return
 	state = BattleState.RESOLVING
-	var experience := monster.calculate_experience()
-	var gold := monster.calculate_gold()
-	var loot := monster.roll_loot(hero.hero_class)
 	var entries: Array[RewardEntry] = []
-	entries.append(RewardEntry.experience(experience))
-	entries.append(RewardEntry.gold(gold))
-	hero.gain_experience(experience)
-	hero.inventory.gold += gold
-	_collect_loot(loot, entries)
+	var experience_entry := RewardService.grant_experience(hero, monster.calculate_experience())
+	if experience_entry != null:
+		entries.append(experience_entry)
+	var gold_entry := RewardService.grant_gold(hero, monster.calculate_gold())
+	if gold_entry != null:
+		entries.append(gold_entry)
+	entries.append_array(_collect_loot(monster.roll_loot(hero.hero_class, hero.inventory)))
 	hero_updated.emit(hero)
 	GameState.monster_killed.emit(monster.monster_id, location_id)
 	end_battle(true, entries)
 
-func _collect_loot(loot: Dictionary, entries: Array[RewardEntry]) -> void:
+func _collect_loot(loot: Dictionary) -> Array[RewardEntry]:
+	var entries: Array[RewardEntry] = []
 	for item_id in loot.get("potions", {}):
 		var count: int = loot["potions"][item_id]
-		hero.inventory.add_potion(item_id, count)
-		entries.append(RewardEntry.potion(item_id, count))
+		var potion_entry := RewardService.grant_potion(hero, item_id, count)
+		if potion_entry != null:
+			entries.append(potion_entry)
 	var weapon_id: String = loot.get("weapon_id", "")
 	if weapon_id != "":
-		if hero.inventory.has_weapon_in_stash(weapon_id):
-			var weapon := ItemLoader.get_item(weapon_id) as Weapon
-			var sold_gold := weapon.value if weapon else 0
-			hero.inventory.gold += sold_gold
-			entries.append(RewardEntry.weapon_sold(weapon_id, sold_gold))
-		else:
-			hero.inventory.add_weapon_to_stash(weapon_id)
-			entries.append(RewardEntry.weapon(weapon_id))
+		var weapon_entry := RewardService.grant_weapon(hero, weapon_id)
+		if weapon_entry != null:
+			entries.append(weapon_entry)
+	return entries
