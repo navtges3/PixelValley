@@ -430,6 +430,9 @@ func _get_quest_data(quest: Quest) -> Dictionary:
 		"id": quest.id,
 		"title": quest.title,
 		"description": quest.description,
+		"category": quest.category,
+		"source_type": quest.source_type,
+		"source_id": quest.source_id,
 		"next_quests": quest.next_quests.duplicate(),
 		"completed": quest.completed,
 		"final_quest": quest.final_quest,
@@ -460,6 +463,9 @@ func _load_quest(data: Dictionary) -> Quest:
 	quest.id = data.get("id", 0)
 	quest.title = data.get("title", "")
 	quest.description = data.get("description", "")
+	quest.category = data.get("category", Quest.Category.MAIN)
+	quest.source_type = data.get("source_type", Quest.SourceType.AUTOMATIC)
+	quest.source_id = str(data.get("source_id", ""))
 	quest.completed = data.get("completed", false)
 	quest.final_quest = data.get("final_quest", false)
 	# Restore next_quests so unlocking the follow-up works after a load.
