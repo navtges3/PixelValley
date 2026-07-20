@@ -163,7 +163,7 @@ func filter_quests_by_category(quests: Array[Quest], category: Quest.Category) -
 			matches.append(quest)
 	return matches
 
-func filter_quests_by_source(quests: Array[Quest], source_type: Quest.SourceType, source_id = "") -> Array[Quest]:
+func filter_quests_by_source(quests: Array[Quest], source_type: Quest.SourceType, source_id: String = "") -> Array[Quest]:
 	var matches: Array[Quest] = []
 	for quest in quests:
 		if quest.source_type != source_type:

@@ -16,6 +16,7 @@ func run_tests() -> int:
 	_prepare_game_state()
 	_test_concurrent_quests_and_save_load()
 	_test_main_quest_progression()
+	_test_quest_metadata_defaults_and_queries()
 	_cleanup()
 	return _finish_test_run("Quest manager multi-quest tests")
 
@@ -44,6 +45,9 @@ func _test_concurrent_quests_and_save_load() -> void:
 	var quick_quest := _make_kill_quest(101, MonsterLoader.MonsterID.GOBLIN, 1, "forest")
 	var long_quest := _make_kill_quest(102, MonsterLoader.MonsterID.GOBLIN, 3, "forest")
 	var unrelated_quest := _make_kill_quest(103, MonsterLoader.MonsterID.ORC, 1, "orc_war_camp")
+	quick_quest.category = Quest.Category.SIDE
+	quick_quest.source_type = Quest.SourceType.QUEST_BOARD
+	quick_quest.source_id = "valley_board"
 	quick_quest.quest_completed.connect(_on_quest_completed)
 	long_quest.quest_completed.connect(_on_quest_completed)
 	unrelated_quest.quest_completed.connect(_on_quest_completed)
@@ -83,6 +87,9 @@ func _test_concurrent_quests_and_save_load() -> void:
 	var loaded_unrelated := loaded_manager.get_quest_by_id(103)
 	loaded_long.quest_completed.connect(_on_quest_completed)
 	_expect_true(loaded_quick in loaded_manager.completed_quests, "save/load preserves the turned-in quest")
+	_expect_equal(loaded_quick.category, Quest.Category.SIDE, "save/load preserves quest category")
+	_expect_equal(loaded_quick.source_type, Quest.SourceType.QUEST_BOARD, "save/load preserves quest source type")
+	_expect_equal(loaded_quick.source_id, "valley_board", "save/load preserves quest source ID")
 	_expect_equal(loaded_long.get_slain_count(), 2, "save/load preserves active quest progress")
 	_expect_equal(loaded_unrelated.get_slain_count(), 0, "save/load preserves unrelated quest progress")
 
@@ -107,16 +114,54 @@ func _test_main_quest_progression() -> void:
 	var first_quest := manager.get_quest_by_id(QuestManager.FIRST_QUEST_ID)
 	_expect_not_null(first_quest, "new game loads the first main quest")
 	_expect_true(first_quest in manager.available_quests, "first main quest starts available")
+	_expect_equal(first_quest.category, Quest.Category.MAIN, "existing quest resources default to main")
+	_expect_equal(first_quest.source_type, Quest.SourceType.AUTOMATIC, "existing quest resources default to automatic activation")
 	var previous_progress := first_quest.get_slain_count()
 	GameState.monster_killed.emit(MonsterLoader.MonsterID.GOBLIN, "forest")
 	_expect_equal(first_quest.get_slain_count(), previous_progress + 1, "main quest still progresses from its normal kill event")
 
-func _make_kill_quest(
-	quest_id: int,
-	monster_id: MonsterLoader.MonsterID,
-	target_amount: int,
-	location_id: String
-) -> Quest:
+func _test_quest_metadata_defaults_and_queries() -> void:
+	var manager := QuestManager.new()
+
+	var main_quest := _make_kill_quest(201, MonsterLoader.MonsterID.GOBLIN, 1, "forest")
+
+	var board_side_quest := _make_kill_quest(202, MonsterLoader.MonsterID.GOBLIN, 1, "forest")
+	board_side_quest.category = Quest.Category.SIDE
+	board_side_quest.source_type = Quest.SourceType.QUEST_BOARD
+	board_side_quest.source_id = "valley_board"
+
+	var npc_side_quest := _make_kill_quest(203, MonsterLoader.MonsterID.ORC, 1, "orc_war_camp")
+	npc_side_quest.category = Quest.Category.SIDE
+	npc_side_quest.source_type = Quest.SourceType.NPC
+	npc_side_quest.source_id = "npc_blacksmith"
+
+	manager.add_available_quest(main_quest)
+	manager.add_available_quest(board_side_quest)
+	manager.add_available_quest(npc_side_quest)
+
+	_expect_equal(main_quest.category, Quest.Category.MAIN, "new quests default to the main category")
+	_expect_equal(main_quest.source_type, Quest.SourceType.AUTOMATIC, "new quests default to automatic activation")
+
+	var side_quests := manager.filter_quests_by_category(manager.available_quests, Quest.Category.SIDE)
+	_expect_equal(side_quests.size(), 2, "category query returns both side quests")
+
+	var board_quests := manager.filter_quests_by_source(manager.available_quests, Quest.SourceType.QUEST_BOARD, "valley_board")
+	_expect_equal(board_quests.size(), 1, "source query can identify a specific quest board")
+	_expect_true(board_side_quest in board_quests, "source query returns the matching board quest")
+
+	var legacy_data := {
+		"id": 204,
+		"title": "Legacy Quest",
+		"description": "Saved before quest metadata existed.",
+		"objectives": [],
+		"reward": {},
+	}
+	var legacy_quest := SaveManager._load_quest(legacy_data)
+	_expect_equal(legacy_quest.category, Quest.Category.MAIN, "legacy saves default quests to main")
+	_expect_equal(legacy_quest.source_type, Quest.SourceType.AUTOMATIC, "legacy saves default quests to automatic activation")
+	_expect_equal(legacy_quest.source_id, "", "legacy saves default to an empty source ID")
+
+func _make_kill_quest(quest_id: int, monster_id: MonsterLoader.MonsterID, target_amount: int, location_id: String) -> Quest:
 	var objective := QuestObjective.new()
 	objective.monster_id = monster_id
 	objective.target_amount = target_amount
