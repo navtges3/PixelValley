@@ -5,6 +5,7 @@
 [ext_resource type="PackedScene" path="res://tests/effects/test_effect_lifecycle_events.tscn" id="3_pe5y4"]
 [ext_resource type="Script" uid="uid://ccfwxvdvq6via" path="res://tests/test_suite.gd" id="4_suite"]
 [ext_resource type="PackedScene" path="res://tests/quests/quest_manager_multi_quest_test.tscn" id="5_quest"]
+[ext_resource type="PackedScene" path="res://tests/quests/quest_save_migration_test.tscn" id="6_migration"]
 
 [node name="TestSuite" type="Node" unique_id=783793299]
 script = ExtResource("4_suite")
@@ -20,3 +21,5 @@ script = ExtResource("4_suite")
 [node name="Quests" type="Node" parent="." unique_id=298955935]
 
 [node name="QuestManagerMultiQuestTests" parent="Quests" unique_id=836248138 instance=ExtResource("5_quest")]
+
+[node name="QuestSaveMigrationTests" parent="Quests" instance=ExtResource("6_migration")]

@@ -66,6 +66,17 @@ Keep reward application centralized in `QuestManager.turn_in_quest()`. Expand th
 
 Before splitting `available_quests` and `active_quests`, add a quest save schema version. Existing saves should interpret the current `available_quests` list as active quests so no progress is lost.
 
+Quest save compatibility is centralized in `scripts/save/quest_save_migrator.gd`. `quests.json` stores a top-level `schema_version`; files without it are schema 0 and migrate forward one version at a time before `SaveManager` constructs runtime resources.
+
+Migration policy for future objective and lifecycle changes:
+
+1. Increment `QuestSaveMigrator.CURRENT_SCHEMA_VERSION` only when the serialized quest shape changes.
+2. Add one `_migrate_vN_to_vN_plus_1()` function and one `match` branch. Each step accepts the previous version and returns the next; do not add compatibility branches to `SaveManager._load_quest()`.
+3. Preserve unknown fields while adding explicit defaults for new required fields. Objective records carry a `type` discriminator (`kill` for the current objective) so later objective types can migrate independently.
+4. Never discard valid IDs, progress, completion, reward, unlock, category, or source data. Unknown quest IDs are warned about and reconstructed from their embedded snapshot when possible.
+5. Malformed lists, records, objectives, and rewards should warn, skip only the unusable portion, and load the rest of the save.
+6. Add direct migrator tests for the previous schema, the new schema, malformed input, and round-trip preservation before changing the main loader.
+
 ## Implementation order
 
 1. Add lifecycle signals, query methods, and duplicate-ID protection.
