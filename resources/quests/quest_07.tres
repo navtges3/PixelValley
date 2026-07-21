@@ -1,15 +1,16 @@
 [gd_resource type="Resource" script_class="Quest" format=3 uid="uid://oa53q7divulk"]
 
 [ext_resource type="Script" uid="uid://bhsjswm1wnll8" path="res://scripts/data/quest_objective.gd" id="1_w36or"]
+[ext_resource type="Script" uid="uid://cxud06btunet" path="res://scripts/data/kill_quest_objective.gd" id="2_pq6bg"]
 [ext_resource type="Script" uid="uid://xhl8p6y5w5e6" path="res://scripts/data/quest.gd" id="3_q3yux"]
 [ext_resource type="Script" uid="uid://bra22kkvfpket" path="res://scripts/data/reward.gd" id="3_tjj41"]
 
-[sub_resource type="Resource" id="Resource_tjj41"]
-script = ExtResource("1_w36or")
+[sub_resource type="Resource" id="Resource_1jjxf"]
+script = ExtResource("2_pq6bg")
 monster_id = 3
 target_amount = 3
 location_id = "cave"
-metadata/_custom_type_script = "uid://bhsjswm1wnll8"
+metadata/_custom_type_script = "uid://cxud06btunet"
 
 [sub_resource type="Resource" id="Resource_w36or"]
 script = ExtResource("3_tjj41")
@@ -21,7 +22,7 @@ script = ExtResource("3_q3yux")
 title = "Into the Dark"
 id = 7
 description = "The ogres have made their home in a network of caves to the east. Venture in and thin their numbers."
-objectives = Array[ExtResource("1_w36or")]([SubResource("Resource_tjj41")])
+objectives = Array[ExtResource("1_w36or")]([SubResource("Resource_1jjxf")])
 reward = SubResource("Resource_w36or")
 next_quests = Array[int]([8])
 metadata/_custom_type_script = "uid://xhl8p6y5w5e6"

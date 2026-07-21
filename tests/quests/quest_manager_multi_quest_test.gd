@@ -13,7 +13,10 @@ func run_tests() -> int:
 	_ready_counts.clear()
 	_turn_in_counts.clear()
 	_prepare_game_state()
+	_test_kill_objective_contract_and_save_hooks()
+	_test_authored_quests_use_concrete_objectives()
 	_test_concurrent_quests_and_save_load()
+	_test_multi_objective_event_routing()
 	_test_main_quest_progression()
 	_test_quest_metadata_defaults_and_queries()
 	_cleanup()
@@ -51,10 +54,10 @@ func _test_concurrent_quests_and_save_load() -> void:
 	manager.activate_quest(long_quest)
 	manager.activate_quest(unrelated_quest)
 
-	GameState.monster_killed.emit(MonsterLoader.MonsterID.GOBLIN, "forest")
-	_expect_equal(quick_quest.get_slain_count(), 1, "one kill progresses the first matching quest")
-	_expect_equal(long_quest.get_slain_count(), 1, "one kill progresses the second matching quest")
-	_expect_equal(unrelated_quest.get_slain_count(), 0, "one kill does not progress an unrelated quest")
+	_emit_kill(MonsterLoader.MonsterID.GOBLIN, "forest")
+	_expect_equal(_get_kill_progress(quick_quest), 1, "one kill progresses the first matching quest")
+	_expect_equal(_get_kill_progress(long_quest), 1, "one kill progresses the second matching quest")
+	_expect_equal(_get_kill_progress(unrelated_quest), 0, "one kill does not progress an unrelated quest")
 	_expect_equal(_progress_counts.get(1, 0), 1, "first matching quest emits one progress event")
 	_expect_equal(_progress_counts.get(2, 0), 1, "second matching quest emits one progress event")
 	_expect_equal(_progress_counts.get(3, 0), 0, "unrelated quest emits no progress event")
@@ -62,16 +65,16 @@ func _test_concurrent_quests_and_save_load() -> void:
 	_expect_true(quick_quest in manager.ready_quests, "completed objectives move the quick quest to ready")
 	_expect_true(quick_quest not in manager.active_quests, "ready quest stops receiving progress")
 
-	GameState.monster_killed.emit(MonsterLoader.MonsterID.GOBLIN, "forest")
+	_emit_kill(MonsterLoader.MonsterID.GOBLIN, "forest")
 	_expect_equal(_progress_counts.get(1, 0), 1, "completed quest does not emit duplicate progress")
 	_expect_equal(_ready_counts.get(1, 0), 1, "completed quest does not emit duplicate readiness")
-	_expect_equal(long_quest.get_slain_count(), 2, "other active quest keeps progressing")
+	_expect_equal(_get_kill_progress(long_quest), 2, "other active quest keeps progressing")
 
 	manager.turn_in_quest(quick_quest)
 	_expect_equal(_turn_in_counts.get(1, 0), 1, "turn-in event emits once")
 	_expect_true(quick_quest in manager.completed_quests, "turned-in quest moves to completed quests")
 	_expect_true(long_quest in manager.active_quests, "turning in one quest keeps the other active")
-	_expect_equal(long_quest.get_slain_count(), 2, "turning in one quest preserves other quest progress")
+	_expect_equal(_get_kill_progress(long_quest), 2, "turning in one quest preserves other quest progress")
 	_expect_true(not long_quest.completed, "turning in one quest does not complete the other")
 
 	SaveManager.save_game()
@@ -91,17 +94,17 @@ func _test_concurrent_quests_and_save_load() -> void:
 	_expect_equal(loaded_quick.category, Quest.Category.SIDE, "save/load preserves quest category")
 	_expect_equal(loaded_quick.source_type, Quest.SourceType.QUEST_BOARD, "save/load preserves quest source type")
 	_expect_equal(loaded_quick.source_id, "valley_board", "save/load preserves quest source ID")
-	_expect_equal(loaded_long.get_slain_count(), 2, "save/load preserves active quest progress")
-	_expect_equal(loaded_unrelated.get_slain_count(), 0, "save/load preserves unrelated quest progress")
+	_expect_equal(_get_kill_progress(loaded_long), 2, "save/load preserves active quest progress")
+	_expect_equal(_get_kill_progress(loaded_unrelated), 0, "save/load preserves unrelated quest progress")
 
 	var stale_progress_count: int = _progress_counts.get(2, 0)
-	GameState.monster_killed.emit(MonsterLoader.MonsterID.GOBLIN, "forest")
-	_expect_equal(loaded_long.get_slain_count(), 3, "loaded active quest continues progressing")
+	_emit_kill(MonsterLoader.MonsterID.GOBLIN, "forest")
+	_expect_equal(_get_kill_progress(loaded_long), 3, "loaded active quest continues progressing")
 	_expect_equal(_progress_counts.get(2, 0), stale_progress_count + 1, "only the loaded manager emits progress")
 	_expect_equal(_ready_counts.get(2, 0), 1, "loaded quest emits readiness once")
 	_expect_true(loaded_long in loaded_manager.ready_quests, "loaded quest moves to ready after its final kill")
 
-	GameState.monster_killed.emit(MonsterLoader.MonsterID.GOBLIN, "forest")
+	_emit_kill(MonsterLoader.MonsterID.GOBLIN, "forest")
 	_expect_equal(_progress_counts.get(2, 0), stale_progress_count + 1, "loaded completed quest emits no duplicate progress")
 	_expect_equal(_ready_counts.get(2, 0), 1, "loaded completed quest emits no duplicate readiness")
 
@@ -116,9 +119,88 @@ func _test_main_quest_progression() -> void:
 	_expect_true(first_quest in manager.active_quests, "first automatic main quest starts active")
 	_expect_equal(first_quest.category, Quest.Category.MAIN, "existing quest resources default to main")
 	_expect_equal(first_quest.source_type, Quest.SourceType.AUTOMATIC, "existing quest resources default to automatic activation")
-	var previous_progress := first_quest.get_slain_count()
-	GameState.monster_killed.emit(MonsterLoader.MonsterID.GOBLIN, "forest")
-	_expect_equal(first_quest.get_slain_count(), previous_progress + 1, "main quest still progresses from its normal kill event")
+	var first_objective := first_quest.objectives[0] as KillQuestObjective
+	_expect_not_null(first_objective, "authored main quest uses the concrete kill objective type")
+	if first_objective == null:
+		return
+	var previous_progress: int = first_objective.current_amount
+	_emit_kill(MonsterLoader.MonsterID.GOBLIN, "forest")
+	_expect_equal(first_objective.current_amount, previous_progress + 1, "main quest still progresses from its normal kill event")
+
+func _test_kill_objective_contract_and_save_hooks() -> void:
+	var objective := KillQuestObjective.new()
+	objective.monster_id = MonsterLoader.MonsterID.GOBLIN
+	objective.target_amount = 2
+	objective.location_id = "forest"
+
+	_expect_true(not objective.apply_event(GameplayEvent.new()), "kill objective ignores unrelated gameplay event types")
+	_expect_true(
+		not objective.apply_event(MonsterKilledEvent.new(MonsterLoader.MonsterID.ORC, "forest")),
+		"kill objective ignores a different monster"
+	)
+	_expect_true(
+		not objective.apply_event(MonsterKilledEvent.new(MonsterLoader.MonsterID.GOBLIN, "orc_war_camp")),
+		"kill objective ignores a different required location"
+	)
+	_expect_equal(objective.current_amount, 0, "ignored events do not change objective progress")
+	_expect_true(
+		objective.apply_event(MonsterKilledEvent.new(MonsterLoader.MonsterID.GOBLIN, "forest")),
+		"matching kill event changes objective progress"
+	)
+	_expect_equal(objective.current_amount, 1, "matching kill event increments progress once")
+	_expect_contains(objective.get_progress_text(), "1/2", "objective provides generalized progress display text")
+
+	var restored := QuestObjectiveFactory.from_save_data(objective.get_save_data()) as KillQuestObjective
+	_expect_not_null(restored, "objective factory restores the concrete objective type")
+	if restored != null:
+		_expect_equal(restored.monster_id, objective.monster_id, "objective save hook preserves the monster ID")
+		_expect_equal(restored.current_amount, 1, "objective save hook preserves progress")
+		_expect_equal(restored.location_id, "forest", "objective save hook preserves the location")
+
+func _test_authored_quests_use_concrete_objectives() -> void:
+	var invalid_quest_paths: Array[String] = []
+	for path: String in QuestManager.QUEST_PATHS:
+		var quest := load(path) as Quest
+		if quest == null:
+			invalid_quest_paths.append(path)
+			continue
+		for objective: QuestObjective in quest.objectives:
+			if not objective is KillQuestObjective:
+				invalid_quest_paths.append(path)
+				break
+	_expect_true(
+		invalid_quest_paths.is_empty(),
+		"authored kill quests use KillQuestObjective resources; invalid: %s"
+			% ", ".join(invalid_quest_paths)
+	)
+
+func _test_multi_objective_event_routing() -> void:
+	GameState.quest_manager.disconnect_signals()
+	var manager := QuestManager.new()
+	GameState.quest_manager = manager
+	manager.reconnect_signals()
+	_connect_manager_counters(manager)
+
+	var quest := _make_kill_quest(301, MonsterLoader.MonsterID.GOBLIN, 1, "forest")
+	var orc_objective := KillQuestObjective.new()
+	orc_objective.monster_id = MonsterLoader.MonsterID.ORC
+	orc_objective.target_amount = 1
+	orc_objective.location_id = "orc_war_camp"
+	quest.objectives.append(orc_objective)
+	manager.activate_quest(quest)
+
+	GameState.gameplay_event.emit(GameplayEvent.new())
+	_expect_equal(_progress_counts.get(301, 0), 0, "unrelated event emits no quest progress signal")
+	_emit_kill(MonsterLoader.MonsterID.GOBLIN, "forest")
+	_expect_equal(_get_kill_progress(quest), 1, "first matching objective progresses")
+	_expect_equal(orc_objective.current_amount, 0, "unrelated objective in the same quest is ignored")
+	_expect_true(quest in manager.active_quests, "multi-objective quest remains active until every objective is complete")
+	_expect_equal(_progress_counts.get(301, 0), 1, "one event emits one progress signal for the affected quest")
+
+	_emit_kill(MonsterLoader.MonsterID.ORC, "orc_war_camp")
+	_expect_equal(orc_objective.current_amount, 1, "second objective progresses from its matching event")
+	_expect_true(quest in manager.ready_quests, "multi-objective quest becomes ready after all objectives complete")
+	_expect_equal(_ready_counts.get(301, 0), 1, "multi-objective quest emits readiness once")
 
 func _test_quest_metadata_defaults_and_queries() -> void:
 	var manager := QuestManager.new()
@@ -164,7 +246,7 @@ func _test_quest_metadata_defaults_and_queries() -> void:
 	_expect_equal(legacy_quest.source_id, "", "legacy saves default to an empty source ID")
 
 func _make_kill_quest(quest_id: int, monster_id: MonsterLoader.MonsterID, target_amount: int, location_id: String) -> Quest:
-	var objective := QuestObjective.new()
+	var objective := KillQuestObjective.new()
 	objective.monster_id = monster_id
 	objective.target_amount = target_amount
 	objective.location_id = location_id
@@ -173,6 +255,13 @@ func _make_kill_quest(quest_id: int, monster_id: MonsterLoader.MonsterID, target
 	quest.title = "Test Quest %d" % quest_id
 	quest.objectives.append(objective)
 	return quest
+
+func _get_kill_progress(quest: Quest, objective_index: int = 0) -> int:
+	var objective := quest.objectives[objective_index] as KillQuestObjective
+	return objective.current_amount if objective != null else -1
+
+func _emit_kill(monster_id: MonsterLoader.MonsterID, location_id: String) -> void:
+	GameState.gameplay_event.emit(MonsterKilledEvent.new(monster_id, location_id))
 
 func _connect_manager_counters(manager: QuestManager) -> void:
 	manager.quest_progress_updated.connect(_on_quest_progress_updated)

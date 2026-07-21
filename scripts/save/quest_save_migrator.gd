@@ -132,21 +132,14 @@ static func _normalize_quest_record(raw_record: Dictionary, emit_warnings: bool)
 static func _normalize_objectives(raw_objectives: Variant, quest_id: int, emit_warnings: bool) -> Array[Dictionary]:
 	var objectives: Array[Dictionary] = []
 	if typeof(raw_objectives) != TYPE_ARRAY:
-		_report_warning("QuestSaveMigrator: quest ID %d has malformed objectives; using none"
-			% quest_id, emit_warnings)
+		_report_warning("QuestSaveMigrator: quest ID %d has malformed objectives; using none" % quest_id, emit_warnings)
 		return objectives
 	for raw_objective: Variant in raw_objectives as Array:
 		if typeof(raw_objective) != TYPE_DICTIONARY:
-			_report_warning("QuestSaveMigrator: quest ID %d has a malformed objective; skipping"
-				% quest_id, emit_warnings)
+			_report_warning("QuestSaveMigrator: quest ID %d has a malformed objective; skipping" % quest_id, emit_warnings)
 			continue
 		var objective: Dictionary = (raw_objective as Dictionary).duplicate(true)
 		objective["type"] = str(objective.get("type", "kill"))
-		var monster_id: int = int(objective.get("monster_id", MonsterLoader.MonsterID.GOBLIN))
-		objective["monster_id"] = monster_id if monster_id in MonsterLoader.MonsterID.values() else MonsterLoader.MonsterID.GOBLIN
-		objective["target_amount"] = max(int(objective.get("target_amount", 1)), 1)
-		objective["current_amount"] = max(int(objective.get("current_amount", 0)), 0)
-		objective["location_id"] = str(objective.get("location_id", ""))
 		objectives.append(objective)
 	return objectives
 

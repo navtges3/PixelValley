@@ -55,8 +55,8 @@ func reconnect_signals() -> void:
 	_connect_signals()
 
 func disconnect_signals() -> void:
-	if GameState.monster_killed.is_connected(_on_monster_killed):
-		GameState.monster_killed.disconnect(_on_monster_killed)
+	if GameState.gameplay_event.is_connected(_on_gameplay_event):
+		GameState.gameplay_event.disconnect(_on_gameplay_event)
 
 func offer_quest(quest: Quest) -> bool:
 	if quest == null:
@@ -232,8 +232,8 @@ func has_quest_id(quest_id: int) -> bool:
 	return get_quest_by_id(quest_id) != null
 
 func _connect_signals() -> void:
-	if not GameState.monster_killed.is_connected(_on_monster_killed):
-		GameState.monster_killed.connect(_on_monster_killed)
+	if not GameState.gameplay_event.is_connected(_on_gameplay_event):
+		GameState.gameplay_event.connect(_on_gameplay_event)
 
 func _contains_quest_id(quests: Array[Quest], quest_id: int) -> bool:
 	for quest: Quest in quests:
@@ -250,20 +250,17 @@ func _remove_from_lifecycle_lists(quest: Quest) -> void:
 
 func _reset_quest_progress(quest: Quest) -> void:
 	quest.completed = false
-	for objective: QuestObjective in quest.objectives:
-		objective.current_amount = 0
+	quest.reset_objectives()
 
 func _should_auto_activate(quest: Quest) -> bool:
 	return quest.category == Quest.Category.MAIN and quest.source_type == Quest.SourceType.AUTOMATIC
 
-func _on_monster_killed(monster_id: MonsterLoader.MonsterID, location_id: String) -> void:
+func _on_gameplay_event(event: GameplayEvent) -> void:
 	for quest: Quest in active_quests.duplicate():
-		var previous_progress := quest.get_slain_count()
-		var was_ready := quest.objectives_met()
-		quest.slay_monster(monster_id, location_id)
-		if quest.get_slain_count() != previous_progress:
-			quest_progress_updated.emit(quest)
-		if not was_ready and quest.objectives_met():
+		if not quest.apply_event(event):
+			continue
+		quest_progress_updated.emit(quest)
+		if quest.objectives_met():
 			mark_quest_ready(quest)
 
 func _apply_location_unlocks(quest: Quest) -> void:
@@ -271,9 +268,5 @@ func _apply_location_unlocks(quest: Quest) -> void:
 		WorldManager.unlock_location(location_id)
 
 func _reset_spawners_for_quest(quest: Quest) -> void:
-	var locations_to_reset: Array[String] = []
-	for objective in quest.objectives:
-		if objective.location_id != "" and objective.location_id not in locations_to_reset:
-			locations_to_reset.append(objective.location_id)
-	for location_id in locations_to_reset:
+	for location_id: String in quest.get_activation_location_ids():
 		WorldManager.reset_location_spawners(location_id)

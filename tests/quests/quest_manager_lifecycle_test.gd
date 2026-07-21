@@ -50,7 +50,8 @@ func _test_locked_offer_accept_ready_and_turn_in() -> void:
 	var saved_quest: Dictionary = saved_active_quests[0]
 	_expect_equal(saved_quest.get("id", 0), quest.id, "the accepted quest ID is persisted")
 
-	quest.objectives[0].current_amount = quest.objectives[0].target_amount
+	var objective := quest.objectives[0] as KillQuestObjective
+	objective.current_amount = objective.target_amount
 	_expect_true(manager.mark_quest_ready(quest), "quest with met objectives becomes ready")
 	_expect_true(manager.is_quest_ready(quest.id), "ready quest is tracked in the ready list")
 	_expect_true(quest not in manager.active_quests, "ready quest leaves the active list")
@@ -81,11 +82,12 @@ func _test_abandon_side_quest() -> void:
 	var quest := _make_side_quest(102)
 	manager.offer_quest(quest)
 	manager.accept_quest(quest)
-	quest.objectives[0].current_amount = 1
+	var objective := quest.objectives[0] as KillQuestObjective
+	objective.current_amount = 1
 
 	_expect_true(manager.abandon_quest(quest), "active side quest can be abandoned")
 	_expect_true(manager.is_quest_offered(quest.id), "abandoned side quest becomes offered again")
-	_expect_equal(quest.objectives[0].current_amount, 0, "abandoning resets objective progress")
+	_expect_equal(objective.current_amount, 0, "abandoning resets objective progress")
 
 
 func _test_invalid_transitions() -> void:
@@ -105,7 +107,7 @@ func _test_invalid_transitions() -> void:
 
 
 func _make_side_quest(quest_id: int) -> Quest:
-	var objective := QuestObjective.new()
+	var objective := KillQuestObjective.new()
 	objective.monster_id = MonsterLoader.MonsterID.GOBLIN
 	objective.target_amount = 2
 	objective.location_id = "forest"
