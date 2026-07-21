@@ -24,10 +24,10 @@ script = ExtResource("4_suite")
 
 [node name="QuestManagerMultiQuestTests" parent="Quests" unique_id=836248138 instance=ExtResource("5_quest")]
 
-[node name="QuestManagerLifecycleTests" parent="Quests" instance=ExtResource("7_lifecycle")]
+[node name="QuestManagerLifecycleTests" parent="Quests" unique_id=1570367937 instance=ExtResource("7_lifecycle")]
 
 [node name="QuestSaveMigrationTests" parent="Quests" unique_id=1838663774 instance=ExtResource("6_migration")]
 
-[node name="Rewards" type="Node" parent="."]
+[node name="Rewards" type="Node" parent="." unique_id=677614548]
 
-[node name="RewardServiceTests" parent="Rewards" instance=ExtResource("8_reward")]
+[node name="RewardServiceTests" parent="Rewards" unique_id=33484618 instance=ExtResource("8_reward")]
