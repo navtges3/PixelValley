@@ -14,7 +14,7 @@ var player_location: Dictionary = {
 }
 
 @warning_ignore("unused_signal")
-signal monster_killed(monster_id: MonsterLoader.MonsterID, location_id: String)
+signal gameplay_event(event: GameplayEvent)
 
 # --- Game Start Flow ---
 func start_new_game(slot: int = 1) -> void:

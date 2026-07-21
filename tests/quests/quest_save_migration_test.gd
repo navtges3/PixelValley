@@ -8,6 +8,7 @@ func run_tests() -> int:
 	_test_legacy_save_migrates_with_safe_defaults()
 	_test_malformed_legacy_available_list_recovers()
 	_test_current_save_preserves_all_quest_state()
+	_test_unknown_objective_state_is_preserved_generically()
 	_test_malformed_records_are_skipped_safely()
 	_test_newer_schema_recovers_recognized_fields()
 	return _finish_test_run("Quest save migration tests")
@@ -68,7 +69,10 @@ func _test_legacy_save_migrates_with_safe_defaults() -> void:
 	_expect_equal(quest["reward"]["experience"], 25, "legacy experience rewards are preserved")
 	_expect_equal(quest["reward"]["gold"], 10, "legacy gold rewards are preserved")
 	_expect_not_null(loaded_quest, "migrated legacy records construct a runtime quest")
-	_expect_equal(loaded_quest.get_slain_count(), 3, "runtime loading keeps migrated legacy progress")
+	var loaded_objective := loaded_quest.objectives[0] as KillQuestObjective
+	_expect_not_null(loaded_objective, "legacy kill data constructs a kill objective")
+	if loaded_objective != null:
+		_expect_equal(loaded_objective.current_amount, 3, "runtime loading keeps migrated legacy progress")
 
 
 func _test_current_save_preserves_all_quest_state() -> void:
@@ -120,6 +124,33 @@ func _test_current_save_preserves_all_quest_state() -> void:
 	_expect_equal(quest["objectives"][0]["current_amount"], 2, "current objective progress is preserved")
 	_expect_equal(quest["reward"]["items"], ["health_potion"], "item rewards are preserved")
 	_expect_equal(quest["reward"]["random_weapon"], true, "random weapon rewards are preserved")
+
+
+func _test_unknown_objective_state_is_preserved_generically() -> void:
+	var document := {
+		"schema_version": QUEST_SAVE_MIGRATOR.CURRENT_SCHEMA_VERSION,
+		"data": {
+			"active_quests": [{
+				"id": 1,
+				"objectives": [{
+					"type": "collect",
+					"item_id": "healing_herb",
+					"required_amount": 4,
+					"collected_amount": 2,
+				}],
+			}],
+		},
+	}
+	var migrated: Dictionary = QUEST_SAVE_MIGRATOR.migrate(document, [1], false)
+	var objective: Dictionary = migrated["data"]["active_quests"][0]["objectives"][0]
+
+	_expect_equal(objective["type"], "collect", "normalization preserves an objective type discriminator")
+	_expect_equal(objective["item_id"], "healing_herb", "normalization preserves objective-specific fields")
+	_expect_equal(objective["collected_amount"], 2, "normalization preserves objective-specific progress")
+	_expect_true(
+		not objective.has("monster_id"),
+		"normalization does not add kill-only state to another objective type"
+	)
 
 
 func _test_malformed_records_are_skipped_safely() -> void:

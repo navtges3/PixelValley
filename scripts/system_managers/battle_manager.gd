@@ -186,7 +186,8 @@ func _on_monster_killed() -> void:
 		entries.append(gold_entry)
 	entries.append_array(_collect_loot(monster.roll_loot(hero.hero_class, hero.inventory)))
 	hero_updated.emit(hero)
-	GameState.monster_killed.emit(monster.monster_id, location_id)
+	var event := MonsterKilledEvent.new(monster.monster_id, location_id)
+	GameState.gameplay_event.emit(event)
 	end_battle(true, entries)
 
 func _collect_loot(loot: Dictionary) -> Array[RewardEntry]:

@@ -51,17 +51,10 @@ func _build_quest_entry(quest: Quest, add_separator: bool) -> Control:
 	var desc := _make_label(quest.description, COLOR_OBJECTIVE_PEND, 10)
 	desc.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	container.add_child(desc)
-	for objective in quest.objectives:
-		var done := objective.current_amount >= objective.target_amount
-		var hint := ""
-		if not objective.location_id.is_empty():
-			hint = " [%s]" % objective.location_id.replace("_", " ").capitalize()
-		var obj_text := "  • %s%s: %d/%d" % [
-			_monster_name(objective.monster_id), hint,
-			objective.current_amount, objective.target_amount
-		]
-		var obj_lbl := _make_label(obj_text, COLOR_OBJECTIVE_DONE if done else COLOR_OBJECTIVE_PEND, 11)
-		container.add_child(obj_lbl)
+	for objective: QuestObjective in quest.objectives:
+		var color := (COLOR_OBJECTIVE_DONE if objective.is_complete() else COLOR_OBJECTIVE_PEND)
+		var objective_label := _make_label("  • %s" % objective.get_progress_text(), color, 11)
+		container.add_child(objective_label)
 	if complete:
 		var badge := _make_label("  ✓ Ready to turn in at the village!", COLOR_COMPLETE, 10)
 		container.add_child(badge)

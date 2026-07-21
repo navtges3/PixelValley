@@ -451,14 +451,8 @@ func _get_quest_data(quest: Quest) -> Dictionary:
 		"rewards": [],
 	}
 	# objectives
-	for obj in quest.objectives:
-		data["objectives"].append({
-			"type": "kill",
-			"monster_id": obj.monster_id,
-			"target_amount": obj.target_amount,
-			"current_amount": obj.current_amount,
-			"location_id": obj.location_id
-		})
+	for objective: QuestObjective in quest.objectives:
+		data["objectives"].append(objective.get_save_data())
 	# reward
 	data["reward"] = {
 		"experience": quest.reward.experience,
@@ -485,20 +479,10 @@ func _load_quest(data: Dictionary) -> Quest:
 	var raw_unlocks: Array = data.get("unlocks_locations", [])
 	quest.unlocks_locations.assign(raw_unlocks)
 	# objectives
-	for obj_data in data.get("objectives", []):
-		var objective_type: String = str(obj_data.get("type", "kill"))
-		if objective_type != "kill":
-			push_warning(
-				"SaveManager: quest ID %d has unsupported objective type '%s'; skipping"
-				% [quest.id, objective_type]
-			)
-			continue
-		var obj := QuestObjective.new()
-		obj.monster_id = obj_data.get("monster_id", MonsterLoader.MonsterID.GOBLIN)
-		obj.target_amount = obj_data.get("target_amount", 1)
-		obj.current_amount = obj_data.get("current_amount", 0)
-		obj.location_id = obj_data.get("location_id", "")
-		quest.objectives.append(obj)
+	for objective_data: Dictionary in data.get("objectives", []):
+		var objective := QuestObjectiveFactory.from_save_data(objective_data)
+		if objective != null:
+			quest.objectives.append(objective)
 	# reward
 	var reward_data: Dictionary = data.get("reward", {})
 	var reward := Reward.new()
