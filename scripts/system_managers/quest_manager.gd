@@ -94,6 +94,11 @@ func activate_quest(quest: Quest) -> bool:
 		return false
 	if quest in active_quests:
 		return true
+	if quest in ready_quests or quest in completed_quests:
+		return false
+	var existing_quest := get_quest_by_id(quest.id)
+	if existing_quest != null and existing_quest != quest:
+		return false
 	_remove_from_lifecycle_lists(quest)
 	active_quests.append(quest)
 	_reset_spawners_for_quest(quest)
