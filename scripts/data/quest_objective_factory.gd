@@ -9,6 +9,6 @@ static func from_save_data(data: Dictionary) -> QuestObjective:
 			objective = KillQuestObjective.new()
 		_:
 			push_warning("QuestObjectiveFactory: unsupported objective type '%s'" % objective_type)
-			return null
+			objective = QuestObjective.new()
 	objective.load_save_data(data)
 	return objective
