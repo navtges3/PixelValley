@@ -206,14 +206,19 @@ func _test_unknown_objective_state_is_preserved_generically() -> void:
 	}
 	var migrated: Dictionary = QUEST_SAVE_MIGRATOR.migrate(document, [1], false)
 	var objective: Dictionary = migrated["data"]["active_quests"][0]["objectives"][0]
+	var loaded_manager: QuestManager = SaveManager._load_quests(migrated["data"])
+	var loaded_quest: Quest = loaded_manager.get_quest_by_id(1)
+	var loaded_objective: QuestObjective = loaded_quest.objectives[0]
+	var resaved_data: Dictionary = SaveManager._get_quests_data(loaded_manager)
+	var resaved_objective: Dictionary = resaved_data["active_quests"][0]["objectives"][0]
 
 	_expect_equal(objective["type"], "collect", "normalization preserves an objective type discriminator")
 	_expect_equal(objective["item_id"], "healing_herb", "normalization preserves objective-specific fields")
 	_expect_equal(objective["collected_amount"], 2, "normalization preserves objective-specific progress")
-	_expect_true(
-		not objective.has("monster_id"),
-		"normalization does not add kill-only state to another objective type"
-	)
+	_expect_true(not objective.has("monster_id"), "normalization does not add kill-only state to another objective type")
+	_expect_true(not loaded_objective is KillQuestObjective, "unsupported objective types load as inert fallback objectives")
+	_expect_true(not loaded_objective.is_complete(), "an unsupported objective cannot accidentally complete its quest")
+	_expect_equal(resaved_objective, objective, "unsupported objective state survives a runtime load and save round trip")
 
 
 func _test_malformed_records_are_skipped_safely() -> void:
