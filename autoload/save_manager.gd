@@ -81,9 +81,10 @@ func load_game(slot: int = 1) -> void:
 
 	var quest_json := _load_json(slot, "quests.json")
 	quest_json = QUEST_SAVE_MIGRATOR.migrate(quest_json, QuestManager.get_defined_quest_ids())
-	if GameState.quest_manager != null:
-		GameState.quest_manager.disconnect_signals()
-	GameState.quest_manager = _load_quests(quest_json.get("data", {}))
+
+	var loaded_manager: QuestManager = _load_quests(quest_json.get("data", {}))
+	loaded_manager.reconnect_signals()
+	GameState.set_quest_manager(loaded_manager)
 
 	var world_json := _load_json(slot, "world_state.json")
 	WorldManager.load_save_data(world_json.get("data", {}))
@@ -92,7 +93,6 @@ func load_game(slot: int = 1) -> void:
 	var scene_int: int = meta_json.get("player_scene", ScreenManager.ScreenName.VALLEY)
 	var entrance: String = meta_json.get("player_entrance", "")
 	GameState.player_location = { "scene": scene_int, "entrance_id": entrance }
-	GameState.quest_manager.reconnect_signals()
 
 func get_meta_data(slot: int = 1) -> Dictionary:
 	var meta_json := _load_json(slot, "meta.json")

@@ -4,7 +4,6 @@ const SAVE_DIR := "user://saves"
 
 var hero: Hero = null
 var village: Village = null
-var current_quest: Quest = null
 var quest_manager: QuestManager = null
 var pre_combat_position: Vector2 = Vector2.ZERO
 
@@ -15,18 +14,39 @@ var player_location: Dictionary = {
 
 @warning_ignore("unused_signal")
 signal gameplay_event(event: GameplayEvent)
+signal quest_manager_changed(manager: QuestManager)
 
-# --- Game Start Flow ---
 func start_new_game(slot: int = 1) -> void:
 	_setup_hero_inv()
 	_setup_village()
-	if quest_manager != null:
-		quest_manager.disconnect_signals()
-	quest_manager = QuestManager.new()
+	var new_manager := QuestManager.new()
+	new_manager.new_game()
+	set_quest_manager(new_manager)
 	pre_combat_position = Vector2.ZERO
-	quest_manager.new_game()
 	WorldManager.reset()
 	SaveManager.new_save(slot)
+
+func reset_state() -> void:
+	set_quest_manager(null)
+	hero = null
+	village = null
+	pre_combat_position = Vector2.ZERO
+	player_location = {
+		"scene": ScreenManager.ScreenName.VALLEY,
+		"entrance_id": ""
+	}
+
+func set_player_location(scene: ScreenManager.ScreenName, entrance_id: String = "") -> void:
+	player_location["scene"] = scene
+	player_location["entrance_id"] = entrance_id
+
+func set_quest_manager(new_manager: QuestManager) -> void:
+	if quest_manager == new_manager:
+		return
+	if quest_manager != null:
+		quest_manager.disconnect_signals()
+	quest_manager = new_manager
+	quest_manager_changed.emit(quest_manager)
 
 func _setup_village() -> void:
 	village = Village.new()
@@ -62,20 +82,3 @@ func _setup_hero_inv() -> void:
 	hero.inventory.add_potion("attack_potion", 3)
 	hero.inventory.add_potion("defense_potion", 3)
 	hero.inventory.add_potion("energy_potion", 3)
-
-func reset_state() -> void:
-	if quest_manager != null:
-		quest_manager.disconnect_signals()
-	hero = null
-	village = null
-	current_quest = null
-	quest_manager = null
-	pre_combat_position = Vector2.ZERO
-	player_location = {
-		"scene": ScreenManager.ScreenName.VALLEY,
-		"entrance_id": ""
-	}
-
-func set_player_location(scene: ScreenManager.ScreenName, entrance_id: String = "") -> void:
-	player_location["scene"] = scene
-	player_location["entrance_id"] = entrance_id
