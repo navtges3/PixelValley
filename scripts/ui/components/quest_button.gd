@@ -15,10 +15,12 @@ signal quest_selected(quest_id: int)
 
 var _quest: Quest = null
 var _display_state: DisplayState = DisplayState.ACTIVE
+var _is_tracked: bool = false
 
-func setup(quest: Quest, display_state: DisplayState) -> void:
+func setup(quest: Quest, display_state: DisplayState, is_tracked: bool = false) -> void:
 	_quest = quest
 	_display_state = display_state
+	_is_tracked = is_tracked
 
 func _ready() -> void:
 	_render()
@@ -40,6 +42,8 @@ func _render() -> void:
 	description_label.text = _quest.description
 	category_label.text = _get_category_text()
 	state_label.text = _get_state_text()
+	if _is_tracked:
+		state_label.text += " [Tracked]"
 	state_label.add_theme_color_override("font_color", _get_state_color())
 	for child: Node in objectives_list.get_children():
 		child.free()

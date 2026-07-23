@@ -400,6 +400,7 @@ func _load_inn(data: Dictionary) -> Inn:
 # ---------------------------------------------------------
 func _get_quests_data(quest_manager: QuestManager) -> Dictionary:
 	var data := {
+		"tracked_quest_id": quest_manager.tracked_quest_id,
 		"locked_quests": [],
 		"offered_quests": [],
 		"active_quests": [],
@@ -430,6 +431,8 @@ func _load_quests(data: Dictionary) -> QuestManager:
 		manager.ready_quests.append(_load_quest(quest_data))
 	for quest_data: Dictionary in data.get("completed_quests", []):
 		manager.completed_quests.append(_load_quest(quest_data))
+	var tracked_id := int(data.get("tracked_quest_id", -1))
+	manager.restore_tracked_quest_id(tracked_id)
 	return manager
 
 # ---------------------------------------------------------

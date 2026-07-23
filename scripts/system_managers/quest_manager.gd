@@ -16,15 +16,6 @@ const QUEST_PATHS := [
 
 const FIRST_QUEST_ID := 1
 
-
-static func get_defined_quest_ids() -> Array[int]:
-	var ids: Array[int] = []
-	for path: String in QUEST_PATHS:
-		var quest := load(path) as Quest
-		if quest != null:
-			ids.append(quest.id)
-	return ids
-
 @export var locked_quests: Array[Quest] = []
 @export var offered_quests: Array[Quest] = []
 @export var active_quests: Array[Quest] = []
@@ -37,6 +28,9 @@ signal quest_abandoned(quest: Quest)
 signal quest_progress_updated(quest: Quest)
 signal quest_ready_to_turn_in(quest: Quest)
 signal quest_turned_in(quest: Quest, rewards: Array[RewardEntry])
+signal tracked_quest_changed(quest_id: int)
+
+var tracked_quest_id: int = -1
 
 func new_game() -> void:
 	locked_quests = []
@@ -44,6 +38,7 @@ func new_game() -> void:
 	active_quests = []
 	ready_quests = []
 	completed_quests = []
+	tracked_quest_id = -1
 	for path: String in QUEST_PATHS:
 		var quest := (load(path) as Quest).duplicate(true)
 		locked_quests.append(quest)
@@ -57,6 +52,24 @@ func reconnect_signals() -> void:
 func disconnect_signals() -> void:
 	if GameState.gameplay_event.is_connected(_on_gameplay_event):
 		GameState.gameplay_event.disconnect(_on_gameplay_event)
+
+static func get_defined_quest_ids() -> Array[int]:
+	var ids: Array[int] = []
+	for path: String in QUEST_PATHS:
+		var quest := load(path) as Quest
+		if quest != null:
+			ids.append(quest.id)
+	return ids
+
+func unlock_quest_by_id(quest_id: int) -> bool:
+	for quest in locked_quests.duplicate():
+		if quest.id != quest_id:
+			continue
+		if _should_auto_activate(quest):
+			return activate_quest(quest)
+		return offer_quest(quest)
+	push_warning("QuestMananager: locked quest id %d was not found" % quest_id)
+	return false
 
 func offer_quest(quest: Quest) -> bool:
 	if quest == null:
@@ -117,6 +130,8 @@ func abandon_quest(quest: Quest) -> bool:
 		return false
 	_reset_quest_progress(quest)
 	_remove_from_lifecycle_lists(quest)
+	if quest.id == tracked_quest_id:
+		_set_tracked_quest_id(-1)
 	offered_quests.append(quest)
 	quest_abandoned.emit(quest)
 	SaveManager.save_game()
@@ -144,6 +159,8 @@ func turn_in_quest(quest: Quest) -> Array[RewardEntry]:
 	if quest not in ready_quests:
 		return []
 	_remove_from_lifecycle_lists(quest)
+	if quest.id == tracked_quest_id:
+		_set_tracked_quest_id(-1)
 	quest.completed = true
 	completed_quests.append(quest)
 	var rewards: Array[RewardEntry] = RewardService.grant(quest.reward, GameState.hero)
@@ -155,16 +172,6 @@ func turn_in_quest(quest: Quest) -> Array[RewardEntry]:
 	if quest.final_quest:
 		ScreenManager.go_to_screen(ScreenManager.ScreenName.VICTORY)
 	return rewards
-
-func unlock_quest_by_id(quest_id: int) -> bool:
-	for quest in locked_quests.duplicate():
-		if quest.id != quest_id:
-			continue
-		if _should_auto_activate(quest):
-			return activate_quest(quest)
-		return offer_quest(quest)
-	push_warning("QuestMananager: locked quest id %d was not found" % quest_id)
-	return false
 
 func get_offered_quests() -> Array[Quest]:
 	return offered_quests.duplicate()
@@ -210,6 +217,34 @@ func is_quest_ready(quest_id: int) -> bool:
 
 func is_quest_completed(quest_id: int) -> bool:
 	return _contains_quest_id(completed_quests, quest_id)
+
+func track_quest(quest_id: int) -> bool:
+	if not is_quest_active(quest_id) and not is_quest_ready(quest_id):
+		return false
+	if tracked_quest_id == quest_id:
+		return true
+	_set_tracked_quest_id(quest_id)
+	return true
+
+func untrack_quest() -> void:
+	_set_tracked_quest_id(-1)
+
+func get_tracked_quest() -> Quest:
+	if tracked_quest_id < 0:
+		return null
+	if not is_quest_active(tracked_quest_id) and not is_quest_ready(tracked_quest_id):
+		_set_tracked_quest_id(-1)
+		return null
+	return get_quest_by_id(tracked_quest_id)
+
+func restore_tracked_quest_id(quest_id: int) -> void:
+	tracked_quest_id = quest_id if (is_quest_active(quest_id) or is_quest_ready(quest_id)) else -1
+
+func _set_tracked_quest_id(quest_id: int) -> void:
+	if tracked_quest_id == quest_id:
+		return
+	tracked_quest_id = quest_id
+	tracked_quest_changed.emit(tracked_quest_id)
 
 func filter_quests_by_category(quests: Array[Quest], category: Quest.Category) -> Array[Quest]:
 	var matches: Array[Quest] = []

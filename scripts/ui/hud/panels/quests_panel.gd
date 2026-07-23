@@ -9,9 +9,10 @@ const COLOR_OBJECTIVE_PEND := Color(0.72, 0.67, 0.57)
 
 signal quest_selected(quest_id: int)
 
-@onready var active_list: VBoxContainer = $ScrollContainer/VBoxContainer/ActiveList
-@onready var completed_header: Label = $ScrollContainer/VBoxContainer/CompletedHeader
-@onready var completed_list: VBoxContainer = $ScrollContainer/VBoxContainer/CompletedList
+@onready var active_list: VBoxContainer = $VBoxContainer/ScrollContainer/QuestList/ActiveList
+@onready var completed_header: Label = $VBoxContainer/ScrollContainer/QuestList/CompletedHeader
+@onready var completed_list: VBoxContainer = $VBoxContainer/ScrollContainer/QuestList/CompletedList
+@onready var track_button: Button = $VBoxContainer/ActionRow/TrackButton
 
 var _bound_manager: QuestManager = null
 var _selected_quest_id: int = -1
@@ -22,6 +23,8 @@ var _refresh_queued: bool = false
 func _ready() -> void:
 	GameState.quest_manager_changed.connect(_on_quest_manager_changed)
 	_bind_quest_manager(GameState.quest_manager)
+	_refresh_track_action()
+	refresh()
 
 func _exit_tree() -> void:
 	_disconnect_quest_manager()
@@ -37,12 +40,10 @@ func refresh() -> void:
 	_clear_container(completed_list)
 	_selection_group = ButtonGroup.new()
 	_buttons_by_id.clear()
-
 	if GameState.quest_manager == null:
 		active_list.add_child(_make_label("Quest information is unavailable.", COLOR_OBJECTIVE_PEND, 11))
 		completed_header.text = "Completed Quests (0)"
 		return
-
 	_refresh_active()
 	_refresh_completed()
 	_validate_selection()
@@ -82,6 +83,7 @@ func _bind_quest_manager(manager: QuestManager) -> void:
 	_bound_manager.quest_progress_updated.connect(_on_quest_changed)
 	_bound_manager.quest_ready_to_turn_in.connect(_on_quest_changed)
 	_bound_manager.quest_turned_in.connect(_on_quest_turned_in)
+	_bound_manager.tracked_quest_changed.connect(_on_tracked_quest_changed)
 
 func _disconnect_quest_manager() -> void:
 	if _bound_manager == null:
@@ -98,12 +100,17 @@ func _disconnect_quest_manager() -> void:
 		_bound_manager.quest_ready_to_turn_in.disconnect(_on_quest_changed)
 	if _bound_manager.quest_turned_in.is_connected(_on_quest_turned_in):
 		_bound_manager.quest_turned_in.disconnect(_on_quest_turned_in)
+	if _bound_manager.tracked_quest_changed.is_connected(_on_tracked_quest_changed):
+		_bound_manager.tracked_quest_changed.disconnect(_on_tracked_quest_changed)
 	_bound_manager = null
 
 func _on_quest_changed(_quest: Quest) -> void:
 	_queue_refresh()
 
 func _on_quest_turned_in(_quest: Quest, _rewards: Array[RewardEntry]) -> void:
+	_queue_refresh()
+
+func _on_tracked_quest_changed(_quest_id: int) -> void:
 	_queue_refresh()
 
 func _queue_refresh() -> void:
@@ -115,6 +122,19 @@ func _queue_refresh() -> void:
 func _apply_queued_refresh() -> void:
 	_refresh_queued = false
 	refresh()
+
+func _refresh_track_action() -> void:
+	var manager := GameState.quest_manager
+	if manager == null or _selected_quest_id < 0:
+		track_button.text = "Track Quest"
+		track_button.disabled = true
+		return
+	var trackable := manager.is_quest_active(_selected_quest_id) or manager.is_quest_ready(_selected_quest_id)
+	track_button.disabled = not trackable
+	if manager.tracked_quest_id == _selected_quest_id:
+		track_button.text = "Untrack Quest"
+	else:
+		track_button.text = "Track Quest"
 
 func _clear_container(list: VBoxContainer) -> void:
 	for child: Node in list.get_children():
@@ -154,7 +174,8 @@ func _add_category_group(parent: VBoxContainer, quests: Array[Quest], category: 
 
 func _add_quest_button(parent: VBoxContainer, quest: Quest, state: QuestButton.DisplayState) -> void:
 	var button := QUEST_BUTTON.instantiate() as QuestButton
-	button.setup(quest, state)
+	var is_tracked := quest.id == GameState.quest_manager.tracked_quest_id
+	button.setup(quest, state, is_tracked)
 	button.button_group = _selection_group
 	button.quest_selected.connect(_on_quest_selected)
 	parent.add_child(button)
@@ -164,6 +185,7 @@ func _add_quest_button(parent: VBoxContainer, quest: Quest, state: QuestButton.D
 
 func _on_quest_selected(quest_id: int) -> void:
 	_selected_quest_id = quest_id
+	_refresh_track_action()
 	quest_selected.emit(quest_id)
 
 func _sort_quests_by_id(a: Quest, b: Quest) -> bool:
@@ -175,3 +197,15 @@ func _make_label(txt: String, color: Color, font_size: int = 12) -> Label:
 	lbl.add_theme_color_override("font_color", color)
 	lbl.add_theme_font_size_override("font_size", font_size)
 	return lbl
+
+func _on_track_button_pressed() -> void:
+	var manager := GameState.quest_manager
+	if manager == null or _selected_quest_id < 0:
+		return
+	if manager.tracked_quest_id == _selected_quest_id:
+		manager.untrack_quest()
+		SaveManager.save_game()
+	elif manager.track_quest(_selected_quest_id):
+		SaveManager.save_game()
+	_refresh_track_action()
+	track_button.grab_focus()
