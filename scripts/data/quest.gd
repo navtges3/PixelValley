@@ -1,9 +1,17 @@
 extends Resource
 class_name Quest
 
+enum Category { MAIN, SIDE }
+enum SourceType { AUTOMATIC, QUEST_BOARD, NPC, SCRIPTED_EVENT }
+
 @export var title: String
 @export var id: int
 @export var description: String
+@export_category("Classification")
+@export var category: Category = Category.MAIN
+@export var source_type: SourceType = SourceType.AUTOMATIC
+@export var source_id: String = ""
+@export_category("Progression")
 @export var objectives: Array[QuestObjective]
 @export var reward: Reward = Reward.new()
 @export var next_quests: Array[int]
@@ -11,50 +19,29 @@ class_name Quest
 @export var completed: bool = false
 @export var final_quest: bool = false
 
-signal quest_completed(quest: Quest)
+func apply_event(event: GameplayEvent) -> bool:
+	var progress_changed := false
+	for objective: QuestObjective in objectives:
+		if objective.apply_event(event):
+			progress_changed = true
+	return progress_changed
 
-func get_monster() -> Monster:
-	var available_ids: Array[MonsterLoader.MonsterID] = []
-	for objective in objectives:
-		if objective.current_amount < objective.target_amount:
-			available_ids.append(objective.monster_id)
-	if available_ids.size() == 0:
-		return null
-	var monster_id: MonsterLoader.MonsterID = available_ids[randi() % available_ids.size()]
-	return MonsterLoader.new_monster(monster_id)
-
-func get_monster_count() -> int:
-	var count := 0
-	for objective in objectives:
-		count += objective.target_amount
-	return count
-
-func get_slain_count() -> int:
-	var count := 0
-	for objective in objectives:
-		count += objective.current_amount
-	return count
-
-func slay_monster(monster_id: MonsterLoader.MonsterID, location_id: String = "") -> bool:
-	for objective in objectives:
-		if objective.monster_id != monster_id:
-			continue
-		if objective.location_id != "" and objective.location_id != location_id:
-			continue
-		if objective.current_amount < objective.target_amount:
-			objective.current_amount += 1
-	return check_completion()
-
-func all_objectives_met() -> bool:
-	for objective in objectives:
-		if objective.current_amount < objective.target_amount:
+func objectives_met() -> bool:
+	if objectives.is_empty():
+		return false
+	for objective: QuestObjective in objectives:
+		if not objective.is_complete():
 			return false
 	return true
 
-func check_completion() -> bool:
-	if not all_objectives_met():
-		return false
-	if not completed:
-		completed = true
-		quest_completed.emit(self)
-	return true
+func reset_objectives() -> void:
+	for objective: QuestObjective in objectives:
+		objective.reset_progress()
+
+func get_activation_location_ids() -> Array[String]:
+	var location_ids: Array[String] = []
+	for objective: QuestObjective in objectives:
+		for location_id: String in objective.get_activation_location_ids():
+			if location_id not in location_ids:
+				location_ids.append(location_id)
+	return location_ids

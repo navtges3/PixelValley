@@ -25,10 +25,7 @@ func spawn(parent: Node, combat_handler: Callable, location_id: String) -> void:
 	if use_existing_children:
 		_wire_existing_children(combat_handler)
 		return
-	var world_bounds := Rect2(
-		global_position + wander_bounds_local.position,
-		wander_bounds_local.size
-	)
+	var world_bounds := Rect2(global_position + wander_bounds_local.position, wander_bounds_local.size)
 	for i in spawn_count:
 		var enemy: Enemy = ENEMY_SCENE.instantiate() as Enemy
 		enemy.monster_id = monster_id
@@ -54,7 +51,4 @@ func _wire_existing_children(combat_handler: Callable) -> void:
 func _is_quest_active(id: int) -> bool:
 	if GameState.quest_manager == null:
 		return false
-	for quest in GameState.quest_manager.available_quests:
-		if quest.id == id:
-			return true
-	return false
+	return GameState.quest_manager.is_quest_active(id)

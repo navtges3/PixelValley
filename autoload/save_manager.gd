@@ -1,6 +1,7 @@
 extends Node
 
 const SAVE_DIR := "user://saves"
+const QUEST_SAVE_MIGRATOR := preload("res://scripts/save/quest_save_migrator.gd")
 
 const LEGACY_EFFECT_SPECS: Dictionary = {
 	0: { "name": "Regeneration", "stat": Effect.EffectStat.CURRENT_HP, "timing": Effect.EffectTiming.ON_TICK, "operation": Effect.EffectOperation.ADD },
@@ -50,6 +51,7 @@ func save_game() -> void:
 	})
 
 	_save_json(save_slot, "quests.json", {
+		"schema_version": QUEST_SAVE_MIGRATOR.CURRENT_SCHEMA_VERSION,
 		"data": _get_quests_data(GameState.quest_manager)
 	})
 
@@ -78,7 +80,11 @@ func load_game(slot: int = 1) -> void:
 	GameState.village = _load_village(village_json.get("data", {}))
 
 	var quest_json := _load_json(slot, "quests.json")
-	GameState.quest_manager = _load_quests(quest_json.get("data", {}))
+	quest_json = QUEST_SAVE_MIGRATOR.migrate(quest_json, QuestManager.get_defined_quest_ids())
+
+	var loaded_manager: QuestManager = _load_quests(quest_json.get("data", {}))
+	loaded_manager.reconnect_signals()
+	GameState.set_quest_manager(loaded_manager)
 
 	var world_json := _load_json(slot, "world_state.json")
 	WorldManager.load_save_data(world_json.get("data", {}))
@@ -87,7 +93,6 @@ func load_game(slot: int = 1) -> void:
 	var scene_int: int = meta_json.get("player_scene", ScreenManager.ScreenName.VALLEY)
 	var entrance: String = meta_json.get("player_entrance", "")
 	GameState.player_location = { "scene": scene_int, "entrance_id": entrance }
-	GameState.quest_manager.reconnect_signals()
 
 func get_meta_data(slot: int = 1) -> Dictionary:
 	var meta_json := _load_json(slot, "meta.json")
@@ -293,7 +298,7 @@ func _load_inventory(data: Dictionary) -> Inventory:
 
 	var weapon_id: String = data.get("equipped_weapon", "")
 	if weapon_id != "":
-		var weapon := ItemLoader.get_item(weapon_id)
+		var weapon = ItemLoader.get_item(weapon_id)
 		if weapon is Weapon:
 			inv.equipped_weapon = weapon.duplicate(true)
 			_load_ability_cooldowns(inv.equipped_weapon, data.get("equipped_weapon_cooldowns", []))
@@ -395,29 +400,39 @@ func _load_inn(data: Dictionary) -> Inn:
 # ---------------------------------------------------------
 func _get_quests_data(quest_manager: QuestManager) -> Dictionary:
 	var data := {
+		"tracked_quest_id": quest_manager.tracked_quest_id,
 		"locked_quests": [],
-		"available_quests": [],
-		"completed_quests": []
+		"offered_quests": [],
+		"active_quests": [],
+		"ready_quests": [],
+		"completed_quests": [],
 	}
-	for quest in quest_manager.locked_quests:
+	for quest: Quest in quest_manager.locked_quests:
 		data["locked_quests"].append(_get_quest_data(quest))
-	for quest in quest_manager.available_quests:
-		data["available_quests"].append(_get_quest_data(quest))
-	for quest in quest_manager.completed_quests:
+	for quest: Quest in quest_manager.offered_quests:
+		data["offered_quests"].append(_get_quest_data(quest))
+	for quest: Quest in quest_manager.active_quests:
+		data["active_quests"].append(_get_quest_data(quest))
+	for quest: Quest in quest_manager.ready_quests:
+		data["ready_quests"].append(_get_quest_data(quest))
+	for quest: Quest in quest_manager.completed_quests:
 		data["completed_quests"].append(_get_quest_data(quest))
 	return data
 
 func _load_quests(data: Dictionary) -> QuestManager:
 	var manager := QuestManager.new()
-	for quest_data in data.get("locked_quests", []):
-		var quest := _load_quest(quest_data)
-		manager.locked_quests.append(quest)
-	for quest_data in data.get("available_quests", []):
-		var quest := _load_quest(quest_data)
-		manager.add_available_quest(quest)
-	for quest_data in data.get("completed_quests", []):
-		var quest := _load_quest(quest_data)
-		manager.completed_quests.append(quest)
+	for quest_data: Dictionary in data.get("locked_quests", []):
+		manager.locked_quests.append(_load_quest(quest_data))
+	for quest_data: Dictionary in data.get("offered_quests", []):
+		manager.offered_quests.append(_load_quest(quest_data))
+	for quest_data: Dictionary in data.get("active_quests", []):
+		manager.active_quests.append(_load_quest(quest_data))
+	for quest_data: Dictionary in data.get("ready_quests", []):
+		manager.ready_quests.append(_load_quest(quest_data))
+	for quest_data: Dictionary in data.get("completed_quests", []):
+		manager.completed_quests.append(_load_quest(quest_data))
+	var tracked_id := int(data.get("tracked_quest_id", -1))
+	manager.restore_tracked_quest_id(tracked_id)
 	return manager
 
 # ---------------------------------------------------------
@@ -428,6 +443,9 @@ func _get_quest_data(quest: Quest) -> Dictionary:
 		"id": quest.id,
 		"title": quest.title,
 		"description": quest.description,
+		"category": quest.category,
+		"source_type": quest.source_type,
+		"source_id": quest.source_id,
 		"next_quests": quest.next_quests.duplicate(),
 		"completed": quest.completed,
 		"final_quest": quest.final_quest,
@@ -436,13 +454,8 @@ func _get_quest_data(quest: Quest) -> Dictionary:
 		"rewards": [],
 	}
 	# objectives
-	for obj in quest.objectives:
-		data["objectives"].append({
-			"monster_id": obj.monster_id,
-			"target_amount": obj.target_amount,
-			"current_amount": obj.current_amount,
-			"location_id": obj.location_id
-		})
+	for objective: QuestObjective in quest.objectives:
+		data["objectives"].append(objective.get_save_data())
 	# reward
 	data["reward"] = {
 		"experience": quest.reward.experience,
@@ -458,6 +471,9 @@ func _load_quest(data: Dictionary) -> Quest:
 	quest.id = data.get("id", 0)
 	quest.title = data.get("title", "")
 	quest.description = data.get("description", "")
+	quest.category = data.get("category", Quest.Category.MAIN)
+	quest.source_type = data.get("source_type", Quest.SourceType.AUTOMATIC)
+	quest.source_id = str(data.get("source_id", ""))
 	quest.completed = data.get("completed", false)
 	quest.final_quest = data.get("final_quest", false)
 	# Restore next_quests so unlocking the follow-up works after a load.
@@ -466,13 +482,10 @@ func _load_quest(data: Dictionary) -> Quest:
 	var raw_unlocks: Array = data.get("unlocks_locations", [])
 	quest.unlocks_locations.assign(raw_unlocks)
 	# objectives
-	for obj_data in data.get("objectives", []):
-		var obj := QuestObjective.new()
-		obj.monster_id = obj_data.get("monster_id", MonsterLoader.MonsterID.GOBLIN)
-		obj.target_amount = obj_data.get("target_amount", 1)
-		obj.current_amount = obj_data.get("current_amount", 0)
-		obj.location_id = obj_data.get("location_id", "")
-		quest.objectives.append(obj)
+	for objective_data: Dictionary in data.get("objectives", []):
+		var objective := QuestObjectiveFactory.from_save_data(objective_data)
+		if objective != null:
+			quest.objectives.append(objective)
 	# reward
 	var reward_data: Dictionary = data.get("reward", {})
 	var reward := Reward.new()

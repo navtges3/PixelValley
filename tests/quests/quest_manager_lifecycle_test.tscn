@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://c2ejhvt30j1jv"]
+
+[ext_resource type="Script" uid="uid://cxmwj000anyn" path="res://tests/quests/quest_manager_lifecycle_test.gd" id="1_us301"]
+
+[node name="QuestManagerLifecycleTest" type="Node" unique_id=1890951420]
+script = ExtResource("1_us301")

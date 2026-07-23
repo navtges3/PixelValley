@@ -45,3 +45,9 @@ static func weapon_sold(item_id: String, gold_amount: int) -> RewardEntry:
 	entry.display_text = "⚔ %s (duplicate — sold for %d gold)" % [name, gold_amount]
 	entry.color = COLOR_WEAPON_SOLD
 	return entry
+
+static func weapon_fallback(gold_amount: int) -> RewardEntry:
+	var entry := RewardEntry.new()
+	entry.display_text = "No new weapon available — received %d gold" % gold_amount
+	entry.color = COLOR_WEAPON_SOLD
+	return entry
