@@ -8,6 +8,8 @@ func run_tests() -> int:
 	_test_legacy_save_migrates_with_safe_defaults()
 	_test_malformed_legacy_available_list_recovers()
 	_test_current_save_preserves_all_quest_state()
+	_test_tracking_state_round_trip()
+	_test_tracking_state_defaults_and_validation()
 	_test_unknown_objective_state_is_preserved_generically()
 	_test_malformed_records_are_skipped_safely()
 	_test_newer_schema_recovers_recognized_fields()
@@ -124,6 +126,67 @@ func _test_current_save_preserves_all_quest_state() -> void:
 	_expect_equal(quest["objectives"][0]["current_amount"], 2, "current objective progress is preserved")
 	_expect_equal(quest["reward"]["items"], ["health_potion"], "item rewards are preserved")
 	_expect_equal(quest["reward"]["random_weapon"], true, "random weapon rewards are preserved")
+
+
+func _test_tracking_state_round_trip() -> void:
+	var manager := QuestManager.new()
+	var active_quest := _make_saved_quest(9101)
+	manager.active_quests.append(active_quest)
+	manager.track_quest(active_quest.id)
+
+	var saved_data: Dictionary = SaveManager._get_quests_data(manager)
+	var loaded_manager: QuestManager = SaveManager._load_quests(saved_data)
+	var loaded_quest: Quest = loaded_manager.get_tracked_quest()
+
+	_expect_equal(saved_data["tracked_quest_id"], active_quest.id, "quest saves store the tracked quest ID")
+	_expect_equal(loaded_manager.tracked_quest_id, active_quest.id, "loading restores a valid tracked quest ID")
+	_expect_not_null(loaded_quest, "a restored tracked quest resolves to a runtime quest")
+	if loaded_quest != null:
+		_expect_equal(loaded_quest.id, active_quest.id, "the restored tracked quest keeps its stable ID")
+
+
+func _test_tracking_state_defaults_and_validation() -> void:
+	var active_quest := _make_saved_quest(9102)
+	var active_record: Dictionary = SaveManager._get_quest_data(active_quest)
+	var legacy_manager: QuestManager = SaveManager._load_quests({
+		"active_quests": [active_record],
+	})
+	_expect_equal(legacy_manager.tracked_quest_id, -1, "older saves default to no tracked quest")
+
+	var unknown_manager: QuestManager = SaveManager._load_quests({
+		"tracked_quest_id": 9999,
+		"active_quests": [active_record],
+	})
+	_expect_equal(unknown_manager.tracked_quest_id, -1, "unknown saved tracking IDs are discarded")
+
+	var offered_manager: QuestManager = SaveManager._load_quests({
+		"tracked_quest_id": active_quest.id,
+		"offered_quests": [active_record],
+	})
+	_expect_equal(offered_manager.tracked_quest_id, -1, "offered quests are not restored as tracked")
+
+	var ready_manager: QuestManager = SaveManager._load_quests({
+		"tracked_quest_id": active_quest.id,
+		"ready_quests": [active_record],
+	})
+	_expect_equal(ready_manager.tracked_quest_id, active_quest.id, "ready quests restore as tracked")
+
+
+func _make_saved_quest(quest_id: int) -> Quest:
+	var objective := KillQuestObjective.new()
+	objective.monster_id = MonsterLoader.MonsterID.GOBLIN
+	objective.target_amount = 3
+	objective.current_amount = 1
+	objective.location_id = "forest"
+	var quest := Quest.new()
+	quest.id = quest_id
+	quest.title = "Saved Quest %d" % quest_id
+	quest.description = "Tracking persistence test quest."
+	quest.category = Quest.Category.SIDE
+	quest.source_type = Quest.SourceType.QUEST_BOARD
+	quest.source_id = "test_board"
+	quest.objectives.append(objective)
+	return quest
 
 
 func _test_unknown_objective_state_is_preserved_generically() -> void:
