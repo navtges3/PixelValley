@@ -4,12 +4,30 @@
 [ext_resource type="PackedScene" path="res://tests/effects/test_effect_integration.tscn" id="2_28f2g"]
 [ext_resource type="PackedScene" path="res://tests/effects/test_effect_lifecycle_events.tscn" id="3_pe5y4"]
 [ext_resource type="Script" uid="uid://ccfwxvdvq6via" path="res://tests/test_suite.gd" id="4_suite"]
+[ext_resource type="PackedScene" path="res://tests/quests/quest_manager_multi_quest_test.tscn" id="5_quest"]
+[ext_resource type="PackedScene" path="res://tests/quests/quest_save_migration_test.tscn" id="6_migration"]
+[ext_resource type="PackedScene" uid="uid://c2ejhvt30j1jv" path="res://tests/quests/quest_manager_lifecycle_test.tscn" id="7_lifecycle"]
+[ext_resource type="PackedScene" path="res://tests/rewards/reward_service_test.tscn" id="8_reward"]
 
 [node name="TestSuite" type="Node" unique_id=783793299]
 script = ExtResource("4_suite")
 
-[node name="ActiveEffectTests" parent="." unique_id=509975379 instance=ExtResource("1_1wc5c")]
+[node name="Effects" type="Node" parent="." unique_id=1607208508]
 
-[node name="EffectIntegrationTests" parent="." unique_id=2146928627 instance=ExtResource("2_28f2g")]
+[node name="ActiveEffectTests" parent="Effects" unique_id=509975379 instance=ExtResource("1_1wc5c")]
 
-[node name="EffectLifecycleEventTests" parent="." unique_id=636950766 instance=ExtResource("3_pe5y4")]
+[node name="EffectIntegrationTests" parent="Effects" unique_id=2146928627 instance=ExtResource("2_28f2g")]
+
+[node name="EffectLifecycleEventTests" parent="Effects" unique_id=636950766 instance=ExtResource("3_pe5y4")]
+
+[node name="Quests" type="Node" parent="." unique_id=298955935]
+
+[node name="QuestManagerMultiQuestTests" parent="Quests" unique_id=836248138 instance=ExtResource("5_quest")]
+
+[node name="QuestManagerLifecycleTests" parent="Quests" unique_id=1570367937 instance=ExtResource("7_lifecycle")]
+
+[node name="QuestSaveMigrationTests" parent="Quests" unique_id=1838663774 instance=ExtResource("6_migration")]
+
+[node name="Rewards" type="Node" parent="." unique_id=677614548]
+
+[node name="RewardServiceTests" parent="Rewards" unique_id=33484618 instance=ExtResource("8_reward")]

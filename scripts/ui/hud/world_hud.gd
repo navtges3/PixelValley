@@ -3,6 +3,7 @@ class_name WorldHUD
 
 @onready var game_hud: GameHUD = $GameHud
 @onready var hero_hud: HeroHUD = $HeroHUD
+@onready var tracked_quest_hud: TrackedQuestHUD = $TrackedQuestHUD
 
 func hide_all() -> void:
 	hide()
@@ -16,6 +17,7 @@ func show_all() -> void:
 	for child in get_children():
 		if child is Control:
 			child.visible = true
+	tracked_quest_hud.refresh()
 
 func open_game_hud(tab: GameHUD.Tab = GameHUD.Tab.STATS) -> void:
 	game_hud.show_hud(tab)
