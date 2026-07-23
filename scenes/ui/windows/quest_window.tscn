@@ -75,7 +75,7 @@ layout_mode = 2
 size_flags_vertical = 3
 horizontal_scroll_mode = 0
 
-[node name="QuestListVBox" type="VBoxContainer" parent="PanelContainer/VBoxContainer/QuestScrollContainer" unique_id=751744356]
+[node name="QuestList" type="VBoxContainer" parent="PanelContainer/VBoxContainer/QuestScrollContainer" unique_id=751744356]
 layout_mode = 2
 size_flags_horizontal = 6
 alignment = 1
@@ -90,7 +90,7 @@ layout_mode = 2
 theme = ExtResource("5_ryvvb")
 text = "Close"
 
-[node name="TurnInButton" type="Button" parent="PanelContainer/VBoxContainer/BottomControls" unique_id=508512640]
+[node name="ActionButton" type="Button" parent="PanelContainer/VBoxContainer/BottomControls" unique_id=508512640]
 custom_minimum_size = Vector2(96, 32)
 layout_mode = 2
 size_flags_horizontal = 10
@@ -100,9 +100,5 @@ text = "Complete Quest"
 [node name="RewardWindow" parent="." unique_id=1940439358 instance=ExtResource("6_lxq6e")]
 visible = false
 
-[connection signal="toggled" from="PanelContainer/VBoxContainer/QuestTabs/AvailableButton" to="." method="_on_available_button_toggled"]
-[connection signal="toggled" from="PanelContainer/VBoxContainer/QuestTabs/ActiveButton" to="." method="_on_active_button_toggled"]
-[connection signal="toggled" from="PanelContainer/VBoxContainer/QuestTabs/CompletedButton" to="." method="_on_completed_button_toggled"]
 [connection signal="pressed" from="PanelContainer/VBoxContainer/BottomControls/CloseButton" to="." method="_on_close_button_pressed"]
-[connection signal="pressed" from="PanelContainer/VBoxContainer/BottomControls/TurnInButton" to="." method="_on_turn_in_button_pressed"]
-[connection signal="rewards_collected" from="RewardWindow" to="." method="_on_rewards_collected"]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/BottomControls/ActionButton" to="." method="_on_action_button_pressed"]

@@ -1,6 +1,8 @@
 extends Button
 class_name QuestButton
 
+const Y_OFFSET: float = 16.0
+
 enum DisplayState { OFFERED, ACTIVE, READY, COMPLETED }
 
 signal quest_selected(quest_id: int)
@@ -38,15 +40,16 @@ func _render() -> void:
 	description_label.text = _quest.description
 	category_label.text = _get_category_text()
 	state_label.text = _get_state_text()
-	for child: Node in objectives_list:
+	state_label.add_theme_color_override("font_color", _get_state_color())
+	for child: Node in objectives_list.get_children():
 		child.free()
 	for objective: QuestObjective in _quest.objectives:
 		var objective_label := Label.new()
-		objective_label.text = "• %s" % objective.get_progress_text()
+		objective_label.text = "- %s" % objective.get_progress_text()
 		objective_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		objective_label.add_theme_color_override("font_color", Color(0.25, 0.85, 0.35) if objective.is_complete() else Color(0, 0, 0))
 		objectives_list.add_child(objective_label)
-	call_deferred("_update_size")
+	_update_size.call_deferred()
 
 func _get_category_text() -> String:
 	match _quest.category:
@@ -75,10 +78,13 @@ func _get_state_color() -> Color:
 		DisplayState.OFFERED:
 			return Color(0.95, 0.80, 0.25)
 		DisplayState.ACTIVE:
-			return Color(0.92, 0.87, 0.72)
+			return Color(0.12, 0.32, 0.62)
 		DisplayState.READY:
 			return Color(0.25, 0.85, 0.35)
 		DisplayState.COMPLETED:
 			return Color(0.55, 0.70, 0.55)
 		_:
 			return Color.WHITE
+
+func _update_size() -> void:
+	custom_minimum_size.y = $VBoxContainer.get_combined_minimum_size().y + Y_OFFSET
