@@ -7,14 +7,19 @@
 [ext_resource type="Script" uid="uid://dpbifjko4digr" path="res://scripts/data/dialogue/dialogue_speaker.gd" id="4_speaker"]
 [ext_resource type="Script" uid="uid://chsetq55irrf0" path="res://scripts/data/dialogue/dialogue_condition.gd" id="5_condition"]
 
-[sub_resource type="Resource" id="Condition_always"]
+[sub_resource type="Resource" id="Condition_in_village"]
 script = ExtResource("5_condition")
+condition_id = &"context_equals"
+parameters = Dictionary[StringName, Variant]({
+&"key": &"location_id",
+&"value": &"village"
+})
 
 [sub_resource type="Resource" id="Response_ask"]
 script = ExtResource("3_response")
 text = "What should I know about Pixel Valley?"
 next_entry_id = &"hero_question"
-conditions = Array[ExtResource("5_condition")]([SubResource("Condition_always")])
+conditions = Array[ExtResource("5_condition")]([SubResource("Condition_in_village")])
 
 [sub_resource type="Resource" id="Response_leave"]
 script = ExtResource("3_response")

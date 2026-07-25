@@ -25,6 +25,7 @@ func _ready() -> void:
 	dialogue_window.close()
 
 func hide_all() -> void:
+	abort_dialogue()
 	hide()
 	game_hud.hide_hud()
 	for child in get_children():
@@ -54,6 +55,11 @@ func start_dialogue(conversation: DialogueConversation, context: Dictionary[Stri
 
 func is_dialogue_open() -> bool:
 	return dialogue_runner.is_running()
+
+func abort_dialogue() -> void:
+	if dialogue_runner == null:
+		return
+	dialogue_runner.abort()
 
 func _on_conversation_started(_conversation: DialogueConversation) -> void:
 	dialogue_window.open()
