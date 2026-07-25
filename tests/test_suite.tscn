@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" path="res://tests/quests/quest_save_migration_test.tscn" id="6_migration"]
 [ext_resource type="PackedScene" uid="uid://c2ejhvt30j1jv" path="res://tests/quests/quest_manager_lifecycle_test.tscn" id="7_lifecycle"]
 [ext_resource type="PackedScene" path="res://tests/rewards/reward_service_test.tscn" id="8_reward"]
+[ext_resource type="PackedScene" path="res://tests/dialogue/dialogue_runner_test.tscn" id="9_dialogue"]
 
 [node name="TestSuite" type="Node" unique_id=783793299]
 script = ExtResource("4_suite")
@@ -31,3 +32,7 @@ script = ExtResource("4_suite")
 [node name="Rewards" type="Node" parent="." unique_id=677614548]
 
 [node name="RewardServiceTests" parent="Rewards" unique_id=33484618 instance=ExtResource("8_reward")]
+
+[node name="Dialogue" type="Node" parent="."]
+
+[node name="DialogueRunnerTests" parent="Dialogue" instance=ExtResource("9_dialogue")]
