@@ -1,8 +1,9 @@
 [gd_resource type="Resource" script_class="Effect" format=3 uid="uid://1iipmfn4doq0"]
 
-[ext_resource type="Script" uid="uid://c5deti4sb2k2j" path="res://scripts/data/effect.gd" id="1_7skor"]
+[ext_resource type="Script" uid="uid://c5deti4sb2k2j" path="res://scripts/data/effects/effect.gd" id="1_7skor"]
 [ext_resource type="Texture2D" uid="uid://bd7fev6mw4obv" path="res://assets/effects/buffs/ward.png" id="1_yyqkm"]
-[ext_resource type="Script" uid="uid://hw30jan7sjfb" path="res://scripts/data/effect_stat_change.gd" id="2_gionp"]
+[ext_resource type="Script" uid="uid://hw30jan7sjfb" path="res://scripts/data/effects/effect_stat_change.gd" id="2_gionp"]
+
 
 [sub_resource type="Resource" id="Resource_7skor"]
 script = ExtResource("2_gionp")

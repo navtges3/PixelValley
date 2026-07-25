@@ -6,8 +6,9 @@
 [ext_resource type="Script" uid="uid://bd6ohffno5w7r" path="res://scripts/characters/monster.gd" id="8_85bo5"]
 [ext_resource type="SpriteFrames" uid="uid://dp6xg6vwbi7yo" path="res://resources/characters/monsters/ogre_king/ogre_king_world_sprite_frames.tres" id="11_gb37p"]
 [ext_resource type="Script" uid="uid://b2o7w8q10stxo" path="res://scripts/data/ability.gd" id="12_ability"]
-[ext_resource type="Script" uid="uid://c5deti4sb2k2j" path="res://scripts/data/effect.gd" id="14_effect"]
+[ext_resource type="Script" uid="uid://c5deti4sb2k2j" path="res://scripts/data/effects/effect.gd" id="14_effect"]
 [ext_resource type="Script" uid="uid://bo48scp6lbwrb" path="res://scripts/data/attack.gd" id="15_attack"]
+
 
 [sub_resource type="Resource" id="Resource_kings_smash_attack"]
 script = ExtResource("15_attack")

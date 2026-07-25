@@ -2,12 +2,13 @@
 
 [ext_resource type="Script" uid="uid://b2o7w8q10stxo" path="res://scripts/data/ability.gd" id="1_pg6mu"]
 [ext_resource type="Script" uid="uid://bo48scp6lbwrb" path="res://scripts/data/attack.gd" id="2_l6c2x"]
-[ext_resource type="Script" uid="uid://c5deti4sb2k2j" path="res://scripts/data/effect.gd" id="4_euknt"]
+[ext_resource type="Script" uid="uid://c5deti4sb2k2j" path="res://scripts/data/effects/effect.gd" id="4_euknt"]
 [ext_resource type="Script" uid="uid://dgykeyxn7fefw" path="res://scripts/data/weapon.gd" id="5_31cju"]
 [ext_resource type="Resource" uid="uid://bipqwa8or45gt" path="res://resources/effects/common/buffs/focus.tres" id="5_euknt"]
-[ext_resource type="Script" uid="uid://hw30jan7sjfb" path="res://scripts/data/effect_stat_change.gd" id="6_31cju"]
+[ext_resource type="Script" uid="uid://hw30jan7sjfb" path="res://scripts/data/effects/effect_stat_change.gd" id="6_31cju"]
 [ext_resource type="Texture2D" uid="uid://cfimwykot25cb" path="res://assets/items/weapons/orb.png" id="6_l6c2x"]
 [ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://resources/themes/buttons/regular/red_button.tres" id="6_rmc7d"]
+
 
 [sub_resource type="Resource" id="Resource_hded4"]
 script = ExtResource("2_l6c2x")

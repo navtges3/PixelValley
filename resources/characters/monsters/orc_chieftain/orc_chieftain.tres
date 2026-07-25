@@ -8,7 +8,8 @@
 [ext_resource type="SpriteFrames" uid="uid://csar6wm63v6f" path="res://resources/characters/monsters/orc_chieftain/orc_chieftain_world_sprite_frames.tres" id="11_t544c"]
 [ext_resource type="Script" uid="uid://b2o7w8q10stxo" path="res://scripts/data/ability.gd" id="12_ability"]
 [ext_resource type="Script" uid="uid://bo48scp6lbwrb" path="res://scripts/data/attack.gd" id="13_attack"]
-[ext_resource type="Script" uid="uid://c5deti4sb2k2j" path="res://scripts/data/effect.gd" id="15_effect"]
+[ext_resource type="Script" uid="uid://c5deti4sb2k2j" path="res://scripts/data/effects/effect.gd" id="15_effect"]
+
 
 [sub_resource type="Resource" id="Resource_cleave_attack"]
 script = ExtResource("13_attack")
