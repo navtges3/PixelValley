@@ -1,0 +1,68 @@
+[gd_scene format=3 uid="uid://cgfwb201d8ray"]
+
+[ext_resource type="Script" uid="uid://bj8ijt5c5vlw0" path="res://scripts/ui/windows/dialogue_window.gd" id="1_0uisl"]
+[ext_resource type="Theme" uid="uid://dq41s7i7v61gk" path="res://resources/themes/backgrounds/background.tres" id="2_aubdg"]
+
+[node name="DialogueLayer" type="CanvasLayer" unique_id=454664237]
+layer = 30
+
+[node name="DialogueWindow" type="Control" parent="." unique_id=293300296]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_0uisl")
+metadata/_custom_type_script = "uid://bg832enpeqhu0"
+
+[node name="InputBlocker" type="ColorRect" parent="DialogueWindow" unique_id=556255922]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(1, 1, 1, 0.6)
+
+[node name="MarginContainer" type="MarginContainer" parent="DialogueWindow" unique_id=990113610]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -68.0
+offset_top = -107.0
+offset_right = 68.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/margin_bottom = 16
+
+[node name="DialoguePanel" type="PanelContainer" parent="DialogueWindow/MarginContainer" unique_id=147452845]
+layout_mode = 2
+theme = ExtResource("2_aubdg")
+
+[node name="MainRow" type="HBoxContainer" parent="DialogueWindow/MarginContainer/DialoguePanel" unique_id=442647536]
+layout_mode = 2
+
+[node name="Portrait" type="TextureRect" parent="DialogueWindow/MarginContainer/DialoguePanel/MainRow" unique_id=311682860]
+layout_mode = 2
+
+[node name="Content" type="VBoxContainer" parent="DialogueWindow/MarginContainer/DialoguePanel/MainRow" unique_id=1327577279]
+layout_mode = 2
+
+[node name="SpeakerName" type="Label" parent="DialogueWindow/MarginContainer/DialoguePanel/MainRow/Content" unique_id=248126674]
+layout_mode = 2
+text = "Name"
+
+[node name="DialogueText" type="Label" parent="DialogueWindow/MarginContainer/DialoguePanel/MainRow/Content" unique_id=1352035633]
+layout_mode = 2
+text = "Dialogue Text"
+
+[node name="Responses" type="VBoxContainer" parent="DialogueWindow/MarginContainer/DialoguePanel/MainRow/Content" unique_id=2067201985]
+layout_mode = 2
+
+[node name="AdvanceHint" type="Label" parent="DialogueWindow/MarginContainer/DialoguePanel/MainRow/Content" unique_id=31510941]
+layout_mode = 2
+text = "Hint"
