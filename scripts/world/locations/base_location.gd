@@ -4,6 +4,7 @@ class_name BaseLocation
 @onready var player: Player = $Player
 
 var _pending_entrance_id: String = ""
+var _movement_blocked_before_dialogue: bool = false
 
 func _ready() -> void:
 	player.set_sprite_frames(GameState.hero.world_visual)
@@ -15,6 +16,8 @@ func _ready() -> void:
 	var world_hud := ScreenManager.get_world_hud() as WorldHUD
 	if world_hud != null:
 		world_hud.game_hud.hud_closed.connect(_on_hud_closed)
+		world_hud.dialogue_opened.connect(_on_dialogue_opened)
+		world_hud.dialogue_closed.connect(_on_dialogue_closed)
 	_on_location_ready()
 
 # Override in subclasses for extra setup (e.g. spawn points, extra signals)
@@ -54,6 +57,8 @@ func _input(event: InputEvent) -> void:
 	var world_hud := ScreenManager.get_world_hud() as WorldHUD
 	if world_hud == null:
 		return
+	if world_hud.is_dialogue_open():
+		return
 	var game_hud: GameHUD = world_hud.game_hud
 	if event.is_action_pressed("ui_cancel"):
 		if game_hud.is_open():
@@ -76,3 +81,11 @@ func _close_hud(game_hud: GameHUD) -> void:
 
 func _on_hud_closed() -> void:
 	player.movement_blocked = false
+
+func _on_dialogue_opened() -> void:
+	_movement_blocked_before_dialogue = player.movement_blocked
+	player.movement_blocked = true
+	player.clear_prompt()
+
+func _on_dialogue_closed() -> void:
+	player.movement_blocked = _movement_blocked_before_dialogue
