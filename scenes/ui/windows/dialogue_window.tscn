@@ -44,22 +44,27 @@ theme = ExtResource("2_aubdg")
 layout_mode = 2
 
 [node name="Portrait" type="TextureRect" parent="MarginContainer/DialoguePanel/MainRow" unique_id=311682860]
+unique_name_in_owner = true
 layout_mode = 2
 
 [node name="Content" type="VBoxContainer" parent="MarginContainer/DialoguePanel/MainRow" unique_id=1327577279]
 layout_mode = 2
 
 [node name="SpeakerName" type="Label" parent="MarginContainer/DialoguePanel/MainRow/Content" unique_id=248126674]
+unique_name_in_owner = true
 layout_mode = 2
 text = "Name"
 
 [node name="DialogueText" type="Label" parent="MarginContainer/DialoguePanel/MainRow/Content" unique_id=1352035633]
+unique_name_in_owner = true
 layout_mode = 2
 text = "Dialogue Text"
 
 [node name="Responses" type="VBoxContainer" parent="MarginContainer/DialoguePanel/MainRow/Content" unique_id=2067201985]
+unique_name_in_owner = true
 layout_mode = 2
 
 [node name="AdvanceHint" type="Label" parent="MarginContainer/DialoguePanel/MainRow/Content" unique_id=31510941]
+unique_name_in_owner = true
 layout_mode = 2
-text = "Hint"
+text = "Press 'E' to continue..."

@@ -1,6 +1,7 @@
 [gd_scene format=4 uid="uid://b0g3svmx36aba"]
 
 [ext_resource type="Script" uid="uid://c11sud53o45be" path="res://scripts/world/locations/village_location.gd" id="1_a16hn"]
+[ext_resource type="Resource" uid="uid://5xkkdsiscpum" path="res://resources/dialogue/test_villager_conversation.tres" id="2_dialogue"]
 [ext_resource type="PackedScene" uid="uid://cv120tmswg7xm" path="res://scenes/world/characters/player.tscn" id="2_e7reh"]
 [ext_resource type="TileSet" uid="uid://4cg7ba3d6vqd" path="res://resources/world/tile_set.tres" id="2_h8u16"]
 [ext_resource type="PackedScene" uid="uid://cs87mrk0vnqod" path="res://scenes/world/buildings/exterior/weapon_shop.tscn" id="3_irc66"]
@@ -10,7 +11,8 @@
 [ext_resource type="Texture2D" uid="uid://dq0q4ayq6y76y" path="res://assets/world/village/village_tileset.png" id="7_fp2bn"]
 [ext_resource type="Texture2D" uid="uid://ch6mx3h7prhud" path="res://assets/world/village/fountain.png" id="7_vlb0o"]
 [ext_resource type="PackedScene" uid="uid://k35wlbc0ho3o" path="res://scenes/world/interact_area.tscn" id="8_yqhou"]
-[ext_resource type="PackedScene" path="res://scenes/ui/windows/quest_window.tscn" id="9_d7y5b"]
+[ext_resource type="PackedScene" uid="uid://cikkediqajtvl" path="res://scenes/ui/windows/quest_window.tscn" id="9_d7y5b"]
+[ext_resource type="Texture2D" uid="uid://lygp75a7owqn" path="res://assets/characters/npcs/weapon_shopkeep.png" id="11_dfut1"]
 [ext_resource type="PackedScene" uid="uid://b0tdph7ofmv7r" path="res://scenes/world/trigger_zone.tscn" id="13_sia6k"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_fp2bn"]
@@ -22,6 +24,8 @@ size = Vector2(46, 5)
 [sub_resource type="CircleShape2D" id="CircleShape2D_h8u16"]
 radius = 16.0
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_f4knm"]
+
 [sub_resource type="CircleShape2D" id="CircleShape2D_rt3mv"]
 radius = 24.0
 
@@ -30,6 +34,7 @@ radius = 24.0
 [node name="Village" type="Node2D" unique_id=1737910824]
 y_sort_enabled = true
 script = ExtResource("1_a16hn")
+test_conversation = ExtResource("2_dialogue")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=204398025]
 layer = 10
@@ -114,6 +119,17 @@ prompt_text = "Press E to View Quests"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Props/QuestBoard/InteractArea" unique_id=474583690]
 position = Vector2(0, 2)
 shape = SubResource("CircleShape2D_h8u16")
+
+[node name="TestNpc" type="Sprite2D" parent="Props" unique_id=955466044]
+position = Vector2(384, 440)
+texture = ExtResource("11_dfut1")
+offset = Vector2(0, -8)
+
+[node name="NpcInteractArea" parent="Props/TestNpc" unique_id=1105164537 instance=ExtResource("8_yqhou")]
+prompt_text = "Press E to Talk"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Props/TestNpc/NpcInteractArea" unique_id=197316304]
+shape = SubResource("CircleShape2D_f4knm")
 
 [node name="Player" parent="." unique_id=426329780 groups=["player"] instance=ExtResource("2_e7reh")]
 position = Vector2(449, 504)

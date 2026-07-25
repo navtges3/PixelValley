@@ -87,5 +87,5 @@ func _on_dialogue_opened() -> void:
 	player.movement_blocked = true
 	player.clear_prompt()
 
-func _on_dialogue_closed() -> void:
+func _on_dialogue_closed(_reason: DialogueRunner.FinishReason) -> void:
 	player.movement_blocked = _movement_blocked_before_dialogue

@@ -9,8 +9,11 @@ var _player_inside: bool = false
 var _player: Player = null
 
 func _unhandled_input(event: InputEvent) -> void:
-	if _player_inside and event.is_action_pressed("interact"):
-		interacted.emit()
+	if (not _player_inside or not event.is_action_pressed("interact") or
+		_player == null or _player.movement_blocked):
+		return
+	get_viewport().set_input_as_handled()
+	interacted.emit()
 
 func _on_body_entered(body: Node2D) -> void:
 	if body is Player:

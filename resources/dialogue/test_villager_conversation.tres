@@ -1,0 +1,65 @@
+[gd_resource type="Resource" script_class="DialogueConversation" format=3 uid="uid://5xkkdsiscpum"]
+
+[ext_resource type="Script" uid="uid://c72ou4xympa8k" path="res://scripts/data/dialogue/dialogue_conversation.gd" id="1_conversation"]
+[ext_resource type="Script" uid="uid://bn5tdgpsujh6q" path="res://scripts/data/dialogue/dialogue_action.gd" id="2_ckncy"]
+[ext_resource type="Script" uid="uid://de2gtyvn62a4q" path="res://scripts/data/dialogue/dialogue_entry.gd" id="2_entry"]
+[ext_resource type="Script" uid="uid://bw8gfgi66jkgt" path="res://scripts/data/dialogue/dialogue_response.gd" id="3_response"]
+[ext_resource type="Script" uid="uid://dpbifjko4digr" path="res://scripts/data/dialogue/dialogue_speaker.gd" id="4_speaker"]
+[ext_resource type="Script" uid="uid://chsetq55irrf0" path="res://scripts/data/dialogue/dialogue_condition.gd" id="5_condition"]
+
+[sub_resource type="Resource" id="Condition_always"]
+script = ExtResource("5_condition")
+
+[sub_resource type="Resource" id="Response_ask"]
+script = ExtResource("3_response")
+text = "What should I know about Pixel Valley?"
+next_entry_id = &"hero_question"
+conditions = Array[ExtResource("5_condition")]([SubResource("Condition_always")])
+
+[sub_resource type="Resource" id="Response_leave"]
+script = ExtResource("3_response")
+text = "Maybe another time."
+next_entry_id = &"goodbye"
+
+[sub_resource type="Resource" id="Speaker_villager"]
+script = ExtResource("4_speaker")
+speaker_id = &"test_villager"
+display_name = "Mara"
+
+[sub_resource type="Resource" id="Entry_welcome"]
+script = ExtResource("2_entry")
+entry_id = &"welcome"
+speaker = SubResource("Speaker_villager")
+pages = Array[String](["Hello, traveler! Welcome to Pixel Valley.", "The village is peaceful today, but the roads beyond our gates are another story."])
+responses = Array[ExtResource("3_response")]([SubResource("Response_ask"), SubResource("Response_leave")])
+
+[sub_resource type="Resource" id="Speaker_hero"]
+script = ExtResource("4_speaker")
+speaker_id = &"hero"
+display_name = "Hero"
+
+[sub_resource type="Resource" id="Entry_hero_question"]
+script = ExtResource("2_entry")
+entry_id = &"hero_question"
+speaker = SubResource("Speaker_hero")
+pages = Array[String](["What should I know before I head outside the village?"])
+next_entry_id = &"about_valley"
+
+[sub_resource type="Resource" id="Entry_about_valley"]
+script = ExtResource("2_entry")
+entry_id = &"about_valley"
+speaker = SubResource("Speaker_villager")
+pages = Array[String](["Start with the Goblin Forest. It is dangerous, but it is the safest road for a new adventurer.", "Return to the inn when you need to recover, and keep your equipment ready."])
+next_entry_id = &"goodbye"
+
+[sub_resource type="Resource" id="Entry_goodbye"]
+script = ExtResource("2_entry")
+entry_id = &"goodbye"
+speaker = SubResource("Speaker_villager")
+pages = Array[String](["Stay safe out there. Pixel Valley needs heroes who know when to prepare."])
+
+[resource]
+script = ExtResource("1_conversation")
+conversation_id = &"test_villager_intro"
+start_entry_id = &"welcome"
+entries = Array[ExtResource("2_entry")]([SubResource("Entry_welcome"), SubResource("Entry_hero_question"), SubResource("Entry_about_valley"), SubResource("Entry_goodbye")])
