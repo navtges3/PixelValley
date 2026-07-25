@@ -46,4 +46,5 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func _clear_responses() -> void:
 	for child: Node in responses.get_children():
-		child.free()
+		responses.remove_child(child)
+		child.queue_free()
