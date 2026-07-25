@@ -12,17 +12,14 @@ script = ExtResource("1_worldh")
 
 [node name="GameHud" parent="." unique_id=956269644 instance=ExtResource("2_iek5v")]
 layer = 20
-visible = false
 
 [node name="HeroHUD" parent="." unique_id=1370001325 instance=ExtResource("2_heroh")]
-visible = false
 offset_left = 8.0
 offset_top = 8.0
 offset_right = 204.0
 offset_bottom = 118.0
 
 [node name="TrackedQuestHUD" parent="." unique_id=1938955935 instance=ExtResource("4_iek5v")]
-visible = false
 
 [node name="DialogueLayer" type="CanvasLayer" parent="." unique_id=252751646]
 layer = 30
