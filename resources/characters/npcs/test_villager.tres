@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="NpcData" format=3 uid="uid://do3xl7dwnlkat"]
 
 [ext_resource type="Script" uid="uid://bvrdh0sqeu4ny" path="res://scripts/data/npc_data.gd" id="1_em4pk"]
-[ext_resource type="Resource" uid="uid://5xkkdsiscpum" path="res://resources/dialogue/test_villager_conversation.tres" id="1_xk42w"]
+[ext_resource type="Resource" path="res://resources/dialogue/quests/test_villager_quest_conversation.tres" id="1_xk42w"]
 [ext_resource type="Texture2D" uid="uid://lygp75a7owqn" path="res://assets/characters/npcs/weapon_shopkeep.png" id="2_84ijy"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_0h6kb"]

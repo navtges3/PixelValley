@@ -92,6 +92,8 @@ func _test_current_save_preserves_all_quest_state() -> void:
 				"category": Quest.Category.SIDE,
 				"source_type": Quest.SourceType.NPC,
 				"source_id": "npc_scout",
+				"turn_in_npc_id": "npc_captain",
+				"initially_unlocked": true,
 				"next_quests": [9002],
 				"unlocks_locations": ["hidden_path"],
 				"completed": true,
@@ -121,6 +123,12 @@ func _test_current_save_preserves_all_quest_state() -> void:
 	_expect_equal(quest["category"], Quest.Category.SIDE, "category is preserved")
 	_expect_equal(quest["source_type"], Quest.SourceType.NPC, "source type is preserved")
 	_expect_equal(quest["source_id"], "npc_scout", "source ID is preserved")
+	_expect_equal(
+		quest["turn_in_npc_id"],
+		"npc_captain",
+		"turn-in NPC ID is preserved"
+	)
+	_expect_true(quest["initially_unlocked"], "initial unlock metadata is preserved")
 	_expect_equal(quest["next_quests"], [9002], "follow-up quest unlocks are preserved")
 	_expect_equal(quest["unlocks_locations"], ["hidden_path"], "location unlocks are preserved")
 	_expect_equal(quest["objectives"][0]["current_amount"], 2, "current objective progress is preserved")

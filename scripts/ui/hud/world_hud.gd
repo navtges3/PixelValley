@@ -58,6 +58,11 @@ func start_dialogue(conversation: DialogueConversation, context: Dictionary[Stri
 		return false
 	return dialogue_runner.start(conversation, context)
 
+func update_dialogue_context(
+	context: Dictionary[StringName, Variant]
+) -> void:
+	dialogue_runner.update_context(context)
+
 func is_dialogue_open() -> bool:
 	return dialogue_runner.is_running() or reward_window.visible
 

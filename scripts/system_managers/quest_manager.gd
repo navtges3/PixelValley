@@ -21,6 +21,9 @@ const QUEST_PATHS := [
 	"res://resources/quests/quest_08.tres",
 	"res://resources/quests/quest_09.tres",
 	"res://resources/quests/quest_10.tres",
+	"res://resources/quests/quest_11.tres",
+	"res://resources/quests/quest_12.tres",
+	"res://resources/quests/quest_13.tres",
 ]
 
 const FIRST_QUEST_ID := 1
@@ -51,8 +54,9 @@ func new_game() -> void:
 	for path: String in QUEST_PATHS:
 		var quest := (load(path) as Quest).duplicate(true)
 		locked_quests.append(quest)
-	if not locked_quests.is_empty():
-		unlock_quest_by_id(FIRST_QUEST_ID)
+	for quest: Quest in locked_quests.duplicate():
+		if quest.id == FIRST_QUEST_ID or quest.initially_unlocked:
+			unlock_quest_by_id(quest.id)
 	_connect_signals()
 
 func reconnect_signals() -> void:
@@ -244,6 +248,16 @@ static func get_defined_quest_ids() -> Array[int]:
 		if quest != null:
 			ids.append(quest.id)
 	return ids
+
+func add_missing_defined_quests() -> void:
+	for path: String in QUEST_PATHS:
+		var definition := load(path) as Quest
+		if definition == null or has_quest_id(definition.id):
+			continue
+		var quest := definition.duplicate(true) as Quest
+		locked_quests.append(quest)
+		if quest.initially_unlocked:
+			unlock_quest_by_id(quest.id)
 
 func has_ready_quests() -> bool:
 	return not ready_quests.is_empty()

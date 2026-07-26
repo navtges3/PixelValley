@@ -119,6 +119,8 @@ static func _normalize_quest_record(raw_record: Dictionary, emit_warnings: bool)
 	var source_type: int = int(quest.get("source_type", Quest.SourceType.AUTOMATIC))
 	quest["source_type"] = source_type if source_type in Quest.SourceType.values() else Quest.SourceType.AUTOMATIC
 	quest["source_id"] = str(quest.get("source_id", ""))
+	quest["turn_in_npc_id"] = str(quest.get("turn_in_npc_id", ""))
+	quest["initially_unlocked"] = bool(quest.get("initially_unlocked", false))
 	quest["next_quests"] = _normalize_int_array(quest.get("next_quests", []))
 	quest["unlocks_locations"] = _normalize_string_array(quest.get("unlocks_locations", []))
 	quest["completed"] = bool(quest.get("completed", false))

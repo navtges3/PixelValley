@@ -9,7 +9,7 @@ static func grant(reward: Reward, recipient: Hero) -> Array[RewardEntry]:
 	_append_entry(entries, grant_experience(recipient, reward.experience))
 	_append_entry(entries, grant_gold(recipient, reward.gold))
 	for item_id in reward.items:
-		_append_entry(entries, grant_potion(recipient, item_id, 1))
+		_append_entry(entries, grant_item(recipient, item_id, 1))
 	if reward.random_weapon:
 		_append_entry(entries, grant_random_weapon(recipient, reward.rarity))
 	return entries
@@ -35,6 +35,23 @@ static func grant_potion(recipient: Hero, item_id: String, amount: int) -> Rewar
 		return null
 	recipient.inventory.add_potion(item_id, amount)
 	return RewardEntry.potion(item_id, amount)
+
+static func grant_item(recipient: Hero, item_id: String, amount: int = 1) -> RewardEntry:
+	if recipient == null or amount <= 0:
+		return null
+	var item := ItemLoader.get_item(item_id)
+	if item is Potion:
+		return grant_potion(recipient, item_id, amount)
+	if item is Weapon:
+		if amount != 1:
+			push_warning("RewardService: weapons can only be granted one at a time")
+			return null
+		return grant_weapon(recipient, item_id)
+	if item is QuestItem:
+		recipient.inventory.add_quest_item(item_id, amount)
+		return RewardEntry.quest_item(item_id, amount)
+	push_warning("RewardService: unknown item id '%s'" % item_id)
+	return null
 
 static func grant_weapon(recipient: Hero, weapon_id: String) -> RewardEntry:
 	if recipient == null:

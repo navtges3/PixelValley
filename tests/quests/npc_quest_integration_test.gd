@@ -10,6 +10,10 @@ func run_tests() -> int:
 	_test_dialogue_lifecycle_actions()
 	_test_locked_dialogue_context()
 	_test_delivery_action()
+	_test_authored_dialogues_validate()
+	_test_authored_dialogue_rolls_into_follow_up_quest()
+	_test_authored_side_quest_chain()
+	_test_existing_save_discovers_side_quest_chain()
 	_cleanup()
 	return _finish_test_run("NPC quest integration tests")
 
@@ -296,6 +300,223 @@ func _test_delivery_action() -> void:
 	)
 	controller.clear_quest_manager()
 
+func _test_authored_dialogues_validate() -> void:
+	var expected_actions: Dictionary[String, Array] = {
+		"res://resources/dialogue/quests/test_villager_quest_conversation.tres":
+			[&"accept_quest", &"decline_quest"],
+		"res://resources/dialogue/quests/alchemist_quest_conversation.tres":
+			[
+				&"complete_npc_interaction",
+				&"turn_in_quest",
+				&"accept_quest",
+				&"decline_quest",
+				&"open_service",
+			],
+		"res://resources/dialogue/quests/blacksmith_quest_conversation.tres":
+			[
+				&"complete_npc_interaction",
+				&"turn_in_quest",
+				&"accept_quest",
+				&"decline_quest",
+				&"open_service",
+			],
+		"res://resources/dialogue/quests/innkeeper_quest_conversation.tres":
+			[&"deliver_quest_items", &"turn_in_quest", &"open_service"],
+	}
+	var runner := DialogueRunner.new()
+	for path: String in expected_actions:
+		var conversation := load(path) as DialogueConversation
+		_expect_not_null(conversation, "authored quest dialogue loads: %s" % path)
+		if conversation == null:
+			continue
+		_expect_true(
+			runner.get_validation_errors(conversation).is_empty(),
+			"authored quest dialogue validates: %s" % path
+		)
+		var action_ids := _get_dialogue_action_ids(conversation)
+		for action_id: StringName in expected_actions[path]:
+			_expect_true(
+				action_id in action_ids,
+				"authored dialogue exposes action '%s': %s"
+					% [action_id, path]
+			)
+
+func _test_authored_dialogue_rolls_into_follow_up_quest() -> void:
+	if GameState.quest_manager != null:
+		GameState.quest_manager.disconnect_signals()
+	var manager := QuestManager.new()
+	manager.new_game()
+	GameState.set_quest_manager(manager)
+	var controller := NpcQuestDialogueController.new()
+	controller.set_quest_manager(manager)
+	controller.handle_action(
+		_make_action(&"accept_quest"),
+		controller.build_context(&"test_villager", &"village")
+	)
+
+	var conversation := load(
+		"res://resources/dialogue/quests/alchemist_quest_conversation.tres"
+	) as DialogueConversation
+	var runner := DialogueRunner.new()
+	runner.action_requested.connect(
+		_handle_refreshing_dialogue_action.bind(
+			runner,
+			controller,
+			&"alchemist",
+			&"potion_shop_interior"
+		)
+	)
+	_expect_true(
+		runner.start(
+			conversation,
+			controller.build_context(&"alchemist", &"potion_shop_interior")
+		),
+		"alchemist quest conversation starts while quest 11 is active"
+	)
+
+	runner.advance()
+	_expect_true(
+		manager.is_quest_ready(11),
+		"finishing the alchemist's first line completes the talk objective"
+	)
+	runner.advance()
+	runner.advance()
+	runner.choose_response(0)
+	_expect_true(
+		manager.is_quest_completed(11),
+		"quest 11 turns in without closing the conversation"
+	)
+	_expect_true(
+		runner.is_running(),
+		"dialogue remains open after the quest 11 reward"
+	)
+
+	runner.advance()
+	runner.advance()
+	runner.advance()
+	runner.choose_response(0)
+	_expect_true(
+		manager.is_quest_active(12),
+		"the follow-up quest is accepted in the same conversation"
+	)
+	runner.advance()
+	_expect_true(
+		not runner.is_running(),
+		"conversation closes only after the follow-up response"
+	)
+	controller.clear_quest_manager()
+
+func _handle_refreshing_dialogue_action(
+	action: DialogueAction,
+	context: Dictionary[StringName, Variant],
+	runner: DialogueRunner,
+	controller: NpcQuestDialogueController,
+	npc_id: StringName,
+	location_id: StringName
+) -> void:
+	controller.handle_action(action, context)
+	runner.update_context(controller.build_context(npc_id, location_id))
+
+func _test_authored_side_quest_chain() -> void:
+	if GameState.quest_manager != null:
+		GameState.quest_manager.disconnect_signals()
+	var manager := QuestManager.new()
+	manager.new_game()
+	GameState.set_quest_manager(manager)
+	var controller := NpcQuestDialogueController.new()
+	controller.set_quest_manager(manager)
+	var starting_gold := GameState.hero.inventory.gold
+	var starting_potion_count := GameState.hero.inventory.get_potion_count(
+		"lesser_healing_potion"
+	)
+	var starting_weapon_count := GameState.hero.inventory.weapon_stash.size()
+
+	var quest_11 := manager.get_quest_by_id(11)
+	var quest_12 := manager.get_quest_by_id(12)
+	var quest_13 := manager.get_quest_by_id(13)
+	_expect_true(manager.is_quest_offered(11), "first authored side quest starts offered")
+	_expect_true(manager.get_quest_state(12) == QuestManager.LifecycleState.LOCKED, "second side quest starts locked")
+	_expect_true(manager.get_quest_state(13) == QuestManager.LifecycleState.LOCKED, "third side quest starts locked")
+
+	var villager_context := controller.build_context(&"test_villager", &"village")
+	controller.handle_action(_make_action(&"accept_quest"), villager_context)
+	GameState.gameplay_event.emit(NpcInteractedEvent.new(&"alchemist"))
+	_expect_true(manager.is_quest_ready(11), "talking to the alchemist readies quest 11")
+	var alchemist_turn_in := controller.build_context(&"alchemist", &"potion_shop_interior")
+	controller.handle_action(_make_action(&"turn_in_quest"), alchemist_turn_in)
+	_expect_true(manager.is_quest_completed(11), "alchemist completes quest 11")
+	_expect_equal(
+		GameState.hero.inventory.get_potion_count("lesser_healing_potion"),
+		starting_potion_count + 1,
+		"alchemist grants the potion reward"
+	)
+	_expect_true(manager.is_quest_offered(12), "quest 11 unlocks the alchemist's quest")
+
+	var alchemist_offer := controller.build_context(&"alchemist", &"potion_shop_interior")
+	controller.handle_action(_make_action(&"accept_quest"), alchemist_offer)
+	GameState.gameplay_event.emit(NpcInteractedEvent.new(&"blacksmith"))
+	_expect_true(manager.is_quest_ready(12), "talking to the blacksmith readies quest 12")
+	var blacksmith_turn_in := controller.build_context(&"blacksmith", &"weapon_shop_interior")
+	controller.handle_action(_make_action(&"turn_in_quest"), blacksmith_turn_in)
+	_expect_true(manager.is_quest_completed(12), "blacksmith completes quest 12")
+	_expect_equal(
+		GameState.hero.inventory.weapon_stash.size(),
+		starting_weapon_count + 1,
+		"blacksmith grants a class-appropriate weapon"
+	)
+	_expect_equal(
+		GameState.hero.inventory.get_quest_item_count("inn_key"),
+		1,
+		"blacksmith grants the brass inn key"
+	)
+	_expect_true(manager.is_quest_offered(13), "quest 12 unlocks the delivery quest")
+
+	var blacksmith_offer := controller.build_context(&"blacksmith", &"weapon_shop_interior")
+	controller.handle_action(_make_action(&"accept_quest"), blacksmith_offer)
+	var innkeeper_delivery := controller.build_context(&"innkeeper", &"inn_interior")
+	_expect_true(
+		bool(innkeeper_delivery[&"has_delivery_items"]),
+		"innkeeper dialogue detects the brass key"
+	)
+	controller.handle_action(_make_action(&"deliver_quest_items"), innkeeper_delivery)
+	_expect_equal(
+		GameState.hero.inventory.get_quest_item_count("inn_key"),
+		0,
+		"delivering the brass key removes it from inventory"
+	)
+	_expect_true(manager.is_quest_ready(13), "key delivery readies quest 13")
+	var innkeeper_turn_in := controller.build_context(&"innkeeper", &"inn_interior")
+	controller.handle_action(_make_action(&"turn_in_quest"), innkeeper_turn_in)
+	_expect_true(manager.is_quest_completed(13), "innkeeper completes the quest chain")
+	_expect_equal(
+		GameState.hero.inventory.gold,
+		starting_gold + quest_13.reward.gold,
+		"innkeeper grants the authored gold reward"
+	)
+	_expect_not_null(quest_11, "quest 11 remains registered")
+	_expect_not_null(quest_12, "quest 12 remains registered")
+	controller.clear_quest_manager()
+
+func _test_existing_save_discovers_side_quest_chain() -> void:
+	var manager := QuestManager.new()
+	var existing_quest := Quest.new()
+	existing_quest.id = 1
+	manager.active_quests.append(existing_quest)
+	manager.add_missing_defined_quests()
+
+	_expect_true(
+		manager.is_quest_offered(11),
+		"an existing save discovers the initially unlocked side quest"
+	)
+	_expect_true(
+		manager.get_quest_state(12) == QuestManager.LifecycleState.LOCKED,
+		"an existing save registers the locked follow-up quest"
+	)
+	_expect_true(
+		manager.get_quest_by_id(1) == existing_quest,
+		"merging new definitions preserves existing quest instances"
+	)
+
 func _make_manager() -> QuestManager:
 	if GameState.quest_manager != null:
 		GameState.quest_manager.disconnect_signals()
@@ -320,6 +541,20 @@ func _make_action(action_id: StringName) -> DialogueAction:
 	var action := DialogueAction.new()
 	action.action_id = action_id
 	return action
+
+func _get_dialogue_action_ids(
+	conversation: DialogueConversation
+) -> Array[StringName]:
+	var result: Array[StringName] = []
+	for entry: DialogueEntry in conversation.entries:
+		for action: DialogueAction in entry.actions:
+			if action.action_id not in result:
+				result.append(action.action_id)
+		for response: DialogueResponse in entry.responses:
+			for action: DialogueAction in response.actions:
+				if action.action_id not in result:
+					result.append(action.action_id)
+	return result
 
 func _cleanup() -> void:
 	GameState.reset_state()

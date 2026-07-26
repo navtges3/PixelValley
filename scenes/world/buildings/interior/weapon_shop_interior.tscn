@@ -57,7 +57,7 @@ tile_set = ExtResource("4_422ht")
 [node name="NpcActor" parent="." unique_id=319491251 instance=ExtResource("4_jtcfk")]
 position = Vector2(48, 120)
 data = ExtResource("5_dmleq")
-prompt_text = "Press E to Shop"
+prompt_text = "Press E to Talk"
 interaction_offset = Vector2(0, 16)
 
 [node name="WallProps" type="Node2D" parent="." unique_id=214688240]
