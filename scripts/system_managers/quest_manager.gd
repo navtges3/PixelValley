@@ -1,6 +1,15 @@
 extends RefCounted
 class_name QuestManager
 
+enum LifecycleState {
+	UNKNOWN,
+	LOCKED,
+	OFFERED,
+	ACTIVE,
+	READY,
+	COMPLETED,
+}
+
 const QUEST_PATHS := [
 	"res://resources/quests/quest_01.tres",
 	"res://resources/quests/quest_02.tres",
@@ -52,14 +61,6 @@ func reconnect_signals() -> void:
 func disconnect_signals() -> void:
 	if GameState.gameplay_event.is_connected(_on_gameplay_event):
 		GameState.gameplay_event.disconnect(_on_gameplay_event)
-
-static func get_defined_quest_ids() -> Array[int]:
-	var ids: Array[int] = []
-	for path: String in QUEST_PATHS:
-		var quest := load(path) as Quest
-		if quest != null:
-			ids.append(quest.id)
-	return ids
 
 func unlock_quest_by_id(quest_id: int) -> bool:
 	for quest in locked_quests.duplicate():
@@ -190,8 +191,13 @@ func get_ready_quests() -> Array[Quest]:
 func get_completed_quests() -> Array[Quest]:
 	return completed_quests.duplicate()
 
-func has_ready_quests() -> bool:
-	return not ready_quests.is_empty()
+func get_tracked_quest() -> Quest:
+	if tracked_quest_id < 0:
+		return null
+	if not is_quest_active(tracked_quest_id) and not is_quest_ready(tracked_quest_id):
+		_set_tracked_quest_id(-1)
+		return null
+	return get_quest_by_id(tracked_quest_id)
 
 func get_quest_by_id(quest_id: int) -> Quest:
 	for quest: Quest in locked_quests:
@@ -210,6 +216,37 @@ func get_quest_by_id(quest_id: int) -> Quest:
 		if quest.id == quest_id:
 			return quest
 	return null
+
+func get_quest_by_source(source_type: Quest.SourceType, source_id: String) -> Array[Quest]:
+	var matches: Array[Quest] = []
+	for quest: Quest in _get_all_quests():
+		if quest.source_type == source_type and quest.source_id == source_id:
+			matches.append(quest)
+	return matches
+
+func get_quest_state(quest_id: int) -> LifecycleState:
+	if _contains_quest_id(locked_quests, quest_id):
+		return LifecycleState.LOCKED
+	if is_quest_offered(quest_id):
+		return LifecycleState.OFFERED
+	if is_quest_active(quest_id):
+		return LifecycleState.ACTIVE
+	if is_quest_ready(quest_id):
+		return LifecycleState.READY
+	if is_quest_completed(quest_id):
+		return LifecycleState.COMPLETED
+	return LifecycleState.UNKNOWN
+
+static func get_defined_quest_ids() -> Array[int]:
+	var ids: Array[int] = []
+	for path: String in QUEST_PATHS:
+		var quest := load(path) as Quest
+		if quest != null:
+			ids.append(quest.id)
+	return ids
+
+func has_ready_quests() -> bool:
+	return not ready_quests.is_empty()
 
 func is_quest_offered(quest_id: int) -> bool:
 	return _contains_quest_id(offered_quests, quest_id)
@@ -234,22 +271,8 @@ func track_quest(quest_id: int) -> bool:
 func untrack_quest() -> void:
 	_set_tracked_quest_id(-1)
 
-func get_tracked_quest() -> Quest:
-	if tracked_quest_id < 0:
-		return null
-	if not is_quest_active(tracked_quest_id) and not is_quest_ready(tracked_quest_id):
-		_set_tracked_quest_id(-1)
-		return null
-	return get_quest_by_id(tracked_quest_id)
-
 func restore_tracked_quest_id(quest_id: int) -> void:
 	tracked_quest_id = quest_id if (is_quest_active(quest_id) or is_quest_ready(quest_id)) else -1
-
-func _set_tracked_quest_id(quest_id: int) -> void:
-	if tracked_quest_id == quest_id:
-		return
-	tracked_quest_id = quest_id
-	tracked_quest_changed.emit(tracked_quest_id)
 
 func filter_quests_by_category(quests: Array[Quest], category: Quest.Category) -> Array[Quest]:
 	var matches: Array[Quest] = []
@@ -280,6 +303,21 @@ func _contains_quest_id(quests: Array[Quest], quest_id: int) -> bool:
 		if quest.id == quest_id:
 			return true
 	return false
+
+func _set_tracked_quest_id(quest_id: int) -> void:
+	if tracked_quest_id == quest_id:
+		return
+	tracked_quest_id = quest_id
+	tracked_quest_changed.emit(tracked_quest_id)
+
+func _get_all_quests() -> Array[Quest]:
+	var result: Array[Quest] = []
+	result.append_array(locked_quests)
+	result.append_array(offered_quests)
+	result.append_array(active_quests)
+	result.append_array(ready_quests)
+	result.append_array(completed_quests)
+	return result
 
 func _remove_from_lifecycle_lists(quest: Quest) -> void:
 	locked_quests.erase(quest)
