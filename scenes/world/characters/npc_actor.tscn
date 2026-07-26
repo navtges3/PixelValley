@@ -2,22 +2,6 @@
 
 [ext_resource type="PackedScene" uid="uid://k35wlbc0ho3o" path="res://scenes/world/interact_area.tscn" id="1_grl41"]
 [ext_resource type="Script" uid="uid://dpsai5624ne4d" path="res://scripts/world/characters/npc_actor.gd" id="1_i2wft"]
-[ext_resource type="Texture2D" uid="uid://lygp75a7owqn" path="res://assets/characters/npcs/weapon_shopkeep.png" id="2_vcc81"]
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_u1xav"]
-atlas = ExtResource("2_vcc81")
-region = Rect2(0, 0, 32, 32)
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_amlo5"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_u1xav")
-}],
-"loop": true,
-"name": &"default",
-"speed": 5.0
-}]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ql5gy"]
 radius = 5.0
@@ -26,10 +10,11 @@ radius = 5.0
 radius = 16.0
 
 [node name="NpcActor" type="CharacterBody2D" unique_id=319491251 groups=["npc"]]
+y_sort_enabled = true
 script = ExtResource("1_i2wft")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=235256959]
-sprite_frames = SubResource("SpriteFrames_amlo5")
+animation = &""
 offset = Vector2(0, -9)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=533677518]
@@ -41,5 +26,10 @@ shape = SubResource("CircleShape2D_ql5gy")
 shape = SubResource("CircleShape2D_vcc81")
 
 [node name="StatusIndicator" type="Label" parent="." unique_id=1343165083]
-offset_right = 40.0
-offset_bottom = 23.0
+anchors_preset = -1
+offset_left = -8.0
+offset_top = -40.0
+offset_right = 8.0
+offset_bottom = -17.666666
+text = "!"
+horizontal_alignment = 1
