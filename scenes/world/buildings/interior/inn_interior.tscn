@@ -3,22 +3,16 @@
 [ext_resource type="Script" uid="uid://bm8uo2lhg2kg5" path="res://scripts/world/buildings/interior/inn_interior.gd" id="1_tlekw"]
 [ext_resource type="PackedScene" uid="uid://dp6qp05llks3o" path="res://scenes/ui/windows/inn_window.tscn" id="2_i6dxs"]
 [ext_resource type="TileSet" uid="uid://c3ib8w4j0mx7n" path="res://resources/world/building_interior_tileset.tres" id="3_eggvl"]
-[ext_resource type="PackedScene" uid="uid://k35wlbc0ho3o" path="res://scenes/world/interact_area.tscn" id="3_tlekw"]
 [ext_resource type="Texture2D" uid="uid://don3grn24yqj5" path="res://assets/world/village/weapon_shop/counter.png" id="4_akkv4"]
-[ext_resource type="Texture2D" uid="uid://dutpghl7y0fri" path="res://assets/characters/npcs/inn_shopkeep.png" id="4_d6ujm"]
+[ext_resource type="PackedScene" uid="uid://b5w0g6a4eqi3g" path="res://scenes/world/characters/npc_actor.tscn" id="4_pbvbh"]
 [ext_resource type="PackedScene" uid="uid://cv120tmswg7xm" path="res://scenes/world/characters/player.tscn" id="4_vofwt"]
 [ext_resource type="Texture2D" uid="uid://d3dd0k6j1w2li" path="res://assets/world/village/inn/key_rack.png" id="5_42aiy"]
+[ext_resource type="Resource" uid="uid://byrxikto167vi" path="res://resources/characters/npcs/innkeeper.tres" id="5_e58a2"]
 [ext_resource type="PackedScene" uid="uid://b0tdph7ofmv7r" path="res://scenes/world/trigger_zone.tscn" id="8_d6ujm"]
 [ext_resource type="Texture2D" uid="uid://ms2qqe1f3kmw" path="res://assets/world/village/inn/bed.png" id="8_oqisc"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_oqisc"]
-radius = 5.0
-
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_d6ujm"]
 size = Vector2(94, 13)
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_42aiy"]
-radius = 16.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_oqisc"]
 size = Vector2(24, 42)
@@ -50,16 +44,9 @@ y_sort_enabled = true
 tile_map_data = PackedByteArray("AAAAAP7/AQAAAAAAAAAAAP//AQAAAAEAAAAIAP7/AQABAAAAAAAIAP//AQABAAEAAAAJAP7/AQACAAAAAAAJAP//AQACAAEAAAAHAP7/AQABAAAAAAAHAP//AQABAAEAAAAGAP7/AQAAAAAAAAAGAP//AQAAAAEAAAAFAP7/AQABAAAAAAAFAP//AQABAAEAAAAEAP7/AQABAAAAAAAEAP//AQABAAEAAAADAP7/AQABAAAAAAADAP//AQABAAEAAAACAP7/AQABAAAAAAACAP//AQABAAEAAAABAP7/AQABAAAAAAABAP//AQABAAEAAAAAAAAAAQADAAEAAAAAAAEAAQADAAEAAAAAAAIAAQADAAEAAAAAAAMAAQADAAEAAAAAAAQAAQADAAEAAAAAAAUAAQADAAEAAAAAAAYAAQADAAEAAAAJAAAAAQAEAAEAAAAJAAEAAQAEAAEAAAAJAAIAAQAEAAEAAAAJAAMAAQACAAAAAAAJAAUAAQAEAAEAAAAJAAYAAQAEAAEAAAAAAAcAAQAAAAIAAAAJAAcAAQACAAIAAAABAAcAAQADAAAAAAACAAcAAQAEAAAAAAADAAcAAQABAAIAAAAEAAcAAQABAAIAAAAFAAcAAQABAAIAAAAGAAcAAQABAAIAAAAHAAcAAQABAAIAAAAIAAcAAQABAAIAAAAGAAAAAQADAAEAAAAGAAEAAQADAAEAAAAGAAIAAQADAAEAAAAGAAMAAQAAAAAAAAAGAAQAAQAAAAEAAAAHAAQAAQADAAMAAAAIAAQAAQAEAAMAAAAJAAQAAQACAAEAAAAIAAMAAQAEAAIAAAAHAAMAAQADAAIAAAA=")
 tile_set = ExtResource("3_eggvl")
 
-[node name="Shopkeeper" type="CharacterBody2D" parent="." unique_id=1260958259]
-y_sort_enabled = true
-position = Vector2(56, 38)
-
-[node name="Sprite2D" type="Sprite2D" parent="Shopkeeper" unique_id=1130051326]
-texture = ExtResource("4_d6ujm")
-offset = Vector2(0, -10)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Shopkeeper" unique_id=1056949789]
-shape = SubResource("CircleShape2D_oqisc")
+[node name="InnKeeper" parent="." unique_id=319491251 instance=ExtResource("4_pbvbh")]
+position = Vector2(57, 35)
+data = ExtResource("5_e58a2")
 
 [node name="WallProps" type="Node2D" parent="." unique_id=750866548]
 
@@ -81,11 +68,6 @@ texture = ExtResource("4_akkv4")
 position = Vector2(0, -6.5)
 shape = SubResource("RectangleShape2D_d6ujm")
 
-[node name="InteractArea" parent="FloorProps/Counter" unique_id=1105164537 instance=ExtResource("3_tlekw")]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="FloorProps/Counter/InteractArea" unique_id=276727262]
-shape = SubResource("CircleShape2D_42aiy")
-
 [node name="Bed" type="StaticBody2D" parent="FloorProps" unique_id=1846600605]
 position = Vector2(296, 16)
 
@@ -97,7 +79,7 @@ offset = Vector2(0, 12)
 position = Vector2(0, 20)
 shape = SubResource("RectangleShape2D_oqisc")
 
-[node name="Player" parent="." unique_id=426329780 groups=["player"] instance=ExtResource("4_vofwt")]
+[node name="Player" parent="." unique_id=426329780 instance=ExtResource("4_vofwt")]
 position = Vector2(64, 216)
 
 [node name="ExitTriggerZone" parent="." unique_id=528423832 instance=ExtResource("8_d6ujm")]

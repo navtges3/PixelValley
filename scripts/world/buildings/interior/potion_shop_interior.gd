@@ -2,20 +2,22 @@ extends BaseLocation
 class_name PotionShopInterior
 
 const ENTRANCE_ID := "potion_shop"
+const SERVICE_ID: StringName = &"potion_shop"
 
 @onready var shop_window: ShopWindow = $CanvasLayer/ShopWindow
-@onready var interact_area: InteractArea = $FloorProps/Counter/InteractArea
 
 func _get_screen_name() -> ScreenManager.ScreenName:
 	return ScreenManager.ScreenName.POTION_SHOP
 
 func _on_location_ready() -> void:
-	interact_area.interacted.connect(_on_counter_interacted)
 	shop_window.setup_shop(ShopWindow.ShopType.POTION)
 	shop_window.closed.connect(_on_window_closed)
 	shop_window.close()
 
-func _on_counter_interacted() -> void:
+func _handle_npc_service_request(npc_id: StringName, service_id: StringName) -> void:
+	if service_id != SERVICE_ID:
+		super._handle_npc_service_request(npc_id, service_id)
+		return
 	player.movement_blocked = true
 	shop_window.open()
 

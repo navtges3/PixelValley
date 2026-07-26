@@ -2,19 +2,21 @@ extends BaseLocation
 class_name InnInterior
 
 const ENTRANCE_ID := "inn"
+const SERVICE_ID: StringName = &"inn"
 
 @onready var inn_window: InnWindow = $CanvasLayer/InnWindow
-@onready var interact_area: InteractArea = $FloorProps/Counter/InteractArea
 
 func _get_screen_name() -> ScreenManager.ScreenName:
 	return ScreenManager.ScreenName.INN
 
 func _on_location_ready() -> void:
-	interact_area.interacted.connect(_on_counter_interacted)
 	inn_window.closed.connect(_on_window_closed)
 	inn_window.close()
 
-func _on_counter_interacted() -> void:
+func _handle_npc_service_request(npc_id: StringName, service_id: StringName) -> void:
+	if service_id != SERVICE_ID:
+		super._handle_npc_service_request(npc_id, service_id)
+		return
 	player.movement_blocked = true
 	inn_window.open()
 

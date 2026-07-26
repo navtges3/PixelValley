@@ -23,4 +23,5 @@ script = ExtResource("1_50c5m")
 npc_id = &"alchemist"
 display_name = "Alchemist"
 world_visual = SubResource("SpriteFrames_ovnb2")
+service_id = &"potion_shop"
 metadata/_custom_type_script = "uid://bvrdh0sqeu4ny"

@@ -1,25 +1,22 @@
 [gd_scene format=4 uid="uid://bsuo6i5yue65u"]
 
 [ext_resource type="Script" uid="uid://cdce1ey4ljwxe" path="res://scripts/world/buildings/interior/weapon_shop_interior.gd" id="1_mu2m6"]
-[ext_resource type="PackedScene" uid="uid://k35wlbc0ho3o" path="res://scenes/world/interact_area.tscn" id="2_mmg14"]
 [ext_resource type="PackedScene" uid="uid://barcl6is7t0uy" path="res://scenes/ui/windows/shop_window.tscn" id="2_mu2m6"]
 [ext_resource type="PackedScene" uid="uid://cv120tmswg7xm" path="res://scenes/world/characters/player.tscn" id="3_mu2m6"]
 [ext_resource type="TileSet" uid="uid://c3ib8w4j0mx7n" path="res://resources/world/building_interior_tileset.tres" id="4_422ht"]
 [ext_resource type="Texture2D" uid="uid://don3grn24yqj5" path="res://assets/world/village/weapon_shop/counter.png" id="4_awdw8"]
+[ext_resource type="PackedScene" uid="uid://b5w0g6a4eqi3g" path="res://scenes/world/characters/npc_actor.tscn" id="4_jtcfk"]
+[ext_resource type="Resource" uid="uid://fx4djpacrcah" path="res://resources/characters/npcs/blacksmith.tres" id="5_dmleq"]
 [ext_resource type="Texture2D" uid="uid://bx5y76f6omoqi" path="res://assets/world/village/weapon_shop/pedistals.png" id="6_7mnpr"]
 [ext_resource type="Texture2D" uid="uid://cknn387jys76r" path="res://assets/world/village/weapon_shop/weapon_rack.png" id="6_8swea"]
 [ext_resource type="Texture2D" uid="uid://cs6xdko54rvuy" path="res://assets/world/village/weapon_shop/wall_rack.png" id="7_so5x8"]
 [ext_resource type="Texture2D" uid="uid://bqsfhmwu4yrw0" path="res://assets/world/village/weapon_shop/forge.png" id="9_422ht"]
 [ext_resource type="Texture2D" uid="uid://cpjxp1gfs0dve" path="res://assets/world/village/weapon_shop/anvil.png" id="10_5xyi6"]
 [ext_resource type="Texture2D" uid="uid://ci7loij7yqm5i" path="res://assets/world/village/weapon_shop/quench_barrel.png" id="11_3aciw"]
-[ext_resource type="Texture2D" uid="uid://lygp75a7owqn" path="res://assets/characters/npcs/weapon_shopkeep.png" id="11_6f06l"]
 [ext_resource type="PackedScene" uid="uid://b0tdph7ofmv7r" path="res://scenes/world/trigger_zone.tscn" id="13_6f06l"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_awdw8"]
 size = Vector2(94, 13)
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_awdw8"]
-radius = 16.0
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_7mnpr"]
 radius = 4.0
@@ -32,9 +29,6 @@ height = 28.0
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_3aciw"]
 radius = 5.0
 height = 18.0
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_3aciw"]
-radius = 5.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_8swea"]
 radius = 16.0
@@ -59,6 +53,11 @@ tile_set = ExtResource("4_422ht")
 [node name="Walls" type="TileMapLayer" parent="." unique_id=5454877]
 tile_map_data = PackedByteArray("AAAGAAcAAQADAAAAAAAHAAcAAQAEAAAAAAAJAAcAAQACAAIAAAAIAAcAAQABAAIAAAAFAAcAAQABAAIAAAAEAAcAAQABAAIAAAADAAcAAQABAAIAAAACAAcAAQABAAIAAAABAAcAAQABAAIAAAAAAAcAAQAAAAIAAAAAAAYAAQADAAEAAAAAAAUAAQADAAEAAAAAAAQAAQADAAEAAAAAAAMAAQADAAEAAAAAAAIAAQADAAEAAAAAAAEAAQADAAEAAAAAAAAAAQADAAEAAAAJAAYAAQAEAAEAAAAJAAUAAQAEAAEAAAAJAAQAAQAEAAEAAAAJAAMAAQAEAAEAAAAJAAIAAQAEAAEAAAAJAAEAAQAEAAEAAAAJAAAAAQAEAAEAAAAAAP7/AQAAAAAAAAAAAP//AQAAAAEAAAAJAP7/AQACAAAAAAAJAP//AQACAAEAAAAIAP7/AQABAAAAAAAIAP//AQABAAEAAAAHAP7/AQABAAAAAAAHAP//AQABAAEAAAAGAP7/AQABAAAAAAAGAP//AQABAAEAAAAFAP7/AQABAAAAAAAFAP//AQABAAEAAAAEAP7/AQABAAAAAAAEAP//AQABAAEAAAADAP7/AQABAAAAAAADAP//AQABAAEAAAACAP7/AQABAAAAAAACAP//AQABAAEAAAABAP7/AQABAAAAAAABAP//AQABAAEAAAA=")
 tile_set = ExtResource("4_422ht")
+
+[node name="NpcActor" parent="." unique_id=319491251 instance=ExtResource("4_jtcfk")]
+position = Vector2(48, 120)
+data = ExtResource("5_dmleq")
+prompt_text = "Press E to Shop"
 
 [node name="WallProps" type="Node2D" parent="." unique_id=214688240]
 
@@ -101,12 +100,6 @@ texture = ExtResource("4_awdw8")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="FloorProps/Counter" unique_id=1746586823]
 position = Vector2(0, -6.5)
 shape = SubResource("RectangleShape2D_awdw8")
-
-[node name="InteractArea" parent="FloorProps/Counter" unique_id=1105164537 instance=ExtResource("2_mmg14")]
-prompt_text = "Press E to Shop"
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="FloorProps/Counter/InteractArea" unique_id=1669272328]
-shape = SubResource("CircleShape2D_awdw8")
 
 [node name="FanPedistal" type="StaticBody2D" parent="FloorProps" unique_id=787812692]
 position = Vector2(240, 112)
@@ -157,18 +150,7 @@ offset = Vector2(0, -10)
 rotation = 1.5707964
 shape = SubResource("CapsuleShape2D_3aciw")
 
-[node name="Shopkeeper" type="CharacterBody2D" parent="." unique_id=1324543982]
-y_sort_enabled = true
-position = Vector2(49, 121)
-
-[node name="Sprite2D" type="Sprite2D" parent="Shopkeeper" unique_id=378448553]
-texture = ExtResource("11_6f06l")
-offset = Vector2(0, -10)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Shopkeeper" unique_id=1252113781]
-shape = SubResource("CircleShape2D_3aciw")
-
-[node name="Player" parent="." unique_id=426329780 groups=["player"] instance=ExtResource("3_mu2m6")]
+[node name="Player" parent="." unique_id=426329780 instance=ExtResource("3_mu2m6")]
 position = Vector2(224, 217)
 
 [node name="ExitTriggerZone" parent="." unique_id=528423832 instance=ExtResource("13_6f06l")]
