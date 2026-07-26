@@ -12,7 +12,7 @@
 [ext_resource type="PackedScene" uid="uid://k35wlbc0ho3o" path="res://scenes/world/interact_area.tscn" id="8_yqhou"]
 [ext_resource type="PackedScene" uid="uid://cikkediqajtvl" path="res://scenes/ui/windows/quest_window.tscn" id="9_d7y5b"]
 [ext_resource type="PackedScene" uid="uid://b5w0g6a4eqi3g" path="res://scenes/world/characters/npc_actor.tscn" id="12_genuq"]
-[ext_resource type="Resource" uid="uid://do3xl7dwnlkat" path="res://resources/characters/npcs/test_villager.tres" id="13_f4knm"]
+[ext_resource type="Resource" uid="uid://do3xl7dwnlkat" path="res://resources/characters/npcs/mara.tres" id="13_f4knm"]
 [ext_resource type="PackedScene" uid="uid://b0tdph7ofmv7r" path="res://scenes/world/trigger_zone.tscn" id="13_sia6k"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_fp2bn"]
