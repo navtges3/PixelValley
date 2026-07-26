@@ -56,6 +56,10 @@ skip_entry_id = &"quest_11_active"
 conditions = Array[ExtResource("5_condition")]([SubResource("ConditionQuest11"), SubResource("ConditionReady")])
 responses = Array[ExtResource("3_response")]([SubResource("ResponseTurnIn"), SubResource("ResponseShop")])
 
+[sub_resource type="Resource" id="ActionCompleteInteraction"]
+script = ExtResource("6_action")
+action_id = &"complete_npc_interaction"
+
 [sub_resource type="Resource" id="ConditionActive"]
 script = ExtResource("5_condition")
 condition_id = &"context_equals"
@@ -63,10 +67,6 @@ parameters = Dictionary[StringName, Variant]({
 &"key": &"quest_state",
 &"value": &"active"
 })
-
-[sub_resource type="Resource" id="ActionCompleteInteraction"]
-script = ExtResource("6_action")
-action_id = &"complete_npc_interaction"
 
 [sub_resource type="Resource" id="EntryQuest11Active"]
 script = ExtResource("2_entry")
