@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="NpcData" format=3 uid="uid://do3xl7dwnlkat"]
+
+[ext_resource type="Script" uid="uid://bvrdh0sqeu4ny" path="res://scripts/data/npc_data.gd" id="1_em4pk"]
+[ext_resource type="Texture2D" uid="uid://lygp75a7owqn" path="res://assets/characters/npcs/weapon_shopkeep.png" id="2_84ijy"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xk42w"]
+atlas = ExtResource("2_84ijy")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_imqyq"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xk42w")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[resource]
+script = ExtResource("1_em4pk")
+npc_id = &"test_villager"
+display_name = "Test Villager"
+world_visual = SubResource("SpriteFrames_imqyq")
+metadata/_custom_type_script = "uid://bvrdh0sqeu4ny"
