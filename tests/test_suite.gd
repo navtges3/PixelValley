@@ -21,12 +21,17 @@ extends Node
 	$Dialogue/DialogueRunnerTests,
 ]
 
+@onready var _npc_test_cases: Array[TestCase] = [
+	$Npcs/NpcActorTests,
+]
+
 func _ready() -> void:
 	var total_failures: int = 0
 	total_failures += _run_section("EFFECTS", _effect_test_cases)
 	total_failures += _run_section("QUESTS", _quest_test_cases)
 	total_failures += _run_section("REWARDS", _reward_test_cases)
 	total_failures += _run_section("DIALOGUE", _dialogue_test_cases)
+	total_failures += _run_section("NPCS", _npc_test_cases)
 
 	print("\n========== TEST SUMMARY ==========")
 	if total_failures == 0:

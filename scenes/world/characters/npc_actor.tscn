@@ -14,7 +14,6 @@ y_sort_enabled = true
 script = ExtResource("1_i2wft")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=235256959]
-animation = &""
 offset = Vector2(0, -9)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=533677518]
