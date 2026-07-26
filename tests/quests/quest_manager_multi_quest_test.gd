@@ -165,12 +165,12 @@ func _test_authored_quests_use_concrete_objectives() -> void:
 			invalid_quest_paths.append(path)
 			continue
 		for objective: QuestObjective in quest.objectives:
-			if not objective is KillQuestObjective:
+			if objective == null or objective.get_objective_type() == "base":
 				invalid_quest_paths.append(path)
 				break
 	_expect_true(
 		invalid_quest_paths.is_empty(),
-		"authored kill quests use KillQuestObjective resources; invalid: %s"
+		"authored quests use concrete objective resources; invalid: %s"
 			% ", ".join(invalid_quest_paths)
 	)
 
@@ -216,6 +216,7 @@ func _test_quest_metadata_defaults_and_queries() -> void:
 	npc_side_quest.category = Quest.Category.SIDE
 	npc_side_quest.source_type = Quest.SourceType.NPC
 	npc_side_quest.source_id = "npc_blacksmith"
+	npc_side_quest.turn_in_npc_id = "npc_innkeeper"
 
 	manager.activate_quest(main_quest)
 	manager.offer_quest(board_side_quest)
@@ -232,6 +233,11 @@ func _test_quest_metadata_defaults_and_queries() -> void:
 	)
 	_expect_equal(board_quests.size(), 1, "source query can identify a specific quest board")
 	_expect_true(board_side_quest in board_quests, "source query returns the matching board quest")
+	_expect_equal(
+		npc_side_quest.get_turn_in_npc_id(),
+		"npc_innkeeper",
+		"NPC quests can specify a distinct turn-in NPC"
+	)
 
 	var legacy_data := {
 		"id": 204,

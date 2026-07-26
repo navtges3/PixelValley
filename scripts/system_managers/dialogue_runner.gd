@@ -28,6 +28,11 @@ var _validation_errors: PackedStringArray = []
 func is_running() -> bool:
 	return _conversation != null
 
+func update_context(context: Dictionary[StringName, Variant]) -> void:
+	if not is_running():
+		return
+	_context = context.duplicate()
+
 func start(conversation: DialogueConversation, context: Dictionary[StringName, Variant] = {}) -> bool:
 	if is_running():
 		return false

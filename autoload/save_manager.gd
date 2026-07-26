@@ -83,6 +83,7 @@ func load_game(slot: int = 1) -> void:
 	quest_json = QUEST_SAVE_MIGRATOR.migrate(quest_json, QuestManager.get_defined_quest_ids())
 
 	var loaded_manager: QuestManager = _load_quests(quest_json.get("data", {}))
+	loaded_manager.add_missing_defined_quests()
 	loaded_manager.reconnect_signals()
 	GameState.set_quest_manager(loaded_manager)
 
@@ -289,7 +290,8 @@ func _get_inventory_data(inventory: Inventory) -> Dictionary:
 		"equipped_weapon": ItemLoader.get_item_id(inventory.equipped_weapon),
 		"equipped_weapon_cooldowns": _get_ability_cooldowns(inventory.equipped_weapon),
 		"weapon_stash": inventory.weapon_stash.duplicate(),
-		"potions": inventory.potions.duplicate()
+		"potions": inventory.potions.duplicate(),
+		"quest_items": inventory.quest_items.duplicate(),
 	}
 
 func _load_inventory(data: Dictionary) -> Inventory:
@@ -316,6 +318,16 @@ func _load_inventory(data: Dictionary) -> Inventory:
 			inv.potions[resolved] = data["potions"][item_id]
 		else:
 			push_warning("SaveManager: unknown potion '%s', skipping" % item_id)
+
+	for item_id in data.get("quest_items", {}):
+		var resolved := _resolve_item_id(item_id)
+		if ItemLoader.get_item(resolved) is QuestItem:
+			inv.quest_items[resolved] = maxi(
+				int(data["quest_items"][item_id]),
+				0
+			)
+		else:
+			push_warning("SaveManager: unknown quest item '%s', skipping" % item_id)
 
 	return inv
 
@@ -446,6 +458,8 @@ func _get_quest_data(quest: Quest) -> Dictionary:
 		"category": quest.category,
 		"source_type": quest.source_type,
 		"source_id": quest.source_id,
+		"turn_in_npc_id": quest.turn_in_npc_id,
+		"initially_unlocked": quest.initially_unlocked,
 		"next_quests": quest.next_quests.duplicate(),
 		"completed": quest.completed,
 		"final_quest": quest.final_quest,
@@ -474,6 +488,8 @@ func _load_quest(data: Dictionary) -> Quest:
 	quest.category = data.get("category", Quest.Category.MAIN)
 	quest.source_type = data.get("source_type", Quest.SourceType.AUTOMATIC)
 	quest.source_id = str(data.get("source_id", ""))
+	quest.turn_in_npc_id = str(data.get("turn_in_npc_id", ""))
+	quest.initially_unlocked = bool(data.get("initially_unlocked", false))
 	quest.completed = data.get("completed", false)
 	quest.final_quest = data.get("final_quest", false)
 	# Restore next_quests so unlocking the follow-up works after a load.

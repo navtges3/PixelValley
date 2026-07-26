@@ -66,6 +66,12 @@ func handle_action(action: DialogueAction, context: Dictionary[StringName, Varia
 		&"decline_quest":
 			# Declining intentionally preserves the offered lifecycle state.
 			pass
+		&"complete_npc_interaction":
+			GameState.gameplay_event.emit(
+				NpcInteractedEvent.new(
+					StringName(context.get(&"npc_id", &""))
+				)
+			)
 		&"deliver_quest_items":
 			_deliver_items(StringName(context.get(&"npc_id", &"")))
 		&"turn_in_quest":
@@ -76,17 +82,29 @@ func handle_action(action: DialogueAction, context: Dictionary[StringName, Varia
 func get_npc_status(npc_id: StringName) -> NpcActor.Status:
 	if _manager == null:
 		return NpcActor.Status.NONE
-	var quests := _manager.get_quest_by_source(Quest.SourceType.NPC, String(npc_id))
+	var quests := _get_relevant_npc_quests(npc_id)
 	for quest: Quest in quests:
-		if _manager.is_quest_ready(quest.id):
+		if (
+			_manager.is_quest_ready(quest.id)
+			and quest.get_turn_in_npc_id() == String(npc_id)
+		):
 			return NpcActor.Status.QUEST_READY
 	for quest: Quest in quests:
-		if _manager.is_quest_offered(quest.id):
+		if (
+			_manager.is_quest_offered(quest.id)
+			and quest.source_id == String(npc_id)
+		):
 			return NpcActor.Status.QUEST_AVAILABLE
+	for quest: Quest in quests:
+		if (
+			_manager.is_quest_active(quest.id)
+			and _quest_targets_npc(quest, npc_id)
+		):
+			return NpcActor.Status.NEW_CONVERSATION
 	return NpcActor.Status.NONE
 
 func _resolve_primary_source_quest(npc_id: StringName) -> Quest:
-	var quests := _manager.get_quest_by_source(Quest.SourceType.NPC, String(npc_id))
+	var quests := _get_relevant_npc_quests(npc_id)
 	var result: Quest = null
 	var result_priority: int = STATE_PRIORITY[QuestManager.LifecycleState.UNKNOWN]
 	for quest: Quest in quests:
@@ -97,6 +115,37 @@ func _resolve_primary_source_quest(npc_id: StringName) -> Quest:
 			result = quest
 			result_priority = priority
 	return result
+
+func _get_relevant_npc_quests(npc_id: StringName) -> Array[Quest]:
+	var npc_id_string := String(npc_id)
+	var quests := _manager.get_quest_by_source(
+		Quest.SourceType.NPC,
+		npc_id_string
+	)
+	for quest: Quest in _manager.get_active_quests():
+		if _quest_targets_npc(quest, npc_id) and quest not in quests:
+			quests.append(quest)
+	for quest: Quest in _manager.get_ready_quests():
+		if quest.get_turn_in_npc_id() == npc_id_string and quest not in quests:
+			quests.append(quest)
+	for quest: Quest in _manager.get_completed_quests():
+		if quest.get_turn_in_npc_id() == npc_id_string and quest not in quests:
+			quests.append(quest)
+	return quests
+
+func _quest_targets_npc(quest: Quest, npc_id: StringName) -> bool:
+	for objective: QuestObjective in quest.objectives:
+		if (
+			objective is TalkToNpcQuestObjective
+			and (objective as TalkToNpcQuestObjective).target_npc_id == npc_id
+		):
+			return true
+		if (
+			objective is DeliveryQuestObjective
+			and (objective as DeliveryQuestObjective).target_npc_id == npc_id
+		):
+			return true
+	return false
 
 func _has_delivery_items(npc_id: StringName) -> bool:
 	if GameState.hero == null or GameState.hero.inventory == null:
@@ -109,7 +158,7 @@ func _has_delivery_items(npc_id: StringName) -> bool:
 			if delivery.target_npc_id != npc_id:
 				continue
 			var remaining := delivery.target_amount - delivery.current_amount
-			if GameState.hero.inventory.get_potion_count(delivery.item_id) >= remaining:
+			if GameState.hero.inventory.get_item_count(delivery.item_id) >= remaining:
 				return true
 	return false
 
@@ -124,7 +173,7 @@ func _deliver_items(npc_id: StringName) -> bool:
 			if delivery.target_npc_id != npc_id:
 				continue
 			var remaining := delivery.target_amount - delivery.current_amount
-			if not GameState.hero.inventory.remove_potions(delivery.item_id, remaining):
+			if not GameState.hero.inventory.remove_items(delivery.item_id, remaining):
 				return false
 			GameState.gameplay_event.emit(
 				ItemDeliveredEvent.new(npc_id, delivery.item_id, remaining)

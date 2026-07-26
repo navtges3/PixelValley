@@ -6,6 +6,8 @@ class_name BaseLocation
 var _pending_entrance_id: String = ""
 var _movement_blocked_before_dialogue: bool = false
 var _active_dialogue_npc_id: StringName = &""
+var _pending_service_npc_id: StringName = &""
+var _pending_service_id: StringName = &""
 var _npcs_by_id: Dictionary[StringName, NpcActor] = {}
 var _npc_quest_controller: NpcQuestDialogueController = NpcQuestDialogueController.new()
 
@@ -110,7 +112,17 @@ func _on_dialogue_closed(reason: DialogueRunner.FinishReason) -> void:
 		GameState.gameplay_event.emit(
 			NpcInteractedEvent.new(_active_dialogue_npc_id)
 		)
+	if (
+		reason == DialogueRunner.FinishReason.COMPLETED
+		and not _pending_service_id.is_empty()
+	):
+		_handle_npc_service_request(
+			_pending_service_npc_id,
+			_pending_service_id
+		)
 	_active_dialogue_npc_id = &""
+	_pending_service_npc_id = &""
+	_pending_service_id = &""
 
 func _bind_npcs() -> void:
 	var seen_ids: Dictionary[StringName, NpcActor] = {}
@@ -142,12 +154,33 @@ func _on_npc_dialogue_requested(npc_id: StringName, conversation: DialogueConver
 		_active_dialogue_npc_id = npc_id
 
 func _on_dialogue_action_requested(action: DialogueAction, context: Dictionary[StringName, Variant]) -> void:
-	var rewards := _npc_quest_controller.handle_action(action, context)
-	if rewards.is_empty():
+	if action.action_id == &"open_service":
+		_queue_dialogue_service(context)
 		return
+	var rewards := _npc_quest_controller.handle_action(action, context)
 	var world_hud := ScreenManager.get_world_hud() as WorldHUD
-	if world_hud != null:
+	if world_hud == null:
+		return
+	var npc_id := StringName(context.get(&"npc_id", &""))
+	world_hud.update_dialogue_context(
+		_npc_quest_controller.build_context(
+			npc_id,
+			_get_dialogue_location_id()
+		)
+	)
+	if not rewards.is_empty():
 		world_hud.queue_quest_rewards(rewards)
+
+func _queue_dialogue_service(
+	context: Dictionary[StringName, Variant]
+) -> void:
+	var npc_id := StringName(context.get(&"npc_id", &""))
+	var npc: NpcActor = _npcs_by_id.get(npc_id)
+	if npc == null or npc.data == null or npc.data.service_id.is_empty():
+		push_warning("NPC '%s' has no service to open." % npc_id)
+		return
+	_pending_service_npc_id = npc_id
+	_pending_service_id = npc.data.service_id
 
 func _on_quest_manager_changed(manager: QuestManager) -> void:
 	_npc_quest_controller.set_quest_manager(manager)

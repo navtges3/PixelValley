@@ -31,7 +31,7 @@ script = ExtResource("4_suite")
 
 [node name="QuestSaveMigrationTests" parent="Quests" unique_id=1838663774 instance=ExtResource("6_migration")]
 
-[node name="NpcQuestIntegrationTests" parent="Quests" instance=ExtResource("11_npc_quest")]
+[node name="NpcQuestIntegrationTests" parent="Quests" unique_id=2049838376 instance=ExtResource("11_npc_quest")]
 
 [node name="Rewards" type="Node" parent="." unique_id=677614548]
 

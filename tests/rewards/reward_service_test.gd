@@ -6,6 +6,8 @@ func run_tests() -> int:
 	_test_grant_applies_authored_reward()
 	_test_zero_values_are_ignored()
 	_test_potion_quantity_is_granted()
+	_test_quest_item_is_granted()
+	_test_quest_item_inventory_round_trip()
 	_test_new_weapon_is_added_to_stash()
 	_test_duplicate_weapon_is_sold()
 	_test_random_weapon_adds_an_available_weapon()
@@ -54,6 +56,32 @@ func _test_potion_quantity_is_granted() -> void:
 		"potion grant applies the requested quantity"
 	)
 	_expect_contains(entry.display_text, "3x", "potion entry reports the granted quantity")
+
+
+func _test_quest_item_is_granted() -> void:
+	var hero := _new_hero()
+	var entry := RewardService.grant_item(hero, "inn_key")
+
+	_expect_not_null(entry, "valid quest-item grant returns a reward entry")
+	_expect_equal(
+		hero.inventory.get_quest_item_count("inn_key"),
+		1,
+		"quest-item grant adds the item to inventory"
+	)
+	_expect_contains(entry.display_text, "Brass Inn Key", "quest-item reward names the item")
+
+
+func _test_quest_item_inventory_round_trip() -> void:
+	var inventory := Inventory.new()
+	inventory.add_quest_item("inn_key")
+	var saved_data := SaveManager._get_inventory_data(inventory)
+	var restored := SaveManager._load_inventory(saved_data)
+
+	_expect_equal(
+		restored.get_quest_item_count("inn_key"),
+		1,
+		"quest items survive inventory save/load"
+	)
 
 
 func _test_new_weapon_is_added_to_stash() -> void:
@@ -122,5 +150,6 @@ func _new_hero() -> Hero:
 	hero.experience = 0
 	hero.inventory.gold = 0
 	hero.inventory.potions.clear()
+	hero.inventory.quest_items.clear()
 	hero.inventory.weapon_stash.clear()
 	return hero
