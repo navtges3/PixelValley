@@ -63,6 +63,7 @@ tile_set = ExtResource("3_ljrrm")
 position = Vector2(256, 120)
 data = ExtResource("5_33xkn")
 prompt_text = "Press E to Shop"
+interaction_offset = Vector2(0, 16)
 
 [node name="WallProps" type="Node2D" parent="." unique_id=1056169244]
 

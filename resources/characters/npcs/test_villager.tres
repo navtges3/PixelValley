@@ -4,7 +4,7 @@
 [ext_resource type="Resource" uid="uid://5xkkdsiscpum" path="res://resources/dialogue/test_villager_conversation.tres" id="1_xk42w"]
 [ext_resource type="Texture2D" uid="uid://lygp75a7owqn" path="res://assets/characters/npcs/weapon_shopkeep.png" id="2_84ijy"]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_xk42w"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_0h6kb"]
 atlas = ExtResource("2_84ijy")
 region = Rect2(0, 0, 32, 32)
 
@@ -12,10 +12,34 @@ region = Rect2(0, 0, 32, 32)
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_xk42w")
+"texture": SubResource("AtlasTexture_0h6kb")
 }],
 "loop": true,
-"name": &"default",
+"name": &"idle_down",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0h6kb")
+}],
+"loop": true,
+"name": &"idle_left",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0h6kb")
+}],
+"loop": true,
+"name": &"idle_right",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0h6kb")
+}],
+"loop": true,
+"name": &"idle_up",
 "speed": 5.0
 }]
 

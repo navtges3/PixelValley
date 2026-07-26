@@ -10,6 +10,7 @@ signal status_changed(status: Status)
 
 @export var data: NpcData
 @export var prompt_text: String = "Press E to Talk"
+@export var interaction_offset: Vector2 = Vector2.ZERO
 @export var facing: Facing = Facing.DOWN:
 	set(value):
 		facing = value
@@ -27,6 +28,7 @@ func _ready() -> void:
 	set_process(false)
 	set_physics_process(false)
 	interact_area.prompt_text = prompt_text
+	interact_area.position = interaction_offset
 	interact_area.interacted.connect(_on_interacted)
 	if not _apply_data():
 		interact_area.set_enabled(false)
@@ -35,8 +37,7 @@ func _ready() -> void:
 	set_status(Status.NONE)
 
 func set_status(new_status: Status) -> void:
-	if status == new_status:
-		return
+	var changed := status != new_status
 	status = new_status
 	match status:
 		Status.NONE:
@@ -51,7 +52,8 @@ func set_status(new_status: Status) -> void:
 		Status.QUEST_READY:
 			status_indicator.text = "✓"
 			status_indicator.show()
-	status_changed.emit(status)
+	if changed:
+		status_changed.emit(status)
 
 func _apply_data() -> bool:
 	if data == null:
