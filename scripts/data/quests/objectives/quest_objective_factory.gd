@@ -7,6 +7,10 @@ static func from_save_data(data: Dictionary) -> QuestObjective:
 	match objective_type:
 		"kill":
 			objective = KillQuestObjective.new()
+		"talk_to_npc":
+			objective = TalkToNpcQuestObjective.new()
+		"delivery":
+			objective = DeliveryQuestObjective.new()
 		_:
 			push_warning("QuestObjectiveFactory: unsupported objective type '%s'" % objective_type)
 			objective = QuestObjective.new()

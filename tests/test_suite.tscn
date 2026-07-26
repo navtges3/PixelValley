@@ -38,6 +38,6 @@ script = ExtResource("4_suite")
 
 [node name="DialogueRunnerTests" parent="Dialogue" unique_id=180448557 instance=ExtResource("9_dialogue")]
 
-[node name="Npcs" type="Node" parent="."]
+[node name="Npcs" type="Node" parent="." unique_id=594707456]
 
-[node name="NpcActorTests" parent="Npcs" instance=ExtResource("10_npc")]
+[node name="NpcActorTests" parent="Npcs" unique_id=289503209 instance=ExtResource("10_npc")]
