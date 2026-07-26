@@ -18,6 +18,7 @@ func _ready() -> void:
 		world_hud.game_hud.hud_closed.connect(_on_hud_closed)
 		world_hud.dialogue_opened.connect(_on_dialogue_opened)
 		world_hud.dialogue_closed.connect(_on_dialogue_closed)
+	_bind_npcs()
 	_on_location_ready()
 
 # Override in subclasses for extra setup (e.g. spawn points, extra signals)
@@ -89,3 +90,41 @@ func _on_dialogue_opened() -> void:
 
 func _on_dialogue_closed(_reason: DialogueRunner.FinishReason) -> void:
 	player.movement_blocked = _movement_blocked_before_dialogue
+
+func _bind_npcs() -> void:
+	var seen_ids: Dictionary[StringName, NpcActor] = {}
+	for node: Node in get_tree().get_nodes_in_group(&"npc"):
+		if not is_ancestor_of(node):
+			continue
+		var npc := node as NpcActor
+		if npc == null or npc.data == null:
+			continue
+		var npc_id := npc.data.npc_id
+		if npc_id.is_empty():
+			push_error("NPC at '%s' has an empty ID." % npc.get_path())
+			continue
+		if seen_ids.has(npc_id):
+			push_error("Duplicate NPC ID '%s' at '%s' and '%s'." % [npc_id, seen_ids[npc_id].get_path(), npc.get_path()])
+			continue
+		seen_ids[npc_id] = npc
+		npc.dialogue_requested.connect(_on_npc_dialogue_requested)
+		npc.service_requested.connect(_on_npc_service_requested)
+
+func _on_npc_dialogue_requested(npc_id: StringName, conversation: DialogueConversation) -> void:
+	var world_hud := ScreenManager.get_world_hud() as WorldHUD
+	if world_hud == null:
+		return
+	var context: Dictionary[StringName, Variant] = {
+		&"npc_id": npc_id,
+		&"location_id": _get_dialogue_location_id(),
+	}
+	world_hud.start_dialogue(conversation, context)
+
+func _on_npc_service_requested(npc_id: StringName, service_id: StringName) -> void:
+	_handle_npc_service_request(npc_id, service_id)
+
+func _handle_npc_service_request(npc_id: StringName, service_id: StringName) -> void:
+	push_warning("NPC '%s' requested unsupported service '%s'." % [npc_id, service_id])
+
+func _get_dialogue_location_id() -> StringName:
+	return StringName(name.to_snake_case())
