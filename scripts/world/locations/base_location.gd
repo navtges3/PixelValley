@@ -5,6 +5,9 @@ class_name BaseLocation
 
 var _pending_entrance_id: String = ""
 var _movement_blocked_before_dialogue: bool = false
+var _active_dialogue_npc_id: StringName = &""
+var _npcs_by_id: Dictionary[StringName, NpcActor] = {}
+var _npc_quest_controller: NpcQuestDialogueController = NpcQuestDialogueController.new()
 
 func _ready() -> void:
 	player.set_sprite_frames(GameState.hero.world_visual)
@@ -18,8 +21,18 @@ func _ready() -> void:
 		world_hud.game_hud.hud_closed.connect(_on_hud_closed)
 		world_hud.dialogue_opened.connect(_on_dialogue_opened)
 		world_hud.dialogue_closed.connect(_on_dialogue_closed)
+		world_hud.dialogue_action_requested.connect(_on_dialogue_action_requested)
+	_npc_quest_controller.state_changed.connect(_refresh_npc_quest_statuses)
+	GameState.quest_manager_changed.connect(_on_quest_manager_changed)
+	_npc_quest_controller.set_quest_manager(GameState.quest_manager)
 	_bind_npcs()
+	_refresh_npc_quest_statuses()
 	_on_location_ready()
+
+func _exit_tree() -> void:
+	_npc_quest_controller.clear_quest_manager()
+	if GameState.quest_manager_changed.is_connected(_on_quest_manager_changed):
+		GameState.quest_manager_changed.disconnect(_on_quest_manager_changed)
 
 # Override in subclasses for extra setup (e.g. spawn points, extra signals)
 func _on_location_ready() -> void:
@@ -88,11 +101,20 @@ func _on_dialogue_opened() -> void:
 	player.movement_blocked = true
 	player.clear_prompt()
 
-func _on_dialogue_closed(_reason: DialogueRunner.FinishReason) -> void:
+func _on_dialogue_closed(reason: DialogueRunner.FinishReason) -> void:
 	player.movement_blocked = _movement_blocked_before_dialogue
+	if (
+		reason == DialogueRunner.FinishReason.COMPLETED
+		and not _active_dialogue_npc_id.is_empty()
+	):
+		GameState.gameplay_event.emit(
+			NpcInteractedEvent.new(_active_dialogue_npc_id)
+		)
+	_active_dialogue_npc_id = &""
 
 func _bind_npcs() -> void:
 	var seen_ids: Dictionary[StringName, NpcActor] = {}
+	_npcs_by_id.clear()
 	for node: Node in get_tree().get_nodes_in_group(&"npc"):
 		if not is_ancestor_of(node):
 			continue
@@ -107,6 +129,7 @@ func _bind_npcs() -> void:
 			push_error("Duplicate NPC ID '%s' at '%s' and '%s'." % [npc_id, seen_ids[npc_id].get_path(), npc.get_path()])
 			continue
 		seen_ids[npc_id] = npc
+		_npcs_by_id[npc_id] = npc
 		npc.dialogue_requested.connect(_on_npc_dialogue_requested)
 		npc.service_requested.connect(_on_npc_service_requested)
 
@@ -114,11 +137,25 @@ func _on_npc_dialogue_requested(npc_id: StringName, conversation: DialogueConver
 	var world_hud := ScreenManager.get_world_hud() as WorldHUD
 	if world_hud == null:
 		return
-	var context: Dictionary[StringName, Variant] = {
-		&"npc_id": npc_id,
-		&"location_id": _get_dialogue_location_id(),
-	}
-	world_hud.start_dialogue(conversation, context)
+	var context := _npc_quest_controller.build_context(npc_id, _get_dialogue_location_id())
+	if world_hud.start_dialogue(conversation, context):
+		_active_dialogue_npc_id = npc_id
+
+func _on_dialogue_action_requested(action: DialogueAction, context: Dictionary[StringName, Variant]) -> void:
+	var rewards := _npc_quest_controller.handle_action(action, context)
+	if rewards.is_empty():
+		return
+	var world_hud := ScreenManager.get_world_hud() as WorldHUD
+	if world_hud != null:
+		world_hud.queue_quest_rewards(rewards)
+
+func _on_quest_manager_changed(manager: QuestManager) -> void:
+	_npc_quest_controller.set_quest_manager(manager)
+
+func _refresh_npc_quest_statuses() -> void:
+	for npc_id: StringName in _npcs_by_id:
+		var npc: NpcActor = _npcs_by_id[npc_id]
+		npc.set_status(_npc_quest_controller.get_npc_status(npc_id))
 
 func _on_npc_service_requested(npc_id: StringName, service_id: StringName) -> void:
 	_handle_npc_service_request(npc_id, service_id)

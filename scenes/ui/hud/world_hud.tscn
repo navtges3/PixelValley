@@ -5,6 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://dub7dt66aucti" path="res://scenes/ui/hud/game_hud.tscn" id="2_iek5v"]
 [ext_resource type="PackedScene" uid="uid://rjw2hl0qx6n0" path="res://scenes/ui/hud/tracked_quest_hud.tscn" id="4_iek5v"]
 [ext_resource type="PackedScene" uid="uid://cgfwb201d8ray" path="res://scenes/ui/windows/dialogue_window.tscn" id="5_42ty7"]
+[ext_resource type="PackedScene" uid="uid://rs7udjvphx52" path="res://scenes/ui/windows/reward_window.tscn" id="6_reward"]
 
 [node name="WorldHUD" type="CanvasLayer" unique_id=668864226]
 layer = 10
@@ -25,3 +26,9 @@ offset_bottom = 118.0
 layer = 30
 
 [node name="DialogueWindow" parent="DialogueLayer" unique_id=293300296 instance=ExtResource("5_42ty7")]
+
+[node name="RewardLayer" type="CanvasLayer" parent="."]
+layer = 40
+
+[node name="RewardWindow" parent="RewardLayer" instance=ExtResource("6_reward")]
+visible = false
