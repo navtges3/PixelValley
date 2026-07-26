@@ -23,4 +23,5 @@ script = ExtResource("1_opbvh")
 npc_id = &"innkeeper"
 display_name = "Innkeeper"
 world_visual = SubResource("SpriteFrames_rkyst")
+service_id = &"inn"
 metadata/_custom_type_script = "uid://bvrdh0sqeu4ny"

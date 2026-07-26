@@ -23,4 +23,5 @@ script = ExtResource("1_q6ltq")
 npc_id = &"blacksmith"
 display_name = "Blacksmith"
 world_visual = SubResource("SpriteFrames_fa03n")
+service_id = &"weapon_shop"
 metadata/_custom_type_script = "uid://bvrdh0sqeu4ny"
