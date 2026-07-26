@@ -21,6 +21,17 @@ func use_potion(item_id: String) -> Array[Effect]:
 func add_potion(item_id: String, amount: int = 1) -> void:
 	potions[item_id] = potions.get(item_id, 0) + amount
 
+func get_potion_count(item_id: String) -> int:
+	return int(potions.get(item_id, 0))
+
+func remove_potions(item_id: String, amount: int) -> bool:
+	if amount <= 0 or get_potion_count(item_id) < amount:
+		return false
+	potions[item_id] -= amount
+	if potions[item_id] <= 0:
+		potions.erase(item_id)
+	return true
+
 # ================================================
 #  Weapons
 # ================================================

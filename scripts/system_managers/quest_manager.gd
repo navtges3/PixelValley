@@ -334,12 +334,17 @@ func _should_auto_activate(quest: Quest) -> bool:
 	return quest.category == Quest.Category.MAIN and quest.source_type == Quest.SourceType.AUTOMATIC
 
 func _on_gameplay_event(event: GameplayEvent) -> void:
+	var has_unsaved_progress := false
 	for quest: Quest in active_quests.duplicate():
 		if not quest.apply_event(event):
 			continue
 		quest_progress_updated.emit(quest)
 		if quest.objectives_met():
 			mark_quest_ready(quest)
+		else:
+			has_unsaved_progress = true
+	if has_unsaved_progress:
+		SaveManager.save_game()
 
 func _apply_location_unlocks(quest: Quest) -> void:
 	for location_id in quest.unlocks_locations:

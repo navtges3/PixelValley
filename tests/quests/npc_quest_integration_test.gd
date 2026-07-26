@@ -1,0 +1,327 @@
+extends TestCase
+
+const TEST_SAVE_SLOT := 999996
+
+func run_tests() -> int:
+	_begin_test_run()
+	_prepare_game_state()
+	_test_objective_event_contracts_and_restoration()
+	_test_dialogue_runner_action_bridge()
+	_test_dialogue_lifecycle_actions()
+	_test_locked_dialogue_context()
+	_test_delivery_action()
+	_cleanup()
+	return _finish_test_run("NPC quest integration tests")
+
+func _prepare_game_state() -> void:
+	GameState.reset_state()
+	GameState.hero = HeroLoader.new_hero(Hero.HeroClass.KNIGHT)
+	GameState.hero.name = "NPC Quest Test Hero"
+	GameState.village = Village.new()
+	GameState.village.name = "NPC Quest Test Village"
+	GameState.village.inn = Inn.new()
+	GameState.village.potion_shop = Shop.new()
+	GameState.village.weapon_shop = Shop.new()
+	GameState.player_location = {
+		"scene": ScreenManager.ScreenName.VILLAGE,
+		"entrance_id": "",
+	}
+	WorldManager.reset()
+	SaveManager.save_slot = TEST_SAVE_SLOT
+
+func _test_objective_event_contracts_and_restoration() -> void:
+	var talk := TalkToNpcQuestObjective.new()
+	talk.target_npc_id = &"blacksmith"
+	_expect_true(
+		not talk.apply_event(NpcInteractedEvent.new(&"alchemist")),
+		"talk objective ignores an unrelated NPC"
+	)
+	_expect_true(
+		talk.apply_event(NpcInteractedEvent.new(&"blacksmith")),
+		"talk objective accepts its stable target NPC ID"
+	)
+	_expect_true(
+		not talk.apply_event(NpcInteractedEvent.new(&"blacksmith")),
+		"completed talk objective ignores duplicate interactions"
+	)
+	var restored_talk := QuestObjectiveFactory.from_save_data(
+		talk.get_save_data()
+	) as TalkToNpcQuestObjective
+	_expect_not_null(restored_talk, "factory restores talk objectives")
+	if restored_talk != null:
+		_expect_equal(
+			restored_talk.target_npc_id,
+			&"blacksmith",
+			"talk objective restoration preserves the target NPC"
+		)
+		_expect_true(
+			restored_talk.completed,
+			"talk objective restoration preserves completion"
+		)
+
+	var delivery := DeliveryQuestObjective.new()
+	delivery.target_npc_id = &"alchemist"
+	delivery.item_id = "lesser_healing_potion"
+	delivery.target_amount = 3
+	_expect_true(
+		not delivery.apply_event(
+			ItemDeliveredEvent.new(
+				&"blacksmith",
+				"lesser_healing_potion",
+				1
+			)
+		),
+		"delivery objective ignores the wrong NPC"
+	)
+	_expect_true(
+		not delivery.apply_event(
+			ItemDeliveredEvent.new(
+				&"alchemist",
+				"lesser_healing_potion",
+				0
+			)
+		),
+		"delivery objective rejects non-positive amounts"
+	)
+	_expect_true(
+		delivery.apply_event(
+			ItemDeliveredEvent.new(
+				&"alchemist",
+				"lesser_healing_potion",
+				2
+			)
+		),
+		"delivery objective accepts matching delivery events"
+	)
+	var restored_delivery := QuestObjectiveFactory.from_save_data(
+		delivery.get_save_data()
+	) as DeliveryQuestObjective
+	_expect_not_null(restored_delivery, "factory restores delivery objectives")
+	if restored_delivery != null:
+		_expect_equal(
+			restored_delivery.current_amount,
+			2,
+			"delivery objective restoration preserves partial progress"
+		)
+		_expect_equal(
+			restored_delivery.target_amount,
+			3,
+			"delivery objective restoration preserves its target"
+		)
+
+func _test_dialogue_lifecycle_actions() -> void:
+	var manager := _make_manager()
+	var controller := NpcQuestDialogueController.new()
+	controller.set_quest_manager(manager)
+	var quest := _make_npc_talk_quest(401, &"test_villager")
+	quest.reward.gold = 25
+	manager.offer_quest(quest)
+
+	var context := controller.build_context(&"test_villager", &"village")
+	_expect_equal(
+		context[&"quest_state"],
+		&"offered",
+		"offered NPC quest routes to offered dialogue"
+	)
+	_expect_equal(
+		controller.get_npc_status(&"test_villager"),
+		NpcActor.Status.QUEST_AVAILABLE,
+		"offered NPC quest displays the available indicator"
+	)
+
+	controller.handle_action(_make_action(&"decline_quest"), context)
+	_expect_true(
+		manager.is_quest_offered(quest.id),
+		"declining leaves the quest offered"
+	)
+	_expect_equal(
+		controller.build_context(&"test_villager", &"village")[&"quest_state"],
+		&"offered",
+		"declined quest is offered again on the next interaction"
+	)
+
+	controller.handle_action(_make_action(&"accept_quest"), context)
+	_expect_true(manager.is_quest_active(quest.id), "dialogue accepts an offered quest")
+	_expect_equal(
+		controller.build_context(&"test_villager", &"village")[&"quest_state"],
+		&"active",
+		"accepted quest routes to active dialogue"
+	)
+	controller.handle_action(_make_action(&"accept_quest"), context)
+	_expect_equal(
+		manager.get_active_quests().size(),
+		1,
+		"repeated accept action does not duplicate an active quest"
+	)
+
+	GameState.gameplay_event.emit(NpcInteractedEvent.new(&"blacksmith"))
+	_expect_true(
+		manager.is_quest_active(quest.id),
+		"unrelated NPC interaction does not complete the objective"
+	)
+	GameState.gameplay_event.emit(NpcInteractedEvent.new(&"test_villager"))
+	_expect_true(manager.is_quest_ready(quest.id), "matching NPC interaction readies the quest")
+	_expect_equal(
+		controller.build_context(&"test_villager", &"village")[&"quest_state"],
+		&"ready",
+		"ready quest routes to turn-in dialogue"
+	)
+	_expect_equal(
+		controller.get_npc_status(&"test_villager"),
+		NpcActor.Status.QUEST_READY,
+		"ready NPC quest displays the ready indicator"
+	)
+
+	var starting_gold := GameState.hero.inventory.gold
+	var ready_context := controller.build_context(&"test_villager", &"village")
+	var rewards := controller.handle_action(
+		_make_action(&"turn_in_quest"),
+		ready_context
+	)
+	_expect_equal(rewards.size(), 1, "turn-in returns the centralized reward result")
+	_expect_true(manager.is_quest_completed(quest.id), "dialogue turn-in completes the quest")
+	_expect_equal(
+		GameState.hero.inventory.gold,
+		starting_gold + 25,
+		"dialogue turn-in grants the reward once"
+	)
+	_expect_equal(
+		controller.build_context(&"test_villager", &"village")[&"quest_state"],
+		&"completed",
+		"turned-in quest routes to completed dialogue"
+	)
+	var repeated_rewards := controller.handle_action(
+		_make_action(&"turn_in_quest"),
+		ready_context
+	)
+	_expect_true(repeated_rewards.is_empty(), "duplicate turn-in returns no rewards")
+	_expect_equal(
+		GameState.hero.inventory.gold,
+		starting_gold + 25,
+		"duplicate turn-in cannot grant the reward twice"
+	)
+	controller.clear_quest_manager()
+
+func _test_dialogue_runner_action_bridge() -> void:
+	var manager := _make_manager()
+	var controller := NpcQuestDialogueController.new()
+	controller.set_quest_manager(manager)
+	var quest := _make_npc_talk_quest(400, &"test_villager")
+	manager.offer_quest(quest)
+
+	var entry := DialogueEntry.new()
+	entry.entry_id = &"offer"
+	entry.pages = ["Will you help?"]
+	var response := DialogueResponse.new()
+	response.text = "I will help."
+	response.actions.append(_make_action(&"accept_quest"))
+	entry.responses.append(response)
+	var conversation := DialogueConversation.new()
+	conversation.conversation_id = &"npc_quest_action_test"
+	conversation.start_entry_id = entry.entry_id
+	conversation.entries.append(entry)
+	var runner := DialogueRunner.new()
+	runner.action_requested.connect(controller.handle_action)
+	var context := controller.build_context(&"test_villager", &"village")
+
+	_expect_true(
+		runner.start(conversation, context),
+		"state-aware NPC quest conversation starts"
+	)
+	runner.advance()
+	runner.choose_response(0)
+	_expect_true(
+		manager.is_quest_active(quest.id),
+		"DialogueRunner action reaches the NPC quest controller"
+	)
+	controller.clear_quest_manager()
+
+func _test_locked_dialogue_context() -> void:
+	var manager := _make_manager()
+	var controller := NpcQuestDialogueController.new()
+	controller.set_quest_manager(manager)
+	var quest := _make_npc_talk_quest(402, &"blacksmith")
+	manager.locked_quests.append(quest)
+	var context := controller.build_context(&"blacksmith", &"village")
+	_expect_equal(
+		context[&"quest_state"],
+		&"locked",
+		"locked NPC quest routes to unavailable dialogue"
+	)
+	_expect_equal(
+		controller.get_npc_status(&"blacksmith"),
+		NpcActor.Status.NONE,
+		"locked NPC quest displays no quest indicator"
+	)
+	controller.clear_quest_manager()
+
+func _test_delivery_action() -> void:
+	var manager := _make_manager()
+	var controller := NpcQuestDialogueController.new()
+	controller.set_quest_manager(manager)
+	var delivery := DeliveryQuestObjective.new()
+	delivery.target_npc_id = &"alchemist"
+	delivery.item_id = "lesser_healing_potion"
+	delivery.target_amount = 2
+	var quest := Quest.new()
+	quest.id = 403
+	quest.title = "Medicine Delivery"
+	quest.category = Quest.Category.SIDE
+	quest.source_type = Quest.SourceType.NPC
+	quest.source_id = "test_villager"
+	quest.objectives.append(delivery)
+	manager.activate_quest(quest)
+	GameState.hero.inventory.add_potion("lesser_healing_potion", 2)
+
+	var context := controller.build_context(&"alchemist", &"village")
+	_expect_true(
+		context[&"has_delivery_items"],
+		"delivery target context reports sufficient items"
+	)
+	controller.handle_action(_make_action(&"deliver_quest_items"), context)
+	_expect_equal(
+		GameState.hero.inventory.get_potion_count("lesser_healing_potion"),
+		0,
+		"delivery removes the required inventory atomically"
+	)
+	_expect_true(
+		manager.is_quest_ready(quest.id),
+		"delivery event progresses the active quest through QuestManager"
+	)
+	controller.handle_action(_make_action(&"deliver_quest_items"), context)
+	_expect_equal(
+		delivery.current_amount,
+		2,
+		"duplicate delivery action cannot progress a ready quest again"
+	)
+	controller.clear_quest_manager()
+
+func _make_manager() -> QuestManager:
+	if GameState.quest_manager != null:
+		GameState.quest_manager.disconnect_signals()
+	var manager := QuestManager.new()
+	manager.reconnect_signals()
+	GameState.set_quest_manager(manager)
+	return manager
+
+func _make_npc_talk_quest(quest_id: int, npc_id: StringName) -> Quest:
+	var objective := TalkToNpcQuestObjective.new()
+	objective.target_npc_id = npc_id
+	var quest := Quest.new()
+	quest.id = quest_id
+	quest.title = "NPC Quest %d" % quest_id
+	quest.category = Quest.Category.SIDE
+	quest.source_type = Quest.SourceType.NPC
+	quest.source_id = String(npc_id)
+	quest.objectives.append(objective)
+	return quest
+
+func _make_action(action_id: StringName) -> DialogueAction:
+	var action := DialogueAction.new()
+	action.action_id = action_id
+	return action
+
+func _cleanup() -> void:
+	GameState.reset_state()
+	if SaveManager.has_save_data(TEST_SAVE_SLOT):
+		SaveManager.delete_slot(TEST_SAVE_SLOT)

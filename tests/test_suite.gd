@@ -11,6 +11,7 @@ extends Node
 	$Quests/QuestManagerMultiQuestTests,
 	$Quests/QuestManagerLifecycleTests,
 	$Quests/QuestSaveMigrationTests,
+	$Quests/NpcQuestIntegrationTests,
 ]
 
 @onready var _reward_test_cases: Array[TestCase] = [
