@@ -1,6 +1,16 @@
 extends CharacterBody2D
 class_name NpcActor
 
+const NEW_CONVERSATION_TEXTURE := preload(
+	"res://assets/characters/status_indicators/new_conversation.png"
+)
+const QUEST_AVAILABLE_TEXTURE := preload(
+	"res://assets/characters/status_indicators/quest_available.png"
+)
+const QUEST_READY_TEXTURE := preload(
+	"res://assets/characters/status_indicators/quest_ready.png"
+)
+
 enum Facing { DOWN, LEFT, RIGHT, UP }
 enum Status { NONE, NEW_CONVERSATION, QUEST_AVAILABLE, QUEST_READY }
 
@@ -19,7 +29,7 @@ signal status_changed(status: Status)
 
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var interact_area: InteractArea = $InteractArea
-@onready var status_indicator: Label = $StatusIndicator
+@onready var status_indicator: Sprite2D = $StatusIndicator
 
 var status: Status = Status.NONE
 
@@ -41,16 +51,16 @@ func set_status(new_status: Status) -> void:
 	status = new_status
 	match status:
 		Status.NONE:
-			status_indicator.text = ""
+			status_indicator.texture = null
 			status_indicator.hide()
 		Status.NEW_CONVERSATION:
-			status_indicator.text = "!"
+			status_indicator.texture = NEW_CONVERSATION_TEXTURE
 			status_indicator.show()
 		Status.QUEST_AVAILABLE:
-			status_indicator.text = "?"
+			status_indicator.texture = QUEST_AVAILABLE_TEXTURE
 			status_indicator.show()
 		Status.QUEST_READY:
-			status_indicator.text = "✓"
+			status_indicator.texture = QUEST_READY_TEXTURE
 			status_indicator.show()
 	if changed:
 		status_changed.emit(status)

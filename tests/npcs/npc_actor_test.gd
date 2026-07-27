@@ -265,17 +265,29 @@ func _test_status_presentation() -> void:
 		"NPC status indicator starts hidden"
 	)
 	_expect_equal(
-		npc.status_indicator.text,
-		"",
-		"hidden NPC status indicator starts empty"
+		npc.status_indicator.texture,
+		null,
+		"hidden NPC status indicator starts without a texture"
 	)
 
 	npc.set_status(NpcActor.Status.NEW_CONVERSATION)
-	_expect_status(npc, "!", "new conversation status")
+	_expect_status(
+		npc,
+		"res://assets/characters/status_indicators/new_conversation.png",
+		"new conversation status"
+	)
 	npc.set_status(NpcActor.Status.QUEST_AVAILABLE)
-	_expect_status(npc, "?", "quest available status")
+	_expect_status(
+		npc,
+		"res://assets/characters/status_indicators/quest_available.png",
+		"quest available status"
+	)
 	npc.set_status(NpcActor.Status.QUEST_READY)
-	_expect_status(npc, "✓", "quest ready status")
+	_expect_status(
+		npc,
+		"res://assets/characters/status_indicators/quest_ready.png",
+		"quest ready status"
+	)
 	npc.set_status(NpcActor.Status.QUEST_READY)
 	npc.set_status(NpcActor.Status.NONE)
 
@@ -393,9 +405,17 @@ func _find_npc_actor(node: Node) -> NpcActor:
 			return result
 	return null
 
-func _expect_status(npc: NpcActor, text: String, message: String) -> void:
+func _expect_status(
+	npc: NpcActor,
+	texture_path: String,
+	message: String
+) -> void:
 	_expect_true(npc.status_indicator.visible, "%s is visible" % message)
-	_expect_equal(npc.status_indicator.text, text, "%s uses the expected icon" % message)
+	_expect_equal(
+		npc.status_indicator.texture.resource_path,
+		texture_path,
+		"%s uses the expected icon" % message
+	)
 
 func _expect_packed_array_contains(
 	values: PackedStringArray,
