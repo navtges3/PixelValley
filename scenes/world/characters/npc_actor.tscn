@@ -24,11 +24,5 @@ shape = SubResource("CircleShape2D_ql5gy")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="InteractArea" unique_id=1673513859]
 shape = SubResource("CircleShape2D_vcc81")
 
-[node name="StatusIndicator" type="Label" parent="." unique_id=1343165083]
-anchors_preset = -1
-offset_left = -8.0
-offset_top = -40.0
-offset_right = 8.0
-offset_bottom = -17.666666
-text = "!"
-horizontal_alignment = 1
+[node name="StatusIndicator" type="Sprite2D" parent="." unique_id=1343165083]
+position = Vector2(0, -32)
