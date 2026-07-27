@@ -1,11 +1,11 @@
-[gd_resource type="Resource" script_class="NpcData" format=3 uid="uid://dhncjvvc78utl"]
+[gd_resource type="Resource" script_class="NpcData" format=3 uid="uid://k3v7kxo3gf2p"]
 
-[ext_resource type="Script" uid="uid://bvrdh0sqeu4ny" path="res://scripts/data/npc_data.gd" id="2_3xkad"]
-[ext_resource type="Texture2D" uid="uid://lygp75a7owqn" path="res://assets/characters/npcs/weapon_shopkeep.png" id="3_mhb4y"]
-[ext_resource type="Resource" path="res://resources/dialogue/rowan_conversation.tres" id="4_dialogue"]
+[ext_resource type="Script" uid="uid://bvrdh0sqeu4ny" path="res://scripts/data/npc_data.gd" id="1_50gxk"]
+[ext_resource type="Texture2D" uid="uid://lygp75a7owqn" path="res://assets/characters/npcs/weapon_shopkeep.png" id="2_4orqe"]
+[ext_resource type="Resource" path="res://resources/dialogue/nessa_conversation.tres" id="3_dialogue"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_0h6kb"]
-atlas = ExtResource("3_mhb4y")
+atlas = ExtResource("2_4orqe")
 region = Rect2(0, 0, 32, 32)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_imqyq"]
@@ -44,11 +44,11 @@ animations = [{
 }]
 
 [resource]
-script = ExtResource("2_3xkad")
-npc_id = &"rowan"
-display_name = "Rowan"
-role = "Village watchman"
+script = ExtResource("1_50gxk")
+npc_id = &"nessa"
+display_name = "Nessa"
+role = "Farmer and cook"
 location_id = &"village"
 world_visual = SubResource("SpriteFrames_imqyq")
-dialogue = ExtResource("4_dialogue")
+dialogue = ExtResource("3_dialogue")
 metadata/_custom_type_script = "uid://bvrdh0sqeu4ny"

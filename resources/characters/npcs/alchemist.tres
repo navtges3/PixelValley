@@ -52,4 +52,5 @@ location_id = &"potion_shop_interior"
 world_visual = SubResource("SpriteFrames_ovnb2")
 dialogue = ExtResource("3_dialogue")
 service_id = &"potion_shop"
+quest_ids = Array[int]([11, 12])
 metadata/_custom_type_script = "uid://bvrdh0sqeu4ny"

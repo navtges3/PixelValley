@@ -9,6 +9,7 @@ func run_tests() -> int:
 	_test_dialogue_runner_action_bridge()
 	_test_dialogue_lifecycle_actions()
 	_test_locked_dialogue_context()
+	_test_main_progression_context()
 	_test_delivery_action()
 	_test_authored_dialogues_validate()
 	_test_authored_dialogue_rolls_into_follow_up_quest()
@@ -117,18 +118,18 @@ func _test_dialogue_lifecycle_actions() -> void:
 	var manager := _make_manager()
 	var controller := NpcQuestDialogueController.new()
 	controller.set_quest_manager(manager)
-	var quest := _make_npc_talk_quest(401, &"test_villager")
+	var quest := _make_npc_talk_quest(401, &"mara")
 	quest.reward.gold = 25
 	manager.offer_quest(quest)
 
-	var context := controller.build_context(&"test_villager", &"village")
+	var context := controller.build_context(&"mara", &"village")
 	_expect_equal(
 		context[&"quest_state"],
 		&"offered",
 		"offered NPC quest routes to offered dialogue"
 	)
 	_expect_equal(
-		controller.get_npc_status(&"test_villager"),
+		controller.get_npc_status(&"mara"),
 		NpcActor.Status.QUEST_AVAILABLE,
 		"offered NPC quest displays the available indicator"
 	)
@@ -139,7 +140,7 @@ func _test_dialogue_lifecycle_actions() -> void:
 		"declining leaves the quest offered"
 	)
 	_expect_equal(
-		controller.build_context(&"test_villager", &"village")[&"quest_state"],
+		controller.build_context(&"mara", &"village")[&"quest_state"],
 		&"offered",
 		"declined quest is offered again on the next interaction"
 	)
@@ -147,7 +148,7 @@ func _test_dialogue_lifecycle_actions() -> void:
 	controller.handle_action(_make_action(&"accept_quest"), context)
 	_expect_true(manager.is_quest_active(quest.id), "dialogue accepts an offered quest")
 	_expect_equal(
-		controller.build_context(&"test_villager", &"village")[&"quest_state"],
+		controller.build_context(&"mara", &"village")[&"quest_state"],
 		&"active",
 		"accepted quest routes to active dialogue"
 	)
@@ -163,21 +164,21 @@ func _test_dialogue_lifecycle_actions() -> void:
 		manager.is_quest_active(quest.id),
 		"unrelated NPC interaction does not complete the objective"
 	)
-	GameState.gameplay_event.emit(NpcInteractedEvent.new(&"test_villager"))
+	GameState.gameplay_event.emit(NpcInteractedEvent.new(&"mara"))
 	_expect_true(manager.is_quest_ready(quest.id), "matching NPC interaction readies the quest")
 	_expect_equal(
-		controller.build_context(&"test_villager", &"village")[&"quest_state"],
+		controller.build_context(&"mara", &"village")[&"quest_state"],
 		&"ready",
 		"ready quest routes to turn-in dialogue"
 	)
 	_expect_equal(
-		controller.get_npc_status(&"test_villager"),
+		controller.get_npc_status(&"mara"),
 		NpcActor.Status.QUEST_READY,
 		"ready NPC quest displays the ready indicator"
 	)
 
 	var starting_gold := GameState.hero.inventory.gold
-	var ready_context := controller.build_context(&"test_villager", &"village")
+	var ready_context := controller.build_context(&"mara", &"village")
 	var rewards := controller.handle_action(
 		_make_action(&"turn_in_quest"),
 		ready_context
@@ -190,7 +191,7 @@ func _test_dialogue_lifecycle_actions() -> void:
 		"dialogue turn-in grants the reward once"
 	)
 	_expect_equal(
-		controller.build_context(&"test_villager", &"village")[&"quest_state"],
+		controller.build_context(&"mara", &"village")[&"quest_state"],
 		&"completed",
 		"turned-in quest routes to completed dialogue"
 	)
@@ -210,7 +211,7 @@ func _test_dialogue_runner_action_bridge() -> void:
 	var manager := _make_manager()
 	var controller := NpcQuestDialogueController.new()
 	controller.set_quest_manager(manager)
-	var quest := _make_npc_talk_quest(400, &"test_villager")
+	var quest := _make_npc_talk_quest(400, &"mara")
 	manager.offer_quest(quest)
 
 	var entry := DialogueEntry.new()
@@ -226,7 +227,7 @@ func _test_dialogue_runner_action_bridge() -> void:
 	conversation.entries.append(entry)
 	var runner := DialogueRunner.new()
 	runner.action_requested.connect(controller.handle_action)
-	var context := controller.build_context(&"test_villager", &"village")
+	var context := controller.build_context(&"mara", &"village")
 
 	_expect_true(
 		runner.start(conversation, context),
@@ -259,6 +260,49 @@ func _test_locked_dialogue_context() -> void:
 	)
 	controller.clear_quest_manager()
 
+func _test_main_progression_context() -> void:
+	var manager := _make_manager()
+	var controller := NpcQuestDialogueController.new()
+	controller.set_quest_manager(manager)
+
+	_expect_equal(
+		controller.build_context(&"rowan", &"village")[&"main_progression"],
+		&"goblin_threat",
+		"early main progression reports the goblin threat"
+	)
+
+	var orc_quest := Quest.new()
+	orc_quest.id = 4
+	orc_quest.title = "Orc progression test"
+	manager.active_quests.append(orc_quest)
+	_expect_equal(
+		controller.build_context(&"rowan", &"village")[&"main_progression"],
+		&"orc_threat",
+		"reaching quest 4 reports the orc threat"
+	)
+
+	var ogre_quest := Quest.new()
+	ogre_quest.id = 7
+	ogre_quest.title = "Ogre progression test"
+	manager.active_quests.append(ogre_quest)
+	_expect_equal(
+		controller.build_context(&"rowan", &"village")[&"main_progression"],
+		&"ogre_threat",
+		"reaching quest 7 reports the ogre threat"
+	)
+
+	var victory_quest := Quest.new()
+	victory_quest.id = 10
+	victory_quest.title = "Victory progression test"
+	victory_quest.completed = true
+	manager.completed_quests.append(victory_quest)
+	_expect_equal(
+		controller.build_context(&"rowan", &"village")[&"main_progression"],
+		&"victory",
+		"completing quest 10 reports victory"
+	)
+	controller.clear_quest_manager()
+
 func _test_delivery_action() -> void:
 	var manager := _make_manager()
 	var controller := NpcQuestDialogueController.new()
@@ -272,7 +316,7 @@ func _test_delivery_action() -> void:
 	quest.title = "Medicine Delivery"
 	quest.category = Quest.Category.SIDE
 	quest.source_type = Quest.SourceType.NPC
-	quest.source_id = "test_villager"
+	quest.source_id = "mara"
 	quest.objectives.append(delivery)
 	manager.activate_quest(quest)
 	GameState.hero.inventory.add_potion("lesser_healing_potion", 2)
@@ -302,7 +346,7 @@ func _test_delivery_action() -> void:
 
 func _test_authored_dialogues_validate() -> void:
 	var expected_actions: Dictionary[String, Array] = {
-		"res://resources/dialogue/quests/test_villager_quest_conversation.tres":
+		"res://resources/dialogue/quests/mara_quest_conversation.tres":
 			[&"accept_quest", &"decline_quest"],
 		"res://resources/dialogue/quests/alchemist_quest_conversation.tres":
 			[
@@ -322,6 +366,9 @@ func _test_authored_dialogues_validate() -> void:
 			],
 		"res://resources/dialogue/quests/innkeeper_quest_conversation.tres":
 			[&"deliver_quest_items", &"turn_in_quest", &"open_service"],
+		"res://resources/dialogue/rowan_conversation.tres": [],
+		"res://resources/dialogue/nessa_conversation.tres": [],
+		"res://resources/dialogue/oren_conversation.tres": [],
 	}
 	var runner := DialogueRunner.new()
 	for path: String in expected_actions:
@@ -351,7 +398,7 @@ func _test_authored_dialogue_rolls_into_follow_up_quest() -> void:
 	controller.set_quest_manager(manager)
 	controller.handle_action(
 		_make_action(&"accept_quest"),
-		controller.build_context(&"test_villager", &"village")
+		controller.build_context(&"mara", &"village")
 	)
 
 	var conversation := load(
@@ -438,7 +485,7 @@ func _test_authored_side_quest_chain() -> void:
 	_expect_true(manager.get_quest_state(12) == QuestManager.LifecycleState.LOCKED, "second side quest starts locked")
 	_expect_true(manager.get_quest_state(13) == QuestManager.LifecycleState.LOCKED, "third side quest starts locked")
 
-	var villager_context := controller.build_context(&"test_villager", &"village")
+	var villager_context := controller.build_context(&"mara", &"village")
 	controller.handle_action(_make_action(&"accept_quest"), villager_context)
 	GameState.gameplay_event.emit(NpcInteractedEvent.new(&"alchemist"))
 	_expect_true(manager.is_quest_ready(11), "talking to the alchemist readies quest 11")

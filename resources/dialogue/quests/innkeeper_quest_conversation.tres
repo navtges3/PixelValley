@@ -45,7 +45,7 @@ actions = Array[ExtResource("6_action")]([SubResource("ActionService")])
 [sub_resource type="Resource" id="Speaker"]
 script = ExtResource("4_speaker")
 speaker_id = &"innkeeper"
-display_name = "Innkeeper"
+display_name = "Elara Vale"
 
 [sub_resource type="Resource" id="EntryReady"]
 script = ExtResource("2_entry")
@@ -129,7 +129,7 @@ responses = Array[ExtResource("3_response")]([SubResource("ResponseRest")])
 script = ExtResource("2_entry")
 entry_id = &"ambient"
 speaker = SubResource("Speaker")
-pages = Array[String](["Welcome to the inn. A warm bed is the best defense against a hard road."])
+pages = Array[String](["Welcome to the inn. I'm Elara Vale, and a warm bed is the best defense against a hard road."])
 responses = Array[ExtResource("3_response")]([SubResource("ResponseRest")])
 
 [sub_resource type="Resource" id="EntryKeyDelivered"]

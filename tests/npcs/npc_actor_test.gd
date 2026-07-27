@@ -7,12 +7,17 @@ const DIRECTIONAL_ANIMATIONS: Array[StringName] = [
 	&"idle_right",
 	&"idle_up",
 ]
-const AUTHORED_NPC_IDS: Dictionary[String, StringName] = {
-	"res://resources/characters/npcs/alchemist.tres": &"alchemist",
-	"res://resources/characters/npcs/blacksmith.tres": &"blacksmith",
-	"res://resources/characters/npcs/innkeeper.tres": &"innkeeper",
-	"res://resources/characters/npcs/test_villager.tres": &"test_villager",
-}
+const NPC_RESOURCE_DIRECTORY := "res://resources/characters/npcs"
+const NPC_ROSTER_PATH := "res://resources/characters/npcs/npc_roster.tres"
+const EXPECTED_NPC_IDS: Array[StringName] = [
+	&"alchemist",
+	&"blacksmith",
+	&"innkeeper",
+	&"mara",
+	&"nessa",
+	&"oren",
+	&"rowan",
+]
 const SERVICE_INTERIORS: Dictionary[String, StringName] = {
 	"res://scenes/world/buildings/interior/inn_interior.tscn": &"inn",
 	"res://scenes/world/buildings/interior/potion_shop_interior.tscn": &"potion_shop",
@@ -42,7 +47,7 @@ func _test_data_validation() -> void:
 	var data := NpcData.new()
 	var errors := data.get_validation_errors()
 
-	_expect_equal(errors.size(), 4, "empty NPC data reports every required field")
+	_expect_equal(errors.size(), 6, "empty NPC data reports every required field")
 	_expect_packed_array_contains(
 		errors,
 		"NPC ID cannot be empty.",
@@ -52,6 +57,16 @@ func _test_data_validation() -> void:
 		errors,
 		"has no display name",
 		"empty NPC display name is rejected"
+	)
+	_expect_packed_array_contains(
+		errors,
+		"has no documented role",
+		"empty NPC role is rejected"
+	)
+	_expect_packed_array_contains(
+		errors,
+		"has no documented location",
+		"empty NPC location is rejected"
 	)
 	_expect_packed_array_contains(
 		errors,
@@ -66,6 +81,8 @@ func _test_data_validation() -> void:
 
 	data.npc_id = &"valid_npc"
 	data.display_name = "Valid NPC"
+	data.role = "Test role"
+	data.location_id = &"test_location"
 	data.world_visual = _make_world_visual()
 	data.service_id = &"test_service"
 	_expect_true(
@@ -74,35 +91,70 @@ func _test_data_validation() -> void:
 	)
 
 func _test_authored_resources() -> void:
-	var seen_ids: Dictionary[StringName, String] = {}
+	var roster := load(NPC_ROSTER_PATH) as NpcRoster
+	_expect_not_null(roster, "authored NPC roster loads")
+	if roster == null:
+		return
+	_expect_true(
+		roster.get_validation_errors().is_empty(),
+		"authored NPC roster validates"
+	)
+	_expect_equal(
+		roster.npcs.size(),
+		EXPECTED_NPC_IDS.size(),
+		"NPC roster contains every expected character"
+	)
 
-	for path: String in AUTHORED_NPC_IDS:
-		var data := load(path) as NpcData
-		_expect_not_null(data, "authored NPC resource loads: %s" % path)
+	var seen_ids: Dictionary[StringName, String] = {}
+	for data: NpcData in roster.npcs:
 		if data == null:
 			continue
-
-		_expect_equal(
-			data.npc_id,
-			AUTHORED_NPC_IDS[path],
-			"authored NPC retains its stable ID: %s" % path
+		_expect_true(
+			data.npc_id in EXPECTED_NPC_IDS,
+			"roster contains recognized stable ID: %s" % data.npc_id
 		)
 		_expect_true(
 			data.get_validation_errors().is_empty(),
-			"authored NPC resource is valid: %s" % path
+			"authored NPC resource is valid: %s" % data.npc_id
 		)
 		_expect_equal(
 			seen_ids.has(data.npc_id),
 			false,
 			"authored NPC ID is unique: %s" % data.npc_id
 		)
-		seen_ids[data.npc_id] = path
+		seen_ids[data.npc_id] = data.resource_path
 
 		for animation_name: StringName in DIRECTIONAL_ANIMATIONS:
 			_expect_true(
 				data.world_visual.has_animation(animation_name),
 				"NPC '%s' has '%s'" % [data.npc_id, animation_name]
 			)
+
+	for expected_id: StringName in EXPECTED_NPC_IDS:
+		_expect_true(
+			seen_ids.has(expected_id),
+			"NPC roster includes '%s'" % expected_id
+		)
+
+	for file_name: String in DirAccess.get_files_at(NPC_RESOURCE_DIRECTORY):
+		if file_name == "npc_roster.tres" or file_name.get_extension() != "tres":
+			continue
+		var resource_path := "%s/%s" % [NPC_RESOURCE_DIRECTORY, file_name]
+		var data := load(resource_path) as NpcData
+		_expect_not_null(data, "NPC resource loads: %s" % resource_path)
+		if data != null:
+			_expect_true(
+				seen_ids.has(data.npc_id),
+				"NPC resource is registered in the roster: %s" % resource_path
+			)
+
+	var duplicate_roster := NpcRoster.new()
+	duplicate_roster.npcs = [roster.npcs[0], roster.npcs[0]]
+	_expect_packed_array_contains(
+		duplicate_roster.get_validation_errors(),
+		"Duplicate NPC ID",
+		"NPC roster rejects duplicate stable IDs"
+	)
 
 func _test_dialogue_interaction() -> void:
 	_reset_signal_captures()
@@ -304,6 +356,8 @@ func _make_data(npc_id: StringName) -> NpcData:
 	var data := NpcData.new()
 	data.npc_id = npc_id
 	data.display_name = "Test NPC"
+	data.role = "Test role"
+	data.location_id = &"test_location"
 	data.world_visual = _make_world_visual()
 	return data
 

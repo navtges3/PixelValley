@@ -9,7 +9,7 @@ var _started_count: int = 0
 func run_tests() -> int:
 	_begin_test_run()
 	_test_context_equals_condition()
-	_test_authored_conversation_resource()
+	_test_authored_progression_conversations()
 	_test_branching_conversation()
 	_test_condition_skips_to_fallback()
 	_test_actions_emit_once()
@@ -17,46 +17,43 @@ func run_tests() -> int:
 	_test_empty_pages_are_rejected()
 	return _finish_test_run("DialogueRunner tests")
 
-func _test_authored_conversation_resource() -> void:
-	_reset_signal_captures()
-	var conversation := load(
-		"res://resources/dialogue/test_villager_conversation.tres"
-	) as DialogueConversation
-	_expect_not_null(
-		conversation,
-		"authored test conversation loads"
-	)
-	if conversation == null:
-		return
+func _test_authored_progression_conversations() -> void:
+	var paths: Array[String] = [
+		"res://resources/dialogue/rowan_conversation.tres",
+		"res://resources/dialogue/nessa_conversation.tres",
+		"res://resources/dialogue/oren_conversation.tres",
+	]
+	var progression_states: Array[StringName] = [
+		&"goblin_threat",
+		&"orc_threat",
+		&"ogre_threat",
+		&"victory",
+	]
 
-	var village_context: Dictionary[StringName, Variant] = {
-		&"location_id": &"village",
-	}
-	var village_runner := _make_connected_runner()
-	village_runner.start(conversation, village_context)
-	village_runner.advance()
-	village_runner.advance()
-	_expect_equal(
-		_response_counts,
-		[2],
-		"authored village context exposes both responses"
-	)
-	village_runner.abort()
+	for path: String in paths:
+		var conversation := load(path) as DialogueConversation
+		_expect_not_null(conversation, "authored dialogue loads: %s" % path)
+		if conversation == null:
+			continue
 
-	_reset_signal_captures()
-	var forest_context: Dictionary[StringName, Variant] = {
-		&"location_id": &"forest",
-	}
-	var forest_runner := _make_connected_runner()
-	forest_runner.start(conversation, forest_context)
-	forest_runner.advance()
-	forest_runner.advance()
-	_expect_equal(
-		_response_counts,
-		[1],
-		"authored non-village context filters the conditional response"
-	)
-	forest_runner.abort()
+		for progression_state: StringName in progression_states:
+			_reset_signal_captures()
+			var context: Dictionary[StringName, Variant] = {
+				&"main_progression": progression_state,
+			}
+			var runner := _make_connected_runner()
+			_expect_true(
+				runner.start(conversation, context),
+				"authored dialogue starts for '%s': %s"
+					% [progression_state, path]
+			)
+			_expect_equal(
+				_visited_pages,
+				["%s:0" % progression_state],
+				"authored dialogue selects '%s': %s"
+					% [progression_state, path]
+			)
+			runner.abort()
 
 func _test_context_equals_condition() -> void:
 	var condition := _make_context_condition(

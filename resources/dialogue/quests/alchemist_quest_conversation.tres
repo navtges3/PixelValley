@@ -45,7 +45,7 @@ actions = Array[ExtResource("6_action")]([SubResource("ActionService")])
 [sub_resource type="Resource" id="Speaker"]
 script = ExtResource("4_speaker")
 speaker_id = &"alchemist"
-display_name = "Alchemist"
+display_name = "Tamsin Reed"
 
 [sub_resource type="Resource" id="EntryQuest11Ready"]
 script = ExtResource("2_entry")
@@ -136,7 +136,7 @@ responses = Array[ExtResource("3_response")]([SubResource("ResponseShop")])
 script = ExtResource("2_entry")
 entry_id = &"ambient"
 speaker = SubResource("Speaker")
-pages = Array[String](["Careful around the cauldron. Restoratives are less restorative before they cool."])
+pages = Array[String](["I'm Tamsin Reed, the village alchemist. Careful around the cauldron—restoratives are less restorative before they cool."])
 responses = Array[ExtResource("3_response")]([SubResource("ResponseShop")])
 
 [sub_resource type="Resource" id="EntryQuest11Rewarded"]
