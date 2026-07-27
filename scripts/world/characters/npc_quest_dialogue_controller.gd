@@ -42,6 +42,7 @@ func build_context(npc_id: StringName, location_id: StringName) -> Dictionary[St
 		&"quest_id": -1,
 		&"quest_state": &"unavailable",
 		&"has_delivery_items": false,
+		&"main_progression": _get_main_progression(),
 	}
 	if _manager == null:
 		return context
@@ -146,6 +147,24 @@ func _quest_targets_npc(quest: Quest, npc_id: StringName) -> bool:
 		):
 			return true
 	return false
+
+func _get_main_progression() -> StringName:
+	if _manager == null:
+		return &"goblin_threat"
+	if _manager.is_quest_completed(10):
+		return &"victory"
+	if _has_reached_main_quest(7):
+		return &"ogre_threat"
+	if _has_reached_main_quest(4):
+		return &"orc_threat"
+	return &"goblin_threat"
+
+func _has_reached_main_quest(quest_id: int) -> bool:
+	var state := _manager.get_quest_state(quest_id)
+	return (
+		state != QuestManager.LifecycleState.UNKNOWN
+		and state != QuestManager.LifecycleState.LOCKED
+	)
 
 func _has_delivery_items(npc_id: StringName) -> bool:
 	if GameState.hero == null or GameState.hero.inventory == null:

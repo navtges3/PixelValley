@@ -52,4 +52,5 @@ location_id = &"weapon_shop_interior"
 world_visual = SubResource("SpriteFrames_fa03n")
 dialogue = ExtResource("3_dialogue")
 service_id = &"weapon_shop"
+quest_ids = Array[int]([12, 13])
 metadata/_custom_type_script = "uid://bvrdh0sqeu4ny"

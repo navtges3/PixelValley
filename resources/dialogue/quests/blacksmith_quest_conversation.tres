@@ -45,7 +45,7 @@ actions = Array[ExtResource("6_action")]([SubResource("ActionService")])
 [sub_resource type="Resource" id="Speaker"]
 script = ExtResource("4_speaker")
 speaker_id = &"blacksmith"
-display_name = "Blacksmith"
+display_name = "Garrick Stone"
 
 [sub_resource type="Resource" id="EntryQuest12Ready"]
 script = ExtResource("2_entry")
@@ -136,7 +136,7 @@ responses = Array[ExtResource("3_response")]([SubResource("ResponseShop")])
 script = ExtResource("2_entry")
 entry_id = &"ambient"
 speaker = SubResource("Speaker")
-pages = Array[String](["Steel is honest work. Heat it, strike it, and don't rush the temper."])
+pages = Array[String](["Garrick Stone, village blacksmith. Steel is honest work—heat it, strike it, and don't rush the temper."])
 responses = Array[ExtResource("3_response")]([SubResource("ResponseShop")])
 
 [sub_resource type="Resource" id="EntryQuest12Rewarded"]
