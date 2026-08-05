@@ -11,6 +11,8 @@ enum SourceType { AUTOMATIC, QUEST_BOARD, NPC, SCRIPTED_EVENT }
 @export var category: Category = Category.MAIN
 @export var source_type: SourceType = SourceType.AUTOMATIC
 @export var source_id: String = ""
+@export var turn_in_npc_id: String = ""
+@export var initially_unlocked: bool = false
 @export_category("Progression")
 @export var objectives: Array[QuestObjective]
 @export var reward: Reward = Reward.new()
@@ -45,3 +47,6 @@ func get_activation_location_ids() -> Array[String]:
 			if location_id not in location_ids:
 				location_ids.append(location_id)
 	return location_ids
+
+func get_turn_in_npc_id() -> String:
+	return turn_in_npc_id if not turn_in_npc_id.is_empty() else source_id

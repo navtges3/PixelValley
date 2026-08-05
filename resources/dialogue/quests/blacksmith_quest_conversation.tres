@@ -1,0 +1,165 @@
+[gd_resource type="Resource" script_class="DialogueConversation" format=3 uid="uid://co3vlqfs1h7i8"]
+
+[ext_resource type="Script" uid="uid://c72ou4xympa8k" path="res://scripts/data/dialogue/dialogue_conversation.gd" id="1_conversation"]
+[ext_resource type="Script" uid="uid://de2gtyvn62a4q" path="res://scripts/data/dialogue/dialogue_entry.gd" id="2_entry"]
+[ext_resource type="Script" uid="uid://bw8gfgi66jkgt" path="res://scripts/data/dialogue/dialogue_response.gd" id="3_response"]
+[ext_resource type="Script" uid="uid://dpbifjko4digr" path="res://scripts/data/dialogue/dialogue_speaker.gd" id="4_speaker"]
+[ext_resource type="Script" uid="uid://chsetq55irrf0" path="res://scripts/data/dialogue/dialogue_condition.gd" id="5_condition"]
+[ext_resource type="Script" uid="uid://bn5tdgpsujh6q" path="res://scripts/data/dialogue/dialogue_action.gd" id="6_action"]
+
+[sub_resource type="Resource" id="ConditionQuest12"]
+script = ExtResource("5_condition")
+condition_id = &"context_equals"
+parameters = Dictionary[StringName, Variant]({
+&"key": &"quest_id",
+&"value": 12
+})
+
+[sub_resource type="Resource" id="ConditionReady"]
+script = ExtResource("5_condition")
+condition_id = &"context_equals"
+parameters = Dictionary[StringName, Variant]({
+&"key": &"quest_state",
+&"value": &"ready"
+})
+
+[sub_resource type="Resource" id="ActionTurnIn"]
+script = ExtResource("6_action")
+action_id = &"turn_in_quest"
+
+[sub_resource type="Resource" id="ResponseTurnIn"]
+script = ExtResource("3_response")
+text = "I'll put them to good use."
+next_entry_id = &"quest_12_rewarded"
+actions = Array[ExtResource("6_action")]([SubResource("ActionTurnIn")])
+
+[sub_resource type="Resource" id="ActionService"]
+script = ExtResource("6_action")
+action_id = &"open_service"
+
+[sub_resource type="Resource" id="ResponseShop"]
+script = ExtResource("3_response")
+text = "Show me your weapons."
+actions = Array[ExtResource("6_action")]([SubResource("ActionService")])
+
+[sub_resource type="Resource" id="Speaker"]
+script = ExtResource("4_speaker")
+speaker_id = &"blacksmith"
+display_name = "Garrick Stone"
+
+[sub_resource type="Resource" id="EntryQuest12Ready"]
+script = ExtResource("2_entry")
+entry_id = &"quest_12_ready"
+speaker = SubResource("Speaker")
+pages = Array[String](["The alchemist said you were coming. A traveler who helps the village deserves a proper weapon.", "I also found this brass inn key near the forge. Take it—the innkeeper will want it back."])
+skip_entry_id = &"quest_12_active"
+conditions = Array[ExtResource("5_condition")]([SubResource("ConditionQuest12"), SubResource("ConditionReady")])
+responses = Array[ExtResource("3_response")]([SubResource("ResponseTurnIn"), SubResource("ResponseShop")])
+
+[sub_resource type="Resource" id="ActionCompleteInteraction"]
+script = ExtResource("6_action")
+action_id = &"complete_npc_interaction"
+
+[sub_resource type="Resource" id="ConditionActive"]
+script = ExtResource("5_condition")
+condition_id = &"context_equals"
+parameters = Dictionary[StringName, Variant]({
+&"key": &"quest_state",
+&"value": &"active"
+})
+
+[sub_resource type="Resource" id="EntryQuest12Active"]
+script = ExtResource("2_entry")
+entry_id = &"quest_12_active"
+speaker = SubResource("Speaker")
+pages = Array[String](["Sent by the alchemist, were you? Good. I've selected something suitable for you."])
+next_entry_id = &"quest_12_ready"
+skip_entry_id = &"quest_13_offered"
+conditions = Array[ExtResource("5_condition")]([SubResource("ConditionQuest12"), SubResource("ConditionActive")])
+actions = Array[ExtResource("6_action")]([SubResource("ActionCompleteInteraction")])
+
+[sub_resource type="Resource" id="ConditionQuest13"]
+script = ExtResource("5_condition")
+condition_id = &"context_equals"
+parameters = Dictionary[StringName, Variant]({
+&"key": &"quest_id",
+&"value": 13
+})
+
+[sub_resource type="Resource" id="ConditionOffered"]
+script = ExtResource("5_condition")
+condition_id = &"context_equals"
+parameters = Dictionary[StringName, Variant]({
+&"key": &"quest_state",
+&"value": &"offered"
+})
+
+[sub_resource type="Resource" id="ActionAccept"]
+script = ExtResource("6_action")
+action_id = &"accept_quest"
+
+[sub_resource type="Resource" id="ResponseAccept"]
+script = ExtResource("3_response")
+text = "I'll deliver the key."
+next_entry_id = &"quest_13_accepted"
+actions = Array[ExtResource("6_action")]([SubResource("ActionAccept")])
+
+[sub_resource type="Resource" id="ActionDecline"]
+script = ExtResource("6_action")
+action_id = &"decline_quest"
+
+[sub_resource type="Resource" id="ResponseDecline"]
+script = ExtResource("3_response")
+text = "I can't make the delivery yet."
+next_entry_id = &"quest_13_declined"
+actions = Array[ExtResource("6_action")]([SubResource("ActionDecline")])
+
+[sub_resource type="Resource" id="EntryQuest13Offered"]
+script = ExtResource("2_entry")
+entry_id = &"quest_13_offered"
+speaker = SubResource("Speaker")
+pages = Array[String](["That brass key belongs to the inn. I kept it safe, but I can't leave the forge unattended.", "Will you deliver it to the innkeeper?"])
+skip_entry_id = &"quest_13_active"
+conditions = Array[ExtResource("5_condition")]([SubResource("ConditionQuest13"), SubResource("ConditionOffered")])
+responses = Array[ExtResource("3_response")]([SubResource("ResponseAccept"), SubResource("ResponseDecline"), SubResource("ResponseShop")])
+
+[sub_resource type="Resource" id="EntryQuest13Active"]
+script = ExtResource("2_entry")
+entry_id = &"quest_13_active"
+speaker = SubResource("Speaker")
+pages = Array[String](["The innkeeper is waiting for that brass key. You'll find the inn just outside."])
+skip_entry_id = &"ambient"
+conditions = Array[ExtResource("5_condition")]([SubResource("ConditionQuest13"), SubResource("ConditionActive")])
+responses = Array[ExtResource("3_response")]([SubResource("ResponseShop")])
+
+[sub_resource type="Resource" id="EntryAmbient"]
+script = ExtResource("2_entry")
+entry_id = &"ambient"
+speaker = SubResource("Speaker")
+pages = Array[String](["Garrick Stone, village blacksmith. Steel is honest work—heat it, strike it, and don't rush the temper."])
+responses = Array[ExtResource("3_response")]([SubResource("ResponseShop")])
+
+[sub_resource type="Resource" id="EntryQuest12Rewarded"]
+script = ExtResource("2_entry")
+entry_id = &"quest_12_rewarded"
+speaker = SubResource("Speaker")
+pages = Array[String](["The weapon is yours, and the key is now in your pack. That brings me to one more favor."])
+next_entry_id = &"quest_13_offered"
+
+[sub_resource type="Resource" id="EntryQuest13Accepted"]
+script = ExtResource("2_entry")
+entry_id = &"quest_13_accepted"
+speaker = SubResource("Speaker")
+pages = Array[String](["Good. Hand the brass key directly to the innkeeper."])
+
+[sub_resource type="Resource" id="EntryQuest13Declined"]
+script = ExtResource("2_entry")
+entry_id = &"quest_13_declined"
+speaker = SubResource("Speaker")
+pages = Array[String](["It can wait here until you're ready."])
+
+[resource]
+script = ExtResource("1_conversation")
+conversation_id = &"blacksmith_quest_chain"
+start_entry_id = &"quest_12_ready"
+entries = Array[ExtResource("2_entry")]([SubResource("EntryQuest12Ready"), SubResource("EntryQuest12Active"), SubResource("EntryQuest13Offered"), SubResource("EntryQuest13Active"), SubResource("EntryAmbient"), SubResource("EntryQuest12Rewarded"), SubResource("EntryQuest13Accepted"), SubResource("EntryQuest13Declined")])

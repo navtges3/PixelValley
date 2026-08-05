@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="NpcRoster" format=3 uid="uid://kpd5segy53l0"]
+
+[ext_resource type="Script" uid="uid://bvrdh0sqeu4ny" path="res://scripts/data/npc_data.gd" id="1_hd16l"]
+[ext_resource type="Script" uid="uid://bn6fgk0uivnu8" path="res://scripts/data/npc_roster.gd" id="2_slhtt"]
+[ext_resource type="Resource" uid="uid://fx4djpacrcah" path="res://resources/characters/npcs/blacksmith.tres" id="2_x22x6"]
+[ext_resource type="Resource" uid="uid://cku2ksvmk1l0e" path="res://resources/characters/npcs/alchemist.tres" id="3_njyog"]
+[ext_resource type="Resource" uid="uid://byrxikto167vi" path="res://resources/characters/npcs/innkeeper.tres" id="4_ujxdp"]
+[ext_resource type="Resource" uid="uid://do3xl7dwnlkat" path="res://resources/characters/npcs/mara.tres" id="5_fslil"]
+[ext_resource type="Resource" uid="uid://dhncjvvc78utl" path="res://resources/characters/npcs/rowan.tres" id="6_aaf5d"]
+[ext_resource type="Resource" uid="uid://k3v7kxo3gf2p" path="res://resources/characters/npcs/nessa.tres" id="7_kd14q"]
+[ext_resource type="Resource" uid="uid://c4615kgcm175j" path="res://resources/characters/npcs/oren.tres" id="8_hjfxi"]
+
+[resource]
+script = ExtResource("2_slhtt")
+npcs = Array[ExtResource("1_hd16l")]([ExtResource("2_x22x6"), ExtResource("3_njyog"), ExtResource("4_ujxdp"), ExtResource("5_fslil"), ExtResource("6_aaf5d"), ExtResource("7_kd14q"), ExtResource("8_hjfxi")])
+metadata/_custom_type_script = "uid://bn6fgk0uivnu8"

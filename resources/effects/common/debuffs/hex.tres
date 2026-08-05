@@ -1,8 +1,9 @@
 [gd_resource type="Resource" script_class="Effect" format=3 uid="uid://ckkbemxl2x7h"]
 
 [ext_resource type="Texture2D" uid="uid://7lsi5axwxq0f" path="res://assets/effects/debuffs/hex.png" id="1_7fsbf"]
-[ext_resource type="Script" uid="uid://c5deti4sb2k2j" path="res://scripts/data/effect.gd" id="1_hex"]
-[ext_resource type="Script" uid="uid://hw30jan7sjfb" path="res://scripts/data/effect_stat_change.gd" id="2_hex"]
+[ext_resource type="Script" uid="uid://c5deti4sb2k2j" path="res://scripts/data/effects/effect.gd" id="1_hex"]
+[ext_resource type="Script" uid="uid://hw30jan7sjfb" path="res://scripts/data/effects/effect_stat_change.gd" id="2_hex"]
+
 
 [sub_resource type="Resource" id="Resource_hex_apply"]
 script = ExtResource("2_hex")

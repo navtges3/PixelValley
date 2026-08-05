@@ -3,11 +3,17 @@
 [ext_resource type="PackedScene" uid="uid://b444axe4enf14" path="res://tests/effects/test_active_effects.tscn" id="1_1wc5c"]
 [ext_resource type="PackedScene" path="res://tests/effects/test_effect_integration.tscn" id="2_28f2g"]
 [ext_resource type="PackedScene" path="res://tests/effects/test_effect_lifecycle_events.tscn" id="3_pe5y4"]
-[ext_resource type="Script" uid="uid://ccfwxvdvq6via" path="res://tests/test_suite.gd" id="4_suite"]
+[ext_resource type="Script" path="res://tests/test_suite.gd" id="4_suite"]
 [ext_resource type="PackedScene" path="res://tests/quests/quest_manager_multi_quest_test.tscn" id="5_quest"]
 [ext_resource type="PackedScene" path="res://tests/quests/quest_save_migration_test.tscn" id="6_migration"]
 [ext_resource type="PackedScene" uid="uid://c2ejhvt30j1jv" path="res://tests/quests/quest_manager_lifecycle_test.tscn" id="7_lifecycle"]
 [ext_resource type="PackedScene" path="res://tests/rewards/reward_service_test.tscn" id="8_reward"]
+[ext_resource type="PackedScene" path="res://tests/dialogue/dialogue_runner_test.tscn" id="9_dialogue"]
+[ext_resource type="PackedScene" path="res://tests/npcs/npc_actor_test.tscn" id="10_npc"]
+[ext_resource type="PackedScene" path="res://tests/quests/npc_quest_integration_test.tscn" id="11_npc_quest"]
+[ext_resource type="PackedScene" path="res://tests/dialogue/dialogue_state_test.tscn" id="12_dialogue_state"]
+[ext_resource type="PackedScene" path="res://tests/npcs/npc_dialogue_integration_test.tscn" id="13_npc_dialogue"]
+[ext_resource type="PackedScene" path="res://tests/dialogue/dialogue_window_test.tscn" id="14_dialogue_window"]
 
 [node name="TestSuite" type="Node" unique_id=783793299]
 script = ExtResource("4_suite")
@@ -28,6 +34,22 @@ script = ExtResource("4_suite")
 
 [node name="QuestSaveMigrationTests" parent="Quests" unique_id=1838663774 instance=ExtResource("6_migration")]
 
+[node name="NpcQuestIntegrationTests" parent="Quests" unique_id=2049838376 instance=ExtResource("11_npc_quest")]
+
 [node name="Rewards" type="Node" parent="." unique_id=677614548]
 
 [node name="RewardServiceTests" parent="Rewards" unique_id=33484618 instance=ExtResource("8_reward")]
+
+[node name="Dialogue" type="Node" parent="." unique_id=1110281297]
+
+[node name="DialogueRunnerTests" parent="Dialogue" unique_id=180448557 instance=ExtResource("9_dialogue")]
+
+[node name="DialogueStateTests" parent="Dialogue" instance=ExtResource("12_dialogue_state")]
+
+[node name="DialogueWindowTests" parent="Dialogue" instance=ExtResource("14_dialogue_window")]
+
+[node name="Npcs" type="Node" parent="." unique_id=594707456]
+
+[node name="NpcActorTests" parent="Npcs" unique_id=289503209 instance=ExtResource("10_npc")]
+
+[node name="NpcDialogueIntegrationTests" parent="Npcs" instance=ExtResource("13_npc_dialogue")]

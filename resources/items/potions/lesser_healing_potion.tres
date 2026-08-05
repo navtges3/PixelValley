@@ -1,9 +1,10 @@
 [gd_resource type="Resource" script_class="Potion" format=3 uid="uid://e282ko0xakwg"]
 
-[ext_resource type="Script" uid="uid://c5deti4sb2k2j" path="res://scripts/data/effect.gd" id="1_4w0xa"]
+[ext_resource type="Script" uid="uid://c5deti4sb2k2j" path="res://scripts/data/effects/effect.gd" id="1_4w0xa"]
 [ext_resource type="Script" uid="uid://dvmhh34nbwxaq" path="res://scripts/data/potion.gd" id="2_j88mq"]
 [ext_resource type="Resource" uid="uid://eow8yhknuroj" path="res://resources/effects/common/buffs/heal.tres" id="2_snqvt"]
 [ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://resources/themes/buttons/regular/green_button.tres" id="3_snqvt"]
+
 
 [resource]
 script = ExtResource("2_j88mq")

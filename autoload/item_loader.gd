@@ -6,6 +6,7 @@ var _cache: Dictionary = {}
 func _ready() -> void:
 	_register_potions()
 	_register_weapons()
+	_register_quest_items()
 
 func _register_potions() -> void:
 	_register("lesser_healing_potion", "res://resources/items/potions/lesser_healing_potion.tres")
@@ -58,6 +59,9 @@ func _register_weapons() -> void:
 	# Princess - Legendary
 	_register("celestias_crownstaff", "res://resources/items/weapons/princess_weapons/legendary/celestias_crownstaff.tres")
 	_register("heart_of_eternity", "res://resources/items/weapons/princess_weapons/legendary/heart_of_eternity.tres")
+
+func _register_quest_items() -> void:
+	_register("inn_key", "res://resources/items/quest_items/inn_key.tres")
 
 func _register(id: String, path: String) -> void:
 	if _paths.has(id):

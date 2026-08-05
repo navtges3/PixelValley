@@ -1,0 +1,56 @@
+[gd_resource type="Resource" script_class="NpcData" format=3 uid="uid://byrxikto167vi"]
+
+[ext_resource type="Script" uid="uid://bvrdh0sqeu4ny" path="res://scripts/data/npc_data.gd" id="1_opbvh"]
+[ext_resource type="Texture2D" uid="uid://dutpghl7y0fri" path="res://assets/characters/npcs/inn_shopkeep.png" id="2_da7hr"]
+[ext_resource type="Resource" uid="uid://blib07g4eu50f" path="res://resources/dialogue/quests/innkeeper_quest_conversation.tres" id="3_dialogue"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_iar77"]
+atlas = ExtResource("2_da7hr")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_rkyst"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_iar77")
+}],
+"loop": true,
+"name": &"idle_down",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_iar77")
+}],
+"loop": true,
+"name": &"idle_left",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_iar77")
+}],
+"loop": true,
+"name": &"idle_right",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_iar77")
+}],
+"loop": true,
+"name": &"idle_up",
+"speed": 5.0
+}]
+
+[resource]
+script = ExtResource("1_opbvh")
+npc_id = &"innkeeper"
+display_name = "Elara Vale"
+role = "Innkeeper"
+location_id = &"inn_interior"
+world_visual = SubResource("SpriteFrames_rkyst")
+dialogue = ExtResource("3_dialogue")
+service_id = &"inn"
+quest_ids = Array[int]([13])
+metadata/_custom_type_script = "uid://bvrdh0sqeu4ny"

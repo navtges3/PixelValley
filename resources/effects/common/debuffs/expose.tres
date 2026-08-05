@@ -1,8 +1,9 @@
 [gd_resource type="Resource" script_class="Effect" format=3 uid="uid://w6qbmd4tfbhe"]
 
-[ext_resource type="Script" uid="uid://c5deti4sb2k2j" path="res://scripts/data/effect.gd" id="1_expose"]
+[ext_resource type="Script" uid="uid://c5deti4sb2k2j" path="res://scripts/data/effects/effect.gd" id="1_expose"]
 [ext_resource type="Texture2D" uid="uid://cuo4pcw7if54d" path="res://assets/effects/debuffs/expose.png" id="1_rtjfm"]
-[ext_resource type="Script" uid="uid://hw30jan7sjfb" path="res://scripts/data/effect_stat_change.gd" id="2_expose"]
+[ext_resource type="Script" uid="uid://hw30jan7sjfb" path="res://scripts/data/effects/effect_stat_change.gd" id="2_expose"]
+
 
 [sub_resource type="Resource" id="Resource_expose_apply"]
 script = ExtResource("2_expose")
