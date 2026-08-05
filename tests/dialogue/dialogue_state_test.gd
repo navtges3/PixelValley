@@ -74,16 +74,21 @@ func _test_malformed_and_unknown_records() -> void:
 
 func _test_save_manager_round_trip_and_legacy_save() -> void:
 	_prepare_game_state()
-	GameState.dialogue_state.claim_fact(&"rowan", &"introduction_seen")
 	SaveManager.save_game()
+	GameState.dialogue_state.claim_fact(&"rowan", &"introduction_seen")
 	GameState.dialogue_state.clear()
 	SaveManager.load_game(TEST_SAVE_SLOT)
-	_expect_true(GameState.dialogue_state.has_fact(&"rowan", &"introduction_seen"), "SaveManager restores durable dialogue state")
+	_expect_true(
+		GameState.dialogue_state.has_fact(&"rowan", &"introduction_seen"),
+		"new dialogue facts are persisted immediately"
+	)
 	var quest_document := SaveManager._load_json(TEST_SAVE_SLOT, "quests.json")
 	_expect_equal(quest_document.get("data", {}).has("npc_facts"), false, "quest saves do not duplicate durable dialogue state")
 	var dialogue_path := SaveManager.get_slot_dir(TEST_SAVE_SLOT).path_join("dialogue.json")
 	DirAccess.remove_absolute(dialogue_path)
-	GameState.dialogue_state.claim_fact(&"rowan", &"stale_fact")
+	GameState.dialogue_state.load_save_data({
+		"npc_facts": {"rowan": ["stale_fact"]}
+	})
 	SaveManager.load_game(TEST_SAVE_SLOT)
 	_expect_true(GameState.dialogue_state.get_facts(&"rowan").is_empty(), "older saves without dialogue.json load with empty dialogue state")
 

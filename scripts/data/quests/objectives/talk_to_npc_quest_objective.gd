@@ -12,7 +12,7 @@ func apply_event(event: GameplayEvent) -> bool:
 		return false
 	completed = true
 	return true
- 
+
 func is_complete() -> bool:
 	return completed
 

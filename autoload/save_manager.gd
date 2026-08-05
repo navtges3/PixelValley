@@ -44,28 +44,41 @@ func new_save(slot: int = 1) -> void:
 	save_game()
 
 func save_game() -> void:
+	save_hero()
+	save_village()
+	save_quests()
+	save_dialogue_state()
+	save_world_state()
+	save_meta()
+
+func save_hero() -> void:
 	_save_json(save_slot, "hero.json", {
 		"data": _get_hero_data(GameState.hero)
 	})
 
+func save_village() -> void:
 	_save_json(save_slot, "village.json", {
 		"data": _get_village_data(GameState.village)
 	})
 
+func save_quests() -> void:
 	_save_json(save_slot, "quests.json", {
 		"schema_version": QUEST_SAVE_MIGRATOR.CURRENT_SCHEMA_VERSION,
 		"data": _get_quests_data(GameState.quest_manager)
 	})
 
+func save_dialogue_state() -> void:
 	_save_json(save_slot, "dialogue.json", {
 		"schema_version": DIALOGUE_SAVE_MIGRATOR.CURRENT_SCHEMA_VERSION,
 		"data": GameState.dialogue_state.get_save_data()
 	})
 
+func save_world_state() -> void:
 	_save_json(save_slot, "world_state.json", {
 		"data": WorldManager.get_save_data()
 	})
 
+func save_meta() -> void:
 	_save_json(save_slot, "meta.json", {
 		"hero_name": GameState.hero.name,
 		"level": GameState.hero.level,
