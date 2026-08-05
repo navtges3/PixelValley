@@ -9,4 +9,3 @@ func _init(target_npc_id: StringName, delivered_item_id: String, delivered_amoun
 	npc_id = target_npc_id
 	item_id = delivered_item_id
 	amount = delivered_amount
-	

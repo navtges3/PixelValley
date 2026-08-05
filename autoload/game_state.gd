@@ -17,6 +17,9 @@ var player_location: Dictionary = {
 signal gameplay_event(event: GameplayEvent)
 signal quest_manager_changed(manager: QuestManager)
 
+func _ready() -> void:
+	dialogue_state.fact_changed.connect(_on_dialogue_fact_changed)
+
 func start_new_game(slot: int = 1) -> void:
 	dialogue_state.clear()
 	_setup_hero_inv()
@@ -50,6 +53,9 @@ func set_quest_manager(new_manager: QuestManager) -> void:
 		quest_manager.disconnect_signals()
 	quest_manager = new_manager
 	quest_manager_changed.emit(quest_manager)
+
+func _on_dialogue_fact_changed(_npc_id: StringName, _fact_id: StringName) -> void:
+	SaveManager.save_dialogue_state()
 
 func _setup_village() -> void:
 	village = Village.new()
