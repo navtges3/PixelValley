@@ -2,6 +2,8 @@ extends Node
 
 const SAVE_DIR := "user://saves"
 const QUEST_SAVE_MIGRATOR := preload("res://scripts/save/quest_save_migrator.gd")
+const DIALOGUE_SAVE_MIGRATOR := preload("res://scripts/save/dialogue_save_migrator.gd")
+const NPC_ROSTER: NpcRoster = preload("res://resources/characters/npcs/npc_roster.tres")
 
 const LEGACY_EFFECT_SPECS: Dictionary = {
 	0: { "name": "Regeneration", "stat": Effect.EffectStat.CURRENT_HP, "timing": Effect.EffectTiming.ON_TICK, "operation": Effect.EffectOperation.ADD },
@@ -55,6 +57,11 @@ func save_game() -> void:
 		"data": _get_quests_data(GameState.quest_manager)
 	})
 
+	_save_json(save_slot, "dialogue.json", {
+		"schema_version": DIALOGUE_SAVE_MIGRATOR.CURRENT_SCHEMA_VERSION,
+		"data": GameState.dialogue_state.get_save_data()
+	})
+
 	_save_json(save_slot, "world_state.json", {
 		"data": WorldManager.get_save_data()
 	})
@@ -87,6 +94,18 @@ func load_game(slot: int = 1) -> void:
 	loaded_manager.reconnect_signals()
 	GameState.set_quest_manager(loaded_manager)
 
+	GameState.dialogue_state.clear()
+	var dialogue_path := _file(slot, "dialogue.json")
+	if FileAccess.file_exists(dialogue_path):
+		var dialogue_json := _load_json(slot, "dialogue.json")
+		dialogue_json = DIALOGUE_SAVE_MIGRATOR.migrate(
+			dialogue_json,
+			NPC_ROSTER.get_npc_ids()
+		)
+		GameState.dialogue_state.load_save_data(
+			dialogue_json.get("data", {})
+		)
+
 	var world_json := _load_json(slot, "world_state.json")
 	WorldManager.load_save_data(world_json.get("data", {}))
 
@@ -104,7 +123,7 @@ func delete_slot(slot: int = 1) -> void:
 	if not DirAccess.dir_exists_absolute(dir):
 		push_warning("SaveManager: No save data to delete for slot %d" % slot)
 		return
-	var files := ["hero.json", "village.json", "quests.json",
+	var files := ["hero.json", "village.json", "quests.json", "dialogue.json",
 		"zone_state.json", "world_state.json", "meta.json"]
 	for filename in files:
 		var path := dir.path_join(filename)
