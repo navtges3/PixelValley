@@ -40,4 +40,6 @@ func get_validation_errors() -> PackedStringArray:
 		errors.append("NPC '%s' has a portrait status but no portrait." % npc_id)
 	if dialogue == null and service_id.is_empty():
 		errors.append("NPC '%s' has neither dialogue nor a service." % npc_id)
+	if dialogue != null and dialogue.conversation_id.is_empty():
+		errors.append("NPC '%s' has dialogue with no stable conversation ID." % npc_id)
 	return errors

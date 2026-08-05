@@ -22,6 +22,7 @@ func set_enabled(enabled: bool) -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	if (not _enabled or not _player_inside
+		or event.is_echo()
 		or not event.is_action_pressed("interact")
 		or _player == null or _player.movement_blocked):
 		return

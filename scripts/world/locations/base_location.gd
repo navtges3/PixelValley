@@ -25,6 +25,7 @@ func _ready() -> void:
 		world_hud.dialogue_closed.connect(_on_dialogue_closed)
 		world_hud.dialogue_action_requested.connect(_on_dialogue_action_requested)
 	_npc_quest_controller.state_changed.connect(_refresh_npc_quest_statuses)
+	_npc_quest_controller.set_dialogue_state(GameState.dialogue_state)
 	GameState.quest_manager_changed.connect(_on_quest_manager_changed)
 	_npc_quest_controller.set_quest_manager(GameState.quest_manager)
 	_bind_npcs()
@@ -33,6 +34,7 @@ func _ready() -> void:
 
 func _exit_tree() -> void:
 	_npc_quest_controller.clear_quest_manager()
+	_npc_quest_controller.clear_dialogue_state()
 	if GameState.quest_manager_changed.is_connected(_on_quest_manager_changed):
 		GameState.quest_manager_changed.disconnect(_on_quest_manager_changed)
 
@@ -146,8 +148,21 @@ func _bind_npcs() -> void:
 		npc.service_requested.connect(_on_npc_service_requested)
 
 func _on_npc_dialogue_requested(npc_id: StringName, conversation: DialogueConversation) -> void:
+	var npc: NpcActor = _npcs_by_id.get(npc_id)
+	if npc == null:
+		push_warning("Dialogue requested for unknown NPC '%s'." % npc_id)
+		return
+	if conversation == null:
+		push_warning("NPC '%s' requested null dialogue." % npc_id)
+		return
+	if npc.data == null or npc.data.dialogue != conversation:
+		push_warning(
+			"NPC '%s' requested an unregistered conversation." % npc_id
+		)
+		return
 	var world_hud := ScreenManager.get_world_hud() as WorldHUD
 	if world_hud == null:
+		push_warning("Dialogue requested without an available WorldHUD.")
 		return
 	var context := _npc_quest_controller.build_context(npc_id, _get_dialogue_location_id())
 	if world_hud.start_dialogue(conversation, context):

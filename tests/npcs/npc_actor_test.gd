@@ -159,6 +159,7 @@ func _test_authored_resources() -> void:
 func _test_dialogue_interaction() -> void:
 	_reset_signal_captures()
 	var conversation := DialogueConversation.new()
+	conversation.conversation_id = &"dialogue_npc_test"
 	var data := _make_data(&"dialogue_npc")
 	data.dialogue = conversation
 	var npc := _spawn_actor(data)
@@ -212,6 +213,7 @@ func _test_service_interaction() -> void:
 func _test_dialogue_takes_priority() -> void:
 	_reset_signal_captures()
 	var conversation := DialogueConversation.new()
+	conversation.conversation_id = &"hybrid_npc_test"
 	var data := _make_data(&"hybrid_npc")
 	data.dialogue = conversation
 	data.service_id = &"test_service"

@@ -5,6 +5,7 @@ const SAVE_DIR := "user://saves"
 var hero: Hero = null
 var village: Village = null
 var quest_manager: QuestManager = null
+var dialogue_state: DialogueState = DialogueState.new()
 var pre_combat_position: Vector2 = Vector2.ZERO
 
 var player_location: Dictionary = {
@@ -17,6 +18,7 @@ signal gameplay_event(event: GameplayEvent)
 signal quest_manager_changed(manager: QuestManager)
 
 func start_new_game(slot: int = 1) -> void:
+	dialogue_state.clear()
 	_setup_hero_inv()
 	_setup_village()
 	var new_manager := QuestManager.new()
@@ -27,6 +29,7 @@ func start_new_game(slot: int = 1) -> void:
 	SaveManager.new_save(slot)
 
 func reset_state() -> void:
+	dialogue_state.clear()
 	set_quest_manager(null)
 	hero = null
 	village = null

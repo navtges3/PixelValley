@@ -13,8 +13,11 @@ func run_tests() -> int:
 	_test_branching_conversation()
 	_test_condition_skips_to_fallback()
 	_test_actions_emit_once()
+	_test_duplicate_response_input_is_idempotent()
+	_test_advance_does_not_bypass_responses()
 	_test_cancel_and_abort()
 	_test_empty_pages_are_rejected()
+	_test_unknown_entry_id_is_rejected()
 	return _finish_test_run("DialogueRunner tests")
 
 func _test_authored_progression_conversations() -> void:
@@ -189,6 +192,53 @@ func _test_actions_emit_once() -> void:
 		"entry and response actions each emit once"
 	)
 
+func _test_duplicate_response_input_is_idempotent() -> void:
+	_reset_signal_captures()
+	var entry := _make_entry(&"start", ["Choose once."])
+	var response := DialogueResponse.new()
+	response.text = "Continue."
+	var action := DialogueAction.new()
+	action.action_id = &"one_shot"
+	response.actions.append(action)
+	entry.responses.append(response)
+	var runner := _make_connected_runner()
+	runner.action_requested.connect(
+		func(
+			_action: DialogueAction,
+			_context: Dictionary[StringName, Variant]
+		) -> void:
+			runner.choose_response(0)
+	)
+	runner.start(_make_conversation([entry], &"start"))
+	runner.advance()
+	runner.choose_response(0)
+	runner.choose_response(0)
+	_expect_equal(
+		_action_ids,
+		[&"one_shot"],
+		"rapid and reentrant response input emits its action once"
+	)
+
+func _test_advance_does_not_bypass_responses() -> void:
+	_reset_signal_captures()
+	var entry := _make_entry(&"start", ["Choose a response."])
+	var response := DialogueResponse.new()
+	response.text = "Required choice."
+	entry.responses.append(response)
+	var runner := _make_connected_runner()
+	runner.start(_make_conversation([entry], &"start"))
+	runner.advance()
+	runner.advance()
+	_expect_true(
+		runner.is_running(),
+		"advance input cannot bypass a required response"
+	)
+	_expect_equal(
+		_response_counts,
+		[1],
+		"rapid advance does not expose responses repeatedly"
+	)
+
 func _test_cancel_and_abort() -> void:
 	_reset_signal_captures()
 	var entry := _make_entry(&"start", ["Cannot be cancelled."])
@@ -239,6 +289,15 @@ func _test_empty_pages_are_rejected() -> void:
 		false,
 		"validation does not retain runner state"
 	)
+
+func _test_unknown_entry_id_is_rejected() -> void:
+	var entry := _make_entry(&"known", ["Known entry."])
+	var conversation := _make_conversation([entry], &"missing")
+	var runner := DialogueRunner.new()
+	var errors := runner.get_validation_errors(conversation)
+	_expect_equal(errors.size(), 1, "unknown start entry produces one validation error")
+	_expect_contains(errors[0], "was not found", "unknown entry error identifies the missing ID")
+	_expect_equal(runner.is_running(), false, "unknown entry validation does not trap the runner")
 
 func _make_context_condition(
 	key: StringName,

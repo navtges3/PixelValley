@@ -51,6 +51,8 @@ func start(conversation: DialogueConversation, context: Dictionary[StringName, V
 func advance() -> void:
 	if _current_entry == null:
 		return
+	if not _visible_responses.is_empty():
+		return
 	if _page_index + 1 < _current_entry.pages.size():
 		_page_index += 1
 		line_changed.emit(_current_entry, _page_index)
@@ -65,10 +67,12 @@ func choose_response(index: int) -> void:
 	if index < 0 or index >= _visible_responses.size():
 		return
 	var response: DialogueResponse = _visible_responses[index]
-	_emit_actions(_current_entry.actions)
-	_emit_actions(response.actions)
-	response_selected.emit(response)
+	var entry_actions := _current_entry.actions.duplicate()
+	var response_actions := response.actions.duplicate()
 	_visible_responses.clear()
+	_emit_actions(entry_actions)
+	_emit_actions(response_actions)
+	response_selected.emit(response)
 	_enter_entry(response.next_entry_id)
 
 func cancel() -> void:

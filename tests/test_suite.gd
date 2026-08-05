@@ -20,10 +20,13 @@ extends Node
 
 @onready var _dialogue_test_cases: Array[TestCase] = [
 	$Dialogue/DialogueRunnerTests,
+	$Dialogue/DialogueStateTests,
+	$Dialogue/DialogueWindowTests,
 ]
 
 @onready var _npc_test_cases: Array[TestCase] = [
 	$Npcs/NpcActorTests,
+	$Npcs/NpcDialogueIntegrationTests,
 ]
 
 func _ready() -> void:

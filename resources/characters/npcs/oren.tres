@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://bvrdh0sqeu4ny" path="res://scripts/data/npc_data.gd" id="1_o37s3"]
 [ext_resource type="Texture2D" uid="uid://lygp75a7owqn" path="res://assets/characters/npcs/weapon_shopkeep.png" id="2_1vuiu"]
-[ext_resource type="Resource" path="res://resources/dialogue/oren_conversation.tres" id="3_dialogue"]
+[ext_resource type="Resource" uid="uid://bg6uqh3h3lib6" path="res://resources/dialogue/oren_conversation.tres" id="3_dialogue"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_0h6kb"]
 atlas = ExtResource("2_1vuiu")

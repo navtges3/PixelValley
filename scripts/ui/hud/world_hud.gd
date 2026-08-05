@@ -1,6 +1,12 @@
 extends CanvasLayer
 class_name WorldHUD
 
+@export_group("Dialogue Audio")
+@export var dialogue_open_sfx_id: StringName = &""
+@export var dialogue_advance_sfx_id: StringName = &""
+@export var dialogue_response_sfx_id: StringName = &""
+@export var dialogue_close_sfx_id: StringName = &""
+
 signal dialogue_opened
 signal dialogue_closed(reason: DialogueRunner.FinishReason)
 signal dialogue_action_requested(action: DialogueAction, context: Dictionary[StringName, Variant])
@@ -18,8 +24,9 @@ var _pending_finish_reason: DialogueRunner.FinishReason = DialogueRunner.FinishR
 func _ready() -> void:
 	dialogue_runner = DialogueRunner.new()
 	dialogue_runner.conversation_started.connect(_on_conversation_started)
-	dialogue_runner.line_changed.connect(dialogue_window.show_line)
+	dialogue_runner.line_changed.connect(_on_dialogue_line_changed)
 	dialogue_runner.responses_changed.connect(dialogue_window.show_responses)
+	dialogue_runner.response_selected.connect(_on_dialogue_response_selected)
 	dialogue_runner.action_requested.connect(dialogue_action_requested.emit)
 	dialogue_runner.conversation_finished.connect(_on_conversation_finished)
 	dialogue_window.advance_requested.connect(dialogue_runner.advance)
@@ -82,10 +89,19 @@ func queue_quest_rewards(rewards: Array[RewardEntry]) -> void:
 
 func _on_conversation_started(_conversation: DialogueConversation) -> void:
 	dialogue_window.open()
+	_play_dialogue_sfx(dialogue_open_sfx_id)
 	dialogue_opened.emit()
+
+func _on_dialogue_line_changed(entry: DialogueEntry, page_index: int) -> void:
+	dialogue_window.show_line(entry, page_index)
+	_play_dialogue_sfx(dialogue_advance_sfx_id)
+
+func _on_dialogue_response_selected(_response: DialogueResponse) -> void:
+	_play_dialogue_sfx(dialogue_response_sfx_id)
 
 func _on_conversation_finished(reason: DialogueRunner.FinishReason) -> void:
 	dialogue_window.close()
+	_play_dialogue_sfx(dialogue_close_sfx_id)
 	if not _pending_quest_rewards.is_empty():
 		_pending_finish_reason = reason
 		reward_window.show_rewards(
@@ -98,3 +114,8 @@ func _on_conversation_finished(reason: DialogueRunner.FinishReason) -> void:
 func _on_rewards_collected() -> void:
 	_pending_quest_rewards.clear()
 	dialogue_closed.emit(_pending_finish_reason)
+
+func _play_dialogue_sfx(sfx_id: StringName) -> void:
+	if sfx_id.is_empty():
+		return
+	AudioManager.play_sfx_by_id(String(sfx_id))

@@ -22,6 +22,7 @@ const STATE_PRIORITY: Dictionary[QuestManager.LifecycleState, int] = {
 }
 
 var _manager: QuestManager = null
+var _dialogue_state: DialogueState = null
 
 func set_quest_manager(manager: QuestManager) -> void:
 	if _manager == manager:
@@ -35,6 +36,21 @@ func clear_quest_manager() -> void:
 	_disconnect_manager()
 	_manager = null
 
+func set_dialogue_state(dialogue_state: DialogueState) -> void:
+	if _dialogue_state == dialogue_state:
+		return
+	clear_dialogue_state()
+	_dialogue_state = dialogue_state
+	if _dialogue_state != null:
+		_dialogue_state.fact_changed.connect(_on_dialogue_fact_changed)
+	state_changed.emit()
+
+func clear_dialogue_state() -> void:
+	if (_dialogue_state != null	and
+		_dialogue_state.fact_changed.is_connected(_on_dialogue_fact_changed)):
+		_dialogue_state.fact_changed.disconnect(_on_dialogue_fact_changed)
+	_dialogue_state = null
+
 func build_context(npc_id: StringName, location_id: StringName) -> Dictionary[StringName, Variant]:
 	var context: Dictionary[StringName, Variant] = {
 		&"npc_id": npc_id,
@@ -43,7 +59,10 @@ func build_context(npc_id: StringName, location_id: StringName) -> Dictionary[St
 		&"quest_state": &"unavailable",
 		&"has_delivery_items": false,
 		&"main_progression": _get_main_progression(),
+		&"dialogue_facts": {},
 	}
+	if _dialogue_state != null:
+		context[&"dialogue_facts"] = _dialogue_state.get_facts(npc_id)
 	if _manager == null:
 		return context
 	var quest := _resolve_primary_source_quest(npc_id)
@@ -56,7 +75,16 @@ func build_context(npc_id: StringName, location_id: StringName) -> Dictionary[St
 
 func handle_action(action: DialogueAction, context: Dictionary[StringName, Variant]) -> Array[RewardEntry]:
 	var rewards: Array[RewardEntry] = []
-	if _manager == null or action == null:
+	if action == null:
+		return rewards
+	if action.action_id == &"set_dialogue_fact":
+		if _dialogue_state == null:
+			return rewards
+		var npc_id := StringName(context.get(&"npc_id", &""))
+		var fact_id := StringName(str(action.parameters.get(&"fact_id", "")))
+		_dialogue_state.claim_fact(npc_id, fact_id)
+		return rewards
+	if _manager == null:
 		return rewards
 	var quest_id := int(context.get(&"quest_id", -1))
 	var quest := _manager.get_quest_by_id(quest_id)
@@ -78,6 +106,8 @@ func handle_action(action: DialogueAction, context: Dictionary[StringName, Varia
 		&"turn_in_quest":
 			if quest != null and _manager.is_quest_ready(quest.id):
 				rewards = _manager.turn_in_quest(quest)
+		_:
+			push_warning("Unsupported NPC dialogue action: %s" % action.action_id)
 	return rewards
 
 func get_npc_status(npc_id: StringName) -> NpcActor.Status:
@@ -235,4 +265,7 @@ func _on_quest_changed(_quest: Quest) -> void:
 	state_changed.emit()
 
 func _on_quest_turned_in(_quest: Quest, _rewards: Array[RewardEntry]) -> void:
+	state_changed.emit()
+
+func _on_dialogue_fact_changed(_npc_id: StringName, _fact_id: StringName) -> void:
 	state_changed.emit()
