@@ -10,8 +10,13 @@
 [ext_resource type="Texture2D" uid="uid://dq0q4ayq6y76y" path="res://assets/world/village/village_tileset.png" id="7_fp2bn"]
 [ext_resource type="Texture2D" uid="uid://ch6mx3h7prhud" path="res://assets/world/village/fountain.png" id="7_vlb0o"]
 [ext_resource type="PackedScene" uid="uid://k35wlbc0ho3o" path="res://scenes/world/interact_area.tscn" id="8_yqhou"]
-[ext_resource type="PackedScene" path="res://scenes/ui/windows/quest_window.tscn" id="9_d7y5b"]
+[ext_resource type="PackedScene" uid="uid://cikkediqajtvl" path="res://scenes/ui/windows/quest_window.tscn" id="9_d7y5b"]
+[ext_resource type="PackedScene" uid="uid://b5w0g6a4eqi3g" path="res://scenes/world/characters/npc_actor.tscn" id="12_genuq"]
+[ext_resource type="Resource" uid="uid://do3xl7dwnlkat" path="res://resources/characters/npcs/mara.tres" id="13_f4knm"]
+[ext_resource type="Resource" uid="uid://dhncjvvc78utl" path="res://resources/characters/npcs/rowan.tres" id="13_genuq"]
 [ext_resource type="PackedScene" uid="uid://b0tdph7ofmv7r" path="res://scenes/world/trigger_zone.tscn" id="13_sia6k"]
+[ext_resource type="Resource" uid="uid://k3v7kxo3gf2p" path="res://resources/characters/npcs/nessa.tres" id="14_f4knm"]
+[ext_resource type="Resource" uid="uid://c4615kgcm175j" path="res://resources/characters/npcs/oren.tres" id="15_yby0u"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_fp2bn"]
 size = Vector2(38, 20)
@@ -115,7 +120,26 @@ prompt_text = "Press E to View Quests"
 position = Vector2(0, 2)
 shape = SubResource("CircleShape2D_h8u16")
 
-[node name="Player" parent="." unique_id=426329780 groups=["player"] instance=ExtResource("2_e7reh")]
+[node name="NPCs" type="Node2D" parent="." unique_id=1997584335]
+y_sort_enabled = true
+
+[node name="Mara" parent="NPCs" unique_id=319491251 instance=ExtResource("12_genuq")]
+position = Vector2(392, 456)
+data = ExtResource("13_f4knm")
+
+[node name="Rowan" parent="NPCs" unique_id=900388450 instance=ExtResource("12_genuq")]
+position = Vector2(488, 664)
+data = ExtResource("13_genuq")
+
+[node name="Nessa" parent="NPCs" unique_id=629089336 instance=ExtResource("12_genuq")]
+position = Vector2(248, 496)
+data = ExtResource("14_f4knm")
+
+[node name="Oren" parent="NPCs" unique_id=1668036299 instance=ExtResource("12_genuq")]
+position = Vector2(344, 312)
+data = ExtResource("15_yby0u")
+
+[node name="Player" parent="." unique_id=426329780 instance=ExtResource("2_e7reh")]
 position = Vector2(449, 504)
 
 [node name="TriggerZones" type="Node2D" parent="." unique_id=1097699768]

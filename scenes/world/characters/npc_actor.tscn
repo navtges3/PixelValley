@@ -1,0 +1,28 @@
+[gd_scene format=3 uid="uid://b5w0g6a4eqi3g"]
+
+[ext_resource type="PackedScene" uid="uid://k35wlbc0ho3o" path="res://scenes/world/interact_area.tscn" id="1_grl41"]
+[ext_resource type="Script" uid="uid://dpsai5624ne4d" path="res://scripts/world/characters/npc_actor.gd" id="1_i2wft"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ql5gy"]
+radius = 5.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_vcc81"]
+radius = 16.0
+
+[node name="NpcActor" type="CharacterBody2D" unique_id=319491251 groups=["npc"]]
+y_sort_enabled = true
+script = ExtResource("1_i2wft")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=235256959]
+offset = Vector2(0, -9)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=533677518]
+shape = SubResource("CircleShape2D_ql5gy")
+
+[node name="InteractArea" parent="." unique_id=1105164537 instance=ExtResource("1_grl41")]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractArea" unique_id=1673513859]
+shape = SubResource("CircleShape2D_vcc81")
+
+[node name="StatusIndicator" type="Sprite2D" parent="." unique_id=1343165083]
+position = Vector2(0, -32)

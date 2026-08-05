@@ -2,6 +2,8 @@ extends Node
 
 const SAVE_DIR := "user://saves"
 const QUEST_SAVE_MIGRATOR := preload("res://scripts/save/quest_save_migrator.gd")
+const DIALOGUE_SAVE_MIGRATOR := preload("res://scripts/save/dialogue_save_migrator.gd")
+const NPC_ROSTER: NpcRoster = preload("res://resources/characters/npcs/npc_roster.tres")
 
 const LEGACY_EFFECT_SPECS: Dictionary = {
 	0: { "name": "Regeneration", "stat": Effect.EffectStat.CURRENT_HP, "timing": Effect.EffectTiming.ON_TICK, "operation": Effect.EffectOperation.ADD },
@@ -42,23 +44,41 @@ func new_save(slot: int = 1) -> void:
 	save_game()
 
 func save_game() -> void:
+	save_hero()
+	save_village()
+	save_quests()
+	save_dialogue_state()
+	save_world_state()
+	save_meta()
+
+func save_hero() -> void:
 	_save_json(save_slot, "hero.json", {
 		"data": _get_hero_data(GameState.hero)
 	})
 
+func save_village() -> void:
 	_save_json(save_slot, "village.json", {
 		"data": _get_village_data(GameState.village)
 	})
 
+func save_quests() -> void:
 	_save_json(save_slot, "quests.json", {
 		"schema_version": QUEST_SAVE_MIGRATOR.CURRENT_SCHEMA_VERSION,
 		"data": _get_quests_data(GameState.quest_manager)
 	})
 
+func save_dialogue_state() -> void:
+	_save_json(save_slot, "dialogue.json", {
+		"schema_version": DIALOGUE_SAVE_MIGRATOR.CURRENT_SCHEMA_VERSION,
+		"data": GameState.dialogue_state.get_save_data()
+	})
+
+func save_world_state() -> void:
 	_save_json(save_slot, "world_state.json", {
 		"data": WorldManager.get_save_data()
 	})
 
+func save_meta() -> void:
 	_save_json(save_slot, "meta.json", {
 		"hero_name": GameState.hero.name,
 		"level": GameState.hero.level,
@@ -83,8 +103,21 @@ func load_game(slot: int = 1) -> void:
 	quest_json = QUEST_SAVE_MIGRATOR.migrate(quest_json, QuestManager.get_defined_quest_ids())
 
 	var loaded_manager: QuestManager = _load_quests(quest_json.get("data", {}))
+	loaded_manager.add_missing_defined_quests()
 	loaded_manager.reconnect_signals()
 	GameState.set_quest_manager(loaded_manager)
+
+	GameState.dialogue_state.clear()
+	var dialogue_path := _file(slot, "dialogue.json")
+	if FileAccess.file_exists(dialogue_path):
+		var dialogue_json := _load_json(slot, "dialogue.json")
+		dialogue_json = DIALOGUE_SAVE_MIGRATOR.migrate(
+			dialogue_json,
+			NPC_ROSTER.get_npc_ids()
+		)
+		GameState.dialogue_state.load_save_data(
+			dialogue_json.get("data", {})
+		)
 
 	var world_json := _load_json(slot, "world_state.json")
 	WorldManager.load_save_data(world_json.get("data", {}))
@@ -103,7 +136,7 @@ func delete_slot(slot: int = 1) -> void:
 	if not DirAccess.dir_exists_absolute(dir):
 		push_warning("SaveManager: No save data to delete for slot %d" % slot)
 		return
-	var files := ["hero.json", "village.json", "quests.json",
+	var files := ["hero.json", "village.json", "quests.json", "dialogue.json",
 		"zone_state.json", "world_state.json", "meta.json"]
 	for filename in files:
 		var path := dir.path_join(filename)
@@ -289,7 +322,8 @@ func _get_inventory_data(inventory: Inventory) -> Dictionary:
 		"equipped_weapon": ItemLoader.get_item_id(inventory.equipped_weapon),
 		"equipped_weapon_cooldowns": _get_ability_cooldowns(inventory.equipped_weapon),
 		"weapon_stash": inventory.weapon_stash.duplicate(),
-		"potions": inventory.potions.duplicate()
+		"potions": inventory.potions.duplicate(),
+		"quest_items": inventory.quest_items.duplicate(),
 	}
 
 func _load_inventory(data: Dictionary) -> Inventory:
@@ -316,6 +350,16 @@ func _load_inventory(data: Dictionary) -> Inventory:
 			inv.potions[resolved] = data["potions"][item_id]
 		else:
 			push_warning("SaveManager: unknown potion '%s', skipping" % item_id)
+
+	for item_id in data.get("quest_items", {}):
+		var resolved := _resolve_item_id(item_id)
+		if ItemLoader.get_item(resolved) is QuestItem:
+			inv.quest_items[resolved] = maxi(
+				int(data["quest_items"][item_id]),
+				0
+			)
+		else:
+			push_warning("SaveManager: unknown quest item '%s', skipping" % item_id)
 
 	return inv
 
@@ -446,6 +490,8 @@ func _get_quest_data(quest: Quest) -> Dictionary:
 		"category": quest.category,
 		"source_type": quest.source_type,
 		"source_id": quest.source_id,
+		"turn_in_npc_id": quest.turn_in_npc_id,
+		"initially_unlocked": quest.initially_unlocked,
 		"next_quests": quest.next_quests.duplicate(),
 		"completed": quest.completed,
 		"final_quest": quest.final_quest,
@@ -474,6 +520,8 @@ func _load_quest(data: Dictionary) -> Quest:
 	quest.category = data.get("category", Quest.Category.MAIN)
 	quest.source_type = data.get("source_type", Quest.SourceType.AUTOMATIC)
 	quest.source_id = str(data.get("source_id", ""))
+	quest.turn_in_npc_id = str(data.get("turn_in_npc_id", ""))
+	quest.initially_unlocked = bool(data.get("initially_unlocked", false))
 	quest.completed = data.get("completed", false)
 	quest.final_quest = data.get("final_quest", false)
 	# Restore next_quests so unlocking the follow-up works after a load.

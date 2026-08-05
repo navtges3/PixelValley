@@ -1,8 +1,9 @@
 [gd_resource type="Resource" script_class="Effect" format=3 uid="uid://dfs0whunveq1o"]
 
-[ext_resource type="Script" uid="uid://c5deti4sb2k2j" path="res://scripts/data/effect.gd" id="1_i0d5n"]
+[ext_resource type="Script" uid="uid://c5deti4sb2k2j" path="res://scripts/data/effects/effect.gd" id="1_i0d5n"]
 [ext_resource type="Texture2D" uid="uid://1iixu5oyt1hh" path="res://assets/effects/buffs/invigorate.png" id="1_ln8jy"]
-[ext_resource type="Script" uid="uid://hw30jan7sjfb" path="res://scripts/data/effect_stat_change.gd" id="2_yiyl4"]
+[ext_resource type="Script" uid="uid://hw30jan7sjfb" path="res://scripts/data/effects/effect_stat_change.gd" id="2_yiyl4"]
+
 
 [sub_resource type="Resource" id="Resource_i0d5n"]
 script = ExtResource("2_yiyl4")

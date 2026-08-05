@@ -1,0 +1,6 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://tests/dialogue/dialogue_window_test.gd" id="1_window"]
+
+[node name="DialogueWindowTests" type="Node"]
+script = ExtResource("1_window")

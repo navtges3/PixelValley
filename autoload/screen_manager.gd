@@ -91,6 +91,9 @@ func go_back(entrance_id: String = "", data: Variant = null) -> void:
 
 func _change_scene(path: String, entrance_id: String = "", data: Variant = null) -> void:
 	_is_transitioning = true
+	var world_hud := _world_hud as WorldHUD
+	if world_hud != null:
+		world_hud.abort_dialogue()
 	await _fade(1.0)
 	_world_hud.hide()
 	var scene = load(path).instantiate()
