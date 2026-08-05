@@ -34,7 +34,7 @@ func calculate_gold() -> int:
 	var variance := gold * gold_variance
 	return int(gold + randf_range(-variance, variance))
 
-func roll_loot(hero_class: Hero.HeroClass) -> Dictionary:
+func roll_loot(hero_class: Hero.HeroClass, inventory: Inventory) -> Dictionary:
 	if loot == null:
 		return {}
-	return loot.roll(hero_class)
+	return loot.roll(hero_class, inventory)

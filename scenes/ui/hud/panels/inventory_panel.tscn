@@ -42,6 +42,23 @@ theme_override_constants/separation = 3
 [node name="HSeparator" type="HSeparator" parent="ScrollContainer/VBox" unique_id=705265213]
 layout_mode = 2
 
+[node name="QuestItemsSection" type="VBoxContainer" parent="ScrollContainer/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="QuestItemsHeader" type="Label" parent="ScrollContainer/VBox/QuestItemsSection"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.92, 0.8, 1)
+theme_override_font_sizes/font_size = 14
+text = "Quest Items"
+
+[node name="QuestItemsList" type="VBoxContainer" parent="ScrollContainer/VBox/QuestItemsSection"]
+layout_mode = 2
+theme_override_constants/separation = 3
+
+[node name="QuestItemsSeparator" type="HSeparator" parent="ScrollContainer/VBox"]
+layout_mode = 2
+
 [node name="WeaponsSection" type="VBoxContainer" parent="ScrollContainer/VBox" unique_id=1637696894]
 layout_mode = 2
 

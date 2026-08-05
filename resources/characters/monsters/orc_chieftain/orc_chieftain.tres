@@ -1,14 +1,15 @@
 [gd_resource type="Resource" script_class="Monster" format=3 uid="uid://defc2ss743h1d"]
 
 [ext_resource type="SpriteFrames" uid="uid://c0eq7l4ijhmwd" path="res://resources/characters/monsters/orc_chieftain/orc_chieftain_battle_sprite_frames.tres" id="2_o5knh"]
+[ext_resource type="Resource" uid="uid://cjtbqoo60022b" path="res://resources/effects/common/buffs/power.tres" id="6_rruql"]
 [ext_resource type="Script" uid="uid://cnso83bg7vodw" path="res://scripts/data/condition.gd" id="6_tp04t"]
 [ext_resource type="Texture2D" uid="uid://byldksu2h2ick" path="res://assets/characters/monsters/orc_chieftain/orc_chieftain.png" id="8_xqsrt"]
 [ext_resource type="Script" uid="uid://bd6ohffno5w7r" path="res://scripts/characters/monster.gd" id="9_77wwi"]
 [ext_resource type="SpriteFrames" uid="uid://csar6wm63v6f" path="res://resources/characters/monsters/orc_chieftain/orc_chieftain_world_sprite_frames.tres" id="11_t544c"]
 [ext_resource type="Script" uid="uid://b2o7w8q10stxo" path="res://scripts/data/ability.gd" id="12_ability"]
 [ext_resource type="Script" uid="uid://bo48scp6lbwrb" path="res://scripts/data/attack.gd" id="13_attack"]
-[ext_resource type="Script" uid="uid://bvuw0uyc36uxx" path="res://scripts/data/utility.gd" id="14_utility"]
-[ext_resource type="Script" uid="uid://c5deti4sb2k2j" path="res://scripts/data/effect.gd" id="15_effect"]
+[ext_resource type="Script" uid="uid://c5deti4sb2k2j" path="res://scripts/data/effects/effect.gd" id="15_effect"]
+
 
 [sub_resource type="Resource" id="Resource_cleave_attack"]
 script = ExtResource("13_attack")
@@ -50,24 +51,12 @@ condition_type = 1
 value = 0.5
 metadata/_custom_type_script = "uid://cnso83bg7vodw"
 
-[sub_resource type="Resource" id="Resource_cry_effect"]
-script = ExtResource("15_effect")
-type = 3
-strength = 7
-duration = 3
-metadata/_custom_type_script = "uid://c5deti4sb2k2j"
-
-[sub_resource type="Resource" id="Resource_cry_utility"]
-script = ExtResource("14_utility")
-effects = Array[ExtResource("15_effect")]([SubResource("Resource_cry_effect")])
-metadata/_custom_type_script = "uid://bvuw0uyc36uxx"
-
 [sub_resource type="Resource" id="Resource_7hvvo"]
 script = ExtResource("12_ability")
 name = "War Cry"
 energy_cost = 20
 cooldown = 4
-utilities = Array[ExtResource("14_utility")]([SubResource("Resource_cry_utility")])
+caster_effects = Array[ExtResource("15_effect")]([ExtResource("6_rruql")])
 condition = SubResource("Resource_7fsos")
 metadata/_custom_type_script = "uid://b2o7w8q10stxo"
 

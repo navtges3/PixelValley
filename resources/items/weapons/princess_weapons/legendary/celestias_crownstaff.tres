@@ -2,11 +2,13 @@
 
 [ext_resource type="Script" uid="uid://b2o7w8q10stxo" path="res://scripts/data/ability.gd" id="1_ujjvl"]
 [ext_resource type="Script" uid="uid://bo48scp6lbwrb" path="res://scripts/data/attack.gd" id="2_n2hj3"]
-[ext_resource type="Script" uid="uid://bvuw0uyc36uxx" path="res://scripts/data/utility.gd" id="3_cvep0"]
-[ext_resource type="Script" uid="uid://c5deti4sb2k2j" path="res://scripts/data/effect.gd" id="4_irma1"]
+[ext_resource type="Script" uid="uid://c5deti4sb2k2j" path="res://scripts/data/effects/effect.gd" id="4_irma1"]
+[ext_resource type="Resource" uid="uid://biyt6u2pxfvqp" path="res://resources/effects/common/buffs/fortify.tres" id="5_irma1"]
 [ext_resource type="Script" uid="uid://dgykeyxn7fefw" path="res://scripts/data/weapon.gd" id="5_n5q04"]
 [ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://resources/themes/buttons/regular/red_button.tres" id="6_dgs6o"]
 [ext_resource type="Texture2D" uid="uid://1aegw5vl6n8q" path="res://assets/items/weapons/silver_scepter.png" id="6_n2hj3"]
+[ext_resource type="Script" uid="uid://hw30jan7sjfb" path="res://scripts/data/effects/effect_stat_change.gd" id="6_n5q04"]
+
 
 [sub_resource type="Resource" id="Resource_ljt0e"]
 script = ExtResource("2_n2hj3")
@@ -38,29 +40,18 @@ metadata/_custom_type_script = "uid://b2o7w8q10stxo"
 
 [sub_resource type="Resource" id="Resource_uu0b5"]
 script = ExtResource("4_irma1")
-type = 4
-strength = 5
-duration = 3
 metadata/_custom_type_script = "uid://c5deti4sb2k2j"
 
 [sub_resource type="Resource" id="Resource_o4vhw"]
 script = ExtResource("4_irma1")
-type = 5
-strength = 5
-duration = 3
 metadata/_custom_type_script = "uid://c5deti4sb2k2j"
-
-[sub_resource type="Resource" id="Resource_rav85"]
-script = ExtResource("3_cvep0")
-effects = Array[ExtResource("4_irma1")]([SubResource("Resource_uu0b5"), SubResource("Resource_o4vhw")])
-metadata/_custom_type_script = "uid://bvuw0uyc36uxx"
 
 [sub_resource type="Resource" id="Resource_mtfn0"]
 script = ExtResource("1_ujjvl")
 name = "Halo Convergence"
 energy_cost = 10
 cooldown = 6
-utilities = Array[ExtResource("3_cvep0")]([SubResource("Resource_rav85")])
+caster_effects = Array[ExtResource("4_irma1")]([ExtResource("5_irma1")])
 metadata/_custom_type_script = "uid://b2o7w8q10stxo"
 
 [sub_resource type="Resource" id="Resource_phwh4"]

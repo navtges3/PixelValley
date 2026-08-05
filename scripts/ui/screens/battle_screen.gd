@@ -35,6 +35,26 @@ func setup(config: Dictionary) -> void:
 	battle_config = config
 	_spawn_hero()
 	battle_manager.setup_battle(config)
+	_refresh_hero_effect_icons()
+
+# --- Effect Icons ---
+func _on_effect_lifecycle_changed(event: EffectLifecycleEvent) -> void:
+	if event.target == battle_manager.hero:
+		_refresh_hero_effect_icons()
+	elif event.target == battle_manager.monster:
+		_refresh_monster_effect_icons()
+
+func _refresh_hero_effect_icons() -> void:
+	if not is_instance_valid(hero_visual):
+		return
+	var effects := EffectManager.get_active_effects(battle_manager.hero)
+	hero_visual.set_effects(effects)
+
+func _refresh_monster_effect_icons() -> void:
+	if not is_instance_valid(monster_visual):
+		return
+	var effects := EffectManager.get_active_effects(battle_manager.monster)
+	monster_visual.set_effects(effects)
 
 # --- Hero ---
 func _spawn_hero() -> void:
@@ -42,6 +62,7 @@ func _spawn_hero() -> void:
 	hero_visual = BATTLE_CHARACTER.instantiate()
 	$HeroSlot.add_child(hero_visual)
 	hero_visual.apply_visual(battle_config.hero)
+	_refresh_hero_effect_icons()
 	hero_visual.configure_vfx(battle_config.hero.hero_class)
 	var weapon: Weapon = battle_config.hero.inventory.equipped_weapon
 	if weapon and weapon.sprite:
@@ -71,6 +92,7 @@ func _spawn_monster(monster_ref: Monster) -> void:
 	monster_visual = BATTLE_CHARACTER.instantiate()
 	$MonsterSlot.add_child(monster_visual)
 	monster_visual.apply_visual(monster_ref, true)
+	_refresh_monster_effect_icons()
 
 func _on_monster_updated(monster_ref: Monster) -> void:
 	var value: int = monster_ref.current_hp

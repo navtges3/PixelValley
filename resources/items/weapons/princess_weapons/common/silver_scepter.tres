@@ -2,11 +2,13 @@
 
 [ext_resource type="Script" uid="uid://b2o7w8q10stxo" path="res://scripts/data/ability.gd" id="1_sigq7"]
 [ext_resource type="Script" uid="uid://bo48scp6lbwrb" path="res://scripts/data/attack.gd" id="2_6usb4"]
-[ext_resource type="Script" uid="uid://bvuw0uyc36uxx" path="res://scripts/data/utility.gd" id="3_3wogk"]
-[ext_resource type="Script" uid="uid://c5deti4sb2k2j" path="res://scripts/data/effect.gd" id="4_nw3g1"]
+[ext_resource type="Script" uid="uid://c5deti4sb2k2j" path="res://scripts/data/effects/effect.gd" id="4_nw3g1"]
 [ext_resource type="Script" uid="uid://dgykeyxn7fefw" path="res://scripts/data/weapon.gd" id="5_6cf6l"]
+[ext_resource type="Resource" uid="uid://bipqwa8or45gt" path="res://resources/effects/common/buffs/focus.tres" id="5_nw3g1"]
+[ext_resource type="Script" uid="uid://hw30jan7sjfb" path="res://scripts/data/effects/effect_stat_change.gd" id="6_6cf6l"]
 [ext_resource type="Texture2D" uid="uid://1aegw5vl6n8q" path="res://assets/items/weapons/silver_scepter.png" id="6_6usb4"]
 [ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://resources/themes/buttons/regular/green_button.tres" id="6_buuea"]
+
 
 [sub_resource type="Resource" id="Resource_il6a2"]
 script = ExtResource("2_6usb4")
@@ -30,15 +32,7 @@ metadata/_custom_type_script = "uid://bo48scp6lbwrb"
 
 [sub_resource type="Resource" id="Resource_dy084"]
 script = ExtResource("4_nw3g1")
-type = 4
-strength = 3
-duration = 2
 metadata/_custom_type_script = "uid://c5deti4sb2k2j"
-
-[sub_resource type="Resource" id="Resource_at8ll"]
-script = ExtResource("3_3wogk")
-effects = Array[ExtResource("4_nw3g1")]([SubResource("Resource_dy084")])
-metadata/_custom_type_script = "uid://bvuw0uyc36uxx"
 
 [sub_resource type="Resource" id="Resource_m0u44"]
 script = ExtResource("1_sigq7")
@@ -46,7 +40,7 @@ name = "Sovereign Grace"
 energy_cost = 5
 cooldown = 3
 attack = SubResource("Resource_8djcv")
-utilities = Array[ExtResource("3_3wogk")]([SubResource("Resource_at8ll")])
+caster_effects = Array[ExtResource("4_nw3g1")]([ExtResource("5_nw3g1")])
 metadata/_custom_type_script = "uid://b2o7w8q10stxo"
 
 [resource]

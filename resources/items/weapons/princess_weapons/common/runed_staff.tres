@@ -2,9 +2,9 @@
 
 [ext_resource type="Script" uid="uid://b2o7w8q10stxo" path="res://scripts/data/ability.gd" id="1_oolys"]
 [ext_resource type="Script" uid="uid://bo48scp6lbwrb" path="res://scripts/data/attack.gd" id="2_ubka3"]
-[ext_resource type="Script" uid="uid://bvuw0uyc36uxx" path="res://scripts/data/utility.gd" id="3_ibvrs"]
 [ext_resource type="Script" uid="uid://dgykeyxn7fefw" path="res://scripts/data/weapon.gd" id="4_4d2j1"]
 [ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://resources/themes/buttons/regular/green_button.tres" id="5_humrn"]
+
 
 [sub_resource type="Resource" id="Resource_hv7gr"]
 script = ExtResource("2_ubka3")

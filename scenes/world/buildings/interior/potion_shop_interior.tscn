@@ -2,19 +2,16 @@
 
 [ext_resource type="Script" uid="uid://xy6lp0v5jq74" path="res://scripts/world/buildings/interior/potion_shop_interior.gd" id="1_kxhju"]
 [ext_resource type="PackedScene" uid="uid://barcl6is7t0uy" path="res://scenes/ui/windows/shop_window.tscn" id="2_kxhju"]
-[ext_resource type="PackedScene" uid="uid://k35wlbc0ho3o" path="res://scenes/world/interact_area.tscn" id="3_d0mt5"]
 [ext_resource type="TileSet" uid="uid://c3ib8w4j0mx7n" path="res://resources/world/building_interior_tileset.tres" id="3_ljrrm"]
-[ext_resource type="Texture2D" uid="uid://dg387lc85bt2q" path="res://assets/characters/npcs/potion_shopkeep.png" id="4_230t1"]
+[ext_resource type="PackedScene" uid="uid://b5w0g6a4eqi3g" path="res://scenes/world/characters/npc_actor.tscn" id="4_61jxo"]
 [ext_resource type="Texture2D" uid="uid://don3grn24yqj5" path="res://assets/world/village/weapon_shop/counter.png" id="4_ljrrm"]
 [ext_resource type="PackedScene" uid="uid://cv120tmswg7xm" path="res://scenes/world/characters/player.tscn" id="4_sexfc"]
+[ext_resource type="Resource" uid="uid://cku2ksvmk1l0e" path="res://resources/characters/npcs/alchemist.tres" id="5_33xkn"]
 [ext_resource type="Texture2D" uid="uid://d3cdi3r3y5kx" path="res://assets/world/village/potion_shop/cauldron.png" id="6_u32er"]
 [ext_resource type="Texture2D" uid="uid://crppd138omvaa" path="res://assets/world/village/potion_shop/shelf_a.png" id="7_jo5y3"]
 [ext_resource type="PackedScene" uid="uid://b0tdph7ofmv7r" path="res://scenes/world/trigger_zone.tscn" id="8_u32er"]
 [ext_resource type="Texture2D" uid="uid://baqgm81vbs0cl" path="res://assets/world/village/potion_shop/shelf_b.png" id="8_y0o1b"]
 [ext_resource type="Texture2D" uid="uid://bm12dtetcyj7d" path="res://assets/world/village/potion_shop/work_table.png" id="10_xuear"]
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_xuear"]
-radius = 5.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_230t1"]
 size = Vector2(62, 11)
@@ -30,9 +27,6 @@ size = Vector2(62, 11)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_u32er"]
 size = Vector2(94, 13)
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_jo5y3"]
-radius = 16.0
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_y0o1b"]
 radius = 5.0
@@ -65,16 +59,11 @@ tile_set = ExtResource("3_ljrrm")
 tile_map_data = PackedByteArray("AAAAAP7/AQAAAAAAAAAAAP//AQAAAAEAAAAJAP7/AQACAAAAAAAJAP//AQACAAEAAAAIAP7/AQABAAAAAAAIAP//AQABAAEAAAAHAP7/AQABAAAAAAAHAP//AQABAAEAAAAGAP7/AQABAAAAAAAGAP//AQABAAEAAAAFAP7/AQABAAAAAAAFAP//AQABAAEAAAAEAP7/AQABAAAAAAAEAP//AQABAAEAAAADAP7/AQABAAAAAAADAP//AQABAAEAAAACAP7/AQABAAAAAAACAP//AQABAAEAAAABAP7/AQABAAAAAAABAP//AQABAAEAAAAAAAAAAQADAAEAAAAAAAEAAQADAAEAAAAAAAIAAQADAAEAAAAAAAMAAQADAAEAAAAAAAQAAQADAAEAAAAAAAUAAQADAAEAAAAAAAYAAQADAAEAAAAJAAAAAQAEAAEAAAAJAAEAAQAEAAEAAAAJAAIAAQAEAAEAAAAJAAMAAQAEAAEAAAAJAAQAAQAEAAEAAAAJAAUAAQAEAAEAAAAJAAYAAQAEAAEAAAAJAAcAAQACAAIAAAAAAAcAAQAAAAIAAAABAAcAAQABAAIAAAACAAcAAQABAAIAAAAIAAcAAQABAAIAAAAHAAcAAQABAAIAAAAEAAcAAQADAAAAAAAFAAcAAQAEAAAAAAAGAAcAAQABAAIAAAADAAcAAQABAAIAAAA=")
 tile_set = ExtResource("3_ljrrm")
 
-[node name="Shopkeeper" type="CharacterBody2D" parent="." unique_id=309295007]
-y_sort_enabled = true
-position = Vector2(255, 123)
-
-[node name="Sprite2D" type="Sprite2D" parent="Shopkeeper" unique_id=397470808]
-texture = ExtResource("4_230t1")
-offset = Vector2(0, -10)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Shopkeeper" unique_id=514172550]
-shape = SubResource("CircleShape2D_xuear")
+[node name="NpcActor" parent="." unique_id=319491251 instance=ExtResource("4_61jxo")]
+position = Vector2(256, 120)
+data = ExtResource("5_33xkn")
+prompt_text = "Press E to Talk"
+interaction_offset = Vector2(0, 16)
 
 [node name="WallProps" type="Node2D" parent="." unique_id=1056169244]
 
@@ -136,12 +125,6 @@ texture = ExtResource("4_ljrrm")
 position = Vector2(0, -6.5)
 shape = SubResource("RectangleShape2D_u32er")
 
-[node name="InteractArea" parent="FloorProps/Counter" unique_id=1105164537 instance=ExtResource("3_d0mt5")]
-prompt_text = "Press E to Shop"
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="FloorProps/Counter/InteractArea" unique_id=1006435846]
-shape = SubResource("CircleShape2D_jo5y3")
-
 [node name="Cauldron" type="StaticBody2D" parent="FloorProps" unique_id=1415701295]
 position = Vector2(48, 144)
 
@@ -165,7 +148,7 @@ offset = Vector2(0, 16)
 position = Vector2(0, 18.5)
 shape = SubResource("RectangleShape2D_rjdcu")
 
-[node name="Player" parent="." unique_id=426329780 groups=["player"] instance=ExtResource("4_sexfc")]
+[node name="Player" parent="." unique_id=426329780 instance=ExtResource("4_sexfc")]
 position = Vector2(160, 216)
 
 [node name="ExitTriggerZone" parent="." unique_id=528423832 instance=ExtResource("8_u32er")]

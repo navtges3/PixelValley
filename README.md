@@ -11,7 +11,7 @@ This project is also a long-term learning project focused on modular, data-drive
 
 ## Current Status
 
-Pixel Valley is playable and actively in development. The current project version is `0.1.2`.
+Pixel Valley is playable and actively in development. The current project version is `0.1.4`.
 
 Implemented systems include hero creation, a village hub, explorable combat zones, turn-based battles, a main quest chain, shops, an inn, inventory/equipment management, save slots, HUD panels, rewards, loot drops, and placeholder audio/visual content.
 
@@ -113,6 +113,7 @@ Core patterns:
 - `BattleManager` emits signals consumed by `BattleScreen` and battle UI components.
 - `QuestManager` is a `Resource` owned by `GameState`, not an autoload.
 - Shops and rewards use item IDs resolved through `ItemLoader` and `WeaponDatabase`.
+- Effect application, future-turn duration, cleanup, events, and contributor guidance are documented in [`docs/effect_system.md`](docs/effect_system.md).
 
 ---
 

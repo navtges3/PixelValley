@@ -9,6 +9,7 @@ const COLOR_XP         := Color(0.35, 0.55, 0.90)
 const COLOR_POTION     := Color(0.25, 0.85, 0.35)
 const COLOR_WEAPON     := Color(0.85, 0.45, 0.15)
 const COLOR_WEAPON_SOLD := Color(0.65, 0.65, 0.65)
+const COLOR_QUEST_ITEM := Color(0.75, 0.55, 0.95)
 
 static func gold(amount: int) -> RewardEntry:
 	var entry := RewardEntry.new()
@@ -44,4 +45,18 @@ static func weapon_sold(item_id: String, gold_amount: int) -> RewardEntry:
 	var name := item.name if item else item_id
 	entry.display_text = "⚔ %s (duplicate — sold for %d gold)" % [name, gold_amount]
 	entry.color = COLOR_WEAPON_SOLD
+	return entry
+
+static func weapon_fallback(gold_amount: int) -> RewardEntry:
+	var entry := RewardEntry.new()
+	entry.display_text = "No new weapon available — received %d gold" % gold_amount
+	entry.color = COLOR_WEAPON_SOLD
+	return entry
+
+static func quest_item(item_id: String, count: int) -> RewardEntry:
+	var entry := RewardEntry.new()
+	var item := ItemLoader.get_item(item_id)
+	var item_name: String = item.name if item != null else item_id
+	entry.display_text = "◆ %dx %s" % [count, item_name]
+	entry.color = COLOR_QUEST_ITEM
 	return entry

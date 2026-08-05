@@ -1,0 +1,54 @@
+[gd_resource type="Resource" script_class="NpcData" format=3 uid="uid://k3v7kxo3gf2p"]
+
+[ext_resource type="Script" uid="uid://bvrdh0sqeu4ny" path="res://scripts/data/npc_data.gd" id="1_50gxk"]
+[ext_resource type="Texture2D" uid="uid://lygp75a7owqn" path="res://assets/characters/npcs/weapon_shopkeep.png" id="2_4orqe"]
+[ext_resource type="Resource" uid="uid://c7jgcpcu64o3f" path="res://resources/dialogue/nessa_conversation.tres" id="3_dialogue"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0h6kb"]
+atlas = ExtResource("2_4orqe")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_imqyq"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0h6kb")
+}],
+"loop": true,
+"name": &"idle_down",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0h6kb")
+}],
+"loop": true,
+"name": &"idle_left",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0h6kb")
+}],
+"loop": true,
+"name": &"idle_right",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0h6kb")
+}],
+"loop": true,
+"name": &"idle_up",
+"speed": 5.0
+}]
+
+[resource]
+script = ExtResource("1_50gxk")
+npc_id = &"nessa"
+display_name = "Nessa"
+role = "Farmer and cook"
+location_id = &"village"
+world_visual = SubResource("SpriteFrames_imqyq")
+dialogue = ExtResource("3_dialogue")
+metadata/_custom_type_script = "uid://bvrdh0sqeu4ny"

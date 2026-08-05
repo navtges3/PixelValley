@@ -1,7 +1,5 @@
-extends Control
+extends GameWindow
 class_name InnWindow
-
-signal closed
 
 @onready var inn_name_label: Label = $PanelContainer/VBoxContainer/InnNameLabel
 @onready var rest_feedback_label: Label = $PanelContainer/VBoxContainer/RestFeedbackLabel
@@ -11,11 +9,10 @@ func open() -> void:
 	inn_name_label.text = GameState.village.inn.name
 	rest_feedback_label.visible = false
 	rest_button.disabled = false
-	show()
+	super.open()
 
 func close() -> void:
-	hide()
-	closed.emit()
+	super.close()
 
 func _on_rest_button_pressed() -> void:
 	GameState.hero.rest()

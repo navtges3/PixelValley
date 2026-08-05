@@ -1,6 +1,23 @@
 extends Node
 
 const SAVE_DIR := "user://saves"
+const QUEST_SAVE_MIGRATOR := preload("res://scripts/save/quest_save_migrator.gd")
+const DIALOGUE_SAVE_MIGRATOR := preload("res://scripts/save/dialogue_save_migrator.gd")
+const NPC_ROSTER: NpcRoster = preload("res://resources/characters/npcs/npc_roster.tres")
+
+const LEGACY_EFFECT_SPECS: Dictionary = {
+	0: { "name": "Regeneration", "stat": Effect.EffectStat.CURRENT_HP, "timing": Effect.EffectTiming.ON_TICK, "operation": Effect.EffectOperation.ADD },
+	1: { "name": "Focus", "stat": Effect.EffectStat.CURRENT_NRG, "timing": Effect.EffectTiming.ON_TICK, "operation": Effect.EffectOperation.ADD },
+	2: { "name": "Poison", "stat": Effect.EffectStat.CURRENT_HP, "timing": Effect.EffectTiming.ON_TICK, "operation": Effect.EffectOperation.SUBTRACT },
+	3: { "name": "Might", "stat": Effect.EffectStat.ATTACK, "timing": Effect.EffectTiming.ON_APPLY, "operation": Effect.EffectOperation.ADD },
+	4: { "name": "Arcane Focus", "stat": Effect.EffectStat.MAGIC, "timing": Effect.EffectTiming.ON_APPLY, "operation": Effect.EffectOperation.ADD },
+	5: { "name": "Stonehide", "stat": Effect.EffectStat.DEFENSE, "timing": Effect.EffectTiming.ON_APPLY, "operation": Effect.EffectOperation.ADD },
+	6: { "name": "Warding", "stat": Effect.EffectStat.RESIST, "timing": Effect.EffectTiming.ON_APPLY, "operation": Effect.EffectOperation.ADD },
+	7: { "name": "Weaken", "stat": Effect.EffectStat.ATTACK, "timing": Effect.EffectTiming.ON_APPLY, "operation": Effect.EffectOperation.SUBTRACT },
+	8: { "name": "Dull Magic", "stat": Effect.EffectStat.MAGIC, "timing": Effect.EffectTiming.ON_APPLY, "operation": Effect.EffectOperation.SUBTRACT },
+	9: { "name": "Shatter Armor", "stat": Effect.EffectStat.DEFENSE, "timing": Effect.EffectTiming.ON_APPLY, "operation": Effect.EffectOperation.SUBTRACT },
+	10: { "name": "Expose", "stat": Effect.EffectStat.RESIST, "timing": Effect.EffectTiming.ON_APPLY, "operation": Effect.EffectOperation.SUBTRACT },
+}
 
 var save_slot: int = 1
 
@@ -27,22 +44,41 @@ func new_save(slot: int = 1) -> void:
 	save_game()
 
 func save_game() -> void:
+	save_hero()
+	save_village()
+	save_quests()
+	save_dialogue_state()
+	save_world_state()
+	save_meta()
+
+func save_hero() -> void:
 	_save_json(save_slot, "hero.json", {
 		"data": _get_hero_data(GameState.hero)
 	})
 
+func save_village() -> void:
 	_save_json(save_slot, "village.json", {
 		"data": _get_village_data(GameState.village)
 	})
 
+func save_quests() -> void:
 	_save_json(save_slot, "quests.json", {
+		"schema_version": QUEST_SAVE_MIGRATOR.CURRENT_SCHEMA_VERSION,
 		"data": _get_quests_data(GameState.quest_manager)
 	})
 
+func save_dialogue_state() -> void:
+	_save_json(save_slot, "dialogue.json", {
+		"schema_version": DIALOGUE_SAVE_MIGRATOR.CURRENT_SCHEMA_VERSION,
+		"data": GameState.dialogue_state.get_save_data()
+	})
+
+func save_world_state() -> void:
 	_save_json(save_slot, "world_state.json", {
 		"data": WorldManager.get_save_data()
 	})
 
+func save_meta() -> void:
 	_save_json(save_slot, "meta.json", {
 		"hero_name": GameState.hero.name,
 		"level": GameState.hero.level,
@@ -64,7 +100,24 @@ func load_game(slot: int = 1) -> void:
 	GameState.village = _load_village(village_json.get("data", {}))
 
 	var quest_json := _load_json(slot, "quests.json")
-	GameState.quest_manager = _load_quests(quest_json.get("data", {}))
+	quest_json = QUEST_SAVE_MIGRATOR.migrate(quest_json, QuestManager.get_defined_quest_ids())
+
+	var loaded_manager: QuestManager = _load_quests(quest_json.get("data", {}))
+	loaded_manager.add_missing_defined_quests()
+	loaded_manager.reconnect_signals()
+	GameState.set_quest_manager(loaded_manager)
+
+	GameState.dialogue_state.clear()
+	var dialogue_path := _file(slot, "dialogue.json")
+	if FileAccess.file_exists(dialogue_path):
+		var dialogue_json := _load_json(slot, "dialogue.json")
+		dialogue_json = DIALOGUE_SAVE_MIGRATOR.migrate(
+			dialogue_json,
+			NPC_ROSTER.get_npc_ids()
+		)
+		GameState.dialogue_state.load_save_data(
+			dialogue_json.get("data", {})
+		)
 
 	var world_json := _load_json(slot, "world_state.json")
 	WorldManager.load_save_data(world_json.get("data", {}))
@@ -73,7 +126,6 @@ func load_game(slot: int = 1) -> void:
 	var scene_int: int = meta_json.get("player_scene", ScreenManager.ScreenName.VALLEY)
 	var entrance: String = meta_json.get("player_entrance", "")
 	GameState.player_location = { "scene": scene_int, "entrance_id": entrance }
-	GameState.quest_manager.reconnect_signals()
 
 func get_meta_data(slot: int = 1) -> Dictionary:
 	var meta_json := _load_json(slot, "meta.json")
@@ -84,7 +136,7 @@ func delete_slot(slot: int = 1) -> void:
 	if not DirAccess.dir_exists_absolute(dir):
 		push_warning("SaveManager: No save data to delete for slot %d" % slot)
 		return
-	var files := ["hero.json", "village.json", "quests.json",
+	var files := ["hero.json", "village.json", "quests.json", "dialogue.json",
 		"zone_state.json", "world_state.json", "meta.json"]
 	for filename in files:
 		var path := dir.path_join(filename)
@@ -160,29 +212,81 @@ func _load_hero(data: Dictionary) -> Hero:
 # ---------------------------------------------------------
 # ACTIVE EFFECTS
 # ---------------------------------------------------------
-func _get_active_effects_data(combatant: Combatant) -> Array:
-	var result := []
+func _get_active_effects_data(combatant: Combatant) -> Array[Dictionary]:
+	var result: Array[Dictionary] = []
 	for ae in combatant.active_effects:
 		result.append({
-			"type": ae.effect.type,
-			"strength": ae.effect.strength,
-			"duration": ae.effect.duration,
-			"remaining_turns": ae.remaining_turns
+			"effect": _get_effect_data(ae.effect),
+			"remaining_turns": ae.remaining_turns,
+			"applied_stat_deltas": ae.get_applied_stat_deltas_data(),
 		})
 	return result
 
 func _load_active_effects(data: Array, combatant: Combatant) -> void:
-	for effect_data in data:
-		var effect := Effect.new()
-		effect.type = effect_data.get("type", Effect.EffectType.HEAL)
-		effect.strength = effect_data.get("strength", 0)
-		effect.duration = effect_data.get("duration", 0)
-
-		var remaining: int = effect_data.get("remaining_turns", 0)
+	for active_effect_data: Dictionary in data:
+		var effect_data: Dictionary = active_effect_data.get("effect", {})
+		var effect: Effect = _load_effect(effect_data) if not effect_data.is_empty() else _load_legacy_effect(active_effect_data)
+		var remaining: int = active_effect_data.get("remaining_turns", effect.get_duration())
 		var active_effect := ActiveEffect.new(effect, combatant)
 		if remaining > 0:
 			active_effect.remaining_turns = remaining
+		if active_effect_data.has("applied_stat_deltas"):
+			active_effect.restore_applied_stat_deltas(active_effect_data.get("applied_stat_deltas", []))
+		else:
+			active_effect.restore_legacy_applied_stat_deltas()
 		combatant.active_effects.append(active_effect)
+
+func _get_effect_data(effect: Effect) -> Dictionary:
+	var stat_changes: Array[Dictionary] = []
+	for stat_change in effect.stat_changes:
+		stat_changes.append({
+			"stat": stat_change.stat,
+			"timing": stat_change.timing,
+			"operation": stat_change.operation,
+			"base_amount": stat_change.base_amount,
+			"amount_per_level": stat_change.amount_per_level,
+		})
+	return {
+		"effect_name": effect.effect_name,
+		"effect_id": String(effect.effect_id),
+		"persistence": effect.persistence,
+		"level": effect.level,
+		"base_duration": effect.base_duration,
+		"duration_per_level": effect.duration_per_level,
+		"stat_changes": stat_changes,
+	}
+
+func _load_effect(data: Dictionary) -> Effect:
+	var effect := Effect.new()
+	effect.effect_name = str(data.get("effect_name", "Effect"))
+	effect.effect_id = StringName(data.get("effect_id", ""))
+	effect.persistence = data.get("persistence", Effect.Persistence.COMBAT_ONLY)
+	effect.level = max(int(data.get("level", 1)), 1)
+	effect.base_duration = max(int(data.get("base_duration", 1)), 1)
+	effect.duration_per_level = int(data.get("duration_per_level", 0))
+	for stat_change_data: Dictionary in data.get("stat_changes", []):
+		var stat_change := EffectStatChange.new()
+		stat_change.stat = stat_change_data.get("stat", Effect.EffectStat.CURRENT_HP)
+		stat_change.timing = stat_change_data.get("timing", Effect.EffectTiming.ON_TICK)
+		stat_change.operation = stat_change_data.get("operation", Effect.EffectOperation.ADD)
+		stat_change.base_amount = int(stat_change_data.get("base_amount", 0))
+		stat_change.amount_per_level = int(stat_change_data.get("amount_per_level", 0))
+		effect.stat_changes.append(stat_change)
+	return effect
+
+func _load_legacy_effect(data: Dictionary) -> Effect:
+	var legacy_type: int = int(data.get("type", 0))
+	var spec: Dictionary = LEGACY_EFFECT_SPECS.get(legacy_type, LEGACY_EFFECT_SPECS[0])
+	var effect := Effect.new()
+	effect.effect_name = str(spec["name"])
+	effect.base_duration = max(int(data.get("duration", 1)), 1)
+	var stat_change := EffectStatChange.new()
+	stat_change.stat = spec["stat"]
+	stat_change.timing = spec["timing"]
+	stat_change.operation = spec["operation"]
+	stat_change.base_amount = int(data.get("strength", 0))
+	effect.stat_changes.append(stat_change)
+	return effect
 
 # ---------------------------------------------------------
 # STATS
@@ -218,7 +322,8 @@ func _get_inventory_data(inventory: Inventory) -> Dictionary:
 		"equipped_weapon": ItemLoader.get_item_id(inventory.equipped_weapon),
 		"equipped_weapon_cooldowns": _get_ability_cooldowns(inventory.equipped_weapon),
 		"weapon_stash": inventory.weapon_stash.duplicate(),
-		"potions": inventory.potions.duplicate()
+		"potions": inventory.potions.duplicate(),
+		"quest_items": inventory.quest_items.duplicate(),
 	}
 
 func _load_inventory(data: Dictionary) -> Inventory:
@@ -227,7 +332,7 @@ func _load_inventory(data: Dictionary) -> Inventory:
 
 	var weapon_id: String = data.get("equipped_weapon", "")
 	if weapon_id != "":
-		var weapon := ItemLoader.get_item(weapon_id)
+		var weapon = ItemLoader.get_item(weapon_id)
 		if weapon is Weapon:
 			inv.equipped_weapon = weapon.duplicate(true)
 			_load_ability_cooldowns(inv.equipped_weapon, data.get("equipped_weapon_cooldowns", []))
@@ -245,6 +350,16 @@ func _load_inventory(data: Dictionary) -> Inventory:
 			inv.potions[resolved] = data["potions"][item_id]
 		else:
 			push_warning("SaveManager: unknown potion '%s', skipping" % item_id)
+
+	for item_id in data.get("quest_items", {}):
+		var resolved := _resolve_item_id(item_id)
+		if ItemLoader.get_item(resolved) is QuestItem:
+			inv.quest_items[resolved] = maxi(
+				int(data["quest_items"][item_id]),
+				0
+			)
+		else:
+			push_warning("SaveManager: unknown quest item '%s', skipping" % item_id)
 
 	return inv
 
@@ -329,29 +444,39 @@ func _load_inn(data: Dictionary) -> Inn:
 # ---------------------------------------------------------
 func _get_quests_data(quest_manager: QuestManager) -> Dictionary:
 	var data := {
+		"tracked_quest_id": quest_manager.tracked_quest_id,
 		"locked_quests": [],
-		"available_quests": [],
-		"completed_quests": []
+		"offered_quests": [],
+		"active_quests": [],
+		"ready_quests": [],
+		"completed_quests": [],
 	}
-	for quest in quest_manager.locked_quests:
+	for quest: Quest in quest_manager.locked_quests:
 		data["locked_quests"].append(_get_quest_data(quest))
-	for quest in quest_manager.available_quests:
-		data["available_quests"].append(_get_quest_data(quest))
-	for quest in quest_manager.completed_quests:
+	for quest: Quest in quest_manager.offered_quests:
+		data["offered_quests"].append(_get_quest_data(quest))
+	for quest: Quest in quest_manager.active_quests:
+		data["active_quests"].append(_get_quest_data(quest))
+	for quest: Quest in quest_manager.ready_quests:
+		data["ready_quests"].append(_get_quest_data(quest))
+	for quest: Quest in quest_manager.completed_quests:
 		data["completed_quests"].append(_get_quest_data(quest))
 	return data
 
 func _load_quests(data: Dictionary) -> QuestManager:
 	var manager := QuestManager.new()
-	for quest_data in data.get("locked_quests", []):
-		var quest := _load_quest(quest_data)
-		manager.locked_quests.append(quest)
-	for quest_data in data.get("available_quests", []):
-		var quest := _load_quest(quest_data)
-		manager.add_available_quest(quest)
-	for quest_data in data.get("completed_quests", []):
-		var quest := _load_quest(quest_data)
-		manager.completed_quests.append(quest)
+	for quest_data: Dictionary in data.get("locked_quests", []):
+		manager.locked_quests.append(_load_quest(quest_data))
+	for quest_data: Dictionary in data.get("offered_quests", []):
+		manager.offered_quests.append(_load_quest(quest_data))
+	for quest_data: Dictionary in data.get("active_quests", []):
+		manager.active_quests.append(_load_quest(quest_data))
+	for quest_data: Dictionary in data.get("ready_quests", []):
+		manager.ready_quests.append(_load_quest(quest_data))
+	for quest_data: Dictionary in data.get("completed_quests", []):
+		manager.completed_quests.append(_load_quest(quest_data))
+	var tracked_id := int(data.get("tracked_quest_id", -1))
+	manager.restore_tracked_quest_id(tracked_id)
 	return manager
 
 # ---------------------------------------------------------
@@ -362,6 +487,11 @@ func _get_quest_data(quest: Quest) -> Dictionary:
 		"id": quest.id,
 		"title": quest.title,
 		"description": quest.description,
+		"category": quest.category,
+		"source_type": quest.source_type,
+		"source_id": quest.source_id,
+		"turn_in_npc_id": quest.turn_in_npc_id,
+		"initially_unlocked": quest.initially_unlocked,
 		"next_quests": quest.next_quests.duplicate(),
 		"completed": quest.completed,
 		"final_quest": quest.final_quest,
@@ -370,13 +500,8 @@ func _get_quest_data(quest: Quest) -> Dictionary:
 		"rewards": [],
 	}
 	# objectives
-	for obj in quest.objectives:
-		data["objectives"].append({
-			"monster_id": obj.monster_id,
-			"target_amount": obj.target_amount,
-			"current_amount": obj.current_amount,
-			"location_id": obj.location_id
-		})
+	for objective: QuestObjective in quest.objectives:
+		data["objectives"].append(objective.get_save_data())
 	# reward
 	data["reward"] = {
 		"experience": quest.reward.experience,
@@ -392,6 +517,11 @@ func _load_quest(data: Dictionary) -> Quest:
 	quest.id = data.get("id", 0)
 	quest.title = data.get("title", "")
 	quest.description = data.get("description", "")
+	quest.category = data.get("category", Quest.Category.MAIN)
+	quest.source_type = data.get("source_type", Quest.SourceType.AUTOMATIC)
+	quest.source_id = str(data.get("source_id", ""))
+	quest.turn_in_npc_id = str(data.get("turn_in_npc_id", ""))
+	quest.initially_unlocked = bool(data.get("initially_unlocked", false))
 	quest.completed = data.get("completed", false)
 	quest.final_quest = data.get("final_quest", false)
 	# Restore next_quests so unlocking the follow-up works after a load.
@@ -400,13 +530,10 @@ func _load_quest(data: Dictionary) -> Quest:
 	var raw_unlocks: Array = data.get("unlocks_locations", [])
 	quest.unlocks_locations.assign(raw_unlocks)
 	# objectives
-	for obj_data in data.get("objectives", []):
-		var obj := QuestObjective.new()
-		obj.monster_id = obj_data.get("monster_id", MonsterLoader.MonsterID.GOBLIN)
-		obj.target_amount = obj_data.get("target_amount", 1)
-		obj.current_amount = obj_data.get("current_amount", 0)
-		obj.location_id = obj_data.get("location_id", "")
-		quest.objectives.append(obj)
+	for objective_data: Dictionary in data.get("objectives", []):
+		var objective := QuestObjectiveFactory.from_save_data(objective_data)
+		if objective != null:
+			quest.objectives.append(objective)
 	# reward
 	var reward_data: Dictionary = data.get("reward", {})
 	var reward := Reward.new()

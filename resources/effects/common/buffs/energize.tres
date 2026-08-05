@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="Effect" format=3 uid="uid://b8vkgtmd1pahc"]
+
+[ext_resource type="Script" uid="uid://c5deti4sb2k2j" path="res://scripts/data/effects/effect.gd" id="1_u3tn3"]
+[ext_resource type="Script" uid="uid://hw30jan7sjfb" path="res://scripts/data/effects/effect_stat_change.gd" id="2_sucxq"]
+
+
+[sub_resource type="Resource" id="Resource_u3tn3"]
+script = ExtResource("2_sucxq")
+stat = 1
+base_amount = 10
+amount_per_level = 10
+metadata/_custom_type_script = "uid://hw30jan7sjfb"
+
+[resource]
+script = ExtResource("1_u3tn3")
+effect_name = "Energize"
+effect_id = &"energize"
+stat_changes = Array[ExtResource("2_sucxq")]([SubResource("Resource_u3tn3")])
+metadata/_custom_type_script = "uid://c5deti4sb2k2j"

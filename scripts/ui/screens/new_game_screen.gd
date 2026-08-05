@@ -30,7 +30,7 @@ func load_hero_previews() -> void:
 	for path: String in HERO_DEFAULTS:
 		var hero_preview := load(path) as Hero
 		if hero_preview:
-			var preview := PREVIEW_SCENE.instantiate()
+			var preview := PREVIEW_SCENE.instantiate() as HeroPreview
 			preview.hero = hero_preview
 			preview.class_selected.connect(_on_class_selected)
 			class_selector.add_child(preview)
@@ -38,15 +38,32 @@ func load_hero_previews() -> void:
 func check_create_button_state() -> void:
 	create_button.disabled = not (_class_selected and hero_name.text != "")
 
-func _on_class_selected(selected_hero: Hero) -> void:
-	if _class_selected and _selected_class == selected_hero.hero_class:
+func _on_class_selected(selected_class: Hero.HeroClass) -> void:
+	if _class_selected and _selected_class == selected_class:
 		_class_selected = false
 		hero_class.text = ""
 	else:
 		_class_selected = true
-		_selected_class = selected_hero.hero_class
-		hero_class.text = selected_hero.get_class_name()
+		_selected_class = selected_class
+		hero_class.text = _get_class_name(selected_class)
+	_update_preview_selection()
 	check_create_button_state()
+
+func _update_preview_selection() -> void:
+	for child in class_selector.get_children():
+		if child is HeroPreview and child.hero != null:
+			child.selected = _class_selected and child.hero.hero_class == _selected_class
+
+func _get_class_name(selected_class: Hero.HeroClass) -> String:
+	match selected_class:
+		Hero.HeroClass.ASSASSIN:
+			return "Assassin"
+		Hero.HeroClass.KNIGHT:
+			return "Knight"
+		Hero.HeroClass.PRINCESS:
+			return "Princess"
+		_:
+			return "Unknown"
 
 func _on_back_button_pressed() -> void:
 	GameState.hero = null

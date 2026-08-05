@@ -4,6 +4,7 @@ class_name InventoryPanel
 signal weapon_equipped(weapon_id: String)
 
 @onready var potions_list: VBoxContainer = $ScrollContainer/VBox/PotionsSection/PotionsList
+@onready var quest_items_list: VBoxContainer = $ScrollContainer/VBox/QuestItemsSection/QuestItemsList
 @onready var equipped_label: Label = $ScrollContainer/VBox/WeaponsSection/EquippedLabel
 @onready var weapons_list: VBoxContainer = $ScrollContainer/VBox/WeaponsSection/WeaponsList
 
@@ -20,6 +21,7 @@ func refresh() -> void:
 		return
 	var hero := GameState.hero
 	_refresh_potions(hero)
+	_refresh_quest_items(hero)
 	_refresh_weapons(hero)
 
 func _refresh_potions(hero: Hero) -> void:
@@ -45,6 +47,24 @@ func _refresh_potions(hero: Hero) -> void:
 				tip_parts.append(eff._to_string())
 			name_lbl.tooltip_text = "\n".join(tip_parts)
 		potions_list.add_child(row)
+
+func _refresh_quest_items(hero: Hero) -> void:
+	for child in quest_items_list.get_children():
+		child.queue_free()
+	if hero.inventory.quest_items.is_empty():
+		quest_items_list.add_child(_make_label("No quest items", COLOR_SUBTEXT))
+		return
+	for item_id: String in hero.inventory.quest_items:
+		var count := hero.inventory.get_quest_item_count(item_id)
+		var item := ItemLoader.get_item(item_id) as QuestItem
+		if item == null:
+			continue
+		var label := _make_label(
+			"◆ %dx %s" % [count, item.name],
+			RewardEntry.COLOR_QUEST_ITEM
+		)
+		label.tooltip_text = item.description
+		quest_items_list.add_child(label)
 
 func _refresh_weapons(hero: Hero) -> void:
 	for child in weapons_list.get_children():

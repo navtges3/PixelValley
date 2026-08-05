@@ -2,11 +2,12 @@
 
 [ext_resource type="Script" uid="uid://b2o7w8q10stxo" path="res://scripts/data/ability.gd" id="1_qgjck"]
 [ext_resource type="Script" uid="uid://bo48scp6lbwrb" path="res://scripts/data/attack.gd" id="2_e5x0j"]
-[ext_resource type="Script" uid="uid://bvuw0uyc36uxx" path="res://scripts/data/utility.gd" id="3_708hw"]
-[ext_resource type="Script" uid="uid://c5deti4sb2k2j" path="res://scripts/data/effect.gd" id="4_me5x0"]
+[ext_resource type="Script" uid="uid://c5deti4sb2k2j" path="res://scripts/data/effects/effect.gd" id="4_me5x0"]
+[ext_resource type="Resource" uid="uid://cjtbqoo60022b" path="res://resources/effects/common/buffs/power.tres" id="5_me5x0"]
 [ext_resource type="Script" uid="uid://dgykeyxn7fefw" path="res://scripts/data/weapon.gd" id="5_sdder"]
 [ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://resources/themes/buttons/regular/red_button.tres" id="6_61bla"]
 [ext_resource type="Texture2D" uid="uid://bay74h6rg08eq" path="res://assets/items/weapons/scimitar.png" id="6_e5x0j"]
+
 
 [sub_resource type="Resource" id="Resource_0aisa"]
 script = ExtResource("2_e5x0j")
@@ -34,24 +35,12 @@ cooldown = 3
 attack = SubResource("Resource_eqh21")
 metadata/_custom_type_script = "uid://b2o7w8q10stxo"
 
-[sub_resource type="Resource" id="Resource_ervrq"]
-script = ExtResource("4_me5x0")
-type = 2
-strength = 10
-duration = 2
-metadata/_custom_type_script = "uid://c5deti4sb2k2j"
-
-[sub_resource type="Resource" id="Resource_fvyw7"]
-script = ExtResource("3_708hw")
-effects = Array[ExtResource("4_me5x0")]([SubResource("Resource_ervrq")])
-metadata/_custom_type_script = "uid://bvuw0uyc36uxx"
-
 [sub_resource type="Resource" id="Resource_5hw8h"]
 script = ExtResource("1_qgjck")
 name = "Cursed Bladewaltze"
 energy_cost = 10
 cooldown = 6
-utilities = Array[ExtResource("3_708hw")]([SubResource("Resource_fvyw7")])
+caster_effects = Array[ExtResource("4_me5x0")]([ExtResource("5_me5x0")])
 metadata/_custom_type_script = "uid://b2o7w8q10stxo"
 
 [sub_resource type="Resource" id="Resource_kyhev"]

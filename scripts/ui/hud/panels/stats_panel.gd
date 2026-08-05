@@ -4,7 +4,6 @@ class_name StatsPanel
 @onready var name_label: Label = $ScrollContainer/VBox/StatsRow/StatsBars/NameRow/NameLabel
 @onready var class_label: Label = $ScrollContainer/VBox/StatsRow/StatsBars/NameRow/ClassLabel
 @onready var level_label: Label = $ScrollContainer/VBox/StatsRow/StatsBars/LevelRow/LevelLabel
-@onready var skill_label: Label = $ScrollContainer/VBox/StatsRow/StatsBars/LevelRow/SkillLabel
 
 @onready var hp_bar: ProgressBar = $ScrollContainer/VBox/StatsRow/StatsBars/HPBar
 @onready var hp_label: Label = $ScrollContainer/VBox/StatsRow/StatsBars/HPBar/HPLabel
@@ -29,6 +28,7 @@ class_name StatsPanel
 @onready var resist_down: Button = $ScrollContainer/VBox/StatsRow/StatsGrid/ResistMod/ResistDown
 
 @onready var confirm_button: Button = $ScrollContainer/VBox/StatsRow/StatsGrid/ConfirmButton
+@onready var skill_label: Label = $ScrollContainer/VBox/StatsRow/StatsGrid/SkillLabel
 
 @onready var effects_container: VBoxContainer = $ScrollContainer/VBox/EffectsContainer
 
@@ -142,16 +142,17 @@ func _refresh_stat_label(stat: String, prefix: String, base_val: int) -> void:
 func _refresh_effects(hero: Hero) -> void:
 	for child in effects_container.get_children():
 		child.queue_free()
-	
-	if hero.active_effects.is_empty():
+
+	var effects: Array[EffectView] = EffectManager.get_active_effects(hero)
+	if effects.is_empty():
 		var lbl := _make_label("No active effects", COLOR_SUBTEXT, 11)
 		effects_container.add_child(lbl)
 		return
-	
+
 	var header := _make_label("Active Effects:", COLOR_HEADER, 12)
 	effects_container.add_child(header)
-	for ae in hero.active_effects:
-		var lbl := _make_label("  • %s" % ae._to_string(), COLOR_SUBTEXT, 11)
+	for effect: EffectView in effects:
+		var lbl := _make_label("  • %s" % effect.tooltip_text, COLOR_SUBTEXT, 11)
 		effects_container.add_child(lbl)
 
 func _on_increase(stat: String) -> void:

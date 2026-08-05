@@ -5,6 +5,7 @@ class_name Inventory
 @export var equipped_weapon: Weapon
 @export var weapon_stash: Array[String]
 @export var potions: Dictionary = {}
+@export var quest_items: Dictionary = {}
 
 # ================================================
 #  Potions
@@ -20,6 +21,57 @@ func use_potion(item_id: String) -> Array[Effect]:
 
 func add_potion(item_id: String, amount: int = 1) -> void:
 	potions[item_id] = potions.get(item_id, 0) + amount
+
+func get_potion_count(item_id: String) -> int:
+	return int(potions.get(item_id, 0))
+
+func remove_potions(item_id: String, amount: int) -> bool:
+	if amount <= 0 or get_potion_count(item_id) < amount:
+		return false
+	potions[item_id] -= amount
+	if potions[item_id] <= 0:
+		potions.erase(item_id)
+	return true
+
+# ================================================
+#  Quest Items
+# ================================================
+func add_quest_item(item_id: String, amount: int = 1) -> void:
+	if amount <= 0:
+		return
+	quest_items[item_id] = int(quest_items.get(item_id, 0)) + amount
+
+func get_quest_item_count(item_id: String) -> int:
+	return int(quest_items.get(item_id, 0))
+
+func remove_quest_items(item_id: String, amount: int) -> bool:
+	if amount <= 0 or get_quest_item_count(item_id) < amount:
+		return false
+	quest_items[item_id] -= amount
+	if quest_items[item_id] <= 0:
+		quest_items.erase(item_id)
+	return true
+
+func get_item_count(item_id: String) -> int:
+	var item := ItemLoader.get_item(item_id)
+	if item is Potion:
+		return get_potion_count(item_id)
+	if item is QuestItem:
+		return get_quest_item_count(item_id)
+	if item is Weapon:
+		return 1 if item_id in weapon_stash else 0
+	return 0
+
+func remove_items(item_id: String, amount: int) -> bool:
+	var item := ItemLoader.get_item(item_id)
+	if item is Potion:
+		return remove_potions(item_id, amount)
+	if item is QuestItem:
+		return remove_quest_items(item_id, amount)
+	if item is Weapon and amount == 1 and item_id in weapon_stash:
+		weapon_stash.erase(item_id)
+		return true
+	return false
 
 # ================================================
 #  Weapons

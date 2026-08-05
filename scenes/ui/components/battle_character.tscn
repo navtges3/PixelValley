@@ -5,10 +5,22 @@
 [ext_resource type="Texture2D" uid="uid://1aegw5vl6n8q" path="res://assets/items/weapons/silver_scepter.png" id="3_ej3rn"]
 [ext_resource type="Script" uid="uid://dob7sohiowffx" path="res://scripts/ui/components/magic_glow.gd" id="4_ej3rn"]
 [ext_resource type="Script" uid="uid://c37q15v1k0fmj" path="res://scripts/ui/components/weapon_trail.gd" id="4_il1nn"]
-[ext_resource type="SpriteFrames" uid="uid://pch4plbc12hl" path="res://resources/characters/heroes/princess/princess_battle_sprite_frames.tres" id="6_igjgp"]
+[ext_resource type="SpriteFrames" uid="uid://ghh4h01vpcng" path="res://resources/characters/monsters/ogre/ogre_battle_sprite_frames.tres" id="6_ej3rn"]
 
 [node name="BattleCharacter" type="Node2D" unique_id=2135240791]
 script = ExtResource("1_il1nn")
+
+[node name="EffectsCenter" type="CenterContainer" parent="." unique_id=2052516605]
+offset_left = -40.0
+offset_top = -84.0
+offset_right = 40.0
+offset_bottom = -68.0
+mouse_filter = 2
+
+[node name="EffectsContainer" type="HBoxContainer" parent="EffectsCenter" unique_id=1864238892]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 2
 
 [node name="Visual" type="Node2D" parent="." unique_id=1615905558]
 
@@ -36,10 +48,11 @@ script = ExtResource("4_il1nn")
 [node name="Line2D" type="Line2D" parent="Visual/WeaponTrail" unique_id=1640209012]
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Visual" unique_id=1921383678]
-sprite_frames = ExtResource("6_igjgp")
-animation = &"attack"
+sprite_frames = ExtResource("6_ej3rn")
+animation = &"idle"
 centered = false
-offset = Vector2(-32, -64)
+offset = Vector2(-64, -64)
+flip_h = true
 
 [connection signal="animation_finished" from="Visual/AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
 [connection signal="frame_changed" from="Visual/AnimatedSprite2D" to="." method="_on_frame_changed"]

@@ -24,12 +24,12 @@ const GOLD_BY_RARITY := {
 	Item.Rarity.LEGENDARY: 400,
 }
 
-func get_random_unowned_weapon_id_for_class(hero_class: Hero.HeroClass, rarity: Item.Rarity) -> String:
+func get_random_unowned_weapon_id_for_class(hero_class: Hero.HeroClass, rarity: Item.Rarity, inventory: Inventory) -> String:
 	var class_list: Dictionary = CLASS_WEAPON_TABLE.get(hero_class, {})
 	var all_ids: Array = class_list.get(rarity, [])
 	var unowned_ids := all_ids.filter(
 		func(id: String) -> bool:
-			return not GameState.hero.inventory.has_weapon_in_stash(id)
+			return not inventory.has_weapon_in_stash(id)
 	)
 	if unowned_ids.is_empty():
 		return ""

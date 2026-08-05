@@ -17,15 +17,15 @@ const REST_CD := 5
 @export var resist: int = 0		# Modifies magical defense
 
 @export_group("Visuals")
-@export var portrait: Texture2D
 @export var world_visual: SpriteFrames
 @export var battle_visual: SpriteFrames
 @export var battle_height: int = 64
+@export var battle_x_offset: int = 32
 @export var hand_positions: Dictionary = {}
 @export var hand_rotations: Dictionary = {}
 
 @export_group("Active Effects")
-@export var active_effects: Array = []
+var active_effects: Array[ActiveEffect] = []
 
 var rest_cooldown: int = 0
 
@@ -35,12 +35,11 @@ func get_colored_name() -> String:
 func is_alive() -> bool:
 	return current_hp > 0
 
-func rest() -> void:
+func rest() -> String:
+	var output := EffectManager.remove_all_effects(self, ActiveEffect.RemovalReason.RESTED, true)
 	current_hp = max_hp
 	current_nrg = max_nrg
-	for ae in active_effects:
-		ae.on_expire()
-	active_effects.clear()
+	return output
 
 func meditate() -> void:
 	var base_hp := 8
@@ -72,23 +71,6 @@ func use_energy(amount: int) -> bool:
 
 func recover_energy(amount: int) -> void:
 	current_nrg = min(current_nrg + amount, max_nrg)
-
-func apply_effect(effect: Effect, source: Combatant = null, remaining_turns: int = 0) -> String:
-	var ae := ActiveEffect.new(effect, self, source)
-	if remaining_turns > 0:
-		ae.remaining_turns = remaining_turns
-	active_effects.append(ae)
-	ae.on_apply()
-	return "%s applied.\n" % effect._to_string()
-
-func process_active_effects() -> String:
-	var output := ""
-	for ae in active_effects:
-		output += ae.on_tick()
-	for ae in active_effects.duplicate():
-		if ae.remaining_turns <= 0:
-			active_effects.erase(ae)
-	return output
 
 func _calculate_damage(amount: int, type: Attack.AttackType) -> int:
 	var damage := amount
