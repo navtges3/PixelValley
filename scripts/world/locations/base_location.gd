@@ -1,7 +1,8 @@
 extends Node2D
 class_name BaseLocation
 
-@onready var player: Player = $Player
+@onready var y_sorted_world: Node2D = $YSortedWorld
+@onready var player: Player = $YSortedWorld/Player
 
 var _pending_entrance_id: String = ""
 var _movement_blocked_before_dialogue: bool = false
