@@ -1,14 +1,25 @@
 extends TestCase
 
 const TEST_DEVICE_ID: int = 99
+const SECOND_TEST_DEVICE_ID: int = 100
+const PLAYER_SCENE := preload(
+	"res://scenes/world/characters/player.tscn"
+)
+const INTERACT_AREA_SCENE := preload(
+	"res://scenes/world/interact_area.tscn"
+)
 
 var _method_change_count: int = 0
+var _prompt_context_change_count: int = 0
 
 
 func run_tests() -> int:
 	_begin_test_run()
 	_test_controller_classification()
 	_test_input_action_bindings()
+	_test_action_prompt_formatting()
+	_test_prompt_context_switching()
+	_test_visible_interaction_prompt_refresh()
 	_test_input_method_switching()
 	return _finish_test_run("Input manager tests")
 
@@ -67,6 +78,140 @@ func _test_input_action_bindings() -> void:
 		),
 		"tab_right has a controller binding"
 	)
+
+
+func _test_action_prompt_formatting() -> void:
+	var original_method := InputManager.active_input_method
+	var original_device := InputManager.active_controller_device
+
+	InputManager.active_input_method = InputManager.InputMethod.KEYBOARD_MOUSE
+	InputManager.active_controller_device = -1
+	_expect_equal(
+		InputManager.get_action_binding_text(&"interact"),
+		"E",
+		"keyboard interaction prompts use E"
+	)
+	_expect_equal(
+		InputManager.format_action_prompt(&"interact", "Talk"),
+		"Press E to Talk",
+		"keyboard actions format complete prompts"
+	)
+
+	InputManager.active_input_method = InputManager.InputMethod.CONTROLLER
+	InputManager.active_controller_device = TEST_DEVICE_ID
+	InputManager._controller_families[TEST_DEVICE_ID] = (
+		InputManager.ControllerFamily.XBOX
+	)
+	_expect_equal(
+		InputManager.get_action_binding_text(&"interact"),
+		"A",
+		"Xbox interaction prompts use A"
+	)
+
+	InputManager._controller_families[TEST_DEVICE_ID] = (
+		InputManager.ControllerFamily.PLAYSTATION
+	)
+	_expect_equal(
+		InputManager.get_action_binding_text(&"interact"),
+		"Cross",
+		"PlayStation interaction prompts use Cross"
+	)
+
+	InputManager._controller_families[TEST_DEVICE_ID] = (
+		InputManager.ControllerFamily.GENERIC
+	)
+	_expect_equal(
+		InputManager.get_action_binding_text(&"interact"),
+		"Button 1",
+		"generic interaction prompts use a numbered button"
+	)
+
+	InputManager._controller_families.erase(TEST_DEVICE_ID)
+	InputManager.active_input_method = original_method
+	InputManager.active_controller_device = original_device
+
+
+func _test_prompt_context_switching() -> void:
+	var original_method := InputManager.active_input_method
+	var original_device := InputManager.active_controller_device
+
+	InputManager.active_input_method = InputManager.InputMethod.KEYBOARD_MOUSE
+	InputManager.active_controller_device = -1
+	InputManager._controller_families[TEST_DEVICE_ID] = (
+		InputManager.ControllerFamily.XBOX
+	)
+	InputManager._controller_families[SECOND_TEST_DEVICE_ID] = (
+		InputManager.ControllerFamily.PLAYSTATION
+	)
+	_prompt_context_change_count = 0
+	InputManager.prompt_context_changed.connect(
+		_on_prompt_context_changed
+	)
+
+	InputManager._activate_controller(TEST_DEVICE_ID)
+	InputManager._activate_controller(SECOND_TEST_DEVICE_ID)
+	InputManager._activate_controller(SECOND_TEST_DEVICE_ID)
+	InputManager._activate_keyboard_mouse()
+
+	_expect_equal(
+		_prompt_context_change_count,
+		3,
+		"prompt context changes once per method or controller transition"
+	)
+
+	InputManager.prompt_context_changed.disconnect(
+		_on_prompt_context_changed
+	)
+	InputManager._controller_families.erase(TEST_DEVICE_ID)
+	InputManager._controller_families.erase(SECOND_TEST_DEVICE_ID)
+	InputManager.active_input_method = original_method
+	InputManager.active_controller_device = original_device
+
+
+func _test_visible_interaction_prompt_refresh() -> void:
+	var original_method := InputManager.active_input_method
+	var original_device := InputManager.active_controller_device
+
+	InputManager.active_input_method = InputManager.InputMethod.KEYBOARD_MOUSE
+	InputManager.active_controller_device = -1
+
+	var player := PLAYER_SCENE.instantiate() as Player
+	var camera := player.get_node("Camera2D") as Camera2D
+	camera.free()
+	var interact_area := INTERACT_AREA_SCENE.instantiate() as InteractArea
+	add_child(player)
+	add_child(interact_area)
+	interact_area.prompt_label = "Talk"
+	interact_area._on_body_entered(player)
+	_expect_equal(
+		player.prompt_label.text,
+		"Press E to Talk",
+		"visible interaction prompts start with the keyboard binding"
+	)
+
+	InputManager._controller_families[TEST_DEVICE_ID] = (
+		InputManager.ControllerFamily.XBOX
+	)
+	InputManager.active_input_method = InputManager.InputMethod.CONTROLLER
+	InputManager.active_controller_device = TEST_DEVICE_ID
+	InputManager.prompt_context_changed.emit()
+	_expect_equal(
+		player.prompt_label.text,
+		"Press A to Talk",
+		"visible interaction prompts refresh without area re-entry"
+	)
+
+	interact_area._on_body_exited(player)
+	_expect_true(
+		not player.prompt_label.visible,
+		"the refreshed interaction prompt clears on area exit"
+	)
+
+	interact_area.free()
+	player.free()
+	InputManager._controller_families.erase(TEST_DEVICE_ID)
+	InputManager.active_input_method = original_method
+	InputManager.active_controller_device = original_device
 
 
 func _test_input_method_switching() -> void:
@@ -156,3 +301,7 @@ func _on_input_method_changed(
 	_method: InputManager.InputMethod
 ) -> void:
 	_method_change_count += 1
+
+
+func _on_prompt_context_changed() -> void:
+	_prompt_context_change_count += 1

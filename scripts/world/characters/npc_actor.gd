@@ -19,7 +19,7 @@ signal service_requested(npc_id: StringName, service_id: StringName)
 signal status_changed(status: Status)
 
 @export var data: NpcData
-@export var prompt_text: String = "Press E to Talk"
+@export var prompt_label: String = "Talk"
 @export var interaction_offset: Vector2 = Vector2.ZERO
 @export var facing: Facing = Facing.DOWN:
 	set(value):
@@ -37,7 +37,7 @@ func _ready() -> void:
 	# This actor has no AI or per-frame behavior.
 	set_process(false)
 	set_physics_process(false)
-	interact_area.prompt_text = prompt_text
+	interact_area.prompt_label = prompt_label
 	interact_area.position = interaction_offset
 	interact_area.interacted.connect(_on_interacted)
 	if not _apply_data():

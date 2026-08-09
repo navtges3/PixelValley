@@ -14,6 +14,10 @@ signal cancel_requested
 var _input_armed: bool = false
 var _previous_focus: Control = null
 
+func _ready() -> void:
+	InputManager.prompt_context_changed.connect(_on_prompt_context_changed)
+	_refresh_advance_hint()
+
 func open() -> void:
 	_previous_focus = get_viewport().gui_get_focus_owner()
 	_input_armed = false
@@ -36,6 +40,7 @@ func show_line(entry: DialogueEntry, page_index: int) -> void:
 		speaker_name.text = entry.speaker.display_name
 		portrait.texture = entry.speaker.portrait
 	dialogue_text.text = entry.pages[page_index]
+	_refresh_advance_hint()
 	advance_hint.visible = true
 	call_deferred("_arm_input")
 
@@ -55,6 +60,22 @@ func show_responses(options: Array[DialogueResponse]) -> void:
 	first_button.grab_focus()
 	call_deferred("_arm_input")
 
+func _arm_input() -> void:
+	if is_open():
+		_input_armed = true
+
+func _clear_responses() -> void:
+	for child: Node in responses.get_children():
+		responses.remove_child(child)
+		child.queue_free()
+
+func _on_prompt_context_changed() -> void:
+	if is_open() and advance_hint.visible:
+		_refresh_advance_hint()
+
+func _refresh_advance_hint() -> void:
+	advance_hint.text = InputManager.format_action_prompt(&"interact", "Continue") + "..."
+
 func _unhandled_input(event: InputEvent) -> void:
 	if not is_open() or not _input_armed or event.is_echo():
 		return
@@ -66,12 +87,3 @@ func _unhandled_input(event: InputEvent) -> void:
 		_input_armed = false
 		advance_requested.emit()
 		get_viewport().set_input_as_handled()
-
-func _arm_input() -> void:
-	if is_open():
-		_input_armed = true
-
-func _clear_responses() -> void:
-	for child: Node in responses.get_children():
-		responses.remove_child(child)
-		child.queue_free()

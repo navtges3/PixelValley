@@ -3,7 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://b444axe4enf14" path="res://tests/effects/test_active_effects.tscn" id="1_1wc5c"]
 [ext_resource type="PackedScene" path="res://tests/effects/test_effect_integration.tscn" id="2_28f2g"]
 [ext_resource type="PackedScene" path="res://tests/effects/test_effect_lifecycle_events.tscn" id="3_pe5y4"]
-[ext_resource type="Script" path="res://tests/test_suite.gd" id="4_suite"]
+[ext_resource type="Script" uid="uid://ccfwxvdvq6via" path="res://tests/test_suite.gd" id="4_suite"]
 [ext_resource type="PackedScene" path="res://tests/quests/quest_manager_multi_quest_test.tscn" id="5_quest"]
 [ext_resource type="PackedScene" path="res://tests/quests/quest_save_migration_test.tscn" id="6_migration"]
 [ext_resource type="PackedScene" uid="uid://c2ejhvt30j1jv" path="res://tests/quests/quest_manager_lifecycle_test.tscn" id="7_lifecycle"]
@@ -45,16 +45,16 @@ script = ExtResource("4_suite")
 
 [node name="DialogueRunnerTests" parent="Dialogue" unique_id=180448557 instance=ExtResource("9_dialogue")]
 
-[node name="DialogueStateTests" parent="Dialogue" instance=ExtResource("12_dialogue_state")]
+[node name="DialogueStateTests" parent="Dialogue" unique_id=135130074 instance=ExtResource("12_dialogue_state")]
 
-[node name="DialogueWindowTests" parent="Dialogue" instance=ExtResource("14_dialogue_window")]
+[node name="DialogueWindowTests" parent="Dialogue" unique_id=1524731483 instance=ExtResource("14_dialogue_window")]
 
 [node name="Npcs" type="Node" parent="." unique_id=594707456]
 
 [node name="NpcActorTests" parent="Npcs" unique_id=289503209 instance=ExtResource("10_npc")]
 
-[node name="NpcDialogueIntegrationTests" parent="Npcs" instance=ExtResource("13_npc_dialogue")]
+[node name="NpcDialogueIntegrationTests" parent="Npcs" unique_id=1887305664 instance=ExtResource("13_npc_dialogue")]
 
-[node name="Input" type="Node" parent="."]
+[node name="Input" type="Node" parent="." unique_id=1972513895]
 
-[node name="InputManagerTests" parent="Input" instance=ExtResource("15_input")]
+[node name="InputManagerTests" parent="Input" unique_id=1331348615 instance=ExtResource("15_input")]

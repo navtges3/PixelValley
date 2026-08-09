@@ -113,7 +113,7 @@ position = Vector2(0, -2.5)
 shape = SubResource("RectangleShape2D_bn7ll")
 
 [node name="InteractArea" parent="YSortedWorld/Props/QuestBoard" unique_id=1647387375 instance=ExtResource("8_yqhou")]
-prompt_text = "Press E to View Quests"
+prompt_label = "View Quests"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="YSortedWorld/Props/QuestBoard/InteractArea" unique_id=474583690]
 position = Vector2(0, 2)

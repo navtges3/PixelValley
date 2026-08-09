@@ -1,5 +1,6 @@
 extends Node
 
+signal prompt_context_changed
 signal input_method_changed(method: InputMethod)
 signal controller_connection_changed(
 	device_id: int,
@@ -51,6 +52,27 @@ func _input(event: InputEvent) -> void:
 func is_using_controller() -> bool:
 	return active_input_method == InputMethod.CONTROLLER
 
+func format_action_prompt(action: StringName, verb: String) -> String:
+	var binding := get_action_binding_text(action)
+	return "Press %s to %s" % [binding, verb]
+
+func get_action_binding_text(action: StringName) -> String:
+	var events := InputMap.action_get_events(action)
+	if is_using_controller():
+		for event: InputEvent in events:
+			if event is InputEventJoypadButton:
+				var button_event := event as InputEventJoypadButton
+				return _get_joypad_button_text(button_event.button_index)
+	else:
+		for event: InputEvent in events:
+			if event is InputEventKey:
+				return _get_key_text(event as InputEventKey)
+		for event: InputEvent in events:
+			if event is InputEventMouseButton:
+				var mouse_event := event as InputEventMouseButton
+				return _get_mouse_button_text(mouse_event.button_index)
+	return String(action).replace("_", " ").capitalize()
+
 func get_connected_controller_ids() -> Array[int]:
 	var device_ids: Array[int] = []
 	for device_id: int in _controller_families:
@@ -68,8 +90,12 @@ func get_controller_family(device_id: int = -1) -> ControllerFamily:
 func _activate_controller(device_id: int) -> void:
 	if not _controller_families.has(device_id):
 		_register_controller(device_id, false)
+	var previous_device := active_controller_device
+	var was_using_controller := is_using_controller()
 	active_controller_device = device_id
 	_set_input_method(InputMethod.CONTROLLER)
+	if was_using_controller and previous_device != device_id:
+		prompt_context_changed.emit()
 
 func _activate_keyboard_mouse() -> void:
 	active_controller_device = -1
@@ -80,6 +106,7 @@ func _set_input_method(method: InputMethod) -> void:
 		return
 	active_input_method = method
 	input_method_changed.emit(method)
+	prompt_context_changed.emit()
 
 func _on_joy_connection_changed(device_id: int, connected: bool) -> void:
 	if connected:
@@ -96,6 +123,7 @@ func _on_joy_connection_changed(device_id: int, connected: bool) -> void:
 			_set_input_method(InputMethod.KEYBOARD_MOUSE)
 		else:
 			active_controller_device = remaining_devices[0]
+			prompt_context_changed.emit()
 	controller_connection_changed.emit(device_id, false, family)
 
 func _register_controller(device_id: int, emit_connection_signal: bool = true) -> void:
@@ -122,3 +150,80 @@ func _classify_controller(controller_name: String) -> ControllerFamily:
 	):
 		return ControllerFamily.PLAYSTATION
 	return ControllerFamily.GENERIC
+
+func _get_key_text(event: InputEventKey) -> String:
+	var keycode := event.physical_keycode
+	if keycode == KEY_NONE:
+		keycode = event.keycode
+	return OS.get_keycode_string(keycode)
+
+func _get_mouse_button_text(button: MouseButton) -> String:
+	match button:
+		MOUSE_BUTTON_LEFT:
+			return "Left Mouse"
+		MOUSE_BUTTON_RIGHT:
+			return "Right Mouse"
+		MOUSE_BUTTON_MIDDLE:
+			return "Middle Mouse"
+		_:
+			return "Mouse %d" % int(button)
+
+func _get_joypad_button_text(button: JoyButton) -> String:
+	var family := get_controller_family()
+	match family:
+		ControllerFamily.XBOX:
+			return _get_xbox_button_text(button)
+		ControllerFamily.PLAYSTATION:
+			return _get_playstation_button_text(button)
+		_:
+			return "Button %d" % (int(button) + 1)
+
+func _get_xbox_button_text(button: JoyButton) -> String:
+	match button:
+		JOY_BUTTON_A:
+			return "A"
+		JOY_BUTTON_B:
+			return "B"
+		JOY_BUTTON_X:
+			return "X"
+		JOY_BUTTON_Y:
+			return "Y"
+		JOY_BUTTON_LEFT_SHOULDER:
+			return "LB"
+		JOY_BUTTON_RIGHT_SHOULDER:
+			return "RB"
+		JOY_BUTTON_BACK:
+			return "View"
+		JOY_BUTTON_START:
+			return "Menu"
+		JOY_BUTTON_LEFT_STICK:
+			return "L3"
+		JOY_BUTTON_RIGHT_STICK:
+			return "R3"
+		_:
+			return "Button %d" % (int(button) + 1)
+
+func _get_playstation_button_text(button: JoyButton) -> String:
+	match button:
+		JOY_BUTTON_A:
+			return "Cross"
+		JOY_BUTTON_B:
+			return "Circle"
+		JOY_BUTTON_X:
+			return "Square"
+		JOY_BUTTON_Y:
+			return "Triangle"
+		JOY_BUTTON_LEFT_SHOULDER:
+			return "L1"
+		JOY_BUTTON_RIGHT_SHOULDER:
+			return "R1"
+		JOY_BUTTON_BACK:
+			return "Create"
+		JOY_BUTTON_START:
+			return "Options"
+		JOY_BUTTON_LEFT_STICK:
+			return "L3"
+		JOY_BUTTON_RIGHT_STICK:
+			return "R3"
+		_:
+			return "Button %d" % (int(button) + 1)

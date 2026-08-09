@@ -24,6 +24,7 @@ color = Color(1, 1, 1, 0.6)
 
 [node name="MarginContainer" type="MarginContainer" parent="." unique_id=990113610]
 layout_mode = 1
+anchors_preset = -1
 anchor_left = 0.06
 anchor_top = 1.0
 anchor_right = 0.94
@@ -74,4 +75,4 @@ layout_mode = 2
 [node name="AdvanceHint" type="Label" parent="MarginContainer/DialoguePanel/MainRow/Content" unique_id=31510941]
 unique_name_in_owner = true
 layout_mode = 2
-text = "Press 'E' to continue..."
+text = "Continue"
