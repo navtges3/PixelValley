@@ -13,6 +13,7 @@ enum ShopType { POTION, WEAPON }
 @onready var quantity_spin_box: SpinBox = $PanelContainer/VBoxContainer/HBoxContainer/ItemContainer/CostContainer/QuantitySpinBox
 @onready var ability_container: VBoxContainer = $PanelContainer/VBoxContainer/HBoxContainer/ItemContainer/ability_container
 @onready var purchase_button: Button = $PanelContainer/VBoxContainer/HBoxContainer/ItemContainer/HBoxContainer/PurchaseButton
+@onready var close_button: Button = $PanelContainer/VBoxContainer/HBoxContainer/ItemContainer/HBoxContainer/CloseButton
 # Hero Panel
 @onready var hero_ui: HeroInfo = $PanelContainer/VBoxContainer/HBoxContainer/HeroInfo/HeroUI
 @onready var inventory_label: Label = $PanelContainer/VBoxContainer/HBoxContainer/HeroInfo/InventoryLabel
@@ -50,6 +51,16 @@ func _get_shop() -> Shop:
 			return GameState.village.weapon_shop
 		_:
 			return GameState.village.potion_shop
+
+func _get_default_focus_target() -> Control:
+	for child: Node in item_list.get_children():
+		if (
+			child is Button and
+			not child.is_queued_for_deletion() and
+			not (child as Button).disabled
+		):
+			return child as Button
+	return close_button
 
 # ─── List ────────────────────────────────────────────────────────────────────
 
@@ -178,6 +189,8 @@ func _on_purchase_button_pressed() -> void:
 	shop_manager.buy_item(qty)
 	AudioManager.play_sfx_by_id("bag_of_coins")
 	_update_item_list()
+	if purchase_button.disabled and purchase_button.has_focus():
+		_apply_default_focus.call_deferred()
 
 func _on_close_button_pressed() -> void:
 	close()

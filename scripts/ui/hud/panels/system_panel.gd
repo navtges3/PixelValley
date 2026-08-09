@@ -1,7 +1,7 @@
 extends Control
 class_name SystemPanel
 
-@onready var options_window: Window = $OptionsWindow
+@onready var options_window: OptionsWindow = $OptionsWindow
 @onready var save_button: Button = $VBoxContainer/SaveButton
 @onready var options_button: Button = $VBoxContainer/OptionsButton
 @onready var main_menu_button: Button = $VBoxContainer/MainMenuButton
@@ -21,7 +21,7 @@ func _on_save_button_pressed() -> void:
 	_show_status("Game saved!", COLOR_STATUS_OK)
 
 func _on_options_button_pressed() -> void:
-	options_window.popup_centered()
+	options_window.open()
 
 func _on_main_menu_button_pressed() -> void:
 	SaveManager.save_game()

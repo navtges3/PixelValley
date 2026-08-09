@@ -1,4 +1,5 @@
-extends Window
+
+extends GameWindow
 class_name LoadWindow
 
 const GREEN_BUTTON = preload("uid://cgbnpl6hlm7s2")
@@ -21,7 +22,7 @@ const RED_BUTTON = preload("uid://130ubmqd1h3b")
 @onready var back_button: Button = $PanelContainer/MarginContainer/VBoxContainer/BackButton
 
 func _ready() -> void:
-	exclusive = true
+	super._ready()
 	for i in slot_buttons.size():
 		var slot_index := i + 1
 		slot_buttons[i].pressed.connect(func(): _on_slot_button_pressed(slot_index))
@@ -39,22 +40,11 @@ func populate_slots() -> void:
 			setup_empty_slot(slot_buttons[i])
 			delete_buttons[i].disabled = true
 
-func _on_slot_button_pressed(slot: int) -> void:
-	if not SaveManager.has_save_data(slot):
-		return
-	self.hide()
-	SaveManager.load_game(slot)
-	var loc := GameState.player_location
-	ScreenManager.go_to_screen(loc["scene"], loc["entrance_id"])
-
-func _on_delete_button_pressed(slot: int) -> void:
-	SaveManager.delete_slot(slot)
-	populate_slots()
-
 func setup_empty_slot(button: Button) -> void:
 	button.text = "Empty Slot"
 	button.alignment = HORIZONTAL_ALIGNMENT_CENTER
 	button.theme = RED_BUTTON
+	button.disabled = true
 
 func setup_filled_slot(button: Button, meta: Dictionary) -> void:
 	var hero_name: String = meta.get("hero_name", "Unknown")
@@ -63,6 +53,26 @@ func setup_filled_slot(button: Button, meta: Dictionary) -> void:
 	button.text = "%s\nLevel: %d\nLast Played: %s" % [hero_name, level, last_played]
 	button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 	button.theme = GREEN_BUTTON
+	button.disabled = false
+
+func _get_default_focus_target() -> Control:
+	for button: Button in slot_buttons:
+		if not button.disabled:
+			return button
+	return back_button
+
+func _on_slot_button_pressed(slot: int) -> void:
+	if not SaveManager.has_save_data(slot):
+		return
+	close()
+	SaveManager.load_game(slot)
+	var loc := GameState.player_location
+	ScreenManager.go_to_screen(loc["scene"], loc["entrance_id"])
+
+func _on_delete_button_pressed(slot: int) -> void:
+	SaveManager.delete_slot(slot)
+	populate_slots()
+	_apply_default_focus.call_deferred()
 
 func _on_back_button_pressed() -> void:
-	self.hide()
+	close()

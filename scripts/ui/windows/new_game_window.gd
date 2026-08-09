@@ -1,9 +1,7 @@
-extends Window
+extends GameWindow
 class_name NewGameWindow
 
-const BACKGROUND = preload("res://resources/themes/backgrounds/background.tres")
-
-@onready var overwrite_dialog: ConfirmationDialog = $OverwriteDialog
+@onready var overwrite_window: ConfirmationWindow = $OverwriteWindow
 @onready var back_button: Button = $PanelContainer/MarginContainer/VBoxContainer/BackButton
 @onready var slot_buttons: Array[Button] = [
 	$PanelContainer/MarginContainer/VBoxContainer/SlotButton1,
@@ -16,17 +14,9 @@ const BACKGROUND = preload("res://resources/themes/backgrounds/background.tres")
 var _pending_slot_index: int = 0
 
 func _ready() -> void:
-	exclusive = true
-	_create_overwrite_dialog()
+	super._ready()
+	_create_overwrite_window()
 	populate_slots()
-
-func _create_overwrite_dialog() -> void:
-	overwrite_dialog.title = "Overwrite Save?"
-	overwrite_dialog.dialog_text = "This slot already has save data. Start a new game here and overwrite it?"
-	overwrite_dialog.theme = BACKGROUND
-	overwrite_dialog.get_ok_button().theme = ThemeManager.GREEN_BUTTON
-	overwrite_dialog.get_cancel_button().theme = ThemeManager.RED_BUTTON
-	overwrite_dialog.confirmed.connect(_confirm_overwrite)
 
 func populate_slots() -> void:
 	for i in slot_buttons.size():
@@ -53,12 +43,8 @@ func setup_filled_slot(button: Button, meta: Dictionary) -> void:
 	button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 	button.theme = ThemeManager.GREEN_BUTTON
 
-func _slot_button_pressed(slot_index: int) -> void:
-	if SaveManager.has_save_data(slot_index):
-		_pending_slot_index = slot_index
-		overwrite_dialog.popup_centered()
-		return
-	_start_new_game_in_slot(slot_index)
+func _cancel_overwrite() -> void:
+	_pending_slot_index = 0
 
 func _confirm_overwrite() -> void:
 	if _pending_slot_index <= 0:
@@ -66,10 +52,30 @@ func _confirm_overwrite() -> void:
 	_start_new_game_in_slot(_pending_slot_index)
 	_pending_slot_index = 0
 
+func _create_overwrite_window() -> void:
+	overwrite_window.setup(
+		"Overwrite Save?",
+		"This slot already has save data. Start a new game here and overwrite it?"
+	)
+	overwrite_window.confirmed.connect(_confirm_overwrite)
+	overwrite_window.cancelled.connect(_cancel_overwrite)
+
+func _get_default_focus_target() -> Control:
+	if slot_buttons.is_empty():
+		return back_button
+	return slot_buttons[0]
+
+func _slot_button_pressed(slot_index: int) -> void:
+	if SaveManager.has_save_data(slot_index):
+		_pending_slot_index = slot_index
+		overwrite_window.open()
+		return
+	_start_new_game_in_slot(slot_index)
+
 func _start_new_game_in_slot(slot_index: int) -> void:
-	self.hide()
+	close()
 	GameState.start_new_game(slot_index)
 	ScreenManager.go_to_screen(ScreenManager.ScreenName.VILLAGE)
 
 func _on_back_button_pressed() -> void:
-	self.hide()
+	close()

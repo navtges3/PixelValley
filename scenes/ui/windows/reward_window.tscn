@@ -4,21 +4,35 @@
 [ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://resources/themes/buttons/regular/green_button.tres" id="1_o1yme"]
 [ext_resource type="Script" uid="uid://8u7rkk8oorfu" path="res://scripts/ui/windows/reward_window.gd" id="1_y5ohc"]
 
-[node name="RewardWindow" type="Window" unique_id=1271341637]
-transparent_bg = true
-oversampling_override = 1.0
-position = Vector2i(0, 36)
-size = Vector2i(158, 154)
-wrap_controls = true
-exclusive = true
-unresizable = true
-borderless = true
-transparent = true
+[node name="RewardWindow" type="Control" unique_id=1271341637]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 script = ExtResource("1_y5ohc")
 
+[node name="InputBlocker" type="ColorRect" parent="." unique_id=859198812]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.45)
+
 [node name="PanelContainer" type="PanelContainer" parent="." unique_id=1731204455]
-offset_right = 40.0
-offset_bottom = 40.0
+custom_minimum_size = Vector2(240, 0)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
 theme = ExtResource("1_b7i7h")
 
 [node name="MarginContainer" type="MarginContainer" parent="PanelContainer" unique_id=1044511665]

@@ -7,8 +7,8 @@ const BATTLE_CHARACTER = preload("res://scenes/ui/components/battle_character.ts
 
 @onready var battle_manager: BattleManager = $BattleManager
 
-@onready var reward_window: Window = $RewardWindow
-@onready var death_window: Window = $DeathWindow
+@onready var reward_window: RewardWindow = $RewardWindow
+@onready var death_window: DeathWindow = $DeathWindow
 @onready var battle_log: RichTextLabel = $MarginContainer/BattleLog
 
 # Monster Info
@@ -178,7 +178,7 @@ func _on_rewards_collected() -> void:
 
 func _on_hero_defeated() -> void:
 	GameState.pre_combat_position = Vector2.ZERO
-	death_window.popup_centered()
+	death_window.open()
 
 func _on_death_window_dismissed() -> void:
 	GameState.hero.rest()

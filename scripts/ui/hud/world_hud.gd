@@ -80,7 +80,7 @@ func abort_dialogue() -> void:
 		dialogue_runner.abort()
 		return
 	if reward_window.visible:
-		reward_window.hide()
+		reward_window.close()
 		_pending_quest_rewards.clear()
 		dialogue_closed.emit(DialogueRunner.FinishReason.INTERRUPTED)
 

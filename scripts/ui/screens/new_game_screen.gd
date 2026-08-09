@@ -1,7 +1,7 @@
 extends Control
 class_name NewGameScreen
 
-@onready var new_game_window: Window = $NewGameWindow
+@onready var new_game_window: NewGameWindow = $NewGameWindow
 
 @onready var hero_name: LineEdit = $VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/HeroInfoContainer/HeroName
 @onready var hero_class: Label = $VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/HeroInfoContainer/HeroClassLabel
@@ -73,11 +73,13 @@ func _on_create_button_pressed() -> void:
 	var new_hero := HeroLoader.new_hero(_selected_class)
 	new_hero.name = hero_name.text
 	GameState.hero = new_hero
-	new_game_window.popup_centered()
+	new_game_window.open()
 
 func _on_hero_name_text_changed(_new_text: String) -> void:
 	check_create_button_state()
 
 func _input(event: InputEvent) -> void:
+	if new_game_window.is_open():
+		return
 	if event.is_action_pressed("ui_text_submit") and not create_button.disabled:
 		_on_create_button_pressed()

@@ -12,23 +12,19 @@ signal cancel_requested
 @onready var advance_hint: Label = %AdvanceHint
 
 var _input_armed: bool = false
-var _previous_focus: Control = null
 
 func _ready() -> void:
+	super._ready()
 	InputManager.prompt_context_changed.connect(_on_prompt_context_changed)
 	_refresh_advance_hint()
 
 func open() -> void:
-	_previous_focus = get_viewport().gui_get_focus_owner()
 	_input_armed = false
 	super.open()
 
 func close() -> void:
 	_input_armed = false
 	super.close()
-	if is_instance_valid(_previous_focus):
-		_previous_focus.grab_focus()
-	_previous_focus = null
 
 func show_line(entry: DialogueEntry, page_index: int) -> void:
 	_input_armed = false

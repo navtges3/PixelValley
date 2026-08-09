@@ -15,6 +15,7 @@
 [ext_resource type="PackedScene" path="res://tests/npcs/npc_dialogue_integration_test.tscn" id="13_npc_dialogue"]
 [ext_resource type="PackedScene" path="res://tests/dialogue/dialogue_window_test.tscn" id="14_dialogue_window"]
 [ext_resource type="PackedScene" path="res://tests/input/input_manager_test.tscn" id="15_input"]
+[ext_resource type="PackedScene" path="res://tests/ui/game_window_consolidation_test.tscn" id="16_ui_window"]
 
 [node name="TestSuite" type="Node" unique_id=783793299]
 script = ExtResource("4_suite")
@@ -58,3 +59,7 @@ script = ExtResource("4_suite")
 [node name="Input" type="Node" parent="." unique_id=1972513895]
 
 [node name="InputManagerTests" parent="Input" unique_id=1331348615 instance=ExtResource("15_input")]
+
+[node name="UI" type="Node" parent="."]
+
+[node name="GameWindowConsolidationTests" parent="UI" instance=ExtResource("16_ui_window")]

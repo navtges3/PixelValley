@@ -1,4 +1,4 @@
-extends Window
+extends GameWindow
 class_name OptionsWindow
 
 @onready var master_volume_slider: HSlider = $PanelContainer/MarginContainer/VBoxContainer/MasterVolumeSlider
@@ -6,9 +6,18 @@ class_name OptionsWindow
 @onready var sfx_volume_slider: HSlider = $PanelContainer/MarginContainer/VBoxContainer/SFXVolumeSlider
 
 func _ready() -> void:
+	super._ready()
 	master_volume_slider.value = SettingsManager.master_volume
 	music_volume_slider.value = SettingsManager.music_volume
 	sfx_volume_slider.value = SettingsManager.sfx_volume
+
+func _get_default_focus_target() -> Control:
+	return master_volume_slider
+
+func _on_fullscreen_button_toggled(toggled: bool) -> void:
+	SettingsManager.fullscreen = toggled
+	SettingsManager.apply_settings()
+	SettingsManager.save_settings()
 
 func _on_master_volume_slider_value_changed(value: float) -> void:
 	SettingsManager.master_volume = value
@@ -25,10 +34,5 @@ func _on_sfx_volume_slider_value_changed(value: float) -> void:
 	SettingsManager.apply_settings()
 	SettingsManager.save_settings()
 
-func _on_fullscreen_button_toggled(toggled: bool) -> void:
-	SettingsManager.fullscreen = toggled
-	SettingsManager.apply_settings()
-	SettingsManager.save_settings()
-
 func _on_close_button_pressed() -> void:
-	self.hide()
+	close()
