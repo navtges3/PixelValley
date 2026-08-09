@@ -86,7 +86,23 @@ func _setup_tab_buttons() -> void:
 
 	_sync_tab_buttons()
 
+func _switch_relative_tab(direction: int) -> void:
+	var tab_count := PANELS_BY_TAB.size()
+	var next_tab: Tab = wrapi(_current_tab + direction, 0, tab_count) as Tab
+	switch_tab(next_tab)
+
 func _sync_tab_buttons() -> void:
 	for tab in _tab_buttons:
 		var btn: Button = _tab_buttons[tab]
 		btn.set_pressed_no_signal(tab == _current_tab)
+
+func _unhandled_input(event: InputEvent) -> void:
+	if not _is_open or event.is_echo():
+		return
+	if event.is_action_pressed(&"tab_left"):
+		_switch_relative_tab(-1)
+	elif event.is_action_pressed(&"tab_right"):
+		_switch_relative_tab(1)
+	else:
+		return
+	get_viewport().set_input_as_handled()
