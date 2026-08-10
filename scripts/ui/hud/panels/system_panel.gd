@@ -13,6 +13,11 @@ const COLOR_STATUS_ERR := Color(0.85, 0.22, 0.18)
 func _ready() -> void:
 	status_label.text = ""
 
+func get_default_focus_target() -> Control:
+	if not save_button.disabled and save_button.is_visible_in_tree():
+		return save_button
+	return null
+
 func refresh() -> void:
 	status_label.text = ""
 

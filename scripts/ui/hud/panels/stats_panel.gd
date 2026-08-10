@@ -75,6 +75,19 @@ func _ready() -> void:
  
 	confirm_button.pressed.connect(_on_confirm_pressed)
 
+func get_default_focus_target() -> Control:
+	var stat_order: Array[String] = [
+		"attack",
+		"magic",
+		"defense",
+		"resist",
+	]
+	for stat: String in stat_order:
+		var button: Button = _up_buttons[stat]
+		if not button.disabled and button.is_visible_in_tree():
+			return button
+	return null
+
 func refresh() -> void:
 	if GameState.hero == null:
 		return

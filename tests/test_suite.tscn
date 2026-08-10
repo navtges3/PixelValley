@@ -60,6 +60,6 @@ script = ExtResource("4_suite")
 
 [node name="InputManagerTests" parent="Input" unique_id=1331348615 instance=ExtResource("15_input")]
 
-[node name="UI" type="Node" parent="."]
+[node name="UI" type="Node" parent="." unique_id=1404067600]
 
-[node name="GameWindowConsolidationTests" parent="UI" instance=ExtResource("16_ui_window")]
+[node name="GameWindowConsolidationTests" parent="UI" unique_id=749794887 instance=ExtResource("16_ui_window")]

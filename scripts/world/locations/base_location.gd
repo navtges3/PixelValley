@@ -79,12 +79,12 @@ func _input(event: InputEvent) -> void:
 	if world_hud.is_dialogue_open():
 		return
 	var game_hud: GameHUD = world_hud.game_hud
-	if event.is_action_pressed("ui_cancel"):
+	if event.is_action_pressed(&"ui_cancel"):
 		if game_hud.is_open():
 			_close_hud(game_hud)
-		else:
+		elif not InputManager.is_using_controller():
 			_open_hud(game_hud, GameHUD.Tab.SYSTEM)
-	elif event.is_action_pressed("open_hud"):
+	elif event.is_action_pressed(&"open_hud"):
 		if game_hud.is_open():
 			_close_hud(game_hud)
 		else:

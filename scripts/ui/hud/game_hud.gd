@@ -59,6 +59,28 @@ func switch_tab(tab: Tab) -> void:
 	content_area.get_node(PANELS_BY_TAB[tab]).visible = true
 	_sync_tab_buttons()
 	_refresh_current_tab()
+	_focus_current_tab.call_deferred()
+
+func _focus_current_tab() -> void:
+	if not _is_open:
+		return
+	var target := _get_default_focus_target()
+	if target == null:
+		target = _tab_buttons[_current_tab] as Button
+	target.grab_focus()
+
+func _get_default_focus_target() -> Control:
+	match _current_tab:
+		Tab.SYSTEM:
+			return system_panel.get_default_focus_target()
+		Tab.STATS:
+			return stats_panel.get_default_focus_target()
+		Tab.INVENTORY:
+			return inventory_panel.get_default_focus_target()
+		Tab.QUESTS:
+			return quests_panel.get_default_focus_target()
+		_:
+			return null
 
 func _refresh_current_tab() -> void:
 	match _current_tab:

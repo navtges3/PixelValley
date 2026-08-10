@@ -12,6 +12,7 @@ func _ready() -> void:
 
 func open() -> void:
 	_capture_previous_focus()
+	move_to_front()
 	show()
 	opened.emit()
 	_apply_default_focus.call_deferred()
