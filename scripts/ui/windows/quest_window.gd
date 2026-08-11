@@ -9,6 +9,7 @@ enum Tab { AVAILABLE, ACTIVE, COMPLETED }
 @onready var active_button: Button = $PanelContainer/VBoxContainer/QuestTabs/ActiveButton
 @onready var completed_button: Button = $PanelContainer/VBoxContainer/QuestTabs/CompletedButton
 @onready var quest_list: VBoxContainer = $PanelContainer/VBoxContainer/QuestScrollContainer/QuestList
+@onready var close_button: Button = $PanelContainer/VBoxContainer/BottomControls/CloseButton
 @onready var action_button: Button = $PanelContainer/VBoxContainer/BottomControls/ActionButton
 @onready var reward_window: RewardWindow = $RewardWindow
 
@@ -19,6 +20,7 @@ var _selected_quest_id: int = -1
 var _bound_manager: QuestManager = null
 var _refresh_queued: bool = false
 var _tab_group: ButtonGroup = ButtonGroup.new()
+var _quest_buttons: Array[QuestButton] = []
 var _quest_group: ButtonGroup = ButtonGroup.new()
 var _buttons_by_id: Dictionary[int, QuestButton] = {}
 
@@ -42,6 +44,7 @@ func _accept_selected_quest(quest: Quest) -> void:
 		_current_tab = Tab.ACTIVE
 		_selected_quest_id = quest.id
 		_sync_tab_buttons()
+		_update_action_button()
 		_refresh_quest_list()
 
 func _add_category_section(quests: Array[Quest], category: Quest.Category, header_text: String) -> void:
@@ -71,6 +74,7 @@ func _add_quest_button(quest: Quest) -> void:
 	quest_button.button_group = _quest_group
 	quest_button.quest_selected.connect(_on_quest_selected)
 	quest_list.add_child(quest_button)
+	_quest_buttons.append(quest_button)
 	_buttons_by_id[quest.id] = quest_button
 	if quest.id == _selected_quest_id:
 		quest_button.set_pressed_no_signal(true)
@@ -79,6 +83,7 @@ func _apply_queued_refresh() -> void:
 	_refresh_queued = false
 	_refresh_quest_list()
 	_update_action_button()
+	_configure_focus_graph()
 
 func _bind_quest_manager(manager: QuestManager) -> void:
 	if _bound_manager == manager:
@@ -97,10 +102,72 @@ func _bind_quest_manager(manager: QuestManager) -> void:
 func _clear_quest_list() -> void:
 	for child: Node in quest_list.get_children():
 		child.free()
+	_quest_buttons.clear()
 
 func _clear_selection() -> void:
 	_selected_quest_id = -1
 	_update_action_button()
+	_configure_focus_graph()
+
+func _configure_focus_graph() -> void:
+	_configure_tab_focus()
+	var current_tab_button: Button = _get_current_tab_button()
+	var list_entry_target: Control = close_button
+	if not _quest_buttons.is_empty():
+		list_entry_target = _quest_buttons[0]
+
+	for tab_button: Button in [
+		available_button,
+		active_button,
+		completed_button,
+	]:
+		tab_button.focus_neighbor_bottom = tab_button.get_path_to(list_entry_target)
+
+	if _quest_buttons.is_empty():
+		_configure_bottom_controls(current_tab_button)
+		return
+
+	for index: int in _quest_buttons.size():
+		var button: QuestButton = _quest_buttons[index]
+		var top_target: Control = current_tab_button
+		var bottom_target: Control
+		if index > 0:
+			top_target = _quest_buttons[index - 1]
+		if index < _quest_buttons.size() - 1:
+			bottom_target = _quest_buttons[index + 1]
+		elif not action_button.disabled:
+			bottom_target = action_button
+		else:
+			bottom_target = close_button
+		button.focus_neighbor_top = button.get_path_to(top_target)
+		button.focus_neighbor_bottom = button.get_path_to(bottom_target)
+
+	_configure_bottom_controls(_quest_buttons.back())
+
+func _configure_tab_focus() -> void:
+	available_button.focus_neighbor_left = available_button.get_path_to(available_button)
+	available_button.focus_neighbor_right = available_button.get_path_to(active_button)
+	active_button.focus_neighbor_left = active_button.get_path_to(available_button)
+	active_button.focus_neighbor_right = active_button.get_path_to(completed_button)
+	completed_button.focus_neighbor_left = completed_button.get_path_to(active_button)
+	completed_button.focus_neighbor_right = completed_button.get_path_to(completed_button)
+
+func _configure_bottom_controls(top_target: Control) -> void:
+	close_button.focus_neighbor_top = close_button.get_path_to(top_target)
+	close_button.focus_neighbor_right = close_button.get_path_to(
+		action_button if not action_button.disabled else close_button
+	)
+	action_button.focus_neighbor_top = action_button.get_path_to(top_target)
+	action_button.focus_neighbor_left = action_button.get_path_to(close_button)
+
+func _get_current_tab_button() -> Button:
+	match _current_tab:
+		Tab.ACTIVE:
+			return active_button
+		Tab.COMPLETED:
+			return completed_button
+		_:
+			return available_button
 
 func _disconnect_quest_manager() -> void:
 	if _bound_manager == null:
@@ -191,13 +258,22 @@ func _on_quest_changed(_quest: Quest) -> void:
 func _on_quest_selected(quest_id: int) -> void:
 	_selected_quest_id = quest_id
 	_update_action_button()
+	_configure_focus_graph()
 
 func _on_quest_turned_in(_quest: Quest, _rewards: Array[RewardEntry]) -> void:
 	_queue_refresh()
 
 func _on_reward_window_collected() -> void:
 	if is_open():
-		available_button.grab_focus.call_deferred()
+		_focus_current_quest_context.call_deferred()
+
+func _focus_current_quest_context() -> void:
+	if not is_open():
+		return
+	if not _quest_buttons.is_empty():
+		_quest_buttons[0].grab_focus()
+	else:
+		_get_current_tab_button().grab_focus()
 
 func _queue_refresh() -> void:
 	if _refresh_queued or not is_visible_in_tree():
@@ -213,12 +289,14 @@ func _refresh_quest_list() -> void:
 	_buttons_by_id.clear()
 	if GameState.quest_manager == null:
 		_add_empty_message("Quest information is unavailable.")
+		_configure_focus_graph()
 		return
 	var quests: Array[Quest] = _get_current_quests()
 	_add_category_section(quests, Quest.Category.MAIN, "Main Quests")
 	_add_category_section(quests, Quest.Category.SIDE, "Side Quests")
 	if quests.is_empty():
 		_add_empty_message(_get_empty_message())
+	_configure_focus_graph()
 	if restore_list_focus:
 		_restore_focus_after_refresh.call_deferred(focused_quest_id)
 

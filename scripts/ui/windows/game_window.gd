@@ -22,6 +22,12 @@ func close() -> void:
 	closed.emit()
 	_restore_previous_focus.call_deferred()
 
+func has_open_child_window() -> bool:
+	for child: Node in get_children():
+		if child is GameWindow and (child as GameWindow).is_open():
+			return true
+	return false
+
 func is_open() -> bool:
 	return is_visible_in_tree()
 
@@ -60,7 +66,7 @@ func _can_receive_focus(control: Control) -> bool:
 	return true
 
 func _unhandled_input(event: InputEvent) -> void:
-	if not is_open():
+	if not is_open() or has_open_child_window():
 		return
 	if not event.is_echo() and event.is_action_pressed(&"ui_cancel"):
 		_handle_cancel()

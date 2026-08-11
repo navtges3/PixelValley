@@ -17,6 +17,7 @@ func _ready() -> void:
 	super._ready()
 	_create_overwrite_window()
 	populate_slots()
+	_configure_focus_graph()
 
 func populate_slots() -> void:
 	for i in slot_buttons.size():
@@ -55,7 +56,8 @@ func _confirm_overwrite() -> void:
 func _create_overwrite_window() -> void:
 	overwrite_window.setup(
 		"Overwrite Save?",
-		"This slot already has save data. Start a new game here and overwrite it?"
+		"This slot already has save data. Start a new game here and overwrite it?",
+		"Overwrite"
 	)
 	overwrite_window.confirmed.connect(_confirm_overwrite)
 	overwrite_window.cancelled.connect(_cancel_overwrite)
@@ -64,6 +66,28 @@ func _get_default_focus_target() -> Control:
 	if slot_buttons.is_empty():
 		return back_button
 	return slot_buttons[0]
+
+func _configure_focus_graph() -> void:
+	if slot_buttons.is_empty():
+		back_button.focus_neighbor_top = back_button.get_path_to(back_button)
+		return
+
+	for index: int in slot_buttons.size():
+		var button: Button = slot_buttons[index]
+		var top_target: Control = button
+		var bottom_target: Control = back_button
+		if index > 0:
+			top_target = slot_buttons[index - 1]
+		if index < slot_buttons.size() - 1:
+			bottom_target = slot_buttons[index + 1]
+		button.focus_neighbor_left = button.get_path_to(button)
+		button.focus_neighbor_right = button.get_path_to(button)
+		button.focus_neighbor_top = button.get_path_to(top_target)
+		button.focus_neighbor_bottom = button.get_path_to(bottom_target)
+
+	back_button.focus_neighbor_left = back_button.get_path_to(back_button)
+	back_button.focus_neighbor_right = back_button.get_path_to(back_button)
+	back_button.focus_neighbor_top = back_button.get_path_to(slot_buttons.back())
 
 func _slot_button_pressed(slot_index: int) -> void:
 	if SaveManager.has_save_data(slot_index):

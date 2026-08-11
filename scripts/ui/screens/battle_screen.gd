@@ -28,7 +28,15 @@ var hero_visual: BattleCharacter
 var monster_visual: BattleCharacter
 var battle_config: Dictionary = {}
 
+var _primary_action_buttons: Array[Button] = []
+
 func _ready() -> void:
+	_primary_action_buttons = [
+		ability_button,
+		item_button,
+		meditate_button,
+		flee_button,
+	]
 	_empty_option_list()
 
 func setup(config: Dictionary) -> void:
@@ -118,6 +126,26 @@ func _on_battle_log_updated(msg: String) -> void:
 	battle_log.append_text(msg)
 
 # --- Action Buttons ---
+func _focus_primary_action() -> void:
+	for button: Button in _primary_action_buttons:
+		if button.disabled or not button.is_visible_in_tree():
+			continue
+		button.grab_focus()
+		return
+
+func _focus_first_usable_option(fallback: Button) -> void:
+	for child: Node in option_list.get_children():
+		if child.is_queued_for_deletion():
+			continue
+		var button := child as Button
+		if button == null or button.disabled:
+			continue
+		if not button.is_visible_in_tree():
+			continue
+		button.grab_focus()
+		return
+	fallback.grab_focus()
+
 func _on_ability_button_toggled(button_pressed: bool) -> void:
 	if button_pressed:
 		item_button.button_pressed = false
@@ -126,6 +154,7 @@ func _on_ability_button_toggled(button_pressed: bool) -> void:
 		for ability: Ability in battle_manager.get_hero_abilities():
 			var btn := _create_ability_button(ability)
 			option_list.add_child(btn)
+		_focus_first_usable_option.call_deferred(ability_button)
 	else:
 		option_list.visible = false
 
@@ -138,6 +167,7 @@ func _on_item_button_toggled(button_pressed: bool) -> void:
 			var count: int = battle_manager.get_hero_items()[item_id]
 			var btn := _create_item_button(item_id, count)
 			option_list.add_child(btn)
+		_focus_first_usable_option.call_deferred(item_button)
 	else:
 		option_list.visible = false
 
@@ -161,6 +191,8 @@ func _on_player_turn() -> void:
 		meditate_button.disabled = false
 		meditate_button.text = "Meditate"
 	flee_button.disabled = false
+	_reset_action_submenu()
+	_focus_primary_action.call_deferred()
 
 func _on_monster_turn() -> void:
 	ability_button.disabled = true
@@ -209,4 +241,34 @@ func _create_item_button(item_id: String, count: int) -> Button:
 
 func _empty_option_list() -> void:
 	for child in option_list.get_children():
-			child.queue_free()
+		child.queue_free()
+
+func _is_action_submenu_open() -> bool:
+	return ability_button.button_pressed or item_button.button_pressed
+
+func _reset_action_submenu() -> void:
+	ability_button.set_pressed_no_signal(false)
+	item_button.set_pressed_no_signal(false)
+	option_list.visible = false
+	_empty_option_list()
+
+func _close_action_submenu() -> void:
+	var return_target: Button = ability_button if ability_button.button_pressed else item_button
+	_reset_action_submenu()
+	_restore_primary_focus.call_deferred(return_target)
+
+func _restore_primary_focus(preferred: Button) -> void:
+	if is_instance_valid(preferred) and preferred.is_visible_in_tree() and not preferred.disabled:
+		preferred.grab_focus()
+		return
+	_focus_primary_action()
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_echo():
+		return
+	if not event.is_action_pressed(&"ui_cancel"):
+		return
+	if not _is_action_submenu_open():
+		return
+	_close_action_submenu()
+	get_viewport().set_input_as_handled()

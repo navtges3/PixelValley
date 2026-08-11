@@ -4,7 +4,7 @@
 [ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://resources/themes/buttons/regular/green_button.tres" id="2_tqaw0"]
 [ext_resource type="Theme" uid="uid://dq41s7i7v61gk" path="res://resources/themes/backgrounds/background.tres" id="2_ycxpi"]
 [ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://resources/themes/buttons/regular/red_button.tres" id="3_l77w7"]
-[ext_resource type="Script" path="res://scripts/ui/windows/confirmation_window.gd" id="4_confirm"]
+[ext_resource type="PackedScene" path="res://scenes/ui/windows/confirmation_window.tscn" id="4_confirm"]
 
 [node name="NewGameWindow" type="Control" unique_id=1924150137]
 visible = false
@@ -110,77 +110,7 @@ theme = ExtResource("3_l77w7")
 text = "Back
 "
 
-[node name="OverwriteWindow" type="Control" parent="." unique_id=1003062573]
-visible = false
+[node name="OverwriteWindow" parent="." unique_id=1003062573 instance=ExtResource("4_confirm")]
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-script = ExtResource("4_confirm")
-
-[node name="InputBlocker" type="ColorRect" parent="OverwriteWindow" unique_id=769204966]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0, 0, 0, 0.55)
-
-[node name="PanelContainer" type="PanelContainer" parent="OverwriteWindow" unique_id=1189394898]
-custom_minimum_size = Vector2(420, 0)
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-grow_horizontal = 2
-grow_vertical = 2
-theme = ExtResource("2_ycxpi")
-
-[node name="MarginContainer" type="MarginContainer" parent="OverwriteWindow/PanelContainer" unique_id=1572263118]
-layout_mode = 2
-theme_override_constants/margin_left = 24
-theme_override_constants/margin_top = 24
-theme_override_constants/margin_right = 24
-theme_override_constants/margin_bottom = 24
-
-[node name="VBoxContainer" type="VBoxContainer" parent="OverwriteWindow/PanelContainer/MarginContainer" unique_id=648282390]
-layout_mode = 2
-theme_override_constants/separation = 16
-
-[node name="TitleLabel" type="Label" parent="OverwriteWindow/PanelContainer/MarginContainer/VBoxContainer" unique_id=1170915926]
-layout_mode = 2
-theme_override_font_sizes/font_size = 20
-text = "Overwrite Save?"
-horizontal_alignment = 1
-
-[node name="MessageLabel" type="Label" parent="OverwriteWindow/PanelContainer/MarginContainer/VBoxContainer" unique_id=1232710359]
-layout_mode = 2
-text = "This slot already has save data. Start a new game here and overwrite it?"
-horizontal_alignment = 1
-autowrap_mode = 3
-
-[node name="ButtonRow" type="HBoxContainer" parent="OverwriteWindow/PanelContainer/MarginContainer/VBoxContainer" unique_id=1634768863]
-layout_mode = 2
-theme_override_constants/separation = 16
-alignment = 1
-
-[node name="ConfirmButton" type="Button" parent="OverwriteWindow/PanelContainer/MarginContainer/VBoxContainer/ButtonRow" unique_id=309109034]
-custom_minimum_size = Vector2(96, 32)
-layout_mode = 2
-theme = ExtResource("2_tqaw0")
-text = "Overwrite"
-
-[node name="CancelButton" type="Button" parent="OverwriteWindow/PanelContainer/MarginContainer/VBoxContainer/ButtonRow" unique_id=843665322]
-custom_minimum_size = Vector2(96, 32)
-layout_mode = 2
-theme = ExtResource("3_l77w7")
-text = "Cancel"
 
 [connection signal="pressed" from="PanelContainer/MarginContainer/VBoxContainer/BackButton" to="." method="_on_back_button_pressed"]
-[connection signal="pressed" from="OverwriteWindow/PanelContainer/MarginContainer/VBoxContainer/ButtonRow/ConfirmButton" to="OverwriteWindow" method="_on_confirm_button_pressed"]
-[connection signal="pressed" from="OverwriteWindow/PanelContainer/MarginContainer/VBoxContainer/ButtonRow/CancelButton" to="OverwriteWindow" method="_on_cancel_button_pressed"]

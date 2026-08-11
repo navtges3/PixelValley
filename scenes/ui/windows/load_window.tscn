@@ -4,6 +4,7 @@
 [ext_resource type="Script" uid="uid://cv56v1xyoucqs" path="res://scripts/ui/windows/load_window.gd" id="1_svb4e"]
 [ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://resources/themes/buttons/regular/red_button.tres" id="2_svb4e"]
 [ext_resource type="Theme" uid="uid://dq41s7i7v61gk" path="res://resources/themes/backgrounds/background.tres" id="2_xdcf0"]
+[ext_resource type="PackedScene" path="res://scenes/ui/windows/confirmation_window.tscn" id="2_yt5x5"]
 
 [node name="LoadWindow" type="Control" unique_id=1918541071]
 visible = false
@@ -14,6 +15,9 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_svb4e")
+
+[node name="DeleteConfirmation" parent="." unique_id=291448909 instance=ExtResource("2_yt5x5")]
+layout_mode = 1
 
 [node name="InputBlocker" type="ColorRect" parent="." unique_id=1265426987]
 layout_mode = 1

@@ -42,6 +42,9 @@ func _ready() -> void:
 func is_open() -> bool:
 	return _is_open
 
+func has_open_modal() -> bool:
+	return system_panel.options_window.is_open()
+
 func show_hud(start_tab: Tab = _current_tab) -> void:
 	_is_open = true
 	visible = true
@@ -119,7 +122,7 @@ func _sync_tab_buttons() -> void:
 		btn.set_pressed_no_signal(tab == _current_tab)
 
 func _unhandled_input(event: InputEvent) -> void:
-	if not _is_open or event.is_echo():
+	if not _is_open or has_open_modal() or event.is_echo():
 		return
 	if event.is_action_pressed(&"tab_left"):
 		_switch_relative_tab(-1)

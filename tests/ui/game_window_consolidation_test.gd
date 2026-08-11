@@ -44,6 +44,13 @@ const REWARD_WINDOW_SCENE := preload(
 const DEATH_WINDOW_SCENE := preload(
 	"res://scenes/ui/windows/death_window.tscn"
 )
+const NEW_GAME_SCREEN_SCENE := preload(
+	"res://scenes/ui/screens/new_game_screen.tscn"
+)
+const QUEST_BUTTON_SCENE := preload(
+	"res://scenes/ui/components/quest_button.tscn"
+)
+const GAME_HUD_SCENE := preload("res://scenes/ui/hud/game_hud.tscn")
 
 var _reward_collection_count: int = 0
 var _return_to_village_count: int = 0
@@ -55,8 +62,14 @@ func run_tests() -> int:
 	_test_converted_windows_start_hidden()
 	_test_game_window_lifecycle()
 	_test_static_default_focus_targets()
+	_test_options_window_focus_graph()
+	_test_game_hud_reports_options_modal()
 	_test_load_window_focus_fallbacks()
+	_test_load_window_focus_graph()
+	_test_new_game_slot_focus_graph()
 	_test_nested_confirmation_focus()
+	_test_new_game_screen_focus_graph()
+	_test_quest_action_focus_route()
 	_test_required_modal_cancel_flows()
 	_test_quest_reward_focus_recovery_is_connected()
 	return _finish_test_run("Game window consolidation tests")
@@ -221,6 +234,111 @@ func _test_load_window_focus_fallbacks() -> void:
 	)
 	load_window.free()
 
+func _test_options_window_focus_graph() -> void:
+	var options_window := _spawn_window(
+		OPTIONS_WINDOW_SCENE
+	) as OptionsWindow
+	var controls: Array[Control] = [
+		options_window.master_volume_slider,
+		options_window.music_volume_slider,
+		options_window.sfx_volume_slider,
+		options_window.fullscreen_button,
+		options_window.close_button,
+	]
+	for index: int in controls.size():
+		var control: Control = controls[index]
+		var top_target: Control = controls[maxi(index - 1, 0)]
+		var bottom_target: Control = controls[mini(index + 1, controls.size() - 1)]
+		_expect_equal(
+			control.focus_neighbor_top,
+			control.get_path_to(top_target),
+			"options control %d has an explicit upward target" % index
+		)
+		_expect_equal(
+			control.focus_neighbor_bottom,
+			control.get_path_to(bottom_target),
+			"options control %d has an explicit downward target" % index
+		)
+	_expect_equal(
+		options_window.fullscreen_button.focus_neighbor_bottom,
+		options_window.fullscreen_button.get_path_to(options_window.close_button),
+		"Fullscreen navigates down to Close instead of the underlying screen"
+	)
+	_expect_equal(
+		options_window.close_button.focus_neighbor_bottom,
+		options_window.close_button.get_path_to(options_window.close_button),
+		"Close cannot navigate down out of the options modal"
+	)
+	options_window.free()
+
+func _test_game_hud_reports_options_modal() -> void:
+	var game_hud := GAME_HUD_SCENE.instantiate() as GameHUD
+	add_child(game_hud)
+	game_hud.show_hud(GameHUD.Tab.SYSTEM)
+	_expect_true(
+		not game_hud.has_open_modal(),
+		"the game HUD starts without an open modal"
+	)
+	game_hud.system_panel.options_window.open()
+	_expect_true(
+		game_hud.has_open_modal(),
+		"the game HUD reports its open Options modal"
+	)
+	game_hud.system_panel.options_window.close()
+	_expect_true(
+		not game_hud.has_open_modal(),
+		"the game HUD clears modal state when Options closes"
+	)
+	game_hud.free()
+
+func _test_load_window_focus_graph() -> void:
+	var load_window := _spawn_window(LOAD_WINDOW_SCENE) as LoadWindow
+	for index: int in load_window.slot_buttons.size():
+		load_window.setup_empty_slot(load_window.slot_buttons[index])
+		load_window.delete_buttons[index].disabled = true
+
+	var filled_index := 2
+	var filled_slot := load_window.slot_buttons[filled_index]
+	var delete_button := load_window.delete_buttons[filled_index]
+	load_window.setup_filled_slot(filled_slot, {})
+	delete_button.disabled = false
+	load_window._rebuild_focus_graph()
+
+	_expect_equal(
+		filled_slot.focus_neighbor_right,
+		filled_slot.get_path_to(delete_button),
+		"load slots navigate right to their matching Delete action"
+	)
+	_expect_equal(
+		delete_button.focus_neighbor_bottom,
+		delete_button.get_path_to(load_window.back_button),
+		"the final enabled delete action navigates down to Back"
+	)
+	load_window.free()
+
+func _test_new_game_slot_focus_graph() -> void:
+	var new_game_window := _spawn_window(
+		NEW_GAME_WINDOW_SCENE
+	) as NewGameWindow
+	for index: int in range(1, new_game_window.slot_buttons.size() - 1):
+		var button: Button = new_game_window.slot_buttons[index]
+		_expect_equal(
+			button.focus_neighbor_top,
+			button.get_path_to(new_game_window.slot_buttons[index - 1]),
+			"new-game middle slot %d navigates to the previous slot" % (index + 1)
+		)
+		_expect_equal(
+			button.focus_neighbor_bottom,
+			button.get_path_to(new_game_window.slot_buttons[index + 1]),
+			"new-game middle slot %d navigates to the next slot" % (index + 1)
+		)
+	_expect_equal(
+		new_game_window.slot_buttons.back().focus_neighbor_bottom,
+		new_game_window.slot_buttons.back().get_path_to(new_game_window.back_button),
+		"the final new-game slot navigates down to Back"
+	)
+	new_game_window.free()
+
 func _test_nested_confirmation_focus() -> void:
 	_confirmation_cancel_count = 0
 	var new_game_window := _spawn_window(
@@ -236,6 +354,10 @@ func _test_nested_confirmation_focus() -> void:
 
 	overwrite_window.open()
 	overwrite_window._apply_default_focus()
+	_expect_true(
+		new_game_window.has_open_child_window(),
+		"new-game slot window recognizes its open confirmation child"
+	)
 	_expect_equal(
 		get_viewport().gui_get_focus_owner(),
 		overwrite_window.cancel_button,
@@ -255,6 +377,45 @@ func _test_nested_confirmation_focus() -> void:
 		"cancelling overwrite restores the selected save slot"
 	)
 	new_game_window.free()
+
+func _test_new_game_screen_focus_graph() -> void:
+	var screen := NEW_GAME_SCREEN_SCENE.instantiate() as NewGameScreen
+	add_child(screen)
+	_expect_equal(
+		screen._hero_previews.size(),
+		3,
+		"character creation builds all three hero previews"
+	)
+	var first_preview: HeroPreview = screen._hero_previews[0]
+	_expect_equal(
+		first_preview.focus_neighbor_bottom,
+		first_preview.get_path_to(screen.hero_name),
+		"hero previews navigate down to the name field"
+	)
+	screen.free()
+
+func _test_quest_action_focus_route() -> void:
+	var quest_window := _spawn_window(QUEST_WINDOW_SCENE) as QuestWindow
+	var quest_button := QUEST_BUTTON_SCENE.instantiate() as QuestButton
+	quest_window.quest_list.add_child(quest_button)
+	quest_window._quest_buttons.append(quest_button)
+
+	quest_window.action_button.disabled = false
+	quest_window._configure_focus_graph()
+	_expect_equal(
+		quest_button.focus_neighbor_bottom,
+		quest_button.get_path_to(quest_window.action_button),
+		"a selectable quest navigates down to an enabled Turn In action"
+	)
+
+	quest_window.action_button.disabled = true
+	quest_window._configure_focus_graph()
+	_expect_equal(
+		quest_button.focus_neighbor_bottom,
+		quest_button.get_path_to(quest_window.close_button),
+		"a quest skips a disabled action and navigates to Close"
+	)
+	quest_window.free()
 
 func _test_required_modal_cancel_flows() -> void:
 	_reward_collection_count = 0
