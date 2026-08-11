@@ -51,6 +51,9 @@ const QUEST_BUTTON_SCENE := preload(
 	"res://scenes/ui/components/quest_button.tscn"
 )
 const GAME_HUD_SCENE := preload("res://scenes/ui/hud/game_hud.tscn")
+const QUESTS_PANEL_SCENE := preload(
+	"res://scenes/ui/hud/panels/quests_panel.tscn"
+)
 
 var _reward_collection_count: int = 0
 var _return_to_village_count: int = 0
@@ -62,14 +65,17 @@ func run_tests() -> int:
 	_test_converted_windows_start_hidden()
 	_test_game_window_lifecycle()
 	_test_static_default_focus_targets()
+	_test_shop_item_selection_and_weapon_ownership()
 	_test_options_window_focus_graph()
 	_test_game_hud_reports_options_modal()
+	_test_completed_quest_section_collapse()
 	_test_load_window_focus_fallbacks()
 	_test_load_window_focus_graph()
 	_test_new_game_slot_focus_graph()
 	_test_nested_confirmation_focus()
 	_test_new_game_screen_focus_graph()
 	_test_quest_action_focus_route()
+	_test_quest_tab_shortcuts_wrap()
 	_test_required_modal_cancel_flows()
 	_test_quest_reward_focus_recovery_is_connected()
 	return _finish_test_run("Game window consolidation tests")
@@ -196,6 +202,59 @@ func _test_static_default_focus_targets() -> void:
 	)
 	death_window.free()
 
+func _test_shop_item_selection_and_weapon_ownership() -> void:
+	var shop_window := _spawn_window(SHOP_WINDOW_SCENE) as ShopWindow
+	var first_button := shop_window.create_item_button(
+		"bronze_mace",
+		1
+	)
+	var second_button := shop_window.create_item_button(
+		"iron_longsword",
+		1
+	)
+	shop_window.item_list.add_child(first_button)
+	shop_window.item_list.add_child(second_button)
+	shop_window._item_buttons.assign([first_button, second_button])
+
+	_expect_true(first_button.toggle_mode, "shop items use toggle buttons")
+	_expect_equal(
+		first_button.button_group,
+		second_button.button_group,
+		"shop item toggles share an exclusive selection group"
+	)
+	var hero := HeroLoader.new_hero(Hero.HeroClass.KNIGHT)
+	hero.inventory.gold = 9999
+	hero.inventory.weapon_stash.append("iron_longsword")
+	var weapon_shop := Shop.new()
+	weapon_shop.inventory = {
+		"bronze_mace": 1,
+		"iron_longsword": 1,
+	}
+	shop_window.hero = hero
+	shop_window.shop = weapon_shop
+	shop_window.shop_type = ShopWindow.ShopType.WEAPON
+	shop_window.shop_manager.hero = hero
+	shop_window.shop_manager.shop = weapon_shop
+	shop_window._on_item_pressed("iron_longsword")
+	_expect_true(
+		second_button.button_pressed,
+		"the displayed shop item remains visibly selected"
+	)
+	_expect_true(
+		not first_button.button_pressed,
+		"selecting another shop item clears the previous toggle"
+	)
+
+	_expect_true(
+		shop_window.purchase_button.disabled,
+		"owned weapons disable Purchase even when the hero has enough gold"
+	)
+	_expect_true(
+		not shop_window.shop_manager.can_buy_selected(),
+		"the shop manager rejects duplicate weapon purchases"
+	)
+	shop_window.free()
+
 func _test_load_window_focus_fallbacks() -> void:
 	var load_window := _spawn_window(LOAD_WINDOW_SCENE) as LoadWindow
 	for button: Button in load_window.slot_buttons:
@@ -290,6 +349,105 @@ func _test_game_hud_reports_options_modal() -> void:
 		"the game HUD clears modal state when Options closes"
 	)
 	game_hud.free()
+
+func _test_completed_quest_section_collapse() -> void:
+	var quests_panel := QUESTS_PANEL_SCENE.instantiate() as QuestsPanel
+	add_child(quests_panel)
+	quests_panel._clear_container(quests_panel.active_list)
+	quests_panel._clear_container(quests_panel.completed_list)
+	quests_panel._active_buttons.clear()
+	quests_panel._completed_buttons.clear()
+	quests_panel._buttons_by_id.clear()
+
+	var active_quest := Quest.new()
+	active_quest.id = 901
+	active_quest.title = "Active Test Quest"
+	var active_button := QUEST_BUTTON_SCENE.instantiate() as QuestButton
+	active_button.setup(active_quest, QuestButton.DisplayState.ACTIVE)
+	quests_panel.active_list.add_child(active_button)
+	quests_panel._active_buttons.append(active_button)
+	quests_panel._buttons_by_id[active_quest.id] = active_button
+
+	var completed_quest := Quest.new()
+	completed_quest.id = 902
+	completed_quest.title = "Completed Test Quest"
+	completed_quest.objectives.append(QuestObjective.new())
+	var completed_button := QUEST_BUTTON_SCENE.instantiate() as QuestButton
+	completed_button.setup(
+		completed_quest,
+		QuestButton.DisplayState.COMPLETED
+	)
+	quests_panel.completed_list.add_child(completed_button)
+	quests_panel._completed_buttons.append(completed_button)
+	quests_panel._buttons_by_id[completed_quest.id] = completed_button
+	_expect_equal(
+		completed_button.size_flags_vertical,
+		Control.SIZE_FILL,
+		"completed quest cards use their content height instead of expanding vertically"
+	)
+	var objective_label := completed_button.objectives_list.get_child(0) as Label
+	_expect_equal(
+		objective_label.custom_minimum_size.x,
+		completed_button.description_label.custom_minimum_size.x,
+		"hidden completed objectives measure at the quest card content width"
+	)
+
+	quests_panel._completed_quest_count = 1
+	quests_panel._completed_list_expanded = false
+	quests_panel.track_button.disabled = false
+	quests_panel._sync_completed_section()
+	quests_panel._configure_focus_graph()
+	_expect_true(
+		not quests_panel.completed_list.visible,
+		"completed quests start hidden when the section is collapsed"
+	)
+	_expect_equal(
+		active_button.focus_neighbor_bottom,
+		active_button.get_path_to(quests_panel.completed_header),
+		"collapsed navigation moves from active quests to the completed header"
+	)
+	_expect_equal(
+		quests_panel.completed_header.focus_neighbor_bottom,
+		quests_panel.completed_header.get_path_to(quests_panel.track_button),
+		"collapsed navigation skips hidden completed quests"
+	)
+
+	quests_panel._on_completed_header_toggled(true)
+	_expect_true(
+		quests_panel.completed_list.visible,
+		"toggling the completed header expands the completed list"
+	)
+	_expect_equal(
+		quests_panel.completed_header.focus_neighbor_bottom,
+		quests_panel.completed_header.get_path_to(completed_button),
+		"expanded navigation enters the completed quest list"
+	)
+	_expect_equal(
+		completed_button.focus_neighbor_bottom,
+		completed_button.get_path_to(quests_panel.track_button),
+		"expanded completed quests reconnect to the next visible control"
+	)
+
+	quests_panel._last_focused_quest_id = completed_quest.id
+	quests_panel._on_completed_header_toggled(false)
+	_expect_equal(
+		quests_panel.get_default_focus_target(),
+		active_button,
+		"default focus ignores a previously focused hidden completed quest"
+	)
+
+	quests_panel._completed_quest_count = 0
+	quests_panel._completed_list_expanded = true
+	quests_panel._sync_completed_section()
+	_expect_true(
+		quests_panel.completed_header.disabled,
+		"an empty completed section cannot receive stranded focus"
+	)
+	_expect_true(
+		not quests_panel.completed_list.visible,
+		"an empty completed section remains hidden"
+	)
+	quests_panel.free()
 
 func _test_load_window_focus_graph() -> void:
 	var load_window := _spawn_window(LOAD_WINDOW_SCENE) as LoadWindow
@@ -414,6 +572,34 @@ func _test_quest_action_focus_route() -> void:
 		quest_button.focus_neighbor_bottom,
 		quest_button.get_path_to(quest_window.close_button),
 		"a quest skips a disabled action and navigates to Close"
+	)
+	quest_window.free()
+
+func _test_quest_tab_shortcuts_wrap() -> void:
+	var quest_window := _spawn_window(QUEST_WINDOW_SCENE) as QuestWindow
+	quest_window._select_tab(QuestWindow.Tab.AVAILABLE)
+	quest_window._switch_relative_tab(-1)
+	_expect_equal(
+		quest_window._current_tab,
+		QuestWindow.Tab.COMPLETED,
+		"quest tab-left wraps from Available to Completed"
+	)
+	_expect_true(
+		quest_window.completed_button.button_pressed,
+		"relative quest tab switching updates the pressed tab"
+	)
+
+	quest_window._switch_relative_tab(1)
+	_expect_equal(
+		quest_window._current_tab,
+		QuestWindow.Tab.AVAILABLE,
+		"quest tab-right wraps from Completed to Available"
+	)
+	quest_window._switch_relative_tab(1)
+	_expect_equal(
+		quest_window._current_tab,
+		QuestWindow.Tab.ACTIVE,
+		"quest tab-right advances from Available to Active"
 	)
 	quest_window.free()
 

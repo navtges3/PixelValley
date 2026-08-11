@@ -316,6 +316,16 @@ func _select_tab(tab: Tab) -> void:
 	_update_action_button()
 	_refresh_quest_list()
 
+func _switch_relative_tab(direction: int) -> void:
+	var tab_count: int = Tab.size()
+	var next_tab: Tab = wrapi(
+		int(_current_tab) + direction,
+		0,
+		tab_count
+	) as Tab
+	_select_tab(next_tab)
+	_focus_current_quest_context.call_deferred()
+
 func _sort_quests_by_id(a: Quest, b: Quest) -> bool:
 	return a.id < b.id
 
@@ -356,3 +366,15 @@ func _update_action_button() -> void:
 		return
 	action_button.disabled = true
 	action_button.text = "Unavailable"
+
+func _unhandled_input(event: InputEvent) -> void:
+	if is_open() and not has_open_child_window() and not event.is_echo():
+		if event.is_action_pressed(&"tab_left"):
+			_switch_relative_tab(-1)
+			get_viewport().set_input_as_handled()
+			return
+		if event.is_action_pressed(&"tab_right"):
+			_switch_relative_tab(1)
+			get_viewport().set_input_as_handled()
+			return
+	super._unhandled_input(event)

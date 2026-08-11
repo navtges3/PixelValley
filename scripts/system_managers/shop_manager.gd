@@ -26,6 +26,8 @@ func can_buy_selected(amount: int = 1) -> bool:
 	var item := ItemLoader.get_item(selected_item_id)
 	if item == null:
 		return false
+	if item is Weapon and hero.inventory.has_weapon_in_stash(selected_item_id):
+		return false
 	return hero.inventory.gold >= item.value * amount
 
 func buy_item(amount: int = 1) -> void:

@@ -25,6 +25,7 @@ var hero: Hero
 var shop: Shop
 var shop_type: ShopType
 var _item_buttons: Array[ItemButton] = []
+var _item_button_group: ButtonGroup = ButtonGroup.new()
 
 func open() -> void:
 	_update_item_list()
@@ -77,6 +78,8 @@ func create_item_button(item_id: String, count: int) -> ItemButton:
 	var button := ITEM_BUTTON.instantiate() as ItemButton
 	button.item_id = item_id
 	button.count = count
+	button.toggle_mode = true
+	button.button_group = _item_button_group
 	button.item_pressed.connect(_on_item_pressed)
 	button.focus_entered.connect(_on_item_focused.bind(item_id))
 	return button
@@ -145,13 +148,19 @@ func _get_selected_item_button() -> ItemButton:
 
 func _on_item_pressed(item_id: String) -> void:
 	shop_manager.selected_item_id = item_id
+	_sync_item_button_selection()
 	_refresh_detail_panel(item_id)
 
 func _on_item_focused(item_id: String) -> void:
-	if shop_manager.selected_item_id == item_id:
-		return
 	shop_manager.selected_item_id = item_id
+	_sync_item_button_selection()
 	_refresh_detail_panel(item_id)
+
+func _sync_item_button_selection() -> void:
+	for button: ItemButton in _item_buttons:
+		button.set_pressed_no_signal(
+			button.item_id == shop_manager.selected_item_id
+		)
 
 func _refresh_detail_panel(item_id: String) -> void:
 	var item := ItemLoader.get_item(item_id)

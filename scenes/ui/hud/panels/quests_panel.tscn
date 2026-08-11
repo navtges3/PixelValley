@@ -43,11 +43,12 @@ theme_override_constants/separation = 6
 [node name="HSeparator" type="HSeparator" parent="VBoxContainer/ScrollContainer/QuestList" unique_id=1159161761]
 layout_mode = 2
 
-[node name="CompletedHeader" type="Label" parent="VBoxContainer/ScrollContainer/QuestList" unique_id=839729027]
+[node name="CompletedHeader" type="Button" parent="VBoxContainer/ScrollContainer/QuestList" unique_id=2109715808]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.25, 0.85, 0.35, 1)
+theme = ExtResource("2_p6s6g")
 theme_override_font_sizes/font_size = 14
-text = "Completed Quests"
+toggle_mode = true
+text = "[+] Completed Quests (0)"
 
 [node name="CompletedList" type="VBoxContainer" parent="VBoxContainer/ScrollContainer/QuestList" unique_id=284471394]
 layout_mode = 2
@@ -61,4 +62,5 @@ layout_mode = 2
 theme = ExtResource("2_p6s6g")
 text = "Track Quest"
 
+[connection signal="toggled" from="VBoxContainer/ScrollContainer/QuestList/CompletedHeader" to="." method="_on_completed_header_toggled"]
 [connection signal="pressed" from="VBoxContainer/ActionRow/TrackButton" to="." method="_on_track_button_pressed"]
