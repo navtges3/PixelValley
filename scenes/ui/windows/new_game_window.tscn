@@ -4,20 +4,38 @@
 [ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://resources/themes/buttons/regular/green_button.tres" id="2_tqaw0"]
 [ext_resource type="Theme" uid="uid://dq41s7i7v61gk" path="res://resources/themes/backgrounds/background.tres" id="2_ycxpi"]
 [ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://resources/themes/buttons/regular/red_button.tres" id="3_l77w7"]
+[ext_resource type="PackedScene" path="res://scenes/ui/windows/confirmation_window.tscn" id="4_confirm"]
 
-[node name="NewGameWindow" type="Window" unique_id=1924150137]
-transparent_bg = true
-oversampling_override = 1.0
-size = Vector2i(382, 619)
-wrap_controls = true
-borderless = true
-transparent = true
-script = ExtResource("1_1unjh")
-
-[node name="PanelContainer" type="PanelContainer" parent="." unique_id=2141844913]
+[node name="NewGameWindow" type="Control" unique_id=1924150137]
+visible = false
+layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_1unjh")
+
+[node name="InputBlocker" type="ColorRect" parent="." unique_id=630823055]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.45)
+
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=2141844913]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -191.0
+offset_top = -309.5
+offset_right = 191.0
+offset_bottom = 309.5
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("2_ycxpi")
@@ -92,10 +110,7 @@ theme = ExtResource("3_l77w7")
 text = "Back
 "
 
-[node name="OverwriteDialog" type="ConfirmationDialog" parent="." unique_id=425625124]
-transparent_bg = true
-oversampling_override = 1.0
-borderless = true
-transparent = true
+[node name="OverwriteWindow" parent="." unique_id=1003062573 instance=ExtResource("4_confirm")]
+layout_mode = 1
 
 [connection signal="pressed" from="PanelContainer/MarginContainer/VBoxContainer/BackButton" to="." method="_on_back_button_pressed"]

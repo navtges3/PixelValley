@@ -3,11 +3,11 @@
 [ext_resource type="Script" uid="uid://b2o7w8q10stxo" path="res://scripts/data/ability.gd" id="1_fuboq"]
 [ext_resource type="Script" uid="uid://bo48scp6lbwrb" path="res://scripts/data/attack.gd" id="2_880to"]
 [ext_resource type="Script" uid="uid://c5deti4sb2k2j" path="res://scripts/data/effects/effect.gd" id="4_8h8ss"]
-[ext_resource type="Resource" uid="uid://bipqwa8or45gt" path="res://resources/effects/common/buffs/focus.tres" id="5_8h8ss"]
+[ext_resource type="Texture2D" uid="uid://cuivik88vyvse" path="res://assets/effects/buffs/focus.png" id="4_ucxnh"]
+[ext_resource type="Script" uid="uid://hw30jan7sjfb" path="res://scripts/data/effects/effect_stat_change.gd" id="5_8h8ss"]
 [ext_resource type="Script" uid="uid://dgykeyxn7fefw" path="res://scripts/data/weapon.gd" id="5_hfbmx"]
 [ext_resource type="Theme" uid="uid://dqwm8agt87lsh" path="res://resources/themes/buttons/regular/blue_button.tres" id="6_4itfl"]
 [ext_resource type="Texture2D" uid="uid://byh7yphw3jtqy" path="res://assets/items/weapons/wand.png" id="6_880to"]
-
 
 [sub_resource type="Resource" id="Resource_y1jow"]
 script = ExtResource("2_880to")
@@ -37,18 +37,36 @@ cooldown = 3
 attack = SubResource("Resource_ivav6")
 metadata/_custom_type_script = "uid://b2o7w8q10stxo"
 
-[sub_resource type="Resource" id="Resource_kmunl"]
+[sub_resource type="Resource" id="Resource_mf47s"]
+script = ExtResource("5_8h8ss")
+stat = 5
+base_amount = 5
+amount_per_level = 5
+metadata/_custom_type_script = "uid://hw30jan7sjfb"
+
+[sub_resource type="Resource" id="Resource_hfbmx"]
+script = ExtResource("4_8h8ss")
+effect_name = "Focus"
+effect_id = &"focus"
+image = ExtResource("4_ucxnh")
+level = 2
+base_duration = 3
+duration_per_level = 2
+stat_changes = Array[ExtResource("5_8h8ss")]([SubResource("Resource_mf47s")])
+metadata/_custom_type_script = "uid://c5deti4sb2k2j"
+
+[sub_resource type="Resource" id="Resource_4itfl"]
 script = ExtResource("1_fuboq")
 name = "Lunar Grace"
 energy_cost = 10
 cooldown = 6
-caster_effects = Array[ExtResource("4_8h8ss")]([ExtResource("5_8h8ss")])
+caster_effects = Array[ExtResource("4_8h8ss")]([SubResource("Resource_hfbmx")])
 metadata/_custom_type_script = "uid://b2o7w8q10stxo"
 
 [resource]
 script = ExtResource("5_hfbmx")
 rarity = 1
-abilities = Array[ExtResource("1_fuboq")]([SubResource("Resource_8snep"), SubResource("Resource_tfw6c"), SubResource("Resource_kmunl")])
+abilities = Array[ExtResource("1_fuboq")]([SubResource("Resource_8snep"), SubResource("Resource_tfw6c"), SubResource("Resource_4itfl")])
 sprite = ExtResource("6_880to")
 sprite_offset = Vector2(0, -8)
 item_id = "moonlight_wand"

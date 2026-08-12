@@ -22,10 +22,10 @@ grow_vertical = 2
 script = ExtResource("1_ihhiw")
 
 [node name="RewardWindow" parent="." unique_id=1271341637 instance=ExtResource("11_xvgma")]
-visible = false
+layout_mode = 1
 
 [node name="DeathWindow" parent="." unique_id=673119729 instance=ExtResource("3_yj4kj")]
-visible = false
+layout_mode = 1
 
 [node name="BattleManager" type="Node" parent="." unique_id=973972740]
 script = ExtResource("11_o00jr")
@@ -143,6 +143,7 @@ text = "Flee"
 
 [node name="MiddlePanel" type="ScrollContainer" parent="MarginContainer/ActionPanel/ActionArea" unique_id=121735259]
 layout_mode = 2
+follow_focus = true
 horizontal_scroll_mode = 0
 
 [node name="OptionList" type="VBoxContainer" parent="MarginContainer/ActionPanel/ActionArea/MiddlePanel" unique_id=781619579]

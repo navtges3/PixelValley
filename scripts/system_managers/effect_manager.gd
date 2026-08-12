@@ -1,7 +1,7 @@
 extends RefCounted
 class_name EffectManager
 
-enum ApplicationStatus { ADDED, REFRESHED, UPGRADED, REJECTED_WEAKER }
+enum ApplicationStatus { ADDED, REFRESHED, UPGRADED, REJECTED_WEAKER, APPLIED_INSTANTLY }
 
 class ApplicationResult:
 	var status: ApplicationStatus
@@ -30,7 +30,8 @@ static func apply_effect(effect: Effect, source: Combatant, target: Combatant, r
 	assert(effect != null, "Cannot apply a null Effect.")
 	assert(target != null, "Cannot apply an Effect to a null target.")
 	assert(effect.effect_id != &"", 'Effect "%s" must have a non-empty effect_id.' % effect.effect_name)
-	
+	if effect.is_instant:
+		return _apply_instant_effect(effect, source, target, dispatcher)
 	var active_effect := find_active_effect(target, effect.effect_id)
 	if active_effect == null:
 		return _add_effect(effect, source, target, remaining_turns, dispatcher)
@@ -167,6 +168,12 @@ static func _add_effect(effect: Effect, source: Combatant, target: Combatant, re
 	var result := ApplicationResult.new(ApplicationStatus.ADDED, active_effect, effect.level, 0, output)
 	_dispatch(dispatcher, EffectLifecycleEvent.new(EffectLifecycleEvent.EventType.ADDED, active_effect, 0, effect.level))
 	return result
+
+static func _apply_instant_effect(effect: Effect, source: Combatant, target: Combatant, _dispatcher: EffectEventDispatcher = null) -> ApplicationResult:
+	var applied_effect := ActiveEffect.new(effect, target, source)
+	var output := "%s applied to %s.\n" % [effect.effect_name, target.get_colored_name()]
+	output += applied_effect.on_apply()
+	return ApplicationResult.new(ApplicationStatus.APPLIED_INSTANTLY, applied_effect, effect.level, 0, output)
 
 static func _remove_effect_instance(active_effect: ActiveEffect, reason: ActiveEffect.RemovalReason, dispatcher: EffectEventDispatcher = null, emit_event: bool = true) -> String:
 	if active_effect == null or active_effect.effect == null:

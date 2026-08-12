@@ -8,6 +8,7 @@
 radius = 5.0
 
 [node name="Player" type="CharacterBody2D" unique_id=426329780 groups=["player"]]
+y_sort_enabled = true
 script = ExtResource("1_l3o4k")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=2050771278]
@@ -23,6 +24,7 @@ zoom = Vector2(2.5, 2.5)
 script = ExtResource("3_hqqc5")
 
 [node name="PromptLabel" type="Label" parent="." unique_id=1452258667]
+z_index = 20
 offset_left = -80.0
 offset_top = -44.0
 offset_right = 80.0

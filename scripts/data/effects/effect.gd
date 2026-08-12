@@ -13,6 +13,7 @@ enum EffectStat { CURRENT_HP, CURRENT_NRG, MAX_HP, MAX_NRG, ATTACK, MAGIC, DEFEN
 @export_range(1, 99) var level: int = 1
 @export_range(1, 99) var base_duration: int = 1
 @export var duration_per_level: int = 0
+@export var is_instant: bool = false
 @export var stat_changes: Array[EffectStatChange] = []
 
 func get_duration() -> int:

@@ -42,6 +42,9 @@ func _ready() -> void:
 func is_open() -> bool:
 	return _is_open
 
+func has_open_modal() -> bool:
+	return system_panel.options_window.is_open()
+
 func show_hud(start_tab: Tab = _current_tab) -> void:
 	_is_open = true
 	visible = true
@@ -59,6 +62,28 @@ func switch_tab(tab: Tab) -> void:
 	content_area.get_node(PANELS_BY_TAB[tab]).visible = true
 	_sync_tab_buttons()
 	_refresh_current_tab()
+	_focus_current_tab.call_deferred()
+
+func _focus_current_tab() -> void:
+	if not _is_open:
+		return
+	var target := _get_default_focus_target()
+	if target == null:
+		target = _tab_buttons[_current_tab] as Button
+	target.grab_focus()
+
+func _get_default_focus_target() -> Control:
+	match _current_tab:
+		Tab.SYSTEM:
+			return system_panel.get_default_focus_target()
+		Tab.STATS:
+			return stats_panel.get_default_focus_target()
+		Tab.INVENTORY:
+			return inventory_panel.get_default_focus_target()
+		Tab.QUESTS:
+			return quests_panel.get_default_focus_target()
+		_:
+			return null
 
 func _refresh_current_tab() -> void:
 	match _current_tab:
@@ -86,7 +111,23 @@ func _setup_tab_buttons() -> void:
 
 	_sync_tab_buttons()
 
+func _switch_relative_tab(direction: int) -> void:
+	var tab_count := PANELS_BY_TAB.size()
+	var next_tab: Tab = wrapi(_current_tab + direction, 0, tab_count) as Tab
+	switch_tab(next_tab)
+
 func _sync_tab_buttons() -> void:
 	for tab in _tab_buttons:
 		var btn: Button = _tab_buttons[tab]
 		btn.set_pressed_no_signal(tab == _current_tab)
+
+func _unhandled_input(event: InputEvent) -> void:
+	if not _is_open or has_open_modal() or event.is_echo():
+		return
+	if event.is_action_pressed(&"tab_left"):
+		_switch_relative_tab(-1)
+	elif event.is_action_pressed(&"tab_right"):
+		_switch_relative_tab(1)
+	else:
+		return
+	get_viewport().set_input_as_handled()

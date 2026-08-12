@@ -82,16 +82,24 @@ layout_mode = 2
 text = "Item Descripton: This item has a powerful effect that will help the hero defeat more monsters"
 autowrap_mode = 2
 
-[node name="CostContainer" type="HBoxContainer" parent="PanelContainer/VBoxContainer/HBoxContainer/ItemContainer" unique_id=686123047]
-layout_mode = 2
-
-[node name="ItemCostLabel" type="Label" parent="PanelContainer/VBoxContainer/HBoxContainer/ItemContainer/CostContainer" unique_id=1608863671]
+[node name="ItemCostLabel" type="Label" parent="PanelContainer/VBoxContainer/HBoxContainer/ItemContainer" unique_id=1608863671]
 layout_mode = 2
 text = "Item Gold"
 
-[node name="QuantitySpinBox" type="SpinBox" parent="PanelContainer/VBoxContainer/HBoxContainer/ItemContainer/CostContainer" unique_id=1826118746]
+[node name="QuantityContainer" type="HBoxContainer" parent="PanelContainer/VBoxContainer/HBoxContainer/ItemContainer" unique_id=686123047]
 layout_mode = 2
+
+[node name="QuantityLabel" type="Label" parent="PanelContainer/VBoxContainer/HBoxContainer/ItemContainer/QuantityContainer" unique_id=1215927192]
+custom_minimum_size = Vector2(64, 0)
+layout_mode = 2
+text = "123"
+horizontal_alignment = 2
+
+[node name="QuantitySlider" type="HSlider" parent="PanelContainer/VBoxContainer/HBoxContainer/ItemContainer/QuantityContainer" unique_id=2053981746]
+layout_mode = 2
+size_flags_horizontal = 3
 min_value = 1.0
+step = 1.0
 value = 1.0
 
 [node name="ability_container" type="VBoxContainer" parent="PanelContainer/VBoxContainer/HBoxContainer/ItemContainer" unique_id=1776671303]
@@ -130,6 +138,6 @@ layout_mode = 2
 text = "Hero Inventory:"
 
 [connection signal="hero_updated" from="ShopManager" to="." method="_on_shop_manager_hero_updated"]
-[connection signal="value_changed" from="PanelContainer/VBoxContainer/HBoxContainer/ItemContainer/CostContainer/QuantitySpinBox" to="." method="_on_spin_box_value_changed"]
+[connection signal="value_changed" from="PanelContainer/VBoxContainer/HBoxContainer/ItemContainer/QuantityContainer/QuantitySlider" to="." method="_on_quantity_changed"]
 [connection signal="pressed" from="PanelContainer/VBoxContainer/HBoxContainer/ItemContainer/HBoxContainer/CloseButton" to="." method="_on_close_button_pressed"]
 [connection signal="pressed" from="PanelContainer/VBoxContainer/HBoxContainer/ItemContainer/HBoxContainer/PurchaseButton" to="." method="_on_purchase_button_pressed"]

@@ -98,7 +98,8 @@ theme = ExtResource("4_fy06a")
 text = "Complete Quest"
 
 [node name="RewardWindow" parent="." unique_id=1940439358 instance=ExtResource("6_lxq6e")]
-visible = false
+layout_mode = 1
 
 [connection signal="pressed" from="PanelContainer/VBoxContainer/BottomControls/CloseButton" to="." method="_on_close_button_pressed"]
 [connection signal="pressed" from="PanelContainer/VBoxContainer/BottomControls/ActionButton" to="." method="_on_action_button_pressed"]
+[connection signal="rewards_collected" from="RewardWindow" to="." method="_on_reward_window_collected"]
