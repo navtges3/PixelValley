@@ -88,12 +88,12 @@ func _test_action_prompt_formatting() -> void:
 	InputManager.active_controller_device = -1
 	_expect_equal(
 		InputManager.get_action_binding_text(&"interact"),
-		"E",
-		"keyboard interaction prompts use E"
+		"F",
+		"keyboard interaction prompts use F"
 	)
 	_expect_equal(
 		InputManager.format_action_prompt(&"interact", "Talk"),
-		"Press E to Talk",
+		"Press F to Talk",
 		"keyboard actions format complete prompts"
 	)
 
@@ -185,7 +185,7 @@ func _test_visible_interaction_prompt_refresh() -> void:
 	interact_area._on_body_entered(player)
 	_expect_equal(
 		player.prompt_label.text,
-		"Press E to Talk",
+		"Press F to Talk",
 		"visible interaction prompts start with the keyboard binding"
 	)
 

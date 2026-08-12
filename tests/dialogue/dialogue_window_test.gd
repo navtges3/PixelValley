@@ -103,7 +103,7 @@ func _test_advance_hint_refreshes_with_input_context() -> void:
 	window.show_line(entry, 0)
 	_expect_equal(
 		window.advance_hint.text,
-		"Press E to Continue...",
+		"Press F to Continue...",
 		"dialogue advance hints start with the keyboard binding"
 	)
 
