@@ -16,6 +16,7 @@
 [ext_resource type="PackedScene" path="res://tests/dialogue/dialogue_window_test.tscn" id="14_dialogue_window"]
 [ext_resource type="PackedScene" path="res://tests/input/input_manager_test.tscn" id="15_input"]
 [ext_resource type="PackedScene" path="res://tests/ui/game_window_consolidation_test.tscn" id="16_ui_window"]
+[ext_resource type="PackedScene" path="res://tests/ui/battle_controller_tooltip_test.tscn" id="17_battle_tooltip"]
 
 [node name="TestSuite" type="Node" unique_id=783793299]
 script = ExtResource("4_suite")
@@ -63,3 +64,5 @@ script = ExtResource("4_suite")
 [node name="UI" type="Node" parent="." unique_id=1404067600]
 
 [node name="GameWindowConsolidationTests" parent="UI" unique_id=749794887 instance=ExtResource("16_ui_window")]
+
+[node name="BattleControllerTooltipTests" parent="UI" instance=ExtResource("17_battle_tooltip")]

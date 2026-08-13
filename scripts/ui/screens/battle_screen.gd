@@ -23,12 +23,15 @@ const BATTLE_CHARACTER = preload("res://scenes/ui/components/battle_character.ts
 @onready var meditate_button: Button = $MarginContainer/ActionPanel/ActionArea/LeftPanel/MeditateButton
 @onready var flee_button: Button = $MarginContainer/ActionPanel/ActionArea/LeftPanel/FleeButton
 @onready var option_list: VBoxContainer = $MarginContainer/ActionPanel/ActionArea/MiddlePanel/OptionList
+@onready var controller_ability_tooltip: PanelContainer = $MarginContainer/ActionPanel/ActionArea/ControllerAbilityTooltip
+@onready var controller_ability_tooltip_label: Label = $MarginContainer/ActionPanel/ActionArea/ControllerAbilityTooltip/TooltipLabel
 
 var hero_visual: BattleCharacter
 var monster_visual: BattleCharacter
 var battle_config: Dictionary = {}
 
 var _primary_action_buttons: Array[Button] = []
+var _focused_ability_button: AbilityButton
 
 func _ready() -> void:
 	_primary_action_buttons = [
@@ -37,6 +40,7 @@ func _ready() -> void:
 		meditate_button,
 		flee_button,
 	]
+	InputManager.input_method_changed.connect(_on_input_method_changed)
 	_empty_option_list()
 
 func setup(config: Dictionary) -> void:
@@ -156,6 +160,7 @@ func _on_ability_button_toggled(button_pressed: bool) -> void:
 			option_list.add_child(btn)
 		_focus_first_usable_option.call_deferred(ability_button)
 	else:
+		_clear_controller_ability_tooltip()
 		option_list.visible = false
 
 func _on_item_button_toggled(button_pressed: bool) -> void:
@@ -195,6 +200,7 @@ func _on_player_turn() -> void:
 	_focus_primary_action.call_deferred()
 
 func _on_monster_turn() -> void:
+	_clear_controller_ability_tooltip()
 	ability_button.disabled = true
 	item_button.disabled = true
 	meditate_button.disabled = true
@@ -218,14 +224,17 @@ func _on_death_window_dismissed() -> void:
 
 # --- Button Factories ---
 func _on_ability_button_pressed(ability: Ability) -> void:
+	_clear_controller_ability_tooltip()
 	battle_manager.player_ability_selected(ability)
 	ability_button.button_pressed = false
 
-func _create_ability_button(ability: Ability) -> Button:
-	var button := ABILITY_BUTTON.instantiate()
+func _create_ability_button(ability: Ability) -> AbilityButton:
+	var button := ABILITY_BUTTON.instantiate() as AbilityButton
 	button.ability = ability
 	button.user_energy = battle_manager.hero.current_nrg
-	button.connect("ability_pressed", Callable(self, "_on_ability_button_pressed"))
+	button.ability_pressed.connect(_on_ability_button_pressed)
+	button.focus_entered.connect(_on_ability_option_focus_entered.bind(button))
+	button.focus_exited.connect(_on_ability_option_focus_exited.bind(button))
 	return button
 
 func _on_item_button_pressed(item_id: String) -> void:
@@ -240,8 +249,38 @@ func _create_item_button(item_id: String, count: int) -> Button:
 	return button
 
 func _empty_option_list() -> void:
+	_clear_controller_ability_tooltip()
 	for child in option_list.get_children():
 		child.queue_free()
+
+func _on_ability_option_focus_entered(button: AbilityButton) -> void:
+	_focused_ability_button = button
+	_refresh_controller_ability_tooltip()
+
+func _on_ability_option_focus_exited(button: AbilityButton) -> void:
+	if _focused_ability_button != button:
+		return
+	_clear_controller_ability_tooltip()
+
+func _on_input_method_changed(_method: InputManager.InputMethod) -> void:
+	_refresh_controller_ability_tooltip()
+
+func _refresh_controller_ability_tooltip() -> void:
+	var should_show := (
+		InputManager.is_using_controller()
+		and is_instance_valid(_focused_ability_button)
+		and _focused_ability_button.has_focus()
+		and ability_button.button_pressed
+		and option_list.is_visible_in_tree()
+	)
+	controller_ability_tooltip.visible = should_show
+	if should_show:
+		controller_ability_tooltip_label.text = _focused_ability_button.tooltip_text
+
+func _clear_controller_ability_tooltip() -> void:
+	_focused_ability_button = null
+	controller_ability_tooltip.visible = false
+	controller_ability_tooltip_label.text = ""
 
 func _is_action_submenu_open() -> bool:
 	return ability_button.button_pressed or item_button.button_pressed

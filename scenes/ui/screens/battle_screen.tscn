@@ -154,6 +154,18 @@ size_flags_vertical = 3
 layout_mode = 2
 text = "This is an Ability"
 
+[node name="ControllerAbilityTooltip" type="PanelContainer" parent="MarginContainer/ActionPanel/ActionArea" unique_id=2124205279]
+visible = false
+custom_minimum_size = Vector2(240, 0)
+layout_mode = 2
+mouse_filter = 2
+theme = ExtResource("4_pxpkm")
+
+[node name="TooltipLabel" type="Label" parent="MarginContainer/ActionPanel/ActionArea/ControllerAbilityTooltip" unique_id=410429761]
+layout_mode = 2
+text = "Ability details"
+autowrap_mode = 2
+
 [connection signal="rewards_collected" from="RewardWindow" to="." method="_on_rewards_collected"]
 [connection signal="return_to_village" from="DeathWindow" to="." method="_on_death_window_dismissed"]
 [connection signal="battle_log_updated" from="BattleManager" to="." method="_on_battle_log_updated"]
