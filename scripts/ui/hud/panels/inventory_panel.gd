@@ -140,4 +140,4 @@ func _refresh_weapons(hero: Hero) -> void:
 func _restore_default_focus() -> void:
 	var target := get_default_focus_target()
 	if target != null:
-		target.grab_focus()
+		InputManager.focus_menu_control(target)

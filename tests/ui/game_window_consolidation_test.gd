@@ -61,6 +61,10 @@ var _confirmation_cancel_count: int = 0
 
 func run_tests() -> int:
 	_begin_test_run()
+	var original_navigation_mode := InputManager.menu_navigation_mode
+	InputManager._set_menu_navigation_mode(
+		InputManager.MenuNavigationMode.FOCUS
+	)
 	_test_native_windows_are_consolidated()
 	_test_converted_windows_start_hidden()
 	_test_game_window_lifecycle()
@@ -78,6 +82,7 @@ func run_tests() -> int:
 	_test_quest_tab_shortcuts_wrap()
 	_test_required_modal_cancel_flows()
 	_test_quest_reward_focus_recovery_is_connected()
+	InputManager._set_menu_navigation_mode(original_navigation_mode)
 	return _finish_test_run("Game window consolidation tests")
 
 func _test_native_windows_are_consolidated() -> void:
@@ -110,8 +115,14 @@ func _test_converted_windows_start_hidden() -> void:
 		window.free()
 
 func _test_game_window_lifecycle() -> void:
+	var parent_context := Control.new()
 	var launcher := Button.new()
-	add_child(launcher)
+	parent_context.add_child(launcher)
+	add_child(parent_context)
+	InputManager.push_menu_focus_context(
+		parent_context,
+		Callable(self, "_return_control").bind(launcher)
+	)
 	launcher.grab_focus()
 
 	var window := GameWindow.new()
@@ -124,7 +135,6 @@ func _test_game_window_lifecycle() -> void:
 	_expect_true(window.is_open(), "open shows a GameWindow")
 	window_button.grab_focus()
 	window.close()
-	window._restore_previous_focus()
 	_expect_true(not window.is_open(), "close hides a GameWindow")
 	_expect_equal(
 		get_viewport().gui_get_focus_owner(),
@@ -134,6 +144,8 @@ func _test_game_window_lifecycle() -> void:
 
 	window.free()
 	launcher.free()
+	InputManager.pop_menu_focus_context(parent_context)
+	parent_context.free()
 
 func _test_static_default_focus_targets() -> void:
 	var inn_window := _spawn_window(INN_WINDOW_SCENE) as InnWindow
@@ -523,7 +535,6 @@ func _test_nested_confirmation_focus() -> void:
 	)
 
 	overwrite_window._handle_cancel()
-	overwrite_window._restore_previous_focus()
 	_expect_equal(
 		_confirmation_cancel_count,
 		1,
@@ -658,6 +669,9 @@ func _spawn_window(scene: PackedScene) -> GameWindow:
 	var window := scene.instantiate() as GameWindow
 	add_child(window)
 	return window
+
+func _return_control(control: Control) -> Control:
+	return control
 
 func _on_rewards_collected() -> void:
 	_reward_collection_count += 1

@@ -52,9 +52,15 @@ func show_responses(options: Array[DialogueResponse]) -> void:
 		button.focus_mode = Control.FOCUS_ALL
 		button.pressed.connect(response_requested.emit.bind(index))
 		responses.add_child(button)
-	var first_button := responses.get_child(0) as Button
-	first_button.grab_focus()
+	InputManager.restore_menu_focus()
+	InputManager.restore_menu_focus.call_deferred()
 	call_deferred("_arm_input")
+
+func _get_default_focus_target() -> Control:
+	for child: Node in responses.get_children():
+		if child is Button and not (child as Button).disabled:
+			return child as Button
+	return null
 
 func _arm_input() -> void:
 	if is_open():

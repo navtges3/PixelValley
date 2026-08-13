@@ -80,6 +80,7 @@ Each class has its own stats, weapon pool, equipment progression, and combat sty
 - Tabbed in-game HUD with Stats, Inventory, Quests, and System panels
 - New game, load, options, shop, reward, death, battle, quest, and victory screens/windows
 - Keyboard and controller input bindings in `project.godot`
+- Input-aware menu focus: pointer interaction hides GUI focus, while UI directions restore the active menu or modal's default focus target
 
 ### Persistence
 

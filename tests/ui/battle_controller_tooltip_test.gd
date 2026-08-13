@@ -9,6 +9,7 @@ func run_tests() -> int:
 
 func _test_focus_and_hover_tooltip() -> void:
 	var original_input_method := InputManager.active_input_method
+	var original_navigation_mode := InputManager.menu_navigation_mode
 	var screen := BATTLE_SCREEN_SCENE.instantiate() as BattleScreen
 	add_child(screen)
 
@@ -26,6 +27,7 @@ func _test_focus_and_hover_tooltip() -> void:
 	screen.ability_button.set_pressed_no_signal(true)
 
 	InputManager._set_input_method(InputManager.InputMethod.CONTROLLER)
+	InputManager._set_menu_navigation_mode(InputManager.MenuNavigationMode.FOCUS)
 	button.grab_focus()
 	_expect_true(
 		screen.ability_tooltip.visible,
@@ -47,6 +49,7 @@ func _test_focus_and_hover_tooltip() -> void:
 	)
 
 	InputManager._set_input_method(InputManager.InputMethod.KEYBOARD_MOUSE)
+	InputManager._set_menu_navigation_mode(InputManager.MenuNavigationMode.POINTER)
 	button.mouse_entered.emit()
 	_expect_true(
 		screen.ability_tooltip.visible,
@@ -62,3 +65,4 @@ func _test_focus_and_hover_tooltip() -> void:
 
 	screen.free()
 	InputManager._set_input_method(original_input_method)
+	InputManager._set_menu_navigation_mode(original_navigation_mode)

@@ -190,7 +190,7 @@ func _on_completed_header_toggled(expanded: bool) -> void:
 	_completed_list_expanded = expanded
 	_sync_completed_section()
 	_configure_focus_graph()
-	completed_header.grab_focus.call_deferred()
+	InputManager.focus_menu_control_deferred(completed_header)
 
 func _on_quest_button_focused(quest_id: int) -> void:
 	_last_focused_quest_id = quest_id
@@ -221,7 +221,7 @@ func _on_track_button_pressed() -> void:
 	elif manager.track_quest(_selected_quest_id):
 		SaveManager.save_game()
 	_refresh_track_action()
-	track_button.grab_focus()
+	InputManager.focus_menu_control(track_button)
 
 func _on_tracked_quest_changed(_quest_id: int) -> void:
 	_queue_refresh()
@@ -269,11 +269,11 @@ func _refresh_track_action() -> void:
 func _restore_focus_after_refresh(preferred_quest_id: int) -> void:
 	var preferred_button: QuestButton = _buttons_by_id.get(preferred_quest_id)
 	if _can_receive_focus(preferred_button):
-		preferred_button.grab_focus()
+		InputManager.focus_menu_control(preferred_button)
 		return
 	var fallback := get_default_focus_target()
 	if _can_receive_focus(fallback):
-		fallback.grab_focus()
+		InputManager.focus_menu_control(fallback)
 
 func _sort_quests_by_id(a: Quest, b: Quest) -> bool:
 	return a.id < b.id

@@ -28,6 +28,10 @@ func _ready() -> void:
 	hero_class.text = ""
 	hero_name.text = ""
 	load_hero_previews()
+	InputManager.push_menu_focus_context(
+		self,
+		Callable(self, "_get_default_focus_target")
+	)
 
 func load_hero_previews() -> void:
 	for path: String in HERO_DEFAULTS:
@@ -40,8 +44,11 @@ func load_hero_previews() -> void:
 		class_selector.add_child(preview)
 		_hero_previews.append(preview)
 	_configure_focus_graph()
+
+func _get_default_focus_target() -> Control:
 	if not _hero_previews.is_empty():
-		_hero_previews[0].grab_focus.call_deferred()
+		return _get_selected_preview()
+	return back_button
 
 func check_create_button_state() -> void:
 	create_button.disabled = not (
@@ -125,9 +132,9 @@ func _on_hero_name_text_changed(_new_text: String) -> void:
 func _on_hero_name_text_submitted(_new_text: String) -> void:
 	hero_name.unedit()
 	if not create_button.disabled:
-		create_button.grab_focus()
+		InputManager.focus_menu_control(create_button)
 	else:
-		back_button.grab_focus()
+		InputManager.focus_menu_control(back_button)
 
 func _update_preview_selection() -> void:
 	for child in class_selector.get_children():
@@ -140,3 +147,6 @@ func _unhandled_input(event: InputEvent) -> void:
 	if not event.is_echo() and event.is_action_pressed(&"ui_cancel"):
 		_on_back_button_pressed()
 		get_viewport().set_input_as_handled()
+
+func _exit_tree() -> void:
+	InputManager.pop_menu_focus_context(self)

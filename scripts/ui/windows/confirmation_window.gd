@@ -9,12 +9,6 @@ signal cancelled
 @onready var confirm_button: Button = $PanelContainer/MarginContainer/VBoxContainer/ButtonRow/ConfirmButton
 @onready var cancel_button: Button = $PanelContainer/MarginContainer/VBoxContainer/ButtonRow/CancelButton
 
-func open() -> void:
-	super.open()
-	var focus_owner: Control = get_viewport().gui_get_focus_owner()
-	if focus_owner != null and not is_ancestor_of(focus_owner):
-		focus_owner.release_focus()
-
 func setup(
 	title: String,
 	message: String,

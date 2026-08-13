@@ -43,7 +43,7 @@ func _on_fullscreen_button_toggled(toggled: bool) -> void:
 	SettingsManager.fullscreen = toggled
 	SettingsManager.apply_settings()
 	SettingsManager.save_settings()
-	fullscreen_button.grab_focus.call_deferred()
+	InputManager.focus_menu_control_deferred(fullscreen_button)
 
 func _on_master_volume_slider_value_changed(value: float) -> void:
 	SettingsManager.master_volume = value

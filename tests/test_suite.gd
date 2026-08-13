@@ -31,6 +31,7 @@ extends Node
 
 @onready var _input_test_cases: Array[TestCase] = [
 	$Input/InputManagerTests,
+	$Input/MenuFocusNavigationTests,
 ]
 
 @onready var _ui_test_cases: Array[TestCase] = [

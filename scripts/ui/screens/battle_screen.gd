@@ -42,6 +42,33 @@ func _ready() -> void:
 		flee_button,
 	]
 	_empty_option_list()
+	InputManager.menu_navigation_mode_changed.connect(
+		_on_menu_navigation_mode_changed
+	)
+	InputManager.push_menu_focus_context(
+		self,
+		Callable(self, "_get_default_focus_target")
+	)
+
+func _get_default_focus_target() -> Control:
+	if _is_action_submenu_open():
+		for child: Node in option_list.get_children():
+			var option := child as Control
+			if _can_focus_battle_control(option):
+				return option
+	for button: Button in _primary_action_buttons:
+		if _can_focus_battle_control(button):
+			return button
+	return null
+
+func _can_focus_battle_control(control: Control) -> bool:
+	return (
+		is_instance_valid(control)
+		and not control.is_queued_for_deletion()
+		and control.is_visible_in_tree()
+		and control.focus_mode != Control.FOCUS_NONE
+		and not (control is BaseButton and (control as BaseButton).disabled)
+	)
 
 func setup(config: Dictionary) -> void:
 	battle_config = config
@@ -134,7 +161,7 @@ func _focus_primary_action() -> void:
 	for button: Button in _primary_action_buttons:
 		if button.disabled or not button.is_visible_in_tree():
 			continue
-		button.grab_focus()
+		InputManager.focus_menu_control(button)
 		return
 
 func _focus_first_usable_option(fallback: Button) -> void:
@@ -146,9 +173,9 @@ func _focus_first_usable_option(fallback: Button) -> void:
 			continue
 		if not button.is_visible_in_tree():
 			continue
-		button.grab_focus()
+		InputManager.focus_menu_control(button)
 		return
-	fallback.grab_focus()
+	InputManager.focus_menu_control(fallback)
 
 func _on_ability_button_toggled(button_pressed: bool) -> void:
 	if button_pressed:
@@ -275,9 +302,16 @@ func _on_ability_option_mouse_exited(button: AbilityButton) -> void:
 
 func _refresh_ability_tooltip() -> void:
 	var source_button: AbilityButton = null
-	if is_instance_valid(_hovered_ability_button):
+	if (
+		InputManager.menu_navigation_mode == InputManager.MenuNavigationMode.POINTER
+		and is_instance_valid(_hovered_ability_button)
+	):
 		source_button = _hovered_ability_button
-	elif is_instance_valid(_focused_ability_button) and _focused_ability_button.has_focus():
+	elif (
+		InputManager.menu_navigation_mode == InputManager.MenuNavigationMode.FOCUS
+		and is_instance_valid(_focused_ability_button)
+		and _focused_ability_button.has_focus()
+	):
 		source_button = _focused_ability_button
 	var should_show := (
 		is_instance_valid(source_button)
@@ -292,6 +326,11 @@ func _clear_ability_tooltip() -> void:
 	_hovered_ability_button = null
 	ability_tooltip.visible = false
 	ability_tooltip_label.text = ""
+
+func _on_menu_navigation_mode_changed(
+	_mode: InputManager.MenuNavigationMode
+) -> void:
+	_refresh_ability_tooltip()
 
 func _is_action_submenu_open() -> bool:
 	return ability_button.button_pressed or item_button.button_pressed
@@ -309,7 +348,7 @@ func _close_action_submenu() -> void:
 
 func _restore_primary_focus(preferred: Button) -> void:
 	if is_instance_valid(preferred) and preferred.is_visible_in_tree() and not preferred.disabled:
-		preferred.grab_focus()
+		InputManager.focus_menu_control(preferred)
 		return
 	_focus_primary_action()
 
@@ -322,3 +361,12 @@ func _unhandled_input(event: InputEvent) -> void:
 		return
 	_close_action_submenu()
 	get_viewport().set_input_as_handled()
+
+func _exit_tree() -> void:
+	if InputManager.menu_navigation_mode_changed.is_connected(
+		_on_menu_navigation_mode_changed
+	):
+		InputManager.menu_navigation_mode_changed.disconnect(
+			_on_menu_navigation_mode_changed
+		)
+	InputManager.pop_menu_focus_context(self)

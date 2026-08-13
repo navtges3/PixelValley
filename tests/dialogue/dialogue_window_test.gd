@@ -10,11 +10,16 @@ var _cancel_count: int = 0
 
 func run_tests() -> int:
 	_begin_test_run()
+	var original_navigation_mode := InputManager.menu_navigation_mode
+	InputManager._set_menu_navigation_mode(
+		InputManager.MenuNavigationMode.FOCUS
+	)
 	_test_long_text_and_response_layout()
 	_test_rapid_advance_input()
 	_test_cancel_input()
 	_test_focus_restoration_and_input_map()
 	_test_advance_hint_refreshes_with_input_context()
+	InputManager._set_menu_navigation_mode(original_navigation_mode)
 	return _finish_test_run("Dialogue window tests")
 
 func _test_long_text_and_response_layout() -> void:
@@ -66,8 +71,14 @@ func _test_cancel_input() -> void:
 	window.free()
 
 func _test_focus_restoration_and_input_map() -> void:
+	var parent_context := Control.new()
 	var focus_target := Button.new()
-	add_child(focus_target)
+	parent_context.add_child(focus_target)
+	add_child(parent_context)
+	InputManager.push_menu_focus_context(
+		parent_context,
+		Callable(self, "_return_control").bind(focus_target)
+	)
 	focus_target.grab_focus()
 	var window := _spawn_window()
 	for cycle: int in 10:
@@ -88,6 +99,8 @@ func _test_focus_restoration_and_input_map() -> void:
 	_expect_true(_action_has_gamepad_binding(&"ui_down"), "response navigation has a gamepad binding")
 	window.free()
 	focus_target.free()
+	InputManager.pop_menu_focus_context(parent_context)
+	parent_context.free()
 
 func _test_advance_hint_refreshes_with_input_context() -> void:
 	var original_method := InputManager.active_input_method
@@ -152,3 +165,6 @@ func _on_advance_requested() -> void:
 
 func _on_cancel_requested() -> void:
 	_cancel_count += 1
+
+func _return_control(control: Control) -> Control:
+	return control

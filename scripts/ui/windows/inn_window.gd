@@ -26,7 +26,7 @@ func _on_rest_button_pressed() -> void:
 	rest_button.disabled = true
 	rest_feedback_label.visible = true
 	rest_feedback_label.text = "You wake up feeling refreshed."
-	close_button.grab_focus()
+	InputManager.focus_menu_control(close_button)
 
 func _on_close_button_pressed() -> void:
 	close()

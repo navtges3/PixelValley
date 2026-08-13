@@ -10,7 +10,16 @@ class_name MainMenuScreen
 func _ready() -> void:
 	GameState.reset_state()
 	AudioManager.play_music_by_id("background")
-	new_game_button.grab_focus.call_deferred()
+	InputManager.push_menu_focus_context(
+		self,
+		Callable(self, "_get_default_focus_target")
+	)
+
+func _get_default_focus_target() -> Control:
+	return new_game_button
+
+func _exit_tree() -> void:
+	InputManager.pop_menu_focus_context(self)
 
 func _on_new_game_button_pressed() -> void:
 	ScreenManager.go_to_screen(ScreenManager.ScreenName.NEW_GAME)

@@ -18,7 +18,16 @@ func _ready() -> void:
 			hero.resist,
 			hero.inventory.gold,
 		]
-	main_menu_button.grab_focus.call_deferred()
+	InputManager.push_menu_focus_context(
+		self,
+		Callable(self, "_get_default_focus_target")
+	)
+
+func _get_default_focus_target() -> Control:
+	return main_menu_button
+
+func _exit_tree() -> void:
+	InputManager.pop_menu_focus_context(self)
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_echo():

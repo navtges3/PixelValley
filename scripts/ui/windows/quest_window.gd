@@ -271,9 +271,9 @@ func _focus_current_quest_context() -> void:
 	if not is_open():
 		return
 	if not _quest_buttons.is_empty():
-		_quest_buttons[0].grab_focus()
+		InputManager.focus_menu_control(_quest_buttons[0])
 	else:
-		_get_current_tab_button().grab_focus()
+		InputManager.focus_menu_control(_get_current_tab_button())
 
 func _queue_refresh() -> void:
 	if _refresh_queued or not is_visible_in_tree():
@@ -303,11 +303,11 @@ func _refresh_quest_list() -> void:
 func _restore_focus_after_refresh(preferred_quest_id: int) -> void:
 	var preferred_button: QuestButton = _buttons_by_id.get(preferred_quest_id)
 	if preferred_button != null:
-		preferred_button.grab_focus()
+		InputManager.focus_menu_control(preferred_button)
 		return
 	if not _buttons_by_id.is_empty():
 		var first_button := _buttons_by_id.values()[0] as QuestButton
-		first_button.grab_focus()
+		InputManager.focus_menu_control(first_button)
 
 func _select_tab(tab: Tab) -> void:
 	_current_tab = tab
