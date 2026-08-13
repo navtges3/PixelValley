@@ -65,4 +65,4 @@ script = ExtResource("4_suite")
 
 [node name="GameWindowConsolidationTests" parent="UI" unique_id=749794887 instance=ExtResource("16_ui_window")]
 
-[node name="BattleControllerTooltipTests" parent="UI" instance=ExtResource("17_battle_tooltip")]
+[node name="BattleAbilityTooltipTests" parent="UI" instance=ExtResource("17_battle_tooltip")]

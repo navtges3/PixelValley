@@ -3,6 +3,8 @@ class_name AbilityButton
 
 signal ability_pressed(ability: Ability)
 
+var ability_tooltip_text: String = ""
+
 @export var ability: Ability:
 	set(value):
 		ability = value
@@ -35,11 +37,12 @@ func _update_text() -> void:
 func _update_tooltip() -> void:
 	if ability:
 		if ability.is_ready():
-			tooltip_text = ability._to_string(GameState.hero)
+			ability_tooltip_text = ability._to_string(GameState.hero)
 		else:
-			tooltip_text = "On cooldown"
+			ability_tooltip_text = "On cooldown"
 	else:
-		tooltip_text = ""
+		ability_tooltip_text = ""
+	tooltip_text = ""
 
 func _update_theme() -> void:
 	if ability:

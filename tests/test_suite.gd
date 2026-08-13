@@ -35,7 +35,7 @@ extends Node
 
 @onready var _ui_test_cases: Array[TestCase] = [
 	$UI/GameWindowConsolidationTests,
-	$UI/BattleControllerTooltipTests,
+	$UI/BattleAbilityTooltipTests,
 ]
 
 func _ready() -> void:
