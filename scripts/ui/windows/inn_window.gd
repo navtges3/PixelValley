@@ -4,6 +4,7 @@ class_name InnWindow
 @onready var inn_name_label: Label = $PanelContainer/VBoxContainer/InnNameLabel
 @onready var rest_feedback_label: Label = $PanelContainer/VBoxContainer/RestFeedbackLabel
 @onready var rest_button: Button = $PanelContainer/VBoxContainer/RestButton
+@onready var close_button: Button = $PanelContainer/VBoxContainer/CloseButton
 
 func open() -> void:
 	inn_name_label.text = GameState.village.inn.name
@@ -14,16 +15,18 @@ func open() -> void:
 func close() -> void:
 	super.close()
 
+func _get_default_focus_target() -> Control:
+	return rest_button
+
 func _on_rest_button_pressed() -> void:
 	GameState.hero.rest()
-	
 	for location_id in [ForestLocation.LOCATION_ID, WarCampLocation.LOCATION_ID, CaveLocation.LOCATION_ID]:
 		WorldManager.reset_location_spawners(location_id)
-	
 	SaveManager.save_game()
 	rest_button.disabled = true
 	rest_feedback_label.visible = true
 	rest_feedback_label.text = "You wake up feeling refreshed."
+	InputManager.focus_menu_control(close_button)
 
 func _on_close_button_pressed() -> void:
 	close()

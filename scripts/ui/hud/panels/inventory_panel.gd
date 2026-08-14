@@ -16,6 +16,16 @@ const COLOR_RARE      := Color(0.30, 0.65, 1.00)
 const COLOR_LEGENDARY := Color(1.00, 0.75, 0.20)
 const COLOR_EQUIPPED  := Color(0.30, 0.90, 0.45)
 
+var _equip_buttons: Dictionary[String, Button] = {}
+var _last_focused_weapon_id: String = ""
+
+func get_default_focus_target() -> Control:
+	if _equip_buttons.has(_last_focused_weapon_id):
+		return _equip_buttons[_last_focused_weapon_id]
+	for weapon_id: String in _equip_buttons:
+		return _equip_buttons[weapon_id]
+	return null
+
 func refresh() -> void:
 	if GameState.hero == null:
 		return
@@ -24,14 +34,46 @@ func refresh() -> void:
 	_refresh_quest_items(hero)
 	_refresh_weapons(hero)
 
+func _make_equip_button(weapon_id: String) -> Button:
+	var button := Button.new()
+	button.text = "Equip"
+	button.theme = ThemeManager.GREEN_BUTTON
+	button.add_theme_font_size_override("font_size", 11)
+	button.pressed.connect(_on_equip_pressed.bind(weapon_id))
+	button.focus_entered.connect(_on_equip_button_focused.bind(weapon_id))
+	_equip_buttons[weapon_id] = button
+	return button
+
+func _make_label(txt: String, color: Color, font_size: int = 12) -> Label:
+	var lbl := Label.new()
+	lbl.text = txt
+	lbl.add_theme_color_override("font_color", color)
+	lbl.add_theme_font_size_override("font_size", font_size)
+	lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	return lbl
+
+func _on_equip_pressed(weapon_id: String) -> void:
+	_last_focused_weapon_id = weapon_id
+	GameState.hero.inventory.equip_weapon(weapon_id)
+	weapon_equipped.emit(weapon_id)
+	refresh()
+	_restore_default_focus.call_deferred()
+
+func _on_equip_button_focused(weapon_id: String) -> void:
+	_last_focused_weapon_id = weapon_id
+
+func _rarity_color(rarity: Item.Rarity) -> Color:
+	match rarity:
+		Item.Rarity.RARE:      return COLOR_RARE
+		Item.Rarity.LEGENDARY: return COLOR_LEGENDARY
+		_:                     return COLOR_COMMON
+
 func _refresh_potions(hero: Hero) -> void:
 	for child in potions_list.get_children():
 		child.queue_free()
-	
 	if hero.inventory.potions.is_empty():
 		potions_list.add_child(_make_label("No potions", COLOR_SUBTEXT))
 		return
-	
 	for item_id in hero.inventory.potions:
 		var count: int = hero.inventory.potions[item_id]
 		var item := ItemLoader.get_item(item_id) as Potion
@@ -67,6 +109,7 @@ func _refresh_quest_items(hero: Hero) -> void:
 		quest_items_list.add_child(label)
 
 func _refresh_weapons(hero: Hero) -> void:
+	_equip_buttons.clear()
 	for child in weapons_list.get_children():
 		child.queue_free()
 	var equipped := hero.inventory.equipped_weapon
@@ -94,28 +137,7 @@ func _refresh_weapons(hero: Hero) -> void:
 		row.add_child(lbl)
 		weapons_list.add_child(row)
 
-func _make_equip_button(weapon_id: String) -> Button:
-	var btn := Button.new()
-	btn.text = "Equip"
-	btn.theme = ThemeManager.GREEN_BUTTON
-	btn.add_theme_font_size_override("font_size", 11) 
-	btn.pressed.connect(func() -> void:
-		GameState.hero.inventory.equip_weapon(weapon_id)
-		weapon_equipped.emit(weapon_id)
-		refresh()
-	)
-	return btn
-
-func _rarity_color(rarity: Item.Rarity) -> Color:
-	match rarity:
-		Item.Rarity.RARE:      return COLOR_RARE
-		Item.Rarity.LEGENDARY: return COLOR_LEGENDARY
-		_:                     return COLOR_COMMON
-
-func _make_label(txt: String, color: Color, font_size: int = 12) -> Label:
-	var lbl := Label.new()
-	lbl.text = txt
-	lbl.add_theme_color_override("font_color", color)
-	lbl.add_theme_font_size_override("font_size", font_size)
-	lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	return lbl
+func _restore_default_focus() -> void:
+	var target := get_default_focus_target()
+	if target != null:
+		InputManager.focus_menu_control(target)

@@ -40,119 +40,127 @@ y_sort_enabled = true
 script = ExtResource("1_mu2m6")
 metadata/_custom_type_script = "uid://bh050uh6e1a4v"
 
-[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=881460187]
-layer = 10
+[node name="Ground" type="Node2D" parent="." unique_id=651115651]
+z_index = -10
 
-[node name="ShopWindow" parent="CanvasLayer" unique_id=1917424634 instance=ExtResource("2_mu2m6")]
-visible = false
-
-[node name="Floor" type="TileMapLayer" parent="." unique_id=1868803194 groups=["camera_bounds"]]
+[node name="Floor" type="TileMapLayer" parent="Ground" unique_id=1868803194 groups=["camera_bounds"]]
 tile_map_data = PackedByteArray("AAAAAAAAAQAAAAMAAAABAAAAAQAAAAMAAAACAAAAAQAAAAMAAAADAAAAAQAAAAMAAAAEAAAAAQAAAAMAAAAFAAAAAQAAAAMAAAAGAAAAAQAAAAMAAAAHAAAAAQAAAAMAAAAIAAAAAQAAAAMAAAAJAAAAAQAAAAMAAAAJAAEAAQAAAAMAAAAJAAIAAQAAAAMAAAAJAAMAAQAAAAMAAAAJAAQAAQAAAAMAAAAJAAUAAQAAAAMAAAAJAAYAAQAAAAMAAAAIAAYAAQAAAAMAAAAHAAYAAQAAAAMAAAAGAAYAAQAAAAMAAAAFAAYAAQAAAAMAAAAEAAYAAQAAAAMAAAADAAYAAQAAAAMAAAACAAYAAQAAAAMAAAABAAYAAQAAAAMAAAAAAAYAAQAAAAMAAAAAAAUAAQAAAAMAAAAAAAQAAQAAAAMAAAAAAAMAAQAAAAMAAAAAAAIAAQAAAAMAAAAAAAEAAQAAAAMAAAABAAEAAQAAAAMAAAACAAEAAQAAAAMAAAADAAEAAQAAAAMAAAAEAAEAAQAAAAMAAAAFAAEAAQAAAAMAAAAGAAEAAQAAAAMAAAAHAAEAAQAAAAMAAAAIAAEAAQAAAAMAAAAGAAIAAQAAAAMAAAAFAAIAAQAAAAMAAAAEAAIAAQAAAAMAAAADAAIAAQAAAAMAAAACAAIAAQAAAAMAAAAHAAIAAQAAAAMAAAAIAAIAAQAAAAMAAAAIAAMAAQAAAAMAAAAHAAMAAQAAAAMAAAAGAAMAAQAAAAMAAAAFAAMAAQAAAAMAAAAEAAMAAQAAAAMAAAADAAMAAQAAAAMAAAACAAMAAQAAAAMAAAABAAMAAQAAAAMAAAABAAQAAQAAAAMAAAACAAQAAQAAAAMAAAADAAQAAQAAAAMAAAAEAAQAAQAAAAMAAAAFAAQAAQAAAAMAAAAGAAQAAQAAAAMAAAAHAAQAAQAAAAMAAAAIAAQAAQAAAAMAAAAIAAUAAQAAAAMAAAAHAAUAAQAAAAMAAAAGAAUAAQAAAAMAAAAFAAUAAQAAAAMAAAAEAAUAAQAAAAMAAAADAAUAAQAAAAMAAAACAAUAAQAAAAMAAAABAAUAAQAAAAMAAAD9//7/AQABAAMAAAD9////AQABAAMAAAD+//7/AQABAAMAAAD+////AQABAAMAAAD///7/AQABAAMAAAD/////AQABAAMAAAAAAP7/AQABAAMAAAAAAP//AQABAAMAAAABAP7/AQABAAMAAAABAP//AQABAAMAAAACAP7/AQABAAMAAAACAP//AQABAAMAAAADAP7/AQABAAMAAAADAP//AQABAAMAAAAEAP7/AQABAAMAAAAEAP//AQABAAMAAAAFAP7/AQABAAMAAAAFAP//AQABAAMAAAAGAP7/AQABAAMAAAAGAP//AQABAAMAAAAHAP7/AQABAAMAAAAHAP//AQABAAMAAAAIAP7/AQABAAMAAAAIAP//AQABAAMAAAAJAP7/AQABAAMAAAAJAP//AQABAAMAAAAKAP7/AQABAAMAAAAKAP//AQABAAMAAAALAP7/AQABAAMAAAALAP//AQABAAMAAAAMAP7/AQABAAMAAAAMAP//AQABAAMAAAAKAAAAAQABAAMAAAAKAAEAAQABAAMAAAAKAAIAAQABAAMAAAAKAAMAAQABAAMAAAAKAAQAAQABAAMAAAAKAAUAAQABAAMAAAAKAAYAAQABAAMAAAAKAAcAAQABAAMAAAALAAAAAQABAAMAAAALAAEAAQABAAMAAAALAAIAAQABAAMAAAALAAMAAQABAAMAAAALAAQAAQABAAMAAAALAAUAAQABAAMAAAALAAYAAQABAAMAAAALAAcAAQABAAMAAAAMAAAAAQABAAMAAAAMAAEAAQABAAMAAAAMAAIAAQABAAMAAAAMAAMAAQABAAMAAAAMAAQAAQABAAMAAAAMAAUAAQABAAMAAAAMAAYAAQABAAMAAAAMAAcAAQABAAMAAAD9/wcAAQABAAMAAAD+/wcAAQABAAMAAAD//wcAAQABAAMAAAAAAAcAAQABAAMAAAABAAcAAQABAAMAAAACAAcAAQABAAMAAAADAAcAAQABAAMAAAAEAAcAAQABAAMAAAAFAAcAAQABAAMAAAAGAAcAAQABAAMAAAAHAAcAAQABAAMAAAAIAAcAAQABAAMAAAAJAAcAAQABAAMAAAD9/wAAAQABAAMAAAD9/wEAAQABAAMAAAD9/wIAAQABAAMAAAD9/wMAAQABAAMAAAD9/wQAAQABAAMAAAD9/wUAAQABAAMAAAD9/wYAAQABAAMAAAD+/wAAAQABAAMAAAD+/wEAAQABAAMAAAD+/wIAAQABAAMAAAD+/wMAAQABAAMAAAD+/wQAAQABAAMAAAD+/wUAAQABAAMAAAD+/wYAAQABAAMAAAD//wAAAQABAAMAAAD//wEAAQABAAMAAAD//wIAAQABAAMAAAD//wMAAQABAAMAAAD//wQAAQABAAMAAAD//wUAAQABAAMAAAD//wYAAQABAAMAAAABAAIAAQAAAAMAAAA=")
 tile_set = ExtResource("4_422ht")
 
-[node name="Walls" type="TileMapLayer" parent="." unique_id=5454877]
+[node name="YSortedWorld" type="Node2D" parent="." unique_id=247285760]
+y_sort_enabled = true
+
+[node name="Player" parent="YSortedWorld" unique_id=426329780 instance=ExtResource("3_mu2m6")]
+position = Vector2(224, 217)
+
+[node name="NpcActor" parent="YSortedWorld" unique_id=319491251 instance=ExtResource("4_jtcfk")]
+position = Vector2(48, 120)
+data = ExtResource("5_dmleq")
+interaction_offset = Vector2(0, 16)
+
+[node name="Walls" type="TileMapLayer" parent="YSortedWorld" unique_id=5454877]
 tile_map_data = PackedByteArray("AAAGAAcAAQADAAAAAAAHAAcAAQAEAAAAAAAJAAcAAQACAAIAAAAIAAcAAQABAAIAAAAFAAcAAQABAAIAAAAEAAcAAQABAAIAAAADAAcAAQABAAIAAAACAAcAAQABAAIAAAABAAcAAQABAAIAAAAAAAcAAQAAAAIAAAAAAAYAAQADAAEAAAAAAAUAAQADAAEAAAAAAAQAAQADAAEAAAAAAAMAAQADAAEAAAAAAAIAAQADAAEAAAAAAAEAAQADAAEAAAAAAAAAAQADAAEAAAAJAAYAAQAEAAEAAAAJAAUAAQAEAAEAAAAJAAQAAQAEAAEAAAAJAAMAAQAEAAEAAAAJAAIAAQAEAAEAAAAJAAEAAQAEAAEAAAAJAAAAAQAEAAEAAAAAAP7/AQAAAAAAAAAAAP//AQAAAAEAAAAJAP7/AQACAAAAAAAJAP//AQACAAEAAAAIAP7/AQABAAAAAAAIAP//AQABAAEAAAAHAP7/AQABAAAAAAAHAP//AQABAAEAAAAGAP7/AQABAAAAAAAGAP//AQABAAEAAAAFAP7/AQABAAAAAAAFAP//AQABAAEAAAAEAP7/AQABAAAAAAAEAP//AQABAAEAAAADAP7/AQABAAAAAAADAP//AQABAAEAAAACAP7/AQABAAAAAAACAP//AQABAAEAAAABAP7/AQABAAAAAAABAP//AQABAAEAAAA=")
 tile_set = ExtResource("4_422ht")
 
-[node name="NpcActor" parent="." unique_id=319491251 instance=ExtResource("4_jtcfk")]
-position = Vector2(48, 120)
-data = ExtResource("5_dmleq")
-prompt_text = "Press E to Talk"
-interaction_offset = Vector2(0, 16)
+[node name="WallProps" type="Node2D" parent="YSortedWorld" unique_id=214688240]
 
-[node name="WallProps" type="Node2D" parent="." unique_id=214688240]
-
-[node name="WeaponRack" type="Sprite2D" parent="WallProps" unique_id=336658583]
+[node name="WeaponRack" type="Sprite2D" parent="YSortedWorld/WallProps" unique_id=336658583]
 position = Vector2(192, -17)
 texture = ExtResource("6_8swea")
 
-[node name="WallSwords" type="Sprite2D" parent="WallProps" unique_id=1058144414]
+[node name="WallSwords" type="Sprite2D" parent="YSortedWorld/WallProps" unique_id=1058144414]
 position = Vector2(112, -24)
 texture = ExtResource("7_so5x8")
 region_enabled = true
 region_rect = Rect2(0, 0, 64, 32)
 
-[node name="WallSpears" type="Sprite2D" parent="WallProps" unique_id=1981055275]
+[node name="WallSpears" type="Sprite2D" parent="YSortedWorld/WallProps" unique_id=1981055275]
 position = Vector2(272, -24)
 texture = ExtResource("7_so5x8")
 region_enabled = true
 region_rect = Rect2(0, 32, 64, 32)
 
-[node name="Forge" type="StaticBody2D" parent="WallProps" unique_id=120730735]
+[node name="Forge" type="StaticBody2D" parent="YSortedWorld/WallProps" unique_id=120730735]
 position = Vector2(48, -22)
 
-[node name="Sprite2D" type="Sprite2D" parent="WallProps/Forge" unique_id=1545436581]
+[node name="Sprite2D" type="Sprite2D" parent="YSortedWorld/WallProps/Forge" unique_id=1545436581]
 texture = ExtResource("9_422ht")
 
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="WallProps/Forge" unique_id=1848294147]
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="YSortedWorld/WallProps/Forge" unique_id=1848294147]
 position = Vector2(0, 48)
 polygon = PackedVector2Array(-18, 0, -24, -5, -24, -26, 24, -26, 24, -5, 18, 0)
 
-[node name="FloorProps" type="Node2D" parent="." unique_id=492778774]
+[node name="FloorProps" type="Node2D" parent="YSortedWorld" unique_id=492778774]
 y_sort_enabled = true
 
-[node name="Counter" type="StaticBody2D" parent="FloorProps" unique_id=575961433]
+[node name="Counter" type="StaticBody2D" parent="YSortedWorld/FloorProps" unique_id=575961433]
 position = Vector2(57, 145)
 
-[node name="Sprite2D" type="Sprite2D" parent="FloorProps/Counter" unique_id=1590558295]
+[node name="Sprite2D" type="Sprite2D" parent="YSortedWorld/FloorProps/Counter" unique_id=1590558295]
 position = Vector2(0, -12)
 texture = ExtResource("4_awdw8")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="FloorProps/Counter" unique_id=1746586823]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="YSortedWorld/FloorProps/Counter" unique_id=1746586823]
 position = Vector2(0, -6.5)
 shape = SubResource("RectangleShape2D_awdw8")
 
-[node name="FanPedistal" type="StaticBody2D" parent="FloorProps" unique_id=787812692]
+[node name="FanPedistal" type="StaticBody2D" parent="YSortedWorld/FloorProps" unique_id=787812692]
 position = Vector2(240, 112)
 
-[node name="Sprite2D" type="Sprite2D" parent="FloorProps/FanPedistal" unique_id=796209420]
+[node name="Sprite2D" type="Sprite2D" parent="YSortedWorld/FloorProps/FanPedistal" unique_id=796209420]
 texture = ExtResource("6_7mnpr")
 offset = Vector2(0, -18)
 region_enabled = true
 region_rect = Rect2(32, 0, 32, 48)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="FloorProps/FanPedistal" unique_id=1654433397]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="YSortedWorld/FloorProps/FanPedistal" unique_id=1654433397]
 rotation = 1.5707964
 shape = SubResource("CapsuleShape2D_7mnpr")
 
-[node name="OrbPedistal" type="StaticBody2D" parent="FloorProps" unique_id=537181489]
+[node name="OrbPedistal" type="StaticBody2D" parent="YSortedWorld/FloorProps" unique_id=537181489]
 position = Vector2(176, 111)
 
-[node name="Sprite2D" type="Sprite2D" parent="FloorProps/OrbPedistal" unique_id=1958116255]
+[node name="Sprite2D" type="Sprite2D" parent="YSortedWorld/FloorProps/OrbPedistal" unique_id=1958116255]
 texture = ExtResource("6_7mnpr")
 offset = Vector2(0, -18)
 region_enabled = true
 region_rect = Rect2(0, 0, 32, 48)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="FloorProps/OrbPedistal" unique_id=1797633087]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="YSortedWorld/FloorProps/OrbPedistal" unique_id=1797633087]
 rotation = 1.5707964
 shape = SubResource("CapsuleShape2D_7mnpr")
 
-[node name="Anvil" type="StaticBody2D" parent="FloorProps" unique_id=45279076]
+[node name="Anvil" type="StaticBody2D" parent="YSortedWorld/FloorProps" unique_id=45279076]
 position = Vector2(77, 84)
 
-[node name="Sprite2D" type="Sprite2D" parent="FloorProps/Anvil" unique_id=300896808]
+[node name="Sprite2D" type="Sprite2D" parent="YSortedWorld/FloorProps/Anvil" unique_id=300896808]
 texture = ExtResource("10_5xyi6")
 offset = Vector2(0, -4)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="FloorProps/Anvil" unique_id=885613909]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="YSortedWorld/FloorProps/Anvil" unique_id=885613909]
 position = Vector2(3, 0)
 rotation = 1.5707964
 shape = SubResource("CapsuleShape2D_5xyi6")
 
-[node name="QuenchBarrel" type="StaticBody2D" parent="FloorProps" unique_id=547141005]
+[node name="QuenchBarrel" type="StaticBody2D" parent="YSortedWorld/FloorProps" unique_id=547141005]
 position = Vector2(111, 48)
 
-[node name="Sprite2D" type="Sprite2D" parent="FloorProps/QuenchBarrel" unique_id=900083966]
+[node name="Sprite2D" type="Sprite2D" parent="YSortedWorld/FloorProps/QuenchBarrel" unique_id=900083966]
 texture = ExtResource("11_3aciw")
 offset = Vector2(0, -10)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="FloorProps/QuenchBarrel" unique_id=1853471677]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="YSortedWorld/FloorProps/QuenchBarrel" unique_id=1853471677]
 rotation = 1.5707964
 shape = SubResource("CapsuleShape2D_3aciw")
 
-[node name="Player" parent="." unique_id=426329780 instance=ExtResource("3_mu2m6")]
-position = Vector2(224, 217)
+[node name="Foreground" type="Node2D" parent="." unique_id=722569727]
+z_index = 10
+
+[node name="CanvasLayer" type="CanvasLayer" parent="Foreground" unique_id=881460187]
+layer = 10
+
+[node name="ShopWindow" parent="Foreground/CanvasLayer" unique_id=1917424634 instance=ExtResource("2_mu2m6")]
+visible = false
 
 [node name="ExitTriggerZone" parent="." unique_id=528423832 instance=ExtResource("13_6f06l")]
 position = Vector2(224, 224)

@@ -11,7 +11,7 @@ This project is also a long-term learning project focused on modular, data-drive
 
 ## Current Status
 
-Pixel Valley is playable and actively in development. The current project version is `0.1.4`.
+Pixel Valley is playable and actively in development. The current project version is `0.1.5`.
 
 Implemented systems include hero creation, a village hub, explorable combat zones, turn-based battles, a main quest chain, shops, an inn, inventory/equipment management, save slots, HUD panels, rewards, loot drops, and placeholder audio/visual content.
 
@@ -80,6 +80,7 @@ Each class has its own stats, weapon pool, equipment progression, and combat sty
 - Tabbed in-game HUD with Stats, Inventory, Quests, and System panels
 - New game, load, options, shop, reward, death, battle, quest, and victory screens/windows
 - Keyboard and controller input bindings in `project.godot`
+- Input-aware menu focus: pointer interaction hides GUI focus, while UI directions restore the active menu or modal's default focus target
 
 ### Persistence
 

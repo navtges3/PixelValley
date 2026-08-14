@@ -3,7 +3,6 @@
 [ext_resource type="Script" uid="uid://c5deti4sb2k2j" path="res://scripts/data/effects/effect.gd" id="1_bmevq"]
 [ext_resource type="Script" uid="uid://hw30jan7sjfb" path="res://scripts/data/effects/effect_stat_change.gd" id="2_giha3"]
 
-
 [sub_resource type="Resource" id="Resource_1ft4j"]
 script = ExtResource("2_giha3")
 base_amount = 50
@@ -14,5 +13,6 @@ metadata/_custom_type_script = "uid://hw30jan7sjfb"
 script = ExtResource("1_bmevq")
 effect_name = "Heal"
 effect_id = &"heal"
+is_instant = true
 stat_changes = Array[ExtResource("2_giha3")]([SubResource("Resource_1ft4j")])
 metadata/_custom_type_script = "uid://c5deti4sb2k2j"

@@ -85,7 +85,7 @@ theme = ExtResource("5_bd2wy")
 text = "Exit Game"
 
 [node name="LoadWindow" parent="." unique_id=1918541071 instance=ExtResource("7_pfh6i")]
-visible = false
+layout_mode = 1
 
 [node name="OptionsWindow" parent="." unique_id=101606992 instance=ExtResource("6_pqlu1")]
 visible = false

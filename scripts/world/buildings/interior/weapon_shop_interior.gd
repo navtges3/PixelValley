@@ -4,7 +4,7 @@ class_name WeaponShopInterior
 const ENTRANCE_ID := "weapon_shop"
 const SERVICE_ID: StringName = &"weapon_shop"
 
-@onready var shop_window: ShopWindow = $CanvasLayer/ShopWindow
+@onready var shop_window: ShopWindow = $Foreground/CanvasLayer/ShopWindow
 
 func _get_screen_name() -> ScreenManager.ScreenName:
 	return ScreenManager.ScreenName.WEAPON_SHOP

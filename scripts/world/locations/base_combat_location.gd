@@ -20,7 +20,7 @@ func _activate_spawn_points() -> void:
 		if node is SpawnPoint and not points.has(node):
 			points.append(node)
 	for sp in points:
-		sp.spawn(self, _on_combat_initiated, _get_location_id())
+		sp.spawn(y_sorted_world, _on_combat_initiated, _get_location_id())
 
 func _on_combat_initiated(enemy: Enemy) -> void:
 	enemy.set_physics_process(false)

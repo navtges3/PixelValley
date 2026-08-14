@@ -2,8 +2,8 @@ extends BaseLocation
 class_name VillageLocation
 
 @onready var exit_trigger_zone: TriggerZone = $TriggerZones/ExitTriggerZone
-@onready var quest_interact_area: InteractArea = $Props/QuestBoard/InteractArea
-@onready var quest_window: QuestWindow = $CanvasLayer/QuestWindow
+@onready var quest_interact_area: InteractArea = $YSortedWorld/Props/QuestBoard/InteractArea
+@onready var quest_window: QuestWindow = $Foreground/CanvasLayer/QuestWindow
 
 func _get_screen_name() -> ScreenManager.ScreenName:
 	return ScreenManager.ScreenName.VILLAGE

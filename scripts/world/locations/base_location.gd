@@ -1,7 +1,8 @@
 extends Node2D
 class_name BaseLocation
 
-@onready var player: Player = $Player
+@onready var y_sorted_world: Node2D = $YSortedWorld
+@onready var player: Player = $YSortedWorld/Player
 
 var _pending_entrance_id: String = ""
 var _movement_blocked_before_dialogue: bool = false
@@ -64,10 +65,12 @@ func _is_window_close_input(event: InputEvent) -> bool:
 	return event.is_action_pressed("open_hud") or event.is_action_pressed("ui_cancel")
 
 func _handle_window_input(event: InputEvent, window: GameWindow) -> bool:
-	if window == null or not window.is_visible_in_tree():
+	if window == null or not window.is_open():
 		return false
+	if window.has_open_child_window():
+		return true
 	if _is_window_close_input(event):
-		window.close()
+		window._handle_cancel()
 		get_viewport().set_input_as_handled()
 	return true
 
@@ -78,12 +81,14 @@ func _input(event: InputEvent) -> void:
 	if world_hud.is_dialogue_open():
 		return
 	var game_hud: GameHUD = world_hud.game_hud
-	if event.is_action_pressed("ui_cancel"):
+	if game_hud.has_open_modal():
+		return
+	if event.is_action_pressed(&"ui_cancel"):
 		if game_hud.is_open():
 			_close_hud(game_hud)
-		else:
+		elif not InputManager.is_using_controller():
 			_open_hud(game_hud, GameHUD.Tab.SYSTEM)
-	elif event.is_action_pressed("open_hud"):
+	elif event.is_action_pressed(&"open_hud"):
 		if game_hud.is_open():
 			_close_hud(game_hud)
 		else:

@@ -1,4 +1,4 @@
-extends Window
+extends GameWindow
 class_name RewardWindow
 
 signal rewards_collected()
@@ -8,7 +8,7 @@ signal rewards_collected()
 @onready var collect_button: Button = $PanelContainer/MarginContainer/VBoxContainer/CollectButton
 
 func _ready() -> void:
-	exclusive = true
+	super._ready()
 	collect_button.pressed.connect(_on_collect_pressed)
 
 func show_rewards(win_title: String, rewards: Array[RewardEntry]) -> void:
@@ -16,7 +16,7 @@ func show_rewards(win_title: String, rewards: Array[RewardEntry]) -> void:
 	_clear_list()
 	for entry in rewards:
 		reward_list.add_child(_build_entry(entry))
-	popup_centered()
+	open()
 
 func _build_entry(entry: RewardEntry) -> Label:
 	var label := Label.new()
@@ -29,6 +29,12 @@ func _clear_list() -> void:
 	for child in reward_list.get_children():
 		child.queue_free()
 
+func _get_default_focus_target() -> Control:
+	return collect_button
+
+func _handle_cancel() -> void:
+	_on_collect_pressed()
+
 func _on_collect_pressed() -> void:
-	hide()
+	close()
 	rewards_collected.emit()

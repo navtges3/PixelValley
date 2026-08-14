@@ -98,8 +98,9 @@ disabled = true
 text = "Create Hero"
 
 [node name="NewGameWindow" parent="." unique_id=1924150137 instance=ExtResource("4_bkijf")]
-visible = false
+layout_mode = 1
 
 [connection signal="text_changed" from="VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/HeroInfoContainer/HeroName" to="." method="_on_hero_name_text_changed"]
+[connection signal="text_submitted" from="VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/HeroInfoContainer/HeroName" to="." method="_on_hero_name_text_submitted"]
 [connection signal="pressed" from="VBoxContainer/PanelContainer/VBoxContainer/ButtonContainer/BackButton" to="." method="_on_back_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/PanelContainer/VBoxContainer/ButtonContainer/CreateButton" to="." method="_on_create_button_pressed"]

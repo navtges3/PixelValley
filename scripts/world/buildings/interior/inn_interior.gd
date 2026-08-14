@@ -4,7 +4,7 @@ class_name InnInterior
 const ENTRANCE_ID := "inn"
 const SERVICE_ID: StringName = &"inn"
 
-@onready var inn_window: InnWindow = $CanvasLayer/InnWindow
+@onready var inn_window: InnWindow = $Foreground/CanvasLayer/InnWindow
 
 func _get_screen_name() -> ScreenManager.ScreenName:
 	return ScreenManager.ScreenName.INN

@@ -29,5 +29,6 @@ region_rect = Rect2(2, 2, 28, 29)
 [resource]
 AcceptDialog/constants/buttons_separation = 10
 AcceptDialog/styles/panel = SubResource("StyleBoxTexture_cunwo")
+Label/colors/font_color = Color(0, 0, 0, 1)
 Panel/styles/panel = SubResource("StyleBoxTexture_gxlck")
 PanelContainer/styles/panel = SubResource("StyleBoxTexture_cnduy")
