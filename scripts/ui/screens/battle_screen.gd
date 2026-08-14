@@ -31,8 +31,8 @@ var monster_visual: BattleCharacter
 var battle_config: Dictionary = {}
 
 var _primary_action_buttons: Array[Button] = []
-var _focused_ability_button: AbilityButton
-var _hovered_ability_button: AbilityButton
+var _focused_tooltip_button: Button
+var _hovered_tooltip_button: Button
 
 func _ready() -> void:
 	_primary_action_buttons = [
@@ -201,6 +201,7 @@ func _on_item_button_toggled(button_pressed: bool) -> void:
 			option_list.add_child(btn)
 		_focus_first_usable_option.call_deferred(item_button)
 	else:
+		_clear_ability_tooltip()
 		option_list.visible = false
 
 func _on_meditate_button_pressed() -> void:
@@ -267,14 +268,19 @@ func _create_ability_button(ability: Ability) -> AbilityButton:
 	return button
 
 func _on_item_button_pressed(item_id: String) -> void:
+	_clear_ability_tooltip()
 	battle_manager.player_item_selected(item_id)
 	item_button.button_pressed = false
 
-func _create_item_button(item_id: String, count: int) -> Button:
-	var button := ITEM_BUTTON.instantiate()
+func _create_item_button(item_id: String, count: int) -> ItemButton:
+	var button := ITEM_BUTTON.instantiate() as ItemButton
 	button.item_id = item_id
 	button.count = count
-	button.connect("item_pressed", Callable(self, "_on_item_button_pressed"))
+	button.item_pressed.connect(_on_item_button_pressed)
+	button.focus_entered.connect(_on_option_focus_entered.bind(button))
+	button.focus_exited.connect(_on_option_focus_exited.bind(button))
+	button.mouse_entered.connect(_on_option_mouse_entered.bind(button))
+	button.mouse_exited.connect(_on_option_mouse_exited.bind(button))
 	return button
 
 func _empty_option_list() -> void:
@@ -283,47 +289,66 @@ func _empty_option_list() -> void:
 		child.queue_free()
 
 func _on_ability_option_focus_entered(button: AbilityButton) -> void:
-	_focused_ability_button = button
-	_refresh_ability_tooltip()
+	_on_option_focus_entered(button)
 
 func _on_ability_option_focus_exited(button: AbilityButton) -> void:
-	if _focused_ability_button == button:
-		_focused_ability_button = null
-	_refresh_ability_tooltip()
+	_on_option_focus_exited(button)
 
 func _on_ability_option_mouse_entered(button: AbilityButton) -> void:
-	_hovered_ability_button = button
-	_refresh_ability_tooltip()
+	_on_option_mouse_entered(button)
 
 func _on_ability_option_mouse_exited(button: AbilityButton) -> void:
-	if _hovered_ability_button == button:
-		_hovered_ability_button = null
+	_on_option_mouse_exited(button)
+
+func _on_option_focus_entered(button: Button) -> void:
+	_focused_tooltip_button = button
+	_refresh_ability_tooltip()
+
+func _on_option_focus_exited(button: Button) -> void:
+	if _focused_tooltip_button == button:
+		_focused_tooltip_button = null
+	_refresh_ability_tooltip()
+
+func _on_option_mouse_entered(button: Button) -> void:
+	_hovered_tooltip_button = button
+	_refresh_ability_tooltip()
+
+func _on_option_mouse_exited(button: Button) -> void:
+	if _hovered_tooltip_button == button:
+		_hovered_tooltip_button = null
 	_refresh_ability_tooltip()
 
 func _refresh_ability_tooltip() -> void:
-	var source_button: AbilityButton = null
+	var source_button: Button = null
 	if (
 		InputManager.menu_navigation_mode == InputManager.MenuNavigationMode.POINTER
-		and is_instance_valid(_hovered_ability_button)
+		and is_instance_valid(_hovered_tooltip_button)
 	):
-		source_button = _hovered_ability_button
+		source_button = _hovered_tooltip_button
 	elif (
 		InputManager.menu_navigation_mode == InputManager.MenuNavigationMode.FOCUS
-		and is_instance_valid(_focused_ability_button)
-		and _focused_ability_button.has_focus()
+		and is_instance_valid(_focused_tooltip_button)
+		and _focused_tooltip_button.has_focus()
 	):
-		source_button = _focused_ability_button
+		source_button = _focused_tooltip_button
 	var should_show := (
 		is_instance_valid(source_button)
-		and ability_button.button_pressed
+		and _is_action_submenu_open()
 		and option_list.is_visible_in_tree()
 	)
 	ability_tooltip.visible = should_show
-	ability_tooltip_label.text = source_button.ability_tooltip_text if should_show else ""
+	ability_tooltip_label.text = _get_option_tooltip_text(source_button) if should_show else ""
+
+func _get_option_tooltip_text(button: Button) -> String:
+	if button is AbilityButton:
+		return (button as AbilityButton).ability_tooltip_text
+	if button is ItemButton:
+		return (button as ItemButton).item_tooltip_text
+	return ""
 
 func _clear_ability_tooltip() -> void:
-	_focused_ability_button = null
-	_hovered_ability_button = null
+	_focused_tooltip_button = null
+	_hovered_tooltip_button = null
 	ability_tooltip.visible = false
 	ability_tooltip_label.text = ""
 
