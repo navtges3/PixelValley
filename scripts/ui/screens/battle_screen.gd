@@ -24,8 +24,8 @@ const MEDITATE_TOOLTIP_TEXT := "Restore health and energy."
 @onready var meditate_button: Button = $MarginContainer/ActionPanel/ActionArea/LeftPanel/MeditateButton
 @onready var flee_button: Button = $MarginContainer/ActionPanel/ActionArea/LeftPanel/FleeButton
 @onready var option_list: VBoxContainer = $MarginContainer/ActionPanel/ActionArea/MiddlePanel/OptionList
-@onready var ability_tooltip: PanelContainer = $MarginContainer/AbilityTooltip
-@onready var ability_tooltip_label: Label = $MarginContainer/AbilityTooltip/TooltipLabel
+@onready var tooltip_panel: PanelContainer = $MarginContainer/TooltipPanel
+@onready var tooltip_label: Label = $MarginContainer/TooltipPanel/TooltipLabel
 
 var hero_visual: BattleCharacter
 var monster_visual: BattleCharacter
@@ -192,7 +192,7 @@ func _on_ability_button_toggled(button_pressed: bool) -> void:
 			option_list.add_child(btn)
 		_focus_first_usable_option.call_deferred(ability_button)
 	else:
-		_clear_ability_tooltip()
+		_clear_tooltip()
 		option_list.visible = false
 
 func _on_item_button_toggled(button_pressed: bool) -> void:
@@ -206,11 +206,11 @@ func _on_item_button_toggled(button_pressed: bool) -> void:
 			option_list.add_child(btn)
 		_focus_first_usable_option.call_deferred(item_button)
 	else:
-		_clear_ability_tooltip()
+		_clear_tooltip()
 		option_list.visible = false
 
 func _on_meditate_button_pressed() -> void:
-	_clear_ability_tooltip()
+	_clear_tooltip()
 	battle_manager.meditate()
 	option_list.visible = false
 	ability_button.button_pressed = false
@@ -234,7 +234,7 @@ func _on_player_turn() -> void:
 	_focus_primary_action.call_deferred()
 
 func _on_monster_turn() -> void:
-	_clear_ability_tooltip()
+	_clear_tooltip()
 	ability_button.disabled = true
 	item_button.disabled = true
 	meditate_button.disabled = true
@@ -258,7 +258,7 @@ func _on_death_window_dismissed() -> void:
 
 # --- Button Factories ---
 func _on_ability_button_pressed(ability: Ability) -> void:
-	_clear_ability_tooltip()
+	_clear_tooltip()
 	battle_manager.player_ability_selected(ability)
 	ability_button.button_pressed = false
 
@@ -274,7 +274,7 @@ func _create_ability_button(ability: Ability) -> AbilityButton:
 	return button
 
 func _on_item_button_pressed(item_id: String) -> void:
-	_clear_ability_tooltip()
+	_clear_tooltip()
 	battle_manager.player_item_selected(item_id)
 	item_button.button_pressed = false
 
@@ -290,7 +290,7 @@ func _create_item_button(item_id: String, count: int) -> ItemButton:
 	return button
 
 func _empty_option_list() -> void:
-	_clear_ability_tooltip()
+	_clear_tooltip()
 	for child in option_list.get_children():
 		child.queue_free()
 
@@ -308,23 +308,23 @@ func _on_ability_option_mouse_exited(button: AbilityButton) -> void:
 
 func _on_option_focus_entered(button: Button) -> void:
 	_focused_tooltip_button = button
-	_refresh_ability_tooltip()
+	_refresh_tooltip()
 
 func _on_option_focus_exited(button: Button) -> void:
 	if _focused_tooltip_button == button:
 		_focused_tooltip_button = null
-	_refresh_ability_tooltip()
+	_refresh_tooltip()
 
 func _on_option_mouse_entered(button: Button) -> void:
 	_hovered_tooltip_button = button
-	_refresh_ability_tooltip()
+	_refresh_tooltip()
 
 func _on_option_mouse_exited(button: Button) -> void:
 	if _hovered_tooltip_button == button:
 		_hovered_tooltip_button = null
-	_refresh_ability_tooltip()
+	_refresh_tooltip()
 
-func _refresh_ability_tooltip() -> void:
+func _refresh_tooltip() -> void:
 	var source_button: Button = null
 	if (
 		InputManager.menu_navigation_mode == InputManager.MenuNavigationMode.POINTER
@@ -344,8 +344,8 @@ func _refresh_ability_tooltip() -> void:
 			or (_is_action_submenu_open() and option_list.is_visible_in_tree())
 		)
 	)
-	ability_tooltip.visible = should_show
-	ability_tooltip_label.text = _get_option_tooltip_text(source_button) if should_show else ""
+	tooltip_panel.visible = should_show
+	tooltip_label.text = _get_option_tooltip_text(source_button) if should_show else ""
 
 func _get_option_tooltip_text(button: Button) -> String:
 	if button is AbilityButton:
@@ -356,16 +356,16 @@ func _get_option_tooltip_text(button: Button) -> String:
 		return MEDITATE_TOOLTIP_TEXT
 	return ""
 
-func _clear_ability_tooltip() -> void:
+func _clear_tooltip() -> void:
 	_focused_tooltip_button = null
 	_hovered_tooltip_button = null
-	ability_tooltip.visible = false
-	ability_tooltip_label.text = ""
+	tooltip_panel.visible = false
+	tooltip_label.text = ""
 
 func _on_menu_navigation_mode_changed(
 	_mode: InputManager.MenuNavigationMode
 ) -> void:
-	_refresh_ability_tooltip()
+	_refresh_tooltip()
 
 func _is_action_submenu_open() -> bool:
 	return ability_button.button_pressed or item_button.button_pressed

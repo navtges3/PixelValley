@@ -32,11 +32,11 @@ func _test_focus_and_hover_tooltip() -> void:
 	InputManager._set_menu_navigation_mode(InputManager.MenuNavigationMode.FOCUS)
 	button.grab_focus()
 	_expect_true(
-		screen.ability_tooltip.visible,
+		screen.tooltip_panel.visible,
 		"controller focus shows the combat ability tooltip"
 	)
 	_expect_equal(
-		screen.ability_tooltip_label.text,
+		screen.tooltip_label.text,
 		button.ability_tooltip_text,
 		"focused ability shows its details in the shared tooltip"
 	)
@@ -46,7 +46,7 @@ func _test_focus_and_hover_tooltip() -> void:
 	)
 	screen.item_button.grab_focus()
 	_expect_true(
-		not screen.ability_tooltip.visible,
+		not screen.tooltip_panel.visible,
 		"moving focus away from the ability hides the controller tooltip"
 	)
 
@@ -54,14 +54,14 @@ func _test_focus_and_hover_tooltip() -> void:
 	InputManager._set_menu_navigation_mode(InputManager.MenuNavigationMode.POINTER)
 	button.mouse_entered.emit()
 	_expect_true(
-		screen.ability_tooltip.visible,
+		screen.tooltip_panel.visible,
 		"mouse hover shows the shared ability tooltip"
 	)
 	button.mouse_exited.emit()
-	_expect_true(not screen.ability_tooltip.visible, "ending mouse hover hides the tooltip")
+	_expect_true(not screen.tooltip_panel.visible, "ending mouse hover hides the tooltip")
 	screen._reset_action_submenu()
 	_expect_true(
-		not screen.ability_tooltip.visible,
+		not screen.tooltip_panel.visible,
 		"closing the ability submenu clears the controller tooltip"
 	)
 
@@ -84,11 +84,11 @@ func _test_item_focus_and_hover_tooltip() -> void:
 	InputManager._set_menu_navigation_mode(InputManager.MenuNavigationMode.FOCUS)
 	button.grab_focus()
 	_expect_true(
-		screen.ability_tooltip.visible,
+		screen.tooltip_panel.visible,
 		"controller focus shows the potion tooltip"
 	)
 	_expect_equal(
-		screen.ability_tooltip_label.text,
+		screen.tooltip_label.text,
 		button.item_tooltip_text,
 		"focused potion shows its details in the shared tooltip"
 	)
@@ -101,12 +101,12 @@ func _test_item_focus_and_hover_tooltip() -> void:
 	InputManager._set_menu_navigation_mode(InputManager.MenuNavigationMode.POINTER)
 	button.mouse_entered.emit()
 	_expect_true(
-		screen.ability_tooltip.visible,
+		screen.tooltip_panel.visible,
 		"mouse hover shows the potion tooltip"
 	)
 	button.mouse_exited.emit()
 	_expect_true(
-		not screen.ability_tooltip.visible,
+		not screen.tooltip_panel.visible,
 		"ending potion mouse hover hides the tooltip"
 	)
 
@@ -124,11 +124,11 @@ func _test_meditate_focus_and_hover_tooltip() -> void:
 	InputManager._set_menu_navigation_mode(InputManager.MenuNavigationMode.FOCUS)
 	screen.meditate_button.grab_focus()
 	_expect_true(
-		screen.ability_tooltip.visible,
+		screen.tooltip_panel.visible,
 		"controller focus shows the meditate tooltip"
 	)
 	_expect_equal(
-		screen.ability_tooltip_label.text,
+		screen.tooltip_label.text,
 		BattleScreen.MEDITATE_TOOLTIP_TEXT,
 		"focused meditate action shows its details in the shared tooltip"
 	)
@@ -141,12 +141,12 @@ func _test_meditate_focus_and_hover_tooltip() -> void:
 	InputManager._set_menu_navigation_mode(InputManager.MenuNavigationMode.POINTER)
 	screen.meditate_button.mouse_entered.emit()
 	_expect_true(
-		screen.ability_tooltip.visible,
+		screen.tooltip_panel.visible,
 		"mouse hover shows the meditate tooltip"
 	)
 	screen.meditate_button.mouse_exited.emit()
 	_expect_true(
-		not screen.ability_tooltip.visible,
+		not screen.tooltip_panel.visible,
 		"ending meditate mouse hover hides the tooltip"
 	)
 

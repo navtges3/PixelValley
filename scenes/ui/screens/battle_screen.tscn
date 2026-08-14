@@ -156,7 +156,7 @@ size_flags_vertical = 3
 layout_mode = 2
 text = "This is an Ability"
 
-[node name="AbilityTooltip" type="PanelContainer" parent="MarginContainer" unique_id=2124205279]
+[node name="TooltipPanel" type="PanelContainer" parent="MarginContainer" unique_id=2124205279]
 visible = false
 custom_minimum_size = Vector2(240, 210)
 layout_mode = 2
@@ -165,10 +165,10 @@ size_flags_vertical = 8
 mouse_filter = 2
 theme = ExtResource("4_pxpkm")
 
-[node name="TooltipLabel" type="Label" parent="MarginContainer/AbilityTooltip" unique_id=410429761]
+[node name="TooltipLabel" type="Label" parent="MarginContainer/TooltipPanel" unique_id=410429761]
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
-text = "Ability details"
+text = "Details"
 autowrap_mode = 2
 
 [connection signal="rewards_collected" from="RewardWindow" to="." method="_on_rewards_collected"]
