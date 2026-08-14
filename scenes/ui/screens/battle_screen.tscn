@@ -134,7 +134,6 @@ text = "Use Item"
 [node name="MeditateButton" type="Button" parent="MarginContainer/ActionPanel/ActionArea/LeftPanel" unique_id=1755693489]
 custom_minimum_size = Vector2(96, 32)
 layout_mode = 2
-tooltip_text = "Restore health and energy."
 theme = ExtResource("9_06vtu")
 text = "Meditate"
 

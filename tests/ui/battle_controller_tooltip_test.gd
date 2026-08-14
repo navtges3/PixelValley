@@ -6,6 +6,7 @@ func run_tests() -> int:
 	_begin_test_run()
 	_test_focus_and_hover_tooltip()
 	_test_item_focus_and_hover_tooltip()
+	_test_meditate_focus_and_hover_tooltip()
 	return _finish_test_run("Battle option tooltip tests")
 
 func _test_focus_and_hover_tooltip() -> void:
@@ -107,6 +108,46 @@ func _test_item_focus_and_hover_tooltip() -> void:
 	_expect_true(
 		not screen.ability_tooltip.visible,
 		"ending potion mouse hover hides the tooltip"
+	)
+
+	screen.free()
+	InputManager._set_input_method(original_input_method)
+	InputManager._set_menu_navigation_mode(original_navigation_mode)
+
+func _test_meditate_focus_and_hover_tooltip() -> void:
+	var original_input_method := InputManager.active_input_method
+	var original_navigation_mode := InputManager.menu_navigation_mode
+	var screen := BATTLE_SCREEN_SCENE.instantiate() as BattleScreen
+	add_child(screen)
+
+	InputManager._set_input_method(InputManager.InputMethod.CONTROLLER)
+	InputManager._set_menu_navigation_mode(InputManager.MenuNavigationMode.FOCUS)
+	screen.meditate_button.grab_focus()
+	_expect_true(
+		screen.ability_tooltip.visible,
+		"controller focus shows the meditate tooltip"
+	)
+	_expect_equal(
+		screen.ability_tooltip_label.text,
+		BattleScreen.MEDITATE_TOOLTIP_TEXT,
+		"focused meditate action shows its details in the shared tooltip"
+	)
+	_expect_true(
+		screen.meditate_button.tooltip_text.is_empty(),
+		"meditate disables the duplicate native mouse tooltip"
+	)
+
+	InputManager._set_input_method(InputManager.InputMethod.KEYBOARD_MOUSE)
+	InputManager._set_menu_navigation_mode(InputManager.MenuNavigationMode.POINTER)
+	screen.meditate_button.mouse_entered.emit()
+	_expect_true(
+		screen.ability_tooltip.visible,
+		"mouse hover shows the meditate tooltip"
+	)
+	screen.meditate_button.mouse_exited.emit()
+	_expect_true(
+		not screen.ability_tooltip.visible,
+		"ending meditate mouse hover hides the tooltip"
 	)
 
 	screen.free()

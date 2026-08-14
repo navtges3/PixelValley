@@ -4,6 +4,7 @@ class_name BattleScreen
 const ABILITY_BUTTON = preload("res://scenes/ui/components/ability_button.tscn")
 const ITEM_BUTTON = preload("res://scenes/ui/components/item_button.tscn")
 const BATTLE_CHARACTER = preload("res://scenes/ui/components/battle_character.tscn")
+const MEDITATE_TOOLTIP_TEXT := "Restore health and energy."
 
 @onready var battle_manager: BattleManager = $BattleManager
 
@@ -41,6 +42,10 @@ func _ready() -> void:
 		meditate_button,
 		flee_button,
 	]
+	meditate_button.focus_entered.connect(_on_option_focus_entered.bind(meditate_button))
+	meditate_button.focus_exited.connect(_on_option_focus_exited.bind(meditate_button))
+	meditate_button.mouse_entered.connect(_on_option_mouse_entered.bind(meditate_button))
+	meditate_button.mouse_exited.connect(_on_option_mouse_exited.bind(meditate_button))
 	_empty_option_list()
 	InputManager.menu_navigation_mode_changed.connect(
 		_on_menu_navigation_mode_changed
@@ -205,6 +210,7 @@ func _on_item_button_toggled(button_pressed: bool) -> void:
 		option_list.visible = false
 
 func _on_meditate_button_pressed() -> void:
+	_clear_ability_tooltip()
 	battle_manager.meditate()
 	option_list.visible = false
 	ability_button.button_pressed = false
@@ -333,8 +339,10 @@ func _refresh_ability_tooltip() -> void:
 		source_button = _focused_tooltip_button
 	var should_show := (
 		is_instance_valid(source_button)
-		and _is_action_submenu_open()
-		and option_list.is_visible_in_tree()
+		and (
+			source_button == meditate_button
+			or (_is_action_submenu_open() and option_list.is_visible_in_tree())
+		)
 	)
 	ability_tooltip.visible = should_show
 	ability_tooltip_label.text = _get_option_tooltip_text(source_button) if should_show else ""
@@ -344,6 +352,8 @@ func _get_option_tooltip_text(button: Button) -> String:
 		return (button as AbilityButton).ability_tooltip_text
 	if button is ItemButton:
 		return (button as ItemButton).item_tooltip_text
+	if button == meditate_button:
+		return MEDITATE_TOOLTIP_TEXT
 	return ""
 
 func _clear_ability_tooltip() -> void:
