@@ -50,19 +50,6 @@ window/stretch/mode="canvas_items"
 version_control/plugin_name="GitPlugin"
 version_control/autoload_on_startup=true
 
-[file_customization]
-
-folder_colors={
-"res://addons/": "gray",
-"res://assets/": "red",
-"res://audio/": "orange",
-"res://autoload/": "yellow",
-"res://exports/": "gray",
-"res://resources/": "green",
-"res://scenes/": "teal",
-"res://scripts/": "blue"
-}
-
 [global_group]
 
 player="Group for the player"
