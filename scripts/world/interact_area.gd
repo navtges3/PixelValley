@@ -27,7 +27,7 @@ func set_enabled(enabled: bool) -> void:
 
 func _clear_player_prompt() -> void:
 	if _player !=  null and not _displayed_prompt_text.is_empty():
-		_player.clear_prompt(_displayed_prompt_text)
+		_player.clear_prompt(_displayed_prompt_text, self)
 	_displayed_prompt_text = ""
 
 func _exit_tree() -> void:
@@ -60,9 +60,9 @@ func _refresh_prompt() -> void:
 		return
 	var refreshed_text := InputManager.format_action_prompt(&"interact", prompt_label)
 	if not _displayed_prompt_text.is_empty() and _displayed_prompt_text != refreshed_text:
-		_player.clear_prompt(_displayed_prompt_text)
+		_player.clear_prompt(_displayed_prompt_text, self)
 	_displayed_prompt_text = refreshed_text
-	_player.show_prompt(_displayed_prompt_text)
+	_player.show_prompt(_displayed_prompt_text, self)
 
 func _unhandled_input(event: InputEvent) -> void:
 	if (not _enabled or not _player_inside

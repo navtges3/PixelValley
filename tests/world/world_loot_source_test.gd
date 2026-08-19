@@ -9,6 +9,9 @@ const INTERACT_AREA_SCENE := preload(
 const WORLD_LOOT_SOURCE_SCENE := preload(
 	"res://scenes/world/world_loot_source.tscn"
 )
+const WORLD_PICKUP_SCENE := preload(
+	"res://scenes/world/world_pickup.tscn"
+)
 
 var _last_claim_result: WorldLootSource.ClaimResult
 var _last_claim_rewards: Array[RewardEntry] = []
@@ -17,8 +20,12 @@ var _claim_signal_count: int = 0
 func run_tests() -> int:
 	_begin_test_run()
 	_test_reusable_scene_has_interaction_component()
+	_test_world_pickup_scene_uses_shared_interaction()
+	_test_interaction_signal_grants_once()
 	_test_claim_grants_loot_once()
+	_test_claimed_pickup_hides_after_feedback()
 	_test_claimed_state_restores_on_reentry()
+	_test_claimed_pickup_restores_hidden()
 	_test_inventory_and_world_state_round_trip()
 	_test_legacy_world_state_uses_empty_claims()
 	_test_empty_ids_are_rejected()
@@ -35,6 +42,43 @@ func _test_reusable_scene_has_interaction_component() -> void:
 		"the reusable scene contains its interaction component"
 	)
 	source.free()
+
+func _test_world_pickup_scene_uses_shared_interaction() -> void:
+	var pickup := WORLD_PICKUP_SCENE.instantiate() as WorldPickup
+
+	_expect_not_null(pickup, "the reusable world-pickup scene instantiates")
+	_expect_true(
+		pickup.get_node_or_null("InteractArea") is InteractArea,
+		"the world pickup inherits the shared interaction component"
+	)
+	_expect_true(
+		pickup.get_node_or_null("InteractArea/CollisionShape2D") is CollisionShape2D,
+		"the world pickup inherits the shared interaction collision"
+	)
+	pickup.free()
+
+func _test_interaction_signal_grants_once() -> void:
+	WorldManager.reset()
+	var original_hero := GameState.hero
+	var hero := _new_hero()
+	GameState.hero = hero
+	var source := _new_source("forest", "forest/interacted_pickup")
+
+	source.interact_area.interacted.emit()
+	source.interact_area.interacted.emit()
+
+	_expect_equal(hero.inventory.gold, 10, "interaction grants authored gold once")
+	_expect_equal(
+		hero.inventory.get_potion_count("lesser_healing_potion"),
+		2,
+		"interaction grants authored items once"
+	)
+	_expect_true(
+		not source.interact_area.monitoring,
+		"interaction immediately disables the claimed source"
+	)
+	source.free()
+	GameState.hero = original_hero
 
 func _test_claim_grants_loot_once() -> void:
 	WorldManager.reset()
@@ -86,6 +130,30 @@ func _test_claim_grants_loot_once() -> void:
 	_expect_equal(source.autosave_count, 1, "a duplicate interaction does not autosave")
 	source.free()
 
+func _test_claimed_pickup_hides_after_feedback() -> void:
+	WorldManager.reset()
+	var pickup := WORLD_PICKUP_SCENE.instantiate() as WorldPickup
+	pickup.location_id = "forest"
+	pickup.loot_source_id = "forest/feedback_pickup"
+	pickup.loot_table = _new_deterministic_table()
+	add_child(pickup)
+	var rewards: Array[RewardEntry] = [RewardEntry.gold(10)]
+
+	pickup.claim_finished.emit(WorldLootSource.ClaimResult.CLAIMED, rewards)
+
+	_expect_true(
+		not pickup.interact_area.monitoring,
+		"a claimed pickup cannot receive another interaction"
+	)
+	_expect_true(
+		not pickup.visuals.visible,
+		"a claimed pickup disappears after collection feedback"
+	)
+	var world_hud := ScreenManager.get_world_hud() as WorldHUD
+	if world_hud != null:
+		world_hud.acquisition_notification.clear()
+	pickup.free()
+
 func _test_claimed_state_restores_on_reentry() -> void:
 	WorldManager.reset()
 	var hero := _new_hero()
@@ -101,6 +169,26 @@ func _test_claimed_state_restores_on_reentry() -> void:
 		"a restored claimed source starts with interaction disabled"
 	)
 	restored_source.free()
+
+func _test_claimed_pickup_restores_hidden() -> void:
+	WorldManager.reset()
+	WorldManager.mark_loot_claimed("forest", "forest/restored_pickup")
+	var pickup := WORLD_PICKUP_SCENE.instantiate() as WorldPickup
+	pickup.location_id = "forest"
+	pickup.loot_source_id = "forest/restored_pickup"
+	pickup.loot_table = _new_deterministic_table()
+	add_child(pickup)
+
+	_expect_true(pickup.is_claimed(), "the pickup restores its claimed state")
+	_expect_true(
+		not pickup.interact_area.monitoring,
+		"a restored pickup cannot receive interaction"
+	)
+	_expect_true(
+		not pickup.visuals.visible,
+		"a restored claimed pickup remains absent"
+	)
+	pickup.free()
 
 func _test_inventory_and_world_state_round_trip() -> void:
 	WorldManager.reset()

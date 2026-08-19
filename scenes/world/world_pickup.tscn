@@ -1,10 +1,10 @@
-[gd_scene format=3 uid="uid://ds7o2fwi8ms8y"]
+[gd_scene load_steps=3 format=3 uid="uid://ds7o2fwi8ms8y"]
 
 [ext_resource type="Script" uid="uid://dl4tlwdscvil3" path="res://scripts/world/world_pickup.gd" id="1_8l6ps"]
+[ext_resource type="PackedScene" uid="uid://bdk8tf27jx088" path="res://scenes/world/world_loot_source.tscn" id="2_loot_source"]
 
-[node name="WorldPickup" type="Node2D" unique_id=256540364]
+[node name="WorldPickup" unique_id=256540364 instance=ExtResource("2_loot_source")]
 script = ExtResource("1_8l6ps")
-metadata/_custom_type_script = "uid://bbyud3es0xr7i"
 
 [node name="Visuals" type="Node2D" parent="." unique_id=1272925374]
 

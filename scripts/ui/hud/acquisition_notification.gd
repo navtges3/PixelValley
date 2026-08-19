@@ -14,7 +14,9 @@ var _queue: Array[RewardEntry] = []
 var _active_entry: RewardEntry = null
 
 func _ready() -> void:
-	pass
+	if not display_timer.timeout.is_connected(_on_display_timer_timeout):
+		display_timer.timeout.connect(_on_display_timer_timeout)
+	panel.hide()
 
 func clear() -> void:
 	display_timer.stop()

@@ -19,6 +19,7 @@
 [ext_resource type="PackedScene" path="res://tests/ui/battle_controller_tooltip_test.tscn" id="17_battle_tooltip"]
 [ext_resource type="PackedScene" path="res://tests/input/menu_focus_navigation_test.tscn" id="18_menu_focus"]
 [ext_resource type="PackedScene" path="res://tests/world/world_loot_source_test.tscn" id="19_world_loot"]
+[ext_resource type="PackedScene" path="res://tests/ui/acquisition_notification_test.tscn" id="20_acquisition"]
 
 [node name="TestSuite" type="Node" unique_id=783793299]
 script = ExtResource("4_suite")
@@ -74,3 +75,5 @@ script = ExtResource("4_suite")
 [node name="GameWindowConsolidationTests" parent="UI" unique_id=749794887 instance=ExtResource("16_ui_window")]
 
 [node name="BattleAbilityTooltipTests" parent="UI" instance=ExtResource("17_battle_tooltip")]
+
+[node name="AcquisitionNotificationTests" parent="UI" instance=ExtResource("20_acquisition")]

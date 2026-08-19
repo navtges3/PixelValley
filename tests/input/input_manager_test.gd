@@ -20,6 +20,7 @@ func run_tests() -> int:
 	_test_action_prompt_formatting()
 	_test_prompt_context_switching()
 	_test_visible_interaction_prompt_refresh()
+	_test_interaction_prompt_cleanup_and_ownership()
 	_test_input_method_switching()
 	return _finish_test_run("Input manager tests")
 
@@ -212,6 +213,56 @@ func _test_visible_interaction_prompt_refresh() -> void:
 	InputManager._controller_families.erase(TEST_DEVICE_ID)
 	InputManager.active_input_method = original_method
 	InputManager.active_controller_device = original_device
+
+
+func _test_interaction_prompt_cleanup_and_ownership() -> void:
+	var player := PLAYER_SCENE.instantiate() as Player
+	var camera := player.get_node("Camera2D") as Camera2D
+	camera.free()
+	var first_area := INTERACT_AREA_SCENE.instantiate() as InteractArea
+	var second_area := INTERACT_AREA_SCENE.instantiate() as InteractArea
+	first_area.prompt_label = "Collect Wood Bundle"
+	second_area.prompt_label = "Collect Wood Bundle"
+	add_child(player)
+	add_child(first_area)
+	add_child(second_area)
+
+	first_area._on_body_entered(player)
+	second_area._on_body_entered(player)
+	first_area._on_body_exited(player)
+	_expect_true(
+		player.prompt_label.visible,
+		"one interaction area cannot clear another area's matching prompt"
+	)
+	_expect_equal(
+		player.prompt_label.text,
+		InputManager.format_action_prompt(&"interact", "Collect Wood Bundle"),
+		"the active interaction area retains its authored prompt"
+	)
+
+	second_area.hide()
+	_expect_true(
+		not player.prompt_label.visible,
+		"hiding an interaction area clears its owned prompt"
+	)
+	second_area.show()
+	second_area._on_body_entered(player)
+	second_area.set_enabled(false)
+	_expect_true(
+		not player.prompt_label.visible,
+		"disabling an interaction area clears its owned prompt"
+	)
+
+	first_area._on_body_entered(player)
+	remove_child(first_area)
+	_expect_true(
+		not player.prompt_label.visible,
+		"removing an interaction area clears its owned prompt"
+	)
+
+	first_area.free()
+	second_area.free()
+	player.free()
 
 
 func _test_input_method_switching() -> void:

@@ -9,6 +9,7 @@ const SPEED := 120.0
 var last_direction := Vector2.DOWN
 var _zone_cooldown := false
 var movement_blocked := false
+var _prompt_owner_id: int = 0
 
 func _ready() -> void:
 	prompt_label.hide()
@@ -60,14 +61,18 @@ func set_sprite_frames(frames: SpriteFrames) -> void:
 	if frames:
 		anim.sprite_frames = frames
 
-func show_prompt(message: String) -> void:
+func show_prompt(message: String, owner: Object = null) -> void:
 	if message.is_empty():
 		return
+	_prompt_owner_id = owner.get_instance_id() if owner != null else 0
 	prompt_label.text = message
 	prompt_label.show()
 
-func clear_prompt(message: String = "") -> void:
+func clear_prompt(message: String = "", owner: Object = null) -> void:
+	if owner != null and _prompt_owner_id != owner.get_instance_id():
+		return
 	if not message.is_empty() and prompt_label.text != message:
 		return
+	_prompt_owner_id = 0
 	prompt_label.text = ""
 	prompt_label.hide()
