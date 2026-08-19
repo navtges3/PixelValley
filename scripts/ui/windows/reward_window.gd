@@ -12,6 +12,11 @@ func _ready() -> void:
 	collect_button.pressed.connect(_on_collect_pressed)
 
 func show_rewards(win_title: String, rewards: Array[RewardEntry]) -> void:
+	if rewards.is_empty():
+		if is_open():
+			close()
+		rewards_collected.emit()
+		return
 	title_label.text = win_title
 	_clear_list()
 	for entry in rewards:

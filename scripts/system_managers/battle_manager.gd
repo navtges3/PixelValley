@@ -174,9 +174,20 @@ func _resolve_deaths_after_effects() -> bool:
 	return false
 
 func _on_monster_killed() -> void:
-	if state in [BattleState.RESOLVING, BattleState.VICTORY, BattleState.DEFEAT]:
+	if state in [
+		BattleState.RESOLVING,
+		BattleState.VICTORY,
+		BattleState.DEFEAT,
+	]:
 		return
 	state = BattleState.RESOLVING
+	var entries: Array[RewardEntry] = _grant_victory_rewards()
+	hero_updated.emit(hero)
+	var event := MonsterKilledEvent.new(monster.monster_id, location_id)
+	GameState.gameplay_event.emit(event)
+	end_battle(true, entries)
+
+func _grant_victory_rewards() -> Array[RewardEntry]:
 	var entries: Array[RewardEntry] = []
 	var experience_entry := RewardService.grant_experience(hero, monster.calculate_experience())
 	if experience_entry != null:
@@ -184,22 +195,5 @@ func _on_monster_killed() -> void:
 	var gold_entry := RewardService.grant_gold(hero, monster.calculate_gold())
 	if gold_entry != null:
 		entries.append(gold_entry)
-	entries.append_array(_collect_loot(monster.roll_loot(hero.hero_class, hero.inventory)))
-	hero_updated.emit(hero)
-	var event := MonsterKilledEvent.new(monster.monster_id, location_id)
-	GameState.gameplay_event.emit(event)
-	end_battle(true, entries)
-
-func _collect_loot(loot: Dictionary) -> Array[RewardEntry]:
-	var entries: Array[RewardEntry] = []
-	for item_id in loot.get("potions", {}):
-		var count: int = loot["potions"][item_id]
-		var potion_entry := RewardService.grant_potion(hero, item_id, count)
-		if potion_entry != null:
-			entries.append(potion_entry)
-	var weapon_id: String = loot.get("weapon_id", "")
-	if weapon_id != "":
-		var weapon_entry := RewardService.grant_weapon(hero, weapon_id)
-		if weapon_entry != null:
-			entries.append(weapon_entry)
+	entries.append_array(RewardService.grant_loot(monster.roll_loot(), hero))
 	return entries

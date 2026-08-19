@@ -81,6 +81,7 @@ func run_tests() -> int:
 	_test_quest_action_focus_route()
 	_test_quest_tab_shortcuts_wrap()
 	_test_required_modal_cancel_flows()
+	_test_empty_reward_presentation_is_skipped()
 	_test_quest_reward_focus_recovery_is_connected()
 	InputManager._set_menu_navigation_mode(original_navigation_mode)
 	return _finish_test_run("Game window consolidation tests")
@@ -654,6 +655,27 @@ func _test_required_modal_cancel_flows() -> void:
 		"death cancel input continues the return-to-village flow"
 	)
 	death_window.free()
+
+func _test_empty_reward_presentation_is_skipped() -> void:
+	_reward_collection_count = 0
+	var reward_window := _spawn_window(
+		REWARD_WINDOW_SCENE
+	) as RewardWindow
+	reward_window.rewards_collected.connect(_on_rewards_collected)
+	var rewards: Array[RewardEntry] = []
+
+	reward_window.show_rewards("Empty Rewards", rewards)
+
+	_expect_true(
+		not reward_window.is_open(),
+		"empty rewards do not open a reward window"
+	)
+	_expect_equal(
+		_reward_collection_count,
+		1,
+		"empty rewards continue the caller's completion flow"
+	)
+	reward_window.free()
 
 func _test_quest_reward_focus_recovery_is_connected() -> void:
 	var quest_window := _spawn_window(QUEST_WINDOW_SCENE) as QuestWindow

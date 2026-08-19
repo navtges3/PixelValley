@@ -7,7 +7,12 @@ class_name DropEntry
 @export var max_count: int = 1
 
 func roll() -> Array:
-	if randf() > chance:
+	if item_id.is_empty():
+		push_warning("DropEntry: item_id cannot be empty")
 		return []
-	var count := randi_range(min_count, max_count)
-	return [item_id, count]
+	var normalized_chance: float = clampf(chance, 0.0, 1.0)
+	if normalized_chance <= 0.0 or randf() >= normalized_chance:
+		return []
+	var low: int = maxi(1, min_count)
+	var high: int = maxi(low, max_count)
+	return [item_id, randi_range(low, high)]
