@@ -15,8 +15,10 @@ signal dialogue_action_requested(action: DialogueAction, context: Dictionary[Str
 @onready var hero_hud: HeroHUD = $HeroHUD
 @onready var tracked_quest_hud: TrackedQuestHUD = $TrackedQuestHUD
 
+@onready var acquisition_notification: AcquisitionNotification = $AcquisitionLayer/AcquisitionNotification
 @onready var dialogue_window: DialogueWindow = $DialogueLayer/DialogueWindow
 @onready var reward_window: RewardWindow = $RewardLayer/RewardWindow
+
 var dialogue_runner: DialogueRunner
 var _pending_quest_rewards: Array[RewardEntry] = []
 var _pending_finish_reason: DialogueRunner.FinishReason = DialogueRunner.FinishReason.COMPLETED
@@ -38,6 +40,7 @@ func _ready() -> void:
 
 func hide_all() -> void:
 	abort_dialogue()
+	acquisition_notification.clear()
 	hide()
 	game_hud.hide_hud()
 	for child in get_children():
@@ -65,9 +68,7 @@ func start_dialogue(conversation: DialogueConversation, context: Dictionary[Stri
 		return false
 	return dialogue_runner.start(conversation, context)
 
-func update_dialogue_context(
-	context: Dictionary[StringName, Variant]
-) -> void:
+func update_dialogue_context(context: Dictionary[StringName, Variant]) -> void:
 	dialogue_runner.update_context(context)
 
 func is_dialogue_open() -> bool:
@@ -83,6 +84,9 @@ func abort_dialogue() -> void:
 		reward_window.close()
 		_pending_quest_rewards.clear()
 		dialogue_closed.emit(DialogueRunner.FinishReason.INTERRUPTED)
+
+func queue_acquisition_rewards(rewards: Array[RewardEntry]) -> void:
+	acquisition_notification.enqueue(rewards)
 
 func queue_quest_rewards(rewards: Array[RewardEntry]) -> void:
 	_pending_quest_rewards = rewards.duplicate()

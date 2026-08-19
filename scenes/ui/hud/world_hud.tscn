@@ -4,6 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://ivm8a60yb0vx" path="res://scenes/ui/hud/hero_hud.tscn" id="2_heroh"]
 [ext_resource type="PackedScene" uid="uid://dub7dt66aucti" path="res://scenes/ui/hud/game_hud.tscn" id="2_iek5v"]
 [ext_resource type="PackedScene" uid="uid://rjw2hl0qx6n0" path="res://scenes/ui/hud/tracked_quest_hud.tscn" id="4_iek5v"]
+[ext_resource type="PackedScene" uid="uid://cwh3cq83115rm" path="res://scenes/ui/hud/acquisition_notification.tscn" id="5_6uurc"]
 [ext_resource type="PackedScene" uid="uid://cgfwb201d8ray" path="res://scenes/ui/windows/dialogue_window.tscn" id="5_42ty7"]
 [ext_resource type="PackedScene" uid="uid://rs7udjvphx52" path="res://scenes/ui/windows/reward_window.tscn" id="6_reward"]
 
@@ -22,13 +23,17 @@ offset_bottom = 118.0
 
 [node name="TrackedQuestHUD" parent="." unique_id=1938955935 instance=ExtResource("4_iek5v")]
 
+[node name="AcquisitionLayer" type="CanvasLayer" parent="." unique_id=4506451]
+layer = 15
+
+[node name="AcquisitionNotification" parent="AcquisitionLayer" unique_id=547449181 instance=ExtResource("5_6uurc")]
+
 [node name="DialogueLayer" type="CanvasLayer" parent="." unique_id=252751646]
 layer = 30
 
 [node name="DialogueWindow" parent="DialogueLayer" unique_id=293300296 instance=ExtResource("5_42ty7")]
 
-[node name="RewardLayer" type="CanvasLayer" parent="."]
+[node name="RewardLayer" type="CanvasLayer" parent="." unique_id=1519884220]
 layer = 40
 
-[node name="RewardWindow" parent="RewardLayer" instance=ExtResource("6_reward")]
-visible = false
+[node name="RewardWindow" parent="RewardLayer" unique_id=1402568647 instance=ExtResource("6_reward")]

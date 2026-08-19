@@ -12,6 +12,7 @@ var _displayed_prompt_text: String = ""
 
 func _ready() -> void:
 	InputManager.prompt_context_changed.connect(_on_prompt_context_changed)
+	visibility_changed.connect(_on_visibility_changed)
 
 func set_enabled(enabled: bool) -> void:
 	if _enabled == enabled:
@@ -29,11 +30,8 @@ func _clear_player_prompt() -> void:
 		_player.clear_prompt(_displayed_prompt_text)
 	_displayed_prompt_text = ""
 
-func _refresh_prompt() -> void:
-	if _player == null or not _player_inside:
-		return
-	_displayed_prompt_text = InputManager.format_action_prompt(&"interact", prompt_label)
-	_player.show_prompt(_displayed_prompt_text)
+func _exit_tree() -> void:
+	_clear_player_prompt()
 
 func _on_body_entered(body: Node2D) -> void:
 	if body is Player:
@@ -49,6 +47,22 @@ func _on_body_exited(body: Node2D) -> void:
 
 func _on_prompt_context_changed() -> void:
 	_refresh_prompt()
+
+func _on_visibility_changed() -> void:
+	if is_visible_in_tree():
+		_refresh_prompt()
+	else:
+		_clear_player_prompt()
+
+func _refresh_prompt() -> void:
+	if (not _enabled or not is_visible_in_tree()
+		or _player == null or not _player_inside):
+		return
+	var refreshed_text := InputManager.format_action_prompt(&"interact", prompt_label)
+	if not _displayed_prompt_text.is_empty() and _displayed_prompt_text != refreshed_text:
+		_player.clear_prompt(_displayed_prompt_text)
+	_displayed_prompt_text = refreshed_text
+	_player.show_prompt(_displayed_prompt_text)
 
 func _unhandled_input(event: InputEvent) -> void:
 	if (not _enabled or not _player_inside

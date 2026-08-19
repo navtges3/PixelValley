@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://ds7o2fwi8ms8y"]
+
+[ext_resource type="Script" uid="uid://dl4tlwdscvil3" path="res://scripts/world/world_pickup.gd" id="1_8l6ps"]
+
+[node name="WorldPickup" type="Node2D" unique_id=256540364]
+script = ExtResource("1_8l6ps")
+metadata/_custom_type_script = "uid://bbyud3es0xr7i"
+
+[node name="Visuals" type="Node2D" parent="." unique_id=1272925374]
+
+[node name="Sprite2D" type="Sprite2D" parent="Visuals" unique_id=727518526]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1903131324]
