@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://bdk8tf27jx088"]
+
+[ext_resource type="Script" uid="uid://bbyud3es0xr7i" path="res://scripts/world/world_loot_source.gd" id="1_m6rqb"]
+[ext_resource type="PackedScene" uid="uid://k35wlbc0ho3o" path="res://scenes/world/interact_area.tscn" id="2_vq8kk"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_0yyqq"]
+radius = 16.0
+
+[node name="WorldLootSource" type="Node2D" unique_id=713527787 groups=["world_loot_source"]]
+script = ExtResource("1_m6rqb")
+
+[node name="InteractArea" parent="." unique_id=1105164537 instance=ExtResource("2_vq8kk")]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractArea" unique_id=1963901772]
+shape = SubResource("CircleShape2D_0yyqq")
+
+[connection signal="interacted" from="InteractArea" to="." method="_on_interacted"]

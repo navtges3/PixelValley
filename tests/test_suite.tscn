@@ -18,6 +18,7 @@
 [ext_resource type="PackedScene" path="res://tests/ui/game_window_consolidation_test.tscn" id="16_ui_window"]
 [ext_resource type="PackedScene" path="res://tests/ui/battle_controller_tooltip_test.tscn" id="17_battle_tooltip"]
 [ext_resource type="PackedScene" path="res://tests/input/menu_focus_navigation_test.tscn" id="18_menu_focus"]
+[ext_resource type="PackedScene" path="res://tests/world/world_loot_source_test.tscn" id="19_world_loot"]
 
 [node name="TestSuite" type="Node" unique_id=783793299]
 script = ExtResource("4_suite")
@@ -43,6 +44,10 @@ script = ExtResource("4_suite")
 [node name="Rewards" type="Node" parent="." unique_id=677614548]
 
 [node name="RewardServiceTests" parent="Rewards" unique_id=33484618 instance=ExtResource("8_reward")]
+
+[node name="World" type="Node" parent="."]
+
+[node name="WorldLootSourceTests" parent="World" instance=ExtResource("19_world_loot")]
 
 [node name="Dialogue" type="Node" parent="." unique_id=1110281297]
 

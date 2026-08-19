@@ -57,6 +57,7 @@ trigger_zone="Trigger zone for interacting with the world"
 spawn_point=""
 camera_bounds="Add to TileMapLayer that represents the ground"
 npc=""
+world_loot_source=""
 
 [gui]
 
