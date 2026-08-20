@@ -6,6 +6,7 @@ class_name BaseLocation
 
 var _pending_entrance_id: String = ""
 var _movement_blocked_before_dialogue: bool = false
+var _movement_blocked_before_world_rewards: bool = false
 var _active_dialogue_npc_id: StringName = &""
 var _pending_service_npc_id: StringName = &""
 var _pending_service_id: StringName = &""
@@ -25,6 +26,8 @@ func _ready() -> void:
 		world_hud.dialogue_opened.connect(_on_dialogue_opened)
 		world_hud.dialogue_closed.connect(_on_dialogue_closed)
 		world_hud.dialogue_action_requested.connect(_on_dialogue_action_requested)
+		world_hud.world_rewards_opened.connect(_on_world_rewards_opened)
+		world_hud.world_rewards_closed.connect(_on_world_rewards_closed)
 	_npc_quest_controller.state_changed.connect(_refresh_npc_quest_statuses)
 	_npc_quest_controller.set_dialogue_state(GameState.dialogue_state)
 	GameState.quest_manager_changed.connect(_on_quest_manager_changed)
@@ -32,20 +35,6 @@ func _ready() -> void:
 	_bind_npcs()
 	_refresh_npc_quest_statuses()
 	_on_location_ready()
-
-func _exit_tree() -> void:
-	_npc_quest_controller.clear_quest_manager()
-	_npc_quest_controller.clear_dialogue_state()
-	if GameState.quest_manager_changed.is_connected(_on_quest_manager_changed):
-		GameState.quest_manager_changed.disconnect(_on_quest_manager_changed)
-
-# Override in subclasses for extra setup (e.g. spawn points, extra signals)
-func _on_location_ready() -> void:
-	pass
-
-# Override to provide the correct ScreenName for set_player_location
-func _get_screen_name() -> ScreenManager.ScreenName:
-	return ScreenManager.ScreenName.VALLEY
 
 func place_player_at_entrance(entrance_id: String) -> void:
 	GameState.set_player_location(_get_screen_name(), entrance_id)
@@ -60,6 +49,16 @@ func place_player_at_entrance(entrance_id: String) -> void:
 			player.place_at_entrance(candidate)
 			return
 	push_warning("Entrance not found: %s" % entrance_id)
+
+func _exit_tree() -> void:
+	_npc_quest_controller.clear_quest_manager()
+	_npc_quest_controller.clear_dialogue_state()
+	if GameState.quest_manager_changed.is_connected(_on_quest_manager_changed):
+		GameState.quest_manager_changed.disconnect(_on_quest_manager_changed)
+
+# Override to provide the correct ScreenName for set_player_location
+func _get_screen_name() -> ScreenManager.ScreenName:
+	return ScreenManager.ScreenName.VALLEY
 
 func _is_window_close_input(event: InputEvent) -> bool:
 	return event.is_action_pressed("open_hud") or event.is_action_pressed("ui_cancel")
@@ -101,6 +100,10 @@ func _open_hud(game_hud: GameHUD, tab: GameHUD.Tab = GameHUD.Tab.STATS) -> void:
 func _close_hud(game_hud: GameHUD) -> void:
 	game_hud.hide_hud()
 	player.movement_blocked = false
+
+# Override in subclasses for extra setup (e.g. spawn points, extra signals)
+func _on_location_ready() -> void:
+	pass
 
 func _on_hud_closed() -> void:
 	player.movement_blocked = false
@@ -191,9 +194,16 @@ func _on_dialogue_action_requested(action: DialogueAction, context: Dictionary[S
 	if not rewards.is_empty():
 		world_hud.queue_quest_rewards(rewards)
 
-func _queue_dialogue_service(
-	context: Dictionary[StringName, Variant]
-) -> void:
+func _on_world_rewards_opened() -> void:
+	_movement_blocked_before_world_rewards = player.movement_blocked
+	player.movement_blocked = true
+	player.clear_prompt()
+
+func _on_world_rewards_closed() -> void:
+	player.movement_blocked = _movement_blocked_before_world_rewards
+	InputManager.release_menu_focus()
+
+func _queue_dialogue_service(context: Dictionary[StringName, Variant]) -> void:
 	var npc_id := StringName(context.get(&"npc_id", &""))
 	var npc: NpcActor = _npcs_by_id.get(npc_id)
 	if npc == null or npc.data == null or npc.data.service_id.is_empty():

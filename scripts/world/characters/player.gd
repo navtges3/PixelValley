@@ -61,15 +61,15 @@ func set_sprite_frames(frames: SpriteFrames) -> void:
 	if frames:
 		anim.sprite_frames = frames
 
-func show_prompt(message: String, owner: Object = null) -> void:
+func show_prompt(message: String, source: Object = null) -> void:
 	if message.is_empty():
 		return
-	_prompt_owner_id = owner.get_instance_id() if owner != null else 0
+	_prompt_owner_id = source.get_instance_id() if source != null else 0
 	prompt_label.text = message
 	prompt_label.show()
 
-func clear_prompt(message: String = "", owner: Object = null) -> void:
-	if owner != null and _prompt_owner_id != owner.get_instance_id():
+func clear_prompt(message: String = "", source: Object = null) -> void:
+	if source != null and _prompt_owner_id != source.get_instance_id():
 		return
 	if not message.is_empty() and prompt_label.text != message:
 		return

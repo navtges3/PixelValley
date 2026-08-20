@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="PackedScene" uid="uid://bmqx8axyy5olp" path="res://scenes/world/world_loot_container.tscn" id="1_container"]
+
+[node name="Crate" instance=ExtResource("1_container")]
+reward_title = "Crate Contents"
+
+[node name="InteractArea" parent="." index="0"]
+prompt_label = "Search Crate"
+
+[editable path="InteractArea"]

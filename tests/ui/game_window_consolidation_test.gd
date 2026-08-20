@@ -58,6 +58,9 @@ const QUESTS_PANEL_SCENE := preload(
 var _reward_collection_count: int = 0
 var _return_to_village_count: int = 0
 var _confirmation_cancel_count: int = 0
+var _world_reward_open_count: int = 0
+var _world_reward_close_count: int = 0
+var _dialogue_close_count: int = 0
 
 func run_tests() -> int:
 	_begin_test_run()
@@ -82,6 +85,7 @@ func run_tests() -> int:
 	_test_quest_tab_shortcuts_wrap()
 	_test_required_modal_cancel_flows()
 	_test_empty_reward_presentation_is_skipped()
+	_test_world_reward_flow_routing_and_focus()
 	_test_quest_reward_focus_recovery_is_connected()
 	InputManager._set_menu_navigation_mode(original_navigation_mode)
 	return _finish_test_run("Game window consolidation tests")
@@ -677,6 +681,54 @@ func _test_empty_reward_presentation_is_skipped() -> void:
 	)
 	reward_window.free()
 
+func _test_world_reward_flow_routing_and_focus() -> void:
+	var world_hud := ScreenManager.get_world_hud() as WorldHUD
+	var hud_was_visible: bool = world_hud.visible
+	world_hud.show()
+	_world_reward_open_count = 0
+	_world_reward_close_count = 0
+	_dialogue_close_count = 0
+	world_hud.world_rewards_opened.connect(_on_world_rewards_opened)
+	world_hud.world_rewards_closed.connect(_on_world_rewards_closed)
+	world_hud.dialogue_closed.connect(_on_dialogue_closed)
+	var rewards: Array[RewardEntry] = [RewardEntry.gold(25)]
+
+	var did_open := world_hud.show_world_rewards("Chest Contents", rewards)
+	world_hud.reward_window._apply_default_focus()
+	_expect_true(did_open, "world rewards open through the shared WorldHUD flow")
+	_expect_equal(_world_reward_open_count, 1, "world reward opening emits once")
+	_expect_equal(
+		get_viewport().gui_get_focus_owner(),
+		world_hud.reward_window.collect_button,
+		"world-container rewards focus Collect for keyboard and controller input"
+	)
+
+	world_hud.reward_window._handle_cancel()
+	_expect_equal(_world_reward_close_count, 1, "cancel completes the world reward flow")
+	_expect_equal(
+		_dialogue_close_count,
+		0,
+		"world-container rewards do not emit dialogue completion"
+	)
+	_expect_equal(
+		world_hud._reward_flow,
+		WorldHUD.RewardFlow.NONE,
+		"closing world rewards clears their presentation context"
+	)
+
+	var empty_rewards: Array[RewardEntry] = []
+	_expect_true(
+		not world_hud.show_world_rewards("Empty Container", empty_rewards),
+		"empty world rewards skip modal presentation"
+	)
+	_expect_equal(_world_reward_open_count, 1, "empty rewards emit no open signal")
+
+	world_hud.world_rewards_opened.disconnect(_on_world_rewards_opened)
+	world_hud.world_rewards_closed.disconnect(_on_world_rewards_closed)
+	world_hud.dialogue_closed.disconnect(_on_dialogue_closed)
+	if not hud_was_visible:
+		world_hud.hide()
+
 func _test_quest_reward_focus_recovery_is_connected() -> void:
 	var quest_window := _spawn_window(QUEST_WINDOW_SCENE) as QuestWindow
 	_expect_true(
@@ -703,3 +755,12 @@ func _on_return_to_village() -> void:
 
 func _on_confirmation_cancelled() -> void:
 	_confirmation_cancel_count += 1
+
+func _on_world_rewards_opened() -> void:
+	_world_reward_open_count += 1
+
+func _on_world_rewards_closed() -> void:
+	_world_reward_close_count += 1
+
+func _on_dialogue_closed(_reason: DialogueRunner.FinishReason) -> void:
+	_dialogue_close_count += 1

@@ -12,6 +12,12 @@ const WORLD_LOOT_SOURCE_SCENE := preload(
 const WORLD_PICKUP_SCENE := preload(
 	"res://scenes/world/world_pickup.tscn"
 )
+const WORLD_LOOT_CONTAINER_SCENE := preload(
+	"res://scenes/world/world_loot_container.tscn"
+)
+const CHEST_SCENE := preload("res://scenes/world/chest.tscn")
+const CRATE_SCENE := preload("res://scenes/world/crate.tscn")
+const PLAYER_SCENE := preload("res://scenes/world/characters/player.tscn")
 
 var _last_claim_result: WorldLootSource.ClaimResult
 var _last_claim_rewards: Array[RewardEntry] = []
@@ -21,6 +27,10 @@ func run_tests() -> int:
 	_begin_test_run()
 	_test_reusable_scene_has_interaction_component()
 	_test_world_pickup_scene_uses_shared_interaction()
+	_test_container_variants_use_context_prompts()
+	_test_container_visual_state_and_reward_presentation()
+	_test_claimed_container_restores_opened()
+	_test_world_reward_movement_state_restores()
 	_test_interaction_signal_grants_once()
 	_test_claim_grants_loot_once()
 	_test_claimed_pickup_hides_after_feedback()
@@ -56,6 +66,136 @@ func _test_world_pickup_scene_uses_shared_interaction() -> void:
 		"the world pickup inherits the shared interaction collision"
 	)
 	pickup.free()
+
+func _test_container_variants_use_context_prompts() -> void:
+	var chest := CHEST_SCENE.instantiate() as WorldLootContainer
+	var crate := CRATE_SCENE.instantiate() as WorldLootContainer
+
+	_expect_not_null(chest, "the reusable chest scene instantiates")
+	_expect_equal(
+		(chest.get_node("InteractArea") as InteractArea).prompt_label,
+		"Open Chest",
+		"closed chests use the context-correct interaction prompt"
+	)
+	_expect_equal(
+		(crate.get_node("InteractArea") as InteractArea).prompt_label,
+		"Search Crate",
+		"closed crates use the context-correct interaction prompt"
+	)
+	chest.free()
+	crate.free()
+
+func _test_container_visual_state_and_reward_presentation() -> void:
+	WorldManager.reset()
+	var container := WORLD_LOOT_CONTAINER_SCENE.instantiate() as WorldLootContainer
+	var closed_texture := GradientTexture1D.new()
+	var opened_texture := GradientTexture1D.new()
+	container.location_id = "forest"
+	container.loot_source_id = "forest/presentation_chest"
+	container.loot_table = _new_deterministic_table()
+	container.closed_texture = closed_texture
+	container.opened_texture = opened_texture
+	add_child(container)
+
+	_expect_equal(
+		container.sprite.texture,
+		closed_texture,
+		"unclaimed containers display their authored closed visual"
+	)
+	var world_hud := ScreenManager.get_world_hud() as WorldHUD
+	var hud_was_visible: bool = world_hud.visible
+	world_hud.show()
+	var presented_rewards: Array[RewardEntry] = [
+		RewardEntry.gold(10),
+		RewardEntry.potion("lesser_healing_potion", 2),
+	]
+	container.claim_finished.emit(
+		WorldLootSource.ClaimResult.CLAIMED,
+		presented_rewards
+	)
+	_expect_equal(
+		container.sprite.texture,
+		opened_texture,
+		"successful claims immediately display the opened visual"
+	)
+	_expect_true(
+		world_hud.reward_window.is_open(),
+		"non-empty container rewards open the focused reward presentation"
+	)
+	_expect_equal(
+		world_hud.reward_window.reward_list.get_child_count(),
+		2,
+		"the container reward presentation lists every granted reward"
+	)
+	world_hud.reward_window._handle_cancel()
+
+	var empty_rewards: Array[RewardEntry] = []
+	container.claim_finished.emit(WorldLootSource.ClaimResult.CLAIMED, empty_rewards)
+	_expect_true(
+		not world_hud.reward_window.is_open(),
+		"empty container results do not open an empty reward presentation"
+	)
+	if not hud_was_visible:
+		world_hud.hide()
+	container.free()
+
+func _test_claimed_container_restores_opened() -> void:
+	WorldManager.reset()
+	WorldManager.mark_loot_claimed("forest", "forest/restored_chest")
+	var container := WORLD_LOOT_CONTAINER_SCENE.instantiate() as WorldLootContainer
+	var opened_texture := GradientTexture1D.new()
+	container.location_id = "forest"
+	container.loot_source_id = "forest/restored_chest"
+	container.loot_table = _new_deterministic_table()
+	container.opened_texture = opened_texture
+	add_child(container)
+
+	_expect_equal(
+		container.sprite.texture,
+		opened_texture,
+		"claimed containers restore their opened visual on scene entry"
+	)
+	_expect_true(
+		not container.interact_area.monitoring,
+		"restored opened containers cannot be claimed again"
+	)
+	container.free()
+
+func _test_world_reward_movement_state_restores() -> void:
+	var location := BaseLocation.new()
+	var test_player := PLAYER_SCENE.instantiate() as Player
+	var test_camera := test_player.get_node("Camera2D") as Camera2D
+	test_camera.free()
+	add_child(test_player)
+	location.player = test_player
+
+	test_player.movement_blocked = false
+	location._on_world_rewards_opened()
+	_expect_true(test_player.movement_blocked, "world rewards block player movement")
+	location._on_world_rewards_closed()
+	_expect_true(
+		not test_player.movement_blocked,
+		"closing world rewards restores an initially unblocked player"
+	)
+
+	test_player.movement_blocked = true
+	location._on_world_rewards_opened()
+	var focused_button := Button.new()
+	add_child(focused_button)
+	focused_button.grab_focus()
+	location._on_world_rewards_closed()
+	_expect_true(
+		test_player.movement_blocked,
+		"closing world rewards preserves a pre-existing movement block"
+	)
+	_expect_equal(
+		get_viewport().gui_get_focus_owner(),
+		null,
+		"closing world rewards does not strand focus on a hidden control"
+	)
+	focused_button.free()
+	test_player.free()
+	location.free()
 
 func _test_interaction_signal_grants_once() -> void:
 	WorldManager.reset()

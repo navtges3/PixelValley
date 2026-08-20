@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://bmqx8axyy5olp"]
+
+[ext_resource type="Script" uid="uid://b3lwniu7e6i5s" path="res://scripts/world/world_loot_container.gd" id="1_4snq3"]
+[ext_resource type="PackedScene" uid="uid://bdk8tf27jx088" path="res://scenes/world/world_loot_source.tscn" id="2_loot_source"]
+
+[node name="WorldLootContainer" unique_id=1320423698 instance=ExtResource("2_loot_source")]
+script = ExtResource("1_4snq3")
+
+[node name="Visuals" type="Node2D" parent="." unique_id=968493056]
+
+[node name="Sprite2D" type="Sprite2D" parent="Visuals" unique_id=1403689487]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1227750062]

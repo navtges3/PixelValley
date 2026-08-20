@@ -21,6 +21,36 @@
 [ext_resource type="Script" uid="uid://buxlf5aagrtgf" path="res://scripts/data/drop_entry.gd" id="17_drop_entry"]
 [ext_resource type="Script" uid="uid://birbqcxvye2x5" path="res://scripts/data/drop_table.gd" id="18_drop_table"]
 [ext_resource type="Texture2D" uid="uid://cfimwykot25cb" path="res://assets/items/weapons/orb.png" id="19_pickup_icon"]
+[ext_resource type="PackedScene" uid="uid://cmfk6rg6ovrjc" path="res://scenes/world/chest.tscn" id="20_test_chest"]
+
+[sub_resource type="Resource" id="Resource_test_pickup_entry"]
+script = ExtResource("17_drop_entry")
+item_id = "lesser_healing_potion"
+metadata/_custom_type_script = "uid://buxlf5aagrtgf"
+
+[sub_resource type="Resource" id="Resource_test_pickup_table"]
+script = ExtResource("18_drop_table")
+entries = Array[ExtResource("17_drop_entry")]([SubResource("Resource_test_pickup_entry")])
+metadata/_custom_type_script = "uid://birbqcxvye2x5"
+
+[sub_resource type="Resource" id="Resource_test_chest_healing_entry"]
+script = ExtResource("17_drop_entry")
+item_id = "lesser_healing_potion"
+min_count = 2
+max_count = 2
+metadata/_custom_type_script = "uid://buxlf5aagrtgf"
+
+[sub_resource type="Resource" id="Resource_test_chest_energy_entry"]
+script = ExtResource("17_drop_entry")
+item_id = "energy_potion"
+metadata/_custom_type_script = "uid://buxlf5aagrtgf"
+
+[sub_resource type="Resource" id="Resource_test_chest_table"]
+script = ExtResource("18_drop_table")
+entries = Array[ExtResource("17_drop_entry")]([SubResource("Resource_test_chest_healing_entry"), SubResource("Resource_test_chest_energy_entry")])
+min_gold = 25
+max_gold = 25
+metadata/_custom_type_script = "uid://birbqcxvye2x5"
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_fp2bn"]
 size = Vector2(38, 20)
@@ -35,16 +65,6 @@ radius = 16.0
 radius = 24.0
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_vlb0o"]
-
-[sub_resource type="Resource" id="Resource_test_pickup_entry"]
-script = ExtResource("17_drop_entry")
-item_id = "lesser_healing_potion"
-metadata/_custom_type_script = "uid://buxlf5aagrtgf"
-
-[sub_resource type="Resource" id="Resource_test_pickup_table"]
-script = ExtResource("18_drop_table")
-entries = Array[ExtResource("17_drop_entry")]([SubResource("Resource_test_pickup_entry")])
-metadata/_custom_type_script = "uid://birbqcxvye2x5"
 
 [node name="Village" type="Node2D" unique_id=1737910824]
 y_sort_enabled = true
@@ -71,18 +91,30 @@ y_sort_enabled = true
 [node name="Player" parent="YSortedWorld" unique_id=426329780 instance=ExtResource("2_e7reh")]
 position = Vector2(449, 504)
 
-[node name="TestPotionPickup" parent="YSortedWorld" instance=ExtResource("16_test_pickup")]
+[node name="TestPotionPickup" parent="YSortedWorld" unique_id=42098572 instance=ExtResource("16_test_pickup")]
 position = Vector2(400, 504)
+pickup_texture = ExtResource("19_pickup_icon")
+pickup_sfx_id = &""
+idle_animation = &"idle"
+collection_animation = &"collect"
 location_id = "village"
 loot_source_id = "village/test_potion_pickup"
 loot_table = SubResource("Resource_test_pickup_table")
-pickup_texture = ExtResource("19_pickup_icon")
 
-[node name="InteractArea" parent="YSortedWorld/TestPotionPickup" index="0"]
+[node name="InteractArea" parent="YSortedWorld/TestPotionPickup" index="0" unique_id=1105164537]
 prompt_label = "Collect Test Potion"
 
-[node name="Sprite2D" parent="YSortedWorld/TestPotionPickup/Visuals" index="0"]
+[node name="Sprite2D" parent="YSortedWorld/TestPotionPickup/Visuals" parent_id_path=PackedInt32Array(42098572, 1272925374) index="0" unique_id=727518526]
 offset = Vector2(0, -8)
+
+[node name="TestChest" parent="YSortedWorld" unique_id=2137837709 instance=ExtResource("20_test_chest")]
+position = Vector2(512, 544)
+location_id = "village"
+loot_source_id = "village/test_reward_chest"
+loot_table = SubResource("Resource_test_chest_table")
+
+[node name="Sprite2D" parent="YSortedWorld/TestChest/Visuals" parent_id_path=PackedInt32Array(2137837709, 968493056) index="0" unique_id=1403689487]
+offset = Vector2(0, -16)
 
 [node name="Walls" type="TileMapLayer" parent="YSortedWorld" unique_id=1657094983]
 y_sort_enabled = true
@@ -192,3 +224,5 @@ position = Vector2(448, 707)
 shape = SubResource("WorldBoundaryShape2D_vlb0o")
 
 [editable path="YSortedWorld/TestPotionPickup"]
+[editable path="YSortedWorld/TestChest"]
+[editable path="YSortedWorld/TestChest/InteractArea"]

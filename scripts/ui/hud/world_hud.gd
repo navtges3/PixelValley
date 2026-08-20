@@ -1,6 +1,8 @@
 extends CanvasLayer
 class_name WorldHUD
 
+enum RewardFlow { NONE, DIALOGUE, WORLD_CONTAINER, }
+
 @export_group("Dialogue Audio")
 @export var dialogue_open_sfx_id: StringName = &""
 @export var dialogue_advance_sfx_id: StringName = &""
@@ -10,6 +12,8 @@ class_name WorldHUD
 signal dialogue_opened
 signal dialogue_closed(reason: DialogueRunner.FinishReason)
 signal dialogue_action_requested(action: DialogueAction, context: Dictionary[StringName, Variant])
+signal world_rewards_opened
+signal world_rewards_closed
 
 @onready var game_hud: GameHUD = $GameHud
 @onready var hero_hud: HeroHUD = $HeroHUD
@@ -22,6 +26,7 @@ signal dialogue_action_requested(action: DialogueAction, context: Dictionary[Str
 var dialogue_runner: DialogueRunner
 var _pending_quest_rewards: Array[RewardEntry] = []
 var _pending_finish_reason: DialogueRunner.FinishReason = DialogueRunner.FinishReason.COMPLETED
+var _reward_flow: RewardFlow = RewardFlow.NONE
 
 func _ready() -> void:
 	dialogue_runner = DialogueRunner.new()
@@ -54,6 +59,16 @@ func show_all() -> void:
 			child.visible = true
 	tracked_quest_hud.refresh()
 
+func show_world_rewards(win_title: String, rewards: Array[RewardEntry]) -> bool:
+	if rewards.is_empty():
+		return false
+	if reward_window.is_open() or dialogue_runner.is_running() or game_hud.is_open():
+		return false
+	_reward_flow = RewardFlow.WORLD_CONTAINER
+	reward_window.show_rewards(win_title, rewards)
+	world_rewards_opened.emit()
+	return true
+
 func open_game_hud(tab: GameHUD.Tab = GameHUD.Tab.STATS) -> void:
 	game_hud.show_hud(tab)
 
@@ -81,9 +96,15 @@ func abort_dialogue() -> void:
 		dialogue_runner.abort()
 		return
 	if reward_window.visible:
+		var interrupted_flow := _reward_flow
+		_reward_flow = RewardFlow.NONE
 		reward_window.close()
-		_pending_quest_rewards.clear()
-		dialogue_closed.emit(DialogueRunner.FinishReason.INTERRUPTED)
+		match interrupted_flow:
+			RewardFlow.DIALOGUE:
+				_pending_quest_rewards.clear()
+				dialogue_closed.emit(DialogueRunner.FinishReason.INTERRUPTED)
+			RewardFlow.WORLD_CONTAINER:
+				world_rewards_closed.emit()
 
 func queue_acquisition_rewards(rewards: Array[RewardEntry]) -> void:
 	acquisition_notification.enqueue(rewards)
@@ -108,16 +129,20 @@ func _on_conversation_finished(reason: DialogueRunner.FinishReason) -> void:
 	_play_dialogue_sfx(dialogue_close_sfx_id)
 	if not _pending_quest_rewards.is_empty():
 		_pending_finish_reason = reason
-		reward_window.show_rewards(
-			"Quest Complete!",
-			_pending_quest_rewards
-		)
+		_reward_flow = RewardFlow.DIALOGUE
+		reward_window.show_rewards("Quest Complete!", _pending_quest_rewards)
 		return
 	dialogue_closed.emit(reason)
 
 func _on_rewards_collected() -> void:
-	_pending_quest_rewards.clear()
-	dialogue_closed.emit(_pending_finish_reason)
+	var completed_flow := _reward_flow
+	_reward_flow = RewardFlow.NONE
+	match completed_flow:
+		RewardFlow.DIALOGUE:
+			_pending_quest_rewards.clear()
+			dialogue_closed.emit(_pending_finish_reason)
+		RewardFlow.WORLD_CONTAINER:
+			world_rewards_closed.emit()
 
 func _play_dialogue_sfx(sfx_id: StringName) -> void:
 	if sfx_id.is_empty():

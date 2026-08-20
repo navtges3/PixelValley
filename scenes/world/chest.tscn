@@ -1,0 +1,24 @@
+[gd_scene format=3 uid="uid://cmfk6rg6ovrjc"]
+
+[ext_resource type="PackedScene" uid="uid://bmqx8axyy5olp" path="res://scenes/world/world_loot_container.tscn" id="1_container"]
+[ext_resource type="Texture2D" uid="uid://b0c6hgcgovyuj" path="res://assets/Chests_placeholder.png" id="2_cpfxo"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6mnhr"]
+atlas = ExtResource("2_cpfxo")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_itayg"]
+atlas = ExtResource("2_cpfxo")
+region = Rect2(0, 96, 32, 32)
+
+[node name="Chest" unique_id=1053538905 instance=ExtResource("1_container")]
+closed_texture = SubResource("AtlasTexture_6mnhr")
+opened_texture = SubResource("AtlasTexture_itayg")
+reward_title = "Chest Contents"
+open_animation = &"open"
+open_sfx_id = &""
+
+[node name="InteractArea" parent="." index="0" unique_id=1105164537]
+prompt_label = "Open Chest"
+
+[editable path="InteractArea"]
