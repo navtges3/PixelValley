@@ -92,5 +92,5 @@ behavior = 2
 position = Vector2(1163, 122)
 script = ExtResource("5_euhvq")
 monster_id = 1
-quest_id = 3
+quest_id = 230
 behavior = 1

@@ -6,6 +6,7 @@ const QUEST_SAVE_MIGRATOR := preload("res://scripts/save/quest_save_migrator.gd"
 func run_tests() -> int:
 	_begin_test_run()
 	_test_legacy_save_migrates_with_safe_defaults()
+	_test_stage_ids_migrate_with_progression_links()
 	_test_malformed_legacy_available_list_recovers()
 	_test_current_save_preserves_all_quest_state()
 	_test_tracking_state_round_trip()
@@ -51,12 +52,12 @@ func _test_legacy_save_migrates_with_safe_defaults() -> void:
 			}],
 		}
 	}
-	var migrated: Dictionary = QUEST_SAVE_MIGRATOR.migrate(legacy_document, [1])
+	var migrated: Dictionary = QUEST_SAVE_MIGRATOR.migrate(legacy_document, [210])
 	var data: Dictionary = migrated["data"]
 	var quest: Dictionary = data["active_quests"][0]
 	var objective: Dictionary = quest["objectives"][0]
 	var loaded_manager: QuestManager = SaveManager._load_quests(data)
-	var loaded_quest: Quest = loaded_manager.get_quest_by_id(1)
+	var loaded_quest: Quest = loaded_manager.get_quest_by_id(210)
 
 	_expect_equal(migrated["schema_version"], QUEST_SAVE_MIGRATOR.CURRENT_SCHEMA_VERSION, "legacy saves migrate to the current schema")
 	_expect_equal(data["locked_quests"], [], "legacy saves default missing locked quests to an empty list")
@@ -75,6 +76,28 @@ func _test_legacy_save_migrates_with_safe_defaults() -> void:
 	_expect_not_null(loaded_objective, "legacy kill data constructs a kill objective")
 	if loaded_objective != null:
 		_expect_equal(loaded_objective.current_amount, 3, "runtime loading keeps migrated legacy progress")
+
+
+func _test_stage_ids_migrate_with_progression_links() -> void:
+	var previous_schema_document := {
+		"schema_version": 2,
+		"data": {
+			"locked_quests": [{"id": 2}],
+			"active_quests": [{"id": 1, "next_quests": [2]}],
+			"tracked_quest_id": 1,
+		},
+	}
+	var migrated: Dictionary = QUEST_SAVE_MIGRATOR.migrate(
+		previous_schema_document,
+		[210, 220],
+		false
+	)
+	var data: Dictionary = migrated["data"]
+
+	_expect_equal(data["active_quests"][0]["id"], 210, "forest quest ID migrates to its staged ID")
+	_expect_equal(data["active_quests"][0]["next_quests"], [220], "follow-up IDs migrate with their quest")
+	_expect_equal(data["locked_quests"][0]["id"], 220, "locked quest IDs migrate to staged IDs")
+	_expect_equal(data["tracked_quest_id"], 210, "tracked quest ID migrates to the staged ID")
 
 
 func _test_current_save_preserves_all_quest_state() -> void:

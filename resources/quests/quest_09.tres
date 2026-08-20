@@ -21,9 +21,9 @@ metadata/_custom_type_script = "uid://bra22kkvfpket"
 [resource]
 script = ExtResource("3_xh3w7")
 title = "The Warlord Falls"
-id = 9
+id = 430
 description = "Deep in the cave lurks an Ogre Warlord who commands the entire horde. Destroy him and the path to their king will open."
 objectives = Array[ExtResource("1_b5tjm")]([SubResource("Resource_3ga82")])
 reward = SubResource("Resource_b5tjm")
-next_quests = Array[int]([10])
+next_quests = Array[int]([440])
 metadata/_custom_type_script = "uid://xhl8p6y5w5e6"

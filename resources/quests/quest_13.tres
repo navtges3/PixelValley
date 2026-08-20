@@ -17,7 +17,7 @@ gold = 100
 [resource]
 script = ExtResource("1_quest")
 title = "The Missing Room Key"
-id = 13
+id = 1030
 description = "Deliver the brass room key from the blacksmith to the village innkeeper."
 category = 1
 source_type = 2

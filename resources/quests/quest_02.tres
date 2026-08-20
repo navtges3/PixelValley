@@ -20,9 +20,9 @@ metadata/_custom_type_script = "uid://bra22kkvfpket"
 [resource]
 script = ExtResource("3_nt4ml")
 title = "Deep in the Woods"
-id = 2
+id = 220
 description = "The goblin infestation runs deeper than we thought. Clear them out entirely."
 objectives = Array[ExtResource("1_jx5gw")]([SubResource("Resource_iw2c0")])
 reward = SubResource("Resource_jx5gw")
-next_quests = Array[int]([3])
+next_quests = Array[int]([230])
 metadata/_custom_type_script = "uid://xhl8p6y5w5e6"

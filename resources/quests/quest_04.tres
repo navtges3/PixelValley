@@ -21,9 +21,9 @@ metadata/_custom_type_script = "uid://bra22kkvfpket"
 [resource]
 script = ExtResource("3_tas6l")
 title = "Breach the Camp"
-id = 4
+id = 310
 description = "The Orc War Camp threatens the region. Push through their outer defenses."
 objectives = Array[ExtResource("1_4kd33")]([SubResource("Resource_n2g6e")])
 reward = SubResource("Resource_4kd33")
-next_quests = Array[int]([5])
+next_quests = Array[int]([320])
 metadata/_custom_type_script = "uid://xhl8p6y5w5e6"

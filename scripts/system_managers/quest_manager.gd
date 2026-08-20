@@ -26,7 +26,13 @@ const QUEST_PATHS := [
 	"res://resources/quests/quest_13.tres",
 ]
 
-const FIRST_QUEST_ID := 1
+const TUTORIAL_MAIN_START_ID: int = 110
+const GOBLIN_FOREST_START_ID: int = 210
+const ORC_WAR_CAMP_START_ID: int = 310
+const OGRE_CAVE_START_ID: int = 410
+const FINAL_QUEST_ID: int = 440
+const TUTORIAL_SIDE_QUEST_START_ID: int = 1010
+const FIRST_QUEST_ID: int = GOBLIN_FOREST_START_ID
 
 @export var locked_quests: Array[Quest] = []
 @export var offered_quests: Array[Quest] = []

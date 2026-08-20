@@ -20,9 +20,9 @@ metadata/_custom_type_script = "uid://bra22kkvfpket"
 [resource]
 script = ExtResource("3_gm6gv")
 title = "Clear the Path"
-id = 1
+id = 210
 description = "Goblins have been terrorizing travelers on the forest road. Drive them back."
 objectives = Array[ExtResource("1_yyq1p")]([SubResource("Resource_hjlys")])
 reward = SubResource("Resource_yyq1p")
-next_quests = Array[int]([2])
+next_quests = Array[int]([220])
 metadata/_custom_type_script = "uid://xhl8p6y5w5e6"

@@ -21,9 +21,9 @@ metadata/_custom_type_script = "uid://bra22kkvfpket"
 [resource]
 script = ExtResource("3_gl651")
 title = "Crush the Warband"
-id = 5
+id = 320
 description = "The Orc warband must be broken. Leave no soldier standing."
 objectives = Array[ExtResource("1_ijq32")]([SubResource("Resource_4jxgj")])
 reward = SubResource("Resource_ijq32")
-next_quests = Array[int]([6])
+next_quests = Array[int]([330])
 metadata/_custom_type_script = "uid://xhl8p6y5w5e6"

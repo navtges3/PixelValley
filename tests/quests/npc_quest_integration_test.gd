@@ -272,34 +272,34 @@ func _test_main_progression_context() -> void:
 	)
 
 	var orc_quest := Quest.new()
-	orc_quest.id = 4
+	orc_quest.id = QuestManager.ORC_WAR_CAMP_START_ID
 	orc_quest.title = "Orc progression test"
 	manager.active_quests.append(orc_quest)
 	_expect_equal(
 		controller.build_context(&"rowan", &"village")[&"main_progression"],
 		&"orc_threat",
-		"reaching quest 4 reports the orc threat"
+		"reaching the first war-camp quest reports the orc threat"
 	)
 
 	var ogre_quest := Quest.new()
-	ogre_quest.id = 7
+	ogre_quest.id = QuestManager.OGRE_CAVE_START_ID
 	ogre_quest.title = "Ogre progression test"
 	manager.active_quests.append(ogre_quest)
 	_expect_equal(
 		controller.build_context(&"rowan", &"village")[&"main_progression"],
 		&"ogre_threat",
-		"reaching quest 7 reports the ogre threat"
+		"reaching the first cave quest reports the ogre threat"
 	)
 
 	var victory_quest := Quest.new()
-	victory_quest.id = 10
+	victory_quest.id = QuestManager.FINAL_QUEST_ID
 	victory_quest.title = "Victory progression test"
 	victory_quest.completed = true
 	manager.completed_quests.append(victory_quest)
 	_expect_equal(
 		controller.build_context(&"rowan", &"village")[&"main_progression"],
 		&"victory",
-		"completing quest 10 reports victory"
+		"completing the final quest reports victory"
 	)
 	controller.clear_quest_manager()
 
@@ -418,24 +418,24 @@ func _test_authored_dialogue_rolls_into_follow_up_quest() -> void:
 			conversation,
 			controller.build_context(&"alchemist", &"potion_shop_interior")
 		),
-		"alchemist quest conversation starts while quest 11 is active"
+		"alchemist quest conversation starts while quest 1010 is active"
 	)
 
 	runner.advance()
 	_expect_true(
-		manager.is_quest_ready(11),
+		manager.is_quest_ready(1010),
 		"finishing the alchemist's first line completes the talk objective"
 	)
 	runner.advance()
 	runner.advance()
 	runner.choose_response(0)
 	_expect_true(
-		manager.is_quest_completed(11),
-		"quest 11 turns in without closing the conversation"
+		manager.is_quest_completed(1010),
+		"quest 1010 turns in without closing the conversation"
 	)
 	_expect_true(
 		runner.is_running(),
-		"dialogue remains open after the quest 11 reward"
+		"dialogue remains open after the quest 1010 reward"
 	)
 
 	runner.advance()
@@ -443,7 +443,7 @@ func _test_authored_dialogue_rolls_into_follow_up_quest() -> void:
 	runner.advance()
 	runner.choose_response(0)
 	_expect_true(
-		manager.is_quest_active(12),
+		manager.is_quest_active(1020),
 		"the follow-up quest is accepted in the same conversation"
 	)
 	runner.advance()
@@ -478,34 +478,34 @@ func _test_authored_side_quest_chain() -> void:
 	)
 	var starting_weapon_count := GameState.hero.inventory.weapon_stash.size()
 
-	var quest_11 := manager.get_quest_by_id(11)
-	var quest_12 := manager.get_quest_by_id(12)
-	var quest_13 := manager.get_quest_by_id(13)
-	_expect_true(manager.is_quest_offered(11), "first authored side quest starts offered")
-	_expect_true(manager.get_quest_state(12) == QuestManager.LifecycleState.LOCKED, "second side quest starts locked")
-	_expect_true(manager.get_quest_state(13) == QuestManager.LifecycleState.LOCKED, "third side quest starts locked")
+	var quest_1010 := manager.get_quest_by_id(1010)
+	var quest_1020 := manager.get_quest_by_id(1020)
+	var quest_1030 := manager.get_quest_by_id(1030)
+	_expect_true(manager.is_quest_offered(1010), "first authored side quest starts offered")
+	_expect_true(manager.get_quest_state(1020) == QuestManager.LifecycleState.LOCKED, "second side quest starts locked")
+	_expect_true(manager.get_quest_state(1030) == QuestManager.LifecycleState.LOCKED, "third side quest starts locked")
 
 	var villager_context := controller.build_context(&"mara", &"village")
 	controller.handle_action(_make_action(&"accept_quest"), villager_context)
 	GameState.gameplay_event.emit(NpcInteractedEvent.new(&"alchemist"))
-	_expect_true(manager.is_quest_ready(11), "talking to the alchemist readies quest 11")
+	_expect_true(manager.is_quest_ready(1010), "talking to the alchemist readies quest 1010")
 	var alchemist_turn_in := controller.build_context(&"alchemist", &"potion_shop_interior")
 	controller.handle_action(_make_action(&"turn_in_quest"), alchemist_turn_in)
-	_expect_true(manager.is_quest_completed(11), "alchemist completes quest 11")
+	_expect_true(manager.is_quest_completed(1010), "alchemist completes quest 1010")
 	_expect_equal(
 		GameState.hero.inventory.get_potion_count("lesser_healing_potion"),
 		starting_potion_count + 1,
 		"alchemist grants the potion reward"
 	)
-	_expect_true(manager.is_quest_offered(12), "quest 11 unlocks the alchemist's quest")
+	_expect_true(manager.is_quest_offered(1020), "quest 1010 unlocks the alchemist's quest")
 
 	var alchemist_offer := controller.build_context(&"alchemist", &"potion_shop_interior")
 	controller.handle_action(_make_action(&"accept_quest"), alchemist_offer)
 	GameState.gameplay_event.emit(NpcInteractedEvent.new(&"blacksmith"))
-	_expect_true(manager.is_quest_ready(12), "talking to the blacksmith readies quest 12")
+	_expect_true(manager.is_quest_ready(1020), "talking to the blacksmith readies quest 1020")
 	var blacksmith_turn_in := controller.build_context(&"blacksmith", &"weapon_shop_interior")
 	controller.handle_action(_make_action(&"turn_in_quest"), blacksmith_turn_in)
-	_expect_true(manager.is_quest_completed(12), "blacksmith completes quest 12")
+	_expect_true(manager.is_quest_completed(1020), "blacksmith completes quest 1020")
 	_expect_equal(
 		GameState.hero.inventory.weapon_stash.size(),
 		starting_weapon_count + 1,
@@ -516,7 +516,7 @@ func _test_authored_side_quest_chain() -> void:
 		1,
 		"blacksmith grants the brass inn key"
 	)
-	_expect_true(manager.is_quest_offered(13), "quest 12 unlocks the delivery quest")
+	_expect_true(manager.is_quest_offered(1030), "quest 1020 unlocks the delivery quest")
 
 	var blacksmith_offer := controller.build_context(&"blacksmith", &"weapon_shop_interior")
 	controller.handle_action(_make_action(&"accept_quest"), blacksmith_offer)
@@ -531,36 +531,36 @@ func _test_authored_side_quest_chain() -> void:
 		0,
 		"delivering the brass key removes it from inventory"
 	)
-	_expect_true(manager.is_quest_ready(13), "key delivery readies quest 13")
+	_expect_true(manager.is_quest_ready(1030), "key delivery readies quest 1030")
 	var innkeeper_turn_in := controller.build_context(&"innkeeper", &"inn_interior")
 	controller.handle_action(_make_action(&"turn_in_quest"), innkeeper_turn_in)
-	_expect_true(manager.is_quest_completed(13), "innkeeper completes the quest chain")
+	_expect_true(manager.is_quest_completed(1030), "innkeeper completes the quest chain")
 	_expect_equal(
 		GameState.hero.inventory.gold,
-		starting_gold + quest_13.reward.gold,
+		starting_gold + quest_1030.reward.gold,
 		"innkeeper grants the authored gold reward"
 	)
-	_expect_not_null(quest_11, "quest 11 remains registered")
-	_expect_not_null(quest_12, "quest 12 remains registered")
+	_expect_not_null(quest_1010, "quest 1010 remains registered")
+	_expect_not_null(quest_1020, "quest 1020 remains registered")
 	controller.clear_quest_manager()
 
 func _test_existing_save_discovers_side_quest_chain() -> void:
 	var manager := QuestManager.new()
 	var existing_quest := Quest.new()
-	existing_quest.id = 1
+	existing_quest.id = 9001
 	manager.active_quests.append(existing_quest)
 	manager.add_missing_defined_quests()
 
 	_expect_true(
-		manager.is_quest_offered(11),
+		manager.is_quest_offered(1010),
 		"an existing save discovers the initially unlocked side quest"
 	)
 	_expect_true(
-		manager.get_quest_state(12) == QuestManager.LifecycleState.LOCKED,
+		manager.get_quest_state(1020) == QuestManager.LifecycleState.LOCKED,
 		"an existing save registers the locked follow-up quest"
 	)
 	_expect_true(
-		manager.get_quest_by_id(1) == existing_quest,
+		manager.get_quest_by_id(9001) == existing_quest,
 		"merging new definitions preserves existing quest instances"
 	)
 

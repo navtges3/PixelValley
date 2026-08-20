@@ -21,9 +21,9 @@ metadata/_custom_type_script = "uid://bra22kkvfpket"
 [resource]
 script = ExtResource("3_rpd37")
 title = "Ogre Purge"
-id = 8
+id = 420
 description = "The cave depths crawl with ogres. Purge them before they pour out into the countryside."
 objectives = Array[ExtResource("1_x50y8")]([SubResource("Resource_2386g")])
 reward = SubResource("Resource_x50y8")
-next_quests = Array[int]([9])
+next_quests = Array[int]([430])
 metadata/_custom_type_script = "uid://xhl8p6y5w5e6"

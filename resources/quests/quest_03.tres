@@ -20,10 +20,10 @@ metadata/_custom_type_script = "uid://bra22kkvfpket"
 [resource]
 script = ExtResource("3_is1pp")
 title = "The Forest Warden"
-id = 3
+id = 230
 description = "An Orc has claimed the deep forest as his territory and commands the goblin horde. Slay him."
 objectives = Array[ExtResource("1_6xpk3")]([SubResource("Resource_7wknm")])
 reward = SubResource("Resource_6xpk3")
-next_quests = Array[int]([4])
+next_quests = Array[int]([310])
 unlocks_locations = Array[String](["war_camp"])
 metadata/_custom_type_script = "uid://xhl8p6y5w5e6"

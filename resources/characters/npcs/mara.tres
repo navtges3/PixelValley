@@ -51,5 +51,5 @@ role = "Village organizer"
 location_id = &"village"
 world_visual = SubResource("SpriteFrames_imqyq")
 dialogue = ExtResource("1_c8mpl")
-quest_ids = Array[int]([11])
+quest_ids = Array[int]([1010])
 metadata/_custom_type_script = "uid://bvrdh0sqeu4ny"

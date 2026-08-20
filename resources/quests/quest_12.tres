@@ -17,7 +17,7 @@ rarity = 0
 [resource]
 script = ExtResource("1_quest")
 title = "A Smith's Favor"
-id = 12
+id = 1020
 description = "The alchemist suggested that you introduce yourself to the village blacksmith."
 category = 1
 source_type = 2
@@ -25,4 +25,4 @@ source_id = "alchemist"
 turn_in_npc_id = "blacksmith"
 objectives = Array[QuestObjective]([SubResource("TalkObjective")])
 reward = SubResource("Reward")
-next_quests = Array[int]([13])
+next_quests = Array[int]([1030])

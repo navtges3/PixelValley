@@ -1,7 +1,23 @@
 extends RefCounted
 
-const CURRENT_SCHEMA_VERSION: int = 2
+const CURRENT_SCHEMA_VERSION: int = 3
 const LEGACY_SCHEMA_VERSION: int = 0
+
+const LEGACY_QUEST_ID_MAP: Dictionary[int, int] = {
+	1: 210,
+	2: 220,
+	3: 230,
+	4: 310,
+	5: 320,
+	6: 330,
+	7: 410,
+	8: 420,
+	9: 430,
+	10: 440,
+	11: 1010,
+	12: 1020,
+	13: 1030,
+}
 
 const QUEST_LIST_KEYS: Array[String] = [
 	"locked_quests",
@@ -24,6 +40,8 @@ static func migrate(document: Dictionary, known_quest_ids: Array[int] = [], emit
 				migrated = _migrate_v0_to_v1(migrated)
 			1:
 				migrated = _migrate_v1_to_v2(migrated)
+			2:
+				migrated = _migrate_v2_to_v3(migrated)
 			_:
 				push_error("QuestSaveMigrator: no migration registered for schema %d" % version)
 				return _normalize_document(migrated, known_quest_ids, emit_warnings)
@@ -66,6 +84,44 @@ static func _migrate_v1_to_v2(document: Dictionary) -> Dictionary:
 	migrated["data"] = data
 	migrated["schema_version"] = 2
 	return migrated
+
+static func _migrate_v2_to_v3(document: Dictionary) -> Dictionary:
+	var migrated: Dictionary = document.duplicate(true)
+	var raw_data: Variant = migrated.get("data", {})
+	var data: Dictionary = ((raw_data as Dictionary).duplicate(true)
+		if typeof(raw_data) == TYPE_DICTIONARY
+		else {}
+	)
+	for list_key: String in QUEST_LIST_KEYS:
+		var raw_list: Variant = data.get(list_key, [])
+		if typeof(raw_list) != TYPE_ARRAY:
+			continue
+		var remapped_quests: Array = (raw_list as Array).duplicate(true)
+		for quest_index: int in remapped_quests.size():
+			var raw_quest: Variant = remapped_quests[quest_index]
+			if typeof(raw_quest) != TYPE_DICTIONARY:
+				continue
+			var quest: Dictionary = (raw_quest as Dictionary).duplicate(true)
+			quest["id"] = _remap_legacy_quest_id(int(quest.get("id", 0)))
+			quest["next_quests"] = _remap_legacy_quest_ids(quest.get("next_quests", []))
+			remapped_quests[quest_index] = quest
+		data[list_key] = remapped_quests
+	data["tracked_quest_id"] = _remap_legacy_quest_id(int(data.get("tracked_quest_id", -1)))
+	migrated["data"] = data
+	migrated["schema_version"] = 3
+	return migrated
+
+static func _remap_legacy_quest_id(quest_id: int) -> int:
+	return LEGACY_QUEST_ID_MAP.get(quest_id, quest_id)
+
+static func _remap_legacy_quest_ids(value: Variant) -> Array[int]:
+	var remapped_ids: Array[int] = []
+	if typeof(value) != TYPE_ARRAY:
+		return remapped_ids
+	for entry: Variant in value as Array:
+		if typeof(entry) == TYPE_INT or typeof(entry) == TYPE_FLOAT:
+			remapped_ids.append(_remap_legacy_quest_id(int(entry)))
+	return remapped_ids
 
 static func _normalize_document(document: Dictionary, known_quest_ids: Array[int], emit_warnings: bool) -> Dictionary:
 	var normalized: Dictionary = document.duplicate(true)

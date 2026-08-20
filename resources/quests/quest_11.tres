@@ -16,7 +16,7 @@ items = Array[String](["lesser_healing_potion"])
 [resource]
 script = ExtResource("1_quest")
 title = "A Neighbor's Remedy"
-id = 11
+id = 1010
 description = "The village resident asked you to speak with the alchemist about a restorative potion."
 category = 1
 source_type = 2
@@ -25,4 +25,4 @@ turn_in_npc_id = "alchemist"
 initially_unlocked = true
 objectives = Array[ExtResource("1_xljhf")]([SubResource("TalkObjective")])
 reward = SubResource("Reward")
-next_quests = Array[int]([12])
+next_quests = Array[int]([1020])

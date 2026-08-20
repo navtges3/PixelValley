@@ -12,7 +12,7 @@ script = ExtResource("5_condition")
 condition_id = &"context_equals"
 parameters = Dictionary[StringName, Variant]({
 &"key": &"quest_id",
-&"value": 13
+&"value": 1030
 })
 
 [sub_resource type="Resource" id="ConditionReady"]

@@ -21,10 +21,10 @@ metadata/_custom_type_script = "uid://bra22kkvfpket"
 [resource]
 script = ExtResource("3_vqcy4")
 title = "Cut Off the Head"
-id = 6
+id = 330
 description = "The Orc Chieftain rallies his forces from the heart of the camp. Defeat him and the warband will fall apart."
 objectives = Array[ExtResource("1_g2r4m")]([SubResource("Resource_gonc1")])
 reward = SubResource("Resource_g2r4m")
-next_quests = Array[int]([7])
+next_quests = Array[int]([410])
 unlocks_locations = Array[String](["cave"])
 metadata/_custom_type_script = "uid://xhl8p6y5w5e6"

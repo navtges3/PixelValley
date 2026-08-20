@@ -2,6 +2,9 @@ extends TestCase
 
 const TEST_SAVE_SLOT := 999999
 const QUEST_SAVE_MIGRATOR := preload("res://scripts/save/quest_save_migrator.gd")
+const QUICK_QUEST_ID: int = 210
+const LONG_QUEST_ID: int = 220
+const UNRELATED_QUEST_ID: int = 230
 
 var _progress_counts: Dictionary[int, int] = {}
 var _ready_counts: Dictionary[int, int] = {}
@@ -44,9 +47,9 @@ func _test_concurrent_quests_and_save_load() -> void:
 	manager.reconnect_signals()
 	_connect_manager_counters(manager)
 
-	var quick_quest := _make_kill_quest(1, MonsterLoader.MonsterID.GOBLIN, 1, "forest")
-	var long_quest := _make_kill_quest(2, MonsterLoader.MonsterID.GOBLIN, 3, "forest")
-	var unrelated_quest := _make_kill_quest(3, MonsterLoader.MonsterID.ORC, 1, "orc_war_camp")
+	var quick_quest := _make_kill_quest(QUICK_QUEST_ID, MonsterLoader.MonsterID.GOBLIN, 1, "forest")
+	var long_quest := _make_kill_quest(LONG_QUEST_ID, MonsterLoader.MonsterID.GOBLIN, 3, "forest")
+	var unrelated_quest := _make_kill_quest(UNRELATED_QUEST_ID, MonsterLoader.MonsterID.ORC, 1, "orc_war_camp")
 	quick_quest.category = Quest.Category.SIDE
 	quick_quest.source_type = Quest.SourceType.QUEST_BOARD
 	quick_quest.source_id = "valley_board"
@@ -58,20 +61,20 @@ func _test_concurrent_quests_and_save_load() -> void:
 	_expect_equal(_get_kill_progress(quick_quest), 1, "one kill progresses the first matching quest")
 	_expect_equal(_get_kill_progress(long_quest), 1, "one kill progresses the second matching quest")
 	_expect_equal(_get_kill_progress(unrelated_quest), 0, "one kill does not progress an unrelated quest")
-	_expect_equal(_progress_counts.get(1, 0), 1, "first matching quest emits one progress event")
-	_expect_equal(_progress_counts.get(2, 0), 1, "second matching quest emits one progress event")
-	_expect_equal(_progress_counts.get(3, 0), 0, "unrelated quest emits no progress event")
-	_expect_equal(_ready_counts.get(1, 0), 1, "ready event emits when the quick quest completes")
+	_expect_equal(_progress_counts.get(QUICK_QUEST_ID, 0), 1, "first matching quest emits one progress event")
+	_expect_equal(_progress_counts.get(LONG_QUEST_ID, 0), 1, "second matching quest emits one progress event")
+	_expect_equal(_progress_counts.get(UNRELATED_QUEST_ID, 0), 0, "unrelated quest emits no progress event")
+	_expect_equal(_ready_counts.get(QUICK_QUEST_ID, 0), 1, "ready event emits when the quick quest completes")
 	_expect_true(quick_quest in manager.ready_quests, "completed objectives move the quick quest to ready")
 	_expect_true(quick_quest not in manager.active_quests, "ready quest stops receiving progress")
 
 	_emit_kill(MonsterLoader.MonsterID.GOBLIN, "forest")
-	_expect_equal(_progress_counts.get(1, 0), 1, "completed quest does not emit duplicate progress")
-	_expect_equal(_ready_counts.get(1, 0), 1, "completed quest does not emit duplicate readiness")
+	_expect_equal(_progress_counts.get(QUICK_QUEST_ID, 0), 1, "completed quest does not emit duplicate progress")
+	_expect_equal(_ready_counts.get(QUICK_QUEST_ID, 0), 1, "completed quest does not emit duplicate readiness")
 	_expect_equal(_get_kill_progress(long_quest), 2, "other active quest keeps progressing")
 
 	manager.turn_in_quest(quick_quest)
-	_expect_equal(_turn_in_counts.get(1, 0), 1, "turn-in event emits once")
+	_expect_equal(_turn_in_counts.get(QUICK_QUEST_ID, 0), 1, "turn-in event emits once")
 	_expect_true(quick_quest in manager.completed_quests, "turned-in quest moves to completed quests")
 	_expect_true(long_quest in manager.active_quests, "turning in one quest keeps the other active")
 	_expect_equal(_get_kill_progress(long_quest), 2, "turning in one quest preserves other quest progress")
@@ -87,9 +90,9 @@ func _test_concurrent_quests_and_save_load() -> void:
 	SaveManager.load_game(TEST_SAVE_SLOT)
 	var loaded_manager := GameState.quest_manager
 	_connect_manager_counters(loaded_manager)
-	var loaded_quick := loaded_manager.get_quest_by_id(1)
-	var loaded_long := loaded_manager.get_quest_by_id(2)
-	var loaded_unrelated := loaded_manager.get_quest_by_id(3)
+	var loaded_quick := loaded_manager.get_quest_by_id(QUICK_QUEST_ID)
+	var loaded_long := loaded_manager.get_quest_by_id(LONG_QUEST_ID)
+	var loaded_unrelated := loaded_manager.get_quest_by_id(UNRELATED_QUEST_ID)
 	_expect_true(loaded_quick in loaded_manager.completed_quests, "save/load preserves the turned-in quest")
 	_expect_equal(loaded_quick.category, Quest.Category.SIDE, "save/load preserves quest category")
 	_expect_equal(loaded_quick.source_type, Quest.SourceType.QUEST_BOARD, "save/load preserves quest source type")
@@ -97,16 +100,16 @@ func _test_concurrent_quests_and_save_load() -> void:
 	_expect_equal(_get_kill_progress(loaded_long), 2, "save/load preserves active quest progress")
 	_expect_equal(_get_kill_progress(loaded_unrelated), 0, "save/load preserves unrelated quest progress")
 
-	var stale_progress_count: int = _progress_counts.get(2, 0)
+	var stale_progress_count: int = _progress_counts.get(LONG_QUEST_ID, 0)
 	_emit_kill(MonsterLoader.MonsterID.GOBLIN, "forest")
 	_expect_equal(_get_kill_progress(loaded_long), 3, "loaded active quest continues progressing")
-	_expect_equal(_progress_counts.get(2, 0), stale_progress_count + 1, "only the loaded manager emits progress")
-	_expect_equal(_ready_counts.get(2, 0), 1, "loaded quest emits readiness once")
+	_expect_equal(_progress_counts.get(LONG_QUEST_ID, 0), stale_progress_count + 1, "only the loaded manager emits progress")
+	_expect_equal(_ready_counts.get(LONG_QUEST_ID, 0), 1, "loaded quest emits readiness once")
 	_expect_true(loaded_long in loaded_manager.ready_quests, "loaded quest moves to ready after its final kill")
 
 	_emit_kill(MonsterLoader.MonsterID.GOBLIN, "forest")
-	_expect_equal(_progress_counts.get(2, 0), stale_progress_count + 1, "loaded completed quest emits no duplicate progress")
-	_expect_equal(_ready_counts.get(2, 0), 1, "loaded completed quest emits no duplicate readiness")
+	_expect_equal(_progress_counts.get(LONG_QUEST_ID, 0), stale_progress_count + 1, "loaded completed quest emits no duplicate progress")
+	_expect_equal(_ready_counts.get(LONG_QUEST_ID, 0), 1, "loaded completed quest emits no duplicate readiness")
 
 func _test_main_quest_progression() -> void:
 	GameState.quest_manager.disconnect_signals()

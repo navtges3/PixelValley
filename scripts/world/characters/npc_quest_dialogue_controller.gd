@@ -181,11 +181,11 @@ func _quest_targets_npc(quest: Quest, npc_id: StringName) -> bool:
 func _get_main_progression() -> StringName:
 	if _manager == null:
 		return &"goblin_threat"
-	if _manager.is_quest_completed(10):
+	if _manager.is_quest_completed(QuestManager.FINAL_QUEST_ID):
 		return &"victory"
-	if _has_reached_main_quest(7):
+	if _has_reached_main_quest(QuestManager.OGRE_CAVE_START_ID):
 		return &"ogre_threat"
-	if _has_reached_main_quest(4):
+	if _has_reached_main_quest(QuestManager.ORC_WAR_CAMP_START_ID):
 		return &"orc_threat"
 	return &"goblin_threat"
 

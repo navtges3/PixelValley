@@ -52,5 +52,5 @@ location_id = &"inn_interior"
 world_visual = SubResource("SpriteFrames_rkyst")
 dialogue = ExtResource("3_dialogue")
 service_id = &"inn"
-quest_ids = Array[int]([13])
+quest_ids = Array[int]([1030])
 metadata/_custom_type_script = "uid://bvrdh0sqeu4ny"

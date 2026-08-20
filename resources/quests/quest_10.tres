@@ -19,7 +19,7 @@ metadata/_custom_type_script = "uid://bra22kkvfpket"
 [resource]
 script = ExtResource("2_vmyfw")
 title = "Hail to the King"
-id = 10
+id = 440
 description = "The Ogre king has risen! Protect the village!"
 objectives = Array[ExtResource("1_vmyfw")]([SubResource("Resource_4wg3f")])
 reward = SubResource("Resource_fi5yr")

@@ -134,4 +134,4 @@ monster_id = 1
 position = Vector2(640, 728)
 script = ExtResource("6_5dlgs")
 monster_id = 2
-quest_id = 6
+quest_id = 330
