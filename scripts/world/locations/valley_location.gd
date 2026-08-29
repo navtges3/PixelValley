@@ -1,9 +1,9 @@
 extends BaseLocation
 class_name ValleyLocation
 
-@onready var camp_gate_closed: StaticBody2D = $YSortedWorld/WoodWalls/CampGateClosed
-@onready var cave_closed: StaticBody2D = $YSortedWorld/CaveWalls/CaveClosed
-@onready var cave_closed_collision: CollisionPolygon2D = $YSortedWorld/CaveWalls/CaveClosed/CollisionPolygon2D
+@onready var cave_closed: StaticBody2D = $YSortedWorld/Mountains/CaveClosed
+@onready var cave_closed_collision: CollisionPolygon2D = $YSortedWorld/Mountains/CaveClosed/CollisionPolygon2D
+@onready var camp_gate_closed: StaticBody2D = $YSortedWorld/CampWalls/CampGateClosed
 @onready var village_trigger_zone: TriggerZone = $TriggerZones/VillageTriggerZone
 @onready var forest_trigger_zone: TriggerZone = $TriggerZones/ForestTriggerZone
 @onready var war_camp_trigger_zone: TriggerZone = $TriggerZones/WarCampTriggerZone
