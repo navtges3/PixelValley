@@ -4,6 +4,7 @@
 [ext_resource type="TileSet" uid="uid://4cg7ba3d6vqd" path="res://resources/world/tile_set.tres" id="2_1da0x"]
 [ext_resource type="PackedScene" uid="uid://cv120tmswg7xm" path="res://scenes/world/characters/player.tscn" id="2_ftutg"]
 [ext_resource type="TileSet" uid="uid://ca0rdl8iyjnxp" path="res://resources/world/tree_tile_set.tres" id="4_cfnsm"]
+[ext_resource type="PackedScene" uid="uid://bj3yhhb5ixdj0" path="res://scenes/world/props/wood_bundle.tscn" id="5_5upft"]
 [ext_resource type="PackedScene" uid="uid://b0tdph7ofmv7r" path="res://scenes/world/trigger_zone.tscn" id="5_cfnsm"]
 [ext_resource type="Script" uid="uid://bh4ht0hpunwty" path="res://scripts/world/characters/spawn_point.gd" id="5_euhvq"]
 
@@ -73,6 +74,28 @@ polygon = PackedVector2Array(594, 361, 626, 393, 638, 393, 654, 377, 654, 344, 6
 
 [node name="Props" type="Node2D" parent="YSortedWorld" unique_id=1719041546]
 y_sort_enabled = true
+
+[node name="Pickups" type="Node2D" parent="YSortedWorld" unique_id=2026497971]
+
+[node name="WoodBundle1" parent="YSortedWorld/Pickups" unique_id=256540364 instance=ExtResource("5_5upft")]
+position = Vector2(144, 112)
+loot_source_id = "forest_wood_bundle_01"
+
+[node name="WoodBundle2" parent="YSortedWorld/Pickups" unique_id=712005119 instance=ExtResource("5_5upft")]
+position = Vector2(521, 296)
+loot_source_id = "forest_wood_bundle_02"
+
+[node name="WoodBundle3" parent="YSortedWorld/Pickups" unique_id=1167556347 instance=ExtResource("5_5upft")]
+position = Vector2(816, 272)
+loot_source_id = "forest_wood_bundle_03"
+
+[node name="WoodBundle4" parent="YSortedWorld/Pickups" unique_id=1067659057 instance=ExtResource("5_5upft")]
+position = Vector2(816, 624)
+loot_source_id = "forest_wood_bundle_04"
+
+[node name="WoodBundle5" parent="YSortedWorld/Pickups" unique_id=1212053658 instance=ExtResource("5_5upft")]
+position = Vector2(1200, 368)
+loot_source_id = "forest_wood_bundle_05"
 
 [node name="Foreground" type="Node2D" parent="." unique_id=1662780125]
 z_index = 10
