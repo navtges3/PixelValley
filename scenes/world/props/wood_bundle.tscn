@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://bj3yhhb5ixdj0"]
+
+[ext_resource type="PackedScene" uid="uid://ds7o2fwi8ms8y" path="res://scenes/world/world_pickup.tscn" id="1_kv8tm"]
+[ext_resource type="Texture2D" uid="uid://cjj73lw7di7ke" path="res://assets/world/forest/wood_bundle.png" id="2_m0jvm"]
+[ext_resource type="Script" uid="uid://buxlf5aagrtgf" path="res://scripts/data/drop_entry.gd" id="3_m7y5u"]
+[ext_resource type="Script" uid="uid://birbqcxvye2x5" path="res://scripts/data/drop_table.gd" id="4_lxgn2"]
+
+[sub_resource type="Resource" id="Resource_fagpj"]
+script = ExtResource("3_m7y5u")
+item_id = "wood_bundle"
+metadata/_custom_type_script = "uid://buxlf5aagrtgf"
+
+[sub_resource type="Resource" id="Resource_m0jvm"]
+script = ExtResource("4_lxgn2")
+entries = Array[ExtResource("3_m7y5u")]([SubResource("Resource_fagpj")])
+metadata/_custom_type_script = "uid://birbqcxvye2x5"
+
+[node name="WoodBundle" unique_id=256540364 instance=ExtResource("1_kv8tm")]
+pickup_texture = ExtResource("2_m0jvm")
+pickup_sfx_id = &""
+idle_animation = &"idle"
+collection_animation = &"collect"
+location_id = "forest"
+loot_table = SubResource("Resource_m0jvm")
+
+[node name="InteractArea" parent="." index="0" unique_id=1105164537]
+prompt_label = "Pick Up"

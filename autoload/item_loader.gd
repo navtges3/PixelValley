@@ -62,6 +62,7 @@ func _register_weapons() -> void:
 
 func _register_quest_items() -> void:
 	_register("inn_key", "res://resources/items/quest_items/inn_key.tres")
+	_register("wood_bundle", "res://resources/items/quest_items/wood_bundle.tres")
 
 func _register(id: String, path: String) -> void:
 	if _paths.has(id):

@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="QuestItem" format=3 uid="uid://ms8t7qhnyx3g"]
+
+[ext_resource type="Script" uid="uid://cvhupsl0k0stk" path="res://scripts/data/quest_item.gd" id="1_w8ax5"]
+[ext_resource type="Theme" uid="uid://e6xnt81pte22" path="res://resources/themes/buttons/regular/gray_button.tres" id="2_eve2p"]
+
+[resource]
+script = ExtResource("1_w8ax5")
+item_id = "wood_bundle"
+name = "Wood Bundle"
+description = "A small bundle of logs found in the forest."
+metadata/_custom_type_script = "uid://cvhupsl0k0stk"
