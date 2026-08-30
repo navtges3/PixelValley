@@ -1,0 +1,13 @@
+[gd_resource type="TileSet" format=3 uid="uid://ca0rdl8iyjnxp"]
+
+[ext_resource type="Texture2D" uid="uid://d2rfd6xg2cwvf" path="res://assets/world/forest/tree.png" id="1_1ja1a"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_xwbyh"]
+resource_name = "Tree"
+texture = ExtResource("1_1ja1a")
+texture_region_size = Vector2i(48, 64)
+0:0/0 = 0
+0:0/0/texture_origin = Vector2i(0, 24)
+
+[resource]
+sources/0 = SubResource("TileSetAtlasSource_xwbyh")
