@@ -11,19 +11,20 @@ enum LifecycleState {
 }
 
 const QUEST_PATHS := [
-	"res://resources/quests/quest_01.tres",
-	"res://resources/quests/quest_02.tres",
-	"res://resources/quests/quest_03.tres",
-	"res://resources/quests/quest_04.tres",
-	"res://resources/quests/quest_05.tres",
-	"res://resources/quests/quest_06.tres",
-	"res://resources/quests/quest_07.tres",
-	"res://resources/quests/quest_08.tres",
-	"res://resources/quests/quest_09.tres",
-	"res://resources/quests/quest_10.tres",
-	"res://resources/quests/quest_11.tres",
-	"res://resources/quests/quest_12.tres",
-	"res://resources/quests/quest_13.tres",
+	"res://resources/quests/quest_210.tres",
+	"res://resources/quests/quest_220.tres",
+	"res://resources/quests/quest_230.tres",
+	"res://resources/quests/quest_310.tres",
+	"res://resources/quests/quest_320.tres",
+	"res://resources/quests/quest_330.tres",
+	"res://resources/quests/quest_410.tres",
+	"res://resources/quests/quest_420.tres",
+	"res://resources/quests/quest_430.tres",
+	"res://resources/quests/quest_440.tres",
+	"res://resources/quests/quest_1010.tres",
+	"res://resources/quests/quest_1020.tres",
+	"res://resources/quests/quest_1025.tres",
+	"res://resources/quests/quest_1030.tres",
 ]
 
 const TUTORIAL_MAIN_START_ID: int = 110

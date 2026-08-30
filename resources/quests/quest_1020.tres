@@ -1,0 +1,28 @@
+[gd_resource type="Resource" script_class="Quest" format=3 uid="uid://jexe84odgca0"]
+
+[ext_resource type="Script" uid="uid://bhsjswm1wnll8" path="res://scripts/data/quests/objectives/quest_objective.gd" id="1_kr6rj"]
+[ext_resource type="Script" uid="uid://d1ce8uu307h1v" path="res://scripts/data/quests/objectives/talk_to_npc_quest_objective.gd" id="2_sps0d"]
+[ext_resource type="Script" uid="uid://bra22kkvfpket" path="res://scripts/data/reward.gd" id="3_w5pcc"]
+[ext_resource type="Script" uid="uid://xhl8p6y5w5e6" path="res://scripts/data/quests/quest.gd" id="4_l6kh3"]
+
+[sub_resource type="Resource" id="TalkObjective"]
+script = ExtResource("2_sps0d")
+target_npc_id = &"blacksmith"
+
+[sub_resource type="Resource" id="Reward"]
+script = ExtResource("3_w5pcc")
+items = Array[String](["inn_key"])
+random_weapon = true
+
+[resource]
+script = ExtResource("4_l6kh3")
+title = "A Smith's Favor"
+id = 1020
+description = "The alchemist suggested that you introduce yourself to the village blacksmith."
+category = 1
+source_type = 2
+source_id = "alchemist"
+turn_in_npc_id = "blacksmith"
+objectives = Array[ExtResource("1_kr6rj")]([SubResource("TalkObjective")])
+reward = SubResource("Reward")
+next_quests = Array[int]([1025])

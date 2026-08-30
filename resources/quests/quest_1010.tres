@@ -1,0 +1,28 @@
+[gd_resource type="Resource" script_class="Quest" format=3 uid="uid://btso30j5g3lvr"]
+
+[ext_resource type="Script" uid="uid://bhsjswm1wnll8" path="res://scripts/data/quests/objectives/quest_objective.gd" id="1_y1alm"]
+[ext_resource type="Script" uid="uid://d1ce8uu307h1v" path="res://scripts/data/quests/objectives/talk_to_npc_quest_objective.gd" id="2_3k6j1"]
+[ext_resource type="Script" uid="uid://bra22kkvfpket" path="res://scripts/data/reward.gd" id="3_htsne"]
+[ext_resource type="Script" uid="uid://xhl8p6y5w5e6" path="res://scripts/data/quests/quest.gd" id="4_7cukr"]
+
+[sub_resource type="Resource" id="TalkObjective"]
+script = ExtResource("2_3k6j1")
+target_npc_id = &"alchemist"
+
+[sub_resource type="Resource" id="Reward"]
+script = ExtResource("3_htsne")
+items = Array[String](["lesser_healing_potion"])
+
+[resource]
+script = ExtResource("4_7cukr")
+title = "A Neighbor's Remedy"
+id = 1010
+description = "The village resident asked you to speak with the alchemist about a restorative potion."
+category = 1
+source_type = 2
+source_id = "mara"
+turn_in_npc_id = "alchemist"
+initially_unlocked = true
+objectives = Array[ExtResource("1_y1alm")]([SubResource("TalkObjective")])
+reward = SubResource("Reward")
+next_quests = Array[int]([1020])

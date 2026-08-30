@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="Quest" format=3 uid="uid://c2b6rpy28c5ag"]
+
+[ext_resource type="Script" uid="uid://bhsjswm1wnll8" path="res://scripts/data/quests/objectives/quest_objective.gd" id="1_ier7t"]
+[ext_resource type="Script" uid="uid://cgjosr5sgyy2v" path="res://scripts/data/quests/objectives/delivery_quest_objective.gd" id="2_twm3s"]
+[ext_resource type="Script" uid="uid://bra22kkvfpket" path="res://scripts/data/reward.gd" id="3_8jbgs"]
+[ext_resource type="Script" uid="uid://xhl8p6y5w5e6" path="res://scripts/data/quests/quest.gd" id="4_pum17"]
+
+[sub_resource type="Resource" id="DeliveryObjective"]
+script = ExtResource("2_twm3s")
+target_npc_id = &"innkeeper"
+item_id = "inn_key"
+
+[sub_resource type="Resource" id="Reward"]
+script = ExtResource("3_8jbgs")
+gold = 100
+
+[resource]
+script = ExtResource("4_pum17")
+title = "The Missing Room Key"
+id = 1030
+description = "Deliver the brass room key from the blacksmith to the village innkeeper."
+category = 1
+source_type = 2
+source_id = "blacksmith"
+turn_in_npc_id = "innkeeper"
+objectives = Array[ExtResource("1_ier7t")]([SubResource("DeliveryObjective")])
+reward = SubResource("Reward")
