@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="DialogueConversation" format=3 uid="uid://kbukjpyugvvc"]
+[gd_resource type="Resource" script_class="DialogueConversation" format=3 uid="uid://l6g2utkdrvrc"]
 
 [ext_resource type="Script" uid="uid://c72ou4xympa8k" path="res://scripts/data/dialogue/dialogue_conversation.gd" id="1_conversation"]
 [ext_resource type="Script" uid="uid://de2gtyvn62a4q" path="res://scripts/data/dialogue/dialogue_entry.gd" id="2_entry"]
@@ -199,7 +199,7 @@ actions = Array[ExtResource("6_action")]([SubResource("Resource_hjosn")])
 script = ExtResource("2_entry")
 entry_id = &"quest_1025_offered"
 speaker = SubResource("Speaker")
-pages = Array[String](["I'm running low on good firewood for the forge. The dry wood from the forest burns hot and steady.", "Bring me three bundles and I'll make sure you get something useful in return."])
+pages = Array[String](["I'm running low on good firewood for the forge. The dry wood from the forest burns hot and steady.", "Bring me five bundles and I'll make sure you get something useful in return."])
 skip_entry_id = &"quest_1025_active"
 conditions = Array[ExtResource("5_condition")]([SubResource("Resource_fpxin"), SubResource("Resource_7jhui")])
 responses = Array[ExtResource("3_response")]([SubResource("Resource_64ptf"), SubResource("Resource_4xb7s"), SubResource("Resource_adabh")])
