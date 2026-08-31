@@ -1,10 +1,8 @@
 [gd_resource type="Resource" script_class="NpcData" format=3 uid="uid://cku2ksvmk1l0e"]
 
 [ext_resource type="Script" uid="uid://bvrdh0sqeu4ny" path="res://scripts/data/npc_data.gd" id="1_50c5m"]
+[ext_resource type="Resource" uid="uid://bggdb2svwljrr" path="res://resources/dialogue/quests/alchemist_quest_conversation.tres" id="1_lwysc"]
 [ext_resource type="Texture2D" uid="uid://dg387lc85bt2q" path="res://assets/characters/npcs/potion_shopkeep.png" id="2_yagej"]
-
-[sub_resource type="Resource" id="Resource_yagej"]
-metadata/__load_path__ = "res://resources/characters/npcs/resources/dialogue/quests/alchemist_quest_conversation.tres"
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_lwysc"]
 atlas = ExtResource("2_yagej")
@@ -52,7 +50,7 @@ display_name = "Tamsin Reed"
 role = "Alchemist"
 location_id = &"potion_shop_interior"
 world_visual = SubResource("SpriteFrames_ovnb2")
-dialogue = SubResource("Resource_yagej")
+dialogue = ExtResource("1_lwysc")
 service_id = &"potion_shop"
 quest_ids = Array[int]([1010, 1020])
 metadata/_custom_type_script = "uid://bvrdh0sqeu4ny"

@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://bvrdh0sqeu4ny" path="res://scripts/data/npc_data.gd" id="1_opbvh"]
 [ext_resource type="Texture2D" uid="uid://dutpghl7y0fri" path="res://assets/characters/npcs/inn_shopkeep.png" id="2_da7hr"]
-[ext_resource type="Resource" uid="uid://blib07g4eu50f" path="res://resources/dialogue/quests/innkeeper_quest_conversation.tres" id="3_dialogue"]
+[ext_resource type="Resource" uid="uid://bqlyto23wrn7v" path="res://resources/dialogue/quests/innkeeper_quest_conversation.tres" id="3_dialogue"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_iar77"]
 atlas = ExtResource("2_da7hr")

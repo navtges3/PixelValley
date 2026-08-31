@@ -1,10 +1,8 @@
 [gd_resource type="Resource" script_class="NpcData" format=3 uid="uid://fx4djpacrcah"]
 
+[ext_resource type="Resource" path="res://resources/dialogue/quests/blacksmith_quest_conversation.tres" id="1_0h6kb"]
 [ext_resource type="Script" uid="uid://bvrdh0sqeu4ny" path="res://scripts/data/npc_data.gd" id="1_q6ltq"]
 [ext_resource type="Texture2D" uid="uid://lygp75a7owqn" path="res://assets/characters/npcs/weapon_shopkeep.png" id="2_dju14"]
-
-[sub_resource type="Resource" id="Resource_dju14"]
-metadata/__load_path__ = "res://resources/characters/npcs/resources/dialogue/quests/blacksmith_quest_conversation.tres"
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_0h6kb"]
 atlas = ExtResource("2_dju14")
@@ -52,7 +50,7 @@ display_name = "Garrick Stone"
 role = "Blacksmith"
 location_id = &"weapon_shop_interior"
 world_visual = SubResource("SpriteFrames_fa03n")
-dialogue = SubResource("Resource_dju14")
+dialogue = ExtResource("1_0h6kb")
 service_id = &"weapon_shop"
 quest_ids = Array[int]([1020, 1030])
 metadata/_custom_type_script = "uid://bvrdh0sqeu4ny"

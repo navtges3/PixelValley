@@ -1,11 +1,11 @@
-[gd_resource type="Resource" script_class="DialogueConversation" format=3]
+[gd_resource type="Resource" script_class="DialogueConversation" format=3 uid="uid://bggdb2svwljrr"]
 
-[ext_resource type="Script" path="res://scripts/data/dialogue/dialogue_conversation.gd" id="1_conversation"]
-[ext_resource type="Script" path="res://scripts/data/dialogue/dialogue_entry.gd" id="2_entry"]
-[ext_resource type="Script" path="res://scripts/data/dialogue/dialogue_response.gd" id="3_response"]
-[ext_resource type="Script" path="res://scripts/data/dialogue/dialogue_speaker.gd" id="4_speaker"]
-[ext_resource type="Script" path="res://scripts/data/dialogue/dialogue_condition.gd" id="5_condition"]
-[ext_resource type="Script" path="res://scripts/data/dialogue/dialogue_action.gd" id="6_action"]
+[ext_resource type="Script" uid="uid://c72ou4xympa8k" path="res://scripts/data/dialogue/dialogue_conversation.gd" id="1_conversation"]
+[ext_resource type="Script" uid="uid://de2gtyvn62a4q" path="res://scripts/data/dialogue/dialogue_entry.gd" id="2_entry"]
+[ext_resource type="Script" uid="uid://bw8gfgi66jkgt" path="res://scripts/data/dialogue/dialogue_response.gd" id="3_response"]
+[ext_resource type="Script" uid="uid://dpbifjko4digr" path="res://scripts/data/dialogue/dialogue_speaker.gd" id="4_speaker"]
+[ext_resource type="Script" uid="uid://chsetq55irrf0" path="res://scripts/data/dialogue/dialogue_condition.gd" id="5_condition"]
+[ext_resource type="Script" uid="uid://bn5tdgpsujh6q" path="res://scripts/data/dialogue/dialogue_action.gd" id="6_action"]
 
 [sub_resource type="Resource" id="ConditionQuest11"]
 script = ExtResource("5_condition")
@@ -51,7 +51,7 @@ display_name = "Tamsin Reed"
 script = ExtResource("2_entry")
 entry_id = &"quest_1010_ready"
 speaker = SubResource("Speaker")
-pages = Array[String](["Mara sent you? Excellent timing. This restorative is ready for a field test.", "Take this lesser healing potion for your trouble."])
+pages = Array[String](["Take this lesser healing potion for your trouble."])
 skip_entry_id = &"quest_1010_active"
 conditions = Array[ExtResource("5_condition")]([SubResource("ConditionQuest11"), SubResource("ConditionReady")])
 responses = Array[ExtResource("3_response")]([SubResource("ResponseTurnIn"), SubResource("ResponseShop")])
