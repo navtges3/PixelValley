@@ -1,11 +1,11 @@
-[gd_resource type="Resource" script_class="DialogueConversation" format=3 uid="uid://blib07g4eu50f"]
+[gd_resource type="Resource" script_class="DialogueConversation" format=3]
 
-[ext_resource type="Script" uid="uid://c72ou4xympa8k" path="res://scripts/data/dialogue/dialogue_conversation.gd" id="1_conversation"]
-[ext_resource type="Script" uid="uid://de2gtyvn62a4q" path="res://scripts/data/dialogue/dialogue_entry.gd" id="2_entry"]
-[ext_resource type="Script" uid="uid://bw8gfgi66jkgt" path="res://scripts/data/dialogue/dialogue_response.gd" id="3_response"]
-[ext_resource type="Script" uid="uid://dpbifjko4digr" path="res://scripts/data/dialogue/dialogue_speaker.gd" id="4_speaker"]
-[ext_resource type="Script" uid="uid://chsetq55irrf0" path="res://scripts/data/dialogue/dialogue_condition.gd" id="5_condition"]
-[ext_resource type="Script" uid="uid://bn5tdgpsujh6q" path="res://scripts/data/dialogue/dialogue_action.gd" id="6_action"]
+[ext_resource type="Script" path="res://scripts/data/dialogue/dialogue_conversation.gd" id="1_conversation"]
+[ext_resource type="Script" path="res://scripts/data/dialogue/dialogue_entry.gd" id="2_entry"]
+[ext_resource type="Script" path="res://scripts/data/dialogue/dialogue_response.gd" id="3_response"]
+[ext_resource type="Script" path="res://scripts/data/dialogue/dialogue_speaker.gd" id="4_speaker"]
+[ext_resource type="Script" path="res://scripts/data/dialogue/dialogue_condition.gd" id="5_condition"]
+[ext_resource type="Script" path="res://scripts/data/dialogue/dialogue_action.gd" id="6_action"]
 
 [sub_resource type="Resource" id="ConditionQuest13"]
 script = ExtResource("5_condition")
@@ -30,7 +30,7 @@ action_id = &"turn_in_quest"
 [sub_resource type="Resource" id="ResponseTurnIn"]
 script = ExtResource("3_response")
 text = "Thank you."
-next_entry_id = &"quest_13_rewarded"
+next_entry_id = &"quest_1030_rewarded"
 actions = Array[ExtResource("6_action")]([SubResource("ActionTurnIn")])
 
 [sub_resource type="Resource" id="ActionService"]
@@ -49,7 +49,7 @@ display_name = "Elara Vale"
 
 [sub_resource type="Resource" id="EntryReady"]
 script = ExtResource("2_entry")
-entry_id = &"quest_13_ready"
+entry_id = &"quest_1030_ready"
 speaker = SubResource("Speaker")
 pages = Array[String](["That's the missing room key! You have no idea how many locks I nearly replaced.", "Please accept some gold for returning it."])
 skip_entry_id = &"active_with_key"
@@ -137,16 +137,16 @@ script = ExtResource("2_entry")
 entry_id = &"key_delivered"
 speaker = SubResource("Speaker")
 pages = Array[String](["It is ours! Let me count out a proper reward."])
-next_entry_id = &"quest_13_ready"
+next_entry_id = &"quest_1030_ready"
 
 [sub_resource type="Resource" id="EntryQuest13Rewarded"]
 script = ExtResource("2_entry")
-entry_id = &"quest_13_rewarded"
+entry_id = &"quest_1030_rewarded"
 speaker = SubResource("Speaker")
 pages = Array[String](["You've done the village a real service. Spend the gold wisely."])
 
 [resource]
 script = ExtResource("1_conversation")
 conversation_id = &"innkeeper_quest_chain"
-start_entry_id = &"quest_13_ready"
+start_entry_id = &"quest_1030_ready"
 entries = Array[ExtResource("2_entry")]([SubResource("EntryReady"), SubResource("EntryActiveWithKey"), SubResource("EntryActiveWithoutKey"), SubResource("EntryCompleted"), SubResource("EntryAmbient"), SubResource("EntryKeyDelivered"), SubResource("EntryQuest13Rewarded")])
