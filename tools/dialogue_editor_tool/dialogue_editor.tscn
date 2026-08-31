@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://ce666xf5iiiwp"]
+
+[ext_resource type="Script" uid="uid://cgfefumqe154q" path="res://tools/dialogue_editor_tool/dialogue_editor.gd" id="1_rfdqs"]
+
+[node name="DialogueEditor" type="Control" unique_id=2136226390]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_rfdqs")
