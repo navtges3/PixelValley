@@ -11,7 +11,6 @@ target_npc_id = &"blacksmith"
 
 [sub_resource type="Resource" id="Reward"]
 script = ExtResource("3_w5pcc")
-items = Array[String](["inn_key"])
 random_weapon = true
 
 [resource]
