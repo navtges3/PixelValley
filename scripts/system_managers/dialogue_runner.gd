@@ -74,6 +74,27 @@ func start_sequence(sequence: DialogueSequence, context: Dictionary[StringName, 
 	_enter_entry(start_entry_id)
 	return true
 
+func resolve_sequence(sequences: Array[DialogueSequence], context: Dictionary[StringName, Variant]) -> DialogueSequence:
+	var best_quest_seq: DialogueSequence = null
+	var best_ambient_seq: DialogueSequence = null
+	for seq: DialogueSequence in sequences:
+		if seq == null or not seq.is_eligible(context):
+			continue
+		if seq.quest_id >= 0:
+			if best_quest_seq == null or _is_higher_priority(seq, best_quest_seq):
+				best_quest_seq = seq
+		else:
+			if best_ambient_seq == null or _is_higher_priority(seq, best_ambient_seq):
+				best_ambient_seq = seq
+	if best_quest_seq != null:
+		return best_quest_seq
+	return best_ambient_seq
+
+func _is_higher_priority(a: DialogueSequence, b: DialogueSequence) -> bool:
+	if a.priority != b.priority:
+		return a.priority > b.priority
+	return String(a.sequence_id) < String(b.sequence_id)
+
 func advance() -> void:
 	if _current_entry == null:
 		return

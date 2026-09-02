@@ -1,8 +1,9 @@
 [gd_resource type="Resource" script_class="NpcData" format=3 uid="uid://fx4djpacrcah"]
 
-[ext_resource type="Resource" uid="uid://ds2by720ok1jx" path="res://resources/dialogue/quests/blacksmith_quest_conversation.tres" id="1_0h6kb"]
+[ext_resource type="Resource" uid="uid://csos2nnx6kr17" path="res://resources/dialogue/quests/blacksmith_quest_conversation.tres" id="1_0h6kb"]
 [ext_resource type="Script" uid="uid://bvrdh0sqeu4ny" path="res://scripts/characters/npc_data.gd" id="1_q6ltq"]
 [ext_resource type="Texture2D" uid="uid://lygp75a7owqn" path="res://assets/characters/npcs/weapon_shopkeep.png" id="2_dju14"]
+[ext_resource type="Script" uid="uid://bc3i162s5h001" path="res://scripts/data/dialogue/dialogue_sequence.gd" id="2_fa03n"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_0h6kb"]
 atlas = ExtResource("2_dju14")

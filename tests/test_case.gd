@@ -34,6 +34,13 @@ func _expect_not_null(value: Variant, message: String) -> void:
 	printerr("FAIL: %s (value was null)" % message)
 
 
+func _expect_null(value: Variant, message: String) -> void:
+	if value == null:
+		return
+	_failures += 1
+	printerr("FAIL: %s (expected null, got %s)" % [message, value])
+
+
 func _expect_true(value: bool, message: String) -> void:
 	if value:
 		return

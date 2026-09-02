@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://bvrdh0sqeu4ny" path="res://scripts/characters/npc_data.gd" id="1_50c5m"]
 [ext_resource type="Resource" uid="uid://bggdb2svwljrr" path="res://resources/dialogue/quests/alchemist_quest_conversation.tres" id="1_lwysc"]
+[ext_resource type="Script" uid="uid://bc3i162s5h001" path="res://scripts/data/dialogue/dialogue_sequence.gd" id="2_ovnb2"]
 [ext_resource type="Texture2D" uid="uid://dg387lc85bt2q" path="res://assets/characters/npcs/potion_shopkeep.png" id="2_yagej"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_lwysc"]

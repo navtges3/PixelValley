@@ -513,13 +513,46 @@ func _test_authored_side_quest_chain() -> void:
 	)
 	_expect_equal(
 		GameState.hero.inventory.get_quest_item_count("inn_key"),
-		1,
-		"blacksmith grants the brass inn key"
+		0,
+		"quest 1020 does not grant the brass inn key directly"
 	)
-	_expect_true(manager.is_quest_offered(1030), "quest 1020 unlocks the delivery quest")
+	_expect_true(manager.is_quest_offered(1025), "quest 1020 unlocks the smith's request")
 
-	var blacksmith_offer := controller.build_context(&"blacksmith", &"weapon_shop_interior")
-	controller.handle_action(_make_action(&"accept_quest"), blacksmith_offer)
+	# Quest 1025: deliver wood_bundle x5 to blacksmith to obtain the inn key.
+	var quest_1025 := manager.get_quest_by_id(1025)
+	var blacksmith_offer_1025 := controller.build_context(&"blacksmith", &"weapon_shop_interior")
+	controller.handle_action(_make_action(&"accept_quest"), blacksmith_offer_1025)
+	_expect_true(manager.is_quest_active(1025), "quest 1025 accepted from blacksmith")
+	GameState.hero.inventory.add_quest_item("wood_bundle", 5)
+	var blacksmith_delivery := controller.build_context(&"blacksmith", &"weapon_shop_interior")
+	_expect_true(
+		bool(blacksmith_delivery[&"has_delivery_items"]),
+		"blacksmith context detects the wood bundle delivery items"
+	)
+	controller.handle_action(_make_action(&"deliver_quest_items"), blacksmith_delivery)
+	_expect_equal(
+		GameState.hero.inventory.get_quest_item_count("wood_bundle"),
+		0,
+		"delivering the wood bundle removes it from inventory"
+	)
+	_expect_true(manager.is_quest_ready(1025), "wood bundle delivery readies quest 1025")
+	var blacksmith_turn_in_1025 := controller.build_context(&"blacksmith", &"weapon_shop_interior")
+	controller.handle_action(_make_action(&"turn_in_quest"), blacksmith_turn_in_1025)
+	_expect_true(manager.is_quest_completed(1025), "blacksmith completes quest 1025")
+	_expect_equal(
+		GameState.hero.inventory.weapon_stash.size(),
+		starting_weapon_count + 2,
+		"blacksmith quest 1025 grants a second weapon"
+	)
+	_expect_equal(
+		GameState.hero.inventory.get_quest_item_count("inn_key"),
+		1,
+		"blacksmith quest 1025 grants the brass inn key"
+	)
+	_expect_true(manager.is_quest_offered(1030), "quest 1025 unlocks the delivery quest")
+
+	var blacksmith_offer_1030 := controller.build_context(&"blacksmith", &"weapon_shop_interior")
+	controller.handle_action(_make_action(&"accept_quest"), blacksmith_offer_1030)
 	var innkeeper_delivery := controller.build_context(&"innkeeper", &"inn_interior")
 	_expect_true(
 		bool(innkeeper_delivery[&"has_delivery_items"]),
@@ -542,6 +575,7 @@ func _test_authored_side_quest_chain() -> void:
 	)
 	_expect_not_null(quest_1010, "quest 1010 remains registered")
 	_expect_not_null(quest_1020, "quest 1020 remains registered")
+	_expect_not_null(quest_1025, "quest 1025 remains registered")
 	controller.clear_quest_manager()
 
 func _test_existing_save_discovers_side_quest_chain() -> void:
