@@ -155,25 +155,22 @@ func _bind_npcs() -> void:
 		npc.dialogue_requested.connect(_on_npc_dialogue_requested)
 		npc.service_requested.connect(_on_npc_service_requested)
 
-func _on_npc_dialogue_requested(npc_id: StringName, conversation: DialogueConversation) -> void:
+func _on_npc_dialogue_requested(npc_id: StringName) -> void:
 	var npc: NpcActor = _npcs_by_id.get(npc_id)
 	if npc == null:
 		push_warning("Dialogue requested for unknown NPC '%s'." % npc_id)
 		return
-	if conversation == null:
-		push_warning("NPC '%s' requested null dialogue." % npc_id)
-		return
-	if npc.data == null or npc.data.dialogue != conversation:
-		push_warning(
-			"NPC '%s' requested an unregistered conversation." % npc_id
-		)
+	var sequences := npc.data.dialogue_sequences
+	var sequence := _npc_quest_controller.resolve_dialogue_sequence(npc_id, _get_dialogue_location_id(), sequences)
+	if sequence == null:
+		push_warning("Dialogue requested for NPC '%s' missing dialogue sequence." % npc_id)
 		return
 	var world_hud := ScreenManager.get_world_hud() as WorldHUD
 	if world_hud == null:
 		push_warning("Dialogue requested without an available WorldHUD.")
 		return
 	var context := _npc_quest_controller.build_context(npc_id, _get_dialogue_location_id())
-	if world_hud.start_dialogue(conversation, context):
+	if world_hud.start_dialogue(sequence, context):
 		_active_dialogue_npc_id = npc_id
 
 func _on_dialogue_action_requested(action: DialogueAction, context: Dictionary[StringName, Variant]) -> void:

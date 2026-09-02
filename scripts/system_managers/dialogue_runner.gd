@@ -8,16 +8,18 @@ enum FinishReason {
 	INVALID_DATA,
 }
 
-signal conversation_started(conversation: DialogueConversation)
+signal dialogue_started(conversation: DialogueConversation)
+signal sequence_started(sequence: DialogueSequence)
 signal line_changed(entry: DialogueEntry, page_index: int)
 signal responses_changed(responses: Array[DialogueResponse])
 signal response_selected(response: DialogueResponse)
 signal action_requested(action: DialogueAction, context: Dictionary[StringName, Variant])
-signal conversation_finished(reason: FinishReason)
+signal dialogue_finished(reason: FinishReason)
 
 var condition_evaluator: DialogueConditionEvaluator = DialogueConditionEvaluator.new()
 
 var _conversation: DialogueConversation
+var _sequence: DialogueSequence
 var _current_entry: DialogueEntry
 var _page_index: int = 0
 var _entries: Dictionary[StringName, DialogueEntry] = {}
@@ -26,7 +28,7 @@ var _context: Dictionary[StringName, Variant] = {}
 var _validation_errors: PackedStringArray = []
 
 func is_running() -> bool:
-	return _conversation != null
+	return _conversation != null or _sequence != null
 
 func update_context(context: Dictionary[StringName, Variant]) -> void:
 	if not is_running():
@@ -44,8 +46,32 @@ func start(conversation: DialogueConversation, context: Dictionary[StringName, V
 		return false
 	_conversation = conversation
 	_context = context.duplicate()
-	conversation_started.emit(conversation)
+	dialogue_started.emit(conversation)
 	_enter_entry(conversation.start_entry_id)
+	return true
+
+func start_sequence(sequence: DialogueSequence, context: Dictionary[StringName, Variant]) -> bool:
+	if is_running():
+		return false
+	if sequence == null:
+		return false
+	var validation_errors := get_sequence_validation_errors(sequence)
+	if not validation_errors.is_empty():
+		for validation_error: String in validation_errors:
+			push_error(validation_error)
+		_entries.clear()
+		return false
+	var start_entry_id := sequence.get_start_entry_id(context)
+	if start_entry_id.is_empty():
+		return false
+	if not _entries.has(start_entry_id):
+		push_error("Dialogue sequence '%s' resolved to missing start entry '%s'." % [sequence.sequence_id, start_entry_id])
+		_entries.clear()
+		return false
+	_sequence = sequence
+	_context = context.duplicate()
+	sequence_started.emit(sequence)
+	_enter_entry(start_entry_id)
 	return true
 
 func advance() -> void:
@@ -76,9 +102,15 @@ func choose_response(index: int) -> void:
 	_enter_entry(response.next_entry_id)
 
 func cancel() -> void:
-	if _conversation == null or not _conversation.can_cancel:
+	if _conversation != null:
+		if not _conversation.can_cancel:
+			return
+		_finish(FinishReason.CANCELLED)
 		return
-	_finish(FinishReason.CANCELLED)
+	if _sequence != null:
+		if not _sequence.can_cancel:
+			return
+		_finish(FinishReason.CANCELLED)
 
 func abort() -> void:
 	if not is_running():
@@ -128,16 +160,15 @@ func _emit_actions(actions: Array[DialogueAction]) -> void:
 
 func _finish(reason: FinishReason) -> void:
 	_conversation = null
+	_sequence = null
 	_current_entry = null
 	_page_index = 0
 	_entries.clear()
 	_visible_responses.clear()
 	_context.clear()
-	conversation_finished.emit(reason)
+	dialogue_finished.emit(reason)
 
-func get_validation_errors(
-	conversation: DialogueConversation
-) -> PackedStringArray:
+func get_validation_errors(conversation: DialogueConversation) -> PackedStringArray:
 	_validation_errors.clear()
 	_entries.clear()
 	if conversation == null:
@@ -159,6 +190,29 @@ func _build_and_validate_entry_index(conversation: DialogueConversation) -> bool
 		return _record_validation_error("Dialogue '%s' start entry '%s' was not found."
 		 % [conversation.conversation_id, conversation.start_entry_id])
 	for entry: DialogueEntry in conversation.entries:
+		if not _validate_entry(entry):
+			return false
+	return true
+
+func get_sequence_validation_errors(sequence: DialogueSequence) -> PackedStringArray:
+	_validation_errors.clear()
+	_entries.clear()
+	if sequence == null:
+		_validation_errors.append("Dialogue sequence is null.")
+	else:
+		_build_and_validate_sequence_entry_index(sequence)
+	return _validation_errors.duplicate()
+
+func _build_and_validate_sequence_entry_index(sequence: DialogueSequence) -> bool:
+	_entries.clear()
+	if sequence.sequence_id.is_empty():
+		return _record_validation_error("Dialogue sequence has no ID.")
+	if sequence.entries.is_empty():
+		return _record_validation_error("Dialogue sequence '%s' has no entries." % sequence.sequence_id)
+	for entry: DialogueEntry in sequence.entries:
+		if not _index_entry(entry):
+			return false
+	for entry: DialogueEntry in sequence.entries:
 		if not _validate_entry(entry):
 			return false
 	return true

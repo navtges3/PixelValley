@@ -73,6 +73,31 @@ func build_context(npc_id: StringName, location_id: StringName) -> Dictionary[St
 	context[&"has_delivery_items"] = _has_delivery_items(npc_id)
 	return context
 
+func resolve_dialogue_sequence(npc_id: StringName, location_id: StringName, sequences: Array[DialogueSequence]) -> DialogueSequence:
+	if _manager == null:
+		return null
+	var highest_sequence: DialogueSequence = null
+	for sequence: DialogueSequence in sequences:
+		if sequence.quest_id < 0:
+			continue
+		var quest_state := _manager.get_quest_state(sequence.quest_id)
+		if not sequence.has_state(quest_state):
+			continue
+		if highest_sequence == null or highest_sequence.priority < sequence.priority:
+			highest_sequence = sequence
+	if highest_sequence != null:
+		return highest_sequence
+	return _find_ambient_dialogue_sequence(sequences)
+
+func _find_ambient_dialogue_sequence(sequences: Array[DialogueSequence]) -> DialogueSequence:
+	var highest_sequence: DialogueSequence = null
+	for sequence: DialogueSequence in sequences:
+		if sequence.quest_id >= 0:
+			continue
+		if highest_sequence == null or highest_sequence.priority < sequence.priority:
+			highest_sequence = sequence
+	return highest_sequence
+
 func handle_action(action: DialogueAction, context: Dictionary[StringName, Variant]) -> Array[RewardEntry]:
 	var rewards: Array[RewardEntry] = []
 	if action == null:

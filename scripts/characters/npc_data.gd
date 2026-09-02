@@ -21,6 +21,7 @@ enum ContentStatus {
 
 @export_category("Interaction")
 @export var dialogue: DialogueConversation
+@export var dialogue_sequences: Array[DialogueSequence] = []
 @export var service_id: StringName = &""
 @export var quest_ids: Array[int] = []
 

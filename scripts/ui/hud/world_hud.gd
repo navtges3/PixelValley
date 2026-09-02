@@ -30,12 +30,12 @@ var _reward_flow: RewardFlow = RewardFlow.NONE
 
 func _ready() -> void:
 	dialogue_runner = DialogueRunner.new()
-	dialogue_runner.conversation_started.connect(_on_conversation_started)
+	dialogue_runner.dialogue_started.connect(_on_dialogue_started)
 	dialogue_runner.line_changed.connect(_on_dialogue_line_changed)
 	dialogue_runner.responses_changed.connect(dialogue_window.show_responses)
 	dialogue_runner.response_selected.connect(_on_dialogue_response_selected)
 	dialogue_runner.action_requested.connect(dialogue_action_requested.emit)
-	dialogue_runner.conversation_finished.connect(_on_conversation_finished)
+	dialogue_runner.dialogue_finished.connect(_on_dialogue_finished)
 	dialogue_window.advance_requested.connect(dialogue_runner.advance)
 	dialogue_window.response_requested.connect(dialogue_runner.choose_response)
 	dialogue_window.cancel_requested.connect(dialogue_runner.cancel)
@@ -83,6 +83,9 @@ func start_dialogue(conversation: DialogueConversation, context: Dictionary[Stri
 		return false
 	return dialogue_runner.start(conversation, context)
 
+func start_dialogue_sequence(sequence: DialogueSequence, context: Dictionary[StringName, Variant]) -> bool:
+	return dialogue_runner.start_sequence(sequence, context)
+
 func update_dialogue_context(context: Dictionary[StringName, Variant]) -> void:
 	dialogue_runner.update_context(context)
 
@@ -112,7 +115,7 @@ func queue_acquisition_rewards(rewards: Array[RewardEntry]) -> void:
 func queue_quest_rewards(rewards: Array[RewardEntry]) -> void:
 	_pending_quest_rewards = rewards.duplicate()
 
-func _on_conversation_started(_conversation: DialogueConversation) -> void:
+func _on_dialogue_started(_conversation: DialogueConversation) -> void:
 	dialogue_window.open()
 	_play_dialogue_sfx(dialogue_open_sfx_id)
 	dialogue_opened.emit()
@@ -124,7 +127,7 @@ func _on_dialogue_line_changed(entry: DialogueEntry, page_index: int) -> void:
 func _on_dialogue_response_selected(_response: DialogueResponse) -> void:
 	_play_dialogue_sfx(dialogue_response_sfx_id)
 
-func _on_conversation_finished(reason: DialogueRunner.FinishReason) -> void:
+func _on_dialogue_finished(reason: DialogueRunner.FinishReason) -> void:
 	dialogue_window.close()
 	_play_dialogue_sfx(dialogue_close_sfx_id)
 	if not _pending_quest_rewards.is_empty():

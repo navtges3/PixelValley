@@ -299,30 +299,20 @@ func _test_unknown_entry_id_is_rejected() -> void:
 	_expect_contains(errors[0], "was not found", "unknown entry error identifies the missing ID")
 	_expect_equal(runner.is_running(), false, "unknown entry validation does not trap the runner")
 
-func _make_context_condition(
-	key: StringName,
-	value: Variant
-) -> DialogueCondition:
+func _make_context_condition(key: StringName, value: Variant) -> DialogueCondition:
 	var condition := DialogueCondition.new()
 	condition.condition_id = &"context_equals"
 	condition.parameters[&"key"] = key
 	condition.parameters[&"value"] = value
 	return condition
 
-func _make_entry(
-	identity: StringName,
-	pages: Array[String]
-) -> DialogueEntry:
+func _make_entry(identity: StringName, pages: Array[String]) -> DialogueEntry:
 	var entry := DialogueEntry.new()
 	entry.entry_id = identity
 	entry.pages = pages
 	return entry
 
-func _make_conversation(
-	entries: Array[DialogueEntry],
-	start_entry_id: StringName,
-	can_cancel: bool = true
-) -> DialogueConversation:
+func _make_conversation(entries: Array[DialogueEntry], start_entry_id: StringName, can_cancel: bool = true) -> DialogueConversation:
 	var conversation := DialogueConversation.new()
 	conversation.conversation_id = &"test_conversation"
 	conversation.start_entry_id = start_entry_id
@@ -332,11 +322,11 @@ func _make_conversation(
 
 func _make_connected_runner() -> DialogueRunner:
 	var runner := DialogueRunner.new()
-	runner.conversation_started.connect(_on_conversation_started)
+	runner.dialogue_started.connect(_on_dialogue_started)
 	runner.line_changed.connect(_on_line_changed)
 	runner.responses_changed.connect(_on_responses_changed)
 	runner.action_requested.connect(_on_action_requested)
-	runner.conversation_finished.connect(_on_conversation_finished)
+	runner.dialogue_finished.connect(_on_dialogue_finished)
 	return runner
 
 func _reset_signal_captures() -> void:
@@ -346,29 +336,17 @@ func _reset_signal_captures() -> void:
 	_finish_reasons.clear()
 	_started_count = 0
 
-func _on_conversation_started(
-	_conversation: DialogueConversation
-) -> void:
+func _on_dialogue_started(_conversation: DialogueConversation) -> void:
 	_started_count += 1
 
-func _on_line_changed(
-	entry: DialogueEntry,
-	page_index: int
-) -> void:
+func _on_line_changed(entry: DialogueEntry, page_index: int) -> void:
 	_visited_pages.append("%s:%d" % [entry.entry_id, page_index])
 
-func _on_responses_changed(
-	responses: Array[DialogueResponse]
-) -> void:
+func _on_responses_changed(responses: Array[DialogueResponse]) -> void:
 	_response_counts.append(responses.size())
 
-func _on_action_requested(
-	action: DialogueAction,
-	_context: Dictionary[StringName, Variant]
-) -> void:
+func _on_action_requested(action: DialogueAction, _context: Dictionary[StringName, Variant]) -> void:
 	_action_ids.append(action.action_id)
 
-func _on_conversation_finished(
-	reason: DialogueRunner.FinishReason
-) -> void:
+func _on_dialogue_finished(reason: DialogueRunner.FinishReason) -> void:
 	_finish_reasons.append(reason)

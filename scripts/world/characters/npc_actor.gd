@@ -14,7 +14,7 @@ const QUEST_READY_TEXTURE := preload(
 enum Facing { DOWN, LEFT, RIGHT, UP }
 enum Status { NONE, NEW_CONVERSATION, QUEST_AVAILABLE, QUEST_READY }
 
-signal dialogue_requested(npc_id: StringName, conversation: DialogueConversation)
+signal dialogue_requested(npc_id: StringName)
 signal service_requested(npc_id: StringName, service_id: StringName)
 signal status_changed(status: Status)
 
@@ -101,6 +101,6 @@ func _on_interacted() -> void:
 	if data == null:
 		return
 	if data.dialogue != null:
-		dialogue_requested.emit(data.npc_id, data.dialogue)
+		dialogue_requested.emit(data.npc_id)
 	elif not data.service_id.is_empty():
 		service_requested.emit(data.npc_id, data.service_id)
