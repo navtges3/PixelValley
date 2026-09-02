@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://bvrdh0sqeu4ny" path="res://scripts/characters/npc_data.gd" id="2_3xkad"]
 [ext_resource type="Script" uid="uid://bc3i162s5h001" path="res://scripts/data/dialogue/dialogue_sequence.gd" id="2_181vf"]
 [ext_resource type="Texture2D" uid="uid://lygp75a7owqn" path="res://assets/characters/npcs/weapon_shopkeep.png" id="3_mhb4y"]
-[ext_resource type="Resource" uid="uid://5o0vkfwh385q" path="res://resources/dialogue/rowan_conversation.tres" id="4_dialogue"]
+[ext_resource type="Resource" path="res://resources/dialogue/sequences/rowan_ambient.tres" id="5_ambient"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_0h6kb"]
 atlas = ExtResource("3_mhb4y")
@@ -51,5 +51,5 @@ display_name = "Rowan"
 role = "Village watchman"
 location_id = &"village"
 world_visual = SubResource("SpriteFrames_imqyq")
-dialogue = ExtResource("4_dialogue")
+dialogue_sequences = Array[ExtResource("2_181vf")]([ExtResource("5_ambient")])
 metadata/_custom_type_script = "uid://bvrdh0sqeu4ny"

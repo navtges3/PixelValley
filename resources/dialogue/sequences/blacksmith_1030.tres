@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="DialogueSequence" format=3]
+
+[ext_resource type="Resource" path="res://resources/dialogue/quests/blacksmith_quest_conversation.tres" id="1_source"]
+[ext_resource type="Script" path="res://scripts/data/dialogue/dialogue_sequence.gd" id="2_script"]
+
+[resource]
+script = ExtResource("2_script")
+sequence_id = &"blacksmith_quest_1030"
+quest_id = 1030
+state_entries = {
+"offered": &"quest_1030_offered",
+"active": &"quest_1030_active"
+}
+source_conversation = ExtResource("1_source")

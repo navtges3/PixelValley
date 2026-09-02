@@ -221,9 +221,10 @@ func _build_and_validate_sequence_entry_index(sequence: DialogueSequence) -> boo
 	_entries.clear()
 	if sequence.sequence_id.is_empty():
 		return _record_validation_error("Dialogue sequence has no ID.")
-	if sequence.entries.is_empty():
+	var sequence_entries := sequence.get_entries()
+	if sequence_entries.is_empty():
 		return _record_validation_error("Dialogue sequence '%s' has no entries." % sequence.sequence_id)
-	for entry: DialogueEntry in sequence.entries:
+	for entry: DialogueEntry in sequence_entries:
 		if not _index_entry(entry):
 			return false
 	if sequence.quest_id < 0:
@@ -242,7 +243,7 @@ func _build_and_validate_sequence_entry_index(sequence: DialogueSequence) -> boo
 				return _record_validation_error("Dialogue sequence '%s' state '%s' points to missing entry '%s'." % [sequence.sequence_id, state, target_entry_id])
 		if not sequence.start_entry_id.is_empty() and not _entries.has(sequence.start_entry_id):
 			return _record_validation_error("Dialogue sequence '%s' start entry '%s' was not found." % [sequence.sequence_id, sequence.start_entry_id])
-	for entry: DialogueEntry in sequence.entries:
+	for entry: DialogueEntry in sequence_entries:
 		if not _validate_entry(entry):
 			return false
 	return true

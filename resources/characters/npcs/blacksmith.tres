@@ -1,6 +1,9 @@
 [gd_resource type="Resource" script_class="NpcData" format=3 uid="uid://fx4djpacrcah"]
 
-[ext_resource type="Resource" uid="uid://csos2nnx6kr17" path="res://resources/dialogue/quests/blacksmith_quest_conversation.tres" id="1_0h6kb"]
+[ext_resource type="Resource" path="res://resources/dialogue/sequences/blacksmith_ambient.tres" id="7_ambient"]
+[ext_resource type="Resource" path="res://resources/dialogue/sequences/blacksmith_1020.tres" id="8_quest_1020"]
+[ext_resource type="Resource" path="res://resources/dialogue/sequences/blacksmith_1025.tres" id="9_quest_1025"]
+[ext_resource type="Resource" path="res://resources/dialogue/sequences/blacksmith_1030.tres" id="10_quest_1030"]
 [ext_resource type="Script" uid="uid://bvrdh0sqeu4ny" path="res://scripts/characters/npc_data.gd" id="1_q6ltq"]
 [ext_resource type="Texture2D" uid="uid://lygp75a7owqn" path="res://assets/characters/npcs/weapon_shopkeep.png" id="2_dju14"]
 [ext_resource type="Script" uid="uid://bc3i162s5h001" path="res://scripts/data/dialogue/dialogue_sequence.gd" id="2_fa03n"]
@@ -51,7 +54,7 @@ display_name = "Garrick Stone"
 role = "Blacksmith"
 location_id = &"weapon_shop_interior"
 world_visual = SubResource("SpriteFrames_fa03n")
-dialogue = ExtResource("1_0h6kb")
+dialogue_sequences = Array[ExtResource("2_fa03n")]([ExtResource("8_quest_1020"), ExtResource("9_quest_1025"), ExtResource("10_quest_1030"), ExtResource("7_ambient")])
 service_id = &"weapon_shop"
-quest_ids = Array[int]([1020, 1030])
+quest_ids = Array[int]([1020, 1025, 1030])
 metadata/_custom_type_script = "uid://bvrdh0sqeu4ny"
