@@ -1,4 +1,4 @@
-Pixel Valley — Agent Development Guide
+Please do not Pixel Valley — Agent Development Guide
 
 1. Project Overview
 

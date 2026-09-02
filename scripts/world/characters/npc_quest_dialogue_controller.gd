@@ -57,6 +57,7 @@ func build_context(npc_id: StringName, location_id: StringName, quest_id: int = 
 		&"location_id": location_id,
 		&"quest_id": -1,
 		&"quest_state": &"unavailable",
+		&"quest_states": _get_quest_states(),
 		&"has_delivery_items": false,
 		&"main_progression": _get_main_progression(),
 		&"dialogue_facts": {},
@@ -77,29 +78,21 @@ func build_context(npc_id: StringName, location_id: StringName, quest_id: int = 
 	context[&"has_delivery_items"] = _has_delivery_items(npc_id)
 	return context
 
-func resolve_dialogue_sequence(npc_id: StringName, location_id: StringName, sequences: Array[DialogueSequence]) -> DialogueSequence:
-	if _manager != null:
-		var highest_sequence: DialogueSequence = null
-		for sequence: DialogueSequence in sequences:
-			if sequence.quest_id < 0:
-				continue
-			var quest_state := _manager.get_quest_state(sequence.quest_id)
-			if not sequence.has_state(quest_state):
-				continue
-			if highest_sequence == null or highest_sequence.priority < sequence.priority:
-				highest_sequence = sequence
-		if highest_sequence != null:
-			return highest_sequence
-	return _find_ambient_dialogue_sequence(sequences)
-
-func _find_ambient_dialogue_sequence(sequences: Array[DialogueSequence]) -> DialogueSequence:
-	var highest_sequence: DialogueSequence = null
-	for sequence: DialogueSequence in sequences:
-		if sequence.quest_id >= 0:
-			continue
-		if highest_sequence == null or highest_sequence.priority < sequence.priority:
-			highest_sequence = sequence
-	return highest_sequence
+func _get_quest_states() -> Dictionary[int, StringName]:
+	var states: Dictionary[int, StringName] = {}
+	if _manager == null:
+		return states
+	for quest: Quest in _manager.locked_quests:
+		states[quest.id] = STATE_CONTEXT[QuestManager.LifecycleState.LOCKED]
+	for quest: Quest in _manager.offered_quests:
+		states[quest.id] = STATE_CONTEXT[QuestManager.LifecycleState.OFFERED]
+	for quest: Quest in _manager.active_quests:
+		states[quest.id] = STATE_CONTEXT[QuestManager.LifecycleState.ACTIVE]
+	for quest: Quest in _manager.ready_quests:
+		states[quest.id] = STATE_CONTEXT[QuestManager.LifecycleState.READY]
+	for quest: Quest in _manager.completed_quests:
+		states[quest.id] = STATE_CONTEXT[QuestManager.LifecycleState.COMPLETED]
+	return states
 
 func handle_action(action: DialogueAction, context: Dictionary[StringName, Variant]) -> Array[RewardEntry]:
 	var rewards: Array[RewardEntry] = []

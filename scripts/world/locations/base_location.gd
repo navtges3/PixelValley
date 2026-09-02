@@ -160,18 +160,24 @@ func _on_npc_dialogue_requested(npc_id: StringName) -> void:
 	if npc == null:
 		push_warning("Dialogue requested for unknown NPC '%s'." % npc_id)
 		return
-	var sequences := npc.data.dialogue_sequences
-	var sequence := _npc_quest_controller.resolve_dialogue_sequence(npc_id, _get_dialogue_location_id(), sequences)
-	if sequence == null:
-		push_warning("Dialogue requested for NPC '%s' missing dialogue sequence." % npc_id)
-		return
 	var world_hud := ScreenManager.get_world_hud() as WorldHUD
 	if world_hud == null:
 		push_warning("Dialogue requested without an available WorldHUD.")
 		return
-	var context := _npc_quest_controller.build_context(npc_id, _get_dialogue_location_id(), sequence.quest_id)
-	if world_hud.start_dialogue_sequence(sequence, context):
-		_active_dialogue_npc_id = npc_id
+	var context := _npc_quest_controller.build_context(npc_id, _get_dialogue_location_id())
+	var sequences := npc.data.dialogue_sequences
+	var resolver := DialogueRunner.new()
+	var sequence := resolver.resolve_sequence(sequences, context)
+	if sequence != null:
+		context = _npc_quest_controller.build_context(
+			npc_id,
+			_get_dialogue_location_id(),
+			sequence.quest_id
+		)
+		if world_hud.start_dialogue_sequence(sequence, context):
+			_active_dialogue_npc_id = npc_id
+		return
+	push_warning("Dialogue requested for NPC '%s' has no eligible dialogue sequence." % npc_id)
 
 func _on_dialogue_action_requested(action: DialogueAction, context: Dictionary[StringName, Variant]) -> void:
 	if action.action_id == &"open_service":
