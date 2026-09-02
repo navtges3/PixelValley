@@ -100,7 +100,7 @@ func _get_facing_animation() -> StringName:
 func _on_interacted() -> void:
 	if data == null:
 		return
-	if data.dialogue != null:
+	if data.dialogue != null or not data.dialogue_sequences.is_empty():
 		dialogue_requested.emit(data.npc_id)
 	elif not data.service_id.is_empty():
 		service_requested.emit(data.npc_id, data.service_id)

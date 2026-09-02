@@ -173,16 +173,34 @@ func _test_dialogue_interaction() -> void:
 		[&"dialogue_npc"],
 		"dialogue NPC emits its stable ID"
 	)
-	_expect_equal(
-		_dialogue_conversations,
-		[conversation],
-		"dialogue NPC emits its configured conversation"
-	)
 	_expect_true(
 		_requested_services.is_empty(),
 		"dialogue-only NPC does not request a service"
 	)
 	npc.free()
+
+	_reset_signal_captures()
+	var sequence := DialogueSequence.new()
+	sequence.sequence_id = &"sequence_npc_test"
+	var seq_data := _make_data(&"sequence_npc")
+	seq_data.dialogue = null
+	seq_data.dialogue_sequences.append(sequence)
+	var seq_npc := _spawn_actor(seq_data)
+	seq_npc.dialogue_requested.connect(_on_dialogue_requested)
+	seq_npc.service_requested.connect(_on_service_requested)
+
+	seq_npc.interact_area.interacted.emit()
+
+	_expect_equal(
+		_dialogue_ids,
+		[&"sequence_npc"],
+		"sequence-based NPC emits its stable ID"
+	)
+	_expect_true(
+		_requested_services.is_empty(),
+		"sequence-only NPC does not request a service"
+	)
+	seq_npc.free()
 
 func _test_service_interaction() -> void:
 	_reset_signal_captures()
@@ -204,10 +222,6 @@ func _test_service_interaction() -> void:
 		[&"test_service"],
 		"service NPC emits its configured service"
 	)
-	_expect_true(
-		_dialogue_conversations.is_empty(),
-		"service-only NPC does not request dialogue"
-	)
 	npc.free()
 
 func _test_dialogue_takes_priority() -> void:
@@ -224,8 +238,8 @@ func _test_dialogue_takes_priority() -> void:
 	npc.interact_area.interacted.emit()
 
 	_expect_equal(
-		_dialogue_conversations,
-		[conversation],
+		_dialogue_ids,
+		[&"hybrid_npc"],
 		"dialogue takes priority when an NPC also has a service"
 	)
 	_expect_true(
@@ -436,12 +450,8 @@ func _reset_signal_captures() -> void:
 	_requested_services.clear()
 	_status_changes.clear()
 
-func _on_dialogue_requested(
-	npc_id: StringName,
-	conversation: DialogueConversation
-) -> void:
+func _on_dialogue_requested(npc_id: StringName) -> void:
 	_dialogue_ids.append(npc_id)
-	_dialogue_conversations.append(conversation)
 
 func _on_service_requested(
 	npc_id: StringName,

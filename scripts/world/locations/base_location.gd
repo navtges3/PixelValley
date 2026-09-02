@@ -169,8 +169,8 @@ func _on_npc_dialogue_requested(npc_id: StringName) -> void:
 	if world_hud == null:
 		push_warning("Dialogue requested without an available WorldHUD.")
 		return
-	var context := _npc_quest_controller.build_context(npc_id, _get_dialogue_location_id())
-	if world_hud.start_dialogue(sequence, context):
+	var context := _npc_quest_controller.build_context(npc_id, _get_dialogue_location_id(), sequence.quest_id)
+	if world_hud.start_dialogue_sequence(sequence, context):
 		_active_dialogue_npc_id = npc_id
 
 func _on_dialogue_action_requested(action: DialogueAction, context: Dictionary[StringName, Variant]) -> void:
@@ -182,12 +182,9 @@ func _on_dialogue_action_requested(action: DialogueAction, context: Dictionary[S
 	if world_hud == null:
 		return
 	var npc_id := StringName(context.get(&"npc_id", &""))
+	var quest_id := int(context.get(&"quest_id", -1))
 	world_hud.update_dialogue_context(
-		_npc_quest_controller.build_context(
-			npc_id,
-			_get_dialogue_location_id()
-		)
-	)
+		_npc_quest_controller.build_context(npc_id, _get_dialogue_location_id(), quest_id))
 	if not rewards.is_empty():
 		world_hud.queue_quest_rewards(rewards)
 

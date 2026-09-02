@@ -103,7 +103,7 @@ func _spawn_actor(data: NpcData) -> NpcActor:
 	add_child(npc)
 	return npc
 
-func _on_dialogue_requested(npc_id: StringName, _conversation: DialogueConversation) -> void:
+func _on_dialogue_requested(npc_id: StringName) -> void:
 	_dialogue_npc_ids.append(npc_id)
 
 func _on_service_requested(npc_id: StringName, _service_id: StringName) -> void:

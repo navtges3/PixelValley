@@ -18,6 +18,10 @@ func run_tests() -> int:
 	_test_cancel_and_abort()
 	_test_empty_pages_are_rejected()
 	_test_unknown_entry_id_is_rejected()
+	_test_sequence_state_selection()
+	_test_ambient_sequence_execution()
+	_test_sequence_cancel_and_abort()
+	_test_sequence_validation_errors()
 	return _finish_test_run("DialogueRunner tests")
 
 func _test_authored_progression_conversations() -> void:
@@ -299,6 +303,176 @@ func _test_unknown_entry_id_is_rejected() -> void:
 	_expect_contains(errors[0], "was not found", "unknown entry error identifies the missing ID")
 	_expect_equal(runner.is_running(), false, "unknown entry validation does not trap the runner")
 
+func _test_sequence_state_selection() -> void:
+	var offered_entry := _make_entry(&"entry_offered", ["I have a task for you."])
+	var active_entry := _make_entry(&"entry_active", ["How goes the task?"])
+	var ready_entry := _make_entry(&"entry_ready", ["You completed it!"])
+	var completed_entry := _make_entry(&"entry_completed", ["Thanks again."])
+	var locked_entry := _make_entry(&"entry_locked", ["Not ready yet."])
+	var default_entry := _make_entry(&"entry_default", ["Greetings traveler."])
+
+	var sequence := DialogueSequence.new()
+	sequence.sequence_id = &"quest_seq_1020"
+	sequence.quest_id = 1020
+	sequence.priority = 10
+	sequence.start_entry_id = &"entry_default"
+	sequence.entries = [offered_entry, active_entry, ready_entry, completed_entry, locked_entry, default_entry]
+	sequence.state_entries = {
+		&"offered": &"entry_offered",
+		&"active": &"entry_active",
+		&"ready": &"entry_ready",
+		&"completed": &"entry_completed",
+		&"locked": &"entry_locked",
+	}
+
+	_expect_equal(sequence.get_entry(&"entry_offered"), offered_entry, "get_entry returns the matching entry")
+	_expect_null(sequence.get_entry(&"missing_entry"), "get_entry returns null for unknown entry")
+
+	_expect_true(sequence.has_state(QuestManager.LifecycleState.OFFERED), "has_state returns true for offered")
+	_expect_true(sequence.has_state(QuestManager.LifecycleState.ACTIVE), "has_state returns true for active")
+	_expect_true(sequence.has_state(QuestManager.LifecycleState.READY), "has_state returns true for ready")
+	_expect_true(sequence.has_state(QuestManager.LifecycleState.COMPLETED), "has_state returns true for completed")
+	_expect_true(sequence.has_state(QuestManager.LifecycleState.LOCKED), "has_state returns true for locked")
+
+	var states: Array[StringName] = [&"offered", &"active", &"ready", &"completed", &"locked"]
+	for state_name: StringName in states:
+		_reset_signal_captures()
+		var runner := _make_connected_runner()
+		var context: Dictionary[StringName, Variant] = {
+			&"quest_id": 1020,
+			&"quest_state": state_name,
+		}
+		_expect_true(
+			runner.start_sequence(sequence, context),
+			"sequence starts for state '%s'" % state_name
+		)
+		_expect_equal(
+			_visited_pages,
+			["entry_%s:0" % state_name],
+			"sequence selects 'entry_%s' for state '%s'" % [state_name, state_name]
+		)
+		runner.abort()
+
+	_reset_signal_captures()
+	var fallback_runner := _make_connected_runner()
+	var fallback_context: Dictionary[StringName, Variant] = {
+		&"quest_id": 1020,
+		&"quest_state": &"unknown_state",
+	}
+	_expect_true(fallback_runner.start_sequence(sequence, fallback_context), "sequence starts with fallback entry")
+	_expect_equal(_visited_pages, ["entry_default:0"], "unmapped state falls back to start_entry_id")
+	fallback_runner.abort()
+
+func _test_ambient_sequence_execution() -> void:
+	_reset_signal_captures()
+	var start_entry := _make_entry(&"start", ["Hello.", "Need anything?"])
+	var bye_entry := _make_entry(&"bye", ["Farewell."])
+
+	var bye_response := DialogueResponse.new()
+	bye_response.text = "Goodbye."
+	bye_response.next_entry_id = &"bye"
+	var bye_action := DialogueAction.new()
+	bye_action.action_id = &"farewell_action"
+	bye_response.actions.append(bye_action)
+	start_entry.responses.append(bye_response)
+
+	var sequence := DialogueSequence.new()
+	sequence.sequence_id = &"ambient_seq"
+	sequence.quest_id = -1
+	sequence.start_entry_id = &"start"
+	sequence.entries = [start_entry, bye_entry]
+
+	var runner := _make_connected_runner()
+	_expect_true(runner.start_sequence(sequence, {}), "ambient sequence starts")
+	runner.advance()
+	runner.advance()
+	_expect_equal(_response_counts, [1], "responses presented")
+	runner.choose_response(0)
+	runner.advance()
+
+	_expect_equal(
+		_visited_pages,
+		["start:0", "start:1", "bye:0"],
+		"ambient sequence visits expected pages"
+	)
+	_expect_equal(_action_ids, [&"farewell_action"], "sequence response action emits")
+	_expect_equal(_finish_reasons, [DialogueRunner.FinishReason.COMPLETED], "sequence completes normally")
+
+func _test_sequence_cancel_and_abort() -> void:
+	_reset_signal_captures()
+	var uncancelable_entry := _make_entry(&"start", ["Cannot cancel."])
+	var uncancelable_seq := DialogueSequence.new()
+	uncancelable_seq.sequence_id = &"uncancelable_seq"
+	uncancelable_seq.start_entry_id = &"start"
+	uncancelable_seq.can_cancel = false
+	uncancelable_seq.entries = [uncancelable_entry]
+
+	var runner := _make_connected_runner()
+	runner.start_sequence(uncancelable_seq, {})
+	runner.cancel()
+	_expect_true(runner.is_running(), "uncancelable sequence stays running on cancel()")
+	runner.abort()
+	_expect_equal(runner.is_running(), false, "abort() terminates sequence")
+	_expect_equal(_finish_reasons, [DialogueRunner.FinishReason.INTERRUPTED], "abort emits INTERRUPTED")
+
+	_reset_signal_captures()
+	var cancelable_entry := _make_entry(&"start", ["Can cancel."])
+	var cancelable_seq := DialogueSequence.new()
+	cancelable_seq.sequence_id = &"cancelable_seq"
+	cancelable_seq.start_entry_id = &"start"
+	cancelable_seq.can_cancel = true
+	cancelable_seq.entries = [cancelable_entry]
+
+	var cancel_runner := _make_connected_runner()
+	cancel_runner.start_sequence(cancelable_seq, {})
+	cancel_runner.cancel()
+	_expect_equal(cancel_runner.is_running(), false, "cancelable sequence stops on cancel()")
+	_expect_equal(_finish_reasons, [DialogueRunner.FinishReason.CANCELLED], "cancel emits CANCELLED")
+
+func _test_sequence_validation_errors() -> void:
+	var runner := DialogueRunner.new()
+
+	var null_errors := runner.get_sequence_validation_errors(null)
+	_expect_equal(null_errors.size(), 1, "null sequence produces 1 error")
+
+	var empty_id_seq := DialogueSequence.new()
+	var id_errors := runner.get_sequence_validation_errors(empty_id_seq)
+	_expect_contains(id_errors[0], "has no ID", "empty sequence ID is rejected")
+
+	var empty_entries_seq := DialogueSequence.new()
+	empty_entries_seq.sequence_id = &"seq_no_entries"
+	var entry_errors := runner.get_sequence_validation_errors(empty_entries_seq)
+	_expect_contains(entry_errors[0], "has no entries", "sequence with no entries is rejected")
+
+	var ambient_no_start := DialogueSequence.new()
+	ambient_no_start.sequence_id = &"ambient_no_start"
+	ambient_no_start.entries = [_make_entry(&"entry1", ["Page"])]
+	var ambient_errors := runner.get_sequence_validation_errors(ambient_no_start)
+	_expect_contains(ambient_errors[0], "has no start entry", "ambient sequence with no start entry is rejected")
+
+	var ambient_bad_start := DialogueSequence.new()
+	ambient_bad_start.sequence_id = &"ambient_bad_start"
+	ambient_bad_start.start_entry_id = &"missing"
+	ambient_bad_start.entries = [_make_entry(&"entry1", ["Page"])]
+	var ambient_bad_errors := runner.get_sequence_validation_errors(ambient_bad_start)
+	_expect_contains(ambient_bad_errors[0], "was not found", "ambient sequence with missing start entry is rejected")
+
+	var quest_bad_state := DialogueSequence.new()
+	quest_bad_state.sequence_id = &"quest_bad_state"
+	quest_bad_state.quest_id = 1010
+	quest_bad_state.state_entries = {&"offered": &"missing_entry"}
+	quest_bad_state.entries = [_make_entry(&"known_entry", ["Page"])]
+	var quest_state_errors := runner.get_sequence_validation_errors(quest_bad_state)
+	_expect_contains(quest_state_errors[0], "points to missing entry", "quest sequence with missing state entry target is rejected")
+
+	var valid_seq := DialogueSequence.new()
+	valid_seq.sequence_id = &"valid_seq"
+	valid_seq.quest_id = 1010
+	valid_seq.state_entries = {&"offered": &"known_entry"}
+	valid_seq.entries = [_make_entry(&"known_entry", ["Page"])]
+	var valid_errors := runner.get_sequence_validation_errors(valid_seq)
+	_expect_equal(valid_errors.size(), 0, "valid sequence produces no errors")
+
 func _make_context_condition(key: StringName, value: Variant) -> DialogueCondition:
 	var condition := DialogueCondition.new()
 	condition.condition_id = &"context_equals"
@@ -323,6 +497,7 @@ func _make_conversation(entries: Array[DialogueEntry], start_entry_id: StringNam
 func _make_connected_runner() -> DialogueRunner:
 	var runner := DialogueRunner.new()
 	runner.dialogue_started.connect(_on_dialogue_started)
+	runner.sequence_started.connect(_on_sequence_started)
 	runner.line_changed.connect(_on_line_changed)
 	runner.responses_changed.connect(_on_responses_changed)
 	runner.action_requested.connect(_on_action_requested)
@@ -337,6 +512,9 @@ func _reset_signal_captures() -> void:
 	_started_count = 0
 
 func _on_dialogue_started(_conversation: DialogueConversation) -> void:
+	_started_count += 1
+
+func _on_sequence_started(_sequence: DialogueSequence) -> void:
 	_started_count += 1
 
 func _on_line_changed(entry: DialogueEntry, page_index: int) -> void:

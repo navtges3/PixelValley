@@ -212,6 +212,22 @@ func _build_and_validate_sequence_entry_index(sequence: DialogueSequence) -> boo
 	for entry: DialogueEntry in sequence.entries:
 		if not _index_entry(entry):
 			return false
+	if sequence.quest_id < 0:
+		if sequence.start_entry_id.is_empty():
+			return _record_validation_error("Dialogue sequence '%s' has no start entry." % sequence.sequence_id)
+		if not _entries.has(sequence.start_entry_id):
+			return _record_validation_error("Dialogue sequence '%s' start entry '%s' was not found." % [sequence.sequence_id, sequence.start_entry_id])
+	else:
+		if sequence.state_entries.is_empty() and sequence.start_entry_id.is_empty():
+			return _record_validation_error("Dialogue sequence '%s' has no state entries or start entry." % sequence.sequence_id)
+		for state: StringName in sequence.state_entries:
+			var target_entry_id: StringName = sequence.state_entries[state]
+			if target_entry_id.is_empty():
+				return _record_validation_error("Dialogue sequence '%s' state '%s' has an empty entry ID." % [sequence.sequence_id, state])
+			if not _entries.has(target_entry_id):
+				return _record_validation_error("Dialogue sequence '%s' state '%s' points to missing entry '%s'." % [sequence.sequence_id, state, target_entry_id])
+		if not sequence.start_entry_id.is_empty() and not _entries.has(sequence.start_entry_id):
+			return _record_validation_error("Dialogue sequence '%s' start entry '%s' was not found." % [sequence.sequence_id, sequence.start_entry_id])
 	for entry: DialogueEntry in sequence.entries:
 		if not _validate_entry(entry):
 			return false

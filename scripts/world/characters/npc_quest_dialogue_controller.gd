@@ -51,7 +51,7 @@ func clear_dialogue_state() -> void:
 		_dialogue_state.fact_changed.disconnect(_on_dialogue_fact_changed)
 	_dialogue_state = null
 
-func build_context(npc_id: StringName, location_id: StringName) -> Dictionary[StringName, Variant]:
+func build_context(npc_id: StringName, location_id: StringName, quest_id: int = -1) -> Dictionary[StringName, Variant]:
 	var context: Dictionary[StringName, Variant] = {
 		&"npc_id": npc_id,
 		&"location_id": location_id,
@@ -65,7 +65,11 @@ func build_context(npc_id: StringName, location_id: StringName) -> Dictionary[St
 		context[&"dialogue_facts"] = _dialogue_state.get_facts(npc_id)
 	if _manager == null:
 		return context
-	var quest := _resolve_primary_source_quest(npc_id)
+	var quest: Quest = null
+	if quest_id >= 0:
+		quest = _manager.get_quest_by_id(quest_id)
+	else:
+		quest = _resolve_primary_source_quest(npc_id)
 	if quest != null:
 		var state := _manager.get_quest_state(quest.id)
 		context[&"quest_id"] = quest.id
@@ -74,19 +78,18 @@ func build_context(npc_id: StringName, location_id: StringName) -> Dictionary[St
 	return context
 
 func resolve_dialogue_sequence(npc_id: StringName, location_id: StringName, sequences: Array[DialogueSequence]) -> DialogueSequence:
-	if _manager == null:
-		return null
-	var highest_sequence: DialogueSequence = null
-	for sequence: DialogueSequence in sequences:
-		if sequence.quest_id < 0:
-			continue
-		var quest_state := _manager.get_quest_state(sequence.quest_id)
-		if not sequence.has_state(quest_state):
-			continue
-		if highest_sequence == null or highest_sequence.priority < sequence.priority:
-			highest_sequence = sequence
-	if highest_sequence != null:
-		return highest_sequence
+	if _manager != null:
+		var highest_sequence: DialogueSequence = null
+		for sequence: DialogueSequence in sequences:
+			if sequence.quest_id < 0:
+				continue
+			var quest_state := _manager.get_quest_state(sequence.quest_id)
+			if not sequence.has_state(quest_state):
+				continue
+			if highest_sequence == null or highest_sequence.priority < sequence.priority:
+				highest_sequence = sequence
+		if highest_sequence != null:
+			return highest_sequence
 	return _find_ambient_dialogue_sequence(sequences)
 
 func _find_ambient_dialogue_sequence(sequences: Array[DialogueSequence]) -> DialogueSequence:
