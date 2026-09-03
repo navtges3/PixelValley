@@ -1,15 +1,16 @@
-[gd_resource type="Resource" script_class="DialogueSequence" format=3]
+[gd_resource type="Resource" script_class="DialogueSequence" format=3 uid="uid://b478mes8x7fl3"]
 
-[ext_resource type="Resource" path="res://resources/dialogue/quests/alchemist_quest_conversation.tres" id="1_source"]
-[ext_resource type="Script" path="res://scripts/data/dialogue/dialogue_sequence.gd" id="2_script"]
+[ext_resource type="Script" uid="uid://de2gtyvn62a4q" path="res://scripts/data/dialogue/dialogue_entry.gd" id="1_j1chp"]
+[ext_resource type="Resource" uid="uid://bggdb2svwljrr" path="res://resources/dialogue/quests/alchemist_quest_conversation.tres" id="1_source"]
+[ext_resource type="Script" uid="uid://bc3i162s5h001" path="res://scripts/data/dialogue/dialogue_sequence.gd" id="2_script"]
 
 [resource]
 script = ExtResource("2_script")
 sequence_id = &"alchemist_quest_1010"
 quest_id = 1010
-state_entries = {
-"active": &"quest_1010_active",
-"ready": &"quest_1010_ready",
-"completed": &"quest_1010_rewarded"
-}
+state_entries = Dictionary[StringName, StringName]({
+&"active": &"quest_1010_active",
+&"completed": &"quest_1010_rewarded",
+&"ready": &"quest_1010_ready"
+})
 source_conversation = ExtResource("1_source")

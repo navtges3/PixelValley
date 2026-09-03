@@ -1,15 +1,16 @@
-[gd_resource type="Resource" script_class="DialogueSequence" format=3]
+[gd_resource type="Resource" script_class="DialogueSequence" format=3 uid="uid://dhw5pvlh4wy4u"]
 
-[ext_resource type="Resource" path="res://resources/dialogue/quests/blacksmith_quest_conversation.tres" id="1_source"]
-[ext_resource type="Script" path="res://scripts/data/dialogue/dialogue_sequence.gd" id="2_script"]
+[ext_resource type="Script" uid="uid://de2gtyvn62a4q" path="res://scripts/data/dialogue/dialogue_entry.gd" id="1_iylt0"]
+[ext_resource type="Resource" uid="uid://csos2nnx6kr17" path="res://resources/dialogue/quests/blacksmith_quest_conversation.tres" id="1_source"]
+[ext_resource type="Script" uid="uid://bc3i162s5h001" path="res://scripts/data/dialogue/dialogue_sequence.gd" id="2_script"]
 
 [resource]
 script = ExtResource("2_script")
 sequence_id = &"blacksmith_quest_1020"
 quest_id = 1020
-state_entries = {
-"ready": &"quest_1020_ready",
-"active": &"quest_1020_active",
-"completed": &"quest_1020_rewarded"
-}
+state_entries = Dictionary[StringName, StringName]({
+&"active": &"quest_1020_active",
+&"completed": &"quest_1020_rewarded",
+&"ready": &"quest_1020_ready"
+})
 source_conversation = ExtResource("1_source")

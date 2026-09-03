@@ -1,0 +1,48 @@
+[gd_resource type="Resource" script_class="Registry" format=3 uid="uid://dytaiih2dk4lu"]
+
+[ext_resource type="Script" uid="uid://dqtv77mng5dyh" path="res://addons/yard/registry.gd" id="1_dnfo4"]
+
+[resource]
+script = ExtResource("1_dnfo4")
+_version = 2
+_scan_rulesets = Array[Dictionary]([{
+&"allowed_file_extensions": Array[String]([".tres"]),
+&"class_restrictions": Array[StringName]([]),
+&"recursive_scan": false,
+&"scan_directories": Array[String]([]),
+&"scan_regex_exclude": "",
+&"scan_regex_include": ""
+}])
+_uids_to_string_ids = Dictionary[StringName, StringName]({
+&"uid://63cprmggavo2": &"alchemist_ambient",
+&"uid://64bdjq7ct18k": &"alchemist_1020",
+&"uid://b478mes8x7fl3": &"alchemist_1010",
+&"uid://c31uflyif77v7": &"mara_1010",
+&"uid://c6ibl280g88eh": &"innkeeper_ambient",
+&"uid://c7bjjhpdribra": &"mara_ambient",
+&"uid://cho4cgsn7qd8c": &"blacksmith_1025",
+&"uid://cpjeomh6tfiuh": &"rowan_ambient",
+&"uid://dgt0uis1d64tt": &"oren_ambient",
+&"uid://dhw5pvlh4wy4u": &"blacksmith_1020",
+&"uid://dj7s0ab72fan5": &"innkeeper_1030",
+&"uid://dko1v0rbtffq5": &"blacksmith_1030",
+&"uid://x3jhmosj7nr2": &"nessa_ambient"
+})
+_string_ids_to_uids = Dictionary[StringName, StringName]({
+&"alchemist_1010": &"uid://b478mes8x7fl3",
+&"alchemist_1020": &"uid://64bdjq7ct18k",
+&"alchemist_ambient": &"uid://63cprmggavo2",
+&"blacksmith_1020": &"uid://dhw5pvlh4wy4u",
+&"blacksmith_1025": &"uid://cho4cgsn7qd8c",
+&"blacksmith_1030": &"uid://dko1v0rbtffq5",
+&"innkeeper_1030": &"uid://dj7s0ab72fan5",
+&"innkeeper_ambient": &"uid://c6ibl280g88eh",
+&"mara_1010": &"uid://c31uflyif77v7",
+&"mara_ambient": &"uid://c7bjjhpdribra",
+&"nessa_ambient": &"uid://x3jhmosj7nr2",
+&"oren_ambient": &"uid://dgt0uis1d64tt",
+&"rowan_ambient": &"uid://cpjeomh6tfiuh"
+})
+_property_index = Dictionary[StringName, Dictionary]({
+&"sequence_id": {}
+})

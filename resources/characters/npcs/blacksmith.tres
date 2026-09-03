@@ -8,6 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://lygp75a7owqn" path="res://assets/characters/npcs/weapon_shopkeep.png" id="2_dju14"]
 [ext_resource type="Script" uid="uid://bc3i162s5h001" path="res://scripts/data/dialogue/dialogue_sequence.gd" id="2_fa03n"]
 
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_0h6kb"]
 atlas = ExtResource("2_dju14")
 region = Rect2(0, 0, 32, 32)

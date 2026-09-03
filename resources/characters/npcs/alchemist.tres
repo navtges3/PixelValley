@@ -7,6 +7,7 @@
 [ext_resource type="Script" uid="uid://bc3i162s5h001" path="res://scripts/data/dialogue/dialogue_sequence.gd" id="2_ovnb2"]
 [ext_resource type="Texture2D" uid="uid://dg387lc85bt2q" path="res://assets/characters/npcs/potion_shopkeep.png" id="2_yagej"]
 
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_lwysc"]
 atlas = ExtResource("2_yagej")
 region = Rect2(0, 0, 32, 32)

@@ -1,15 +1,16 @@
-[gd_resource type="Resource" script_class="DialogueSequence" format=3]
+[gd_resource type="Resource" script_class="DialogueSequence" format=3 uid="uid://c31uflyif77v7"]
 
-[ext_resource type="Resource" path="res://resources/dialogue/quests/mara_quest_conversation.tres" id="1_source"]
-[ext_resource type="Script" path="res://scripts/data/dialogue/dialogue_sequence.gd" id="2_script"]
+[ext_resource type="Script" uid="uid://de2gtyvn62a4q" path="res://scripts/data/dialogue/dialogue_entry.gd" id="1_a7b1e"]
+[ext_resource type="Resource" uid="uid://cswbs4j8jp5wj" path="res://resources/dialogue/quests/mara_quest_conversation.tres" id="1_source"]
+[ext_resource type="Script" uid="uid://bc3i162s5h001" path="res://scripts/data/dialogue/dialogue_sequence.gd" id="2_script"]
 
 [resource]
 script = ExtResource("2_script")
 sequence_id = &"mara_quest_1010"
 quest_id = 1010
-state_entries = {
-"offered": &"offered",
-"active": &"active",
-"completed": &"completed"
-}
+state_entries = Dictionary[StringName, StringName]({
+&"active": &"active",
+&"completed": &"completed",
+&"offered": &"offered"
+})
 source_conversation = ExtResource("1_source")
