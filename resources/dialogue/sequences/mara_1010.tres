@@ -93,6 +93,7 @@ pages = Array[String](["No trouble. Ask me again when you're ready."])
 [resource]
 script = ExtResource("2_script")
 sequence_id = &"mara_quest_1010"
+sequence_type = 0
 quest_id = 1010
 start_entry_id = &"offered"
 entries = Array[ExtResource("1_a7b1e")]([SubResource("Resource_6qnim"), SubResource("Resource_ybvxy"), SubResource("Resource_wt562"), SubResource("Resource_grkc7"), SubResource("Resource_rqdt3")])

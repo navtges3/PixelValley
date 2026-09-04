@@ -86,6 +86,7 @@ next_entry_id = &"offered"
 [resource]
 script = ExtResource("2_script")
 sequence_id = &"alchemist_quest_1010"
+sequence_type = 0
 quest_id = 1010
 start_entry_id = &"ready"
 entries = Array[ExtResource("1_j1chp")]([SubResource("Resource_2wclv"), SubResource("Resource_awx2b"), SubResource("Resource_15trq")])

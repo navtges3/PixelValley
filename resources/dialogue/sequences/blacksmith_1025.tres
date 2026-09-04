@@ -170,6 +170,7 @@ metadata/_custom_type_script = "uid://de2gtyvn62a4q"
 [resource]
 script = ExtResource("2_script")
 sequence_id = &"blacksmith_quest_1025"
+sequence_type = 0
 quest_id = 1025
 start_entry_id = &"offered"
 entries = Array[ExtResource("1_mn50b")]([SubResource("Resource_mdlbf"), SubResource("Resource_4vdya"), SubResource("Resource_bkoli"), SubResource("Resource_mbp2j"), SubResource("Resource_5ufol"), SubResource("Resource_rn612")])

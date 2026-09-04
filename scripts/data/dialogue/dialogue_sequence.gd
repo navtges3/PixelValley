@@ -1,7 +1,14 @@
 extends Resource
 class_name DialogueSequence
 
+enum SequenceType {
+	QUEST,
+	DEFAULT,
+	NOT_AVAILABLE,
+}
+
 @export var sequence_id: StringName = &""
+@export var sequence_type: SequenceType = SequenceType.DEFAULT
 @export var can_cancel: bool = true
 @export var quest_id: int = -1
 @export var priority: int = 0

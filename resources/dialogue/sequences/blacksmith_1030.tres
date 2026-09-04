@@ -96,6 +96,7 @@ pages = Array[String](["It can wait here until you're ready."])
 [resource]
 script = ExtResource("2_script")
 sequence_id = &"blacksmith_quest_1030"
+sequence_type = 0
 quest_id = 1030
 start_entry_id = &"offered"
 entries = Array[ExtResource("1_qynmc")]([SubResource("Resource_n432x"), SubResource("Resource_eeadj"), SubResource("Resource_he0xk"), SubResource("Resource_46qlh")])

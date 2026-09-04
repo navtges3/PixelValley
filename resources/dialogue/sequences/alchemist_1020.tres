@@ -96,6 +96,7 @@ pages = Array[String](["Very well. The offer will remain open."])
 [resource]
 script = ExtResource("2_script")
 sequence_id = &"alchemist_quest_1020"
+sequence_type = 0
 quest_id = 1020
 start_entry_id = &"offered"
 entries = Array[ExtResource("1_cqmln")]([SubResource("Resource_lmy7j"), SubResource("Resource_dtap4"), SubResource("Resource_s0i5r"), SubResource("Resource_g5fht")])

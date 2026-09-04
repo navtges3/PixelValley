@@ -137,6 +137,7 @@ pages = Array[String](["You've done the village a real service. Spend the gold w
 [resource]
 script = ExtResource("2_script")
 sequence_id = &"innkeeper_quest_1030"
+sequence_type = 0
 quest_id = 1030
 start_entry_id = &"ready"
 entries = Array[ExtResource("1_8dolu")]([SubResource("Resource_u1ybr"), SubResource("Resource_4yrel"), SubResource("Resource_rhfvr"), SubResource("Resource_yjrr0"), SubResource("Resource_2qidm"), SubResource("Resource_63c38")])
