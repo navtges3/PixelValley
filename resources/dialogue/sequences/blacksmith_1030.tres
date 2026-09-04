@@ -31,7 +31,7 @@ action_id = &"accept_quest"
 [sub_resource type="Resource" id="ResponseAccept"]
 script = ExtResource("4_46qlh")
 text = "I'll deliver the key."
-next_entry_id = &"quest_1030_accepted"
+next_entry_id = &"accepted"
 actions = Array[ExtResource("2_eeadj")]([SubResource("ActionAccept")])
 
 [sub_resource type="Resource" id="ActionDecline"]
@@ -41,7 +41,7 @@ action_id = &"decline_quest"
 [sub_resource type="Resource" id="ResponseDecline"]
 script = ExtResource("4_46qlh")
 text = "I can't make the delivery yet."
-next_entry_id = &"quest_1030_declined"
+next_entry_id = &"declined"
 actions = Array[ExtResource("2_eeadj")]([SubResource("ActionDecline")])
 
 [sub_resource type="Resource" id="ActionService"]
@@ -60,10 +60,10 @@ display_name = "Garrick Stone"
 
 [sub_resource type="Resource" id="Resource_n432x"]
 script = ExtResource("1_qynmc")
-entry_id = &"quest_1030_offered"
+entry_id = &"offered"
 speaker = SubResource("Speaker")
 pages = Array[String](["That brass key belongs to the inn. I kept it safe, but I can't leave the forge unattended.", "Will you deliver it to the innkeeper?"])
-skip_entry_id = &"quest_1030_active"
+skip_entry_id = &"active"
 conditions = Array[ExtResource("3_he0xk")]([SubResource("ConditionQuest13"), SubResource("ConditionOffered")])
 responses = Array[ExtResource("4_46qlh")]([SubResource("ResponseAccept"), SubResource("ResponseDecline"), SubResource("ResponseShop")])
 
@@ -77,7 +77,7 @@ parameters = Dictionary[StringName, Variant]({
 
 [sub_resource type="Resource" id="Resource_eeadj"]
 script = ExtResource("1_qynmc")
-entry_id = &"quest_1030_active"
+entry_id = &"active"
 speaker = SubResource("Speaker")
 pages = Array[String](["The innkeeper is waiting for that brass key. You'll find the inn just outside."])
 skip_entry_id = &"ambient"
@@ -86,13 +86,13 @@ responses = Array[ExtResource("4_46qlh")]([SubResource("ResponseShop")])
 
 [sub_resource type="Resource" id="Resource_he0xk"]
 script = ExtResource("1_qynmc")
-entry_id = &"quest_1030_accepted"
+entry_id = &"accepted"
 speaker = SubResource("Speaker")
 pages = Array[String](["Good. Hand the brass key directly to the innkeeper."])
 
 [sub_resource type="Resource" id="Resource_46qlh"]
 script = ExtResource("1_qynmc")
-entry_id = &"quest_1030_declined"
+entry_id = &"declined"
 speaker = SubResource("Speaker")
 pages = Array[String](["It can wait here until you're ready."])
 
@@ -100,10 +100,10 @@ pages = Array[String](["It can wait here until you're ready."])
 script = ExtResource("2_script")
 sequence_id = &"blacksmith_quest_1030"
 quest_id = 1030
-start_entry_id = &"quest_1030_offered"
+start_entry_id = &"offered"
 entries = Array[ExtResource("1_qynmc")]([SubResource("Resource_n432x"), SubResource("Resource_eeadj"), SubResource("Resource_he0xk"), SubResource("Resource_46qlh")])
 state_entries = Dictionary[StringName, StringName]({
-&"active": &"quest_1030_active",
-&"offered": &"quest_1030_offered"
+&"active": &"active",
+&"offered": &"offered"
 })
 source_conversation = ExtResource("1_source")

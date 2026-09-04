@@ -2,15 +2,152 @@
 
 [ext_resource type="Script" uid="uid://de2gtyvn62a4q" path="res://scripts/data/dialogue/dialogue_entry.gd" id="1_8dolu"]
 [ext_resource type="Resource" uid="uid://bqlyto23wrn7v" path="res://resources/dialogue/quests/innkeeper_quest_conversation.tres" id="1_source"]
+[ext_resource type="Script" uid="uid://bn5tdgpsujh6q" path="res://scripts/data/dialogue/dialogue_action.gd" id="2_4yrel"]
 [ext_resource type="Script" uid="uid://bc3i162s5h001" path="res://scripts/data/dialogue/dialogue_sequence.gd" id="2_script"]
+[ext_resource type="Script" uid="uid://chsetq55irrf0" path="res://scripts/data/dialogue/dialogue_condition.gd" id="3_rhfvr"]
+[ext_resource type="Script" uid="uid://bw8gfgi66jkgt" path="res://scripts/data/dialogue/dialogue_response.gd" id="4_yjrr0"]
+[ext_resource type="Script" uid="uid://dpbifjko4digr" path="res://scripts/data/dialogue/dialogue_speaker.gd" id="5_2qidm"]
+
+[sub_resource type="Resource" id="ConditionQuest13"]
+script = ExtResource("3_rhfvr")
+condition_id = &"context_equals"
+parameters = Dictionary[StringName, Variant]({
+&"key": &"quest_id",
+&"value": 1030
+})
+
+[sub_resource type="Resource" id="ConditionReady"]
+script = ExtResource("3_rhfvr")
+condition_id = &"context_equals"
+parameters = Dictionary[StringName, Variant]({
+&"key": &"quest_state",
+&"value": &"ready"
+})
+
+[sub_resource type="Resource" id="ActionTurnIn"]
+script = ExtResource("2_4yrel")
+action_id = &"turn_in_quest"
+
+[sub_resource type="Resource" id="ResponseTurnIn"]
+script = ExtResource("4_yjrr0")
+text = "Thank you."
+next_entry_id = &"rewarded"
+actions = Array[ExtResource("2_4yrel")]([SubResource("ActionTurnIn")])
+
+[sub_resource type="Resource" id="ActionService"]
+script = ExtResource("2_4yrel")
+action_id = &"open_service"
+
+[sub_resource type="Resource" id="ResponseRest"]
+script = ExtResource("4_yjrr0")
+text = "I'd like to rest."
+actions = Array[ExtResource("2_4yrel")]([SubResource("ActionService")])
+
+[sub_resource type="Resource" id="Speaker"]
+script = ExtResource("5_2qidm")
+speaker_id = &"innkeeper"
+display_name = "Elara Vale"
+
+[sub_resource type="Resource" id="Resource_u1ybr"]
+script = ExtResource("1_8dolu")
+entry_id = &"ready"
+speaker = SubResource("Speaker")
+pages = Array[String](["That's the missing room key! You have no idea how many locks I nearly replaced.", "Please accept some gold for returning it."])
+skip_entry_id = &"active_with_key"
+conditions = Array[ExtResource("3_rhfvr")]([SubResource("ConditionQuest13"), SubResource("ConditionReady")])
+responses = Array[ExtResource("4_yjrr0")]([SubResource("ResponseTurnIn"), SubResource("ResponseRest")])
+
+[sub_resource type="Resource" id="ConditionActive"]
+script = ExtResource("3_rhfvr")
+condition_id = &"context_equals"
+parameters = Dictionary[StringName, Variant]({
+&"key": &"quest_state",
+&"value": &"active"
+})
+
+[sub_resource type="Resource" id="ConditionHasKey"]
+script = ExtResource("3_rhfvr")
+condition_id = &"context_equals"
+parameters = Dictionary[StringName, Variant]({
+&"key": &"has_delivery_items",
+&"value": true
+})
+
+[sub_resource type="Resource" id="ActionDeliver"]
+script = ExtResource("2_4yrel")
+action_id = &"deliver_quest_items"
+
+[sub_resource type="Resource" id="ResponseDeliver"]
+script = ExtResource("4_yjrr0")
+text = "The blacksmith asked me to return this key."
+next_entry_id = &"key_delivered"
+actions = Array[ExtResource("2_4yrel")]([SubResource("ActionDeliver")])
+
+[sub_resource type="Resource" id="Resource_4yrel"]
+script = ExtResource("1_8dolu")
+entry_id = &"active_with_key"
+speaker = SubResource("Speaker")
+pages = Array[String](["Is that our brass room key? I thought it was lost for good."])
+skip_entry_id = &"active_without_key"
+conditions = Array[ExtResource("3_rhfvr")]([SubResource("ConditionQuest13"), SubResource("ConditionActive"), SubResource("ConditionHasKey")])
+responses = Array[ExtResource("4_yjrr0")]([SubResource("ResponseDeliver"), SubResource("ResponseRest")])
+
+[sub_resource type="Resource" id="ConditionMissingKey"]
+script = ExtResource("3_rhfvr")
+condition_id = &"context_equals"
+parameters = Dictionary[StringName, Variant]({
+&"key": &"has_delivery_items",
+&"value": false
+})
+
+[sub_resource type="Resource" id="Resource_rhfvr"]
+script = ExtResource("1_8dolu")
+entry_id = &"active_without_key"
+speaker = SubResource("Speaker")
+pages = Array[String](["The blacksmith said he found one of our room keys. Bring it to me if you recover it."])
+skip_entry_id = &"completed"
+conditions = Array[ExtResource("3_rhfvr")]([SubResource("ConditionQuest13"), SubResource("ConditionActive"), SubResource("ConditionMissingKey")])
+responses = Array[ExtResource("4_yjrr0")]([SubResource("ResponseRest")])
+
+[sub_resource type="Resource" id="ConditionCompleted"]
+script = ExtResource("3_rhfvr")
+condition_id = &"context_equals"
+parameters = Dictionary[StringName, Variant]({
+&"key": &"quest_state",
+&"value": &"completed"
+})
+
+[sub_resource type="Resource" id="Resource_yjrr0"]
+script = ExtResource("1_8dolu")
+entry_id = &"completed"
+speaker = SubResource("Speaker")
+pages = Array[String](["Thanks again for returning that key. The room is back in service."])
+skip_entry_id = &"ambient"
+conditions = Array[ExtResource("3_rhfvr")]([SubResource("ConditionQuest13"), SubResource("ConditionCompleted")])
+responses = Array[ExtResource("4_yjrr0")]([SubResource("ResponseRest")])
+
+[sub_resource type="Resource" id="Resource_2qidm"]
+script = ExtResource("1_8dolu")
+entry_id = &"key_delivered"
+speaker = SubResource("Speaker")
+pages = Array[String](["It is ours! Let me count out a proper reward."])
+next_entry_id = &"ready"
+
+[sub_resource type="Resource" id="Resource_63c38"]
+script = ExtResource("1_8dolu")
+entry_id = &"rewarded"
+speaker = SubResource("Speaker")
+pages = Array[String](["You've done the village a real service. Spend the gold wisely."])
 
 [resource]
 script = ExtResource("2_script")
 sequence_id = &"innkeeper_quest_1030"
 quest_id = 1030
+start_entry_id = &"ready"
+entries = Array[ExtResource("1_8dolu")]([SubResource("Resource_u1ybr"), SubResource("Resource_4yrel"), SubResource("Resource_rhfvr"), SubResource("Resource_yjrr0"), SubResource("Resource_2qidm"), SubResource("Resource_63c38")])
 state_entries = Dictionary[StringName, StringName]({
 &"active": &"active_with_key",
 &"completed": &"completed",
-&"ready": &"quest_1030_ready"
+&"ready": &"ready"
 })
 source_conversation = ExtResource("1_source")

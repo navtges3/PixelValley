@@ -2,10 +2,74 @@
 
 [ext_resource type="Script" uid="uid://de2gtyvn62a4q" path="res://scripts/data/dialogue/dialogue_entry.gd" id="1_bu6q2"]
 [ext_resource type="Resource" uid="uid://5o0vkfwh385q" path="res://resources/dialogue/rowan_conversation.tres" id="1_source"]
+[ext_resource type="Script" uid="uid://bn5tdgpsujh6q" path="res://scripts/data/dialogue/dialogue_action.gd" id="2_j68j0"]
 [ext_resource type="Script" uid="uid://bc3i162s5h001" path="res://scripts/data/dialogue/dialogue_sequence.gd" id="2_script"]
+[ext_resource type="Script" uid="uid://chsetq55irrf0" path="res://scripts/data/dialogue/dialogue_condition.gd" id="3_pbda5"]
+[ext_resource type="Script" uid="uid://bw8gfgi66jkgt" path="res://scripts/data/dialogue/dialogue_response.gd" id="4_kycuh"]
+[ext_resource type="Script" uid="uid://dpbifjko4digr" path="res://scripts/data/dialogue/dialogue_speaker.gd" id="5_qafs6"]
+
+[sub_resource type="Resource" id="ConditionVictory"]
+script = ExtResource("3_pbda5")
+condition_id = &"context_equals"
+parameters = Dictionary[StringName, Variant]({
+&"key": &"main_progression",
+&"value": &"victory"
+})
+
+[sub_resource type="Resource" id="Speaker"]
+script = ExtResource("5_qafs6")
+speaker_id = &"rowan"
+display_name = "Rowan"
+
+[sub_resource type="Resource" id="Resource_5a1jf"]
+script = ExtResource("1_bu6q2")
+entry_id = &"victory"
+speaker = SubResource("Speaker")
+pages = Array[String](["The gate is finally quiet. You earned Pixel Valley a peaceful night, and the watch won't forget it."])
+skip_entry_id = &"ogre_threat"
+conditions = Array[ExtResource("3_pbda5")]([SubResource("ConditionVictory")])
+
+[sub_resource type="Resource" id="ConditionOgre"]
+script = ExtResource("3_pbda5")
+condition_id = &"context_equals"
+parameters = Dictionary[StringName, Variant]({
+&"key": &"main_progression",
+&"value": &"ogre_threat"
+})
+
+[sub_resource type="Resource" id="Resource_uc1gc"]
+script = ExtResource("1_bu6q2")
+entry_id = &"ogre_threat"
+speaker = SubResource("Speaker")
+pages = Array[String](["Heavy tracks appeared east of the village. Whatever made them is larger than any orc I've seen."])
+skip_entry_id = &"orc_threat"
+conditions = Array[ExtResource("3_pbda5")]([SubResource("ConditionOgre")])
+
+[sub_resource type="Resource" id="ConditionOrc"]
+script = ExtResource("3_pbda5")
+condition_id = &"context_equals"
+parameters = Dictionary[StringName, Variant]({
+&"key": &"main_progression",
+&"value": &"orc_threat"
+})
+
+[sub_resource type="Resource" id="Resource_ed26h"]
+script = ExtResource("1_bu6q2")
+entry_id = &"orc_threat"
+speaker = SubResource("Speaker")
+pages = Array[String](["Goblins don't march in ranks. The patrols on the road are taking orders from orcs now."])
+skip_entry_id = &"goblin_threat"
+conditions = Array[ExtResource("3_pbda5")]([SubResource("ConditionOrc")])
+
+[sub_resource type="Resource" id="Resource_w3e1i"]
+script = ExtResource("1_bu6q2")
+entry_id = &"goblin_threat"
+speaker = SubResource("Speaker")
+pages = Array[String](["I'm Rowan, one of the village watch. Goblins have been prowling the forest road, so keep your weapon close."])
 
 [resource]
 script = ExtResource("2_script")
 sequence_id = &"rowan_ambient"
 start_entry_id = &"victory"
+entries = Array[ExtResource("1_bu6q2")]([SubResource("Resource_5a1jf"), SubResource("Resource_uc1gc"), SubResource("Resource_ed26h"), SubResource("Resource_w3e1i")])
 source_conversation = ExtResource("1_source")
