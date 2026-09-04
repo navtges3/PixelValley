@@ -1,13 +1,13 @@
 ## Right-hand panel that edits the currently selected DialogueEntry in full:
 ## entry_id, speaker (with reuse of existing speakers), pages, flow
-## (next_entry_id / skip_entry_id), conditions, actions, and responses.
+## (next_entry_id), conditions, actions, and responses.
 class_name EntryEditorPanel
 extends ScrollContainer
 
 signal changed()
 
 var entry: DialogueEntry
-var conversation: DialogueConversation
+var sequence: DialogueSequence
 
 var _content: VBoxContainer
 var _speaker_picker: OptionButton
@@ -16,7 +16,6 @@ var _speaker_name_edit: LineEdit
 var _portrait_preview: TextureRect
 var _pages_box: VBoxContainer
 var _next_id_field: IDField
-var _skip_id_field: IDField
 var _conditions_box: VBoxContainer
 var _actions_box: VBoxContainer
 var _responses_box: VBoxContainer
@@ -26,8 +25,8 @@ func _init() -> void:
 	size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	size_flags_vertical = Control.SIZE_EXPAND_FILL
 
-func set_conversation(target_conversation: DialogueConversation) -> void:
-	conversation = target_conversation
+func set_sequence(target_sequence: DialogueSequence) -> void:
+	sequence = target_sequence
 
 func edit_entry(target_entry: DialogueEntry) -> void:
 	entry = target_entry
@@ -43,9 +42,9 @@ func clear() -> void:
 
 func get_entry_ids() -> Array[String]:
 	var ids: Array[String] = []
-	if conversation == null:
+	if sequence == null:
 		return ids
-	for e in conversation.entries:
+	for e in sequence.entries:
 		if e != null and String(e.entry_id) != "":
 			ids.append(String(e.entry_id))
 	return ids
@@ -56,8 +55,6 @@ func refresh_id_options() -> void:
 	var ids := get_entry_ids()
 	if _next_id_field:
 		_next_id_field.set_options(ids)
-	if _skip_id_field:
-		_skip_id_field.set_options(ids)
 	for child in _responses_box.get_children():
 		if child is ResponseEditor:
 			child.refresh_id_options()
@@ -197,9 +194,9 @@ func _build_speaker_section() -> void:
 func _collect_speakers() -> Array:
 	var result: Array = []
 	var seen: Dictionary = {}
-	if conversation == null:
+	if sequence == null:
 		return result
-	for e in conversation.entries:
+	for e in sequence.entries:
 		if e != null and e.speaker != null:
 			var key := e.speaker.get_instance_id()
 			if not seen.has(key):
@@ -317,21 +314,6 @@ func _build_flow_section() -> void:
 		changed.emit()
 	)
 	next_row.add_child(_next_id_field)
-
-	var skip_row := HBoxContainer.new()
-	skip_row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	_content.add_child(skip_row)
-	var skip_label := Label.new()
-	skip_label.text = "skip_entry_id:"
-	skip_row.add_child(skip_label)
-	_skip_id_field = IDField.new()
-	_skip_id_field.set_value(String(entry.skip_entry_id))
-	_skip_id_field.set_options(get_entry_ids())
-	_skip_id_field.value_changed.connect(func(v):
-		entry.skip_entry_id = StringName(v)
-		changed.emit()
-	)
-	skip_row.add_child(_skip_id_field)
 
 func _build_conditions_section() -> void:
 	_section_label("Conditions")

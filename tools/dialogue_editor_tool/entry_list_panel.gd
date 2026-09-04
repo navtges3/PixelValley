@@ -1,14 +1,12 @@
 ## Left-hand panel listing every DialogueEntry in the currently loaded
-## conversation. Handles selecting, adding, duplicating, and deleting entries.
-## Does not know anything about conversation-level fields (conversation_id,
-## start_entry_id, can_cancel) - that's owned by the root controller.
+## sequence. Handles selecting, adding, duplicating, and deleting entries.
 class_name EntryListPanel
 extends VBoxContainer
 
 signal entry_selected(entry: DialogueEntry)
 signal entries_changed()
 
-var conversation: DialogueConversation
+var sequence: DialogueSequence
 var _list_box: VBoxContainer
 var _selected_entry: DialogueEntry
 var _entry_buttons: Dictionary = {}  # DialogueEntry -> Button
@@ -16,8 +14,8 @@ var _entry_buttons: Dictionary = {}  # DialogueEntry -> Button
 func _init() -> void:
 	size_flags_vertical = Control.SIZE_EXPAND_FILL
 
-func set_conversation(target_conversation: DialogueConversation) -> void:
-	conversation = target_conversation
+func set_sequence(target_sequence: DialogueSequence) -> void:
+	sequence = target_sequence
 	_selected_entry = null
 	_rebuild()
 
@@ -43,8 +41,8 @@ func _rebuild() -> void:
 	_list_box.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	scroll.add_child(_list_box)
 
-	if conversation != null:
-		for entry in conversation.entries:
+	if sequence != null:
+		for entry in sequence.entries:
 			_list_box.add_child(_build_entry_row(entry))
 
 	var add_button := Button.new()
@@ -93,12 +91,12 @@ func _update_button_styles() -> void:
 		button.button_pressed = entry == _selected_entry
 
 func _on_add_entry() -> void:
-	if conversation == null:
+	if sequence == null:
 		return
 	var new_entry := DialogueEntry.new()
 	new_entry.entry_id = StringName(_next_default_id())
 	new_entry.pages.append("")
-	conversation.entries.append(new_entry)
+	sequence.entries.append(new_entry)
 	_rebuild()
 	_selected_entry = new_entry
 	_update_button_styles()
@@ -108,7 +106,7 @@ func _on_add_entry() -> void:
 func _next_default_id() -> String:
 	var index := 1
 	var existing: Dictionary = {}
-	for entry in conversation.entries:
+	for entry in sequence.entries:
 		existing[String(entry.entry_id)] = true
 	while existing.has("new_entry_%d" % index):
 		index += 1
@@ -117,13 +115,13 @@ func _next_default_id() -> String:
 func _duplicate_entry(entry: DialogueEntry) -> void:
 	var copy := entry.duplicate(true) as DialogueEntry
 	copy.entry_id = StringName(String(entry.entry_id) + "_copy")
-	var index := conversation.entries.find(entry)
-	conversation.entries.insert(index + 1, copy)
+	var index := sequence.entries.find(entry)
+	sequence.entries.insert(index + 1, copy)
 	_rebuild()
 	entries_changed.emit()
 
 func _delete_entry(entry: DialogueEntry) -> void:
-	conversation.entries.erase(entry)
+	sequence.entries.erase(entry)
 	if _selected_entry == entry:
 		_selected_entry = null
 	_rebuild()

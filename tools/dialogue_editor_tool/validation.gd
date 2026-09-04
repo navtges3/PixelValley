@@ -1,59 +1,47 @@
-## Static helper that inspects a DialogueConversation and returns a list of
-## human-readable warnings: dangling entry_id references, duplicate ids,
-## missing speakers/pages, empty response text, and so on.
+## Static helper for the editor's live validation panel.
+##
+## DialogueRunner owns the runtime sequence validation rules, so the editor
+## delegates those checks and adds editor-specific warnings for missing
+## speakers and state-entry targets.
 class_name DialogueValidator
 extends RefCounted
 
-static func validate(conversation: DialogueConversation) -> Array[String]:
+static func validate(sequence: DialogueSequence) -> Array[String]:
 	var issues: Array[String] = []
-	if conversation == null:
+	var runner := DialogueRunner.new()
+	var runner_errors := runner.get_sequence_validation_errors(sequence)
+	for error: String in runner_errors:
+		issues.append(error)
+
+	if sequence == null:
 		return issues
 
-	var all_ids: Dictionary = {}
-	for entry in conversation.entries:
+	var entry_ids: Dictionary = {}
+	for entry: DialogueEntry in sequence.entries:
 		if entry != null:
-			all_ids[String(entry.entry_id)] = true
+			entry_ids[String(entry.entry_id)] = true
 
-	if String(conversation.start_entry_id) != "" and not all_ids.has(String(conversation.start_entry_id)):
-		issues.append("Start entry '%s' does not exist." % conversation.start_entry_id)
+	for state in sequence.state_entries.keys():
+		var state_name := String(state)
+		var target_id := String(sequence.state_entries[state])
+		if state_name == "":
+			issues.append("Dialogue sequence contains a state entry with no state.")
+		elif target_id == "":
+			issues.append("Dialogue sequence state '%s' has an empty entry ID." % state_name)
+		elif not entry_ids.has(target_id):
+			var missing_state_message := "Dialogue sequence state '%s' points to missing entry '%s'." % [state_name, target_id]
+			if not issues.has(missing_state_message):
+				issues.append(missing_state_message)
 
-	var seen_ids: Dictionary = {}
-	for entry in conversation.entries:
+	for entry: DialogueEntry in sequence.entries:
 		if entry == null:
-			issues.append("Conversation contains a null entry.")
 			continue
-
-		var id_str := String(entry.entry_id)
-		if id_str == "":
-			issues.append("An entry has no entry_id set.")
-		elif seen_ids.has(id_str):
-			issues.append("Duplicate entry_id '%s'." % id_str)
-		else:
-			seen_ids[id_str] = true
-
-		if String(entry.next_entry_id) != "" and not all_ids.has(String(entry.next_entry_id)):
-			issues.append("Entry '%s' -> next_entry_id '%s' does not exist." % [id_str, entry.next_entry_id])
-
-		if String(entry.skip_entry_id) != "" and not all_ids.has(String(entry.skip_entry_id)):
-			issues.append("Entry '%s' -> skip_entry_id '%s' does not exist." % [id_str, entry.skip_entry_id])
-
 		if entry.speaker == null:
-			issues.append("Entry '%s' has no speaker assigned." % id_str)
-
-		if entry.pages.is_empty():
-			issues.append("Entry '%s' has no dialogue pages." % id_str)
-
-		for response in entry.responses:
-			if response == null:
-				continue
-			if String(response.next_entry_id) != "" and not all_ids.has(String(response.next_entry_id)):
-				issues.append("Entry '%s' response '%s' -> next_entry_id '%s' does not exist." % [id_str, _short(response.text), response.next_entry_id])
-			if response.text.strip_edges() == "":
-				issues.append("Entry '%s' has a response with empty text." % id_str)
+			issues.append("Dialogue entry '%s' has no speaker assigned." % entry.entry_id)
+		for response: DialogueResponse in entry.responses:
+			if response != null and not response.text.is_empty() and response.text.strip_edges() == "":
+				issues.append(
+					"Dialogue entry '%s' has a response with empty text." % entry.entry_id
+				)
 
 	return issues
-
-static func _short(text: String) -> String:
-	if text.length() <= 24:
-		return text
-	return text.substr(0, 24) + "..."

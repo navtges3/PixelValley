@@ -1,8 +1,8 @@
 ## A small composite control for editing a StringName-style id field
-## (entry_id references like next_entry_id / skip_entry_id).
+## (entry_id references like next_entry_id).
 ##
 ## Shows a free-text LineEdit next to a MenuButton that lists the current
-## entry ids in the conversation, so the user can either type a custom id
+## entry ids in the sequence, so the user can either type a custom id
 ## or pick an existing one from the dropdown.
 class_name IDField
 extends HBoxContainer
