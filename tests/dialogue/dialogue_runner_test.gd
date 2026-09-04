@@ -19,6 +19,12 @@ func run_tests() -> int:
 	_test_empty_pages_are_rejected()
 	_test_unknown_entry_id_is_rejected()
 	_test_sequence_state_selection()
+	_test_quest_sequence_resolution_by_state()
+	_test_unavailable_sequences_do_not_block_newer_quests()
+	_test_sequence_priority_and_deterministic_ties()
+	_test_default_dialogue_fallback()
+	_test_independent_sequences()
+	_test_next_entry_progression_within_sequence()
 	_test_ambient_sequence_execution()
 	_test_sequence_cancel_and_abort()
 	_test_sequence_validation_errors()
@@ -352,6 +358,116 @@ func _test_sequence_state_selection() -> void:
 	_expect_equal(_visited_pages, ["entry_default:0"], "unmapped state falls back to start_entry_id")
 	fallback_runner.abort()
 
+func _test_quest_sequence_resolution_by_state() -> void:
+	var runner := DialogueRunner.new()
+	for state_name: StringName in [&"offered", &"active", &"ready"]:
+		var sequence := _make_quest_sequence(
+			&"quest_%s" % state_name,
+			2000,
+			state_name,
+			10
+		)
+		var context: Dictionary[StringName, Variant] = {
+			&"quest_id": 2000,
+			&"quest_states": {2000: state_name},
+		}
+		var resolved := runner.resolve_sequence([sequence], context)
+		_expect_equal(
+			resolved,
+			sequence,
+			"quest sequence resolves for the %s state" % state_name
+		)
+
+func _test_unavailable_sequences_do_not_block_newer_quests() -> void:
+	var completed := _make_quest_sequence(&"quest_1010", 1010, &"completed", 10)
+	var offered := _make_quest_sequence(&"quest_1020", 1020, &"offered", 10)
+	var context: Dictionary[StringName, Variant] = {
+		&"quest_id": 1020,
+		&"quest_states": {
+			1010: &"completed",
+			1020: &"offered",
+		},
+	}
+	var resolved := DialogueRunner.new().resolve_sequence([completed, offered], context)
+	_expect_equal(
+		resolved,
+		offered,
+		"completed quest dialogue does not block a newer offered quest"
+	)
+
+func _test_sequence_priority_and_deterministic_ties() -> void:
+	var low_priority := _make_quest_sequence(&"z_low", 2001, &"offered", 1)
+	var high_priority := _make_quest_sequence(&"a_high", 2001, &"offered", 5)
+	var context: Dictionary[StringName, Variant] = {
+		&"quest_id": 2001,
+		&"quest_states": {2001: &"offered"},
+	}
+	var runner := DialogueRunner.new()
+	_expect_equal(
+		runner.resolve_sequence([low_priority, high_priority], context),
+		high_priority,
+		"highest-priority eligible sequence is selected"
+	)
+
+	var tie_later_id := _make_quest_sequence(&"z_tie", 2002, &"offered", 5)
+	var tie_earlier_id := _make_quest_sequence(&"a_tie", 2002, &"offered", 5)
+	var tie_context: Dictionary[StringName, Variant] = {
+		&"quest_id": 2002,
+		&"quest_states": {2002: &"offered"},
+	}
+	_expect_equal(
+		runner.resolve_sequence([tie_later_id, tie_earlier_id], tie_context),
+		tie_earlier_id,
+		"equal priorities select the lexicographically earlier sequence ID"
+	)
+
+func _test_default_dialogue_fallback() -> void:
+	var default_sequence := _make_default_sequence(&"npc_default", 10)
+	var unavailable_quest := _make_quest_sequence(
+		&"unavailable_quest",
+		2003,
+		&"unavailable",
+		100
+	)
+	var resolved := DialogueRunner.new().resolve_sequence(
+		[unavailable_quest, default_sequence],
+		{&"quest_id": -1, &"quest_states": {2003: &"unavailable"}}
+	)
+	_expect_equal(resolved, default_sequence, "default dialogue is selected when no quest is eligible")
+
+func _test_independent_sequences() -> void:
+	var quest_a := _make_quest_sequence(&"quest_a", 2004, &"offered", 1)
+	var quest_b := _make_quest_sequence(&"quest_b", 2005, &"offered", 1)
+	var context: Dictionary[StringName, Variant] = {
+		&"quest_id": 2005,
+		&"quest_states": {2004: &"offered", 2005: &"offered"},
+	}
+	var resolved := DialogueRunner.new().resolve_sequence([quest_a, quest_b], context)
+	_expect_equal(
+		resolved,
+		quest_b,
+		"an independent quest sequence resolves without cross-sequence links"
+	)
+	_expect_true(
+		quest_a.entries[0].next_entry_id.is_empty(),
+		"independent sequence does not require a next-entry link into another sequence"
+	)
+
+func _test_next_entry_progression_within_sequence() -> void:
+	_reset_signal_captures()
+	var first := _make_entry(&"first", ["First."])
+	first.next_entry_id = &"second"
+	var second := _make_entry(&"second", ["Second."])
+	var sequence := _make_sequence([first, second], &"first")
+	var runner := _make_connected_runner()
+	runner.start_sequence(sequence, {})
+	runner.advance()
+	_expect_equal(
+		_visited_pages,
+		["first:0", "second:0"],
+		"next_entry_id advances within the selected sequence"
+	)
+
 func _test_ambient_sequence_execution() -> void:
 	_reset_signal_captures()
 	var start_entry := _make_entry(&"start", ["Hello.", "Need anything?"])
@@ -485,6 +601,28 @@ func _make_sequence(
 	sequence.start_entry_id = start_entry_id
 	sequence.can_cancel = can_cancel
 	sequence.entries = entries
+	return sequence
+
+func _make_quest_sequence(
+	sequence_id: StringName,
+	quest_id: int,
+	state: StringName,
+	priority: int
+) -> DialogueSequence:
+	var sequence := DialogueSequence.new()
+	sequence.sequence_id = sequence_id
+	sequence.sequence_type = DialogueSequence.SequenceType.QUEST
+	sequence.quest_id = quest_id
+	sequence.priority = priority
+	var entry := _make_entry(&"entry", ["Quest dialogue."])
+	sequence.entries = [entry]
+	sequence.state_entries = {state: entry.entry_id}
+	return sequence
+
+func _make_default_sequence(sequence_id: StringName, priority: int) -> DialogueSequence:
+	var sequence := _make_sequence([_make_entry(&"default", ["Default dialogue."])], &"default")
+	sequence.sequence_id = sequence_id
+	sequence.priority = priority
 	return sequence
 
 func _make_connected_runner() -> DialogueRunner:

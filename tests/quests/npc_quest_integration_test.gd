@@ -1,12 +1,14 @@
 extends TestCase
 
 const TEST_SAVE_SLOT := 999996
+const BLACKSMITH_DATA: NpcData = preload("res://resources/characters/npcs/blacksmith.tres")
 
 func run_tests() -> int:
 	_begin_test_run()
 	_prepare_game_state()
 	_test_objective_event_contracts_and_restoration()
 	_test_dialogue_runner_action_bridge()
+	_test_dialogue_context_refresh_after_actions()
 	_test_dialogue_lifecycle_actions()
 	_test_locked_dialogue_context()
 	_test_main_progression_context()
@@ -241,6 +243,101 @@ func _test_dialogue_runner_action_bridge() -> void:
 	)
 	controller.clear_quest_manager()
 
+func _test_dialogue_context_refresh_after_actions() -> void:
+	var manager := _make_manager()
+	var controller := NpcQuestDialogueController.new()
+	controller.set_quest_manager(manager)
+	var quest := _make_npc_talk_quest(404, &"mara")
+	manager.offer_quest(quest)
+
+	var offered := DialogueEntry.new()
+	offered.entry_id = &"offered"
+	offered.pages = ["Accept this quest."]
+	var accept := DialogueResponse.new()
+	accept.text = "I accept."
+	accept.next_entry_id = &"active"
+	accept.actions.append(_make_action(&"accept_quest"))
+	offered.responses.append(accept)
+
+	var active := DialogueEntry.new()
+	active.entry_id = &"active"
+	active.pages = ["The quest is active."]
+	active.conditions.append(_make_context_condition(&"quest_state", &"active"))
+	var sequence := DialogueSequence.new()
+	sequence.sequence_id = &"context_refresh_offer"
+	sequence.quest_id = quest.id
+	sequence.state_entries = {&"offered": &"offered"}
+	sequence.entries = [offered, active]
+
+	var runner := DialogueRunner.new()
+	runner.action_requested.connect(
+		_handle_refreshing_dialogue_action.bind(
+			runner,
+			controller,
+			&"mara",
+			&"village"
+		)
+	)
+	_expect_true(
+		runner.start_sequence(sequence, controller.build_context(&"mara", &"village")),
+		"offered sequence starts for context refresh"
+	)
+	runner.advance()
+	runner.choose_response(0)
+	_expect_true(manager.is_quest_active(quest.id), "accept action updates the quest lifecycle")
+	_expect_true(runner.is_running(), "runner evaluates the next entry with refreshed active context")
+	runner.abort()
+
+	var ready_quest := _make_npc_talk_quest(405, &"mara")
+	manager.offer_quest(ready_quest)
+	manager.accept_quest(ready_quest)
+	GameState.gameplay_event.emit(NpcInteractedEvent.new(&"mara"))
+	var ready := DialogueEntry.new()
+	ready.entry_id = &"ready"
+	ready.pages = ["Turn in the quest."]
+	var turn_in := DialogueResponse.new()
+	turn_in.text = "Here you go."
+	turn_in.next_entry_id = &"completed"
+	turn_in.actions.append(_make_action(&"turn_in_quest"))
+	ready.responses.append(turn_in)
+	var completed := DialogueEntry.new()
+	completed.entry_id = &"completed"
+	completed.pages = ["Quest complete."]
+	completed.conditions.append(_make_context_condition(&"quest_state", &"completed"))
+	var turn_in_sequence := DialogueSequence.new()
+	turn_in_sequence.sequence_id = &"context_refresh_turn_in"
+	turn_in_sequence.quest_id = ready_quest.id
+	turn_in_sequence.state_entries = {&"ready": &"ready"}
+	turn_in_sequence.entries = [ready, completed]
+	var turn_in_runner := DialogueRunner.new()
+	turn_in_runner.action_requested.connect(
+		_handle_refreshing_dialogue_action.bind(
+			turn_in_runner,
+			controller,
+			&"mara",
+			&"village"
+		)
+	)
+	_expect_true(
+		turn_in_runner.start_sequence(
+			turn_in_sequence,
+			controller.build_context(&"mara", &"village", ready_quest.id)
+		),
+		"ready sequence starts for context refresh"
+	)
+	turn_in_runner.advance()
+	turn_in_runner.choose_response(0)
+	_expect_true(
+		manager.is_quest_completed(ready_quest.id),
+		"turn-in action updates the quest lifecycle"
+	)
+	_expect_true(
+		turn_in_runner.is_running(),
+		"runner evaluates the next entry with refreshed completed context"
+	)
+	turn_in_runner.abort()
+	controller.clear_quest_manager()
+
 func _test_locked_dialogue_context() -> void:
 	var manager := _make_manager()
 	var controller := NpcQuestDialogueController.new()
@@ -466,7 +563,13 @@ func _handle_refreshing_dialogue_action(
 	location_id: StringName
 ) -> void:
 	controller.handle_action(action, context)
-	runner.update_context(controller.build_context(npc_id, location_id))
+	runner.update_context(
+		controller.build_context(
+			npc_id,
+			location_id,
+			int(context.get(&"quest_id", -1))
+		)
+	)
 
 func _test_authored_side_quest_chain() -> void:
 	if GameState.quest_manager != null:
@@ -505,9 +608,19 @@ func _test_authored_side_quest_chain() -> void:
 
 	var alchemist_offer := controller.build_context(&"alchemist", &"potion_shop_interior")
 	controller.handle_action(_make_action(&"accept_quest"), alchemist_offer)
+	_expect_equal(
+		_resolve_blacksmith_sequence(controller),
+		&"blacksmith_quest_1020",
+		"Blacksmith resolves the active 1020 sequence"
+	)
 	GameState.gameplay_event.emit(NpcInteractedEvent.new(&"blacksmith"))
 	_expect_true(manager.is_quest_ready(1020), "talking to the blacksmith readies quest 1020")
 	var blacksmith_turn_in := controller.build_context(&"blacksmith", &"weapon_shop_interior")
+	_expect_equal(
+		_resolve_blacksmith_sequence(controller),
+		&"blacksmith_quest_1020",
+		"Blacksmith resolves the 1020 ready sequence"
+	)
 	controller.handle_action(_make_action(&"turn_in_quest"), blacksmith_turn_in)
 	_expect_true(manager.is_quest_completed(1020), "blacksmith completes quest 1020")
 	_expect_equal(
@@ -525,13 +638,29 @@ func _test_authored_side_quest_chain() -> void:
 	# Quest 1025: deliver wood_bundle x5 to blacksmith to obtain the inn key.
 	var quest_1025 := manager.get_quest_by_id(1025)
 	var blacksmith_offer_1025 := controller.build_context(&"blacksmith", &"weapon_shop_interior")
+	_expect_equal(
+		_resolve_blacksmith_sequence(controller),
+		&"blacksmith_quest_1025",
+		"Blacksmith skips completed 1020 and resolves the offered 1025 sequence"
+	)
 	controller.handle_action(_make_action(&"accept_quest"), blacksmith_offer_1025)
+	_expect_equal(
+		_resolve_blacksmith_sequence(controller),
+		&"blacksmith_quest_1025",
+		"Blacksmith resolves the active 1025 sequence"
+	)
 	_expect_true(manager.is_quest_active(1025), "quest 1025 accepted from blacksmith")
 	GameState.hero.inventory.add_quest_item("wood_bundle", 5)
 	var blacksmith_delivery := controller.build_context(&"blacksmith", &"weapon_shop_interior")
 	_expect_true(
 		bool(blacksmith_delivery[&"has_delivery_items"]),
 		"blacksmith context detects the wood bundle delivery items"
+	)
+	_expect_true(
+		&"deliver_quest_items" in _get_dialogue_action_ids(
+			load("res://resources/dialogue/sequences/blacksmith_1025.tres") as DialogueSequence
+		),
+		"active 1025 dialogue exposes the delivery action"
 	)
 	controller.handle_action(_make_action(&"deliver_quest_items"), blacksmith_delivery)
 	_expect_equal(
@@ -541,6 +670,11 @@ func _test_authored_side_quest_chain() -> void:
 	)
 	_expect_true(manager.is_quest_ready(1025), "wood bundle delivery readies quest 1025")
 	var blacksmith_turn_in_1025 := controller.build_context(&"blacksmith", &"weapon_shop_interior")
+	_expect_equal(
+		_resolve_blacksmith_sequence(controller),
+		&"blacksmith_quest_1025",
+		"Blacksmith resolves the ready 1025 sequence"
+	)
 	controller.handle_action(_make_action(&"turn_in_quest"), blacksmith_turn_in_1025)
 	_expect_true(manager.is_quest_completed(1025), "blacksmith completes quest 1025")
 	_expect_equal(
@@ -556,6 +690,11 @@ func _test_authored_side_quest_chain() -> void:
 	_expect_true(manager.is_quest_offered(1030), "quest 1025 unlocks the delivery quest")
 
 	var blacksmith_offer_1030 := controller.build_context(&"blacksmith", &"weapon_shop_interior")
+	_expect_equal(
+		_resolve_blacksmith_sequence(controller),
+		&"blacksmith_quest_1030",
+		"Blacksmith skips completed 1025 and resolves the offered 1030 sequence"
+	)
 	controller.handle_action(_make_action(&"accept_quest"), blacksmith_offer_1030)
 	var innkeeper_delivery := controller.build_context(&"innkeeper", &"inn_interior")
 	_expect_true(
@@ -626,6 +765,23 @@ func _make_action(action_id: StringName) -> DialogueAction:
 	var action := DialogueAction.new()
 	action.action_id = action_id
 	return action
+
+func _make_context_condition(key: StringName, value: Variant) -> DialogueCondition:
+	var condition := DialogueCondition.new()
+	condition.condition_id = &"context_equals"
+	condition.parameters[&"key"] = key
+	condition.parameters[&"value"] = value
+	return condition
+
+func _resolve_blacksmith_sequence(controller: NpcQuestDialogueController) -> StringName:
+	var context := controller.build_context(&"blacksmith", &"weapon_shop_interior")
+	var sequence := DialogueRunner.new().resolve_sequence(
+		BLACKSMITH_DATA.dialogue_sequences,
+		context
+	)
+	if sequence == null:
+		return &""
+	return sequence.sequence_id
 
 func _get_dialogue_action_ids(
 	sequence: DialogueSequence
