@@ -182,7 +182,6 @@ func _test_dialogue_interaction() -> void:
 	sequence = DialogueSequence.new()
 	sequence.sequence_id = &"sequence_npc_test"
 	var seq_data := _make_data(&"sequence_npc")
-	seq_data.dialogue = null
 	seq_data.dialogue_sequences.append(sequence)
 	var seq_npc := _spawn_actor(seq_data)
 	seq_npc.dialogue_requested.connect(_on_dialogue_requested)

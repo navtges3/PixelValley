@@ -81,7 +81,6 @@ script = ExtResource("1_j1chp")
 entry_id = &"rewarded"
 speaker = SubResource("Speaker")
 pages = Array[String](["Use it when your health runs low. I may have another favor if you're interested."])
-next_entry_id = &"offered"
 
 [resource]
 script = ExtResource("2_script")

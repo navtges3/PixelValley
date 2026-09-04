@@ -22,7 +22,7 @@ func _test_normal_service_and_quest_npcs() -> void:
 	var quest_giver_data := NPC_ROSTER.get_npc(&"mara")
 	var service_data := NPC_ROSTER.get_npc(&"alchemist").duplicate() as NpcData
 	service_data.npc_id = &"test_service_npc"
-	service_data.dialogue = null
+	service_data.dialogue_sequences.clear()
 	service_data.quest_ids.clear()
 	var normal := _spawn_actor(normal_data)
 	var service := _spawn_actor(service_data)

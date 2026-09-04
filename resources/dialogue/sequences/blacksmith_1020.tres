@@ -81,7 +81,6 @@ script = ExtResource("1_iylt0")
 entry_id = &"rewarded"
 speaker = SubResource("Speaker")
 pages = Array[String](["The weapon is yours. That brings me to one more favor."])
-next_entry_id = &"offered"
 
 [resource]
 script = ExtResource("2_script")
