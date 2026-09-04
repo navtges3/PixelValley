@@ -8,7 +8,6 @@ enum FinishReason {
 	INVALID_DATA,
 }
 
-signal dialogue_started(conversation: DialogueConversation)
 signal sequence_started(sequence: DialogueSequence)
 signal line_changed(entry: DialogueEntry, page_index: int)
 signal responses_changed(responses: Array[DialogueResponse])
@@ -18,7 +17,6 @@ signal dialogue_finished(reason: FinishReason)
 
 var condition_evaluator: DialogueConditionEvaluator = DialogueConditionEvaluator.new()
 
-var _conversation: DialogueConversation
 var _sequence: DialogueSequence
 var _current_entry: DialogueEntry
 var _page_index: int = 0
@@ -28,27 +26,12 @@ var _context: Dictionary[StringName, Variant] = {}
 var _validation_errors: PackedStringArray = []
 
 func is_running() -> bool:
-	return _conversation != null or _sequence != null
+	return _sequence != null
 
 func update_context(context: Dictionary[StringName, Variant]) -> void:
 	if not is_running():
 		return
 	_context = context.duplicate()
-
-func start(conversation: DialogueConversation, context: Dictionary[StringName, Variant] = {}) -> bool:
-	if is_running():
-		return false
-	var validation_errors := get_validation_errors(conversation)
-	if not validation_errors.is_empty():
-		for validation_error: String in validation_errors:
-			push_error(validation_error)
-		_entries.clear()
-		return false
-	_conversation = conversation
-	_context = context.duplicate()
-	dialogue_started.emit(conversation)
-	_enter_entry(conversation.start_entry_id)
-	return true
 
 func start_sequence(sequence: DialogueSequence, context: Dictionary[StringName, Variant]) -> bool:
 	if is_running():
@@ -116,11 +99,6 @@ func choose_response(index: int) -> void:
 	_enter_entry(response.next_entry_id)
 
 func cancel() -> void:
-	if _conversation != null:
-		if not _conversation.can_cancel:
-			return
-		_finish(FinishReason.CANCELLED)
-		return
 	if _sequence != null:
 		if not _sequence.can_cancel:
 			return
@@ -173,7 +151,6 @@ func _emit_actions(actions: Array[DialogueAction]) -> void:
 		action_requested.emit(action, _context)
 
 func _finish(reason: FinishReason) -> void:
-	_conversation = null
 	_sequence = null
 	_current_entry = null
 	_page_index = 0
@@ -181,32 +158,6 @@ func _finish(reason: FinishReason) -> void:
 	_visible_responses.clear()
 	_context.clear()
 	dialogue_finished.emit(reason)
-
-func get_validation_errors(conversation: DialogueConversation) -> PackedStringArray:
-	_validation_errors.clear()
-	_entries.clear()
-	if conversation == null:
-		_validation_errors.append("Dialogue conversation is null.")
-	else:
-		_build_and_validate_entry_index(conversation)
-	return _validation_errors.duplicate()
-
-func _build_and_validate_entry_index(conversation: DialogueConversation) -> bool:
-	_entries.clear()
-	if conversation.conversation_id.is_empty():
-		return _record_validation_error("Dialogue conversation has no ID.")
-	if conversation.start_entry_id.is_empty():
-		return _record_validation_error("Dialogue '%s' has no start entry." % conversation.conversation_id)
-	for entry: DialogueEntry in conversation.entries:
-		if not _index_entry(entry):
-			return false
-	if not _entries.has(conversation.start_entry_id):
-		return _record_validation_error("Dialogue '%s' start entry '%s' was not found."
-		 % [conversation.conversation_id, conversation.start_entry_id])
-	for entry: DialogueEntry in conversation.entries:
-		if not _validate_entry(entry):
-			return false
-	return true
 
 func get_sequence_validation_errors(sequence: DialogueSequence) -> PackedStringArray:
 	_validation_errors.clear()

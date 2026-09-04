@@ -79,11 +79,6 @@ func close_game_hud() -> void:
 func set_hero_hud_visible(vis: bool) -> void:
 	hero_hud.visible = vis
 
-func start_dialogue(conversation: DialogueConversation, context: Dictionary[StringName, Variant] = {}) -> bool:
-	if game_hud.is_open() or is_dialogue_open():
-		return false
-	return dialogue_runner.start(conversation, context)
-
 func start_dialogue_sequence(sequence: DialogueSequence, context: Dictionary[StringName, Variant] = {}) -> bool:
 	if game_hud.is_open() or is_dialogue_open():
 		return false
@@ -117,11 +112,6 @@ func queue_acquisition_rewards(rewards: Array[RewardEntry]) -> void:
 
 func queue_quest_rewards(rewards: Array[RewardEntry]) -> void:
 	_pending_quest_rewards = rewards.duplicate()
-
-func _on_dialogue_started(_conversation: DialogueConversation) -> void:
-	dialogue_window.open()
-	_play_dialogue_sfx(dialogue_open_sfx_id)
-	dialogue_opened.emit()
 
 func _on_sequence_started(_sequence: DialogueSequence) -> void:
 	dialogue_window.open()

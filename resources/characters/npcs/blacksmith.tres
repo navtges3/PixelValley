@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://bvrdh0sqeu4ny" path="res://scripts/characters/npc_data.gd" id="1_q6ltq"]
 [ext_resource type="Texture2D" uid="uid://lygp75a7owqn" path="res://assets/characters/npcs/weapon_shopkeep.png" id="2_dju14"]
 [ext_resource type="Script" uid="uid://bc3i162s5h001" path="res://scripts/data/dialogue/dialogue_sequence.gd" id="2_fa03n"]
-[ext_resource type="Resource" path="res://resources/dialogue/sequences/blacksmith_ambient.tres" id="7_ambient"]
+[ext_resource type="Resource" uid="uid://b2ho7dln4w88" path="res://resources/dialogue/sequences/blacksmith_ambient.tres" id="7_ambient"]
 [ext_resource type="Resource" uid="uid://dhw5pvlh4wy4u" path="res://resources/dialogue/sequences/blacksmith_1020.tres" id="8_quest_1020"]
 [ext_resource type="Resource" uid="uid://cho4cgsn7qd8c" path="res://resources/dialogue/sequences/blacksmith_1025.tres" id="9_quest_1025"]
 [ext_resource type="Resource" uid="uid://dko1v0rbtffq5" path="res://resources/dialogue/sequences/blacksmith_1030.tres" id="10_quest_1030"]
