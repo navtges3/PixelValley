@@ -2,12 +2,96 @@
 
 [ext_resource type="Script" uid="uid://de2gtyvn62a4q" path="res://scripts/data/dialogue/dialogue_entry.gd" id="1_j1chp"]
 [ext_resource type="Resource" uid="uid://bggdb2svwljrr" path="res://resources/dialogue/quests/alchemist_quest_conversation.tres" id="1_source"]
+[ext_resource type="Script" uid="uid://bn5tdgpsujh6q" path="res://scripts/data/dialogue/dialogue_action.gd" id="2_15trq"]
 [ext_resource type="Script" uid="uid://bc3i162s5h001" path="res://scripts/data/dialogue/dialogue_sequence.gd" id="2_script"]
+[ext_resource type="Script" uid="uid://chsetq55irrf0" path="res://scripts/data/dialogue/dialogue_condition.gd" id="3_7td3o"]
+[ext_resource type="Script" uid="uid://bw8gfgi66jkgt" path="res://scripts/data/dialogue/dialogue_response.gd" id="4_kc864"]
+[ext_resource type="Script" uid="uid://dpbifjko4digr" path="res://scripts/data/dialogue/dialogue_speaker.gd" id="5_s6t7d"]
+
+[sub_resource type="Resource" id="ConditionQuest11"]
+script = ExtResource("3_7td3o")
+condition_id = &"context_equals"
+parameters = Dictionary[StringName, Variant]({
+&"key": &"quest_id",
+&"value": 1010
+})
+
+[sub_resource type="Resource" id="ConditionReady"]
+script = ExtResource("3_7td3o")
+condition_id = &"context_equals"
+parameters = Dictionary[StringName, Variant]({
+&"key": &"quest_state",
+&"value": &"ready"
+})
+
+[sub_resource type="Resource" id="ActionTurnIn"]
+script = ExtResource("2_15trq")
+action_id = &"turn_in_quest"
+
+[sub_resource type="Resource" id="ResponseTurnIn"]
+script = ExtResource("4_kc864")
+text = "Thank you. I'll take the potion."
+next_entry_id = &"quest_1010_rewarded"
+actions = Array[ExtResource("2_15trq")]([SubResource("ActionTurnIn")])
+
+[sub_resource type="Resource" id="ActionService"]
+script = ExtResource("2_15trq")
+action_id = &"open_service"
+
+[sub_resource type="Resource" id="ResponseShop"]
+script = ExtResource("4_kc864")
+text = "Show me your potions."
+actions = Array[ExtResource("2_15trq")]([SubResource("ActionService")])
+
+[sub_resource type="Resource" id="Speaker"]
+script = ExtResource("5_s6t7d")
+speaker_id = &"alchemist"
+display_name = "Tamsin Reed"
+
+[sub_resource type="Resource" id="Resource_2wclv"]
+script = ExtResource("1_j1chp")
+entry_id = &"quest_1010_ready"
+speaker = SubResource("Speaker")
+pages = Array[String](["Take this lesser healing potion for your trouble."])
+skip_entry_id = &"quest_1010_active"
+conditions = Array[ExtResource("3_7td3o")]([SubResource("ConditionQuest11"), SubResource("ConditionReady")])
+responses = Array[ExtResource("4_kc864")]([SubResource("ResponseTurnIn"), SubResource("ResponseShop")])
+
+[sub_resource type="Resource" id="ActionCompleteInteraction"]
+script = ExtResource("2_15trq")
+action_id = &"complete_npc_interaction"
+
+[sub_resource type="Resource" id="ConditionActive"]
+script = ExtResource("3_7td3o")
+condition_id = &"context_equals"
+parameters = Dictionary[StringName, Variant]({
+&"key": &"quest_state",
+&"value": &"active"
+})
+
+[sub_resource type="Resource" id="Resource_awx2b"]
+script = ExtResource("1_j1chp")
+entry_id = &"quest_1010_active"
+speaker = SubResource("Speaker")
+pages = Array[String](["Mara sent you to help with my restorative? Excellent. I have your sample ready now."])
+next_entry_id = &"quest_1010_ready"
+skip_entry_id = &"quest_1020_offered"
+conditions = Array[ExtResource("3_7td3o")]([SubResource("ConditionQuest11"), SubResource("ConditionActive")])
+actions = Array[ExtResource("2_15trq")]([SubResource("ActionCompleteInteraction")])
+
+[sub_resource type="Resource" id="Resource_15trq"]
+script = ExtResource("1_j1chp")
+entry_id = &"quest_1010_rewarded"
+speaker = SubResource("Speaker")
+pages = Array[String](["Use it when your health runs low. I may have another favor if you're interested."])
+next_entry_id = &"quest_1020_offered"
 
 [resource]
 script = ExtResource("2_script")
 sequence_id = &"alchemist_quest_1010"
 quest_id = 1010
+start_entry_id = &"quest_1010_ready"
+entries = Array[ExtResource("1_j1chp")]([SubResource("Resource_2wclv"), SubResource("Resource_awx2b"), SubResource("Resource_15trq")])
 state_entries = Dictionary[StringName, StringName]({
 &"active": &"quest_1010_active",
 &"completed": &"quest_1010_rewarded",

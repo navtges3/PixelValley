@@ -2,12 +2,106 @@
 
 [ext_resource type="Script" uid="uid://de2gtyvn62a4q" path="res://scripts/data/dialogue/dialogue_entry.gd" id="1_cqmln"]
 [ext_resource type="Resource" uid="uid://bggdb2svwljrr" path="res://resources/dialogue/quests/alchemist_quest_conversation.tres" id="1_source"]
+[ext_resource type="Script" uid="uid://bn5tdgpsujh6q" path="res://scripts/data/dialogue/dialogue_action.gd" id="2_dtap4"]
 [ext_resource type="Script" uid="uid://bc3i162s5h001" path="res://scripts/data/dialogue/dialogue_sequence.gd" id="2_script"]
+[ext_resource type="Script" uid="uid://chsetq55irrf0" path="res://scripts/data/dialogue/dialogue_condition.gd" id="3_s0i5r"]
+[ext_resource type="Script" uid="uid://bw8gfgi66jkgt" path="res://scripts/data/dialogue/dialogue_response.gd" id="4_g5fht"]
+[ext_resource type="Script" uid="uid://dpbifjko4digr" path="res://scripts/data/dialogue/dialogue_speaker.gd" id="5_aicsv"]
+
+[sub_resource type="Resource" id="ConditionQuest12"]
+script = ExtResource("3_s0i5r")
+condition_id = &"context_equals"
+parameters = Dictionary[StringName, Variant]({
+&"key": &"quest_id",
+&"value": 1020
+})
+
+[sub_resource type="Resource" id="ConditionOffered"]
+script = ExtResource("3_s0i5r")
+condition_id = &"context_equals"
+parameters = Dictionary[StringName, Variant]({
+&"key": &"quest_state",
+&"value": &"offered"
+})
+
+[sub_resource type="Resource" id="ActionAccept"]
+script = ExtResource("2_dtap4")
+action_id = &"accept_quest"
+
+[sub_resource type="Resource" id="ResponseAccept"]
+script = ExtResource("4_g5fht")
+text = "I'll speak with the blacksmith."
+next_entry_id = &"quest_1020_accepted"
+actions = Array[ExtResource("2_dtap4")]([SubResource("ActionAccept")])
+
+[sub_resource type="Resource" id="ActionDecline"]
+script = ExtResource("2_dtap4")
+action_id = &"decline_quest"
+
+[sub_resource type="Resource" id="ResponseDecline"]
+script = ExtResource("4_g5fht")
+text = "Not right now."
+next_entry_id = &"quest_1020_declined"
+actions = Array[ExtResource("2_dtap4")]([SubResource("ActionDecline")])
+
+[sub_resource type="Resource" id="ActionService"]
+script = ExtResource("2_dtap4")
+action_id = &"open_service"
+
+[sub_resource type="Resource" id="ResponseShop"]
+script = ExtResource("4_g5fht")
+text = "Show me your potions."
+actions = Array[ExtResource("2_dtap4")]([SubResource("ActionService")])
+
+[sub_resource type="Resource" id="Speaker"]
+script = ExtResource("5_aicsv")
+speaker_id = &"alchemist"
+display_name = "Tamsin Reed"
+
+[sub_resource type="Resource" id="Resource_lmy7j"]
+script = ExtResource("1_cqmln")
+entry_id = &"quest_1020_offered"
+speaker = SubResource("Speaker")
+pages = Array[String](["Before you leave, the blacksmith asked me to send a capable traveler his way.", "Would you introduce yourself at the weapon shop?"])
+skip_entry_id = &"quest_1020_active"
+conditions = Array[ExtResource("3_s0i5r")]([SubResource("ConditionQuest12"), SubResource("ConditionOffered")])
+responses = Array[ExtResource("4_g5fht")]([SubResource("ResponseAccept"), SubResource("ResponseDecline"), SubResource("ResponseShop")])
+
+[sub_resource type="Resource" id="ConditionActive"]
+script = ExtResource("3_s0i5r")
+condition_id = &"context_equals"
+parameters = Dictionary[StringName, Variant]({
+&"key": &"quest_state",
+&"value": &"active"
+})
+
+[sub_resource type="Resource" id="Resource_dtap4"]
+script = ExtResource("1_cqmln")
+entry_id = &"quest_1020_active"
+speaker = SubResource("Speaker")
+pages = Array[String](["The blacksmith is waiting in the weapon shop. He appreciates punctuality."])
+skip_entry_id = &"ambient"
+conditions = Array[ExtResource("3_s0i5r")]([SubResource("ConditionQuest12"), SubResource("ConditionActive")])
+responses = Array[ExtResource("4_g5fht")]([SubResource("ResponseShop")])
+
+[sub_resource type="Resource" id="Resource_s0i5r"]
+script = ExtResource("1_cqmln")
+entry_id = &"quest_1020_accepted"
+speaker = SubResource("Speaker")
+pages = Array[String](["Good. You'll find him behind the counter in the weapon shop."])
+
+[sub_resource type="Resource" id="Resource_g5fht"]
+script = ExtResource("1_cqmln")
+entry_id = &"quest_1020_declined"
+speaker = SubResource("Speaker")
+pages = Array[String](["Very well. The offer will remain open."])
 
 [resource]
 script = ExtResource("2_script")
 sequence_id = &"alchemist_quest_1020"
 quest_id = 1020
+start_entry_id = &"quest_1020_offered"
+entries = Array[ExtResource("1_cqmln")]([SubResource("Resource_lmy7j"), SubResource("Resource_dtap4"), SubResource("Resource_s0i5r"), SubResource("Resource_g5fht")])
 state_entries = Dictionary[StringName, StringName]({
 &"active": &"quest_1020_active",
 &"offered": &"quest_1020_offered"
