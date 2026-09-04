@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="DialogueSequence" format=3 uid="uid://cho4cgsn7qd8c"]
+[gd_resource type="Resource" script_class="DialogueSequence" format=3 uid="uid://dscrdngkphjlr"]
 
 [ext_resource type="Script" uid="uid://de2gtyvn62a4q" path="res://scripts/data/dialogue/dialogue_entry.gd" id="1_mn50b"]
 [ext_resource type="Script" uid="uid://bn5tdgpsujh6q" path="res://scripts/data/dialogue/dialogue_action.gd" id="2_mbp2j"]
@@ -81,6 +81,25 @@ parameters = Dictionary[StringName, Variant]({
 &"value": &"active"
 })
 
+[sub_resource type="Resource" id="Resource_rdqa7"]
+script = ExtResource("2_mbp2j")
+action_id = &"deliver_quest_items"
+
+[sub_resource type="Resource" id="Resource_dtrkr"]
+script = ExtResource("3_5ufol")
+condition_id = &"context_equals"
+parameters = Dictionary[StringName, Variant]({
+&"key": "has_delivery_items",
+&"value": true
+})
+
+[sub_resource type="Resource" id="Resource_ms7yi"]
+script = ExtResource("4_4vdya")
+text = "Here are the wood bundles."
+next_entry_id = &"ready"
+conditions = Array[ExtResource("3_5ufol")]([SubResource("Resource_dtrkr")])
+actions = Array[ExtResource("2_mbp2j")]([SubResource("Resource_rdqa7")])
+
 [sub_resource type="Resource" id="Resource_5a48i"]
 script = ExtResource("2_mbp2j")
 action_id = &"open_service"
@@ -94,10 +113,10 @@ actions = Array[ExtResource("2_mbp2j")]([SubResource("Resource_5a48i")])
 script = ExtResource("1_mn50b")
 entry_id = &"active"
 speaker = SubResource("Speaker")
-pages = Array[String](["Still need some firewood? Bring me three bundles and we'll call it even."])
+pages = Array[String](["I'm still waiting on those wood bundles."])
 next_entry_id = &"ready"
 conditions = Array[ExtResource("3_5ufol")]([SubResource("Resource_l3hcx"), SubResource("Resource_tgihv")])
-responses = Array[ExtResource("4_4vdya")]([SubResource("Resource_l4337")])
+responses = Array[ExtResource("4_4vdya")]([SubResource("Resource_ms7yi"), SubResource("Resource_l4337")])
 
 [sub_resource type="Resource" id="Resource_n3xoa"]
 script = ExtResource("3_5ufol")
@@ -122,6 +141,7 @@ action_id = &"turn_in_quest"
 [sub_resource type="Resource" id="Resource_vyf24"]
 script = ExtResource("4_4vdya")
 text = "Glad I could help."
+next_entry_id = &"completed"
 actions = Array[ExtResource("2_mbp2j")]([SubResource("Resource_dstv2")])
 
 [sub_resource type="Resource" id="Resource_60a3j"]
@@ -161,10 +181,9 @@ display_name = "Garrick Stone"
 
 [sub_resource type="Resource" id="Resource_rn612"]
 script = ExtResource("1_mn50b")
-entry_id = &"rewarded"
+entry_id = &"completed"
 speaker = SubResource("Resource_svxiq")
 pages = Array[String](["Take this. It's the least I can do for keeping the forge burning.", "You'll get plenty of use out of it.", "Before you leave, I found this key near the forge."])
-next_entry_id = &"offered"
 metadata/_custom_type_script = "uid://de2gtyvn62a4q"
 
 [resource]
@@ -176,6 +195,7 @@ start_entry_id = &"offered"
 entries = Array[ExtResource("1_mn50b")]([SubResource("Resource_mdlbf"), SubResource("Resource_4vdya"), SubResource("Resource_bkoli"), SubResource("Resource_mbp2j"), SubResource("Resource_5ufol"), SubResource("Resource_rn612")])
 state_entries = Dictionary[StringName, StringName]({
 &"active": &"active",
+&"completed": &"completed",
 &"offered": &"offered",
 &"ready": &"ready"
 })
