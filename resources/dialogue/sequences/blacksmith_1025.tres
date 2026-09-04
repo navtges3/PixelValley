@@ -2,12 +2,181 @@
 
 [ext_resource type="Script" uid="uid://de2gtyvn62a4q" path="res://scripts/data/dialogue/dialogue_entry.gd" id="1_mn50b"]
 [ext_resource type="Resource" uid="uid://csos2nnx6kr17" path="res://resources/dialogue/quests/blacksmith_quest_conversation.tres" id="1_source"]
+[ext_resource type="Script" uid="uid://bn5tdgpsujh6q" path="res://scripts/data/dialogue/dialogue_action.gd" id="2_mbp2j"]
 [ext_resource type="Script" uid="uid://bc3i162s5h001" path="res://scripts/data/dialogue/dialogue_sequence.gd" id="2_script"]
+[ext_resource type="Script" uid="uid://chsetq55irrf0" path="res://scripts/data/dialogue/dialogue_condition.gd" id="3_5ufol"]
+[ext_resource type="Script" uid="uid://bw8gfgi66jkgt" path="res://scripts/data/dialogue/dialogue_response.gd" id="4_4vdya"]
+[ext_resource type="Script" uid="uid://dpbifjko4digr" path="res://scripts/data/dialogue/dialogue_speaker.gd" id="5_bkoli"]
+
+[sub_resource type="Resource" id="Resource_fpxin"]
+script = ExtResource("3_5ufol")
+condition_id = &"context_equals"
+parameters = Dictionary[StringName, Variant]({
+&"key": &"quest_id",
+&"value": 1025
+})
+
+[sub_resource type="Resource" id="Resource_7jhui"]
+script = ExtResource("3_5ufol")
+condition_id = &"context_equals"
+parameters = Dictionary[StringName, Variant]({
+&"key": &"quest_state",
+&"value": &"offered"
+})
+
+[sub_resource type="Resource" id="Resource_bvdbl"]
+script = ExtResource("2_mbp2j")
+action_id = &"accept_quest"
+
+[sub_resource type="Resource" id="Resource_64ptf"]
+script = ExtResource("4_4vdya")
+text = "I'll bring you the wood."
+next_entry_id = &"quest_1025_accepted"
+actions = Array[ExtResource("2_mbp2j")]([SubResource("Resource_bvdbl")])
+
+[sub_resource type="Resource" id="Resource_5xv71"]
+script = ExtResource("2_mbp2j")
+action_id = &"decline_quest"
+
+[sub_resource type="Resource" id="Resource_4xb7s"]
+script = ExtResource("4_4vdya")
+text = "I can't take on another task right now."
+next_entry_id = &"quest_1025_declined"
+actions = Array[ExtResource("2_mbp2j")]([SubResource("Resource_5xv71")])
+
+[sub_resource type="Resource" id="Resource_hjosn"]
+script = ExtResource("2_mbp2j")
+action_id = &"open_service"
+
+[sub_resource type="Resource" id="Resource_adabh"]
+script = ExtResource("4_4vdya")
+text = "Show me your weapons"
+actions = Array[ExtResource("2_mbp2j")]([SubResource("Resource_hjosn")])
+
+[sub_resource type="Resource" id="Speaker"]
+script = ExtResource("5_bkoli")
+speaker_id = &"blacksmith"
+display_name = "Garrick Stone"
+
+[sub_resource type="Resource" id="Resource_mdlbf"]
+script = ExtResource("1_mn50b")
+entry_id = &"quest_1025_offered"
+speaker = SubResource("Speaker")
+pages = Array[String](["I'm running low on good firewood for the forge. The dry wood from the forest burns hot and steady.", "Bring me five bundles and I'll make sure you get something useful in return."])
+skip_entry_id = &"quest_1025_active"
+conditions = Array[ExtResource("3_5ufol")]([SubResource("Resource_fpxin"), SubResource("Resource_7jhui")])
+responses = Array[ExtResource("4_4vdya")]([SubResource("Resource_64ptf"), SubResource("Resource_4xb7s"), SubResource("Resource_adabh")])
+
+[sub_resource type="Resource" id="Resource_l3hcx"]
+script = ExtResource("3_5ufol")
+condition_id = &"context_equals"
+parameters = Dictionary[StringName, Variant]({
+&"key": &"quest_id",
+&"value": 1025
+})
+
+[sub_resource type="Resource" id="Resource_tgihv"]
+script = ExtResource("3_5ufol")
+condition_id = &"context_equals"
+parameters = Dictionary[StringName, Variant]({
+&"key": &"quest_state",
+&"value": &"active"
+})
+
+[sub_resource type="Resource" id="Resource_5a48i"]
+script = ExtResource("2_mbp2j")
+action_id = &"open_service"
+
+[sub_resource type="Resource" id="Resource_l4337"]
+script = ExtResource("4_4vdya")
+text = "Show me your weapons."
+actions = Array[ExtResource("2_mbp2j")]([SubResource("Resource_5a48i")])
+
+[sub_resource type="Resource" id="Resource_4vdya"]
+script = ExtResource("1_mn50b")
+entry_id = &"quest_1025_active"
+speaker = SubResource("Speaker")
+pages = Array[String](["Still need some firewood? Bring me three bundles and we'll call it even."])
+next_entry_id = &"quest_1025_ready"
+skip_entry_id = &"ambient"
+conditions = Array[ExtResource("3_5ufol")]([SubResource("Resource_l3hcx"), SubResource("Resource_tgihv")])
+responses = Array[ExtResource("4_4vdya")]([SubResource("Resource_l4337")])
+
+[sub_resource type="Resource" id="Resource_n3xoa"]
+script = ExtResource("3_5ufol")
+condition_id = &"context_equals"
+parameters = Dictionary[StringName, Variant]({
+&"key": &"quest_id",
+&"value": 1025
+})
+
+[sub_resource type="Resource" id="Resource_8a6qk"]
+script = ExtResource("3_5ufol")
+condition_id = &"context_equals"
+parameters = Dictionary[StringName, Variant]({
+&"key": &"quest_state",
+&"value": &"ready"
+})
+
+[sub_resource type="Resource" id="Resource_dstv2"]
+script = ExtResource("2_mbp2j")
+action_id = &"turn_in_quest"
+
+[sub_resource type="Resource" id="Resource_vyf24"]
+script = ExtResource("4_4vdya")
+text = "Glad I could help."
+actions = Array[ExtResource("2_mbp2j")]([SubResource("Resource_dstv2")])
+
+[sub_resource type="Resource" id="Resource_60a3j"]
+script = ExtResource("2_mbp2j")
+action_id = &"open_service"
+
+[sub_resource type="Resource" id="Resource_4mnbc"]
+script = ExtResource("4_4vdya")
+text = "Show me your weapons."
+actions = Array[ExtResource("2_mbp2j")]([SubResource("Resource_60a3j")])
+
+[sub_resource type="Resource" id="Resource_bkoli"]
+script = ExtResource("1_mn50b")
+entry_id = &"quest_1025_ready"
+speaker = SubResource("Speaker")
+pages = Array[String](["That's the last of it, isn't it? Five good bundles.", "This should keep my forge going for quite a while. Thanks for the help."])
+skip_entry_id = &"quest_1025_active"
+conditions = Array[ExtResource("3_5ufol")]([SubResource("Resource_n3xoa"), SubResource("Resource_8a6qk")])
+responses = Array[ExtResource("4_4vdya")]([SubResource("Resource_vyf24"), SubResource("Resource_4mnbc")])
+
+[sub_resource type="Resource" id="Resource_mbp2j"]
+script = ExtResource("1_mn50b")
+entry_id = &"quest_1025_accepted"
+speaker = SubResource("Speaker")
+pages = Array[String](["Good. Three bundles should keep the forge burning for a while.", "You can find the wood in the forest. Bring it back here when you've got enough."])
+next_entry_id = &"quest_1025_active"
+
+[sub_resource type="Resource" id="Resource_5ufol"]
+script = ExtResource("1_mn50b")
+entry_id = &"quest_1025_declined"
+speaker = SubResource("Speaker")
+pages = Array[String](["It can wait here until you're ready."])
+
+[sub_resource type="Resource" id="Resource_svxiq"]
+script = ExtResource("5_bkoli")
+speaker_id = &"blacksmith"
+display_name = "Garrick Stone"
+
+[sub_resource type="Resource" id="Resource_rn612"]
+script = ExtResource("1_mn50b")
+entry_id = &"quest_1025_rewarded"
+speaker = SubResource("Resource_svxiq")
+pages = Array[String](["Take this. It's the least I can do for keeping the forge burning.", "You'll get plenty of use out of it.", "Before you leave, I found this key near the forge."])
+next_entry_id = &"quest_1030_offered"
+metadata/_custom_type_script = "uid://de2gtyvn62a4q"
 
 [resource]
 script = ExtResource("2_script")
 sequence_id = &"blacksmith_quest_1025"
 quest_id = 1025
+start_entry_id = &"quest_1025_offered"
+entries = Array[ExtResource("1_mn50b")]([SubResource("Resource_mdlbf"), SubResource("Resource_4vdya"), SubResource("Resource_bkoli"), SubResource("Resource_mbp2j"), SubResource("Resource_5ufol"), SubResource("Resource_rn612")])
 state_entries = Dictionary[StringName, StringName]({
 &"active": &"quest_1025_active",
 &"offered": &"quest_1025_offered",

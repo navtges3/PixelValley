@@ -2,12 +2,96 @@
 
 [ext_resource type="Script" uid="uid://de2gtyvn62a4q" path="res://scripts/data/dialogue/dialogue_entry.gd" id="1_iylt0"]
 [ext_resource type="Resource" uid="uid://csos2nnx6kr17" path="res://resources/dialogue/quests/blacksmith_quest_conversation.tres" id="1_source"]
+[ext_resource type="Script" uid="uid://bn5tdgpsujh6q" path="res://scripts/data/dialogue/dialogue_action.gd" id="2_mh3hy"]
 [ext_resource type="Script" uid="uid://bc3i162s5h001" path="res://scripts/data/dialogue/dialogue_sequence.gd" id="2_script"]
+[ext_resource type="Script" uid="uid://chsetq55irrf0" path="res://scripts/data/dialogue/dialogue_condition.gd" id="3_gwive"]
+[ext_resource type="Script" uid="uid://bw8gfgi66jkgt" path="res://scripts/data/dialogue/dialogue_response.gd" id="4_oku3u"]
+[ext_resource type="Script" uid="uid://dpbifjko4digr" path="res://scripts/data/dialogue/dialogue_speaker.gd" id="5_1prag"]
+
+[sub_resource type="Resource" id="ConditionQuest12"]
+script = ExtResource("3_gwive")
+condition_id = &"context_equals"
+parameters = Dictionary[StringName, Variant]({
+&"key": &"quest_id",
+&"value": 1020
+})
+
+[sub_resource type="Resource" id="ConditionReady"]
+script = ExtResource("3_gwive")
+condition_id = &"context_equals"
+parameters = Dictionary[StringName, Variant]({
+&"key": &"quest_state",
+&"value": &"ready"
+})
+
+[sub_resource type="Resource" id="ActionTurnIn"]
+script = ExtResource("2_mh3hy")
+action_id = &"turn_in_quest"
+
+[sub_resource type="Resource" id="ResponseTurnIn"]
+script = ExtResource("4_oku3u")
+text = "I'll put them to good use."
+next_entry_id = &"quest_1020_rewarded"
+actions = Array[ExtResource("2_mh3hy")]([SubResource("ActionTurnIn")])
+
+[sub_resource type="Resource" id="ActionService"]
+script = ExtResource("2_mh3hy")
+action_id = &"open_service"
+
+[sub_resource type="Resource" id="ResponseShop"]
+script = ExtResource("4_oku3u")
+text = "Show me your weapons."
+actions = Array[ExtResource("2_mh3hy")]([SubResource("ActionService")])
+
+[sub_resource type="Resource" id="Speaker"]
+script = ExtResource("5_1prag")
+speaker_id = &"blacksmith"
+display_name = "Garrick Stone"
+
+[sub_resource type="Resource" id="Resource_d8qvh"]
+script = ExtResource("1_iylt0")
+entry_id = &"quest_1020_ready"
+speaker = SubResource("Speaker")
+pages = Array[String](["A traveler who helps the village deserves a proper weapon."])
+skip_entry_id = &"quest_1020_active"
+conditions = Array[ExtResource("3_gwive")]([SubResource("ConditionQuest12"), SubResource("ConditionReady")])
+responses = Array[ExtResource("4_oku3u")]([SubResource("ResponseTurnIn"), SubResource("ResponseShop")])
+
+[sub_resource type="Resource" id="ActionCompleteInteraction"]
+script = ExtResource("2_mh3hy")
+action_id = &"complete_npc_interaction"
+
+[sub_resource type="Resource" id="ConditionActive"]
+script = ExtResource("3_gwive")
+condition_id = &"context_equals"
+parameters = Dictionary[StringName, Variant]({
+&"key": &"quest_state",
+&"value": &"active"
+})
+
+[sub_resource type="Resource" id="Resource_mh3hy"]
+script = ExtResource("1_iylt0")
+entry_id = &"quest_1020_active"
+speaker = SubResource("Speaker")
+pages = Array[String](["Sent by the alchemist, were you? Good. I've selected something suitable for you."])
+next_entry_id = &"quest_1020_ready"
+skip_entry_id = &"quest_1030_offered"
+conditions = Array[ExtResource("3_gwive")]([SubResource("ConditionQuest12"), SubResource("ConditionActive")])
+actions = Array[ExtResource("2_mh3hy")]([SubResource("ActionCompleteInteraction")])
+
+[sub_resource type="Resource" id="Resource_gwive"]
+script = ExtResource("1_iylt0")
+entry_id = &"quest_1020_rewarded"
+speaker = SubResource("Speaker")
+pages = Array[String](["The weapon is yours. That brings me to one more favor."])
+next_entry_id = &"quest_1025_offered"
 
 [resource]
 script = ExtResource("2_script")
 sequence_id = &"blacksmith_quest_1020"
 quest_id = 1020
+start_entry_id = &"quest_1020_ready"
+entries = Array[ExtResource("1_iylt0")]([SubResource("Resource_d8qvh"), SubResource("Resource_mh3hy"), SubResource("Resource_gwive")])
 state_entries = Dictionary[StringName, StringName]({
 &"active": &"quest_1020_active",
 &"completed": &"quest_1020_rewarded",
