@@ -14,36 +14,36 @@ _scan_rulesets = Array[Dictionary]([{
 &"scan_regex_include": ""
 }])
 _uids_to_string_ids = Dictionary[StringName, StringName]({
-&"uid://63cprmggavo2": &"alchemist_ambient",
+&"uid://63cprmggavo2": &"alchemist_default",
 &"uid://64bdjq7ct18k": &"alchemist_1020",
-&"uid://b2ho7dln4w88": &"blacksmith_ambient",
+&"uid://b2ho7dln4w88": &"blacksmith_default",
 &"uid://b478mes8x7fl3": &"alchemist_1010",
 &"uid://c31uflyif77v7": &"mara_1010",
-&"uid://c6ibl280g88eh": &"innkeeper_ambient",
-&"uid://c7bjjhpdribra": &"mara_ambient",
+&"uid://c6ibl280g88eh": &"innkeeper_default",
+&"uid://c7bjjhpdribra": &"mara_default",
 &"uid://cho4cgsn7qd8c": &"blacksmith_1025",
-&"uid://cpjeomh6tfiuh": &"rowan_ambient",
-&"uid://dgt0uis1d64tt": &"oren_ambient",
+&"uid://cpjeomh6tfiuh": &"rowan_default",
+&"uid://dgt0uis1d64tt": &"oren_default",
 &"uid://dhw5pvlh4wy4u": &"blacksmith_1020",
 &"uid://dj7s0ab72fan5": &"innkeeper_1030",
 &"uid://dko1v0rbtffq5": &"blacksmith_1030",
-&"uid://x3jhmosj7nr2": &"nessa_ambient"
+&"uid://x3jhmosj7nr2": &"nessa_default"
 })
 _string_ids_to_uids = Dictionary[StringName, StringName]({
 &"alchemist_1010": &"uid://b478mes8x7fl3",
 &"alchemist_1020": &"uid://64bdjq7ct18k",
-&"alchemist_ambient": &"uid://63cprmggavo2",
+&"alchemist_default": &"uid://63cprmggavo2",
 &"blacksmith_1020": &"uid://dhw5pvlh4wy4u",
 &"blacksmith_1025": &"uid://cho4cgsn7qd8c",
 &"blacksmith_1030": &"uid://dko1v0rbtffq5",
-&"blacksmith_ambient": &"uid://b2ho7dln4w88",
+&"blacksmith_default": &"uid://b2ho7dln4w88",
 &"innkeeper_1030": &"uid://dj7s0ab72fan5",
-&"innkeeper_ambient": &"uid://c6ibl280g88eh",
+&"innkeeper_default": &"uid://c6ibl280g88eh",
 &"mara_1010": &"uid://c31uflyif77v7",
-&"mara_ambient": &"uid://c7bjjhpdribra",
-&"nessa_ambient": &"uid://x3jhmosj7nr2",
-&"oren_ambient": &"uid://dgt0uis1d64tt",
-&"rowan_ambient": &"uid://cpjeomh6tfiuh"
+&"mara_default": &"uid://c7bjjhpdribra",
+&"nessa_default": &"uid://x3jhmosj7nr2",
+&"oren_default": &"uid://dgt0uis1d64tt",
+&"rowan_default": &"uid://cpjeomh6tfiuh"
 })
 _property_index = Dictionary[StringName, Dictionary]({
 &"sequence_id": {}

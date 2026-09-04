@@ -1,0 +1,35 @@
+[gd_resource type="Resource" script_class="DialogueSequence" format=3 uid="uid://c6ibl280g88eh"]
+
+[ext_resource type="Script" uid="uid://de2gtyvn62a4q" path="res://scripts/data/dialogue/dialogue_entry.gd" id="1_oexcp"]
+[ext_resource type="Script" uid="uid://bn5tdgpsujh6q" path="res://scripts/data/dialogue/dialogue_action.gd" id="2_w5jyt"]
+[ext_resource type="Script" uid="uid://chsetq55irrf0" path="res://scripts/data/dialogue/dialogue_condition.gd" id="3_axgq8"]
+[ext_resource type="Script" uid="uid://bw8gfgi66jkgt" path="res://scripts/data/dialogue/dialogue_response.gd" id="4_vv4be"]
+[ext_resource type="Script" uid="uid://dpbifjko4digr" path="res://scripts/data/dialogue/dialogue_speaker.gd" id="5_5x66p"]
+[ext_resource type="Script" uid="uid://bc3i162s5h001" path="res://scripts/data/dialogue/dialogue_sequence.gd" id="6_qq3rd"]
+
+[sub_resource type="Resource" id="ActionService"]
+script = ExtResource("2_w5jyt")
+action_id = &"open_service"
+
+[sub_resource type="Resource" id="ResponseRest"]
+script = ExtResource("4_vv4be")
+text = "I'd like to rest."
+actions = Array[ExtResource("2_w5jyt")]([SubResource("ActionService")])
+
+[sub_resource type="Resource" id="Speaker"]
+script = ExtResource("5_5x66p")
+speaker_id = &"innkeeper"
+display_name = "Elara Vale"
+
+[sub_resource type="Resource" id="Resource_ejxwf"]
+script = ExtResource("1_oexcp")
+entry_id = &"default"
+speaker = SubResource("Speaker")
+pages = Array[String](["Welcome to the inn. I'm Elara Vale, and a warm bed is the best defense against a hard road."])
+responses = Array[ExtResource("4_vv4be")]([SubResource("ResponseRest")])
+
+[resource]
+script = ExtResource("6_qq3rd")
+sequence_id = &"innkeeper_ambient"
+start_entry_id = &"default"
+entries = Array[ExtResource("1_oexcp")]([SubResource("Resource_ejxwf")])

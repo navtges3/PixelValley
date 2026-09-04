@@ -1,0 +1,35 @@
+[gd_resource type="Resource" script_class="DialogueSequence" format=3 uid="uid://63cprmggavo2"]
+
+[ext_resource type="Script" uid="uid://de2gtyvn62a4q" path="res://scripts/data/dialogue/dialogue_entry.gd" id="1_irfrn"]
+[ext_resource type="Script" uid="uid://bn5tdgpsujh6q" path="res://scripts/data/dialogue/dialogue_action.gd" id="2_5a08w"]
+[ext_resource type="Script" uid="uid://chsetq55irrf0" path="res://scripts/data/dialogue/dialogue_condition.gd" id="3_y5dj7"]
+[ext_resource type="Script" uid="uid://bw8gfgi66jkgt" path="res://scripts/data/dialogue/dialogue_response.gd" id="4_v1266"]
+[ext_resource type="Script" uid="uid://dpbifjko4digr" path="res://scripts/data/dialogue/dialogue_speaker.gd" id="5_o5ipf"]
+[ext_resource type="Script" uid="uid://bc3i162s5h001" path="res://scripts/data/dialogue/dialogue_sequence.gd" id="6_6mb67"]
+
+[sub_resource type="Resource" id="ActionService"]
+script = ExtResource("2_5a08w")
+action_id = &"open_service"
+
+[sub_resource type="Resource" id="ResponseShop"]
+script = ExtResource("4_v1266")
+text = "Show me your potions."
+actions = Array[ExtResource("2_5a08w")]([SubResource("ActionService")])
+
+[sub_resource type="Resource" id="Speaker"]
+script = ExtResource("5_o5ipf")
+speaker_id = &"alchemist"
+display_name = "Tamsin Reed"
+
+[sub_resource type="Resource" id="Resource_gssac"]
+script = ExtResource("1_irfrn")
+entry_id = &"default"
+speaker = SubResource("Speaker")
+pages = Array[String](["I'm Tamsin Reed, the village alchemist. Careful around the cauldron—restoratives are less restorative before they cool."])
+responses = Array[ExtResource("4_v1266")]([SubResource("ResponseShop")])
+
+[resource]
+script = ExtResource("6_6mb67")
+sequence_id = &"alchemist_ambient"
+start_entry_id = &"default"
+entries = Array[ExtResource("1_irfrn")]([SubResource("Resource_gssac")])

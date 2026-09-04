@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://bvrdh0sqeu4ny" path="res://scripts/characters/npc_data.gd" id="1_50c5m"]
 [ext_resource type="Script" uid="uid://bc3i162s5h001" path="res://scripts/data/dialogue/dialogue_sequence.gd" id="2_ovnb2"]
 [ext_resource type="Texture2D" uid="uid://dg387lc85bt2q" path="res://assets/characters/npcs/potion_shopkeep.png" id="2_yagej"]
-[ext_resource type="Resource" uid="uid://63cprmggavo2" path="res://resources/dialogue/sequences/alchemist_ambient.tres" id="4_ambient"]
+[ext_resource type="Resource" uid="uid://63cprmggavo2" path="res://resources/dialogue/sequences/alchemist_default.tres" id="4_ambient"]
 [ext_resource type="Resource" uid="uid://b478mes8x7fl3" path="res://resources/dialogue/sequences/alchemist_1010.tres" id="5_quest_1010"]
 [ext_resource type="Resource" uid="uid://64bdjq7ct18k" path="res://resources/dialogue/sequences/alchemist_1020.tres" id="6_quest_1020"]
 
