@@ -20,7 +20,6 @@ enum ContentStatus {
 @export var portrait_status: ContentStatus = ContentStatus.MISSING
 
 @export_category("Interaction")
-@export var dialogue: DialogueConversation
 @export var dialogue_sequences: Array[DialogueSequence] = []
 @export var service_id: StringName = &""
 @export var quest_ids: Array[int] = []
@@ -39,10 +38,8 @@ func get_validation_errors() -> PackedStringArray:
 		errors.append("NPC '%s' has no world visual." % npc_id)
 	if portrait_status != ContentStatus.MISSING and portrait == null:
 		errors.append("NPC '%s' has a portrait status but no portrait." % npc_id)
-	if dialogue == null and dialogue_sequences.is_empty() and service_id.is_empty():
+	if dialogue_sequences.is_empty() and service_id.is_empty():
 		errors.append("NPC '%s' has neither dialogue nor a service." % npc_id)
-	if dialogue != null and dialogue.conversation_id.is_empty():
-		errors.append("NPC '%s' has dialogue with no stable conversation ID." % npc_id)
 	for sequence: DialogueSequence in dialogue_sequences:
 		if sequence != null and sequence.sequence_id.is_empty():
 			errors.append("NPC '%s' has a dialogue sequence with no stable sequence ID." % npc_id)

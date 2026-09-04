@@ -6,7 +6,7 @@ class_name NpcRoster
 func get_validation_errors() -> PackedStringArray:
 	var errors := PackedStringArray()
 	var seen_ids: Dictionary[StringName, NpcData] = {}
-	var seen_dialogue_ids: Dictionary[StringName, NpcData] = {}
+	var seen_sequence_ids: Dictionary[StringName, NpcData] = {}
 	for npc: NpcData in npcs:
 		if npc == null:
 			errors.append("NPC roster contains a null entry.")
@@ -16,13 +16,13 @@ func get_validation_errors() -> PackedStringArray:
 			errors.append("Duplicate NPC ID '%s'." % npc.npc_id)
 		else:
 			seen_ids[npc.npc_id] = npc
-		if npc.dialogue == null or npc.dialogue.conversation_id.is_empty():
-			continue
-		var conversation_id := npc.dialogue.conversation_id
-		if seen_dialogue_ids.has(conversation_id):
-			errors.append("Duplicate dialogue conversation ID '%s'." % conversation_id)
-		else:
-			seen_dialogue_ids[conversation_id] = npc
+		for sequence: DialogueSequence in npc.dialogue_sequences:
+			if sequence == null or sequence.sequence_id.is_empty():
+				continue
+			if seen_sequence_ids.has(sequence.sequence_id):
+				errors.append("Duplicate dialogue sequence ID '%s'." % sequence.sequence_id)
+			else:
+				seen_sequence_ids[sequence.sequence_id] = npc
 	return errors
 
 func get_npc(npc_id: StringName) -> NpcData:

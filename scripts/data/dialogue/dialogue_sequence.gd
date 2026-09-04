@@ -8,8 +8,6 @@ class_name DialogueSequence
 @export var start_entry_id: StringName = &""
 @export var entries: Array[DialogueEntry] = []
 @export var state_entries: Dictionary[StringName, StringName] = {}
-@export var source_conversation: DialogueConversation
-# state entries is ordered state, DialogueEntry name
 
 func get_entry(entry_id: StringName) -> DialogueEntry:
 	for entry: DialogueEntry in get_entries():
@@ -18,11 +16,7 @@ func get_entry(entry_id: StringName) -> DialogueEntry:
 	return null
 
 func get_entries() -> Array[DialogueEntry]:
-	if not entries.is_empty():
-		return entries
-	if source_conversation != null:
-		return source_conversation.entries
-	return []
+	return entries
 
 func get_start_entry_id(context: Dictionary[StringName, Variant]) -> StringName:
 	if quest_id >= 0:

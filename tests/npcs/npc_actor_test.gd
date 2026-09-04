@@ -25,7 +25,6 @@ const SERVICE_INTERIORS: Dictionary[String, StringName] = {
 }
 
 var _dialogue_ids: Array[StringName] = []
-var _dialogue_conversations: Array[DialogueConversation] = []
 var _service_ids: Array[StringName] = []
 var _requested_services: Array[StringName] = []
 var _status_changes: Array[int] = []
@@ -158,10 +157,10 @@ func _test_authored_resources() -> void:
 
 func _test_dialogue_interaction() -> void:
 	_reset_signal_captures()
-	var conversation := DialogueConversation.new()
-	conversation.conversation_id = &"dialogue_npc_test"
+	var sequence := DialogueSequence.new()
+	sequence.sequence_id = &"dialogue_npc_test"
 	var data := _make_data(&"dialogue_npc")
-	data.dialogue = conversation
+	data.dialogue_sequences.append(sequence)
 	var npc := _spawn_actor(data)
 	npc.dialogue_requested.connect(_on_dialogue_requested)
 	npc.service_requested.connect(_on_service_requested)
@@ -226,10 +225,10 @@ func _test_service_interaction() -> void:
 
 func _test_dialogue_takes_priority() -> void:
 	_reset_signal_captures()
-	var conversation := DialogueConversation.new()
-	conversation.conversation_id = &"hybrid_npc_test"
+	var sequence := DialogueSequence.new()
+	sequence.sequence_id = &"hybrid_npc_test"
 	var data := _make_data(&"hybrid_npc")
-	data.dialogue = conversation
+	data.dialogue_sequences.append(sequence)
 	data.service_id = &"test_service"
 	var npc := _spawn_actor(data)
 	npc.dialogue_requested.connect(_on_dialogue_requested)
@@ -445,7 +444,6 @@ func _expect_packed_array_contains(
 
 func _reset_signal_captures() -> void:
 	_dialogue_ids.clear()
-	_dialogue_conversations.clear()
 	_service_ids.clear()
 	_requested_services.clear()
 	_status_changes.clear()

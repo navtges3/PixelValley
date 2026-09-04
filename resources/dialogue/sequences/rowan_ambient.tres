@@ -1,7 +1,6 @@
 [gd_resource type="Resource" script_class="DialogueSequence" format=3 uid="uid://cpjeomh6tfiuh"]
 
 [ext_resource type="Script" uid="uid://de2gtyvn62a4q" path="res://scripts/data/dialogue/dialogue_entry.gd" id="1_bu6q2"]
-[ext_resource type="Resource" uid="uid://5o0vkfwh385q" path="res://resources/dialogue/rowan_conversation.tres" id="1_source"]
 [ext_resource type="Script" uid="uid://bn5tdgpsujh6q" path="res://scripts/data/dialogue/dialogue_action.gd" id="2_j68j0"]
 [ext_resource type="Script" uid="uid://bc3i162s5h001" path="res://scripts/data/dialogue/dialogue_sequence.gd" id="2_script"]
 [ext_resource type="Script" uid="uid://chsetq55irrf0" path="res://scripts/data/dialogue/dialogue_condition.gd" id="3_pbda5"]
@@ -72,4 +71,3 @@ script = ExtResource("2_script")
 sequence_id = &"rowan_ambient"
 start_entry_id = &"victory"
 entries = Array[ExtResource("1_bu6q2")]([SubResource("Resource_5a1jf"), SubResource("Resource_uc1gc"), SubResource("Resource_ed26h"), SubResource("Resource_w3e1i")])
-source_conversation = ExtResource("1_source")
