@@ -68,3 +68,9 @@ script = ExtResource("2_script")
 sequence_id = &"rowan_ambient"
 start_entry_id = &"victory"
 entries = Array[ExtResource("1_bu6q2")]([SubResource("Resource_5a1jf"), SubResource("Resource_uc1gc"), SubResource("Resource_ed26h"), SubResource("Resource_w3e1i")])
+state_entries = Dictionary[StringName, StringName]({
+&"goblin_threat": &"goblin_threat",
+&"ogre_threat": &"ogre_threat",
+&"orc_threat": &"orc_threat",
+&"victory": &"victory"
+})

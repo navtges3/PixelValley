@@ -52,7 +52,6 @@ script = ExtResource("1_j1chp")
 entry_id = &"ready"
 speaker = SubResource("Speaker")
 pages = Array[String](["Take this lesser healing potion for your trouble."])
-skip_entry_id = &"active"
 conditions = Array[ExtResource("3_7td3o")]([SubResource("ConditionQuest11"), SubResource("ConditionReady")])
 responses = Array[ExtResource("4_kc864")]([SubResource("ResponseTurnIn"), SubResource("ResponseShop")])
 
@@ -74,7 +73,6 @@ entry_id = &"active"
 speaker = SubResource("Speaker")
 pages = Array[String](["Mara sent you to help with my restorative? Excellent. I have your sample ready now."])
 next_entry_id = &"ready"
-skip_entry_id = &"offered"
 conditions = Array[ExtResource("3_7td3o")]([SubResource("ConditionQuest11"), SubResource("ConditionActive")])
 actions = Array[ExtResource("2_15trq")]([SubResource("ActionCompleteInteraction")])
 

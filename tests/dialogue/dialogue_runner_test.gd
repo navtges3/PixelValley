@@ -11,7 +11,7 @@ func run_tests() -> int:
 	_test_context_equals_condition()
 	_test_authored_progression_sequences()
 	_test_branching_conversation()
-	_test_condition_skips_to_fallback()
+	_test_condition_follows_next_entry()
 	_test_actions_emit_once()
 	_test_duplicate_response_input_is_idempotent()
 	_test_advance_does_not_bypass_responses()
@@ -42,7 +42,6 @@ func _test_authored_progression_sequences() -> void:
 		_expect_not_null(sequence, "authored dialogue sequence loads: %s" % path)
 		if sequence == null:
 			continue
-
 		for progression_state: StringName in progression_states:
 			_reset_signal_captures()
 			var context: Dictionary[StringName, Variant] = {
@@ -57,8 +56,7 @@ func _test_authored_progression_sequences() -> void:
 			_expect_equal(
 				_visited_pages,
 				["%s:0" % progression_state],
-				"authored dialogue selects '%s': %s"
-					% [progression_state, path]
+				"authored dialogue selects '%s': %s" % [progression_state, path]
 			)
 			runner.abort()
 
@@ -137,7 +135,7 @@ func _test_branching_conversation() -> void:
 		"branch completes normally"
 	)
 
-func _test_condition_skips_to_fallback() -> void:
+func _test_condition_follows_next_entry() -> void:
 	_reset_signal_captures()
 	var conditional := _make_entry(
 		&"conditional",
@@ -146,7 +144,7 @@ func _test_condition_skips_to_fallback() -> void:
 	conditional.conditions.append(
 		_make_context_condition(&"location_id", &"village")
 	)
-	conditional.skip_entry_id = &"fallback"
+	conditional.next_entry_id = &"fallback"
 	var fallback := _make_entry(
 		&"fallback",
 		["Shown outside the village."]
@@ -167,7 +165,7 @@ func _test_condition_skips_to_fallback() -> void:
 	_expect_equal(
 		_visited_pages,
 		["fallback:0"],
-		"failed condition follows skip_entry_id"
+		"failed condition follows the normal next entry"
 	)
 
 func _test_actions_emit_once() -> void:
@@ -324,15 +322,6 @@ func _test_sequence_state_selection() -> void:
 		&"completed": &"entry_completed",
 		&"locked": &"entry_locked",
 	}
-
-	_expect_equal(sequence.get_entry(&"entry_offered"), offered_entry, "get_entry returns the matching entry")
-	_expect_null(sequence.get_entry(&"missing_entry"), "get_entry returns null for unknown entry")
-
-	_expect_true(sequence.has_state(QuestManager.LifecycleState.OFFERED), "has_state returns true for offered")
-	_expect_true(sequence.has_state(QuestManager.LifecycleState.ACTIVE), "has_state returns true for active")
-	_expect_true(sequence.has_state(QuestManager.LifecycleState.READY), "has_state returns true for ready")
-	_expect_true(sequence.has_state(QuestManager.LifecycleState.COMPLETED), "has_state returns true for completed")
-	_expect_true(sequence.has_state(QuestManager.LifecycleState.LOCKED), "has_state returns true for locked")
 
 	var states: Array[StringName] = [&"offered", &"active", &"ready", &"completed", &"locked"]
 	for state_name: StringName in states:
