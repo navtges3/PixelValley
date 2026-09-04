@@ -346,41 +346,39 @@ func _test_delivery_action() -> void:
 
 func _test_authored_dialogues_validate() -> void:
 	var expected_actions: Dictionary[String, Array] = {
-		"res://resources/dialogue/quests/mara_quest_conversation.tres":
+		"res://resources/dialogue/sequences/mara_1010.tres":
 			[&"accept_quest", &"decline_quest"],
-		"res://resources/dialogue/quests/alchemist_quest_conversation.tres":
-			[
-				&"complete_npc_interaction",
-				&"turn_in_quest",
-				&"accept_quest",
-				&"decline_quest",
-				&"open_service",
-			],
-		"res://resources/dialogue/quests/blacksmith_quest_conversation.tres":
-			[
-				&"complete_npc_interaction",
-				&"turn_in_quest",
-				&"accept_quest",
-				&"decline_quest",
-				&"open_service",
-			],
-		"res://resources/dialogue/quests/innkeeper_quest_conversation.tres":
+		"res://resources/dialogue/sequences/alchemist_1010.tres":
+			[&"complete_npc_interaction", &"turn_in_quest", &"open_service"],
+		"res://resources/dialogue/sequences/alchemist_1020.tres":
+			[&"accept_quest", &"decline_quest", &"open_service"],
+		"res://resources/dialogue/sequences/blacksmith_1020.tres":
+			[&"complete_npc_interaction", &"turn_in_quest", &"open_service"],
+		"res://resources/dialogue/sequences/blacksmith_1025.tres":
+			[&"accept_quest", &"decline_quest", &"open_service", &"turn_in_quest"],
+		"res://resources/dialogue/sequences/blacksmith_1030.tres":
+			[&"accept_quest", &"decline_quest", &"open_service"],
+		"res://resources/dialogue/sequences/innkeeper_1030.tres":
 			[&"deliver_quest_items", &"turn_in_quest", &"open_service"],
-		"res://resources/dialogue/rowan_conversation.tres": [],
-		"res://resources/dialogue/nessa_conversation.tres": [],
-		"res://resources/dialogue/oren_conversation.tres": [],
+		"res://resources/dialogue/sequences/rowan_ambient.tres": [],
+		"res://resources/dialogue/sequences/nessa_ambient.tres": [],
+		"res://resources/dialogue/sequences/oren_ambient.tres": [],
+		"res://resources/dialogue/sequences/mara_ambient.tres": [],
+		"res://resources/dialogue/sequences/alchemist_ambient.tres": [&"open_service"],
+		"res://resources/dialogue/sequences/blacksmith_ambient.tres": [&"open_service"],
+		"res://resources/dialogue/sequences/innkeeper_ambient.tres": [&"open_service"],
 	}
 	var runner := DialogueRunner.new()
 	for path: String in expected_actions:
-		var conversation := load(path) as DialogueConversation
-		_expect_not_null(conversation, "authored quest dialogue loads: %s" % path)
-		if conversation == null:
+		var sequence := load(path) as DialogueSequence
+		_expect_not_null(sequence, "authored dialogue sequence loads: %s" % path)
+		if sequence == null:
 			continue
 		_expect_true(
-			runner.get_validation_errors(conversation).is_empty(),
-			"authored quest dialogue validates: %s" % path
+			runner.get_sequence_validation_errors(sequence).is_empty(),
+			"authored dialogue sequence validates: %s" % path
 		)
-		var action_ids := _get_dialogue_action_ids(conversation)
+		var action_ids := _get_dialogue_action_ids(sequence)
 		for action_id: StringName in expected_actions[path]:
 			_expect_true(
 				action_id in action_ids,
@@ -401,9 +399,9 @@ func _test_authored_dialogue_rolls_into_follow_up_quest() -> void:
 		controller.build_context(&"mara", &"village")
 	)
 
-	var conversation := load(
-		"res://resources/dialogue/quests/alchemist_quest_conversation.tres"
-	) as DialogueConversation
+	var first_sequence := load(
+		"res://resources/dialogue/sequences/alchemist_1010.tres"
+	) as DialogueSequence
 	var runner := DialogueRunner.new()
 	runner.action_requested.connect(
 		_handle_refreshing_dialogue_action.bind(
@@ -414,11 +412,11 @@ func _test_authored_dialogue_rolls_into_follow_up_quest() -> void:
 		)
 	)
 	_expect_true(
-		runner.start(
-			conversation,
+		runner.start_sequence(
+			first_sequence,
 			controller.build_context(&"alchemist", &"potion_shop_interior")
 		),
-		"alchemist quest conversation starts while quest 1010 is active"
+		"alchemist quest 1010 sequence starts while the quest is active"
 	)
 
 	runner.advance()
@@ -435,22 +433,28 @@ func _test_authored_dialogue_rolls_into_follow_up_quest() -> void:
 	)
 	_expect_true(
 		runner.is_running(),
-		"dialogue remains open after the quest 1010 reward"
+		"quest 1010 sequence remains open on its reward entry"
 	)
 
+	runner.abort()
+	var follow_up_sequence := load(
+		"res://resources/dialogue/sequences/alchemist_1020.tres"
+	) as DialogueSequence
+	_expect_true(
+		runner.start_sequence(
+			follow_up_sequence,
+			controller.build_context(&"alchemist", &"potion_shop_interior")
+		),
+		"alchemist quest 1020 sequence starts after quest 1010 completes"
+	)
 	runner.advance()
 	runner.advance()
-	runner.advance()
+	_expect_true(
+		runner.is_running(),
+		"follow-up quest sequence remains open for its offer response"
+	)
 	runner.choose_response(0)
-	_expect_true(
-		manager.is_quest_active(1020),
-		"the follow-up quest is accepted in the same conversation"
-	)
-	runner.advance()
-	_expect_true(
-		not runner.is_running(),
-		"conversation closes only after the follow-up response"
-	)
+	_expect_true(manager.is_quest_active(1020), "the follow-up quest is accepted")
 	controller.clear_quest_manager()
 
 func _handle_refreshing_dialogue_action(
@@ -624,10 +628,10 @@ func _make_action(action_id: StringName) -> DialogueAction:
 	return action
 
 func _get_dialogue_action_ids(
-	conversation: DialogueConversation
+	sequence: DialogueSequence
 ) -> Array[StringName]:
 	var result: Array[StringName] = []
-	for entry: DialogueEntry in conversation.entries:
+	for entry: DialogueEntry in sequence.get_entries():
 		for action: DialogueAction in entry.actions:
 			if action.action_id not in result:
 				result.append(action.action_id)
