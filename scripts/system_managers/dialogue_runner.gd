@@ -58,13 +58,33 @@ func start_sequence(sequence: DialogueSequence, context: Dictionary[StringName, 
 	return true
 
 func resolve_sequence(sequences: Array[DialogueSequence], context: Dictionary[StringName, Variant]) -> DialogueSequence:
-	var best_sequence: DialogueSequence = null
+	var quest_sequences: Array[DialogueSequence] = []
+	var default_sequences: Array[DialogueSequence] = []
+	var not_available_sequences: Array[DialogueSequence] = []
 	for seq: DialogueSequence in sequences:
 		if seq == null or not seq.is_eligible(context):
 			continue
-		if best_sequence == null or _is_higher_priority(seq, best_sequence):
-			best_sequence = seq
-	return best_sequence
+		match seq.sequence_type:
+			DialogueSequence.SequenceType.QUEST:
+				quest_sequences.append(seq)
+			DialogueSequence.SequenceType.DEFAULT:
+				default_sequences.append(seq)
+			DialogueSequence.SequenceType.NOT_AVAILABLE:
+				not_available_sequences.append(seq)
+	if not quest_sequences.is_empty():
+		return _select_best_sequence(quest_sequences)
+	if not not_available_sequences.is_empty():
+		return _select_best_sequence(not_available_sequences)
+	if not default_sequences.is_empty():
+		return _select_best_sequence(default_sequences)
+	return null
+
+func _select_best_sequence(sequences: Array[DialogueSequence]) -> DialogueSequence:
+	var best: DialogueSequence = null
+	for seq: DialogueSequence in sequences:
+		if best == null or _is_higher_priority(seq, best):
+			best = seq
+	return best
 
 func _is_higher_priority(a: DialogueSequence, b: DialogueSequence) -> bool:
 	if a.priority != b.priority:
