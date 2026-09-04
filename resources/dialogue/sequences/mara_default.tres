@@ -21,5 +21,6 @@ pages = Array[String](["Welcome to Pixel Valley. Keep an eye on the roads beyond
 [resource]
 script = ExtResource("6_pocxr")
 sequence_id = &"mara_default"
+priority = 100
 start_entry_id = &"default"
 entries = Array[ExtResource("1_q8tsn")]([SubResource("Resource_l4jxq")])

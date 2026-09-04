@@ -31,5 +31,6 @@ responses = Array[ExtResource("4_36bp1")]([SubResource("ResponseShop")])
 [resource]
 script = ExtResource("6_l2gfw")
 sequence_id = &"blacksmith_default"
+priority = 100
 start_entry_id = &"default"
 entries = Array[ExtResource("1_dvlbl")]([SubResource("Resource_nv24i")])

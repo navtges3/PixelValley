@@ -7,6 +7,10 @@
 [ext_resource type="Script" uid="uid://bw8gfgi66jkgt" path="res://scripts/data/dialogue/dialogue_response.gd" id="4_oku3u"]
 [ext_resource type="Script" uid="uid://dpbifjko4digr" path="res://scripts/data/dialogue/dialogue_speaker.gd" id="5_1prag"]
 
+[sub_resource type="Resource" id="ActionCompleteInteraction"]
+script = ExtResource("2_mh3hy")
+action_id = &"complete_npc_interaction"
+
 [sub_resource type="Resource" id="ConditionQuest12"]
 script = ExtResource("3_gwive")
 condition_id = &"context_equals"
@@ -14,6 +18,28 @@ parameters = Dictionary[StringName, Variant]({
 &"key": &"quest_id",
 &"value": 1020
 })
+
+[sub_resource type="Resource" id="ConditionActive"]
+script = ExtResource("3_gwive")
+condition_id = &"context_equals"
+parameters = Dictionary[StringName, Variant]({
+&"key": &"quest_state",
+&"value": &"active"
+})
+
+[sub_resource type="Resource" id="Speaker"]
+script = ExtResource("5_1prag")
+speaker_id = &"blacksmith"
+display_name = "Garrick Stone"
+
+[sub_resource type="Resource" id="Resource_mh3hy"]
+script = ExtResource("1_iylt0")
+entry_id = &"active"
+speaker = SubResource("Speaker")
+pages = Array[String](["Sent by the alchemist, were you? Good. I've selected something suitable for you."])
+next_entry_id = &"ready"
+conditions = Array[ExtResource("3_gwive")]([SubResource("ConditionQuest12"), SubResource("ConditionActive")])
+actions = Array[ExtResource("2_mh3hy")]([SubResource("ActionCompleteInteraction")])
 
 [sub_resource type="Resource" id="ConditionReady"]
 script = ExtResource("3_gwive")
@@ -30,7 +56,7 @@ action_id = &"turn_in_quest"
 [sub_resource type="Resource" id="ResponseTurnIn"]
 script = ExtResource("4_oku3u")
 text = "I'll put them to good use."
-next_entry_id = &"rewarded"
+next_entry_id = &"completed"
 actions = Array[ExtResource("2_mh3hy")]([SubResource("ActionTurnIn")])
 
 [sub_resource type="Resource" id="ActionService"]
@@ -42,11 +68,6 @@ script = ExtResource("4_oku3u")
 text = "Show me your weapons."
 actions = Array[ExtResource("2_mh3hy")]([SubResource("ActionService")])
 
-[sub_resource type="Resource" id="Speaker"]
-script = ExtResource("5_1prag")
-speaker_id = &"blacksmith"
-display_name = "Garrick Stone"
-
 [sub_resource type="Resource" id="Resource_d8qvh"]
 script = ExtResource("1_iylt0")
 entry_id = &"ready"
@@ -55,30 +76,9 @@ pages = Array[String](["A traveler who helps the village deserves a proper weapo
 conditions = Array[ExtResource("3_gwive")]([SubResource("ConditionQuest12"), SubResource("ConditionReady")])
 responses = Array[ExtResource("4_oku3u")]([SubResource("ResponseTurnIn"), SubResource("ResponseShop")])
 
-[sub_resource type="Resource" id="ActionCompleteInteraction"]
-script = ExtResource("2_mh3hy")
-action_id = &"complete_npc_interaction"
-
-[sub_resource type="Resource" id="ConditionActive"]
-script = ExtResource("3_gwive")
-condition_id = &"context_equals"
-parameters = Dictionary[StringName, Variant]({
-&"key": &"quest_state",
-&"value": &"active"
-})
-
-[sub_resource type="Resource" id="Resource_mh3hy"]
-script = ExtResource("1_iylt0")
-entry_id = &"active"
-speaker = SubResource("Speaker")
-pages = Array[String](["Sent by the alchemist, were you? Good. I've selected something suitable for you."])
-next_entry_id = &"ready"
-conditions = Array[ExtResource("3_gwive")]([SubResource("ConditionQuest12"), SubResource("ConditionActive")])
-actions = Array[ExtResource("2_mh3hy")]([SubResource("ActionCompleteInteraction")])
-
 [sub_resource type="Resource" id="Resource_gwive"]
 script = ExtResource("1_iylt0")
-entry_id = &"rewarded"
+entry_id = &"completed"
 speaker = SubResource("Speaker")
 pages = Array[String](["The weapon is yours. That brings me to one more favor."])
 
@@ -87,10 +87,10 @@ script = ExtResource("2_script")
 sequence_id = &"blacksmith_quest_1020"
 sequence_type = 0
 quest_id = 1020
-start_entry_id = &"ready"
-entries = Array[ExtResource("1_iylt0")]([SubResource("Resource_d8qvh"), SubResource("Resource_mh3hy"), SubResource("Resource_gwive")])
+start_entry_id = &"active"
+entries = Array[ExtResource("1_iylt0")]([SubResource("Resource_mh3hy"), SubResource("Resource_d8qvh"), SubResource("Resource_gwive")])
 state_entries = Dictionary[StringName, StringName]({
 &"active": &"active",
-&"completed": &"rewarded",
+&"completed": &"completed",
 &"ready": &"ready"
 })
