@@ -165,7 +165,7 @@ responses = Array[ExtResource("4_4vdya")]([SubResource("Resource_vyf24"), SubRes
 script = ExtResource("1_mn50b")
 entry_id = &"accepted"
 speaker = SubResource("Speaker")
-pages = Array[String](["Good. Three bundles should keep the forge burning for a while.", "You can find the wood in the forest. Bring it back here when you've got enough."])
+pages = Array[String](["Good. Five bundles should keep the forge burning for a while.", "You can find the wood in the forest. Bring it back here when you've got enough."])
 next_entry_id = &"active"
 
 [sub_resource type="Resource" id="Resource_5ufol"]
@@ -191,6 +191,7 @@ script = ExtResource("2_script")
 sequence_id = &"blacksmith_quest_1025"
 sequence_type = 0
 quest_id = 1025
+priority = 10
 start_entry_id = &"offered"
 entries = Array[ExtResource("1_mn50b")]([SubResource("Resource_mdlbf"), SubResource("Resource_4vdya"), SubResource("Resource_bkoli"), SubResource("Resource_mbp2j"), SubResource("Resource_5ufol"), SubResource("Resource_rn612")])
 state_entries = Dictionary[StringName, StringName]({

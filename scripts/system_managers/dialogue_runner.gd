@@ -72,6 +72,14 @@ func resolve_sequence(sequences: Array[DialogueSequence], context: Dictionary[St
 			DialogueSequence.SequenceType.NOT_AVAILABLE:
 				not_available_sequences.append(seq)
 	if not quest_sequences.is_empty():
+		var selected_quest_id := int(context.get(&"quest_id", -1))
+		if selected_quest_id >= 0:
+			var matching_sequences: Array[DialogueSequence] = []
+			for seq: DialogueSequence in quest_sequences:
+				if seq.quest_id == selected_quest_id:
+					matching_sequences.append(seq)
+			if not matching_sequences.is_empty():
+				return _select_best_sequence(matching_sequences)
 		return _select_best_sequence(quest_sequences)
 	if not not_available_sequences.is_empty():
 		return _select_best_sequence(not_available_sequences)
