@@ -30,7 +30,6 @@ var _reward_flow: RewardFlow = RewardFlow.NONE
 
 func _ready() -> void:
 	dialogue_runner = DialogueRunner.new()
-	dialogue_runner.dialogue_started.connect(_on_dialogue_started)
 	dialogue_runner.sequence_started.connect(_on_sequence_started)
 	dialogue_runner.line_changed.connect(_on_dialogue_line_changed)
 	dialogue_runner.responses_changed.connect(dialogue_window.show_responses)

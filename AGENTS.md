@@ -273,7 +273,7 @@ Dialogue is data-driven.
 
 Important concepts include:
 
-* DialogueConversation
+* DialogueSequence
 * DialogueEntry
 * DialogueRunner
 * Dialogue conditions
@@ -281,17 +281,17 @@ Important concepts include:
 * Dialogue UI
 * Quest integration
 
-DialogueRunner is responsible for runtime conversation flow; do not duplicate dialogue progression logic in individual NPCs or UI components.
+DialogueRunner is responsible for runtime sequence flow; do not duplicate dialogue progression logic in individual NPCs or UI components.
 
 When debugging dialogue, inspect the entire chain:
 
 NPC / Interaction
     ↓
-Conversation Selection
+Sequence Selection
     ↓
 Quest / State Conditions
     ↓
-DialogueConversation
+DialogueSequence
     ↓
 DialogueRunner
     ↓

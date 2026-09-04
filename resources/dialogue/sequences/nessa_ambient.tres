@@ -1,7 +1,6 @@
 [gd_resource type="Resource" script_class="DialogueSequence" format=3 uid="uid://x3jhmosj7nr2"]
 
 [ext_resource type="Script" uid="uid://de2gtyvn62a4q" path="res://scripts/data/dialogue/dialogue_entry.gd" id="1_4wktv"]
-[ext_resource type="Resource" uid="uid://c7jgcpcu64o3f" path="res://resources/dialogue/nessa_conversation.tres" id="1_source"]
 [ext_resource type="Script" uid="uid://bn5tdgpsujh6q" path="res://scripts/data/dialogue/dialogue_action.gd" id="2_qhgxn"]
 [ext_resource type="Script" uid="uid://bc3i162s5h001" path="res://scripts/data/dialogue/dialogue_sequence.gd" id="2_script"]
 [ext_resource type="Script" uid="uid://chsetq55irrf0" path="res://scripts/data/dialogue/dialogue_condition.gd" id="3_bv7hf"]
@@ -72,4 +71,3 @@ script = ExtResource("2_script")
 sequence_id = &"nessa_ambient"
 start_entry_id = &"victory"
 entries = Array[ExtResource("1_4wktv")]([SubResource("Resource_12kuc"), SubResource("Resource_e01p0"), SubResource("Resource_8k1ud"), SubResource("Resource_2r0yt")])
-source_conversation = ExtResource("1_source")

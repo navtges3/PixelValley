@@ -1,7 +1,6 @@
 [gd_resource type="Resource" script_class="DialogueSequence" format=3 uid="uid://dko1v0rbtffq5"]
 
 [ext_resource type="Script" uid="uid://de2gtyvn62a4q" path="res://scripts/data/dialogue/dialogue_entry.gd" id="1_qynmc"]
-[ext_resource type="Resource" uid="uid://csos2nnx6kr17" path="res://resources/dialogue/quests/blacksmith_quest_conversation.tres" id="1_source"]
 [ext_resource type="Script" uid="uid://bn5tdgpsujh6q" path="res://scripts/data/dialogue/dialogue_action.gd" id="2_eeadj"]
 [ext_resource type="Script" uid="uid://bc3i162s5h001" path="res://scripts/data/dialogue/dialogue_sequence.gd" id="2_script"]
 [ext_resource type="Script" uid="uid://chsetq55irrf0" path="res://scripts/data/dialogue/dialogue_condition.gd" id="3_he0xk"]
@@ -106,4 +105,3 @@ state_entries = Dictionary[StringName, StringName]({
 &"active": &"active",
 &"offered": &"offered"
 })
-source_conversation = ExtResource("1_source")

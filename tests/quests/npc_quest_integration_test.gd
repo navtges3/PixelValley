@@ -221,17 +221,17 @@ func _test_dialogue_runner_action_bridge() -> void:
 	response.text = "I will help."
 	response.actions.append(_make_action(&"accept_quest"))
 	entry.responses.append(response)
-	var conversation := DialogueConversation.new()
-	conversation.conversation_id = &"npc_quest_action_test"
-	conversation.start_entry_id = entry.entry_id
-	conversation.entries.append(entry)
+	var sequence := DialogueSequence.new()
+	sequence.sequence_id = &"npc_quest_action_test"
+	sequence.start_entry_id = entry.entry_id
+	sequence.entries.append(entry)
 	var runner := DialogueRunner.new()
 	runner.action_requested.connect(controller.handle_action)
 	var context := controller.build_context(&"mara", &"village")
 
 	_expect_true(
-		runner.start(conversation, context),
-		"state-aware NPC quest conversation starts"
+		runner.start_sequence(sequence, context),
+		"state-aware NPC quest sequence starts"
 	)
 	runner.advance()
 	runner.choose_response(0)

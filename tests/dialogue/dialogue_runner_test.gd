@@ -9,7 +9,7 @@ var _started_count: int = 0
 func run_tests() -> int:
 	_begin_test_run()
 	_test_context_equals_condition()
-	_test_authored_progression_conversations()
+	_test_authored_progression_sequences()
 	_test_branching_conversation()
 	_test_condition_skips_to_fallback()
 	_test_actions_emit_once()
@@ -24,11 +24,11 @@ func run_tests() -> int:
 	_test_sequence_validation_errors()
 	return _finish_test_run("DialogueRunner tests")
 
-func _test_authored_progression_conversations() -> void:
+func _test_authored_progression_sequences() -> void:
 	var paths: Array[String] = [
-		"res://resources/dialogue/rowan_conversation.tres",
-		"res://resources/dialogue/nessa_conversation.tres",
-		"res://resources/dialogue/oren_conversation.tres",
+		"res://resources/dialogue/sequences/rowan_ambient.tres",
+		"res://resources/dialogue/sequences/nessa_ambient.tres",
+		"res://resources/dialogue/sequences/oren_ambient.tres",
 	]
 	var progression_states: Array[StringName] = [
 		&"goblin_threat",
@@ -38,9 +38,9 @@ func _test_authored_progression_conversations() -> void:
 	]
 
 	for path: String in paths:
-		var conversation := load(path) as DialogueConversation
-		_expect_not_null(conversation, "authored dialogue loads: %s" % path)
-		if conversation == null:
+		var sequence := load(path) as DialogueSequence
+		_expect_not_null(sequence, "authored dialogue sequence loads: %s" % path)
+		if sequence == null:
 			continue
 
 		for progression_state: StringName in progression_states:
@@ -50,8 +50,8 @@ func _test_authored_progression_conversations() -> void:
 			}
 			var runner := _make_connected_runner()
 			_expect_true(
-				runner.start(conversation, context),
-				"authored dialogue starts for '%s': %s"
+				runner.start_sequence(sequence, context),
+				"authored dialogue sequence starts for '%s': %s"
 					% [progression_state, path]
 			)
 			_expect_equal(
@@ -105,13 +105,13 @@ func _test_branching_conversation() -> void:
 	welcome.responses.append(leave_response)
 
 	var runner := _make_connected_runner()
-	var conversation := _make_conversation(
+	var sequence := _make_sequence(
 		[welcome, info, goodbye],
 		&"welcome"
 	)
 
 	_expect_true(
-		runner.start(conversation),
+		runner.start_sequence(sequence, {}),
 		"branching conversation starts"
 	)
 	runner.advance()
@@ -151,7 +151,7 @@ func _test_condition_skips_to_fallback() -> void:
 		&"fallback",
 		["Shown outside the village."]
 	)
-	var conversation := _make_conversation(
+	var sequence := _make_sequence(
 		[conditional, fallback],
 		&"conditional"
 	)
@@ -161,7 +161,7 @@ func _test_condition_skips_to_fallback() -> void:
 	var runner := _make_connected_runner()
 
 	_expect_true(
-		runner.start(conversation, context),
+		runner.start_sequence(sequence, context),
 		"conditional conversation starts"
 	)
 	_expect_equal(
@@ -185,8 +185,8 @@ func _test_actions_emit_once() -> void:
 	entry.responses.append(response)
 
 	var runner := _make_connected_runner()
-	var conversation := _make_conversation([entry], &"start")
-	runner.start(conversation)
+	var sequence := _make_sequence([entry], &"start")
+	runner.start_sequence(sequence, {})
 	runner.advance()
 	runner.choose_response(0)
 
@@ -213,7 +213,7 @@ func _test_duplicate_response_input_is_idempotent() -> void:
 		) -> void:
 			runner.choose_response(0)
 	)
-	runner.start(_make_conversation([entry], &"start"))
+	runner.start_sequence(_make_sequence([entry], &"start"), {})
 	runner.advance()
 	runner.choose_response(0)
 	runner.choose_response(0)
@@ -230,7 +230,7 @@ func _test_advance_does_not_bypass_responses() -> void:
 	response.text = "Required choice."
 	entry.responses.append(response)
 	var runner := _make_connected_runner()
-	runner.start(_make_conversation([entry], &"start"))
+	runner.start_sequence(_make_sequence([entry], &"start"), {})
 	runner.advance()
 	runner.advance()
 	_expect_true(
@@ -246,9 +246,9 @@ func _test_advance_does_not_bypass_responses() -> void:
 func _test_cancel_and_abort() -> void:
 	_reset_signal_captures()
 	var entry := _make_entry(&"start", ["Cannot be cancelled."])
-	var conversation := _make_conversation([entry], &"start", false)
+	var sequence := _make_sequence([entry], &"start", false)
 	var runner := _make_connected_runner()
-	runner.start(conversation)
+	runner.start_sequence(sequence, {})
 
 	runner.cancel()
 	_expect_true(
@@ -271,12 +271,12 @@ func _test_cancel_and_abort() -> void:
 func _test_empty_pages_are_rejected() -> void:
 	_reset_signal_captures()
 	var invalid_entry := _make_entry(&"start", [])
-	var conversation := _make_conversation(
+	var sequence := _make_sequence(
 		[invalid_entry],
 		&"start"
 	)
 	var runner := _make_connected_runner()
-	var validation_errors := runner.get_validation_errors(conversation)
+	var validation_errors := runner.get_sequence_validation_errors(sequence)
 
 	_expect_equal(
 		validation_errors.size(),
@@ -296,9 +296,9 @@ func _test_empty_pages_are_rejected() -> void:
 
 func _test_unknown_entry_id_is_rejected() -> void:
 	var entry := _make_entry(&"known", ["Known entry."])
-	var conversation := _make_conversation([entry], &"missing")
+	var sequence := _make_sequence([entry], &"missing")
 	var runner := DialogueRunner.new()
-	var errors := runner.get_validation_errors(conversation)
+	var errors := runner.get_sequence_validation_errors(sequence)
 	_expect_equal(errors.size(), 1, "unknown start entry produces one validation error")
 	_expect_contains(errors[0], "was not found", "unknown entry error identifies the missing ID")
 	_expect_equal(runner.is_running(), false, "unknown entry validation does not trap the runner")
@@ -486,17 +486,20 @@ func _make_entry(identity: StringName, pages: Array[String]) -> DialogueEntry:
 	entry.pages = pages
 	return entry
 
-func _make_conversation(entries: Array[DialogueEntry], start_entry_id: StringName, can_cancel: bool = true) -> DialogueConversation:
-	var conversation := DialogueConversation.new()
-	conversation.conversation_id = &"test_conversation"
-	conversation.start_entry_id = start_entry_id
-	conversation.can_cancel = can_cancel
-	conversation.entries = entries
-	return conversation
+func _make_sequence(
+	entries: Array[DialogueEntry],
+	start_entry_id: StringName,
+	can_cancel: bool = true
+) -> DialogueSequence:
+	var sequence := DialogueSequence.new()
+	sequence.sequence_id = &"test_sequence"
+	sequence.start_entry_id = start_entry_id
+	sequence.can_cancel = can_cancel
+	sequence.entries = entries
+	return sequence
 
 func _make_connected_runner() -> DialogueRunner:
 	var runner := DialogueRunner.new()
-	runner.dialogue_started.connect(_on_dialogue_started)
 	runner.sequence_started.connect(_on_sequence_started)
 	runner.line_changed.connect(_on_line_changed)
 	runner.responses_changed.connect(_on_responses_changed)
@@ -510,9 +513,6 @@ func _reset_signal_captures() -> void:
 	_action_ids.clear()
 	_finish_reasons.clear()
 	_started_count = 0
-
-func _on_dialogue_started(_conversation: DialogueConversation) -> void:
-	_started_count += 1
 
 func _on_sequence_started(_sequence: DialogueSequence) -> void:
 	_started_count += 1
