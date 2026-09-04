@@ -52,7 +52,6 @@ script = ExtResource("1_iylt0")
 entry_id = &"ready"
 speaker = SubResource("Speaker")
 pages = Array[String](["A traveler who helps the village deserves a proper weapon."])
-skip_entry_id = &"active"
 conditions = Array[ExtResource("3_gwive")]([SubResource("ConditionQuest12"), SubResource("ConditionReady")])
 responses = Array[ExtResource("4_oku3u")]([SubResource("ResponseTurnIn"), SubResource("ResponseShop")])
 
@@ -74,7 +73,6 @@ entry_id = &"active"
 speaker = SubResource("Speaker")
 pages = Array[String](["Sent by the alchemist, were you? Good. I've selected something suitable for you."])
 next_entry_id = &"ready"
-skip_entry_id = &"offered"
 conditions = Array[ExtResource("3_gwive")]([SubResource("ConditionQuest12"), SubResource("ConditionActive")])
 actions = Array[ExtResource("2_mh3hy")]([SubResource("ActionCompleteInteraction")])
 

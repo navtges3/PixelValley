@@ -62,7 +62,6 @@ script = ExtResource("1_mn50b")
 entry_id = &"offered"
 speaker = SubResource("Speaker")
 pages = Array[String](["I'm running low on good firewood for the forge. The dry wood from the forest burns hot and steady.", "Bring me five bundles and I'll make sure you get something useful in return."])
-skip_entry_id = &"active"
 conditions = Array[ExtResource("3_5ufol")]([SubResource("Resource_fpxin"), SubResource("Resource_7jhui")])
 responses = Array[ExtResource("4_4vdya")]([SubResource("Resource_64ptf"), SubResource("Resource_4xb7s"), SubResource("Resource_adabh")])
 
@@ -97,7 +96,6 @@ entry_id = &"active"
 speaker = SubResource("Speaker")
 pages = Array[String](["Still need some firewood? Bring me three bundles and we'll call it even."])
 next_entry_id = &"ready"
-skip_entry_id = &"ambient"
 conditions = Array[ExtResource("3_5ufol")]([SubResource("Resource_l3hcx"), SubResource("Resource_tgihv")])
 responses = Array[ExtResource("4_4vdya")]([SubResource("Resource_l4337")])
 
@@ -140,7 +138,6 @@ script = ExtResource("1_mn50b")
 entry_id = &"ready"
 speaker = SubResource("Speaker")
 pages = Array[String](["That's the last of it, isn't it? Five good bundles.", "This should keep my forge going for quite a while. Thanks for the help."])
-skip_entry_id = &"active"
 conditions = Array[ExtResource("3_5ufol")]([SubResource("Resource_n3xoa"), SubResource("Resource_8a6qk")])
 responses = Array[ExtResource("4_4vdya")]([SubResource("Resource_vyf24"), SubResource("Resource_4mnbc")])
 

@@ -62,7 +62,6 @@ script = ExtResource("1_qynmc")
 entry_id = &"offered"
 speaker = SubResource("Speaker")
 pages = Array[String](["That brass key belongs to the inn. I kept it safe, but I can't leave the forge unattended.", "Will you deliver it to the innkeeper?"])
-skip_entry_id = &"active"
 conditions = Array[ExtResource("3_he0xk")]([SubResource("ConditionQuest13"), SubResource("ConditionOffered")])
 responses = Array[ExtResource("4_46qlh")]([SubResource("ResponseAccept"), SubResource("ResponseDecline"), SubResource("ResponseShop")])
 
@@ -79,7 +78,6 @@ script = ExtResource("1_qynmc")
 entry_id = &"active"
 speaker = SubResource("Speaker")
 pages = Array[String](["The innkeeper is waiting for that brass key. You'll find the inn just outside."])
-skip_entry_id = &"ambient"
 conditions = Array[ExtResource("3_he0xk")]([SubResource("ConditionQuest13"), SubResource("ConditionActive")])
 responses = Array[ExtResource("4_46qlh")]([SubResource("ResponseShop")])
 

@@ -7,7 +7,6 @@ class_name DialogueEntry
 
 @export_category("Flow")
 @export var next_entry_id: StringName = &""
-@export var skip_entry_id: StringName = &""
 
 @export_category("Conditions and Actions")
 @export var conditions: Array[DialogueCondition] = []

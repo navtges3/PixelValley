@@ -62,7 +62,6 @@ script = ExtResource("1_cqmln")
 entry_id = &"offered"
 speaker = SubResource("Speaker")
 pages = Array[String](["Before you leave, the blacksmith asked me to send a capable traveler his way.", "Would you introduce yourself at the weapon shop?"])
-skip_entry_id = &"active"
 conditions = Array[ExtResource("3_s0i5r")]([SubResource("ConditionQuest12"), SubResource("ConditionOffered")])
 responses = Array[ExtResource("4_g5fht")]([SubResource("ResponseAccept"), SubResource("ResponseDecline"), SubResource("ResponseShop")])
 
@@ -79,7 +78,6 @@ script = ExtResource("1_cqmln")
 entry_id = &"active"
 speaker = SubResource("Speaker")
 pages = Array[String](["The blacksmith is waiting in the weapon shop. He appreciates punctuality."])
-skip_entry_id = &"ambient"
 conditions = Array[ExtResource("3_s0i5r")]([SubResource("ConditionQuest12"), SubResource("ConditionActive")])
 responses = Array[ExtResource("4_g5fht")]([SubResource("ResponseShop")])
 
