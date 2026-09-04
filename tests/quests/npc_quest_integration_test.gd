@@ -360,13 +360,13 @@ func _test_authored_dialogues_validate() -> void:
 			[&"accept_quest", &"decline_quest", &"open_service"],
 		"res://resources/dialogue/sequences/innkeeper_1030.tres":
 			[&"deliver_quest_items", &"turn_in_quest", &"open_service"],
-		"res://resources/dialogue/sequences/rowan_ambient.tres": [],
-		"res://resources/dialogue/sequences/nessa_ambient.tres": [],
-		"res://resources/dialogue/sequences/oren_ambient.tres": [],
-		"res://resources/dialogue/sequences/mara_ambient.tres": [],
-		"res://resources/dialogue/sequences/alchemist_ambient.tres": [&"open_service"],
-		"res://resources/dialogue/sequences/blacksmith_ambient.tres": [&"open_service"],
-		"res://resources/dialogue/sequences/innkeeper_ambient.tres": [&"open_service"],
+		"res://resources/dialogue/sequences/rowan_default.tres": [],
+		"res://resources/dialogue/sequences/nessa_default.tres": [],
+		"res://resources/dialogue/sequences/oren_default.tres": [],
+		"res://resources/dialogue/sequences/mara_default.tres": [],
+		"res://resources/dialogue/sequences/alchemist_default.tres": [&"open_service"],
+		"res://resources/dialogue/sequences/blacksmith_default.tres": [&"open_service"],
+		"res://resources/dialogue/sequences/innkeeper_default.tres": [&"open_service"],
 	}
 	var runner := DialogueRunner.new()
 	for path: String in expected_actions:

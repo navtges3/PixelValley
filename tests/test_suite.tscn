@@ -46,9 +46,9 @@ script = ExtResource("4_suite")
 
 [node name="RewardServiceTests" parent="Rewards" unique_id=33484618 instance=ExtResource("8_reward")]
 
-[node name="World" type="Node" parent="."]
+[node name="World" type="Node" parent="." unique_id=1246779547]
 
-[node name="WorldLootSourceTests" parent="World" instance=ExtResource("19_world_loot")]
+[node name="WorldLootSourceTests" parent="World" unique_id=1524886541 instance=ExtResource("19_world_loot")]
 
 [node name="Dialogue" type="Node" parent="." unique_id=1110281297]
 
@@ -68,12 +68,12 @@ script = ExtResource("4_suite")
 
 [node name="InputManagerTests" parent="Input" unique_id=1331348615 instance=ExtResource("15_input")]
 
-[node name="MenuFocusNavigationTests" parent="Input" instance=ExtResource("18_menu_focus")]
+[node name="MenuFocusNavigationTests" parent="Input" unique_id=203324576 instance=ExtResource("18_menu_focus")]
 
 [node name="UI" type="Node" parent="." unique_id=1404067600]
 
 [node name="GameWindowConsolidationTests" parent="UI" unique_id=749794887 instance=ExtResource("16_ui_window")]
 
-[node name="BattleAbilityTooltipTests" parent="UI" instance=ExtResource("17_battle_tooltip")]
+[node name="BattleAbilityTooltipTests" parent="UI" unique_id=1059415195 instance=ExtResource("17_battle_tooltip")]
 
-[node name="AcquisitionNotificationTests" parent="UI" instance=ExtResource("20_acquisition")]
+[node name="AcquisitionNotificationTests" parent="UI" unique_id=1339938459 instance=ExtResource("20_acquisition")]

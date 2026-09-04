@@ -30,6 +30,6 @@ responses = Array[ExtResource("4_36bp1")]([SubResource("ResponseShop")])
 
 [resource]
 script = ExtResource("6_l2gfw")
-sequence_id = &"blacksmith_ambient"
+sequence_id = &"blacksmith_default"
 start_entry_id = &"default"
 entries = Array[ExtResource("1_dvlbl")]([SubResource("Resource_nv24i")])

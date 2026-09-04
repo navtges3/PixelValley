@@ -1,14 +1,14 @@
 [gd_resource type="Resource" script_class="DialogueSequence" format=3 uid="uid://x3jhmosj7nr2"]
 
-[ext_resource type="Script" uid="uid://de2gtyvn62a4q" path="res://scripts/data/dialogue/dialogue_entry.gd" id="1_4wktv"]
-[ext_resource type="Script" uid="uid://bn5tdgpsujh6q" path="res://scripts/data/dialogue/dialogue_action.gd" id="2_qhgxn"]
-[ext_resource type="Script" uid="uid://bc3i162s5h001" path="res://scripts/data/dialogue/dialogue_sequence.gd" id="2_script"]
-[ext_resource type="Script" uid="uid://chsetq55irrf0" path="res://scripts/data/dialogue/dialogue_condition.gd" id="3_bv7hf"]
-[ext_resource type="Script" uid="uid://bw8gfgi66jkgt" path="res://scripts/data/dialogue/dialogue_response.gd" id="4_6jhnu"]
-[ext_resource type="Script" uid="uid://dpbifjko4digr" path="res://scripts/data/dialogue/dialogue_speaker.gd" id="5_b5f3j"]
+[ext_resource type="Script" uid="uid://de2gtyvn62a4q" path="res://scripts/data/dialogue/dialogue_entry.gd" id="1_4oper"]
+[ext_resource type="Script" uid="uid://bn5tdgpsujh6q" path="res://scripts/data/dialogue/dialogue_action.gd" id="2_la3qm"]
+[ext_resource type="Script" uid="uid://chsetq55irrf0" path="res://scripts/data/dialogue/dialogue_condition.gd" id="3_2f6sx"]
+[ext_resource type="Script" uid="uid://bw8gfgi66jkgt" path="res://scripts/data/dialogue/dialogue_response.gd" id="4_7ynoh"]
+[ext_resource type="Script" uid="uid://dpbifjko4digr" path="res://scripts/data/dialogue/dialogue_speaker.gd" id="5_ha58u"]
+[ext_resource type="Script" uid="uid://bc3i162s5h001" path="res://scripts/data/dialogue/dialogue_sequence.gd" id="6_18a6i"]
 
 [sub_resource type="Resource" id="ConditionVictory"]
-script = ExtResource("3_bv7hf")
+script = ExtResource("3_2f6sx")
 condition_id = &"context_equals"
 parameters = Dictionary[StringName, Variant]({
 &"key": &"main_progression",
@@ -16,19 +16,19 @@ parameters = Dictionary[StringName, Variant]({
 })
 
 [sub_resource type="Resource" id="Speaker"]
-script = ExtResource("5_b5f3j")
+script = ExtResource("5_ha58u")
 speaker_id = &"nessa"
 display_name = "Nessa"
 
 [sub_resource type="Resource" id="Resource_12kuc"]
-script = ExtResource("1_4wktv")
+script = ExtResource("1_4oper")
 entry_id = &"victory"
 speaker = SubResource("Speaker")
 pages = Array[String](["The ovens are full again, and this time we're baking for a celebration instead of a siege."])
-conditions = Array[ExtResource("3_bv7hf")]([SubResource("ConditionVictory")])
+conditions = Array[ExtResource("3_2f6sx")]([SubResource("ConditionVictory")])
 
 [sub_resource type="Resource" id="ConditionOgre"]
-script = ExtResource("3_bv7hf")
+script = ExtResource("3_2f6sx")
 condition_id = &"context_equals"
 parameters = Dictionary[StringName, Variant]({
 &"key": &"main_progression",
@@ -36,14 +36,14 @@ parameters = Dictionary[StringName, Variant]({
 })
 
 [sub_resource type="Resource" id="Resource_e01p0"]
-script = ExtResource("1_4wktv")
+script = ExtResource("1_4oper")
 entry_id = &"ogre_threat"
 speaker = SubResource("Speaker")
 pages = Array[String](["The ground shook hard enough to rattle every jar in my pantry. Ogres near the valley can only mean trouble."])
-conditions = Array[ExtResource("3_bv7hf")]([SubResource("ConditionOgre")])
+conditions = Array[ExtResource("3_2f6sx")]([SubResource("ConditionOgre")])
 
 [sub_resource type="Resource" id="ConditionOrc"]
-script = ExtResource("3_bv7hf")
+script = ExtResource("3_2f6sx")
 condition_id = &"context_equals"
 parameters = Dictionary[StringName, Variant]({
 &"key": &"main_progression",
@@ -51,23 +51,23 @@ parameters = Dictionary[StringName, Variant]({
 })
 
 [sub_resource type="Resource" id="Resource_8k1ud"]
-script = ExtResource("1_4wktv")
+script = ExtResource("1_4oper")
 entry_id = &"orc_threat"
 speaker = SubResource("Speaker")
 pages = Array[String](["Orc raids have stopped the supply wagons. We're stretching every sack of grain until the road is safe."])
-conditions = Array[ExtResource("3_bv7hf")]([SubResource("ConditionOrc")])
+conditions = Array[ExtResource("3_2f6sx")]([SubResource("ConditionOrc")])
 
 [sub_resource type="Resource" id="Resource_2r0yt"]
-script = ExtResource("1_4wktv")
+script = ExtResource("1_4oper")
 entry_id = &"goblin_threat"
 speaker = SubResource("Speaker")
 pages = Array[String](["I'm Nessa. I tend the fields and keep half the village fed. Goblins stealing from the road make both jobs harder."])
 
 [resource]
-script = ExtResource("2_script")
-sequence_id = &"nessa_ambient"
+script = ExtResource("6_18a6i")
+sequence_id = &"nessa_default"
 start_entry_id = &"victory"
-entries = Array[ExtResource("1_4wktv")]([SubResource("Resource_12kuc"), SubResource("Resource_e01p0"), SubResource("Resource_8k1ud"), SubResource("Resource_2r0yt")])
+entries = Array[ExtResource("1_4oper")]([SubResource("Resource_12kuc"), SubResource("Resource_e01p0"), SubResource("Resource_8k1ud"), SubResource("Resource_2r0yt")])
 state_entries = Dictionary[StringName, StringName]({
 &"goblin_threat": &"goblin_threat",
 &"ogre_threat": &"ogre_threat",

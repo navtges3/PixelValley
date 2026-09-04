@@ -179,7 +179,7 @@ func _test_dialogue_interaction() -> void:
 	npc.free()
 
 	_reset_signal_captures()
-	var sequence := DialogueSequence.new()
+	sequence = DialogueSequence.new()
 	sequence.sequence_id = &"sequence_npc_test"
 	var seq_data := _make_data(&"sequence_npc")
 	seq_data.dialogue = null

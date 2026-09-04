@@ -30,6 +30,6 @@ responses = Array[ExtResource("4_vv4be")]([SubResource("ResponseRest")])
 
 [resource]
 script = ExtResource("6_qq3rd")
-sequence_id = &"innkeeper_ambient"
+sequence_id = &"innkeeper_default"
 start_entry_id = &"default"
 entries = Array[ExtResource("1_oexcp")]([SubResource("Resource_ejxwf")])

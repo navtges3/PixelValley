@@ -30,6 +30,6 @@ responses = Array[ExtResource("4_v1266")]([SubResource("ResponseShop")])
 
 [resource]
 script = ExtResource("6_6mb67")
-sequence_id = &"alchemist_ambient"
+sequence_id = &"alchemist_default"
 start_entry_id = &"default"
 entries = Array[ExtResource("1_irfrn")]([SubResource("Resource_gssac")])

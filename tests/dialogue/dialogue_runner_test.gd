@@ -26,9 +26,9 @@ func run_tests() -> int:
 
 func _test_authored_progression_sequences() -> void:
 	var paths: Array[String] = [
-		"res://resources/dialogue/sequences/rowan_ambient.tres",
-		"res://resources/dialogue/sequences/nessa_ambient.tres",
-		"res://resources/dialogue/sequences/oren_ambient.tres",
+		"res://resources/dialogue/sequences/rowan_default.tres",
+		"res://resources/dialogue/sequences/nessa_default.tres",
+		"res://resources/dialogue/sequences/oren_default.tres",
 	]
 	var progression_states: Array[StringName] = [
 		&"goblin_threat",
