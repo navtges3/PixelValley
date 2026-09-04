@@ -45,7 +45,6 @@ script = ExtResource("1_a7b1e")
 entry_id = &"offered"
 speaker = SubResource("Speaker")
 pages = Array[String](["You look capable. Our alchemist has been testing a new restorative, but she needs someone willing to help.", "Would you go speak with her in the potion shop?"])
-skip_entry_id = &"active"
 conditions = Array[ExtResource("3_grkc7")]([SubResource("ConditionOffered")])
 responses = Array[ExtResource("4_rqdt3")]([SubResource("ResponseAccept"), SubResource("ResponseDecline")])
 
@@ -62,7 +61,6 @@ script = ExtResource("1_a7b1e")
 entry_id = &"active"
 speaker = SubResource("Speaker")
 pages = Array[String](["The alchemist works in the potion shop. Tell her Mara sent you."])
-skip_entry_id = &"completed"
 conditions = Array[ExtResource("3_grkc7")]([SubResource("ConditionActive")])
 
 [sub_resource type="Resource" id="ConditionCompleted"]
@@ -78,7 +76,6 @@ script = ExtResource("1_a7b1e")
 entry_id = &"completed"
 speaker = SubResource("Speaker")
 pages = Array[String](["I knew the alchemist would have something useful for you."])
-skip_entry_id = &"ambient"
 conditions = Array[ExtResource("3_grkc7")]([SubResource("ConditionCompleted")])
 
 [sub_resource type="Resource" id="Resource_grkc7"]

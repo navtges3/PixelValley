@@ -132,7 +132,7 @@ func _enter_entry(entry_id: StringName) -> void:
 			_visible_responses.clear()
 			line_changed.emit(_current_entry, _page_index)
 			return
-		candidate_id = candidate.skip_entry_id if not candidate.skip_entry_id.is_empty() else candidate.next_entry_id
+		candidate_id = candidate.next_entry_id
 	if candidate_id.is_empty():
 		_finish(FinishReason.COMPLETED)
 	else:
@@ -172,7 +172,7 @@ func _build_and_validate_sequence_entry_index(sequence: DialogueSequence) -> boo
 	_entries.clear()
 	if sequence.sequence_id.is_empty():
 		return _record_validation_error("Dialogue sequence has no ID.")
-	var sequence_entries := sequence.get_entries()
+	var sequence_entries := sequence.entries
 	if sequence_entries.is_empty():
 		return _record_validation_error("Dialogue sequence '%s' has no entries." % sequence.sequence_id)
 	for entry: DialogueEntry in sequence_entries:
@@ -214,8 +214,6 @@ func _validate_entry(entry: DialogueEntry) -> bool:
 		return _record_validation_error("Dialogue entry '%s' has no pages." % entry.entry_id)
 	if not _is_valid_destination(entry.next_entry_id):
 		return _report_missing_destination(entry.entry_id, entry.next_entry_id)
-	if not _is_valid_destination(entry.skip_entry_id):
-		return _report_missing_destination(entry.entry_id, entry.skip_entry_id)
 	for condition: DialogueCondition in entry.conditions:
 		if not _validate_condition(condition, entry.entry_id):
 			return false

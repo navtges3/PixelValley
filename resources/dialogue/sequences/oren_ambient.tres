@@ -25,7 +25,6 @@ script = ExtResource("1_6d0o8")
 entry_id = &"victory"
 speaker = SubResource("Speaker")
 pages = Array[String](["I've watched this valley weather many hard years, but today feels like the beginning of a better one."])
-skip_entry_id = &"ogre_threat"
 conditions = Array[ExtResource("3_mkv5m")]([SubResource("ConditionVictory")])
 
 [sub_resource type="Resource" id="ConditionOgre"]
@@ -41,7 +40,6 @@ script = ExtResource("1_6d0o8")
 entry_id = &"ogre_threat"
 speaker = SubResource("Speaker")
 pages = Array[String](["Those broken trees are ogre work. I saw the same signs years ago, and I hoped never to see them again."])
-skip_entry_id = &"orc_threat"
 conditions = Array[ExtResource("3_mkv5m")]([SubResource("ConditionOgre")])
 
 [sub_resource type="Resource" id="ConditionOrc"]
@@ -57,7 +55,6 @@ script = ExtResource("1_6d0o8")
 entry_id = &"orc_threat"
 speaker = SubResource("Speaker")
 pages = Array[String](["I scouted orc camps when I was younger. Break their command, and the rest usually lose their nerve."])
-skip_entry_id = &"goblin_threat"
 conditions = Array[ExtResource("3_mkv5m")]([SubResource("ConditionOrc")])
 
 [sub_resource type="Resource" id="Resource_00blx"]
@@ -71,3 +68,9 @@ script = ExtResource("2_script")
 sequence_id = &"oren_ambient"
 start_entry_id = &"victory"
 entries = Array[ExtResource("1_6d0o8")]([SubResource("Resource_joxrg"), SubResource("Resource_mkv5m"), SubResource("Resource_fsd26"), SubResource("Resource_00blx")])
+state_entries = Dictionary[StringName, StringName]({
+&"goblin_threat": &"goblin_threat",
+&"ogre_threat": &"ogre_threat",
+&"orc_threat": &"orc_threat",
+&"victory": &"victory"
+})

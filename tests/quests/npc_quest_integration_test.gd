@@ -631,7 +631,7 @@ func _get_dialogue_action_ids(
 	sequence: DialogueSequence
 ) -> Array[StringName]:
 	var result: Array[StringName] = []
-	for entry: DialogueEntry in sequence.get_entries():
+	for entry: DialogueEntry in sequence.entries:
 		for action: DialogueAction in entry.actions:
 			if action.action_id not in result:
 				result.append(action.action_id)

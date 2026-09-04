@@ -9,19 +9,13 @@ class_name DialogueSequence
 @export var entries: Array[DialogueEntry] = []
 @export var state_entries: Dictionary[StringName, StringName] = {}
 
-func get_entry(entry_id: StringName) -> DialogueEntry:
-	for entry: DialogueEntry in get_entries():
-		if entry != null and entry.entry_id == entry_id:
-			return entry
-	return null
-
-func get_entries() -> Array[DialogueEntry]:
-	return entries
-
 func get_start_entry_id(context: Dictionary[StringName, Variant]) -> StringName:
 	if quest_id >= 0:
 		var quest_state: StringName = get_quest_state(context)
 		return state_entries.get(quest_state, start_entry_id)
+	if context.has(&"main_progression"):
+		var progression: StringName = StringName(context[&"main_progression"])
+		return state_entries.get(progression, start_entry_id)
 	return start_entry_id
 
 func get_quest_state(context: Dictionary[StringName, Variant]) -> StringName:
@@ -34,23 +28,6 @@ func get_quest_state(context: Dictionary[StringName, Variant]) -> StringName:
 	if context.get(&"quest_id", -1) == quest_id:
 		return StringName(context.get(&"quest_state", &"unavailable"))
 	return &"unavailable"
-
-func has_state_name(state_name: StringName) -> bool:
-	return state_entries.has(state_name)
-
-func has_state(quest_state: QuestManager.LifecycleState) -> bool:
-	match quest_state:
-		QuestManager.LifecycleState.OFFERED:
-			return state_entries.has(&"offered")
-		QuestManager.LifecycleState.ACTIVE:
-			return state_entries.has(&"active")
-		QuestManager.LifecycleState.READY:
-			return state_entries.has(&"ready")
-		QuestManager.LifecycleState.COMPLETED:
-			return state_entries.has(&"completed")
-		QuestManager.LifecycleState.LOCKED:
-			return state_entries.has(&"locked")
-	return false
 
 func is_eligible(context: Dictionary[StringName, Variant]) -> bool:
 	if quest_id >= 0:

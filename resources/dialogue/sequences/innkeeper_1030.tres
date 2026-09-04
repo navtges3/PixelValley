@@ -52,7 +52,6 @@ script = ExtResource("1_8dolu")
 entry_id = &"ready"
 speaker = SubResource("Speaker")
 pages = Array[String](["That's the missing room key! You have no idea how many locks I nearly replaced.", "Please accept some gold for returning it."])
-skip_entry_id = &"active_with_key"
 conditions = Array[ExtResource("3_rhfvr")]([SubResource("ConditionQuest13"), SubResource("ConditionReady")])
 responses = Array[ExtResource("4_yjrr0")]([SubResource("ResponseTurnIn"), SubResource("ResponseRest")])
 
@@ -87,7 +86,6 @@ script = ExtResource("1_8dolu")
 entry_id = &"active_with_key"
 speaker = SubResource("Speaker")
 pages = Array[String](["Is that our brass room key? I thought it was lost for good."])
-skip_entry_id = &"active_without_key"
 conditions = Array[ExtResource("3_rhfvr")]([SubResource("ConditionQuest13"), SubResource("ConditionActive"), SubResource("ConditionHasKey")])
 responses = Array[ExtResource("4_yjrr0")]([SubResource("ResponseDeliver"), SubResource("ResponseRest")])
 
@@ -104,7 +102,6 @@ script = ExtResource("1_8dolu")
 entry_id = &"active_without_key"
 speaker = SubResource("Speaker")
 pages = Array[String](["The blacksmith said he found one of our room keys. Bring it to me if you recover it."])
-skip_entry_id = &"completed"
 conditions = Array[ExtResource("3_rhfvr")]([SubResource("ConditionQuest13"), SubResource("ConditionActive"), SubResource("ConditionMissingKey")])
 responses = Array[ExtResource("4_yjrr0")]([SubResource("ResponseRest")])
 
@@ -121,7 +118,6 @@ script = ExtResource("1_8dolu")
 entry_id = &"completed"
 speaker = SubResource("Speaker")
 pages = Array[String](["Thanks again for returning that key. The room is back in service."])
-skip_entry_id = &"ambient"
 conditions = Array[ExtResource("3_rhfvr")]([SubResource("ConditionQuest13"), SubResource("ConditionCompleted")])
 responses = Array[ExtResource("4_yjrr0")]([SubResource("ResponseRest")])
 
