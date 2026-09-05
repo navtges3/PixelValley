@@ -4,9 +4,9 @@ class_name WorldCamera
 @export var tilemap_group: String = "camera_bounds"
 
 func _ready() -> void:
-	_apply_tilemap_limits()
+	refresh_limits()
 
-func _apply_tilemap_limits() -> void:
+func refresh_limits() -> void:
 	var tilemaps := get_tree().get_nodes_in_group(tilemap_group)
 	if tilemaps.is_empty():
 		push_warning("WorldCamera: no TileMapLayer found in group '%s'" % tilemap_group)

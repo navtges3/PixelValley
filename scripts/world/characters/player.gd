@@ -5,6 +5,7 @@ const SPEED := 120.0
 
 @onready var anim: AnimatedSprite2D = $AnimatedSprite2D
 @onready var prompt_label: Label = $PromptLabel
+@onready var camera: WorldCamera = $Camera2D
 
 var last_direction := Vector2.DOWN
 var _zone_cooldown := false
