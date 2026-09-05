@@ -5,7 +5,6 @@
 [ext_resource type="TileSet" uid="uid://c3ib8w4j0mx7n" path="res://resources/world/building_interior_tileset.tres" id="3_ljrrm"]
 [ext_resource type="PackedScene" uid="uid://b5w0g6a4eqi3g" path="res://scenes/world/characters/npc_actor.tscn" id="4_61jxo"]
 [ext_resource type="Texture2D" uid="uid://don3grn24yqj5" path="res://assets/world/village/weapon_shop/counter.png" id="4_ljrrm"]
-[ext_resource type="PackedScene" uid="uid://cv120tmswg7xm" path="res://scenes/world/characters/player.tscn" id="4_sexfc"]
 [ext_resource type="Resource" uid="uid://cku2ksvmk1l0e" path="res://resources/characters/npcs/alchemist.tres" id="5_33xkn"]
 [ext_resource type="Texture2D" uid="uid://d3cdi3r3y5kx" path="res://assets/world/village/potion_shop/cauldron.png" id="6_u32er"]
 [ext_resource type="Texture2D" uid="uid://crppd138omvaa" path="res://assets/world/village/potion_shop/shelf_a.png" id="7_jo5y3"]
@@ -55,10 +54,7 @@ tile_set = ExtResource("3_ljrrm")
 [node name="YSortedWorld" type="Node2D" parent="." unique_id=608797256]
 y_sort_enabled = true
 
-[node name="Player" parent="YSortedWorld" unique_id=426329780 instance=ExtResource("4_sexfc")]
-position = Vector2(160, 216)
-
-[node name="NpcActor" parent="YSortedWorld" unique_id=319491251 instance=ExtResource("4_61jxo")]
+[node name="Alchemist" parent="YSortedWorld" unique_id=319491251 instance=ExtResource("4_61jxo")]
 position = Vector2(256, 120)
 data = ExtResource("5_33xkn")
 interaction_offset = Vector2(0, 16)
