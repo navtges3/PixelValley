@@ -1,6 +1,8 @@
 extends BaseLocation
 class_name VillageLocation
 
+const DEFAULT_SPAWN_POSITION := Vector2(449, 504)
+
 @onready var exit_trigger_zone: TriggerZone = $TriggerZones/ExitTriggerZone
 @onready var quest_interact_area: InteractArea = $YSortedWorld/Props/QuestBoard/InteractArea
 @onready var quest_window: QuestWindow = $Foreground/CanvasLayer/QuestWindow
@@ -15,12 +17,19 @@ func _on_location_ready() -> void:
 	quest_window.closed.connect(_on_window_closed)
 	quest_window.hide()
 
+func _apply_default_player_placement() -> void:
+	super._apply_default_player_placement()
+	if player != null and GameState.pre_combat_position == Vector2.ZERO:
+		player.global_position = DEFAULT_SPAWN_POSITION
+
 func _on_quest_board_interacted() -> void:
-	player.movement_blocked = true
+	if player != null:
+		player.movement_blocked = true
 	quest_window.open()
 
 func _on_window_closed() -> void:
-	player.movement_blocked = false
+	if player != null:
+		player.movement_blocked = false
 
 func _input(event: InputEvent) -> void:
 	if _handle_window_input(event, quest_window):

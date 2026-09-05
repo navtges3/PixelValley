@@ -18,11 +18,13 @@ func _handle_npc_service_request(npc_id: StringName, service_id: StringName) -> 
 	if service_id != SERVICE_ID:
 		super._handle_npc_service_request(npc_id, service_id)
 		return
-	player.movement_blocked = true
+	if player != null:
+		player.movement_blocked = true
 	shop_window.open()
 
 func _on_window_closed() -> void:
-	player.movement_blocked = false
+	if player != null:
+		player.movement_blocked = false
 
 func _input(event: InputEvent) -> void:
 	if _handle_window_input(event, shop_window):

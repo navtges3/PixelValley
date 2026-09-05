@@ -2,7 +2,6 @@
 
 [ext_resource type="Script" uid="uid://jt2dx7nr4qb8" path="res://scripts/game/game.gd" id="1_7h61r"]
 [ext_resource type="PackedScene" uid="uid://cv120tmswg7xm" path="res://scenes/world/characters/player.tscn" id="1_sul5r"]
-[ext_resource type="PackedScene" uid="uid://b0g3svmx36aba" path="res://scenes/world/locations/village.tscn" id="2_0sr1o"]
 
 [node name="Game" type="Node" unique_id=695376540]
 script = ExtResource("1_7h61r")
@@ -10,6 +9,8 @@ script = ExtResource("1_7h61r")
 [node name="World" type="Node2D" parent="." unique_id=1650983818]
 y_sort_enabled = true
 
-[node name="Village" parent="World" unique_id=1737910824 instance=ExtResource("2_0sr1o")]
-
 [node name="Player" parent="." unique_id=426329780 instance=ExtResource("1_sul5r")]
+visible = false
+
+[node name="Screens" type="CanvasLayer" parent="." unique_id=2050771279]
+layer = 10

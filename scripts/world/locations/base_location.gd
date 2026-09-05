@@ -15,11 +15,6 @@ var _npcs_by_id: Dictionary[StringName, NpcActor] = {}
 var _npc_quest_controller: NpcQuestDialogueController = NpcQuestDialogueController.new()
 
 func _ready() -> void:
-	#player.set_sprite_frames(GameState.hero.world_visual)
-	#if _pending_entrance_id != "":
-	#	place_player_at_entrance(_pending_entrance_id)
-	#else:
-	#	GameState.set_player_location(_get_screen_name(), "")
 	var world_hud := ScreenManager.get_world_hud() as WorldHUD
 	if world_hud != null:
 		world_hud.game_hud.hud_closed.connect(_on_hud_closed)
@@ -36,19 +31,42 @@ func _ready() -> void:
 	_refresh_npc_quest_statuses()
 	_on_location_ready()
 
+func attach_player(new_player: Player, entrance_id: String = "") -> void:
+	player = new_player
+	if player != null:
+		var target_parent: Node = y_sorted_world if y_sorted_world != null else self
+		if player.get_parent() != target_parent:
+			if player.get_parent() != null:
+				player.reparent(target_parent, false)
+			else:
+				target_parent.add_child(player)
+		if not player.is_in_group("player"):
+			player.add_to_group("player")
+		player.enable_player()
+		if GameState.hero != null and GameState.hero.world_visual != null:
+			player.set_sprite_frames(GameState.hero.world_visual)
+		if entrance_id != "":
+			place_player_at_entrance(entrance_id)
+			GameState.set_player_location(_get_screen_name(), entrance_id)
+		else:
+			_apply_default_player_placement()
+	_on_player_attached()
+
+func _apply_default_player_placement() -> void:
+	GameState.set_player_location(_get_screen_name(), "")
+
+func _on_player_attached() -> void:
+	pass
+
 func set_player(new_player: Player) -> void:
 	player = new_player
 
-func setup_player(new_player: Player, entrance_id: String) -> void:
-	player = new_player
-	player.set_sprite_frames(GameState.hero.world_visual)
-	if entrance_id != "":
-		place_player_at_entrance(entrance_id)
-		GameState.set_player_location(_get_screen_name(), entrance_id)
+func setup_player(new_player: Player, entrance_id: String = "") -> void:
+	attach_player(new_player, entrance_id)
 
 func place_player_at_entrance(entrance_id: String) -> void:
 	GameState.set_player_location(_get_screen_name(), entrance_id)
-	if not is_node_ready():
+	if not is_node_ready() or player == null:
 		_pending_entrance_id = entrance_id
 		return
 	var candidates: Array[Node] = []
@@ -104,27 +122,32 @@ func _input(event: InputEvent) -> void:
 			_open_hud(game_hud)
 
 func _open_hud(game_hud: GameHUD, tab: GameHUD.Tab = GameHUD.Tab.STATS) -> void:
-	player.movement_blocked = true
+	if player != null:
+		player.movement_blocked = true
 	game_hud.show_hud(tab)
 
 func _close_hud(game_hud: GameHUD) -> void:
 	game_hud.hide_hud()
-	player.movement_blocked = false
+	if player != null:
+		player.movement_blocked = false
 
 # Override in subclasses for extra setup (e.g. spawn points, extra signals)
 func _on_location_ready() -> void:
 	pass
 
 func _on_hud_closed() -> void:
-	player.movement_blocked = false
+	if player != null:
+		player.movement_blocked = false
 
 func _on_dialogue_opened() -> void:
-	_movement_blocked_before_dialogue = player.movement_blocked
-	player.movement_blocked = true
-	player.clear_prompt()
+	if player != null:
+		_movement_blocked_before_dialogue = player.movement_blocked
+		player.movement_blocked = true
+		player.clear_prompt()
 
 func _on_dialogue_closed(reason: DialogueRunner.FinishReason) -> void:
-	player.movement_blocked = _movement_blocked_before_dialogue
+	if player != null:
+		player.movement_blocked = _movement_blocked_before_dialogue
 	if (
 		reason == DialogueRunner.FinishReason.COMPLETED
 		and not _active_dialogue_npc_id.is_empty()
@@ -205,12 +228,14 @@ func _on_dialogue_action_requested(action: DialogueAction, context: Dictionary[S
 		world_hud.queue_quest_rewards(rewards)
 
 func _on_world_rewards_opened() -> void:
-	_movement_blocked_before_world_rewards = player.movement_blocked
-	player.movement_blocked = true
-	player.clear_prompt()
+	if player != null:
+		_movement_blocked_before_world_rewards = player.movement_blocked
+		player.movement_blocked = true
+		player.clear_prompt()
 
 func _on_world_rewards_closed() -> void:
-	player.movement_blocked = _movement_blocked_before_world_rewards
+	if player != null:
+		player.movement_blocked = _movement_blocked_before_world_rewards
 	InputManager.release_menu_focus()
 
 func _queue_dialogue_service(context: Dictionary[StringName, Variant]) -> void:

@@ -5,7 +5,7 @@ const SPEED := 120.0
 
 @onready var anim: AnimatedSprite2D = $AnimatedSprite2D
 @onready var prompt_label: Label = $PromptLabel
-@onready var camera: WorldCamera = $Camera2D
+@onready var camera: WorldCamera = get_node_or_null("Camera2D") as WorldCamera
 
 var last_direction := Vector2.DOWN
 var _zone_cooldown := false
@@ -14,6 +14,36 @@ var _prompt_owner_id: int = 0
 
 func _ready() -> void:
 	prompt_label.hide()
+	if camera == null:
+		camera = get_node_or_null("Camera2D") as WorldCamera
+
+func get_camera() -> WorldCamera:
+	if camera == null:
+		camera = get_node_or_null("Camera2D") as WorldCamera
+	return camera
+
+func refresh_camera_limits() -> void:
+	var cam := get_camera()
+	if cam != null:
+		cam.refresh_limits()
+
+func enable_player() -> void:
+	visible = true
+	set_physics_process(true)
+	set_process_unhandled_input(true)
+	var cam := get_camera()
+	if cam != null:
+		cam.enabled = true
+
+func disable_player() -> void:
+	visible = false
+	velocity = Vector2.ZERO
+	clear_prompt()
+	set_physics_process(false)
+	set_process_unhandled_input(false)
+	var cam := get_camera()
+	if cam != null:
+		cam.enabled = false
 
 func _physics_process(_delta: float) -> void:
 	if movement_blocked:
@@ -43,16 +73,18 @@ func _update_animation(input: Vector2) -> void:
 		anim.play("walk_down" if input.y > 0 else "walk_up")
 
 func on_zone_entered(zone: TriggerZone) -> void:
-	print("Player entered zone: %s" % zone.name)
-	if _zone_cooldown or zone.locked:
+	if _zone_cooldown or zone == null or not is_instance_valid(zone) or zone.locked:
+		return
+	if ScreenManager.is_transitioning():
 		return
 	clear_prompt()
-	_zone_cooldown = true
-	await get_tree().process_frame
+	var screen_target := zone.screen_target
+	var entrance_id := zone.entrance_id
 	var data: Variant = null
 	if zone.screen_data >= 0:
 		data = zone.screen_data
-	ScreenManager.go_to_screen(zone.screen_target, zone.entrance_id, data)
+	_zone_cooldown = true
+	ScreenManager.go_to_screen(screen_target, entrance_id, data)
 	_zone_cooldown = false
 
 func place_at_entrance(entrance_node: Node2D) -> void:
