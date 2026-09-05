@@ -3,9 +3,6 @@ class_name WorldCamera
 
 @export var tilemap_group: String = "camera_bounds"
 
-func _ready() -> void:
-	refresh_limits()
-
 func refresh_limits() -> void:
 	var tilemaps := get_tree().get_nodes_in_group(tilemap_group)
 	if tilemaps.is_empty():
