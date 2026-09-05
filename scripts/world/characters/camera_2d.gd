@@ -8,10 +8,8 @@ func refresh_limits() -> void:
 	if tilemaps.is_empty():
 		push_warning("WorldCamera: no TileMapLayer found in group '%s'" % tilemap_group)
 		return
-
 	var combined_rect: Rect2
 	var has_valid_tilemap := false
-
 	for node in tilemaps:
 		var tilemap := node as TileMapLayer
 		if tilemap == null or tilemap.tile_set == null:
@@ -21,21 +19,17 @@ func refresh_limits() -> void:
 			continue
 		var tile_size: Vector2i = tilemap.tile_set.tile_size
 		var origin: Vector2 = tilemap.global_position
-
 		var world_rect := Rect2(
 			origin + Vector2(used_rect.position * tile_size),
-			Vector2(used_rect.size * tile_size)
-		)
+			Vector2(used_rect.size * tile_size))
 		if not has_valid_tilemap:
 			combined_rect = world_rect
 			has_valid_tilemap = true
 		else:
 			combined_rect = combined_rect.merge(world_rect)
-
 	if not has_valid_tilemap:
 		push_warning("WorldCamera: no valid TileMapLayer with bounds found in group '%s'" % tilemap_group)
 		return
-
 	limit_left   = int(combined_rect.position.x)
 	limit_top    = int(combined_rect.position.y)
 	limit_right  = int(combined_rect.end.x)
