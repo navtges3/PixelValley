@@ -1,7 +1,5 @@
 extends Node
 
-const Game = preload("res://scripts/game/game.gd")
-
 var _current_screen_name: ScreenName = ScreenName.NONE
 var _history: Array[ScreenName] = []
 
