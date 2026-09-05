@@ -96,14 +96,24 @@ func _change_scene(path: String, entrance_id: String = "", data: Variant = null)
 		world_hud.abort_dialogue()
 	await _fade(1.0)
 	_world_hud.hide()
-	var scene = load(path).instantiate()
-	get_tree().current_scene.free()
-	get_tree().root.add_child(scene)
-	get_tree().current_scene = scene
-	if data != null and scene.has_method("setup"):
-		scene.setup(data)
-	if entrance_id != "" and scene.has_method("place_player_at_entrance"):
-		scene.place_player_at_entrance(entrance_id)
+	# NEW
+	var player := Game.get_player()
+	var old_location := Game.get_current_location()
+	if old_location:
+		old_location.queue_free()
+		await get_tree().process_frame
+	var new_location = load(path).instantiate()
+	Game.world.add_child(new_location)
+	new_location.setup_player(player, entrance_id)
+	# OLD
+	#var scene = load(path).instantiate()
+	#get_tree().current_scene.free()
+	#get_tree().root.add_child(scene)
+	#get_tree().current_scene = scene
+	#if data != null and scene.has_method("setup"):
+	#	scene.setup(data)
+	#if entrance_id != "" and scene.has_method("place_player_at_entrance"):
+	#	scene.place_player_at_entrance(entrance_id)
 	if _current_screen_name in WORLD_SCREENS:
 		_world_hud.show_all()
 	else:

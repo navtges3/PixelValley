@@ -2,7 +2,8 @@ extends Node2D
 class_name BaseLocation
 
 @onready var y_sorted_world: Node2D = $YSortedWorld
-@onready var player: Player = $YSortedWorld/Player
+
+var player: Player
 
 var _pending_entrance_id: String = ""
 var _movement_blocked_before_dialogue: bool = false
@@ -14,12 +15,11 @@ var _npcs_by_id: Dictionary[StringName, NpcActor] = {}
 var _npc_quest_controller: NpcQuestDialogueController = NpcQuestDialogueController.new()
 
 func _ready() -> void:
-	player.set_sprite_frames(GameState.hero.world_visual)
-	if _pending_entrance_id != "":
-		place_player_at_entrance(_pending_entrance_id)
-	else:
-		GameState.set_player_location(_get_screen_name(), "")
-
+	#player.set_sprite_frames(GameState.hero.world_visual)
+	#if _pending_entrance_id != "":
+	#	place_player_at_entrance(_pending_entrance_id)
+	#else:
+	#	GameState.set_player_location(_get_screen_name(), "")
 	var world_hud := ScreenManager.get_world_hud() as WorldHUD
 	if world_hud != null:
 		world_hud.game_hud.hud_closed.connect(_on_hud_closed)
@@ -35,6 +35,16 @@ func _ready() -> void:
 	_bind_npcs()
 	_refresh_npc_quest_statuses()
 	_on_location_ready()
+
+func set_player(new_player: Player) -> void:
+	player = new_player
+
+func setup_player(new_player: Player, entrance_id: String) -> void:
+	player = new_player
+	player.set_sprite_frames(GameState.hero.world_visual)
+	if entrance_id != "":
+		place_player_at_entrance(entrance_id)
+		GameState.set_player_location(_get_screen_name(), entrance_id)
 
 func place_player_at_entrance(entrance_id: String) -> void:
 	GameState.set_player_location(_get_screen_name(), entrance_id)
