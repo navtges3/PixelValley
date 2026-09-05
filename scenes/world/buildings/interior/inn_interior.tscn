@@ -5,7 +5,6 @@
 [ext_resource type="TileSet" uid="uid://c3ib8w4j0mx7n" path="res://resources/world/building_interior_tileset.tres" id="3_eggvl"]
 [ext_resource type="Texture2D" uid="uid://don3grn24yqj5" path="res://assets/world/village/weapon_shop/counter.png" id="4_akkv4"]
 [ext_resource type="PackedScene" uid="uid://b5w0g6a4eqi3g" path="res://scenes/world/characters/npc_actor.tscn" id="4_pbvbh"]
-[ext_resource type="PackedScene" uid="uid://cv120tmswg7xm" path="res://scenes/world/characters/player.tscn" id="4_vofwt"]
 [ext_resource type="Texture2D" uid="uid://d3dd0k6j1w2li" path="res://assets/world/village/inn/key_rack.png" id="5_42aiy"]
 [ext_resource type="Resource" uid="uid://byrxikto167vi" path="res://resources/characters/npcs/innkeeper.tres" id="5_e58a2"]
 [ext_resource type="PackedScene" uid="uid://b0tdph7ofmv7r" path="res://scenes/world/trigger_zone.tscn" id="8_d6ujm"]
@@ -37,9 +36,6 @@ tile_set = ExtResource("3_eggvl")
 
 [node name="YSortedWorld" type="Node2D" parent="." unique_id=1085901230]
 y_sort_enabled = true
-
-[node name="Player" parent="YSortedWorld" unique_id=426329780 instance=ExtResource("4_vofwt")]
-position = Vector2(64, 216)
 
 [node name="InnKeeper" parent="YSortedWorld" unique_id=319491251 instance=ExtResource("4_pbvbh")]
 position = Vector2(57, 35)

@@ -7,12 +7,20 @@ func _get_location_id() -> String:
 
 func _on_location_ready() -> void:
 	_activate_spawn_points()
-	_restore_combat_position()
+
+func _on_player_attached() -> void:
+	super._on_player_attached()
 
 func _restore_combat_position() -> void:
-	if GameState.pre_combat_position != Vector2.ZERO:
+	if player != null and GameState.pre_combat_position != Vector2.ZERO:
 		player.global_position = GameState.pre_combat_position
 		GameState.pre_combat_position = Vector2.ZERO
+
+func _apply_default_player_placement() -> void:
+	if GameState.pre_combat_position != Vector2.ZERO:
+		_restore_combat_position()
+	else:
+		super._apply_default_player_placement()
 
 func _activate_spawn_points() -> void:
 	var points: Array = []
@@ -24,14 +32,15 @@ func _activate_spawn_points() -> void:
 
 func _on_combat_initiated(enemy: Enemy) -> void:
 	enemy.set_physics_process(false)
-	var retreat_dir := player.global_position - enemy.global_position
+	var retreat_dir := (player.global_position - enemy.global_position) if player != null else Vector2.DOWN
 	if retreat_dir == Vector2.ZERO:
 		retreat_dir = Vector2.DOWN
-	GameState.pre_combat_position = player.global_position
-	ScreenManager.go_to_screen(ScreenManager.ScreenName.BATTLE, "", {
-		"hero": GameState.hero,
-		"monster_id": enemy.monster_id,
-		"spawn_point_id": enemy.spawn_point_id,
-		"location_id": _get_location_id(),
-		"flee_position": player.global_position + retreat_dir.normalized() * 96.0
-	})
+	if player != null:
+		GameState.pre_combat_position = player.global_position
+		ScreenManager.go_to_screen(ScreenManager.ScreenName.BATTLE, "", {
+			"hero": GameState.hero,
+			"monster_id": enemy.monster_id,
+			"spawn_point_id": enemy.spawn_point_id,
+			"location_id": _get_location_id(),
+			"flee_position": player.global_position + retreat_dir.normalized() * 96.0
+		})

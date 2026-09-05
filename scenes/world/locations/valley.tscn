@@ -5,7 +5,6 @@
 [ext_resource type="Texture2D" uid="uid://bn7ut6nmque8y" path="res://assets/world/war_camp/war_camp_tileset.png" id="4_gbuke"]
 [ext_resource type="Texture2D" uid="uid://dh7ukilah1cch" path="res://assets/world/cave/cave_tileset.png" id="5_otlcx"]
 [ext_resource type="TileSet" uid="uid://ca0rdl8iyjnxp" path="res://resources/world/tree_tile_set.tres" id="5_rf3nj"]
-[ext_resource type="PackedScene" uid="uid://cv120tmswg7xm" path="res://scenes/world/characters/player.tscn" id="6_6nwor"]
 [ext_resource type="PackedScene" uid="uid://b0tdph7ofmv7r" path="res://scenes/world/trigger_zone.tscn" id="8_xwbyh"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ajhkl"]
@@ -54,9 +53,6 @@ tile_set = ExtResource("3_4rieo")
 
 [node name="YSortedWorld" type="Node2D" parent="." unique_id=2063025473]
 y_sort_enabled = true
-
-[node name="Player" parent="YSortedWorld" unique_id=426329780 instance=ExtResource("6_6nwor")]
-position = Vector2(-448, 831)
 
 [node name="Mountains" type="TileMapLayer" parent="YSortedWorld" unique_id=993224332]
 y_sort_enabled = true

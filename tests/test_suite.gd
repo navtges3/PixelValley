@@ -44,6 +44,10 @@ extends Node
 	$UI/AcquisitionNotificationTests,
 ]
 
+@onready var _game_test_cases: Array[TestCase] = [
+	$GameArchitecture/PersistentPlayerTests,
+]
+
 func _ready() -> void:
 	var total_failures: int = 0
 	total_failures += _run_section("EFFECTS", _effect_test_cases)
@@ -54,6 +58,7 @@ func _ready() -> void:
 	total_failures += _run_section("NPCS", _npc_test_cases)
 	total_failures += _run_section("INPUT", _input_test_cases)
 	total_failures += _run_section("UI", _ui_test_cases)
+	total_failures += await _run_async_section("GAME ARCHITECTURE", _game_test_cases)
 
 	print("\n========== TEST SUMMARY ==========")
 	if total_failures == 0:
@@ -68,6 +73,22 @@ func _run_section(section_name: String, test_cases: Array[TestCase]) -> int:
 	var section_failures: int = 0
 	for test_case: TestCase in test_cases:
 		section_failures += test_case.run_tests()
+
+	if section_failures == 0:
+		print("%s tests passed." % section_name.capitalize())
+	else:
+		printerr("%s tests failed: %d" % [section_name.capitalize(), section_failures])
+	return section_failures
+
+
+func _run_async_section(section_name: String, test_cases: Array[TestCase]) -> int:
+	print("\n========== %s TESTS ==========" % section_name)
+	var section_failures: int = 0
+	for test_case: TestCase in test_cases:
+		if test_case.has_method("run_async_tests"):
+			section_failures += await test_case.run_async_tests()
+		else:
+			section_failures += test_case.run_tests()
 
 	if section_failures == 0:
 		print("%s tests passed." % section_name.capitalize())

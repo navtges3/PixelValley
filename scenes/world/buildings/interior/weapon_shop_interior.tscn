@@ -2,7 +2,6 @@
 
 [ext_resource type="Script" uid="uid://cdce1ey4ljwxe" path="res://scripts/world/buildings/interior/weapon_shop_interior.gd" id="1_mu2m6"]
 [ext_resource type="PackedScene" uid="uid://barcl6is7t0uy" path="res://scenes/ui/windows/shop_window.tscn" id="2_mu2m6"]
-[ext_resource type="PackedScene" uid="uid://cv120tmswg7xm" path="res://scenes/world/characters/player.tscn" id="3_mu2m6"]
 [ext_resource type="TileSet" uid="uid://c3ib8w4j0mx7n" path="res://resources/world/building_interior_tileset.tres" id="4_422ht"]
 [ext_resource type="Texture2D" uid="uid://don3grn24yqj5" path="res://assets/world/village/weapon_shop/counter.png" id="4_awdw8"]
 [ext_resource type="PackedScene" uid="uid://b5w0g6a4eqi3g" path="res://scenes/world/characters/npc_actor.tscn" id="4_jtcfk"]
@@ -50,10 +49,7 @@ tile_set = ExtResource("4_422ht")
 [node name="YSortedWorld" type="Node2D" parent="." unique_id=247285760]
 y_sort_enabled = true
 
-[node name="Player" parent="YSortedWorld" unique_id=426329780 instance=ExtResource("3_mu2m6")]
-position = Vector2(224, 217)
-
-[node name="NpcActor" parent="YSortedWorld" unique_id=319491251 instance=ExtResource("4_jtcfk")]
+[node name="Blacksmith" parent="YSortedWorld" unique_id=319491251 instance=ExtResource("4_jtcfk")]
 position = Vector2(48, 120)
 data = ExtResource("5_dmleq")
 interaction_offset = Vector2(0, 16)
