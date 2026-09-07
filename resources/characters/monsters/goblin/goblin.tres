@@ -4,14 +4,12 @@
 [ext_resource type="Script" uid="uid://c5deti4sb2k2j" path="res://scripts/data/effects/effect.gd" id="6_7quqt"]
 [ext_resource type="Resource" uid="uid://67rh3fh1efyh" path="res://resources/effects/common/debuffs/poison.tres" id="6_lwmax"]
 [ext_resource type="Script" uid="uid://cnso83bg7vodw" path="res://scripts/data/condition.gd" id="6_w4m2s"]
-[ext_resource type="Texture2D" uid="uid://5ruk6t3rbyd5" path="res://assets/characters/monsters/goblin/goblin.png" id="7_0ojpk"]
 [ext_resource type="Script" uid="uid://buxlf5aagrtgf" path="res://scripts/data/drop_entry.gd" id="7_lwmax"]
 [ext_resource type="Script" uid="uid://bd6ohffno5w7r" path="res://scripts/characters/monster.gd" id="8_li32v"]
 [ext_resource type="Script" uid="uid://birbqcxvye2x5" path="res://scripts/data/drop_table.gd" id="8_lygd1"]
 [ext_resource type="SpriteFrames" uid="uid://2sjuet18mpdk" path="res://resources/characters/monsters/goblin/goblin_world_sprite_frames.tres" id="10_7quqt"]
 [ext_resource type="Script" uid="uid://b2o7w8q10stxo" path="res://scripts/data/ability.gd" id="11_ability"]
 [ext_resource type="Script" uid="uid://bo48scp6lbwrb" path="res://scripts/data/attack.gd" id="12_attack"]
-
 
 [sub_resource type="Resource" id="Resource_stab_attack"]
 script = ExtResource("12_attack")
@@ -70,9 +68,9 @@ max_hp = 50
 current_hp = 50
 max_nrg = 5
 current_nrg = 5
+initiative = 3
 attack = 3
 defense = 1
-portrait = ExtResource("7_0ojpk")
 world_visual = ExtResource("10_7quqt")
 battle_visual = ExtResource("2_ehlpm")
 metadata/_custom_type_script = "uid://bd6ohffno5w7r"

@@ -7,6 +7,10 @@ extends Node
 	$Effects/EffectLifecycleEventTests,
 ]
 
+@onready var _combatant_test_cases: Array[TestCase] = [
+	$Combatants/CombatantStatsTests,
+]
+
 @onready var _quest_test_cases: Array[TestCase] = [
 	$Quests/QuestManagerMultiQuestTests,
 	$Quests/QuestManagerLifecycleTests,
@@ -50,6 +54,7 @@ extends Node
 
 func _ready() -> void:
 	var total_failures: int = 0
+	total_failures += _run_section("COMBATANTS", _combatant_test_cases)
 	total_failures += _run_section("EFFECTS", _effect_test_cases)
 	total_failures += _run_section("QUESTS", _quest_test_cases)
 	total_failures += _run_section("REWARDS", _reward_test_cases)

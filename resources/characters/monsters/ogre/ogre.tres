@@ -70,6 +70,7 @@ max_hp = 100
 current_hp = 100
 max_nrg = 40
 current_nrg = 40
+initiative = 3
 attack = 9
 defense = 5
 resist = 2

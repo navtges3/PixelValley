@@ -21,9 +21,14 @@
 [ext_resource type="PackedScene" path="res://tests/world/world_loot_source_test.tscn" id="19_world_loot"]
 [ext_resource type="PackedScene" path="res://tests/ui/acquisition_notification_test.tscn" id="20_acquisition"]
 [ext_resource type="PackedScene" path="res://tests/game/persistent_player_test.tscn" id="21_game"]
+[ext_resource type="PackedScene" path="res://tests/combatants/combatant_stats_test.tscn" id="22_combatants"]
 
 [node name="TestSuite" type="Node" unique_id=783793299]
 script = ExtResource("4_suite")
+
+[node name="Combatants" type="Node" parent="." unique_id=765432101]
+
+[node name="CombatantStatsTests" parent="Combatants" unique_id=765432102 instance=ExtResource("22_combatants")]
 
 [node name="Effects" type="Node" parent="." unique_id=1607208508]
 
