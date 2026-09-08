@@ -9,6 +9,7 @@ extends Node
 
 @onready var _combatant_test_cases: Array[TestCase] = [
 	$Combatants/CombatantStatsTests,
+	$Combatants/BattlePartyTests,
 ]
 
 @onready var _quest_test_cases: Array[TestCase] = [
