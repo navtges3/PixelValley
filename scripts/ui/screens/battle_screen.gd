@@ -81,6 +81,10 @@ func setup(config: Dictionary) -> void:
 	battle_manager.setup_battle(config)
 	_refresh_hero_effect_icons()
 
+func _on_active_combatant_changed(_combatant: Combatant) -> void:
+	# Future turn-order display or combatant highlight belongs here.
+	pass
+
 # --- Effect Icons ---
 func _on_effect_lifecycle_changed(event: EffectLifecycleEvent) -> void:
 	if event.target == battle_manager.hero:

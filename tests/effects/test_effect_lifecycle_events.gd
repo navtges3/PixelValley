@@ -94,6 +94,8 @@ func _test_battle_cleanup_event_order_and_payloads() -> void:
 	var manager := BattleManager.new()
 	manager.hero = _make_hero()
 	manager.monster = _make_monster()
+	manager.player_party.add_member(manager.hero)
+	manager.enemy_party.add_member(manager.monster)
 	manager.effect_lifecycle_changed.connect(_record_event)
 	var hero_combat := _make_effect("hero_combat", 1, 3)
 	var hero_persistent := _make_effect("hero_persistent", 1, 3)

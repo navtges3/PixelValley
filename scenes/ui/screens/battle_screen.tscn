@@ -173,6 +173,7 @@ autowrap_mode = 2
 
 [connection signal="rewards_collected" from="RewardWindow" to="." method="_on_rewards_collected"]
 [connection signal="return_to_village" from="DeathWindow" to="." method="_on_death_window_dismissed"]
+[connection signal="active_combatant_changed" from="BattleManager" to="." method="_on_active_combatant_changed"]
 [connection signal="battle_log_updated" from="BattleManager" to="." method="_on_battle_log_updated"]
 [connection signal="battle_won" from="BattleManager" to="." method="_on_battle_won"]
 [connection signal="effect_lifecycle_changed" from="BattleManager" to="." method="_on_effect_lifecycle_changed"]
