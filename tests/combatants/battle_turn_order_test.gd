@@ -7,6 +7,10 @@ func run_tests() -> int:
 	_test_same_party_ties_preserve_membership_order()
 	_test_defeated_combatants_are_skipped_and_order_cycles()
 	_test_non_primary_hero_acts_and_completes_turn()
+	_test_one_defeated_member_does_not_end_battle()
+	_test_all_enemy_members_trigger_victory()
+	_test_all_player_members_trigger_defeat()
+	_test_defeated_signal_emits_once_per_member()
 	return _finish_test_run("Battle turn order tests")
 
 
@@ -139,6 +143,83 @@ func _test_non_primary_hero_acts_and_completes_turn() -> void:
 		next_hero,
 		"the non-primary hero's action advances to the next turn"
 	)
+
+
+func _test_one_defeated_member_does_not_end_battle() -> void:
+	var manager := _make_party_manager(2, 2)
+	var defeated_enemy := manager.enemy_party.get_members()[0] as Monster
+	defeated_enemy.current_hp = 0
+
+	manager._resolve_party_defeat()
+
+	_expect_false(
+		manager.state in [
+			BattleManager.BattleState.VICTORY,
+			BattleManager.BattleState.DEFEAT,
+		],
+		"one defeated enemy does not end a party battle"
+	)
+
+
+func _test_all_enemy_members_trigger_victory() -> void:
+	var manager := _make_party_manager(1, 2)
+	for enemy: Combatant in manager.enemy_party.get_members():
+		enemy.current_hp = 0
+
+	manager._resolve_party_defeat()
+
+	_expect_equal(
+		manager.state,
+		BattleManager.BattleState.VICTORY,
+		"all defeated enemies trigger victory"
+	)
+
+
+func _test_all_player_members_trigger_defeat() -> void:
+	var manager := _make_party_manager(2, 1)
+	for player: Combatant in manager.player_party.get_members():
+		player.current_hp = 0
+
+	manager._resolve_party_defeat()
+
+	_expect_equal(
+		manager.state,
+		BattleManager.BattleState.DEFEAT,
+		"all defeated players trigger defeat"
+	)
+
+
+func _test_defeated_signal_emits_once_per_member() -> void:
+	var manager := _make_party_manager(2, 2)
+	var defeated := manager.enemy_party.get_members()[0] as Monster
+	var defeated_count := [0]
+	manager.combatant_defeated.connect(
+		func(_combatant: Combatant) -> void:
+			defeated_count[0] += 1
+	)
+	defeated.current_hp = 0
+
+	manager._emit_newly_defeated_combatants()
+	manager._emit_newly_defeated_combatants()
+
+	_expect_equal(
+		defeated_count[0],
+		1,
+		"defeated signal emits once for each combatant"
+	)
+
+
+func _make_party_manager(player_count: int, enemy_count: int) -> BattleManager:
+	var manager := BattleManager.new()
+	for index: int in player_count:
+		var hero := _make_hero("Hero %d" % index, 10 - index)
+		manager.player_party.add_member(hero)
+	for index: int in enemy_count:
+		var monster := _make_monster("Monster %d" % index, 5 - index)
+		manager.enemy_party.add_member(monster)
+	manager.hero = manager.player_party.get_members()[0] as Hero
+	manager.monster = manager.enemy_party.get_members()[0] as Monster
+	return manager
 
 
 func _make_combatant(initiative: int) -> Combatant:

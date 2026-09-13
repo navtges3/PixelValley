@@ -29,6 +29,10 @@ const MEDITATE_TOOLTIP_TEXT := "Restore health and energy."
 
 var hero_visual: BattleCharacter
 var monster_visual: BattleCharacter
+
+var combatant_visuals: Dictionary = {}
+var combatant_health_labels: Dictionary = {}
+
 var battle_config: Dictionary = {}
 
 var _primary_action_buttons: Array[Button] = []
@@ -77,20 +81,100 @@ func _can_focus_battle_control(control: Control) -> bool:
 
 func setup(config: Dictionary) -> void:
 	battle_config = config
-	_spawn_hero()
 	battle_manager.setup_battle(config)
+	_spawn_party_visuals()
 	_refresh_hero_effect_icons()
 
-func _on_active_combatant_changed(_combatant: Combatant) -> void:
-	# Future turn-order display or combatant highlight belongs here.
-	pass
+func _spawn_party_visuals() -> void:
+	combatant_visuals.clear()
+	for child: Node in $HeroSlot.get_children():
+		child.queue_free()
+	for child: Node in $MonsterSlot.get_children():
+		child.queue_free()
+	var players := battle_manager.player_party.get_members()
+	var enemies := battle_manager.enemy_party.get_members()
+	for index: int in players.size():
+		_spawn_combatant_visual(players[index], $HeroSlot, index, players.size())
+	for index: int in enemies.size():
+		_spawn_combatant_visual(enemies[index], $MonsterSlot, index, enemies.size())
+
+func _spawn_combatant_visual(
+	combatant: Combatant,
+	parent: Node,
+	index: int,
+	party_size: int
+) -> void:
+	var visual := BATTLE_CHARACTER.instantiate() as BattleCharacter
+	parent.add_child(visual)
+	visual.position.x = (index - (party_size - 1) / 2.0) * 96.0
+	visual.apply_visual(combatant, combatant is Monster)
+	combatant_visuals[combatant] = visual
+	var health_label := Label.new()
+	health_label.position = Vector2(-42, 12)
+	health_label.size = Vector2(84, 20)
+	health_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	health_label.add_theme_color_override(
+		"font_color",
+		Color(0.2, 0.1, 0.1) if combatant is Hero else Color(0.4, 0.05, 0.05))
+	visual.add_child(health_label)
+	combatant_health_labels[combatant] = health_label
+	_update_combatant_status(combatant)
+	if combatant == battle_manager.hero:
+		hero_visual = visual
+		hero_info.hero = battle_manager.hero
+		var hero := combatant as Hero
+		hero_info.hero = hero
+		hero_info.refresh()
+		visual.configure_vfx(hero.hero_class)
+		var weapon: Weapon = hero.inventory.equipped_weapon
+		if weapon != null:
+			if weapon.sprite:
+				visual.equip_weapon(weapon.sprite, weapon.sprite_offset, weapon.tip_offset)
+			ability_button.text = weapon.name
+	elif combatant == battle_manager.monster:
+		monster_visual = visual
+		var monster := combatant as Monster
+		monster_label.text = monster.name
+		_on_monster_updated(monster)
+
+func _on_combatant_updated(combatant: Combatant) -> void:
+	var visual := combatant_visuals.get(combatant) as BattleCharacter
+	if visual == null:
+		return
+	visual.set_effects(EffectManager.get_active_effects(combatant))
+	_update_combatant_status(combatant)
+	if combatant == battle_manager.hero:
+		hero_info.refresh()
+
+func _update_combatant_status(combatant: Combatant) -> void:
+	var label := combatant_health_labels.get(combatant) as Label
+	if label == null:
+		return
+	label.text = "%d / %d" % [combatant.current_hp, combatant.max_hp]
+
+func _on_combatant_defeated(combatant: Combatant) -> void:
+	var visual := combatant_visuals.get(combatant) as BattleCharacter
+	if visual == null:
+		return
+	visual.play_death()
+	visual.modulate = Color(0.45, 0.45, 0.45, 0.7)
+
+func _on_combatant_attacking(combatant: Combatant) -> void:
+	var visual := combatant_visuals.get(combatant) as BattleCharacter
+	if visual == null:
+		return
+	visual.play_attack()
+	AudioManager.play_sfx_by_id("sword_swing", 1.0, randf_range(0.9, 1.1))
+	await visual.animation_done
+
+func _on_combatant_hurt(combatant: Combatant) -> void:
+	var visual := combatant_visuals.get(combatant) as BattleCharacter
+	if visual != null:
+		visual.play_hurt()
 
 # --- Effect Icons ---
 func _on_effect_lifecycle_changed(event: EffectLifecycleEvent) -> void:
-	if event.target == battle_manager.hero:
-		_refresh_hero_effect_icons()
-	elif event.target == battle_manager.monster:
-		_refresh_monster_effect_icons()
+	_on_combatant_updated(event.target)
 
 func _refresh_hero_effect_icons() -> void:
 	if not is_instance_valid(hero_visual):
@@ -225,11 +309,15 @@ func _on_flee_button_pressed() -> void:
 	ScreenManager.go_back()
 
 func _on_player_turn() -> void:
+	var actor := battle_manager.active_combatant as Hero
+	if actor == null:
+		return
+	hero_info.hero = actor
 	ability_button.disabled = false
 	item_button.disabled = battle_manager.get_hero_items().is_empty()
-	if battle_manager.hero.rest_cooldown > 0:
+	if actor.rest_cooldown > 0:
 		meditate_button.disabled = true
-		meditate_button.text = "Cooldown: %d" % battle_manager.hero.rest_cooldown
+		meditate_button.text = "Cooldown: %d" % actor.rest_cooldown
 	else:
 		meditate_button.disabled = false
 		meditate_button.text = "Meditate"
@@ -268,8 +356,9 @@ func _on_ability_button_pressed(ability: Ability) -> void:
 
 func _create_ability_button(ability: Ability) -> AbilityButton:
 	var button := ABILITY_BUTTON.instantiate() as AbilityButton
+	var actor := battle_manager.active_combatant as Hero
 	button.ability = ability
-	button.user_energy = battle_manager.hero.current_nrg
+	button.user_energy = actor.current_nrg if actor != null else 0
 	button.ability_pressed.connect(_on_ability_button_pressed)
 	button.focus_entered.connect(_on_ability_option_focus_entered.bind(button))
 	button.focus_exited.connect(_on_ability_option_focus_exited.bind(button))
