@@ -24,6 +24,7 @@
 [ext_resource type="PackedScene" path="res://tests/combatants/combatant_stats_test.tscn" id="22_combatants"]
 [ext_resource type="PackedScene" path="res://tests/combatants/battle_party_test.tscn" id="23_battle_party"]
 [ext_resource type="PackedScene" path="res://tests/combatants/battle_turn_order_test.tscn" id="24_turn_order"]
+[ext_resource type="PackedScene" path="res://tests/combatants/ability_targeting_test.tscn" id="25_ability_targeting"]
 
 [node name="TestSuite" type="Node" unique_id=783793299]
 script = ExtResource("4_suite")
@@ -35,6 +36,8 @@ script = ExtResource("4_suite")
 [node name="BattlePartyTests" parent="Combatants" unique_id=1263386570 instance=ExtResource("23_battle_party")]
 
 [node name="BattleTurnOrderTests" parent="Combatants" instance=ExtResource("24_turn_order")]
+
+[node name="AbilityTargetingTests" parent="Combatants" instance=ExtResource("25_ability_targeting")]
 
 [node name="Effects" type="Node" parent="." unique_id=1607208508]
 

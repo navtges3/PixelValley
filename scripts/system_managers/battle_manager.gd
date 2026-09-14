@@ -139,16 +139,32 @@ func _run_enemy_turn() -> void:
 	if state != BattleState.MONSTER_TURN:
 		return
 	var actor := active_combatant as Monster
-	var target := _get_first_living_player()
-	if actor == null or target == null:
+	if actor == null:
+		return
+	var default_target := _get_first_living_player()
+	var ability: Ability = null
+	if default_target != null:
+		ability = actor.choose_ability(default_target)
+	if ability == null:
+		ability = actor.basic_attack
+	if ability == null:
+		_complete_active_turn()
+		return
+	var targets := resolve_targets_for_ability(ability, actor, default_target)
+	if targets.is_empty():
+		_complete_active_turn()
 		return
 	combatant_attacking.emit(actor)
-	var ability := actor.choose_ability(target)
-	var output := ability.use(actor, target, effect_events)
+	var output := ability.use_on_targets(actor, targets, effect_events)
+	if output.is_empty():
+		_complete_active_turn()
+		return
 	battle_log_updated.emit(output)
-	combatant_hurt.emit(target)
+	for t: Combatant in targets:
+		if ability.is_hostile() or ability.attack != null:
+			combatant_hurt.emit(t)
+		_emit_combatant_updated(t)
 	_emit_combatant_updated(actor)
-	_emit_combatant_updated(target)
 	_emit_newly_defeated_combatants()
 	_complete_active_turn()
 
@@ -223,21 +239,25 @@ func get_hero_abilities() -> Array[Ability]:
 	var actor := active_combatant as Hero
 	return actor.inventory.equipped_weapon.abilities if actor != null else []
 
-func player_ability_selected(ability: Ability) -> void:
+func player_ability_selected(ability: Ability, target: Combatant = null) -> void:
 	if state != BattleState.PLAYER_TURN:
 		return
 	var actor := active_combatant as Hero
-	var target := _get_first_living_enemy()
-	if actor == null or target == null:
+	if actor == null:
+		return
+	var targets := resolve_targets_for_ability(ability, actor, target)
+	if targets.is_empty():
 		return
 	combatant_attacking.emit(actor)
-	var output := ability.use(actor, target, effect_events)
+	var output := ability.use_on_targets(actor, targets, effect_events)
 	if output.is_empty():
 		return
 	battle_log_updated.emit(output)
-	combatant_hurt.emit(target)
+	for t: Combatant in targets:
+		if ability.is_hostile() or ability.attack != null:
+			combatant_hurt.emit(t)
+		_emit_combatant_updated(t)
 	_emit_combatant_updated(actor)
-	_emit_combatant_updated(target)
 	_emit_newly_defeated_combatants()
 	_complete_active_turn()
 
@@ -333,6 +353,71 @@ func _grant_victory_rewards() -> Array[RewardEntry]:
 
 func _is_player_combatant(combatant: Combatant) -> bool:
 	return player_party.has_member(combatant)
+
+func get_friendly_party(combatant: Combatant) -> BattleParty:
+	if combatant != null and _is_player_combatant(combatant):
+		return player_party
+	return enemy_party
+
+func get_opposing_party(combatant: Combatant) -> BattleParty:
+	if combatant != null and _is_player_combatant(combatant):
+		return enemy_party
+	return player_party
+
+func get_valid_targets(ability: Ability, actor: Combatant = null) -> Array[Combatant]:
+	var caster := actor if actor != null else active_combatant
+	if caster == null or not caster.is_alive() or ability == null:
+		return []
+	var friendly := get_friendly_party(caster)
+	var opposing := get_opposing_party(caster)
+	return ability.get_valid_targets(caster, friendly, opposing)
+
+func is_valid_target(ability: Ability, target: Combatant, actor: Combatant = null) -> bool:
+	var caster := actor if actor != null else active_combatant
+	if caster == null or not caster.is_alive() or ability == null:
+		return false
+	var friendly := get_friendly_party(caster)
+	var opposing := get_opposing_party(caster)
+	return ability.is_valid_target(caster, target, friendly, opposing)
+
+func resolve_targets_for_ability(
+	ability: Ability,
+	actor: Combatant,
+	selected_target: Combatant = null
+) -> Array[Combatant]:
+	var result: Array[Combatant] = []
+	if actor == null or not actor.is_alive() or ability == null:
+		return result
+	var friendly := get_friendly_party(actor)
+	var opposing := get_opposing_party(actor)
+	match ability.target_type:
+		Ability.TargetType.SELF:
+			result.append(actor)
+			return result
+		Ability.TargetType.ALLY:
+			if selected_target != null and is_valid_target(ability, selected_target, actor):
+				result.append(selected_target)
+				return result
+			result.append(actor)
+			return result
+		Ability.TargetType.PARTY:
+			if friendly != null:
+				return friendly.get_alive_members()
+			result.append(actor)
+			return result
+		Ability.TargetType.ENEMY:
+			if selected_target != null and is_valid_target(ability, selected_target, actor):
+				result.append(selected_target)
+				return result
+			var living := opposing.get_alive_members() if opposing != null else result
+			if not living.is_empty():
+				result.append(living[0])
+			return result
+		Ability.TargetType.ENEMY_PARTY:
+			if opposing != null:
+				return opposing.get_alive_members()
+			return result
+	return result
 
 func _get_active_hero() -> Hero:
 	if active_combatant is Hero:
