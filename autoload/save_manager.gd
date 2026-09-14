@@ -3,6 +3,7 @@ extends Node
 const SAVE_DIR := "user://saves"
 const QUEST_SAVE_MIGRATOR := preload("res://scripts/save/quest_save_migrator.gd")
 const DIALOGUE_SAVE_MIGRATOR := preload("res://scripts/save/dialogue_save_migrator.gd")
+const PARTY_SAVE_MIGRATOR := preload("res://scripts/save/party_save_migrator.gd")
 const NPC_ROSTER: NpcRoster = preload("res://resources/characters/npcs/npc_roster.tres")
 
 const LEGACY_EFFECT_SPECS: Dictionary = {
@@ -60,7 +61,7 @@ func save_party() -> void:
 		push_error("SaveManager: cannot save without a Party.")
 		return
 	_save_json(save_slot, "party.json", {
-		"schema_version": 1,
+		"schema_version": PARTY_SAVE_MIGRATOR.CURRENT_SCHEMA_VERSION,
 		"data": _get_party_data(party)
 	})
 
@@ -103,7 +104,7 @@ func load_game(slot: int = 1) -> void:
 
 	var party_path := _file(slot, "party.json")
 	if FileAccess.file_exists(party_path):
-		var party_json := _load_json(slot, "party.json")
+		var party_json := PARTY_SAVE_MIGRATOR.migrate(_load_json(slot, "party.json"))
 		GameState.party = _load_party(party_json.get("data", {}))
 	else:
 		var hero_json := _load_json(slot, "hero.json")
@@ -197,6 +198,7 @@ func _load_json(slot: int, filename: String) -> Dictionary:
 func _get_hero_data(hero: Hero) -> Dictionary:
 	return {
 		# Hero
+		"hero_id": String(hero.hero_id),
 		"hero_class": hero.hero_class,
 		"level": hero.level,
 		"experience": hero.experience,
@@ -212,6 +214,7 @@ func _get_hero_data(hero: Hero) -> Dictionary:
 func _load_hero(data: Dictionary) -> Hero:
 	var hero := Hero.new()
 	# Hero
+	hero.hero_id = StringName(str(data.get("hero_id", "")))
 	hero.hero_class = data.get("hero_class", Hero.HeroClass.KNIGHT)
 	hero.level = data.get("level", 1)
 	hero.experience = data.get("experience", 0)
@@ -233,6 +236,7 @@ func _get_party_data(party: Party) -> Dictionary:
 		members.append(_get_hero_data(member))
 	return {
 		"members": members,
+		"active_member_ids": party.active_member_ids.map(func(hero_id: StringName) -> String: return String(hero_id)),
 		"inventory": _get_inventory_data(party.inventory),
 	}
 
@@ -241,6 +245,8 @@ func _load_party(data: Dictionary) -> Party:
 	party.inventory = _load_inventory(data.get("inventory", {}))
 	for member_data: Dictionary in data.get("members", []):
 		party.add_member(_load_hero(member_data))
+	if data.has("active_member_ids"):
+		party.set_active_member_ids(data.get("active_member_ids", []))
 	return party
 
 func _load_legacy_party(data: Dictionary) -> Party:

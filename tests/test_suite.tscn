@@ -32,10 +32,6 @@ script = ExtResource("4_suite")
 
 [node name="Combatants" type="Node" parent="." unique_id=765432101]
 
-[node name="Characters" type="Node" parent="."]
-
-[node name="PartyTests" parent="Characters" instance=ExtResource("26_party")]
-
 [node name="CombatantStatsTests" parent="Combatants" unique_id=765432102 instance=ExtResource("22_combatants")]
 
 [node name="BattlePartyTests" parent="Combatants" unique_id=1263386570 instance=ExtResource("23_battle_party")]
@@ -43,6 +39,10 @@ script = ExtResource("4_suite")
 [node name="BattleTurnOrderTests" parent="Combatants" unique_id=169667284 instance=ExtResource("24_turn_order")]
 
 [node name="AbilityTargetingTests" parent="Combatants" unique_id=1221925205 instance=ExtResource("25_ability_targeting")]
+
+[node name="Characters" type="Node" parent="." unique_id=881476188]
+
+[node name="PartyTests" parent="Characters" unique_id=1696980244 instance=ExtResource("26_party")]
 
 [node name="Effects" type="Node" parent="." unique_id=1607208508]
 

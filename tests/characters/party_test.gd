@@ -1,6 +1,7 @@
 extends TestCase
 
 const TEST_SAVE_SLOT := 999997
+const PARTY_SAVE_MIGRATOR := preload("res://scripts/save/party_save_migrator.gd")
 
 
 func run_tests() -> int:
@@ -9,6 +10,9 @@ func run_tests() -> int:
 	_test_equip_transfers_weapon_from_shared_inventory()
 	_test_swap_returns_previous_weapon()
 	_test_equipped_weapon_cannot_be_granted_twice()
+	_test_roster_and_active_party_limits()
+	_test_active_party_membership()
+	_test_party_save_migration()
 	_test_party_builds_battle_party_from_same_heroes()
 	_test_invalid_equipment_operations_do_not_mutate_state()
 	_test_save_data_round_trip_preserves_shared_and_equipped_items()
@@ -59,6 +63,78 @@ func _test_equipped_weapon_cannot_be_granted_twice() -> void:
 	_expect_equal(party.inventory.gold, weapon.value, "duplicate reward converts to gold")
 
 
+func _test_roster_and_active_party_limits() -> void:
+	var party := Party.new()
+	for index: int in 5:
+		var hero := HeroLoader.new_hero(Hero.HeroClass.KNIGHT)
+		_expect_true(party.add_member(hero), "Party accepts recruited roster member %d" % index)
+
+	_expect_equal(party.members.size(), 5, "roster is not limited to active party size")
+	_expect_equal(
+		party.get_active_members().size(),
+		Party.MAX_ACTIVE_MEMBERS,
+		"active party is limited to four members"
+	)
+
+
+func _test_active_party_membership() -> void:
+	var party := Party.new()
+	var first := HeroLoader.new_hero(Hero.HeroClass.KNIGHT)
+	var second := HeroLoader.new_hero(Hero.HeroClass.ASSASSIN)
+	party.add_member(first)
+	party.add_member(second)
+	party.remove_from_active_party(second)
+
+	_expect_true(party.add_to_active_party(second), "recruited member can rejoin active party")
+	_expect_false(party.add_to_active_party(HeroLoader.new_hero(Hero.HeroClass.PRINCESS)),
+		"unrecruited member cannot join active party")
+	_expect_equal(party.get_active_members()[1], second, "active party preserves member identity")
+
+
+func _test_party_save_migration() -> void:
+	var legacy := PARTY_SAVE_MIGRATOR.migrate({
+		"schema_version": 1,
+		"data": {
+			"members": [
+				{"hero_name": "Knight"},
+				{"hero_name": "Assassin"},
+			],
+		},
+	}, false)
+	var legacy_data: Dictionary = legacy["data"]
+	_expect_equal(
+		legacy["schema_version"],
+		PARTY_SAVE_MIGRATOR.CURRENT_SCHEMA_VERSION,
+		"legacy Party saves migrate to the current schema"
+	)
+	_expect_equal(
+		legacy_data["active_member_ids"],
+		["hero_0", "hero_1"],
+		"legacy Party saves activate the first members"
+	)
+	_expect_equal(
+		(legacy_data["members"][0] as Dictionary)["hero_id"],
+		"hero_0",
+		"legacy members receive stable IDs"
+	)
+
+	var invalid := PARTY_SAVE_MIGRATOR.migrate({
+		"schema_version": PARTY_SAVE_MIGRATOR.CURRENT_SCHEMA_VERSION,
+		"data": {
+			"members": [
+				{"hero_id": "knight"},
+				{"hero_id": "assassin"},
+			],
+			"active_member_ids": ["missing", "knight", "knight", "assassin"],
+		},
+	}, false)
+	_expect_equal(
+		invalid["data"]["active_member_ids"],
+		["knight", "assassin"],
+		"invalid and duplicate active IDs are removed"
+	)
+
+
 func _test_party_builds_battle_party_from_same_heroes() -> void:
 	var party := _new_party()
 	var second_hero := HeroLoader.new_hero(Hero.HeroClass.ASSASSIN)
@@ -104,6 +180,8 @@ func _test_save_data_round_trip_preserves_shared_and_equipped_items() -> void:
 	var restored := SaveManager._load_party(SaveManager._get_party_data(party))
 
 	_expect_equal(restored.members.size(), 2, "Party members survive serialization")
+	_expect_equal(restored.active_member_ids, party.active_member_ids,
+		"active formation survives serialization")
 	_expect_equal(restored.inventory.gold, 123, "shared gold survives serialization")
 	_expect_equal(
 		restored.inventory.get_potion_count("lesser_healing_potion"),
@@ -146,6 +224,8 @@ func _test_full_save_load_round_trip() -> void:
 	var restored := GameState.party
 	_expect_not_null(restored, "full save/load restores the Party")
 	_expect_equal(restored.members.size(), 2, "full save/load restores all Party members")
+	_expect_equal(restored.active_member_ids, party.active_member_ids,
+		"full save/load restores active formation")
 	_expect_equal(restored.inventory.gold, 321, "full save/load restores shared gold")
 	_expect_equal(
 		restored.inventory.get_potion_count("lesser_healing_potion"),

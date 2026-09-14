@@ -10,6 +10,7 @@ enum HeroClass {
 const LEVEL_UP_MULT := 25
 
 @export var hero_class: HeroClass
+@export var hero_id: StringName
 @export var level := 1
 @export var experience := 0
 @export var skill_points := 0
