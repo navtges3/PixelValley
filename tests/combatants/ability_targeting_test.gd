@@ -388,7 +388,7 @@ func _make_hero(hero_name: String, hp: int, energy: int) -> Hero:
 	hero.resist = 0
 	hero.initiative = 10
 	hero.inventory = Inventory.new()
-	hero.inventory.equipped_weapon = Weapon.new()
+	hero.equipped_weapon = Weapon.new()
 	return hero
 
 

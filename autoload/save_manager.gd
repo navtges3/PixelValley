@@ -44,7 +44,7 @@ func new_save(slot: int = 1) -> void:
 	save_game()
 
 func save_game() -> void:
-	save_hero()
+	save_party()
 	save_village()
 	save_quests()
 	save_dialogue_state()
@@ -52,8 +52,16 @@ func save_game() -> void:
 	save_meta()
 
 func save_hero() -> void:
-	_save_json(save_slot, "hero.json", {
-		"data": _get_hero_data(GameState.hero)
+	save_party()
+
+func save_party() -> void:
+	var party := GameState.get_party()
+	if party == null:
+		push_error("SaveManager: cannot save without a Party.")
+		return
+	_save_json(save_slot, "party.json", {
+		"schema_version": 1,
+		"data": _get_party_data(party)
 	})
 
 func save_village() -> void:
@@ -93,8 +101,14 @@ func load_game(slot: int = 1) -> void:
 		return
 	save_slot = slot
 
-	var hero_json := _load_json(slot, "hero.json")
-	GameState.hero = _load_hero(hero_json.get("data", {}))
+	var party_path := _file(slot, "party.json")
+	if FileAccess.file_exists(party_path):
+		var party_json := _load_json(slot, "party.json")
+		GameState.party = _load_party(party_json.get("data", {}))
+	else:
+		var hero_json := _load_json(slot, "hero.json")
+		GameState.party = _load_legacy_party(hero_json.get("data", {}))
+	GameState.hero = GameState.party.members[0] if not GameState.party.members.is_empty() else null
 
 	var village_json := _load_json(slot, "village.json")
 	GameState.village = _load_village(village_json.get("data", {}))
@@ -136,7 +150,7 @@ func delete_slot(slot: int = 1) -> void:
 	if not DirAccess.dir_exists_absolute(dir):
 		push_warning("SaveManager: No save data to delete for slot %d" % slot)
 		return
-	var files := ["hero.json", "village.json", "quests.json", "dialogue.json",
+	var files := ["party.json", "hero.json", "village.json", "quests.json", "dialogue.json",
 		"zone_state.json", "world_state.json", "meta.json"]
 	for filename in files:
 		var path := dir.path_join(filename)
@@ -189,7 +203,8 @@ func _get_hero_data(hero: Hero) -> Dictionary:
 		"skill_points": hero.skill_points,
 		"rest_cooldown": hero.rest_cooldown,
 		"hero_name": hero.name,
-		"inventory": _get_inventory_data(hero.inventory),
+		"equipped_weapon": ItemLoader.get_item_id(hero.equipped_weapon),
+		"equipped_weapon_cooldowns": _get_ability_cooldowns(hero.equipped_weapon),
 		"active_effects": _get_active_effects_data(hero),
 		"stats": _get_stat_block_data(hero),
 	}
@@ -205,9 +220,40 @@ func _load_hero(data: Dictionary) -> Hero:
 	hero.name = data.get("hero_name", "Unnamed Hero")
 	_load_stat_block(data.get("stats", {}), hero)
 	_load_active_effects(data.get("active_effects", []), hero)
-	hero.inventory = _load_inventory(data.get("inventory", {}))
+	hero.equipped_weapon = _load_equipped_weapon(
+		str(data.get("equipped_weapon", "")),
+		data.get("equipped_weapon_cooldowns", [])
+	)
 	HeroLoader.apply_visual(hero)
 	return hero
+
+func _get_party_data(party: Party) -> Dictionary:
+	var members: Array[Dictionary] = []
+	for member: Hero in party.members:
+		members.append(_get_hero_data(member))
+	return {
+		"members": members,
+		"inventory": _get_inventory_data(party.inventory),
+	}
+
+func _load_party(data: Dictionary) -> Party:
+	var party := Party.new()
+	party.inventory = _load_inventory(data.get("inventory", {}))
+	for member_data: Dictionary in data.get("members", []):
+		party.add_member(_load_hero(member_data))
+	return party
+
+func _load_legacy_party(data: Dictionary) -> Party:
+	var party := Party.new()
+	var legacy_inventory: Dictionary = data.get("inventory", {})
+	var hero := _load_hero(data)
+	hero.equipped_weapon = _load_equipped_weapon(
+		str(legacy_inventory.get("equipped_weapon", "")),
+		legacy_inventory.get("equipped_weapon_cooldowns", [])
+	)
+	party.inventory = _load_inventory(legacy_inventory)
+	party.add_member(hero)
+	return party
 
 # ---------------------------------------------------------
 # ACTIVE EFFECTS
@@ -319,8 +365,6 @@ func _load_stat_block(data: Dictionary, combatant: Combatant) -> void:
 func _get_inventory_data(inventory: Inventory) -> Dictionary:
 	return {
 		"gold": inventory.gold,
-		"equipped_weapon": ItemLoader.get_item_id(inventory.equipped_weapon),
-		"equipped_weapon_cooldowns": _get_ability_cooldowns(inventory.equipped_weapon),
 		"weapon_stash": inventory.weapon_stash.duplicate(),
 		"potions": inventory.potions.duplicate(),
 		"quest_items": inventory.quest_items.duplicate(),
@@ -329,13 +373,6 @@ func _get_inventory_data(inventory: Inventory) -> Dictionary:
 func _load_inventory(data: Dictionary) -> Inventory:
 	var inv := Inventory.new()
 	inv.gold = data.get("gold", 0)
-
-	var weapon_id: String = data.get("equipped_weapon", "")
-	if weapon_id != "":
-		var weapon = ItemLoader.get_item(weapon_id)
-		if weapon is Weapon:
-			inv.equipped_weapon = weapon.duplicate(true)
-			_load_ability_cooldowns(inv.equipped_weapon, data.get("equipped_weapon_cooldowns", []))
 
 	for wid in data.get("weapon_stash", []):
 		var resolved := _resolve_item_id(wid)
@@ -362,6 +399,15 @@ func _load_inventory(data: Dictionary) -> Inventory:
 			push_warning("SaveManager: unknown quest item '%s', skipping" % item_id)
 
 	return inv
+
+func _load_equipped_weapon(weapon_id: String, cooldowns: Array) -> Weapon:
+	var resolved := _resolve_item_id(weapon_id)
+	var weapon := ItemLoader.get_item(resolved) as Weapon
+	if weapon == null:
+		return null
+	var equipped := weapon.duplicate(true) as Weapon
+	_load_ability_cooldowns(equipped, cooldowns)
+	return equipped
 
 func _get_ability_cooldowns(weapon: Weapon) -> Array[int]:
 	var cooldowns: Array[int] = []

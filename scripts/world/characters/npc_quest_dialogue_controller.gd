@@ -218,7 +218,8 @@ func _has_reached_main_quest(quest_id: int) -> bool:
 	)
 
 func _has_delivery_items(npc_id: StringName) -> bool:
-	if GameState.hero == null or GameState.hero.inventory == null:
+	var party := GameState.get_party()
+	if party == null:
 		return false
 	for quest: Quest in _get_sorted_active_quests():
 		for objective: QuestObjective in quest.objectives:
@@ -228,12 +229,13 @@ func _has_delivery_items(npc_id: StringName) -> bool:
 			if delivery.target_npc_id != npc_id:
 				continue
 			var remaining := delivery.target_amount - delivery.current_amount
-			if GameState.hero.inventory.get_item_count(delivery.item_id) >= remaining:
+			if party.inventory.get_item_count(delivery.item_id) >= remaining:
 				return true
 	return false
 
 func _deliver_items(npc_id: StringName) -> bool:
-	if GameState.hero == null or GameState.hero.inventory == null:
+	var party := GameState.get_party()
+	if party == null:
 		return false
 	for quest: Quest in _get_sorted_active_quests():
 		for objective: QuestObjective in quest.objectives:
@@ -243,7 +245,7 @@ func _deliver_items(npc_id: StringName) -> bool:
 			if delivery.target_npc_id != npc_id:
 				continue
 			var remaining := delivery.target_amount - delivery.current_amount
-			if not GameState.hero.inventory.remove_items(delivery.item_id, remaining):
+			if not party.inventory.remove_items(delivery.item_id, remaining):
 				return false
 			GameState.gameplay_event.emit(
 				ItemDeliveredEvent.new(npc_id, delivery.item_id, remaining)

@@ -38,15 +38,24 @@ func _ready() -> void:
 func is_claimed() -> bool:
 	return WorldManager.is_loot_claimed(location_id, loot_source_id)
 
-func try_claim(recipient: Hero) -> ClaimResult:
+func try_claim(recipient: Hero, party: Party = GameState.party) -> ClaimResult:
 	var empty_rewards: Array[RewardEntry] = []
+	if recipient != null and (party == null or not party.has_member(recipient)):
+		if GameState.party != null and GameState.party.has_member(recipient):
+			party = GameState.party
+		else:
+			party = Party.new()
+			party.inventory = (
+				recipient.inventory if recipient.inventory != null else Inventory.new()
+			)
+			party.add_member(recipient)
 	if _claim_in_progress:
 		return ClaimResult.IN_PROGRESS
 	if not get_validation_errors().is_empty():
 		interact_area.set_enabled(false)
 		claim_finished.emit(ClaimResult.INVALID_CONFIGURATION, empty_rewards)
 		return ClaimResult.INVALID_CONFIGURATION
-	if recipient == null:
+	if recipient == null or party == null:
 		claim_finished.emit(ClaimResult.NO_RECIPIENT, empty_rewards)
 		return ClaimResult.NO_RECIPIENT
 	if is_claimed():
@@ -55,7 +64,7 @@ func try_claim(recipient: Hero) -> ClaimResult:
 		return ClaimResult.ALREADY_CLAIMED
 	_claim_in_progress = true
 	var loot: Dictionary = loot_table.roll()
-	var rewards := RewardService.grant_loot(loot, recipient)
+	var rewards := RewardService.grant_loot(loot, party, recipient.hero_class)
 	WorldManager.mark_loot_claimed(location_id, loot_source_id)
 	interact_area.set_enabled(false)
 	_autosave_after_claim()

@@ -5,6 +5,7 @@ enum BattleState { PLAYER_TURN, MONSTER_TURN, RESOLVING, VICTORY, DEFEAT }
 
 var player_party := BattleParty.new()
 var enemy_party := BattleParty.new()
+var persistent_party: Party
 
 var active_combatant: Combatant
 var _turn_order: Array[Combatant] = []
@@ -54,12 +55,22 @@ func _on_effect_lifecycle_event(event: EffectLifecycleEvent) -> void:
 	effect_lifecycle_changed.emit(event)
 
 func setup_battle(config: Dictionary) -> void:
+	persistent_party = config.get("persistent_party") as Party
 	spawn_point_id = config.get("spawn_point_id", "")
 	location_id = config.get("location_id", "")
 	flee_position = config.get("flee_position", Vector2.ZERO)
 	var configured_players := config.get("player_party") as BattleParty
 	var configured_enemies := config.get("enemy_party") as BattleParty
 	player_party = configured_players if configured_players != null else BattleParty.new()
+	if persistent_party != null:
+		var persistent_battle_party := persistent_party.create_battle_party()
+		if configured_players != null:
+			for combatant: Combatant in configured_players.get_members():
+				if combatant is Hero and not persistent_party.has_member(combatant as Hero):
+					push_warning(
+						"BattleManager: ignoring a player Hero that is not in the persistent Party."
+					)
+		player_party = persistent_battle_party
 	enemy_party = configured_enemies if configured_enemies != null else BattleParty.new()
 	_defeated_combatants.clear()
 	if player_party.get_members().is_empty():
@@ -201,7 +212,10 @@ func _emit_combatant_updated(combatant: Combatant) -> void:
 func _emit_newly_defeated_combatants() -> void:
 	for combatant: Combatant in player_party.get_members():
 		_emit_combatant_defeated_if_needed(combatant)
-	for combatant: Combatant in enemy_party.get_members():
+	var enemies := enemy_party.get_members()
+	if enemies.is_empty() and monster != null:
+		enemies.append(monster)
+	for combatant: Combatant in enemies:
 		_emit_combatant_defeated_if_needed(combatant)
 
 func _emit_combatant_defeated_if_needed(combatant: Combatant) -> void:
@@ -227,7 +241,10 @@ func _on_enemy_party_defeated() -> void:
 	]:
 		return
 	state = BattleState.RESOLVING
-	for combatant: Combatant in enemy_party.get_members():
+	var enemies := enemy_party.get_members()
+	if enemies.is_empty() and monster != null:
+		enemies.append(monster)
+	for combatant: Combatant in enemies:
 		var enemy := combatant as Monster
 		if enemy != null:
 			GameState.gameplay_event.emit(
@@ -237,7 +254,7 @@ func _on_enemy_party_defeated() -> void:
 
 func get_hero_abilities() -> Array[Ability]:
 	var actor := active_combatant as Hero
-	return actor.inventory.equipped_weapon.abilities if actor != null else []
+	return actor.equipped_weapon.abilities if actor != null and actor.equipped_weapon != null else []
 
 func player_ability_selected(ability: Ability, target: Combatant = null) -> void:
 	if state != BattleState.PLAYER_TURN:
@@ -265,16 +282,15 @@ func get_hero_items() -> Dictionary:
 	return get_active_hero_items()
 
 func get_active_hero_items() -> Dictionary:
-	var actor := active_combatant as Hero
-	return actor.inventory.potions if actor != null else {}
+	return persistent_party.inventory.potions if persistent_party != null else {}
 
 func player_item_selected(item_id: String) -> void:
 	if state != BattleState.PLAYER_TURN:
 		return
 	var actor := active_combatant as Hero
-	if actor == null:
+	if actor == null or persistent_party == null:
 		return
-	var result := actor.use_item(item_id, effect_events)
+	var result := actor.use_item(item_id, effect_events, persistent_party.inventory)
 	battle_log_updated.emit(result)
 	_emit_combatant_updated(actor)
 	_complete_active_turn()
@@ -336,7 +352,15 @@ func _grant_victory_rewards() -> Array[RewardEntry]:
 	var recipient := _get_reward_recipient()
 	if recipient == null:
 		return entries
-	for combatant: Combatant in enemy_party.get_members():
+	var reward_party := persistent_party
+	if reward_party == null:
+		reward_party = Party.new()
+		reward_party.inventory = recipient.inventory if recipient.inventory != null else Inventory.new()
+		reward_party.add_member(recipient)
+	var enemies := enemy_party.get_members()
+	if enemies.is_empty() and monster != null:
+		enemies.append(monster)
+	for combatant: Combatant in enemies:
 		var enemy := combatant as Monster
 		if enemy == null:
 			continue
@@ -345,10 +369,11 @@ func _grant_victory_rewards() -> Array[RewardEntry]:
 		if experience != null:
 			entries.append(experience)
 		var gold := RewardService.grant_gold(
-			recipient, enemy.calculate_gold())
+			reward_party, enemy.calculate_gold())
 		if gold != null:
 			entries.append(gold)
-		entries.append_array(RewardService.grant_loot(enemy.roll_loot(), recipient))
+		entries.append_array(RewardService.grant_loot(
+			enemy.roll_loot(), reward_party, recipient.hero_class))
 	return entries
 
 func _is_player_combatant(combatant: Combatant) -> bool:
@@ -442,7 +467,7 @@ func _get_reward_recipient() -> Hero:
 	for member: Combatant in players:
 		if member is Hero:
 			return member as Hero
-	return null
+	return hero
 
 class TurnOrderEntry:
 	var combatant: Combatant

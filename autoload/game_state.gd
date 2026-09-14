@@ -1,7 +1,9 @@
 extends Node
 
 const SAVE_DIR := "user://saves"
+const STARTING_GOLD := 50
 
+var party: Party = null
 var hero: Hero = null
 var village: Village = null
 var quest_manager: QuestManager = null
@@ -22,7 +24,7 @@ func _ready() -> void:
 
 func start_new_game(slot: int = 1) -> void:
 	dialogue_state.clear()
-	_setup_hero_inv()
+	_setup_party()
 	_setup_village()
 	var new_manager := QuestManager.new()
 	new_manager.new_game()
@@ -34,6 +36,7 @@ func start_new_game(slot: int = 1) -> void:
 func reset_state() -> void:
 	dialogue_state.clear()
 	set_quest_manager(null)
+	party = null
 	hero = null
 	village = null
 	pre_combat_position = Vector2.ZERO
@@ -45,6 +48,13 @@ func reset_state() -> void:
 func set_player_location(scene: ScreenManager.ScreenName, entrance_id: String = "") -> void:
 	player_location["scene"] = scene
 	player_location["entrance_id"] = entrance_id
+
+func get_party() -> Party:
+	if party == null and hero != null:
+		party = Party.new()
+		party.inventory = hero.inventory if hero.inventory != null else Inventory.new()
+		party.add_member(hero)
+	return party
 
 func set_quest_manager(new_manager: QuestManager) -> void:
 	if quest_manager == new_manager:
@@ -85,9 +95,14 @@ func _setup_weapon_shop() -> void:
 		shop.add_item(weapon_id, 1)
 	village.weapon_shop = shop
 
-func _setup_hero_inv() -> void:
-	hero.inventory.potions.clear()
-	hero.inventory.add_potion("lesser_healing_potion", 3)
-	hero.inventory.add_potion("attack_potion", 3)
-	hero.inventory.add_potion("defense_potion", 3)
-	hero.inventory.add_potion("energy_potion", 3)
+func _setup_party() -> void:
+	if hero == null:
+		push_error("GameState: cannot start a game without a selected Hero.")
+		return
+	party = Party.new()
+	party.add_member(hero)
+	party.inventory.gold = STARTING_GOLD
+	party.inventory.add_potion("lesser_healing_potion", 3)
+	party.inventory.add_potion("attack_potion", 3)
+	party.inventory.add_potion("defense_potion", 3)
+	party.inventory.add_potion("energy_potion", 3)

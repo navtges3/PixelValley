@@ -136,7 +136,7 @@ func _refresh_stats() -> void:
 		_up_buttons[stat].disabled = no_points
 		_down_buttons[stat].disabled = _temp_allocations[stat] <= 0
 	
-	gold_label.text = "Gold: %d" % hero.inventory.gold
+	gold_label.text = "Gold: %d" % GameState.party.inventory.gold
 	gold_label.add_theme_color_override("font_color", COLOR_GOLD)
 	
 	var has_pending := _temp_allocations.values().any(func(v): return v > 0)

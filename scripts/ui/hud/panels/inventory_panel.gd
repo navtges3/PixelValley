@@ -27,12 +27,12 @@ func get_default_focus_target() -> Control:
 	return null
 
 func refresh() -> void:
-	if GameState.hero == null:
+	if GameState.hero == null or GameState.party == null:
 		return
 	var hero := GameState.hero
-	_refresh_potions(hero)
-	_refresh_quest_items(hero)
-	_refresh_weapons(hero)
+	_refresh_potions(GameState.party.inventory)
+	_refresh_quest_items(GameState.party.inventory)
+	_refresh_weapons(hero, GameState.party.inventory)
 
 func _make_equip_button(weapon_id: String) -> Button:
 	var button := Button.new()
@@ -54,7 +54,7 @@ func _make_label(txt: String, color: Color, font_size: int = 12) -> Label:
 
 func _on_equip_pressed(weapon_id: String) -> void:
 	_last_focused_weapon_id = weapon_id
-	GameState.hero.inventory.equip_weapon(weapon_id)
+	GameState.party.equip_weapon(GameState.hero, weapon_id)
 	weapon_equipped.emit(weapon_id)
 	refresh()
 	_restore_default_focus.call_deferred()
@@ -68,14 +68,14 @@ func _rarity_color(rarity: Item.Rarity) -> Color:
 		Item.Rarity.LEGENDARY: return COLOR_LEGENDARY
 		_:                     return COLOR_COMMON
 
-func _refresh_potions(hero: Hero) -> void:
+func _refresh_potions(inventory: Inventory) -> void:
 	for child in potions_list.get_children():
 		child.queue_free()
-	if hero.inventory.potions.is_empty():
+	if inventory.potions.is_empty():
 		potions_list.add_child(_make_label("No potions", COLOR_SUBTEXT))
 		return
-	for item_id in hero.inventory.potions:
-		var count: int = hero.inventory.potions[item_id]
+	for item_id in inventory.potions:
+		var count: int = inventory.potions[item_id]
 		var item := ItemLoader.get_item(item_id) as Potion
 		if item == null:
 			continue
@@ -90,14 +90,14 @@ func _refresh_potions(hero: Hero) -> void:
 			name_lbl.tooltip_text = "\n".join(tip_parts)
 		potions_list.add_child(row)
 
-func _refresh_quest_items(hero: Hero) -> void:
+func _refresh_quest_items(inventory: Inventory) -> void:
 	for child in quest_items_list.get_children():
 		child.queue_free()
-	if hero.inventory.quest_items.is_empty():
+	if inventory.quest_items.is_empty():
 		quest_items_list.add_child(_make_label("No quest items", COLOR_SUBTEXT))
 		return
-	for item_id: String in hero.inventory.quest_items:
-		var count := hero.inventory.get_quest_item_count(item_id)
+	for item_id: String in inventory.quest_items:
+		var count := inventory.get_quest_item_count(item_id)
 		var item := ItemLoader.get_item(item_id) as QuestItem
 		if item == null:
 			continue
@@ -108,11 +108,11 @@ func _refresh_quest_items(hero: Hero) -> void:
 		label.tooltip_text = item.description
 		quest_items_list.add_child(label)
 
-func _refresh_weapons(hero: Hero) -> void:
+func _refresh_weapons(hero: Hero, inventory: Inventory) -> void:
 	_equip_buttons.clear()
 	for child in weapons_list.get_children():
 		child.queue_free()
-	var equipped := hero.inventory.equipped_weapon
+	var equipped := hero.equipped_weapon
 	if equipped:
 		equipped_label.text = "Equipped: %s" % equipped.name
 		equipped_label.add_theme_color_override("font_color", COLOR_EQUIPPED)
@@ -120,10 +120,10 @@ func _refresh_weapons(hero: Hero) -> void:
 	else:
 		equipped_label.text = "Equipped: None"
 		equipped_label.add_theme_color_override("font_color", COLOR_SUBTEXT)
-	if hero.inventory.weapon_stash.is_empty():
+	if inventory.weapon_stash.is_empty():
 		weapons_list.add_child(_make_label("No weapons in stash", COLOR_SUBTEXT))
 		return
-	for weapon_id in hero.inventory.weapon_stash:
+	for weapon_id in inventory.weapon_stash:
 		var weapon := ItemLoader.get_item(weapon_id) as Weapon
 		if weapon == null:
 			continue

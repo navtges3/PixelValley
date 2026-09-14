@@ -44,7 +44,7 @@ func setup_shop(type: ShopType) -> void:
 	shop_type = type
 	shop = _get_shop()
 	hero = GameState.hero
-	shop_manager.start_shop(hero, shop)
+	shop_manager.start_shop(hero, GameState.party, shop)
 	shop_name_label.text = shop.name
 	quantity_label.visible = shop_type == ShopType.POTION
 	quantity_slider.visible = shop_type == ShopType.POTION
@@ -225,25 +225,27 @@ func _on_shop_manager_hero_updated(hero_ref: Hero) -> void:
 			_refresh_weapon_inventory(hero_ref)
 
 func _refresh_potion_inventory(hero_ref: Hero) -> void:
-	var text := "Hero Inventory:"
-	if hero_ref.inventory.potions.is_empty():
+	var text := "Party Inventory:"
+	var inventory := GameState.party.inventory
+	if inventory.potions.is_empty():
 		text += "\n None"
 	else:
-		for item_id in hero_ref.inventory.potions:
-			var count: int = hero_ref.inventory.potions[item_id]
+		for item_id in inventory.potions:
+			var count: int = inventory.potions[item_id]
 			var item := ItemLoader.get_item(item_id)
 			text += "\n - %s x%d" % [item.name if item else item_id, count]
 	inventory_label.text = text
 
 func _refresh_weapon_inventory(hero_ref: Hero) -> void:
 	var text := "Equipped: "
-	var equipped := hero_ref.inventory.equipped_weapon
+	var equipped := hero_ref.equipped_weapon
 	text += equipped.name if equipped else "None"
 	text += "\n\nOwned:"
-	if hero_ref.inventory.weapon_stash.is_empty():
+	var inventory := GameState.party.inventory
+	if inventory.weapon_stash.is_empty():
 		text += "\n  None"
 	else:
-		for weapon_id in hero_ref.inventory.weapon_stash:
+		for weapon_id in inventory.weapon_stash:
 			var item := ItemLoader.get_item(weapon_id)
 			text += "\n - %s" % (item.name if item else weapon_id)
 	inventory_label.text = text

@@ -29,8 +29,8 @@ func _update_preview() -> void:
 	if hero == null or not is_node_ready():
 		return
 	class_name_label.text = hero.get_class_name()
-	if hero.inventory != null and hero.inventory.equipped_weapon != null:
-		weapon_label.text = hero.inventory.equipped_weapon.name
+	if hero.equipped_weapon != null:
+		weapon_label.text = hero.equipped_weapon.name
 	else:
 		weapon_label.text = ""
 	

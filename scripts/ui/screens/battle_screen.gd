@@ -126,7 +126,7 @@ func _spawn_combatant_visual(
 		hero_info.hero = hero
 		hero_info.refresh()
 		visual.configure_vfx(hero.hero_class)
-		var weapon: Weapon = hero.inventory.equipped_weapon
+		var weapon: Weapon = hero.equipped_weapon
 		if weapon != null:
 			if weapon.sprite:
 				visual.equip_weapon(weapon.sprite, weapon.sprite_offset, weapon.tip_offset)
@@ -196,7 +196,7 @@ func _spawn_hero() -> void:
 	hero_visual.apply_visual(battle_config.hero)
 	_refresh_hero_effect_icons()
 	hero_visual.configure_vfx(battle_config.hero.hero_class)
-	var weapon: Weapon = battle_config.hero.inventory.equipped_weapon
+	var weapon: Weapon = battle_config.hero.equipped_weapon
 	if weapon and weapon.sprite:
 		hero_visual.equip_weapon(weapon.sprite, weapon.sprite_offset, weapon.tip_offset)
 	ability_button.text = weapon.name

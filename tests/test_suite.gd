@@ -8,6 +8,7 @@ extends Node
 ]
 
 @onready var _combatant_test_cases: Array[TestCase] = [
+	$Characters/PartyTests,
 	$Combatants/CombatantStatsTests,
 	$Combatants/BattlePartyTests,
 	$Combatants/BattleTurnOrderTests,

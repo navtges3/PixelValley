@@ -37,8 +37,15 @@ func _on_combat_initiated(enemy: Enemy) -> void:
 		retreat_dir = Vector2.DOWN
 	if player != null:
 		GameState.pre_combat_position = player.global_position
+		var battle_party := (
+			GameState.party.create_battle_party()
+			if GameState.party != null
+			else BattleParty.new()
+		)
 		ScreenManager.go_to_screen(ScreenManager.ScreenName.BATTLE, "", {
 			"hero": GameState.hero,
+			"player_party": battle_party,
+			"persistent_party": GameState.party,
 			"monster_id": enemy.monster_id,
 			"spawn_point_id": enemy.spawn_point_id,
 			"location_id": _get_location_id(),

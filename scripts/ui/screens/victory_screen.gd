@@ -16,7 +16,7 @@ func _ready() -> void:
 			hero.magic,
 			hero.defense,
 			hero.resist,
-			hero.inventory.gold,
+			GameState.party.inventory.gold,
 		]
 	InputManager.push_menu_focus_context(
 		self,

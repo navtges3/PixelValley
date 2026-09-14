@@ -31,7 +31,7 @@ func _process(_delta: float) -> void:
 	_refresh_if_dirty()
 
 func _refresh_if_dirty() -> void:
-	if GameState.hero == null:
+	if GameState.hero == null or GameState.party == null:
 		return
 	var hero := GameState.hero
 	
@@ -41,7 +41,7 @@ func _refresh_if_dirty() -> void:
 		hero.experience != _last_xp or 
 		hero.level != _last_level or 
 		hero.skill_points != _last_skill or 
-		hero.inventory.gold != _last_gold
+		GameState.party.inventory.gold != _last_gold
 	)
 	if not changed:
 		return
@@ -51,7 +51,7 @@ func _refresh_if_dirty() -> void:
 	_last_xp = hero.experience
 	_last_level = hero.level
 	_last_skill = hero.skill_points
-	_last_gold = hero.inventory.gold
+	_last_gold = GameState.party.inventory.gold
 	
 	_draw_data(hero)
 
@@ -71,7 +71,7 @@ func _draw_data(hero: Hero) -> void:
 	name_label.text = hero.name
 	level_label.text = "Lv %d" % hero.level
 	skill_label.text = "Skill Points: %d" % hero.skill_points
-	gold_label.text = "⬡ %d" % hero.inventory.gold
+	gold_label.text = "⬡ %d" % GameState.party.inventory.gold
 	level_label.add_theme_color_override("font_color", COLOR_LEVEL)
 	skill_label.add_theme_color_override("font_color", COLOR_LEVEL)
 	gold_label.add_theme_color_override("font_color", COLOR_GOLD)
