@@ -211,9 +211,11 @@ func _test_defeated_signal_emits_once_per_member() -> void:
 
 func _make_party_manager(player_count: int, enemy_count: int) -> BattleManager:
 	var manager := BattleManager.new()
+	manager.persistent_party = Party.new()
 	for index: int in player_count:
 		var hero := _make_hero("Hero %d" % index, 10 - index)
 		manager.player_party.add_member(hero)
+		manager.persistent_party.add_member(hero)
 	for index: int in enemy_count:
 		var monster := _make_monster("Monster %d" % index, 5 - index)
 		manager.enemy_party.add_member(monster)
@@ -241,7 +243,6 @@ func _make_hero(hero_name: String, initiative: int) -> Hero:
 	hero.defense = 0
 	hero.resist = 0
 	hero.initiative = initiative
-	hero.inventory = Inventory.new()
 	hero.equipped_weapon = Weapon.new()
 	return hero
 

@@ -39,8 +39,10 @@ func _update_text() -> void:
 	magic_label.text = "Mag: " + str(hero.magic)
 	defense_label.text = "Def: " + str(hero.defense)
 	resist_label.text = "Res: " + str(hero.resist)
-	var inventory := GameState.party.inventory if GameState.party != null else hero.inventory
-	gold_label.text = "Gold: " + str(inventory.gold)
+	if GameState.party == null:
+		gold_label.text = "Gold: --"
+		return
+	gold_label.text = "Gold: " + str(GameState.party.inventory.gold)
 
 func _update_health_bar() -> void:
 	var value: int = hero.current_hp

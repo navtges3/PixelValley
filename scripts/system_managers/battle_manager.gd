@@ -354,9 +354,11 @@ func _grant_victory_rewards() -> Array[RewardEntry]:
 		return entries
 	var reward_party := persistent_party
 	if reward_party == null:
-		reward_party = Party.new()
-		reward_party.inventory = recipient.inventory if recipient.inventory != null else Inventory.new()
-		reward_party.add_member(recipient)
+		push_error("BattleManager: cannot grant rewards without a persistent Party.")
+		return entries
+	if not reward_party.has_member(recipient):
+		push_error("BattleManager: reward recipient is not in the persistent Party.")
+		return entries
 	var enemies := enemy_party.get_members()
 	if enemies.is_empty() and monster != null:
 		enemies.append(monster)

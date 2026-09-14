@@ -200,6 +200,7 @@ func _test_world_reward_movement_state_restores() -> void:
 func _test_interaction_signal_grants_once() -> void:
 	WorldManager.reset()
 	var original_hero := GameState.hero
+	var original_party := GameState.party
 	var hero := _new_hero()
 	GameState.hero = hero
 	var source := _new_source("forest", "forest/interacted_pickup")
@@ -207,9 +208,9 @@ func _test_interaction_signal_grants_once() -> void:
 	source.interact_area.interacted.emit()
 	source.interact_area.interacted.emit()
 
-	_expect_equal(hero.inventory.gold, 10, "interaction grants authored gold once")
+	_expect_equal(GameState.party.inventory.gold, 10, "interaction grants authored gold once")
 	_expect_equal(
-		hero.inventory.get_potion_count("lesser_healing_potion"),
+		GameState.party.inventory.get_potion_count("lesser_healing_potion"),
 		2,
 		"interaction grants authored items once"
 	)
@@ -219,6 +220,7 @@ func _test_interaction_signal_grants_once() -> void:
 	)
 	source.free()
 	GameState.hero = original_hero
+	GameState.party = original_party
 
 func _test_claim_grants_loot_once() -> void:
 	WorldManager.reset()
@@ -234,9 +236,9 @@ func _test_claim_grants_loot_once() -> void:
 		WorldLootSource.ClaimResult.CLAIMED,
 		"an unclaimed source reports a successful claim"
 	)
-	_expect_equal(hero.inventory.gold, 10, "a claim grants authored gold")
+	_expect_equal(GameState.party.inventory.gold, 10, "a claim grants authored gold")
 	_expect_equal(
-		hero.inventory.get_potion_count("lesser_healing_potion"),
+		GameState.party.inventory.get_potion_count("lesser_healing_potion"),
 		2,
 		"a claim grants authored item quantities"
 	)
@@ -261,9 +263,9 @@ func _test_claim_grants_loot_once() -> void:
 		WorldLootSource.ClaimResult.ALREADY_CLAIMED,
 		"repeated interaction reports an existing claim"
 	)
-	_expect_equal(hero.inventory.gold, 10, "repeated interaction does not duplicate gold")
+	_expect_equal(GameState.party.inventory.gold, 10, "repeated interaction does not duplicate gold")
 	_expect_equal(
-		hero.inventory.get_potion_count("lesser_healing_potion"),
+		GameState.party.inventory.get_potion_count("lesser_healing_potion"),
 		2,
 		"repeated interaction does not duplicate items"
 	)
@@ -335,7 +337,7 @@ func _test_inventory_and_world_state_round_trip() -> void:
 	var hero := _new_hero()
 	var source := _new_source("forest", "forest/saved_chest")
 	source.try_claim(hero)
-	var inventory_data := SaveManager._get_inventory_data(hero.inventory)
+	var inventory_data := SaveManager._get_inventory_data(GameState.party.inventory)
 	var world_data := WorldManager.get_save_data()
 	source.free()
 
@@ -391,7 +393,7 @@ func _test_empty_ids_are_rejected() -> void:
 		WorldLootSource.ClaimResult.INVALID_CONFIGURATION,
 		"an empty loot-source ID is rejected"
 	)
-	_expect_equal(hero.inventory.gold, 0, "invalid sources cannot grant rewards")
+	_expect_equal(GameState.party.inventory.gold, 0, "invalid sources cannot grant rewards")
 	source.free()
 
 func _test_duplicate_ids_in_one_location_are_detected() -> void:
@@ -445,10 +447,9 @@ func _new_deterministic_table() -> DropTable:
 
 func _new_hero() -> Hero:
 	var hero := HeroLoader.new_hero(Hero.HeroClass.KNIGHT)
-	hero.inventory.gold = 0
-	hero.inventory.potions.clear()
-	hero.inventory.quest_items.clear()
-	hero.inventory.weapon_stash.clear()
+	var party := Party.new()
+	party.add_member(hero)
+	GameState.party = party
 	return hero
 
 func _reset_claim_signal() -> void:

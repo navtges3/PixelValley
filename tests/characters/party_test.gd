@@ -1,5 +1,7 @@
 extends TestCase
 
+const TEST_SAVE_SLOT := 999997
+
 
 func run_tests() -> int:
 	_begin_test_run()
@@ -10,6 +12,9 @@ func run_tests() -> int:
 	_test_party_builds_battle_party_from_same_heroes()
 	_test_invalid_equipment_operations_do_not_mutate_state()
 	_test_save_data_round_trip_preserves_shared_and_equipped_items()
+	_test_full_save_load_round_trip()
+	if SaveManager.has_save_data(TEST_SAVE_SLOT):
+		SaveManager.delete_slot(TEST_SAVE_SLOT)
 	return _finish_test_run("Party tests")
 
 
@@ -20,8 +25,6 @@ func _test_members_share_one_inventory() -> void:
 
 	_expect_true(party.add_member(knight), "party accepts its first member")
 	_expect_true(party.add_member(assassin), "party accepts its second member")
-	_expect_equal(knight.inventory, party.inventory, "first member uses Party inventory")
-	_expect_equal(assassin.inventory, party.inventory, "second member uses Party inventory")
 
 
 func _test_equip_transfers_weapon_from_shared_inventory() -> void:
@@ -112,10 +115,47 @@ func _test_save_data_round_trip_preserves_shared_and_equipped_items() -> void:
 		"bronze_mace",
 		"equipped Hero weapon survives serialization"
 	)
+
+
+func _test_full_save_load_round_trip() -> void:
+	GameState.reset_state()
+	var party := Party.new()
+	var knight := HeroLoader.new_hero(Hero.HeroClass.KNIGHT)
+	var assassin := HeroLoader.new_hero(Hero.HeroClass.ASSASSIN)
+	party.add_member(knight)
+	party.add_member(assassin)
+	party.inventory.gold = 321
+	party.inventory.add_potion("lesser_healing_potion", 4)
+	party.inventory.add_weapon("bronze_mace")
+	party.equip_weapon(assassin, "bronze_mace")
+	GameState.party = party
+	GameState.hero = knight
+	GameState.village = Village.new()
+	GameState.village.name = "Party Test Village"
+	GameState.village.inn = Inn.new()
+	GameState.village.potion_shop = Shop.new()
+	GameState.village.weapon_shop = Shop.new()
+	GameState.quest_manager = QuestManager.new()
+	GameState.quest_manager.new_game()
+	SaveManager.save_slot = TEST_SAVE_SLOT
+	SaveManager.save_game()
+
+	GameState.reset_state()
+	SaveManager.load_game(TEST_SAVE_SLOT)
+
+	var restored := GameState.party
+	_expect_not_null(restored, "full save/load restores the Party")
+	_expect_equal(restored.members.size(), 2, "full save/load restores all Party members")
+	_expect_equal(restored.inventory.gold, 321, "full save/load restores shared gold")
 	_expect_equal(
-		restored.members[1].inventory,
-		restored.inventory,
-		"restored members share the restored Party inventory"
+		restored.inventory.get_potion_count("lesser_healing_potion"),
+		4,
+		"full save/load restores shared consumables"
+	)
+	_expect_equal(
+		ItemLoader.get_item_id(restored.members[1].equipped_weapon),
+		"bronze_mace",
+		"full save/load restores Hero equipment"
 	)
 
 

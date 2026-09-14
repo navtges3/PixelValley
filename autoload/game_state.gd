@@ -52,7 +52,6 @@ func set_player_location(scene: ScreenManager.ScreenName, entrance_id: String = 
 func get_party() -> Party:
 	if party == null and hero != null:
 		party = Party.new()
-		party.inventory = hero.inventory if hero.inventory != null else Inventory.new()
 		party.add_member(hero)
 	return party
 

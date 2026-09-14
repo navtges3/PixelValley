@@ -40,15 +40,6 @@ func is_claimed() -> bool:
 
 func try_claim(recipient: Hero, party: Party = GameState.party) -> ClaimResult:
 	var empty_rewards: Array[RewardEntry] = []
-	if recipient != null and (party == null or not party.has_member(recipient)):
-		if GameState.party != null and GameState.party.has_member(recipient):
-			party = GameState.party
-		else:
-			party = Party.new()
-			party.inventory = (
-				recipient.inventory if recipient.inventory != null else Inventory.new()
-			)
-			party.add_member(recipient)
 	if _claim_in_progress:
 		return ClaimResult.IN_PROGRESS
 	if not get_validation_errors().is_empty():
@@ -98,7 +89,7 @@ func _autosave_after_claim() -> void:
 	SaveManager.save_world_state()
 
 func _on_interacted() -> void:
-	try_claim(GameState.hero)
+	try_claim(GameState.hero, GameState.party)
 
 func _restore_claimed_state() -> void:
 	interact_area.set_enabled(not is_claimed())

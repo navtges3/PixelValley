@@ -14,9 +14,6 @@ const LEVEL_UP_MULT := 25
 @export var experience := 0
 @export var skill_points := 0
 @export var equipped_weapon: Weapon
-# Compatibility reference only. Party.add_member assigns its single shared inventory.
-@export var inventory: Inventory = Inventory.new()
-
 func get_colored_name() -> String:
 	return "[color=green]" + self.name + "[/color]"
 
@@ -50,14 +47,13 @@ func level_up() -> void:
 
 func use_item(
 	item_id: String,
-	dispatcher: EffectEventDispatcher = null,
-	shared_inventory: Inventory = null
+	dispatcher: EffectEventDispatcher,
+	shared_inventory: Inventory
 ) -> String:
 	var potion := ItemLoader.get_item(item_id) as Potion
-	var inventory_to_use := shared_inventory if shared_inventory != null else inventory
-	if potion == null or inventory_to_use == null:
+	if potion == null or shared_inventory == null:
 		return "%s can't use this item.\n" % get_colored_name()
-	var effects := inventory_to_use.use_potion(item_id)
+	var effects := shared_inventory.use_potion(item_id)
 	if effects.is_empty():
 		return "%s has none of that item.\n" % get_colored_name()
 	var output := "%s drank %s.\n" % [get_colored_name(), potion.name]

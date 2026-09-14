@@ -104,17 +104,17 @@ func _test_locked_offer_accept_ready_and_turn_in() -> void:
 	_expect_true(manager.is_quest_ready(quest.id), "ready quest is tracked in the ready list")
 	_expect_true(quest not in manager.active_quests, "ready quest leaves the active list")
 	_expect_equal(manager.tracked_quest_id, quest.id, "a tracked quest remains tracked while ready")
-	var starting_gold := GameState.hero.inventory.gold
+	var starting_gold := GameState.party.inventory.gold
 	var reward_entries := manager.turn_in_quest(quest)
 	_expect_true(manager.is_quest_completed(quest.id), "turned-in quest becomes completed")
 	_expect_true(quest.completed, "turn-in records completion on the quest resource")
 	_expect_true(quest not in manager.ready_quests, "completed quest leaves the ready list")
 	_expect_equal(manager.tracked_quest_id, -1, "turning in the tracked quest clears tracking")
-	_expect_equal(GameState.hero.inventory.gold, starting_gold + quest.reward.gold, "turn-in grants the authored quest reward")
+	_expect_equal(	GameState.party.inventory.gold, starting_gold + quest.reward.gold, "turn-in grants the authored quest reward")
 	_expect_equal(reward_entries.size(), 1, "turn-in reports the applied quest reward")
 	var repeated_entries := manager.turn_in_quest(quest)
 	_expect_equal(repeated_entries.size(), 0, "completed quest cannot grant rewards again")
-	_expect_equal(GameState.hero.inventory.gold, starting_gold + quest.reward.gold, "repeated turn-in does not duplicate quest rewards")
+	_expect_equal(	GameState.party.inventory.gold, starting_gold + quest.reward.gold, "repeated turn-in does not duplicate quest rewards")
 
 
 func _test_abandon_side_quest() -> void:

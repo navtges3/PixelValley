@@ -128,10 +128,7 @@ static func _resolve_party(target: Variant) -> Party:
 		var hero := target as Hero
 		if GameState.party != null and GameState.party.has_member(hero):
 			return GameState.party
-		var party := Party.new()
-		party.inventory = hero.inventory if hero.inventory != null else Inventory.new()
-		party.add_member(hero)
-		return party
+		push_error("RewardService: Hero recipient must belong to the persistent Party.")
 	return null
 
 static func _append_entry(entries: Array[RewardEntry], entry: RewardEntry) -> void:

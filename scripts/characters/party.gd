@@ -7,14 +7,11 @@ const MAX_MEMBERS := 4
 @export var inventory: Inventory = Inventory.new():
 	set(value):
 		inventory = value if value != null else Inventory.new()
-		for member: Hero in members:
-			member.inventory = inventory
 
 func add_member(hero: Hero) -> bool:
 	if hero == null or hero in members or members.size() >= MAX_MEMBERS:
 		return false
 	members.append(hero)
-	hero.inventory = inventory
 	_remove_equipped_weapon_from_stash(hero)
 	return true
 

@@ -240,8 +240,10 @@ func _test_shop_item_selection_and_weapon_ownership() -> void:
 		"shop item toggles share an exclusive selection group"
 	)
 	var hero := HeroLoader.new_hero(Hero.HeroClass.KNIGHT)
-	hero.inventory.gold = 9999
-	hero.inventory.weapon_stash.append("iron_longsword")
+	GameState.party = Party.new()
+	GameState.party.add_member(hero)
+	GameState.party.inventory.gold = 9999
+	GameState.party.inventory.weapon_stash.append("iron_longsword")
 	var weapon_shop := Shop.new()
 	weapon_shop.inventory = {
 		"bronze_mace": 1,

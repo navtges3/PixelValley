@@ -169,7 +169,6 @@ func _make_hero() -> Hero:
 	hero.magic = 10
 	hero.defense = 10
 	hero.resist = 10
-	hero.inventory = Inventory.new()
 	hero.equipped_weapon = Weapon.new()
 	return hero
 
