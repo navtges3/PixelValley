@@ -78,9 +78,13 @@ func setup_battle(config: Dictionary) -> void:
 		if configured_hero != null:
 			player_party.add_member(configured_hero)
 	if enemy_party.get_members().is_empty():
-		var monster_id: MonsterLoader.MonsterID = (
-			config.get("monster_id", MonsterLoader.MonsterID.GOBLIN))
-		enemy_party.add_member(MonsterLoader.new_monster(monster_id))
+		var encounter := config.get("encounter") as EncounterDefinition
+		if encounter != null:
+			enemy_party = encounter.create_enemy_party()
+		if enemy_party.get_members().is_empty():
+			var monster_id: MonsterLoader.MonsterID = (
+				config.get("monster_id", MonsterLoader.MonsterID.GOBLIN))
+			enemy_party.add_member(MonsterLoader.new_monster(monster_id))
 	var players := player_party.get_members()
 	var enemies := enemy_party.get_members()
 	hero = players[0] as Hero if not players.is_empty() else null

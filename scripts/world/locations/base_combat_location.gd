@@ -42,7 +42,7 @@ func _on_combat_initiated(enemy: Enemy) -> void:
 			if GameState.party != null
 			else BattleParty.new()
 		)
-		ScreenManager.go_to_screen(ScreenManager.ScreenName.BATTLE, "", {
+		var battle_data := {
 			"hero": GameState.hero,
 			"player_party": battle_party,
 			"persistent_party": GameState.party,
@@ -50,4 +50,7 @@ func _on_combat_initiated(enemy: Enemy) -> void:
 			"spawn_point_id": enemy.spawn_point_id,
 			"location_id": _get_location_id(),
 			"flee_position": player.global_position + retreat_dir.normalized() * 96.0
-		})
+		}
+		if enemy.encounter != null:
+			battle_data["encounter"] = enemy.encounter
+		ScreenManager.go_to_screen(ScreenManager.ScreenName.BATTLE, "", battle_data)

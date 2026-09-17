@@ -3,6 +3,7 @@ class_name SpawnPoint
 
 const ENEMY_SCENE := preload("res://scenes/world/characters/enemy.tscn")
 
+@export var encounter: EncounterDefinition = null
 @export var monster_id: MonsterLoader.MonsterID = MonsterLoader.MonsterID.GOBLIN
 @export var spawn_count: int = 1
 @export var use_existing_children: bool = false
@@ -26,9 +27,15 @@ func spawn(parent: Node, combat_handler: Callable, location_id: String) -> void:
 		_wire_existing_children(combat_handler)
 		return
 	var world_bounds := Rect2(global_position + wander_bounds_local.position, wander_bounds_local.size)
-	for i in spawn_count:
+	# An encounter defines the full enemy party — spawn exactly one world representative.
+	var effective_count := 1 if encounter != null else spawn_count
+	for i in effective_count:
 		var enemy: Enemy = ENEMY_SCENE.instantiate() as Enemy
-		enemy.monster_id = monster_id
+		enemy.encounter = encounter
+		if encounter != null:
+			enemy.monster_id = encounter.get_lead_monster_id()
+		else:
+			enemy.monster_id = monster_id
 		enemy.spawn_point_id = path
 		enemy.behavior = behavior
 		enemy.wander_bounds = world_bounds
@@ -45,6 +52,9 @@ func _wire_existing_children(combat_handler: Callable) -> void:
 			continue
 		spawned_enemies.append(enemy)
 		enemy.spawn_point_id = path
+		if enemy.encounter == null and encounter != null:
+			enemy.encounter = encounter
+			enemy.monster_id = encounter.get_lead_monster_id()
 		if not enemy.combat_initiated.is_connected(combat_handler):
 			enemy.combat_initiated.connect(combat_handler)
 
