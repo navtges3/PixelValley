@@ -1,6 +1,7 @@
-[gd_resource type="Resource" script_class="EncounterDefinition" format=3]
+[gd_resource type="Resource" script_class="EncounterDefinition" format=3 uid="uid://bfeyhybycab35"]
 
 [ext_resource type="Script" uid="uid://bwul64vwrc8rn" path="res://scripts/data/encounter_definition.gd" id="1_encounter"]
+[ext_resource type="Script" uid="uid://bd6ohffno5w7r" path="res://scripts/characters/monster.gd" id="1_otcks"]
 
 [resource]
 script = ExtResource("1_encounter")
