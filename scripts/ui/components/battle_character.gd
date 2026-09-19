@@ -29,6 +29,7 @@ var _flip_h := false
 func _ready() -> void:
 	weapon_trail.visible = false
 	magic_glow.visible = false
+	set_target_selectable(false)
 
 func set_frames(frames: SpriteFrames) -> void:
 	sprite.sprite_frames = frames
