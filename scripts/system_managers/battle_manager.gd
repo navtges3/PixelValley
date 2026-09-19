@@ -1,29 +1,18 @@
 extends Node
 class_name BattleManager
 
+class TurnOrderEntry:
+	var combatant: Combatant
+	var is_player_side: bool
+	var party_index: int
+
+	func _init(_combatant: Combatant, _is_player_side: bool, _party_index: int) -> void:
+		combatant = _combatant
+		is_player_side = _is_player_side
+		party_index = _party_index
+
 enum BattleState { PLAYER_TURN, MONSTER_TURN, RESOLVING, VICTORY, DEFEAT }
 
-var player_party := BattleParty.new()
-var enemy_party := BattleParty.new()
-var persistent_party: Party
-
-var active_combatant: Combatant
-var _turn_order: Array[Combatant] = []
-var _turn_index := -1
-var _active_effects_at_turn_start: Array[EffectManager.TurnEffectSnapshot] = []
-var _defeated_combatants: Array[Combatant] = []
-
-signal active_combatant_changed(combatant: Combatant)
-
-var hero: Hero
-var monster: Monster
-var spawn_point_id: String = ""
-var location_id: String = ""
-var flee_position: Vector2 = Vector2.ZERO
-
-var state: BattleState = BattleState.PLAYER_TURN
-
-signal new_monster(monster_ref: Monster)
 signal player_turn()
 signal monster_turn()
 signal battle_won(entries: Array)
@@ -35,19 +24,34 @@ signal hero_updated(hero_ref: Hero)
 signal monster_updated(monster_ref: Monster)
 
 # Animation Signals
-signal hero_attacking()
-signal hero_hurt()
-signal monster_attacking()
-signal monster_hurt()
-
 signal combatant_updated(combatant: Combatant)
 signal combatant_attacking(combatant: Combatant)
 signal combatant_hurt(combatant: Combatant)
 signal combatant_defeated(combatant: Combatant)
 
-var effect_events := EffectEventDispatcher.new()
+signal active_combatant_changed(combatant: Combatant)
 signal effect_lifecycle_changed(event: EffectLifecycleEvent)
 
+var player_party := BattleParty.new()
+var enemy_party := BattleParty.new()
+var persistent_party: Party
+
+var active_combatant: Combatant
+var _turn_order: Array[Combatant] = []
+var _turn_index := -1
+var _active_effects_at_turn_start: Array[EffectManager.TurnEffectSnapshot] = []
+var _defeated_combatants: Array[Combatant] = []
+
+var hero: Hero
+var monster: Monster
+var spawn_point_id: String = ""
+var location_id: String = ""
+var flee_position: Vector2 = Vector2.ZERO
+
+var state: BattleState = BattleState.PLAYER_TURN
+var _enemy_ai := EnemyAI.new()
+
+var effect_events := EffectEventDispatcher.new()
 func _init() -> void:
 	effect_events.lifecycle_event.connect(_on_effect_lifecycle_event)
 
@@ -156,16 +160,13 @@ func _run_enemy_turn() -> void:
 	var actor := active_combatant as Monster
 	if actor == null:
 		return
-	var default_target := _get_first_living_player()
-	var ability: Ability = null
-	if default_target != null:
-		ability = actor.choose_ability(default_target)
-	if ability == null:
-		ability = actor.basic_attack
-	if ability == null:
+	var decision := _enemy_ai.choose_action(
+		actor, get_friendly_party(actor), get_opposing_party(actor))
+	if decision == null:
 		_complete_active_turn()
 		return
-	var targets := resolve_targets_for_ability(ability, actor, default_target)
+	var ability := decision.ability
+	var targets := resolve_targets_for_ability(ability, actor, decision.target)
 	if targets.is_empty():
 		_complete_active_turn()
 		return
@@ -460,27 +461,9 @@ func _get_active_monster() -> Monster:
 		return active_combatant as Monster
 	return null
 
-func _get_first_living_enemy() -> Combatant:
-	var enemies := enemy_party.get_alive_members()
-	return enemies[0] if not enemies.is_empty() else null
-
-func _get_first_living_player() -> Combatant:
-	var players := player_party.get_alive_members()
-	return players[0] if not players.is_empty() else null
-
 func _get_reward_recipient() -> Hero:
 	var players := player_party.get_members()
 	for member: Combatant in players:
 		if member is Hero:
 			return member as Hero
 	return hero
-
-class TurnOrderEntry:
-	var combatant: Combatant
-	var is_player_side: bool
-	var party_index: int
-
-	func _init(_combatant: Combatant, _is_player_side: bool, _party_index: int) -> void:
-		combatant = _combatant
-		is_player_side = _is_player_side
-		party_index = _party_index

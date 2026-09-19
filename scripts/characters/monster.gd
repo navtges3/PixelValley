@@ -13,12 +13,6 @@ const HEALTH_WEIGHT := 0.5
 func get_colored_name() -> String:
 	return "[color=red]" + self.name + "[/color]"
 
-func choose_ability(target: Combatant) -> Ability:
-	for ability in conditional_abilities:
-		if ability.is_ready(self, target) and current_nrg >= ability.energy_cost:
-			return ability
-	return basic_attack
-
 func update_cooldown() -> void:
 	if self.basic_attack.current_cooldown > 0:
 		self.basic_attack.current_cooldown -= 1
