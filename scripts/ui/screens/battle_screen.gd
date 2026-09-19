@@ -38,6 +38,8 @@ var battle_config: Dictionary = {}
 var _primary_action_buttons: Array[Button] = []
 var _focused_tooltip_button: Button
 var _hovered_tooltip_button: Button
+var _targeting_ability: Ability
+var _active_target_visuals: Array[BattleCharacter] = []
 
 func _ready() -> void:
 	_primary_action_buttons = [
@@ -351,8 +353,50 @@ func _on_death_window_dismissed() -> void:
 # --- Button Factories ---
 func _on_ability_button_pressed(ability: Ability) -> void:
 	_clear_tooltip()
+	if ability.requires_manual_target_selection():
+		_begin_target_selection(ability)
+		return
 	battle_manager.player_ability_selected(ability)
 	ability_button.button_pressed = false
+
+func _begin_target_selection(ability: Ability) -> void:
+	_targeting_ability = ability
+	option_list.visible = false
+	_set_primary_actions_disabled(true)
+	for target: Combatant in battle_manager.get_valid_targets(ability):
+		var visual := combatant_visuals.get(target) as BattleCharacter
+		if visual == null:
+			continue
+		visual.set_target_selectable(true)
+		visual.target_selected.connect(_on_target_selected)
+		_active_target_visuals.append(visual)
+	if not _active_target_visuals.is_empty():
+		InputManager.focus_menu_control_deferred(_active_target_visuals[0].target_hitbox)
+
+func _on_target_selected(target: Combatant) -> void:
+	var ability := _targeting_ability
+	_clear_target_selection_state()
+	battle_manager.player_ability_selected(ability, target)
+	ability_button.button_pressed = false
+
+func _cancel_target_selection() -> void:
+	_clear_target_selection_state()
+	option_list.visible = true
+	_focus_first_usable_option.call_deferred(ability_button)
+
+func _clear_target_selection_state() -> void:
+	for visual: BattleCharacter in _active_target_visuals:
+		if is_instance_valid(visual):
+			visual.set_target_selectable(false)
+			if visual.target_selected.is_connected(_on_target_selected):
+				visual.target_selected.disconnect(_on_target_selected)
+	_active_target_visuals.clear()
+	_targeting_ability = null
+	_set_primary_actions_disabled(false)
+
+func _set_primary_actions_disabled(value: bool) -> void:
+	for button: Button in _primary_action_buttons:
+		button.disabled = value
 
 func _create_ability_button(ability: Ability) -> AbilityButton:
 	var button := ABILITY_BUTTON.instantiate() as AbilityButton
@@ -481,9 +525,11 @@ func _restore_primary_focus(preferred: Button) -> void:
 	_focus_primary_action()
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event.is_echo():
+	if event.is_echo() or not event.is_action_pressed(&"ui_cancel"):
 		return
-	if not event.is_action_pressed(&"ui_cancel"):
+	if not _active_target_visuals.is_empty():
+		_cancel_target_selection()
+		get_viewport().set_input_as_handled()
 		return
 	if not _is_action_submenu_open():
 		return

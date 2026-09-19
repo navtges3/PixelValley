@@ -57,6 +57,9 @@ func is_friendly() -> bool:
 func is_hostile() -> bool:
 	return target_type in [TargetType.ENEMY, TargetType.ENEMY_PARTY]
 
+func requires_manual_target_selection() -> bool:
+	return target_type in [TargetType.ALLY, TargetType.ENEMY]
+
 func get_target_type_name() -> String:
 	match target_type:
 		TargetType.SELF:

@@ -4,6 +4,8 @@ class_name BattleCharacter
 const SCALE := Vector2(3.0, 3.0)
 const EFFECT_ICON_SIZE := Vector2(16.0, 16.0)
 
+signal target_selected(combatant: Combatant)
+
 @onready var sprite: AnimatedSprite2D = $Visual/AnimatedSprite2D
 @onready var weapon_anchor: Marker2D = $Visual/WeaponAnchor
 @onready var weapon_sprite: Sprite2D = $Visual/WeaponAnchor/WeaponSprite
@@ -11,6 +13,9 @@ const EFFECT_ICON_SIZE := Vector2(16.0, 16.0)
 @onready var tip_point: Node2D = $Visual/WeaponAnchor/TipPoint
 @onready var weapon_trail: WeaponTrail = $Visual/WeaponTrail
 @onready var effects_container: HBoxContainer = $EffectsCenter/EffectsContainer
+@onready var target_hitbox: Button = $TargetHitbox
+
+var combatant: Combatant
 
 const TRAIL_FRAMES := {
 	"attack": [1, 2]
@@ -29,14 +34,16 @@ func set_frames(frames: SpriteFrames) -> void:
 	sprite.sprite_frames = frames
 	sprite.play("idle")
 
-func apply_visual(combatant: Combatant, flip_h := false) -> void:
+func apply_visual(combatant_in: Combatant, flip_h := false) -> void:
+	combatant = combatant_in
 	sprite.sprite_frames = combatant.battle_visual
 	scale = SCALE
 	sprite.offset.y = -combatant.battle_height
 	sprite.offset.x = -combatant.battle_x_offset
+	target_hitbox.size.x = combatant.battle_height
+	target_hitbox.size.y - combatant.battle_x_offset
 	sprite.flip_h = flip_h
 	sprite.play("idle")
-	
 	_flip_h = flip_h
 	_hand_positions = combatant.hand_positions
 	_hand_rotations = combatant.hand_rotations
@@ -164,3 +171,20 @@ func _on_animated_sprite_2d_animation_finished() -> void:
 	if sprite.animation != "idle" and sprite.animation != "death":
 		sprite.play("idle")
 	emit_signal("animation_done")
+
+func set_target_selectable(selectable: bool) -> void:
+	target_hitbox.visible = selectable
+	target_hitbox.focus_mode = Control.FOCUS_ALL if selectable else Control.FOCUS_NONE
+	set_highlighted(false)
+
+func set_highlighted(value: bool) -> void:
+	sprite.modulate = Color(1.25, 1.25, 1.0) if value else Color.WHITE
+
+func _on_target_hitbox_pressed() -> void:
+	target_selected.emit(combatant)
+
+func _on_target_hitbox_focus_entered() -> void:
+	set_highlighted(true)
+
+func _on_target_hitbox_mouse_entered() -> void:
+	set_highlighted(false)

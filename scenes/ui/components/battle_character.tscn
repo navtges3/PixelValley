@@ -54,5 +54,20 @@ centered = false
 offset = Vector2(-64, -64)
 flip_h = true
 
+[node name="TargetHitbox" type="Button" parent="." unique_id=31777540]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -4.0
+offset_top = -8.0
+offset_right = 4.0
+grow_horizontal = 2
+grow_vertical = 0
+
 [connection signal="animation_finished" from="Visual/AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
 [connection signal="frame_changed" from="Visual/AnimatedSprite2D" to="." method="_on_frame_changed"]
+[connection signal="focus_entered" from="TargetHitbox" to="." method="_on_target_hitbox_focus_entered"]
+[connection signal="mouse_entered" from="TargetHitbox" to="." method="_on_target_hitbox_mouse_entered"]
+[connection signal="pressed" from="TargetHitbox" to="." method="_on_target_hitbox_pressed"]
