@@ -7,6 +7,16 @@
 [ext_resource type="Script" uid="uid://c37q15v1k0fmj" path="res://scripts/ui/components/weapon_trail.gd" id="4_il1nn"]
 [ext_resource type="SpriteFrames" uid="uid://ghh4h01vpcng" path="res://resources/characters/monsters/ogre/ogre_battle_sprite_frames.tres" id="6_ej3rn"]
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ej3rn"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_igjgp"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_8b360"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ceqj5"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_mid1b"]
+
 [node name="BattleCharacter" type="Node2D" unique_id=2135240791]
 script = ExtResource("1_il1nn")
 
@@ -65,9 +75,16 @@ offset_top = -8.0
 offset_right = 4.0
 grow_horizontal = 2
 grow_vertical = 0
+theme_override_styles/normal = SubResource("StyleBoxEmpty_ej3rn")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_igjgp")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_8b360")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_ceqj5")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_mid1b")
 
 [connection signal="animation_finished" from="Visual/AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
 [connection signal="frame_changed" from="Visual/AnimatedSprite2D" to="." method="_on_frame_changed"]
 [connection signal="focus_entered" from="TargetHitbox" to="." method="_on_target_hitbox_focus_entered"]
+[connection signal="focus_exited" from="TargetHitbox" to="." method="_on_target_hitbox_focus_exited"]
 [connection signal="mouse_entered" from="TargetHitbox" to="." method="_on_target_hitbox_mouse_entered"]
+[connection signal="mouse_exited" from="TargetHitbox" to="." method="_on_target_hitbox_mouse_exited"]
 [connection signal="pressed" from="TargetHitbox" to="." method="_on_target_hitbox_pressed"]

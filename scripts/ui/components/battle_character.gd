@@ -40,8 +40,10 @@ func apply_visual(combatant_in: Combatant, flip_h := false) -> void:
 	scale = SCALE
 	sprite.offset.y = -combatant.battle_height
 	sprite.offset.x = -combatant.battle_x_offset
-	target_hitbox.size.x = combatant.battle_height
-	target_hitbox.size.y - combatant.battle_x_offset
+	target_hitbox.size.y = combatant.battle_height
+	target_hitbox.size.x = combatant.battle_x_offset
+	target_hitbox.position.y = -combatant.battle_height
+	target_hitbox.position.x = -(combatant.battle_x_offset / 2.0)
 	sprite.flip_h = flip_h
 	sprite.play("idle")
 	_flip_h = flip_h
@@ -186,5 +188,11 @@ func _on_target_hitbox_pressed() -> void:
 func _on_target_hitbox_focus_entered() -> void:
 	set_highlighted(true)
 
+func _on_target_hitbox_focus_exited() -> void:
+	set_highlighted(false)
+
 func _on_target_hitbox_mouse_entered() -> void:
+	set_highlighted(true)
+
+func _on_target_hitbox_mouse_exited() -> void:
 	set_highlighted(false)

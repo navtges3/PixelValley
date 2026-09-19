@@ -100,12 +100,7 @@ func _spawn_party_visuals() -> void:
 	for index: int in enemies.size():
 		_spawn_combatant_visual(enemies[index], $MonsterSlot, index, enemies.size())
 
-func _spawn_combatant_visual(
-	combatant: Combatant,
-	parent: Node,
-	index: int,
-	party_size: int
-) -> void:
+func _spawn_combatant_visual(combatant: Combatant, parent: Node, index: int, party_size: int) -> void:
 	var visual := BATTLE_CHARACTER.instantiate() as BattleCharacter
 	parent.add_child(visual)
 	visual.position.x = (index - (party_size - 1) / 2.0) * 96.0
