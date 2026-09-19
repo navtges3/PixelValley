@@ -14,6 +14,7 @@ extends Node
 	$Combatants/BattleTurnOrderTests,
 	$Combatants/AbilityTargetingTests,
 	$Combatants/EncounterDefinitionTests,
+	$Combatants/EnemyAITests,
 ]
 
 @onready var _quest_test_cases: Array[TestCase] = [

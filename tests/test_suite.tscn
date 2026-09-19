@@ -27,6 +27,7 @@
 [ext_resource type="PackedScene" path="res://tests/combatants/ability_targeting_test.tscn" id="25_ability_targeting"]
 [ext_resource type="PackedScene" path="res://tests/characters/party_test.tscn" id="26_party"]
 [ext_resource type="PackedScene" path="res://tests/combatants/encounter_definition_test.tscn" id="27_encounter"]
+[ext_resource type="PackedScene" path="res://tests/combatants/enemy_ai_test.tscn" id="28_enemy_ai"]
 
 [node name="TestSuite" type="Node" unique_id=783793299]
 script = ExtResource("4_suite")
@@ -42,6 +43,8 @@ script = ExtResource("4_suite")
 [node name="AbilityTargetingTests" parent="Combatants" unique_id=1221925205 instance=ExtResource("25_ability_targeting")]
 
 [node name="EncounterDefinitionTests" parent="Combatants" instance=ExtResource("27_encounter")]
+
+[node name="EnemyAITests" parent="Combatants" instance=ExtResource("28_enemy_ai")]
 
 [node name="Characters" type="Node" parent="." unique_id=881476188]
 
