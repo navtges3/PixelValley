@@ -103,6 +103,7 @@ func _spawn_combatant_visual(combatant: Combatant, parent: Node, index: int, par
 	var visual := BATTLE_CHARACTER.instantiate() as BattleCharacter
 	parent.add_child(visual)
 	visual.position = _get_formation_offset(index, party_size)
+	visual.apply_visual(combatant, combatant is Monster)
 	combatant_visuals[combatant] = visual
 	if combatant is Hero:
 		_setup_hero_visual(combatant as Hero, visual)
@@ -244,6 +245,11 @@ func _on_battle_won(entries: Array) -> void:
 
 func _on_rewards_collected() -> void:
 	ScreenManager.go_back()
+
+func _on_hero_defeated() -> void:
+	_set_active_visual(null)
+	GameState.pre_combat_position = Vector2.ZERO
+	death_window.open()
 
 func _on_death_window_dismissed() -> void:
 	GameState.hero.rest()
