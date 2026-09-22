@@ -6,6 +6,7 @@
 [ext_resource type="Script" uid="uid://dob7sohiowffx" path="res://scripts/ui/components/magic_glow.gd" id="4_ej3rn"]
 [ext_resource type="Script" uid="uid://c37q15v1k0fmj" path="res://scripts/ui/components/weapon_trail.gd" id="4_il1nn"]
 [ext_resource type="SpriteFrames" uid="uid://ghh4h01vpcng" path="res://resources/characters/monsters/ogre/ogre_battle_sprite_frames.tres" id="6_ej3rn"]
+[ext_resource type="PackedScene" uid="uid://d733c46btg2g" path="res://scenes/ui/components/battle_status_plate.tscn" id="7_igjgp"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ej3rn"]
 
@@ -80,6 +81,8 @@ theme_override_styles/pressed = SubResource("StyleBoxEmpty_igjgp")
 theme_override_styles/hover = SubResource("StyleBoxEmpty_8b360")
 theme_override_styles/disabled = SubResource("StyleBoxEmpty_ceqj5")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_mid1b")
+
+[node name="StatusPlate" parent="." unique_id=281833145 instance=ExtResource("7_igjgp")]
 
 [connection signal="animation_finished" from="Visual/AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
 [connection signal="frame_changed" from="Visual/AnimatedSprite2D" to="." method="_on_frame_changed"]

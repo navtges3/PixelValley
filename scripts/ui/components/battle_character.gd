@@ -61,7 +61,7 @@ func _build_active_ring() -> void:
 	visual_root.move_child(_active_ring, 1) # above floor (0), below sprite
 
 func _layout_status_plate() -> void:
-	status_plate.scale = Vactor2.ONE / SCALE
+	status_plate.scale = Vector2.ONE / SCALE
 	status_plate.position = (Vector2(-status_plate.custom_minimum_size.x * 0.5, STATUS_PLATE_GAP) / SCALE)
 
 func set_frames(frames: SpriteFrames) -> void:

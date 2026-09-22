@@ -96,20 +96,20 @@ func _spawn_party_visuals() -> void:
 	for index: int in enemies.size():
 		_spawn_combatant_visual(enemies[index], $MonsterSlot, index, enemies.size())
 
-func _get_formation_offset(index: int, party_size, int) -> Vector2:
+func _get_formation_offset(index: int, party_size: int) -> Vector2:
 	return Vector2((index - (party_size - 1) / 2.0) * FORMATION_SPACING, 0.0)
 
 func _spawn_combatant_visual(combatant: Combatant, parent: Node, index: int, party_size: int) -> void:
 	var visual := BATTLE_CHARACTER.instantiate() as BattleCharacter
 	parent.add_child(visual)
 	visual.position = _get_formation_offset(index, party_size)
-	visual.apply_visual[combatant] = visual
+	combatant_visuals[combatant] = visual
 	if combatant is Hero:
-		_setup_hero_visual(combatatn as Hero, visual)
+		_setup_hero_visual(combatant as Hero, visual)
 
 func _setup_hero_visual(hero: Hero, visual: BattleCharacter) -> void:
 	visual.configure_vfx(hero.hero_class)
-	var weapon := hero.equip_weapon
+	var weapon: Weapon = hero.equipped_weapon
 	if weapon != null and weapon.sprite:
 		visual.equip_weapon(weapon.sprite, weapon.sprite_offset, weapon.tip_offset)
 
@@ -153,75 +153,6 @@ func _on_combatant_hurt(combatant: Combatant) -> void:
 # --- Effect Icons ---
 func _on_effect_lifecycle_changed(event: EffectLifecycleEvent) -> void:
 	_on_combatant_updated(event.target)
-
-func _refresh_hero_effect_icons() -> void:
-	if not is_instance_valid(hero_visual):
-		return
-	var effects := EffectManager.get_active_effects(battle_manager.hero)
-	hero_visual.set_effects(effects)
-
-func _refresh_monster_effect_icons() -> void:
-	if not is_instance_valid(monster_visual):
-		return
-	var effects := EffectManager.get_active_effects(battle_manager.monster)
-	monster_visual.set_effects(effects)
-
-# --- Hero ---
-func _spawn_hero() -> void:
-	hero_info.hero = battle_config.hero
-	hero_visual = BATTLE_CHARACTER.instantiate()
-	$HeroSlot.add_child(hero_visual)
-	hero_visual.apply_visual(battle_config.hero)
-	_refresh_hero_effect_icons()
-	hero_visual.configure_vfx(battle_config.hero.hero_class)
-	var weapon: Weapon = battle_config.hero.equipped_weapon
-	if weapon and weapon.sprite:
-		hero_visual.equip_weapon(weapon.sprite, weapon.sprite_offset, weapon.tip_offset)
-	ability_button.text = weapon.name
-
-func _on_hero_updated(_hero_ref: Hero) -> void:
-	hero_info.refresh()
-
-func _on_hero_attacking() -> void:
-	hero_visual.play_attack()
-	AudioManager.play_sfx_by_id("sword_swing", 1.0, randf_range(0.9, 1.1))
-	await hero_visual.animation_done
-
-func _on_hero_hurt() -> void:
-	hero_visual.play_hurt()
-
-# --- Monster ---
-func _on_new_monster(monster_ref: Monster) -> void:
-	monster_label.text = monster_ref.name
-	_on_monster_updated(monster_ref)
-	_spawn_monster(monster_ref)
-
-func _spawn_monster(monster_ref: Monster) -> void:
-	for child in $MonsterSlot.get_children():
-		child.queue_free()
-	monster_visual = BATTLE_CHARACTER.instantiate()
-	$MonsterSlot.add_child(monster_visual)
-	monster_visual.apply_visual(monster_ref, true)
-	_refresh_monster_effect_icons()
-
-func _on_monster_updated(monster_ref: Monster) -> void:
-	var value: int = monster_ref.current_hp
-	var max_value: int = monster_ref.max_hp
-	monster_health_bar.max_value = max_value
-	monster_health_bar.value = value
-	monster_health_bar_label.text = "%d / %d" % [value, max_value]
-	_set_bar_color(monster_health_bar, HudBarStyle.hp_color(value, max_value))
-
-func _set_bar_color(bar: ProgressBar, color: Color) -> void:
-	HudBarStyle.apply(bar, color)
-
-func _on_monster_attacking() -> void:
-	monster_visual.play_attack()
-	AudioManager.play_sfx_by_id("sword_swing", 1.0, randf_range(0.9, 1.1))
-	await monster_visual.animation_done
-
-func _on_monster_hurt() -> void:
-	monster_visual.play_hurt()
 
 # --- Battle Log ---
 func _on_battle_log_updated(msg: String) -> void:
@@ -305,13 +236,6 @@ func _on_player_turn() -> void:
 	_reset_action_submenu()
 	_focus_primary_action.call_deferred()
 
-func _on_monster_turn() -> void:
-	_clear_tooltip()
-	ability_button.disabled = true
-	item_button.disabled = true
-	meditate_button.disabled = true
-	flee_button.disabled = true
-
 # --- End-of-battle ---
 func _on_battle_won(entries: Array) -> void:
 	_set_active_visual(null)
@@ -320,11 +244,6 @@ func _on_battle_won(entries: Array) -> void:
 
 func _on_rewards_collected() -> void:
 	ScreenManager.go_back()
-
-func _on_hero_defeated() -> void:
-	_set_active_visual(null)
-	GameState.pre_combat_position = Vector2.ZERO
-	death_window.open()
 
 func _on_death_window_dismissed() -> void:
 	GameState.hero.rest()
