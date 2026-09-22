@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://d733c46btg2g"]
+
+[ext_resource type="Script" uid="uid://b3wpeafqk6xwm" path="res://scripts/ui/components/battle_status_plate.gd" id="1_adsja"]
+
+[node name="BattleStatusPlate" type="VBoxContainer" unique_id=281833145]
+script = ExtResource("1_adsja")
+
+[node name="NameLabel" type="Label" parent="." unique_id=457117097]
+layout_mode = 2
+
+[node name="HealthBar" type="ProgressBar" parent="." unique_id=1639173639]
+layout_mode = 2
+show_percentage = false
+
+[node name="HealthLabel" type="Label" parent="HealthBar" unique_id=234034969]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
