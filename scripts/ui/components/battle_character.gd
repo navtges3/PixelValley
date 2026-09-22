@@ -21,9 +21,9 @@ signal target_selected(combatant: Combatant)
 @onready var effects_container: HBoxContainer = $EffectsCenter/EffectsContainer
 @onready var target_hitbox: Button = $TargetHitbox
 @onready var visual_root: Node2D = $Visual
+@onready var status_plate: BattleStatusPlate = $StatusPlate
 
 var _defeated := false
-var _status_plate: BattleStatusPlate
 var _active_ring: Line2D
 var _ring_tween: Tween
 
@@ -43,7 +43,7 @@ func _ready() -> void:
 	magic_glow.visible = false
 	set_target_selectable(false)
 	_build_active_ring()
-	_build_status_plate()
+	_layout_status_plate()
 
 func _build_active_ring() -> void:
 	var points := PackedVector2Array()
@@ -60,12 +60,9 @@ func _build_active_ring() -> void:
 	visual_root.add_child(_active_ring)
 	visual_root.move_child(_active_ring, 1) # above floor (0), below sprite
 
-func _build_status_plate() -> void:
-	_status_plate = BattleStatusPlate.new()
-	add_child(_status_plate)
-	# Root is scaled 3x for pixel art; cancel it so text is real screen px.
-	_status_plate.scale = Vector2.ONE / SCALE
-	_status_plate.position = (Vector2(-BattleStatusPlate.WIDTH * 0.5, STATUS_PLATE_GAP) / SCALE)
+func _layout_status_plate() -> void:
+	status_plate.scale = Vactor2.ONE / SCALE
+	status_plate.position = (Vector2(-status_plate.custom_minimum_size.x * 0.5, STATUS_PLATE_GAP) / SCALE)
 
 func set_frames(frames: SpriteFrames) -> void:
 	sprite.sprite_frames = frames
@@ -73,6 +70,7 @@ func set_frames(frames: SpriteFrames) -> void:
 
 func apply_visual(combatant_in: Combatant, flip_h := false) -> void:
 	combatant = combatant_in
+	status_plate.combatant = combatant
 	sprite.sprite_frames = combatant.battle_visual
 	scale = SCALE
 	sprite.offset.y = -combatant.battle_height
@@ -90,13 +88,13 @@ func apply_visual(combatant_in: Combatant, flip_h := false) -> void:
 	_update_weapon_anchor()
 
 func refresh_status() -> void:
-	_status_plate.refresh()
+	status_plate.refresh()
 
 func set_active(value: bool) -> void:
 	if value and _defeated:
 		return
 	_active_ring.visible = value
-	_status_plate.set_active(value)
+	status_plate.set_active(value)
 	if _ring_tween != null:
 		_ring_tween.kill()
 		_ring_tween = null
@@ -113,7 +111,7 @@ func set_defeated() -> void:
 	play_death()
 	visual_root.modulate = DEFEATED_MODULATE
 	effects_container.visible = false
-	_status_plate.set_defeated()
+	status_plate.set_defeated()
 
 func set_effects(effects: Array[EffectView]) -> void:
 	_clear_effect_icons()

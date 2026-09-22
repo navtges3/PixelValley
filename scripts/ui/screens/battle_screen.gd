@@ -5,17 +5,13 @@ const ABILITY_BUTTON = preload("res://scenes/ui/components/ability_button.tscn")
 const ITEM_BUTTON = preload("res://scenes/ui/components/item_button.tscn")
 const BATTLE_CHARACTER = preload("res://scenes/ui/components/battle_character.tscn")
 const MEDITATE_TOOLTIP_TEXT := "Restore health and energy."
+const FORMATION_SPACING := 128.0
 
 @onready var battle_manager: BattleManager = $BattleManager
 
 @onready var reward_window: RewardWindow = $RewardWindow
 @onready var death_window: DeathWindow = $DeathWindow
 @onready var battle_log: RichTextLabel = $MarginContainer/BattleLog
-
-# Monster Info
-@onready var monster_health_bar: ProgressBar = $MarginContainer/VBoxContainer/MonsterHealthBar
-@onready var monster_health_bar_label: Label = $MarginContainer/VBoxContainer/MonsterHealthBar/MonsterHealthBarLabel
-@onready var monster_label: Label = $MarginContainer/VBoxContainer/MonsterLabel
 
 # Action Area
 @onready var hero_info: HeroInfo = $MarginContainer/ActionPanel/ActionArea/HeroInfo
@@ -27,12 +23,8 @@ const MEDITATE_TOOLTIP_TEXT := "Restore health and energy."
 @onready var tooltip_panel: PanelContainer = $MarginContainer/TooltipPanel
 @onready var tooltip_label: Label = $MarginContainer/TooltipPanel/TooltipLabel
 
-var hero_visual: BattleCharacter
-var monster_visual: BattleCharacter
-
 var combatant_visuals: Dictionary = {}
-var combatant_health_labels: Dictionary = {}
-
+var _active_visual: BattleCharacter
 var battle_config: Dictionary = {}
 
 var _primary_action_buttons: Array[Button] = []
@@ -85,7 +77,11 @@ func setup(config: Dictionary) -> void:
 	battle_config = config
 	battle_manager.setup_battle(config)
 	_spawn_party_visuals()
-	_refresh_hero_effect_icons()
+	if hero_info.hero == null:
+		hero_info.hero = battle_manager.hero
+	for combatant: Combatant in combatant_visuals:
+		_on_combatant_updated(combatant)
+	_set_active_visual(battle_manager.active_combatant)
 
 func _spawn_party_visuals() -> void:
 	combatant_visuals.clear()
@@ -100,61 +96,46 @@ func _spawn_party_visuals() -> void:
 	for index: int in enemies.size():
 		_spawn_combatant_visual(enemies[index], $MonsterSlot, index, enemies.size())
 
+func _get_formation_offset(index: int, party_size, int) -> Vector2:
+	return Vector2((index - (party_size - 1) / 2.0) * FORMATION_SPACING, 0.0)
+
 func _spawn_combatant_visual(combatant: Combatant, parent: Node, index: int, party_size: int) -> void:
 	var visual := BATTLE_CHARACTER.instantiate() as BattleCharacter
 	parent.add_child(visual)
-	visual.position.x = (index - (party_size - 1) / 2.0) * 96.0
-	visual.apply_visual(combatant, combatant is Monster)
-	combatant_visuals[combatant] = visual
-	var health_label := Label.new()
-	health_label.position = Vector2(-42, 12)
-	health_label.size = Vector2(84, 20)
-	health_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	health_label.add_theme_color_override(
-		"font_color",
-		Color(0.2, 0.1, 0.1) if combatant is Hero else Color(0.4, 0.05, 0.05))
-	visual.add_child(health_label)
-	combatant_health_labels[combatant] = health_label
-	_update_combatant_status(combatant)
-	if combatant == battle_manager.hero:
-		hero_visual = visual
-		hero_info.hero = battle_manager.hero
-		var hero := combatant as Hero
-		hero_info.hero = hero
-		hero_info.refresh()
-		visual.configure_vfx(hero.hero_class)
-		var weapon: Weapon = hero.equipped_weapon
-		if weapon != null:
-			if weapon.sprite:
-				visual.equip_weapon(weapon.sprite, weapon.sprite_offset, weapon.tip_offset)
-			ability_button.text = weapon.name
-	elif combatant == battle_manager.monster:
-		monster_visual = visual
-		var monster := combatant as Monster
-		monster_label.text = monster.name
-		_on_monster_updated(monster)
+	visual.position = _get_formation_offset(index, party_size)
+	visual.apply_visual[combatant] = visual
+	if combatant is Hero:
+		_setup_hero_visual(combatatn as Hero, visual)
+
+func _setup_hero_visual(hero: Hero, visual: BattleCharacter) -> void:
+	visual.configure_vfx(hero.hero_class)
+	var weapon := hero.equip_weapon
+	if weapon != null and weapon.sprite:
+		visual.equip_weapon(weapon.sprite, weapon.sprite_offset, weapon.tip_offset)
 
 func _on_combatant_updated(combatant: Combatant) -> void:
 	var visual := combatant_visuals.get(combatant) as BattleCharacter
 	if visual == null:
 		return
 	visual.set_effects(EffectManager.get_active_effects(combatant))
-	_update_combatant_status(combatant)
-	if combatant == battle_manager.hero:
+	visual.refresh_status()
+	if combatant == hero_info.hero:
 		hero_info.refresh()
 
-func _update_combatant_status(combatant: Combatant) -> void:
-	var label := combatant_health_labels.get(combatant) as Label
-	if label == null:
-		return
-	label.text = "%d / %d" % [combatant.current_hp, combatant.max_hp]
+func _on_active_combatant_changed(combatant: Combatant) -> void:
+	_set_active_visual(combatant)
+
+func _set_active_visual(combatant: Combatant) -> void:
+	if is_instance_valid(_active_visual):
+		_active_visual.set_active(false)
+	_active_visual = combatant_visuals.get(combatant) as BattleCharacter
+	if _active_visual != null:
+		_active_visual.set_active(true)
 
 func _on_combatant_defeated(combatant: Combatant) -> void:
 	var visual := combatant_visuals.get(combatant) as BattleCharacter
-	if visual == null:
-		return
-	visual.play_death()
-	visual.modulate = Color(0.45, 0.45, 0.45, 0.7)
+	if visual != null:
+		visual.set_defeated()
 
 func _on_combatant_attacking(combatant: Combatant) -> void:
 	var visual := combatant_visuals.get(combatant) as BattleCharacter
@@ -310,6 +291,8 @@ func _on_player_turn() -> void:
 	if actor == null:
 		return
 	hero_info.hero = actor
+	var weapon := actor.equipped_weapon
+	ability_button.text = weapon.name if weapon != null else "Use Ability"
 	ability_button.disabled = false
 	item_button.disabled = battle_manager.get_hero_items().is_empty()
 	if actor.rest_cooldown > 0:
@@ -331,6 +314,7 @@ func _on_monster_turn() -> void:
 
 # --- End-of-battle ---
 func _on_battle_won(entries: Array) -> void:
+	_set_active_visual(null)
 	reward_window.show_rewards("Victory!", entries)
 	AudioManager.play_sfx_by_id("levelup")
 
@@ -338,6 +322,7 @@ func _on_rewards_collected() -> void:
 	ScreenManager.go_back()
 
 func _on_hero_defeated() -> void:
+	_set_active_visual(null)
 	GameState.pre_combat_position = Vector2.ZERO
 	death_window.open()
 
