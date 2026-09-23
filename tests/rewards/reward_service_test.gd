@@ -21,6 +21,7 @@ func run_tests() -> int:
 	_test_grant_loot_uses_random_weapon_fallback()
 	_test_empty_loot_produces_no_entries()
 	_test_battle_rewards_use_generalized_loot_pipeline()
+	_test_battle_rewards_split_experience_across_party()
 	return _finish_test_run("Reward service tests")
 
 
@@ -299,6 +300,7 @@ func _test_battle_rewards_use_generalized_loot_pipeline() -> void:
 	manager.hero = hero
 	manager.monster = monster
 	manager.persistent_party = GameState.party
+	manager.player_party.add_member(hero)
 
 	var entries := manager._grant_victory_rewards()
 
@@ -307,6 +309,49 @@ func _test_battle_rewards_use_generalized_loot_pipeline() -> void:
 	_expect_equal(GameState.party.inventory.get_quest_item_count("inn_key"), 2, "battle grants generalized item loot")
 	_expect_true(GameState.party.inventory.has_weapon_in_stash("bronze_mace"), "battle preserves authored weapon loot")
 	_expect_equal(entries.size(), 6, "battle reports experience, gold, and every loot item")
+	manager.free()
+
+
+func _test_battle_rewards_split_experience_across_party() -> void:
+	var party := _new_party_with_heroes()
+	var monster := MonsterLoader.new_monster(MonsterLoader.MonsterID.GOBLIN)
+	monster.max_hp = 30
+	var expected_xp: int = monster.calculate_experience()
+	var manager := BattleManager.new()
+	manager.persistent_party = party
+	manager.player_party = party.create_battle_party()
+	manager.monster = monster
+
+	var entries := manager._grant_victory_rewards()
+
+	for member: Hero in party.members:
+		_expect_equal(
+			member.experience,
+			expected_xp,
+			"%s receives full monster XP" % member.get_class_name()
+		)
+		_expect_equal(
+			member.level,
+			1,
+			"%s level is unchanged when XP is below level-up threshold" % member.get_class_name()
+		)
+
+	var xp_entries: Array[RewardEntry] = []
+	for entry: RewardEntry in entries:
+		if entry.color == RewardEntry.COLOR_XP:
+			xp_entries.append(entry)
+
+	_expect_equal(
+		xp_entries.size(),
+		party.members.size(),
+		"victory rewards include one XP entry per party member"
+	)
+	for entry: RewardEntry in xp_entries:
+		_expect_contains(
+			entry.display_text,
+			"%d Experience" % expected_xp,
+			"XP entry reflects full monster XP amount"
+		)
 	manager.free()
 
 
@@ -327,3 +372,21 @@ func _new_hero() -> Hero:
 	party.add_member(hero)
 	GameState.party = party
 	return hero
+
+
+func _new_party_with_heroes() -> Party:
+	var party := Party.new()
+	var knight := HeroLoader.new_hero(Hero.HeroClass.KNIGHT)
+	knight.level = 1
+	knight.experience = 0
+	var assassin := HeroLoader.new_hero(Hero.HeroClass.ASSASSIN)
+	assassin.level = 1
+	assassin.experience = 0
+	var princess := HeroLoader.new_hero(Hero.HeroClass.PRINCESS)
+	princess.level = 1
+	princess.experience = 0
+	party.add_member(knight)
+	party.add_member(assassin)
+	party.add_member(princess)
+	GameState.party = party
+	return party

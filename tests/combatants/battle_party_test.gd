@@ -10,6 +10,7 @@ func run_tests() -> int:
 	_test_remove_member()
 	_test_alive_member_queries()
 	_test_accepts_heroes_and_monsters()
+	_test_grant_victory_rewards_no_op_without_hero_members()
 	return _finish_test_run("Battle party tests")
 
 
@@ -107,6 +108,28 @@ func _test_accepts_heroes_and_monsters() -> void:
 	_expect_true(party.add_member(hero), "party accepts heroes")
 	_expect_true(party.add_member(monster), "party accepts monsters")
 	_expect_equal(party.get_members().size(), 2, "party stores both combatant subtypes")
+
+
+func _test_grant_victory_rewards_no_op_without_hero_members() -> void:
+	var manager := BattleManager.new()
+	var party := Party.new()
+	manager.persistent_party = party
+
+	var monster := MonsterLoader.new_monster(MonsterLoader.MonsterID.GOBLIN)
+	monster.gold = 25
+	manager.monster = monster
+
+	var empty_entries := manager._grant_victory_rewards()
+	_expect_true(empty_entries.is_empty(), "granting victory rewards with empty player party returns no entries")
+	_expect_equal(party.inventory.gold, 0, "gold is not granted when player party has no members")
+
+	var non_hero := Combatant.new()
+	manager.player_party.add_member(non_hero)
+	var non_hero_entries := manager._grant_victory_rewards()
+	_expect_true(non_hero_entries.is_empty(), "granting victory rewards with non-hero player party returns no entries")
+	_expect_equal(party.inventory.gold, 0, "gold is not granted when player party has no hero combatants")
+
+	manager.free()
 
 
 func _new_combatant(health: int) -> Combatant:

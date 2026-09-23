@@ -17,6 +17,7 @@ func run_tests() -> int:
 	_test_invalid_equipment_operations_do_not_mutate_state()
 	_test_save_data_round_trip_preserves_shared_and_equipped_items()
 	_test_full_save_load_round_trip()
+	_test_rest_all_restores_every_member()
 	if SaveManager.has_save_data(TEST_SAVE_SLOT):
 		SaveManager.delete_slot(TEST_SAVE_SLOT)
 	return _finish_test_run("Party tests")
@@ -237,6 +238,33 @@ func _test_full_save_load_round_trip() -> void:
 		"bronze_mace",
 		"full save/load restores Hero equipment"
 	)
+
+
+func _test_rest_all_restores_every_member() -> void:
+	var party := Party.new()
+	var knight := HeroLoader.new_hero(Hero.HeroClass.KNIGHT)
+	var assassin := HeroLoader.new_hero(Hero.HeroClass.ASSASSIN)
+	party.add_member(knight)
+	party.add_member(assassin)
+
+	knight.current_hp = 5
+	knight.current_nrg = 2
+	assassin.current_hp = 1
+	assassin.current_nrg = 0
+
+	party.rest_all()
+
+	for hero: Hero in party.members:
+		_expect_equal(
+			hero.current_hp,
+			hero.max_hp,
+			"%s HP is fully restored by rest_all" % hero.get_class_name()
+		)
+		_expect_equal(
+			hero.current_nrg,
+			hero.max_nrg,
+			"%s NRG is fully restored by rest_all" % hero.get_class_name()
+		)
 
 
 func _new_party() -> Party:
