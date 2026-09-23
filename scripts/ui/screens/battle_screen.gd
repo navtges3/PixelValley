@@ -252,7 +252,7 @@ func _on_hero_defeated() -> void:
 	death_window.open()
 
 func _on_death_window_dismissed() -> void:
-	GameState.hero.rest()
+	GameState.party.rest_all()
 	ScreenManager.go_to_screen(ScreenManager.ScreenName.VILLAGE, InnInterior.ENTRANCE_ID)
 
 # --- Button Factories ---

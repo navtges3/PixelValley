@@ -354,34 +354,39 @@ func _cleanup_battle_effects() -> String:
 
 func _grant_victory_rewards() -> Array[RewardEntry]:
 	var entries: Array[RewardEntry] = []
-	var recipient := _get_reward_recipient()
-	if recipient == null:
-		return entries
 	var reward_party := persistent_party
 	if reward_party == null:
 		push_error("BattleManager: cannot grant rewards without a persistent Party.")
 		return entries
-	if not reward_party.has_member(recipient):
-		push_error("BattleManager: reward recipient is not in the persistent Party.")
+	var recipients := _get_reward_recipients()
+	if recipients.is_empty():
 		return entries
 	var enemies := enemy_party.get_members()
 	if enemies.is_empty() and monster != null:
 		enemies.append(monster)
+	var total_experience := 0
 	for combatant: Combatant in enemies:
 		var enemy := combatant as Monster
 		if enemy == null:
 			continue
-		var experience := RewardService.grant_experience(
-			recipient, enemy.calculate_experience())
-		if experience != null:
-			entries.append(experience)
-		var gold := RewardService.grant_gold(
-			reward_party, enemy.calculate_gold())
+		total_experience += enemy.calculate_experience()
+		var gold := RewardService.grant_gold(reward_party, enemy.calculate_gold())
 		if gold != null:
 			entries.append(gold)
 		entries.append_array(RewardService.grant_loot(
-			enemy.roll_loot(), reward_party, recipient.hero_class))
+			enemy.roll_loot(), reward_party, recipients[0].hero_class))
+	for hero: Hero in recipients:
+		var xp_entry := RewardService.grant_experience(hero, total_experience)
+		if xp_entry != null:
+			entries.append(xp_entry)
 	return entries
+
+func _get_reward_recipients() -> Array[Hero]:
+	var recipients: Array[Hero] = []
+	for member: Combatant in player_party.get_members():
+		if member is Hero:
+			recipients.append(member as Hero)
+	return recipients
 
 func _is_player_combatant(combatant: Combatant) -> bool:
 	return player_party.has_member(combatant)
@@ -460,10 +465,3 @@ func _get_active_monster() -> Monster:
 	if active_combatant is Monster:
 		return active_combatant as Monster
 	return null
-
-func _get_reward_recipient() -> Hero:
-	var players := player_party.get_members()
-	for member: Combatant in players:
-		if member is Hero:
-			return member as Hero
-	return hero

@@ -77,6 +77,10 @@ func create_battle_party() -> BattleParty:
 		battle_party.add_member(member)
 	return battle_party
 
+func rest_all() -> void:
+	for hero: Hero in members:
+		hero.rest()
+
 # ---- INVENTORY ----
 func equip_weapon(hero: Hero, weapon_id: String) -> bool:
 	if not has_member(hero) or weapon_id not in inventory.weapon_stash:
