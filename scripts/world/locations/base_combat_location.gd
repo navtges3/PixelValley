@@ -31,6 +31,8 @@ func _activate_spawn_points() -> void:
 		sp.spawn(y_sorted_world, _on_combat_initiated, _get_location_id())
 
 func _on_combat_initiated(enemy: Enemy) -> void:
+	if GameState.party == null or not GameState.party.can_fight():
+		return
 	enemy.set_physics_process(false)
 	var retreat_dir := (player.global_position - enemy.global_position) if player != null else Vector2.DOWN
 	if retreat_dir == Vector2.ZERO:

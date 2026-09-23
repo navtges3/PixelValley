@@ -3,6 +3,8 @@ class_name Party
 
 const MAX_ACTIVE_MEMBERS := 4
 
+signal party_changed
+
 @export var members: Array[Hero] = []
 @export var active_member_ids: Array[StringName] = []
 @export var inventory: Inventory = Inventory.new():
@@ -18,10 +20,11 @@ func add_member(hero: Hero) -> bool:
 	if active_member_ids.size() < MAX_ACTIVE_MEMBERS:
 		active_member_ids.append(hero.hero_id)
 	_remove_equipped_weapon_from_stash(hero)
+	party_changed.emit()
 	return true
 
 func add_to_active_party(hero: Hero) -> bool:
-	if not has_member(hero) or active_member_ids.size() >= MAX_ACTIVE_MEMBERS:
+	if not is_eligible(hero) or active_member_ids.size() >= MAX_ACTIVE_MEMBERS:
 		return false
 	if hero.hero_id in active_member_ids:
 		return false
@@ -30,6 +33,8 @@ func add_to_active_party(hero: Hero) -> bool:
 
 func remove_from_active_party(hero: Hero) -> bool:
 	if not has_member(hero) or hero.hero_id not in active_member_ids:
+		return false
+	if is_leader(hero) or active_member_ids.size() <= 1:
 		return false
 	active_member_ids.erase(hero.hero_id)
 	return true
@@ -62,6 +67,7 @@ func set_active_member_ids(ids: Array) -> void:
 		active_member_ids.append(hero_id)
 		if active_member_ids.size() >= MAX_ACTIVE_MEMBERS:
 			break
+	party_changed.emit()
 
 func has_weapon(weapon_id: String) -> bool:
 	if weapon_id in inventory.weapon_stash:
@@ -73,13 +79,41 @@ func has_weapon(weapon_id: String) -> bool:
 
 func create_battle_party() -> BattleParty:
 	var battle_party := BattleParty.new()
-	for member: Hero in get_active_members():
+	for member: Hero in get_eligible_active_members():
 		battle_party.add_member(member)
 	return battle_party
 
 func rest_all() -> void:
 	for hero: Hero in members:
 		hero.rest()
+
+func is_leader(hero: Hero) -> bool:
+	return not members.is_empty() and members[0] == hero
+
+func is_eligible(hero: Hero) -> bool:
+	return has_member(hero) and hero.is_alive()
+
+func get_eligible_active_members() -> Array[Hero]:
+	var result: Array[Hero] = []
+	for hero: Hero in get_active_members():
+		if is_eligible(hero):
+			result.append(hero)
+	return result
+
+func can_fight() -> bool:
+	return not get_eligible_active_members().is_empty()
+
+func move_active_member(hero: Hero, direction: int) -> bool:
+	if hero == null:
+		return false
+	var index := active_member_ids.find(hero.hero_id)
+	var target := index + direction
+	if index == -1 or target < 0 or target >= active_member_ids.size():
+		return false
+	active_member_ids.remove_at(index)
+	active_member_ids.insert(target, hero.hero_id)
+	party_changed.emit()
+	return true
 
 # ---- INVENTORY ----
 func equip_weapon(hero: Hero, weapon_id: String) -> bool:
@@ -95,6 +129,7 @@ func equip_weapon(hero: Hero, weapon_id: String) -> bool:
 	hero.equipped_weapon = weapon_template.duplicate(true) as Weapon
 	if not previous_weapon_id.is_empty() and previous_weapon_id not in inventory.weapon_stash:
 		inventory.weapon_stash.append(previous_weapon_id)
+	party_changed.emit()
 	return true
 
 func unequip_weapon(hero: Hero) -> bool:
@@ -106,6 +141,7 @@ func unequip_weapon(hero: Hero) -> bool:
 	hero.equipped_weapon = null
 	if weapon_id not in inventory.weapon_stash:
 		inventory.weapon_stash.append(weapon_id)
+	party_changed.emit()
 	return true
 
 func _remove_equipped_weapon_from_stash(hero: Hero) -> void:

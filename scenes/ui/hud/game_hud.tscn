@@ -10,6 +10,8 @@
 [ext_resource type="PackedScene" uid="uid://cw2srj46vgqyq" path="res://scenes/ui/hud/panels/quests_panel.tscn" id="5_hb3v3"]
 [ext_resource type="Theme" uid="uid://dqwm8agt87lsh" path="res://resources/themes/buttons/regular/blue_button.tres" id="6_11vu1"]
 [ext_resource type="PackedScene" uid="uid://cfkpdp82x2nsu" path="res://scenes/ui/hud/panels/system_panel.tscn" id="6_fde6m"]
+[ext_resource type="Theme" uid="uid://e6xnt81pte22" path="res://resources/themes/buttons/regular/gray_button.tres" id="7_0h4j1"]
+[ext_resource type="PackedScene" uid="uid://biuxoevi5uvak" path="res://scenes/ui/hud/panels/party_panel.tscn" id="9_11vu1"]
 
 [node name="GameHud" type="CanvasLayer" unique_id=956269644]
 script = ExtResource("1_uhlhu")
@@ -72,6 +74,12 @@ theme = ExtResource("4_4co4c")
 toggle_mode = true
 text = "Stats"
 
+[node name="PartyButton" type="Button" parent="Panel/MarginContainer/VBox/TabBar" unique_id=1162283119]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("5_0h4j1")
+text = "Party"
+
 [node name="InventoryButton" type="Button" parent="Panel/MarginContainer/VBox/TabBar" unique_id=1716018902]
 layout_mode = 2
 size_flags_horizontal = 3
@@ -89,7 +97,7 @@ text = "Quests"
 [node name="SystemButton" type="Button" parent="Panel/MarginContainer/VBox/TabBar" unique_id=1866902854]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("5_0h4j1")
+theme = ExtResource("7_0h4j1")
 toggle_mode = true
 text = "System"
 
@@ -106,6 +114,10 @@ layout_mode = 2
 size_flags_vertical = 3
 
 [node name="StatsPanel" parent="Panel/MarginContainer/VBox/MarginContainer/ContentArea" unique_id=1483468948 instance=ExtResource("3_b1c7m")]
+layout_mode = 1
+
+[node name="PartyPanel" parent="Panel/MarginContainer/VBox/MarginContainer/ContentArea" unique_id=459256884 instance=ExtResource("9_11vu1")]
+visible = false
 layout_mode = 1
 
 [node name="InventoryPanel" parent="Panel/MarginContainer/VBox/MarginContainer/ContentArea" unique_id=1848494753 instance=ExtResource("4_au6ik")]

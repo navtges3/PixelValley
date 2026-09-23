@@ -3,6 +3,7 @@ class_name GameHUD
 
 enum Tab {
 	STATS,
+	PARTY,
 	INVENTORY,
 	QUESTS,
 	SYSTEM,
@@ -10,6 +11,7 @@ enum Tab {
 
 const PANELS_BY_TAB := {
 	Tab.STATS:     "StatsPanel",
+	Tab.PARTY:     "PartyPanel",
 	Tab.INVENTORY: "InventoryPanel",
 	Tab.QUESTS:    "QuestsPanel",
 	Tab.SYSTEM:    "SystemPanel",
@@ -20,11 +22,13 @@ const PANELS_BY_TAB := {
 @onready var content_area: Control = $Panel/MarginContainer/VBox/MarginContainer/ContentArea
 
 @onready var stats_button: Button = $Panel/MarginContainer/VBox/TabBar/StatsButton
+@onready var party_button: Button = $Panel/MarginContainer/VBox/TabBar/PartyButton
 @onready var inventory_button: Button = $Panel/MarginContainer/VBox/TabBar/InventoryButton
 @onready var quests_button: Button = $Panel/MarginContainer/VBox/TabBar/QuestsButton
 @onready var system_button: Button = $Panel/MarginContainer/VBox/TabBar/SystemButton
 
 @onready var stats_panel: StatsPanel = $Panel/MarginContainer/VBox/MarginContainer/ContentArea/StatsPanel
+@onready var party_panel: Control = $Panel/MarginContainer/VBox/MarginContainer/ContentArea/PartyPanel
 @onready var inventory_panel: InventoryPanel = $Panel/MarginContainer/VBox/MarginContainer/ContentArea/InventoryPanel
 @onready var quests_panel: QuestsPanel = $Panel/MarginContainer/VBox/MarginContainer/ContentArea/QuestsPanel
 @onready var system_panel: SystemPanel = $Panel/MarginContainer/VBox/MarginContainer/ContentArea/SystemPanel
@@ -81,6 +85,8 @@ func _get_default_focus_target() -> Control:
 	match _current_tab:
 		Tab.SYSTEM:
 			return system_panel.get_default_focus_target()
+		Tab.PARTY:
+			return party_panel.get_default_focus_target()
 		Tab.STATS:
 			return stats_panel.get_default_focus_target()
 		Tab.INVENTORY:
@@ -94,6 +100,8 @@ func _refresh_current_tab() -> void:
 	match _current_tab:
 		Tab.STATS:
 			stats_panel.refresh()
+		Tab.PARTY:
+			party_panel.refresh()
 		Tab.INVENTORY:
 			inventory_panel.refresh()
 		Tab.QUESTS:
@@ -104,6 +112,7 @@ func _refresh_current_tab() -> void:
 func _setup_tab_buttons() -> void:
 	_tab_buttons = {
 		Tab.STATS: stats_button,
+		Tab.PARTY: party_button,
 		Tab.INVENTORY: inventory_button,
 		Tab.QUESTS: quests_button,
 		Tab.SYSTEM: system_button,

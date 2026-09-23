@@ -19,7 +19,7 @@ func _get_default_focus_target() -> Control:
 	return rest_button
 
 func _on_rest_button_pressed() -> void:
-	GameState.hero.rest()
+	GameState.party.rest_all()
 	for location_id in [ForestLocation.LOCATION_ID, WarCampLocation.LOCATION_ID, CaveLocation.LOCATION_ID]:
 		WorldManager.reset_location_spawners(location_id)
 	SaveManager.save_game()
