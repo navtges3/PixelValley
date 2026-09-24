@@ -39,9 +39,29 @@ var _tab_buttons: Dictionary = {}
 
 signal hud_closed
 
+var _panels: Dictionary[Tab, HudPanel] = {}
+
 func _ready() -> void:
+	_panels = {
+		Tab.STATS: stats_panel,
+		Tab.PARTY: party_panel,
+		Tab.INVENTORY: inventory_panel,
+		Tab.QUESTS: quests_panel,
+		Tab.SYSTEM: system_panel,
+	}
 	_setup_tab_buttons()
 	hide_hud()
+
+func switch_tab(tab: Tab) -> void:
+	_current_tab = tab
+	for panel_tab: Tab in _panels:
+		_panels[panel_tab].visible = panel_tab == tab
+	_sync_tab_buttons()
+	_panels[tab].on_tab_opened()
+	_focus_current_tab.call_deferred()
+
+func _get_default_focus_target() -> Control:
+	return _panels[_current_tab].get_default_focus_target()
 
 func is_open() -> bool:
 	return _is_open
@@ -64,15 +84,6 @@ func hide_hud() -> void:
 	InputManager.pop_menu_focus_context(panel)
 	hud_closed.emit()
 
-func switch_tab(tab: Tab) -> void:
-	_current_tab = tab
-	for panel_name in PANELS_BY_TAB.values():
-		content_area.get_node(panel_name).visible = false
-	content_area.get_node(PANELS_BY_TAB[tab]).visible = true
-	_sync_tab_buttons()
-	_refresh_current_tab()
-	_focus_current_tab.call_deferred()
-
 func _focus_current_tab() -> void:
 	if not _is_open:
 		return
@@ -80,21 +91,6 @@ func _focus_current_tab() -> void:
 	if target == null:
 		target = _tab_buttons[_current_tab] as Button
 	InputManager.focus_menu_control(target)
-
-func _get_default_focus_target() -> Control:
-	match _current_tab:
-		Tab.SYSTEM:
-			return system_panel.get_default_focus_target()
-		Tab.PARTY:
-			return party_panel.get_default_focus_target()
-		Tab.STATS:
-			return stats_panel.get_default_focus_target()
-		Tab.INVENTORY:
-			return inventory_panel.get_default_focus_target()
-		Tab.QUESTS:
-			return quests_panel.get_default_focus_target()
-		_:
-			return null
 
 func _refresh_current_tab() -> void:
 	match _current_tab:
