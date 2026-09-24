@@ -9,13 +9,7 @@ enum Tab {
 	SYSTEM,
 }
 
-const PANELS_BY_TAB := {
-	Tab.STATS:     "StatsPanel",
-	Tab.PARTY:     "PartyPanel",
-	Tab.INVENTORY: "InventoryPanel",
-	Tab.QUESTS:    "QuestsPanel",
-	Tab.SYSTEM:    "SystemPanel",
-}
+signal hud_closed
 
 @onready var overlay: ColorRect = $Overlay
 @onready var panel: PanelContainer = $Panel
@@ -36,32 +30,16 @@ const PANELS_BY_TAB := {
 var _is_open: bool = false
 var _current_tab: Tab = Tab.STATS
 var _tab_buttons: Dictionary = {}
-
-signal hud_closed
-
 var _panels: Dictionary[Tab, HudPanel] = {}
 
 func _ready() -> void:
-	_panels = {
-		Tab.STATS: stats_panel,
-		Tab.PARTY: party_panel,
-		Tab.INVENTORY: inventory_panel,
-		Tab.QUESTS: quests_panel,
-		Tab.SYSTEM: system_panel,
-	}
+	_register_panel(Tab.STATS, stats_panel)
+	_register_panel(Tab.PARTY, party_panel)
+	_register_panel(Tab.INVENTORY, inventory_panel)
+	_register_panel(Tab.QUESTS, quests_panel)
+	_register_panel(Tab.SYSTEM, system_panel)
 	_setup_tab_buttons()
 	hide_hud()
-
-func switch_tab(tab: Tab) -> void:
-	_current_tab = tab
-	for panel_tab: Tab in _panels:
-		_panels[panel_tab].visible = panel_tab == tab
-	_sync_tab_buttons()
-	_panels[tab].on_tab_opened()
-	_focus_current_tab.call_deferred()
-
-func _get_default_focus_target() -> Control:
-	return _panels[_current_tab].get_default_focus_target()
 
 func is_open() -> bool:
 	return _is_open
@@ -84,6 +62,20 @@ func hide_hud() -> void:
 	InputManager.pop_menu_focus_context(panel)
 	hud_closed.emit()
 
+func switch_tab(tab: Tab) -> void:
+	_current_tab = tab
+	for panel_tab: Tab in _panels:
+		_panels[panel_tab].visible = panel_tab == tab
+	_sync_tab_buttons()
+	_panels[tab].on_tab_opened()
+	_focus_current_tab.call_deferred()
+
+func _register_panel(tab: Tab, hud_panel: HudPanel) -> void:
+	_panels[tab] = hud_panel
+
+func _get_default_focus_target() -> Control:
+	return _panels[_current_tab].get_default_focus_target()
+
 func _focus_current_tab() -> void:
 	if not _is_open:
 		return
@@ -91,19 +83,6 @@ func _focus_current_tab() -> void:
 	if target == null:
 		target = _tab_buttons[_current_tab] as Button
 	InputManager.focus_menu_control(target)
-
-func _refresh_current_tab() -> void:
-	match _current_tab:
-		Tab.STATS:
-			stats_panel.refresh()
-		Tab.PARTY:
-			party_panel.refresh()
-		Tab.INVENTORY:
-			inventory_panel.refresh()
-		Tab.QUESTS:
-			quests_panel.refresh()
-		Tab.SYSTEM:
-			system_panel.refresh()
 
 func _setup_tab_buttons() -> void:
 	_tab_buttons = {
@@ -122,8 +101,7 @@ func _setup_tab_buttons() -> void:
 	_sync_tab_buttons()
 
 func _switch_relative_tab(direction: int) -> void:
-	var tab_count := PANELS_BY_TAB.size()
-	var next_tab: Tab = wrapi(_current_tab + direction, 0, tab_count) as Tab
+	var next_tab: Tab = wrapi(_current_tab + direction, 0, _panels.size()) as Tab
 	switch_tab(next_tab)
 
 func _sync_tab_buttons() -> void:

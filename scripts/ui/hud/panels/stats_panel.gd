@@ -1,4 +1,4 @@
-extends Control
+extends HudPanel
 class_name StatsPanel
 
 @onready var name_label: Label = $ScrollContainer/VBox/StatsRow/StatsBars/NameRow/NameLabel
@@ -32,10 +32,7 @@ class_name StatsPanel
 
 @onready var effects_container: VBoxContainer = $ScrollContainer/VBox/EffectsContainer
 
-const COLOR_GOLD     := Color(0.95, 0.80, 0.25)
-const COLOR_HEADER   := Color(0.95, 0.92, 0.80)
-const COLOR_SUBTEXT  := Color(0.72, 0.67, 0.57)
-const COLOR_BUFFED   := Color(0.30, 0.90, 0.40)
+const COLOR_BUFFED := Color(0.30, 0.90, 0.40)
 
 var _up_buttons: Dictionary
 var _down_buttons: Dictionary
@@ -68,12 +65,20 @@ func _ready() -> void:
 		"defense": defense_label,
 		"resist": resist_label,
 	}
-	
+
 	for stat in _up_buttons:
 		_up_buttons[stat].pressed.connect(_on_increase.bind(stat))
 		_down_buttons[stat].pressed.connect(_on_decrease.bind(stat))
- 
+
 	confirm_button.pressed.connect(_on_confirm_pressed)
+
+# ---- HudPanel contract ----
+
+# Opening the tab discards any unconfirmed point allocation; a plain refresh()
+# (e.g. after confirming) keeps pending points and just redraws.
+func on_tab_opened() -> void:
+	_reset_pending_allocations()
+	refresh()
 
 func get_default_focus_target() -> Control:
 	var stat_order: Array[String] = [
@@ -89,27 +94,30 @@ func get_default_focus_target() -> Control:
 	return null
 
 func refresh() -> void:
-	if GameState.hero == null:
+	var hero := GameState.hero
+	if hero == null:
 		return
-	# Reset pending allocations every time the panel is refreshed (HUD opened)
-	_temp_allocations = { "attack": 0, "magic": 0, "defense": 0, "resist": 0 }
-	_available_points = GameState.hero.skill_points
- 
+	if _pending_total() > hero.skill_points:
+		_reset_pending_allocations()
+	_available_points = hero.skill_points - _pending_total()
+
 	_refresh_identity()
 	_refresh_bars()
 	_refresh_stats()
-	_refresh_effects(GameState.hero)
- 
+	_refresh_effects(hero)
+
+# ---- Refresh helpers ----
+
 func _refresh_identity() -> void:
 	var hero := GameState.hero
 	name_label.text = hero.name
-	name_label.add_theme_color_override("font_color", COLOR_HEADER)
+	name_label.add_theme_color_override("font_color", HudStyle.COLOR_HEADER)
 	class_label.text = hero.get_class_name()
-	class_label.add_theme_color_override("font_color", COLOR_SUBTEXT)
+	class_label.add_theme_color_override("font_color", HudStyle.COLOR_SUBTEXT)
 	level_label.text = "Level %d" % hero.level
-	level_label.add_theme_color_override("font_color", COLOR_HEADER)
+	level_label.add_theme_color_override("font_color", HudStyle.COLOR_HEADER)
 	skill_label.text = "Skill Points: %d" % _available_points
-	skill_label.add_theme_color_override("font_color", COLOR_GOLD)
+	skill_label.add_theme_color_override("font_color", HudStyle.COLOR_GOLD)
 
 func _refresh_bars() -> void:
 	var hero := GameState.hero
@@ -121,26 +129,25 @@ func _refresh_bar(bar: ProgressBar, label: Label, value: int, max_val: int, fmt:
 	bar.max_value = max(max_val, 1)
 	bar.value = value
 	label.text = fmt % [value, max_val]
-	_set_bar_color(bar, color)
+	HudBarStyle.apply(bar, color)
 
 func _refresh_stats() -> void:
 	var hero := GameState.hero
 	var no_points := _available_points <= 0
-	
+
 	_refresh_stat_label("attack", "Attack", hero.attack)
 	_refresh_stat_label("magic", "Magic", hero.magic)
 	_refresh_stat_label("defense", "Defense", hero.defense)
 	_refresh_stat_label("resist", "Resist", hero.resist)
-	
+
 	for stat in _up_buttons:
 		_up_buttons[stat].disabled = no_points
 		_down_buttons[stat].disabled = _temp_allocations[stat] <= 0
-	
+
 	gold_label.text = "Gold: %d" % GameState.party.inventory.gold
-	gold_label.add_theme_color_override("font_color", COLOR_GOLD)
-	
-	var has_pending := _temp_allocations.values().any(func(v): return v > 0)
-	confirm_button.visible = has_pending
+	gold_label.add_theme_color_override("font_color", HudStyle.COLOR_GOLD)
+
+	confirm_button.visible = _pending_total() > 0
 
 func _refresh_stat_label(stat: String, prefix: String, base_val: int) -> void:
 	var bonus: int = _temp_allocations[stat]
@@ -153,20 +160,28 @@ func _refresh_stat_label(stat: String, prefix: String, base_val: int) -> void:
 		lbl.remove_theme_color_override("font_color")
 
 func _refresh_effects(hero: Hero) -> void:
-	for child in effects_container.get_children():
-		child.queue_free()
+	clear_children(effects_container)
 
 	var effects: Array[EffectView] = EffectManager.get_active_effects(hero)
 	if effects.is_empty():
-		var lbl := _make_label("No active effects", COLOR_SUBTEXT, 11)
-		effects_container.add_child(lbl)
+		effects_container.add_child(HudStyle.label("No active effects", HudStyle.COLOR_SUBTEXT, 11))
 		return
 
-	var header := _make_label("Active Effects:", COLOR_HEADER, 12)
-	effects_container.add_child(header)
+	effects_container.add_child(HudStyle.label("Active Effects:", HudStyle.COLOR_HEADER))
 	for effect: EffectView in effects:
-		var lbl := _make_label("  • %s" % effect.tooltip_text, COLOR_SUBTEXT, 11)
-		effects_container.add_child(lbl)
+		effects_container.add_child(HudStyle.label("  • %s" % effect.tooltip_text, HudStyle.COLOR_SUBTEXT, 11))
+
+# ---- Point allocation ----
+
+func _pending_total() -> int:
+	var total := 0
+	for stat: String in _temp_allocations:
+		total += _temp_allocations[stat]
+	return total
+
+func _reset_pending_allocations() -> void:
+	for stat: String in _temp_allocations:
+		_temp_allocations[stat] = 0
 
 func _on_increase(stat: String) -> void:
 	if _available_points <= 0:
@@ -196,14 +211,5 @@ func _on_confirm_pressed() -> void:
 			"defense": hero.defense += increase
 			"resist": hero.resist += increase
 	hero.skill_points = _available_points
+	_reset_pending_allocations()
 	refresh()
-
-func _set_bar_color(bar: ProgressBar, color: Color) -> void:
-	HudBarStyle.apply(bar, color)
-
-func _make_label(txt: String, color: Color, font_size: int = 12) -> Label:
-	var lbl := Label.new()
-	lbl.text = txt
-	lbl.add_theme_color_override("font_color", color)
-	lbl.add_theme_font_size_override("font_size", font_size)
-	return lbl
