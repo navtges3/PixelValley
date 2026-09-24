@@ -2,6 +2,7 @@ extends Node
 
 const SAVE_DIR := "user://saves"
 const STARTING_GOLD := 50
+const STARTING_PARTY := [Hero.HeroClass.KNIGHT, Hero.HeroClass.PRINCESS]
 
 var party: Party = null
 var hero: Hero = null
@@ -89,17 +90,18 @@ func _setup_potion_shop() -> void:
 func _setup_weapon_shop() -> void:
 	var shop := Shop.new()
 	shop.name = "Oakshield Forge"
-	var common_weapons: Array = WeaponDatabase.CLASS_WEAPON_TABLE.get(hero.hero_class, {}).get(Item.Rarity.COMMON, [])
+	var common_weapons: Array = WeaponDatabase.CLASS_WEAPON_TABLE.get(Hero.HeroClass.KNIGHT, {}).get(Item.Rarity.COMMON, [])
+	common_weapons.append_array(WeaponDatabase.CLASS_WEAPON_TABLE.get(Hero.HeroClass.PRINCESS, {}).get(Item.Rarity.COMMON, []))
+	common_weapons.append_array(WeaponDatabase.CLASS_WEAPON_TABLE.get(Hero.HeroClass.ASSASSIN, {}).get(Item.Rarity.COMMON, []))
 	for weapon_id in common_weapons:
 		shop.add_item(weapon_id, 1)
 	village.weapon_shop = shop
 
 func _setup_party() -> void:
-	if hero == null:
-		push_error("GameState: cannot start a game without a selected Hero.")
-		return
 	party = Party.new()
-	party.add_member(hero)
+	for hero_class: Hero.HeroClass in STARTING_PARTY:
+		party.add_member(HeroLoader.new_hero(hero_class))
+	hero = party.members[0]
 	party.inventory.gold = STARTING_GOLD
 	party.inventory.add_potion("lesser_healing_potion", 3)
 	party.inventory.add_potion("attack_potion", 3)
