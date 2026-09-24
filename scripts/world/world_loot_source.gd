@@ -55,7 +55,7 @@ func try_claim(recipient: Hero, party: Party = GameState.party) -> ClaimResult:
 		return ClaimResult.ALREADY_CLAIMED
 	_claim_in_progress = true
 	var loot: Dictionary = loot_table.roll()
-	var rewards := RewardService.grant_loot(loot, party, recipient.hero_class)
+	var rewards := RewardService.grant_loot(loot, party)
 	WorldManager.mark_loot_claimed(location_id, loot_source_id)
 	interact_area.set_enabled(false)
 	_autosave_after_claim()

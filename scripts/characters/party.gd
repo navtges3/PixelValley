@@ -52,6 +52,14 @@ func get_active_members() -> Array[Hero]:
 			result.append(hero)
 	return result
 
+func get_average_level() -> int:
+	if members.is_empty():
+		return 1
+	var total := 0
+	for hero: Hero in members:
+		total += hero.level
+	return maxi(roundi(float(total) / members.size()), 1)
+
 func get_member_by_id(hero_id: StringName) -> Hero:
 	for hero: Hero in members:
 		if hero.hero_id == hero_id:

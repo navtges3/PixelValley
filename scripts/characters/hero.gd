@@ -46,11 +46,12 @@ func level_up() -> void:
 	else:
 		skill_points += 2
 
-func use_item(
-	item_id: String,
-	dispatcher: EffectEventDispatcher,
-	shared_inventory: Inventory
-) -> String:
+func set_level(target_level: int) -> void:
+	while level < target_level:
+		level_up()
+	experience = 0
+
+func use_item(item_id: String, dispatcher: EffectEventDispatcher, shared_inventory: Inventory) -> String:
 	var potion := ItemLoader.get_item(item_id) as Potion
 	if potion == null or shared_inventory == null:
 		return "%s can't use this item.\n" % get_colored_name()

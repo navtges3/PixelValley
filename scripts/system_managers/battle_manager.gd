@@ -373,8 +373,7 @@ func _grant_victory_rewards() -> Array[RewardEntry]:
 		var gold := RewardService.grant_gold(reward_party, enemy.calculate_gold())
 		if gold != null:
 			entries.append(gold)
-		entries.append_array(RewardService.grant_loot(
-			enemy.roll_loot(), reward_party, recipients[0].hero_class))
+		entries.append_array(RewardService.grant_loot(enemy.roll_loot(), reward_party))
 	for hero: Hero in recipients:
 		var xp_entry := RewardService.grant_experience(hero, total_experience)
 		if xp_entry != null:
