@@ -28,7 +28,7 @@ const PANELS_BY_TAB := {
 @onready var system_button: Button = $Panel/MarginContainer/VBox/TabBar/SystemButton
 
 @onready var stats_panel: StatsPanel = $Panel/MarginContainer/VBox/MarginContainer/ContentArea/StatsPanel
-@onready var party_panel: Control = $Panel/MarginContainer/VBox/MarginContainer/ContentArea/PartyPanel
+@onready var party_panel: PartyPanel = $Panel/MarginContainer/VBox/MarginContainer/ContentArea/PartyPanel
 @onready var inventory_panel: InventoryPanel = $Panel/MarginContainer/VBox/MarginContainer/ContentArea/InventoryPanel
 @onready var quests_panel: QuestsPanel = $Panel/MarginContainer/VBox/MarginContainer/ContentArea/QuestsPanel
 @onready var system_panel: SystemPanel = $Panel/MarginContainer/VBox/MarginContainer/ContentArea/SystemPanel

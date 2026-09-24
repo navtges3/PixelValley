@@ -1,8 +1,7 @@
 extends Control
 class_name InventoryPanel
 
-signal weapon_equipped(weapon_id: String)
-
+@onready var gold_label: Label = $ScrollContainer/VBox/GoldLabel
 @onready var potions_list: VBoxContainer = $ScrollContainer/VBox/PotionsSection/PotionsList
 @onready var quest_items_list: VBoxContainer = $ScrollContainer/VBox/QuestItemsSection/QuestItemsList
 @onready var equipped_label: Label = $ScrollContainer/VBox/WeaponsSection/EquippedLabel
@@ -16,33 +15,17 @@ const COLOR_RARE      := Color(0.30, 0.65, 1.00)
 const COLOR_LEGENDARY := Color(1.00, 0.75, 0.20)
 const COLOR_EQUIPPED  := Color(0.30, 0.90, 0.45)
 
-var _equip_buttons: Dictionary[String, Button] = {}
-var _last_focused_weapon_id: String = ""
-
 func get_default_focus_target() -> Control:
-	if _equip_buttons.has(_last_focused_weapon_id):
-		return _equip_buttons[_last_focused_weapon_id]
-	for weapon_id: String in _equip_buttons:
-		return _equip_buttons[weapon_id]
 	return null
 
 func refresh() -> void:
-	if GameState.hero == null or GameState.party == null:
+	if GameState.party == null:
 		return
-	var hero := GameState.hero
-	_refresh_potions(GameState.party.inventory)
-	_refresh_quest_items(GameState.party.inventory)
-	_refresh_weapons(hero, GameState.party.inventory)
-
-func _make_equip_button(weapon_id: String) -> Button:
-	var button := Button.new()
-	button.text = "Equip"
-	button.theme = ThemeManager.GREEN_BUTTON
-	button.add_theme_font_size_override("font_size", 11)
-	button.pressed.connect(_on_equip_pressed.bind(weapon_id))
-	button.focus_entered.connect(_on_equip_button_focused.bind(weapon_id))
-	_equip_buttons[weapon_id] = button
-	return button
+	var party := GameState.party
+	_refresh_gold(party.inventory)
+	_refresh_potions(party.inventory)
+	_refresh_quest_items(party.inventory)
+	_refresh_weapons(party)
 
 func _make_label(txt: String, color: Color, font_size: int = 12) -> Label:
 	var lbl := Label.new()
@@ -52,21 +35,16 @@ func _make_label(txt: String, color: Color, font_size: int = 12) -> Label:
 	lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	return lbl
 
-func _on_equip_pressed(weapon_id: String) -> void:
-	_last_focused_weapon_id = weapon_id
-	GameState.party.equip_weapon(GameState.hero, weapon_id)
-	weapon_equipped.emit(weapon_id)
-	refresh()
-	_restore_default_focus.call_deferred()
-
-func _on_equip_button_focused(weapon_id: String) -> void:
-	_last_focused_weapon_id = weapon_id
-
 func _rarity_color(rarity: Item.Rarity) -> Color:
 	match rarity:
 		Item.Rarity.RARE:      return COLOR_RARE
 		Item.Rarity.LEGENDARY: return COLOR_LEGENDARY
 		_:                     return COLOR_COMMON
+
+func _refresh_gold(inventory: Inventory) -> void:
+	if gold_label != null:
+		gold_label.text = "⬡ Gold: %d" % inventory.gold
+		gold_label.add_theme_color_override("font_color", COLOR_GOLD)
 
 func _refresh_potions(inventory: Inventory) -> void:
 	for child in potions_list.get_children():
@@ -108,36 +86,32 @@ func _refresh_quest_items(inventory: Inventory) -> void:
 		label.tooltip_text = item.description
 		quest_items_list.add_child(label)
 
-func _refresh_weapons(hero: Hero, inventory: Inventory) -> void:
-	_equip_buttons.clear()
+func _refresh_weapons(party: Party) -> void:
 	for child in weapons_list.get_children():
 		child.queue_free()
-	var equipped := hero.equipped_weapon
-	if equipped:
-		equipped_label.text = "Equipped: %s" % equipped.name
-		equipped_label.add_theme_color_override("font_color", COLOR_EQUIPPED)
-		equipped_label.tooltip_text = equipped._to_string()
-	else:
-		equipped_label.text = "Equipped: None"
+	var equipped_lines: Array[String] = []
+	for hero: Hero in party.members:
+		var weapon := hero.equipped_weapon
+		var weapon_name := weapon.name if weapon != null else "None"
+		equipped_lines.append("%s: %s" % [hero.name, weapon_name])
+	if equipped_lines.is_empty():
+		equipped_label.text = "No party members"
 		equipped_label.add_theme_color_override("font_color", COLOR_SUBTEXT)
-	if inventory.weapon_stash.is_empty():
+	else:
+		equipped_label.text = "\n".join(equipped_lines)
+		equipped_label.add_theme_color_override("font_color", COLOR_EQUIPPED)
+
+	if party.inventory.weapon_stash.is_empty():
 		weapons_list.add_child(_make_label("No weapons in stash", COLOR_SUBTEXT))
 		return
-	for weapon_id in inventory.weapon_stash:
+	for weapon_id in party.inventory.weapon_stash:
 		var weapon := ItemLoader.get_item(weapon_id) as Weapon
 		if weapon == null:
 			continue
 		var color := _rarity_color(weapon.rarity)
 		var row := HBoxContainer.new()
-		var btn := _make_equip_button(weapon_id)
-		row.add_child(btn)
 		var lbl := _make_label("• %s  [%s]" % [weapon.name, Item.rarity_to_string(weapon.rarity)], color)
 		lbl.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		lbl.tooltip_text = weapon._to_string()
 		row.add_child(lbl)
 		weapons_list.add_child(row)
-
-func _restore_default_focus() -> void:
-	var target := get_default_focus_target()
-	if target != null:
-		InputManager.focus_menu_control(target)

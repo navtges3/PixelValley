@@ -12,18 +12,51 @@ grow_vertical = 2
 script = ExtResource("1_b8sjr")
 
 [node name="ScrollContainer" type="ScrollContainer" parent="." unique_id=1858086075]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+horizontal_scroll_mode = 0
 
 [node name="VBox" type="VBoxContainer" parent="ScrollContainer" unique_id=1920325013]
 layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 10
+
+[node name="ActiveHeader" type="Label" parent="ScrollContainer/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.92, 0.8, 1)
+theme_override_font_sizes/font_size = 14
+text = "Active Party"
 
 [node name="ActiveList" type="VBoxContainer" parent="ScrollContainer/VBox" unique_id=345610985]
 layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="Separator1" type="HSeparator" parent="ScrollContainer/VBox"]
+layout_mode = 2
+
+[node name="ReserveHeader" type="Label" parent="ScrollContainer/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.92, 0.8, 1)
+theme_override_font_sizes/font_size = 14
+text = "Reserve"
 
 [node name="ReserveList" type="VBoxContainer" parent="ScrollContainer/VBox" unique_id=256876463]
 layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="Separator2" type="HSeparator" parent="ScrollContainer/VBox"]
+layout_mode = 2
+
+[node name="DetailHeader" type="Label" parent="ScrollContainer/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.92, 0.8, 1)
+theme_override_font_sizes/font_size = 14
+text = "Details"
 
 [node name="DetailList" type="VBoxContainer" parent="ScrollContainer/VBox" unique_id=1565922551]
 layout_mode = 2
+theme_override_constants/separation = 4

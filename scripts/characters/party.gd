@@ -29,6 +29,7 @@ func add_to_active_party(hero: Hero) -> bool:
 	if hero.hero_id in active_member_ids:
 		return false
 	active_member_ids.append(hero.hero_id)
+	party_changed.emit()
 	return true
 
 func remove_from_active_party(hero: Hero) -> bool:
@@ -37,6 +38,7 @@ func remove_from_active_party(hero: Hero) -> bool:
 	if is_leader(hero) or active_member_ids.size() <= 1:
 		return false
 	active_member_ids.erase(hero.hero_id)
+	party_changed.emit()
 	return true
 
 func has_member(hero: Hero) -> bool:
@@ -118,6 +120,8 @@ func move_active_member(hero: Hero, direction: int) -> bool:
 # ---- INVENTORY ----
 func equip_weapon(hero: Hero, weapon_id: String) -> bool:
 	if not has_member(hero) or weapon_id not in inventory.weapon_stash:
+		return false
+	if not WeaponDatabase.can_class_equip(hero.hero_class, weapon_id):
 		return false
 	var weapon_template := ItemLoader.get_item(weapon_id) as Weapon
 	if weapon_template == null:
