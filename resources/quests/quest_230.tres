@@ -14,6 +14,8 @@ metadata/_custom_type_script = "uid://cxud06btunet"
 [sub_resource type="Resource" id="Resource_6xpk3"]
 script = ExtResource("3_wan0o")
 random_weapon = true
+recruit_hero = true
+recruit_level_mode = 1
 metadata/_custom_type_script = "uid://bra22kkvfpket"
 
 [resource]
