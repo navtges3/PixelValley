@@ -28,13 +28,9 @@ func get_default_focus_target() -> Control:
 		if _is_focusable(target):
 			return target
 	# Fall back to the selected hero's select button
-	if not _selected_id.is_empty():
-		var sel_key := "active:%s:select" % _selected_id
-		if _focus_controls.has(sel_key) and _is_focusable(_focus_controls[sel_key]):
-			return _focus_controls[sel_key]
-		var res_key := "reserve:%s:select" % _selected_id
-		if _focus_controls.has(res_key) and _is_focusable(_focus_controls[res_key]):
-			return _focus_controls[res_key]
+	var same_hero := _hero_select_for(_last_focus_key)
+	if same_hero != null:
+		return same_hero
 	# Fall back to the first active row's select button
 	var active := party.get_active_members()
 	if not active.is_empty():
@@ -115,13 +111,11 @@ func _reserve_row(party: Party, hero: Hero) -> HBoxContainer:
 	select.pressed.connect(_select.bind(hero.hero_id))
 	_register_focus(select, "reserve:%s:select" % hero.hero_id)
 	row.add_child(select)
-
 	var has_room := party.active_member_ids.size() < Party.MAX_ACTIVE_MEMBERS
 	var add_btn := _button("Add", party.add_to_active_party.bind(hero),
 		party.is_eligible(hero) and has_room, ThemeManager.GREEN_BUTTON)
 	_register_focus(add_btn, "reserve:%s:add" % hero.hero_id)
 	row.add_child(add_btn)
-
 	return row
 
 func _build_detail(party: Party, hero: Hero) -> void:
@@ -152,7 +146,6 @@ func _build_detail(party: Party, hero: Hero) -> void:
 				equip_btn.tooltip_text = "Cannot be equipped by a %s." % hero.get_class_name()
 			_register_focus(equip_btn, "detail:equip:%s" % weapon_id)
 			row.add_child(equip_btn)
-
 			var color := _rarity_color(stashed.rarity)
 			var lbl := _make_label("• %s  [%s]" % [stashed.name, Item.rarity_to_string(stashed.rarity)], color)
 			lbl.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -173,15 +166,25 @@ func _add_label(txt: String, color: Color = COLOR_COMMON, font_size: int = 12) -
 	detail_list.add_child(lbl)
 	return lbl
 
-func _button(text: String, action: Callable, enabled: bool = true, theme: Theme = null) -> Button:
+func _button(text: String, action: Callable, enabled: bool = true, button_theme: Theme = null) -> Button:
 	var button := Button.new()
 	button.text = text
 	button.disabled = not enabled
-	if theme != null:
-		button.theme = theme
+	if button_theme != null:
+		button.theme = button_theme
 	button.add_theme_font_size_override("font_size", 11)
 	button.pressed.connect(_run.bind(action))
 	return button
+
+func _hero_select_for(key: String) -> Control:
+	var parts := key.split(":")
+	if parts.size() < 3 or parts[0] not in ["active", "reserve"]:
+		return null
+	for list_name: String in ["active", "reserve"]:
+		var select_key := "%s:%s:select" % [list_name, parts[1]]
+		if _focus_controls.has(select_key) and _is_focusable(_focus_controls[select_key]):
+			return _focus_controls[select_key]
+	return null
 
 func _run(action: Callable) -> void:
 	var result: Variant = action.call()

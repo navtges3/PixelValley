@@ -3,6 +3,8 @@ extends TestCase
 const TEST_SAVE_SLOT := 999997
 const PARTY_SAVE_MIGRATOR := preload("res://scripts/save/party_save_migrator.gd")
 
+var _party_changed_count: int = 0
+
 
 func run_tests() -> int:
 	_begin_test_run()
@@ -38,6 +40,8 @@ func _test_members_share_one_inventory() -> void:
 
 	_expect_true(party.add_member(knight), "party accepts its first member")
 	_expect_true(party.add_member(assassin), "party accepts its second member")
+	_expect_equal(party.members.size(), 2, "both heroes are on the roster")
+	_expect_true(party.is_leader(knight), "the first recruit is the leader")
 
 
 func _test_equip_transfers_weapon_from_shared_inventory() -> void:
@@ -209,12 +213,19 @@ func _test_full_save_load_round_trip() -> void:
 	var party := Party.new()
 	var knight := HeroLoader.new_hero(Hero.HeroClass.KNIGHT)
 	var assassin := HeroLoader.new_hero(Hero.HeroClass.ASSASSIN)
+	var princess := HeroLoader.new_hero(Hero.HeroClass.PRINCESS)
 	party.add_member(knight)
 	party.add_member(assassin)
+	party.add_member(princess)
 	party.inventory.gold = 321
 	party.inventory.add_potion("lesser_healing_potion", 4)
-	party.inventory.add_weapon("bronze_mace")
-	party.equip_weapon(assassin, "bronze_mace")
+	party.inventory.add_weapon("silent_dirk")
+	party.inventory.add_weapon("focus_orb")
+	party.equip_weapon(assassin, "silent_dirk")
+	party.equip_weapon(princess, "focus_orb")
+	# Formation: [knight, princess]; the assassin waits in reserve with a weapon.
+	party.move_active_member(princess, -1)
+	party.remove_from_active_party(assassin)
 	GameState.party = party
 	GameState.hero = knight
 	GameState.village = Village.new()
@@ -232,9 +243,14 @@ func _test_full_save_load_round_trip() -> void:
 
 	var restored := GameState.party
 	_expect_not_null(restored, "full save/load restores the Party")
-	_expect_equal(restored.members.size(), 2, "full save/load restores all Party members")
+	_expect_equal(restored.members.size(), 3, "full save/load restores all Party members")
 	_expect_equal(restored.active_member_ids, party.active_member_ids,
 		"full save/load restores active formation")
+	_expect_equal(
+		_active_order(restored),
+		[knight.hero_id, princess.hero_id],
+		"full save/load restores a reordered formation with a reserve member"
+	)
 	_expect_equal(restored.inventory.gold, 321, "full save/load restores shared gold")
 	_expect_equal(
 		restored.inventory.get_potion_count("lesser_healing_potion"),
@@ -243,8 +259,13 @@ func _test_full_save_load_round_trip() -> void:
 	)
 	_expect_equal(
 		ItemLoader.get_item_id(restored.members[1].equipped_weapon),
-		"bronze_mace",
-		"full save/load restores Hero equipment"
+		"silent_dirk",
+		"full save/load restores equipment on a reserve Hero"
+	)
+	_expect_equal(
+		ItemLoader.get_item_id(restored.members[2].equipped_weapon),
+		"focus_orb",
+		"full save/load restores equipment on an active Hero"
 	)
 
 
@@ -273,6 +294,332 @@ func _test_rest_all_restores_every_member() -> void:
 			hero.max_nrg,
 			"%s NRG is fully restored by rest_all" % hero.get_class_name()
 		)
+
+
+func _test_reorder_active_members() -> void:
+	var party := _new_party()
+	var leader := party.members[0]
+	var second := HeroLoader.new_hero(Hero.HeroClass.ASSASSIN)
+	var third := HeroLoader.new_hero(Hero.HeroClass.PRINCESS)
+	party.add_member(second)
+	party.add_member(third)
+	_expect_equal(
+		_active_order(party),
+		[leader.hero_id, second.hero_id, third.hero_id],
+		"recruits join the active party in recruitment order"
+	)
+
+	_expect_true(party.move_active_member(second, -1), "a member can move up")
+	_expect_equal(
+		_active_order(party),
+		[second.hero_id, leader.hero_id, third.hero_id],
+		"moving up swaps with the previous slot"
+	)
+	_expect_false(party.move_active_member(second, -1), "the first slot cannot move up")
+	_expect_false(party.move_active_member(third, 1), "the last slot cannot move down")
+	_expect_equal(
+		_active_order(party),
+		[second.hero_id, leader.hero_id, third.hero_id],
+		"rejected moves leave the order unchanged"
+	)
+
+	_expect_true(party.move_active_member(leader, 1), "a member can move down")
+	_expect_equal(
+		_active_order(party),
+		[second.hero_id, third.hero_id, leader.hero_id],
+		"moving down swaps with the next slot"
+	)
+	_expect_equal(party.members[0], leader, "reordering does not change roster order")
+	_expect_true(party.is_leader(leader), "the leader stays the leader after being moved")
+
+	_expect_false(party.move_active_member(null, 1), "a null hero cannot move")
+	_expect_false(
+		party.move_active_member(HeroLoader.new_hero(Hero.HeroClass.KNIGHT), 1),
+		"a hero outside the roster cannot move"
+	)
+
+	var full_party := _new_party()
+	for hero_class: Hero.HeroClass in [
+		Hero.HeroClass.ASSASSIN,
+		Hero.HeroClass.PRINCESS,
+		Hero.HeroClass.KNIGHT,
+		Hero.HeroClass.ASSASSIN,
+	]:
+		full_party.add_member(HeroLoader.new_hero(hero_class))
+	var reserve := full_party.members[4]
+	_expect_false(full_party.active_member_ids.has(reserve.hero_id), "fifth hero starts in reserve")
+	_expect_false(full_party.move_active_member(reserve, -1), "a reserve hero cannot be reordered")
+
+
+func _test_removal_constraints() -> void:
+	var party := _new_party()
+	var leader := party.members[0]
+	var second := HeroLoader.new_hero(Hero.HeroClass.ASSASSIN)
+	party.add_member(second)
+
+	_expect_false(party.remove_from_active_party(leader), "the leader cannot leave the active party")
+	_expect_equal(party.active_member_ids.size(), 2, "a rejected leader removal keeps both members active")
+
+	_expect_true(party.remove_from_active_party(second), "a non-leader can leave the active party")
+	_expect_true(party.has_member(second), "leaving the active party keeps the hero on the roster")
+	_expect_false(party.remove_from_active_party(second), "a reserve hero cannot be removed twice")
+	_expect_false(party.remove_from_active_party(leader), "the last active member cannot be removed")
+	_expect_equal(_active_order(party), [leader.hero_id], "the leader remains as the only active member")
+
+	# Loaded or migrated data can leave a non-leader as the only active member.
+	party.set_active_member_ids([second.hero_id])
+	_expect_false(
+		party.remove_from_active_party(second),
+		"the last active member cannot be removed even when it is not the leader"
+	)
+	_expect_equal(_active_order(party), [second.hero_id], "the sole active member stays active")
+
+	_expect_false(
+		party.remove_from_active_party(HeroLoader.new_hero(Hero.HeroClass.PRINCESS)),
+		"a hero outside the roster cannot be removed"
+	)
+
+
+func _test_downed_hero_eligibility_and_battle_party() -> void:
+	var party := _new_party()
+	var leader := party.members[0]
+	var second := HeroLoader.new_hero(Hero.HeroClass.ASSASSIN)
+	var third := HeroLoader.new_hero(Hero.HeroClass.PRINCESS)
+	party.add_member(second)
+	party.add_member(third)
+
+	_expect_true(party.is_eligible(second), "a healthy roster member is eligible")
+	_expect_false(
+		party.is_eligible(HeroLoader.new_hero(Hero.HeroClass.KNIGHT)),
+		"a hero outside the roster is not eligible"
+	)
+
+	second.current_hp = 0
+	_expect_false(party.is_eligible(second), "a downed hero is not eligible")
+	_expect_equal(
+		_ids(party.get_eligible_active_members()),
+		[leader.hero_id, third.hero_id],
+		"eligible active members skip downed heroes"
+	)
+	_expect_equal(
+		_battle_order(party.create_battle_party()),
+		[leader.hero_id, third.hero_id],
+		"the battle party skips downed heroes"
+	)
+	_expect_equal(party.get_active_members().size(), 3, "a downed hero stays in the active party")
+	_expect_true(party.can_fight(), "the party can fight while any active hero is up")
+
+	var solo := _new_party()
+	solo.members[0].current_hp = 0
+	_expect_false(solo.can_fight(), "a party with no eligible active hero cannot fight")
+	_expect_true(
+		solo.create_battle_party().get_members().is_empty(),
+		"no eligible heroes produces an empty battle party"
+	)
+
+	var reserve_party := _new_party()
+	var recruit := HeroLoader.new_hero(Hero.HeroClass.ASSASSIN)
+	reserve_party.add_member(recruit)
+	reserve_party.remove_from_active_party(recruit)
+	recruit.current_hp = 0
+	_expect_false(reserve_party.add_to_active_party(recruit), "a downed hero cannot join the active party")
+	recruit.current_hp = recruit.max_hp
+	_expect_true(reserve_party.add_to_active_party(recruit), "a healthy hero can join the active party")
+
+
+func _test_battle_party_order_matches_active_order() -> void:
+	var party := _new_party()
+	var leader := party.members[0]
+	var second := HeroLoader.new_hero(Hero.HeroClass.ASSASSIN)
+	var third := HeroLoader.new_hero(Hero.HeroClass.PRINCESS)
+	party.add_member(second)
+	party.add_member(third)
+
+	party.move_active_member(third, -1)
+	party.move_active_member(third, -1)
+	_expect_equal(
+		_battle_order(party.create_battle_party()),
+		[third.hero_id, leader.hero_id, second.hero_id],
+		"the battle party follows the formation order"
+	)
+
+	var full_party := _new_party()
+	for hero_class: Hero.HeroClass in [
+		Hero.HeroClass.ASSASSIN,
+		Hero.HeroClass.PRINCESS,
+		Hero.HeroClass.KNIGHT,
+		Hero.HeroClass.ASSASSIN,
+	]:
+		full_party.add_member(HeroLoader.new_hero(hero_class))
+	var reserve := full_party.members[4]
+	var battle_ids := _battle_order(full_party.create_battle_party())
+	_expect_equal(battle_ids.size(), Party.MAX_ACTIVE_MEMBERS, "the battle party is capped at the active size")
+	_expect_false(battle_ids.has(reserve.hero_id), "reserve heroes do not join the battle party")
+
+
+func _test_equip_returns_old_weapon_and_prevents_duplicate_assignment() -> void:
+	var party := _new_party()
+	var knight := party.members[0]
+	var assassin := HeroLoader.new_hero(Hero.HeroClass.ASSASSIN)
+	var second_assassin := HeroLoader.new_hero(Hero.HeroClass.ASSASSIN)
+	party.add_member(assassin)
+	party.add_member(second_assassin)
+	var knight_default := ItemLoader.get_item_id(knight.equipped_weapon)
+	var assassin_default := ItemLoader.get_item_id(assassin.equipped_weapon)
+	party.inventory.add_weapon("silent_dirk")
+
+	_expect_true(party.equip_weapon(assassin, "silent_dirk"), "a stashed weapon equips on the second hero")
+	_expect_equal(
+		ItemLoader.get_item_id(assassin.equipped_weapon),
+		"silent_dirk",
+		"the second hero owns the new weapon"
+	)
+	_expect_true(assassin_default in party.inventory.weapon_stash, "the replaced weapon returns to the shared stash")
+	_expect_false("silent_dirk" in party.inventory.weapon_stash, "the equipped weapon leaves the shared stash")
+	_expect_equal(
+		ItemLoader.get_item_id(knight.equipped_weapon),
+		knight_default,
+		"equipping on one hero does not change another hero's weapon"
+	)
+	_expect_true(party.has_weapon("silent_dirk"), "an equipped weapon still counts as owned")
+
+	_expect_false(
+		party.equip_weapon(second_assassin, "silent_dirk"),
+		"a weapon equipped by one hero cannot be equipped by another"
+	)
+	_expect_equal(
+		ItemLoader.get_item_id(assassin.equipped_weapon),
+		"silent_dirk",
+		"a rejected duplicate equip leaves the owner unchanged"
+	)
+
+	_expect_true(party.unequip_weapon(knight), "a hero can unequip their weapon")
+	_expect_null(knight.equipped_weapon, "unequipping clears the hero's weapon")
+	_expect_true(knight_default in party.inventory.weapon_stash, "the unequipped weapon returns to the shared stash")
+	_expect_false(party.unequip_weapon(knight), "a hero without a weapon cannot unequip")
+	_expect_true(party.equip_weapon(knight, knight_default), "an unequipped weapon can be equipped again")
+
+
+func _test_class_locked_equip_and_unlisted_weapon() -> void:
+	var party := _new_party()
+	var knight := party.members[0]
+	var assassin := HeroLoader.new_hero(Hero.HeroClass.ASSASSIN)
+	party.add_member(assassin)
+	var assassin_weapon := assassin.equipped_weapon
+	party.inventory.add_weapon("iron_longsword")
+	party.inventory.add_weapon("focus_orb")
+
+	_expect_false(party.equip_weapon(assassin, "iron_longsword"), "an assassin cannot equip a knight weapon")
+	_expect_false(party.equip_weapon(knight, "focus_orb"), "a knight cannot equip a princess weapon")
+	_expect_true("iron_longsword" in party.inventory.weapon_stash, "a rejected equip keeps the weapon in the stash")
+	_expect_true("focus_orb" in party.inventory.weapon_stash, "a rejected equip keeps the weapon in the stash")
+	_expect_equal(assassin.equipped_weapon, assassin_weapon, "a rejected equip leaves the equipped weapon unchanged")
+	_expect_true(party.equip_weapon(knight, "iron_longsword"), "a knight can equip a knight weapon")
+
+	for hero_class: Hero.HeroClass in WeaponDatabase.CLASS_WEAPON_TABLE:
+		var rarities: Dictionary = WeaponDatabase.CLASS_WEAPON_TABLE[hero_class]
+		for rarity: Item.Rarity in rarities:
+			for weapon_id: String in rarities[rarity]:
+				_expect_not_null(ItemLoader.get_item(weapon_id), "%s is registered with ItemLoader" % weapon_id)
+				for other_class: Hero.HeroClass in [
+					Hero.HeroClass.KNIGHT,
+					Hero.HeroClass.ASSASSIN,
+					Hero.HeroClass.PRINCESS,
+				]:
+					_expect_equal(
+						WeaponDatabase.can_class_equip(other_class, weapon_id),
+						other_class == hero_class,
+						"%s is equippable only by its own class" % weapon_id
+					)
+
+	for hero_class: Hero.HeroClass in [
+		Hero.HeroClass.KNIGHT,
+		Hero.HeroClass.ASSASSIN,
+		Hero.HeroClass.PRINCESS,
+	]:
+		_expect_true(
+			WeaponDatabase.can_class_equip(hero_class, "weapon_missing_from_class_table"),
+			"a weapon listed for no class is equippable by any class"
+		)
+
+
+func _test_party_changed_signal() -> void:
+	var party := _new_party()
+	var leader := party.members[0]
+	var second := HeroLoader.new_hero(Hero.HeroClass.ASSASSIN)
+	party.party_changed.connect(_on_party_changed)
+	party.inventory.add_weapon("silent_dirk")
+	party.inventory.add_weapon("iron_longsword")
+
+	_expect_equal(_changes_from(party.add_member.bind(second)), 1, "add_member emits party_changed")
+	_expect_equal(_changes_from(party.add_member.bind(second)), 0, "a duplicate add_member emits nothing")
+
+	_expect_equal(_changes_from(party.remove_from_active_party.bind(second)), 1, "removal emits party_changed")
+	_expect_equal(_changes_from(party.remove_from_active_party.bind(second)), 0, "a repeated removal emits nothing")
+	_expect_equal(_changes_from(party.remove_from_active_party.bind(leader)), 0, "a rejected leader removal emits nothing")
+
+	_expect_equal(_changes_from(party.add_to_active_party.bind(second)), 1, "rejoining emits party_changed")
+	_expect_equal(_changes_from(party.add_to_active_party.bind(second)), 0, "a repeated rejoin emits nothing")
+
+	_expect_equal(_changes_from(party.move_active_member.bind(second, -1)), 1, "a move emits party_changed")
+	_expect_equal(_changes_from(party.move_active_member.bind(second, -1)), 0, "a rejected move emits nothing")
+
+	_expect_equal(_changes_from(party.equip_weapon.bind(second, "silent_dirk")), 1, "equipping emits party_changed")
+	_expect_equal(
+		_changes_from(party.equip_weapon.bind(second, "iron_longsword")),
+		0,
+		"a class-locked equip emits nothing"
+	)
+	_expect_equal(_changes_from(party.unequip_weapon.bind(second)), 1, "unequipping emits party_changed")
+	_expect_equal(_changes_from(party.unequip_weapon.bind(second)), 0, "a repeated unequip emits nothing")
+
+
+func _test_rest_all_revives_downed_heroes() -> void:
+	var party := _new_party()
+	var assassin := HeroLoader.new_hero(Hero.HeroClass.ASSASSIN)
+	party.add_member(assassin)
+	assassin.current_hp = 0
+
+	_expect_false(party.is_eligible(assassin), "a downed hero starts ineligible")
+	party.rest_all()
+	_expect_equal(assassin.current_hp, assassin.max_hp, "rest_all restores a downed hero to full HP")
+	_expect_true(party.is_eligible(assassin), "a rested hero is eligible again")
+	_expect_equal(
+		_battle_order(party.create_battle_party()),
+		[party.members[0].hero_id, assassin.hero_id],
+		"a rested hero rejoins the battle party"
+	)
+
+
+func _active_order(party: Party) -> Array:
+	var order: Array = []
+	for hero: Hero in party.get_active_members():
+		order.append(hero.hero_id)
+	return order
+
+
+func _ids(heroes: Array[Hero]) -> Array:
+	var ids: Array = []
+	for hero: Hero in heroes:
+		ids.append(hero.hero_id)
+	return ids
+
+
+func _battle_order(battle_party: BattleParty) -> Array:
+	var order: Array = []
+	for combatant: Combatant in battle_party.get_members():
+		order.append((combatant as Hero).hero_id)
+	return order
+
+
+func _changes_from(action: Callable) -> int:
+	var before := _party_changed_count
+	action.call()
+	return _party_changed_count - before
+
+
+func _on_party_changed() -> void:
+	_party_changed_count += 1
 
 
 func _new_party() -> Party:

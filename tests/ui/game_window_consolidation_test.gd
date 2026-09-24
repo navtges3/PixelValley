@@ -75,6 +75,7 @@ func run_tests() -> int:
 	_test_shop_item_selection_and_weapon_ownership()
 	_test_options_window_focus_graph()
 	_test_game_hud_reports_options_modal()
+	_test_party_tab_rows_and_button_states()
 	_test_completed_quest_section_collapse()
 	_test_load_window_focus_fallbacks()
 	_test_load_window_focus_graph()
@@ -368,6 +369,93 @@ func _test_game_hud_reports_options_modal() -> void:
 		"the game HUD clears modal state when Options closes"
 	)
 	game_hud.free()
+
+func _test_party_tab_rows_and_button_states() -> void:
+	var original_party := GameState.party
+	var original_slot := SaveManager.save_slot
+	var test_slot := 999996
+	# Panel actions call SaveManager.save_party(); never let that touch a real slot.
+	SaveManager.save_slot = test_slot
+
+	var party := Party.new()
+	for hero_class: Hero.HeroClass in [
+		Hero.HeroClass.KNIGHT,
+		Hero.HeroClass.ASSASSIN,
+		Hero.HeroClass.PRINCESS,
+		Hero.HeroClass.KNIGHT,
+		Hero.HeroClass.ASSASSIN,
+	]:
+		party.add_member(HeroLoader.new_hero(hero_class))
+	var leader := party.members[0]
+	var second := party.members[1]
+	var third := party.members[2]
+	var healthy_reserve := party.members[3]
+	var downed_reserve := party.members[4]
+	# Four members start active; free a slot so Add is limited by health, not capacity.
+	party.remove_from_active_party(healthy_reserve)
+	downed_reserve.current_hp = 0
+	GameState.party = party
+
+	var game_hud := GAME_HUD_SCENE.instantiate() as GameHUD
+	add_child(game_hud)
+	game_hud.show_hud(GameHUD.Tab.PARTY)
+	var panel := game_hud.party_panel
+
+	_expect_true(panel.visible, "the Party tab shows the party panel")
+	_expect_equal(panel.active_list.get_child_count(), 3, "the panel lists every active member")
+	_expect_equal(panel.reserve_list.get_child_count(), 2, "the panel lists every reserve member")
+
+	_expect_contains(
+		_row_button(panel.active_list, 0, 0).text,
+		"(Leader)",
+		"the first active row is marked as the leader"
+	)
+	_expect_true(_row_button(panel.active_list, 0, 1).disabled, "the top row cannot move up")
+	_expect_false(_row_button(panel.active_list, 1, 1).disabled, "a middle row can move up")
+	_expect_false(_row_button(panel.active_list, 0, 2).disabled, "the top row can move down")
+	_expect_true(_row_button(panel.active_list, 2, 2).disabled, "the last row cannot move down")
+	_expect_true(_row_button(panel.active_list, 0, 3).disabled, "the leader cannot be removed")
+	_expect_false(_row_button(panel.active_list, 1, 3).disabled, "a non-leader can be removed")
+
+	_expect_false(_row_button(panel.reserve_list, 0, 1).disabled, "a healthy reserve hero can be added")
+	_expect_contains(
+		_row_button(panel.reserve_list, 1, 0).text,
+		"(Downed)",
+		"a downed reserve hero is marked as downed"
+	)
+	_expect_true(_row_button(panel.reserve_list, 1, 1).disabled, "a downed reserve hero cannot be added")
+
+	# Pressing a row button must run the matching Party action. Grab both buttons
+	# first: refresh() rebuilds the rows after every press.
+	var move_up_button := _row_button(panel.active_list, 1, 1)
+	var add_button := _row_button(panel.reserve_list, 0, 1)
+	move_up_button.pressed.emit()
+	_expect_equal(
+		_active_ids(party),
+		[second.hero_id, leader.hero_id, third.hero_id],
+		"pressing Move Up reorders the active party"
+	)
+	add_button.pressed.emit()
+	_expect_true(
+		party.active_member_ids.has(healthy_reserve.hero_id),
+		"pressing Add moves a reserve hero into the active party"
+	)
+
+	game_hud.hide_hud()
+	game_hud.free()
+	GameState.party = original_party
+	SaveManager.save_slot = original_slot
+	if DirAccess.dir_exists_absolute(SaveManager.get_slot_dir(test_slot)):
+		SaveManager.delete_slot(test_slot)
+
+func _row_button(list: VBoxContainer, row_index: int, button_index: int) -> Button:
+	return list.get_child(row_index).get_child(button_index) as Button
+
+func _active_ids(party: Party) -> Array:
+	var ids: Array = []
+	for hero: Hero in party.get_active_members():
+		ids.append(hero.hero_id)
+	return ids
 
 func _test_completed_quest_section_collapse() -> void:
 	var quests_panel := QUESTS_PANEL_SCENE.instantiate() as QuestsPanel
