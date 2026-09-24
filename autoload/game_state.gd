@@ -90,9 +90,9 @@ func _setup_potion_shop() -> void:
 func _setup_weapon_shop() -> void:
 	var shop := Shop.new()
 	shop.name = "Oakshield Forge"
-	var common_weapons: Array = WeaponDatabase.CLASS_WEAPON_TABLE.get(Hero.HeroClass.KNIGHT, {}).get(Item.Rarity.COMMON, [])
-	common_weapons.append_array(WeaponDatabase.CLASS_WEAPON_TABLE.get(Hero.HeroClass.PRINCESS, {}).get(Item.Rarity.COMMON, []))
-	common_weapons.append_array(WeaponDatabase.CLASS_WEAPON_TABLE.get(Hero.HeroClass.ASSASSIN, {}).get(Item.Rarity.COMMON, []))
+	var common_weapons: Array = [WeaponDatabase.CLASS_WEAPON_TABLE.get(Hero.HeroClass.KNIGHT, {}).get(Item.Rarity.COMMON, []), 
+		WeaponDatabase.CLASS_WEAPON_TABLE.get(Hero.HeroClass.PRINCESS, {}).get(Item.Rarity.COMMON, []),
+		WeaponDatabase.CLASS_WEAPON_TABLE.get(Hero.HeroClass.ASSASSIN, {}).get(Item.Rarity.COMMON, [])]
 	for weapon_id in common_weapons:
 		shop.add_item(weapon_id, 1)
 	village.weapon_shop = shop
