@@ -110,23 +110,24 @@ func _build_detail(party: Party, hero: Hero) -> void:
 		_stat_hero_id = hero.hero_id
 		_reset_pending_allocations()
 	_available_points = hero.skill_points - _pending_total()
+	detail_list.add_child(_bar_row(hero.current_hp, hero.max_hp,
+		"%d / %d HP", HudBarStyle.hp_color(hero.current_hp, hero.max_hp)))
+	detail_list.add_child(_bar_row(hero.current_nrg, hero.max_nrg,
+		"%d / %d NRG", HudBarStyle.COLOR_NRG))
+	detail_list.add_child(_bar_row(hero.experience, hero.level * Hero.LEVEL_UP_MULT,
+			"%d / %d XP", HudBarStyle.COLOR_XP))
 	_add_detail_label("%s the %s, Lv %d" % [hero.name, hero.get_class_name(), hero.level],
 		HudStyle.COLOR_HEADER, 14)
 	_add_detail_label("HP %d/%d  ATK %d  MAG %d  DEF %d  RES %d  INIT %d" % [
 		hero.current_hp, hero.max_hp, hero.attack, hero.magic,
 		hero.defense, hero.resist, hero.initiative], HudStyle.COLOR_SUBTEXT)
-
 	var weapon := hero.equipped_weapon
 	_add_detail_label("Weapon: %s" % (weapon.name if weapon != null else "None"),
 		HudStyle.COLOR_EQUIPPED if weapon != null else HudStyle.COLOR_SUBTEXT)
-
 	# Abilities come from the equipped weapon, so an active hero must keep one.
 	if weapon != null and hero.hero_id not in party.active_member_ids:
-		detail_list.add_child(_action_button(
-			"Unequip", party.unequip_weapon.bind(hero), true,
-			ThemeManager.RED_BUTTON, "detail:unequip"
-		))
-
+		detail_list.add_child(_action_button("Unequip", party.unequip_weapon.bind(hero),
+		true, ThemeManager.RED_BUTTON, "detail:unequip"))
 	if party.inventory.weapon_stash.is_empty():
 		_add_detail_label("No weapons in stash", HudStyle.COLOR_SUBTEXT)
 		return
@@ -139,18 +140,13 @@ func _build_detail(party: Party, hero: Hero) -> void:
 func _stash_row(party: Party, hero: Hero, weapon_id: String, stashed: Weapon) -> HBoxContainer:
 	var row := HBoxContainer.new()
 	var can_equip := WeaponDatabase.can_class_equip(hero.hero_class, weapon_id)
-	var equip_btn := _action_button(
-		"Equip", party.equip_weapon.bind(hero, weapon_id), can_equip,
-		ThemeManager.GREEN_BUTTON, "detail:equip:%s" % weapon_id
-	)
+	var equip_btn := _action_button("Equip", party.equip_weapon.bind(hero, weapon_id), can_equip,
+		ThemeManager.GREEN_BUTTON, "detail:equip:%s" % weapon_id)
 	if not can_equip:
 		equip_btn.tooltip_text = "Cannot be equipped by a %s." % hero.get_class_name()
 	row.add_child(equip_btn)
-
-	var lbl := HudStyle.label(
-		"• %s  [%s]" % [stashed.name, Item.rarity_to_string(stashed.rarity)],
-		HudStyle.rarity_color(stashed.rarity), HudStyle.DEFAULT_FONT_SIZE, true
-	)
+	var lbl := HudStyle.label("• %s  [%s]" % [stashed.name, Item.rarity_to_string(stashed.rarity)],
+		HudStyle.rarity_color(stashed.rarity), HudStyle.DEFAULT_FONT_SIZE, true)
 	lbl.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	HudStyle.set_tooltip(lbl, stashed._to_string())
 	row.add_child(lbl)
@@ -158,6 +154,20 @@ func _stash_row(party: Party, hero: Hero, weapon_id: String, stashed: Weapon) ->
 
 func _add_detail_label(text: String, color: Color, font_size: int = HudStyle.DEFAULT_FONT_SIZE) -> void:
 	detail_list.add_child(HudStyle.label(text, color, font_size, true))
+
+func _bar_row(value: int, max_val: int, fmt: String, color: Color) -> Control:
+	var bar := ProgressBar.new()
+	bar.max_value = max(max_val, 1)
+	bar.value = value
+	bar.show_percentage = false
+	bar.custom_minimum_size = Vector2(0, 18)
+	HudBarStyle.apply(bar, color)
+	var lbl := HudStyle.label(fmt % [value, max_val], HudStyle.COLOR_HEADER, 11)
+	lbl.set_anchors_preset(Control.PRESET_FULL_RECT)
+	lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	lbl.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	bar.add_child(lbl)
+	return bar
 
 # ---- Controls ----
 
