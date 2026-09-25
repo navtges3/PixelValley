@@ -100,6 +100,14 @@ func rest_all() -> void:
 func is_leader(hero: Hero) -> bool:
 	return not members.is_empty() and members[0] == hero
 
+func set_leader(hero: Hero) -> bool:
+	if not has_member(hero) or is_leader(hero):
+		return false
+	members.erase(hero)
+	members.insert(0, hero)
+	party_changed.emit()
+	return true
+
 func is_eligible(hero: Hero) -> bool:
 	return has_member(hero) and hero.is_alive()
 

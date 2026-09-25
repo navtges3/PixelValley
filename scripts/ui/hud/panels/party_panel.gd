@@ -71,6 +71,12 @@ func _active_row(party: Party, hero: Hero, index: int, count: int) -> HBoxContai
 		not party.is_leader(hero) and count > 1,
 		ThemeManager.RED_BUTTON, "active:%s:remove" % hero.hero_id
 	))
+	# Leader control sits after formation buttons so ▲ ▼ Remove stay grouped.
+	row.add_child(_action_button(
+		"Make Leader", _promote_to_leader.bind(party, hero),
+		not party.is_leader(hero),
+		ThemeManager.GRAY_BUTTON, "active:%s:leader" % hero.hero_id
+	))
 	return row
 
 func _reserve_row(party: Party, hero: Hero) -> HBoxContainer:
@@ -171,6 +177,12 @@ func _run(action: Callable) -> void:
 	if result == true:
 		SaveManager.save_party()
 	request_refresh()
+
+func _promote_to_leader(party: Party, hero: Hero) -> bool:
+	if not party.set_leader(hero):
+		return false
+	GameState.hero = party.members[0]
+	return true
 
 func _select(hero_id: StringName) -> void:
 	_selected_id = hero_id

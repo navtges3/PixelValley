@@ -27,6 +27,7 @@ func run_tests() -> int:
 	_test_equip_returns_old_weapon_and_prevents_duplicate_assignment()
 	_test_class_locked_equip_and_unlisted_weapon()
 	_test_party_changed_signal()
+	_test_set_leader()
 	_test_rest_all_revives_downed_heroes()
 	if SaveManager.has_save_data(TEST_SAVE_SLOT):
 		SaveManager.delete_slot(TEST_SAVE_SLOT)
@@ -572,6 +573,40 @@ func _test_party_changed_signal() -> void:
 	)
 	_expect_equal(_changes_from(party.unequip_weapon.bind(second)), 1, "unequipping emits party_changed")
 	_expect_equal(_changes_from(party.unequip_weapon.bind(second)), 0, "a repeated unequip emits nothing")
+
+	_expect_equal(_changes_from(party.set_leader.bind(second)), 1, "set_leader emits party_changed")
+	_expect_equal(_changes_from(party.set_leader.bind(second)), 0, "a repeated set_leader emits nothing")
+
+
+func _test_set_leader() -> void:
+	var party := _new_party()
+	var leader := party.members[0]
+	var second := HeroLoader.new_hero(Hero.HeroClass.ASSASSIN)
+	var third := HeroLoader.new_hero(Hero.HeroClass.PRINCESS)
+	party.add_member(second)
+	party.add_member(third)
+	var active_before := party.active_member_ids.duplicate()
+
+	_expect_true(party.set_leader(second), "a non-leader member can become leader")
+	_expect_equal(party.members[0], second, "the new leader moves to members[0]")
+	_expect_true(party.is_leader(second), "is_leader returns true for the new leader")
+	_expect_false(party.is_leader(leader), "is_leader returns false for the old leader")
+	_expect_equal(party.members[1], leader, "the old leader shifts down one slot")
+	_expect_equal(party.members[2], third, "later members keep their relative order")
+	_expect_equal(
+		party.active_member_ids,
+		active_before,
+		"set_leader does not change active formation order"
+	)
+
+	_expect_false(party.set_leader(second), "the current leader cannot be promoted again")
+	_expect_equal(party.members[0], second, "a rejected set_leader leaves members unchanged")
+
+	_expect_false(
+		party.set_leader(HeroLoader.new_hero(Hero.HeroClass.KNIGHT)),
+		"a hero outside the roster cannot become leader"
+	)
+	_expect_equal(party.members[0], second, "a rejected outsider leaves the leader unchanged")
 
 
 func _test_rest_all_revives_downed_heroes() -> void:
