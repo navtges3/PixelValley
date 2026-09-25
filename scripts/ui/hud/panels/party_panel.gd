@@ -1,6 +1,9 @@
 extends HudPanel
 class_name PartyPanel
 
+const UP_BUTTON_THEME := preload("res://resources/themes/buttons/specialty/up_button.tres")
+const DOWN_BUTTON_THEME := preload("res://resources/themes/buttons/specialty/down_button.tres")
+
 @onready var active_list: VBoxContainer = $ScrollContainer/VBox/ActiveList
 @onready var reserve_list: VBoxContainer = $ScrollContainer/VBox/ReserveList
 @onready var detail_list: VBoxContainer = $ScrollContainer/VBox/DetailList
