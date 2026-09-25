@@ -69,7 +69,7 @@ func show_world_rewards(win_title: String, rewards: Array[RewardEntry]) -> bool:
 	world_rewards_opened.emit()
 	return true
 
-func open_game_hud(tab: GameHUD.Tab = GameHUD.Tab.STATS) -> void:
+func open_game_hud(tab: GameHUD.Tab = GameHUD.Tab.PARTY) -> void:
 	game_hud.show_hud(tab)
 
 func close_game_hud() -> void:

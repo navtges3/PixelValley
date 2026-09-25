@@ -121,7 +121,7 @@ func _input(event: InputEvent) -> void:
 		else:
 			_open_hud(game_hud)
 
-func _open_hud(game_hud: GameHUD, tab: GameHUD.Tab = GameHUD.Tab.STATS) -> void:
+func _open_hud(game_hud: GameHUD, tab: GameHUD.Tab = GameHUD.Tab.PARTY) -> void:
 	if player != null:
 		player.movement_blocked = true
 	game_hud.show_hud(tab)
