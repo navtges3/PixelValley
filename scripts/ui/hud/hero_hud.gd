@@ -31,9 +31,9 @@ func _process(_delta: float) -> void:
 	_refresh_if_dirty()
 
 func _refresh_if_dirty() -> void:
-	if GameState.hero == null or GameState.party == null:
+	if GameState.leader == null or GameState.party == null:
 		return
-	var hero := GameState.hero
+	var hero := GameState.leader
 	
 	var changed := (
 		hero.current_hp != _last_hp or 
@@ -56,9 +56,9 @@ func _refresh_if_dirty() -> void:
 	_draw_data(hero)
 
 func _force_refresh() -> void:
-	if GameState.hero == null:
+	if GameState.leader == null:
 		return
-	var hero := GameState.hero
+	var hero := GameState.leader
 	
 	name_label.text = hero.name
 	class_label.text = hero.get_class_name()

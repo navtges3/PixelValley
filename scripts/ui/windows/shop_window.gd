@@ -43,7 +43,7 @@ func close() -> void:
 func setup_shop(type: ShopType) -> void:
 	shop_type = type
 	shop = _get_shop()
-	hero = GameState.hero
+	hero = GameState.leader
 	shop_manager.start_shop(hero, GameState.party, shop)
 	shop_name_label.text = shop.name
 	quantity_label.visible = shop_type == ShopType.POTION

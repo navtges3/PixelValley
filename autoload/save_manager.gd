@@ -89,8 +89,8 @@ func save_world_state() -> void:
 
 func save_meta() -> void:
 	_save_json(save_slot, "meta.json", {
-		"hero_name": GameState.hero.name,
-		"level": GameState.hero.level,
+		"hero_name": GameState.leader.name,
+		"level": GameState.leader.level,
 		"time": Time.get_datetime_string_from_system(),
 		"player_scene": GameState.player_location["scene"],
 		"player_entrance": GameState.player_location["entrance_id"]

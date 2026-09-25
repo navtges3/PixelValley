@@ -6,7 +6,7 @@ class_name VictoryScreen
 @onready var main_menu_button: Button = $PanelContainer/VBoxContainer/MainMenuButton
 
 func _ready() -> void:
-	var hero := GameState.hero
+	var hero := GameState.leader
 	if hero:
 		hero_info_label.text = "%s\nLevel %d %s\n\nAttack: %d  Magic: %d\nDefense: %d  Resist: %d\nGold: %d" % [
 			hero.name,

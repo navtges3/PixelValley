@@ -5,7 +5,7 @@ const STARTING_GOLD := 50
 const STARTING_PARTY := [Hero.HeroClass.KNIGHT, Hero.HeroClass.PRINCESS]
 
 var party: Party = null
-var hero: Hero:
+var leader: Hero:
 	get:
 		return party.get_leader() if party != null else null
 var village: Village = null

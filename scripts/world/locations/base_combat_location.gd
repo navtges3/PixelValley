@@ -45,7 +45,7 @@ func _on_combat_initiated(enemy: Enemy) -> void:
 			else BattleParty.new()
 		)
 		var battle_data := {
-			"hero": GameState.hero,
+			"hero": GameState.leader,
 			"player_party": battle_party,
 			"persistent_party": GameState.party,
 			"monster_id": enemy.monster_id,

@@ -94,7 +94,7 @@ func get_default_focus_target() -> Control:
 	return null
 
 func refresh() -> void:
-	var hero := GameState.hero
+	var hero := GameState.leader
 	if hero == null:
 		return
 	if _pending_total() > hero.skill_points:
@@ -109,7 +109,7 @@ func refresh() -> void:
 # ---- Refresh helpers ----
 
 func _refresh_identity() -> void:
-	var hero := GameState.hero
+	var hero := GameState.leader
 	name_label.text = hero.name
 	name_label.add_theme_color_override("font_color", HudStyle.COLOR_HEADER)
 	class_label.text = hero.get_class_name()
@@ -120,7 +120,7 @@ func _refresh_identity() -> void:
 	skill_label.add_theme_color_override("font_color", HudStyle.COLOR_GOLD)
 
 func _refresh_bars() -> void:
-	var hero := GameState.hero
+	var hero := GameState.leader
 	_refresh_bar(hp_bar, hp_label, hero.current_hp, hero.max_hp, "%d / %d HP", HudBarStyle.hp_color(hero.current_hp, hero.max_hp))
 	_refresh_bar(nrg_bar, nrg_label, hero.current_nrg, hero.max_nrg, "%d / %d NRG", HudBarStyle.COLOR_NRG)
 	_refresh_bar(xp_bar, xp_label, hero.experience, hero.level * Hero.LEVEL_UP_MULT, "%d / %d XP", HudBarStyle.COLOR_XP)
@@ -132,7 +132,7 @@ func _refresh_bar(bar: ProgressBar, label: Label, value: int, max_val: int, fmt:
 	HudBarStyle.apply(bar, color)
 
 func _refresh_stats() -> void:
-	var hero := GameState.hero
+	var hero := GameState.leader
 	var no_points := _available_points <= 0
 
 	_refresh_stat_label("attack", "Attack", hero.attack)
@@ -200,7 +200,7 @@ func _on_decrease(stat: String) -> void:
 	_refresh_stats()
 
 func _on_confirm_pressed() -> void:
-	var hero := GameState.hero
+	var hero := GameState.leader
 	for stat in _temp_allocations:
 		var increase: int = _temp_allocations[stat]
 		if increase <= 0:
