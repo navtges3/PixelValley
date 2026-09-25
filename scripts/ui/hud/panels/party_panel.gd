@@ -112,33 +112,19 @@ func _build_detail(party: Party, hero: Hero) -> void:
 	if _stat_hero_id != hero.hero_id:
 		_stat_hero_id = hero.hero_id
 		_reset_pending_allocations()
+	if _pending_total() > hero.skill_points:
+		_reset_pending_allocations()
 	_available_points = hero.skill_points - _pending_total()
+	_add_identity_row(hero)
 	detail_list.add_child(_bar_row(hero.current_hp, hero.max_hp,
 		"%d / %d HP", HudBarStyle.hp_color(hero.current_hp, hero.max_hp)))
 	detail_list.add_child(_bar_row(hero.current_nrg, hero.max_nrg,
 		"%d / %d NRG", HudBarStyle.COLOR_NRG))
-	detail_list.add_child(_bar_row(hero.experience, hero.level * Hero.LEVEL_UP_MULT,
-			"%d / %d XP", HudBarStyle.COLOR_XP))
-	_add_detail_label("%s the %s, Lv %d" % [hero.name, hero.get_class_name(), hero.level],
-		HudStyle.COLOR_HEADER, 14)
-	_add_detail_label("HP %d/%d  ATK %d  MAG %d  DEF %d  RES %d  INIT %d" % [
-		hero.current_hp, hero.max_hp, hero.attack, hero.magic,
-		hero.defense, hero.resist, hero.initiative], HudStyle.COLOR_SUBTEXT)
-	var weapon := hero.equipped_weapon
-	_add_detail_label("Weapon: %s" % (weapon.name if weapon != null else "None"),
-		HudStyle.COLOR_EQUIPPED if weapon != null else HudStyle.COLOR_SUBTEXT)
-	# Abilities come from the equipped weapon, so an active hero must keep one.
-	if weapon != null and hero.hero_id not in party.active_member_ids:
-		detail_list.add_child(_action_button("Unequip", party.unequip_weapon.bind(hero),
-		true, ThemeManager.RED_BUTTON, "detail:unequip"))
-	if party.inventory.weapon_stash.is_empty():
-		_add_detail_label("No weapons in stash", HudStyle.COLOR_SUBTEXT)
-		return
-	for weapon_id: String in party.inventory.weapon_stash:
-		var stashed := ItemLoader.get_item(weapon_id) as Weapon
-		if stashed == null:
-			continue
-		detail_list.add_child(_stash_row(party, hero, weapon_id, stashed))
+	detail_list.add_child(_bar_row(	hero.experience, hero.level * Hero.LEVEL_UP_MULT,
+		"%d / %d XP", HudBarStyle.COLOR_XP))
+	_add_stat_section(hero)
+	_add_effects_section(hero)
+	_add_equipment_section(party, hero)
 
 func _stash_row(party: Party, hero: Hero, weapon_id: String, stashed: Weapon) -> HBoxContainer:
 	var row := HBoxContainer.new()
