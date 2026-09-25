@@ -126,6 +126,18 @@ func _build_detail(party: Party, hero: Hero) -> void:
 	_add_effects_section(hero)
 	_add_equipment_section(party, hero)
 
+func _add_identity_row(hero: Hero) -> void:
+	var row := HBoxContainer.new()
+	row.add_theme_constant_override("separation", 8)
+	var name_label := HudStyle.label(hero.name, HudStyle.COLOR_HEADER, 18, true)
+	name_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	var class_label := HudStyle.label(hero.get_class_name(), HudStyle.COLOR_SUBTEXT, 12, true)
+	var level_label := HudStyle.label("Level %d" % hero.level, HudStyle.COLOR_HEADER, 13, true)
+	row.add_child(name_label)
+	row.add_child(class_label)
+	row.add_child(level_label)
+	detail_list.add_child(row)
+
 func _stash_row(party: Party, hero: Hero, weapon_id: String, stashed: Weapon) -> HBoxContainer:
 	var row := HBoxContainer.new()
 	var can_equip := WeaponDatabase.can_class_equip(hero.hero_class, weapon_id)
