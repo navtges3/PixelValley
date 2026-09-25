@@ -194,6 +194,19 @@ func _stat_modifier_controls(stat: String) -> VBoxContainer:
 	controls.add_child(decrease_button)
 	return controls
 
+func _add_effects_section(hero: Hero) -> void:
+	detail_list.add_child(HSeparator.new())
+	detail_list.add_child(
+		HudStyle.label("Active Effects", HudStyle.COLOR_HEADER, 12, true))
+	var effects: Array[EffectView] = EffectManager.get_active_effects(hero)
+	if effects.is_empty():
+		detail_list.add_child(
+			HudStyle.label("No active effects", HudStyle.COLOR_SUBTEXT, 11, true))
+		return
+	for effect: EffectView in effects:
+		detail_list.add_child(
+			HudStyle.label("  • %s" % effect.tooltip_text, HudStyle.COLOR_SUBTEXT, 11, true))
+
 func _stash_row(party: Party, hero: Hero, weapon_id: String, stashed: Weapon) -> HBoxContainer:
 	var row := HBoxContainer.new()
 	var can_equip := WeaponDatabase.can_class_equip(hero.hero_class, weapon_id)
