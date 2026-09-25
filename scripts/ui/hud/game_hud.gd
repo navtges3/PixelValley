@@ -2,7 +2,6 @@ extends CanvasLayer
 class_name GameHUD
 
 enum Tab {
-	STATS,
 	PARTY,
 	INVENTORY,
 	QUESTS,
@@ -15,25 +14,22 @@ signal hud_closed
 @onready var panel: PanelContainer = $Panel
 @onready var content_area: Control = $Panel/MarginContainer/VBox/MarginContainer/ContentArea
 
-@onready var stats_button: Button = $Panel/MarginContainer/VBox/TabBar/StatsButton
 @onready var party_button: Button = $Panel/MarginContainer/VBox/TabBar/PartyButton
 @onready var inventory_button: Button = $Panel/MarginContainer/VBox/TabBar/InventoryButton
 @onready var quests_button: Button = $Panel/MarginContainer/VBox/TabBar/QuestsButton
 @onready var system_button: Button = $Panel/MarginContainer/VBox/TabBar/SystemButton
 
-@onready var stats_panel: StatsPanel = $Panel/MarginContainer/VBox/MarginContainer/ContentArea/StatsPanel
 @onready var party_panel: PartyPanel = $Panel/MarginContainer/VBox/MarginContainer/ContentArea/PartyPanel
 @onready var inventory_panel: InventoryPanel = $Panel/MarginContainer/VBox/MarginContainer/ContentArea/InventoryPanel
 @onready var quests_panel: QuestsPanel = $Panel/MarginContainer/VBox/MarginContainer/ContentArea/QuestsPanel
 @onready var system_panel: SystemPanel = $Panel/MarginContainer/VBox/MarginContainer/ContentArea/SystemPanel
 
 var _is_open: bool = false
-var _current_tab: Tab = Tab.STATS
+var _current_tab: Tab = Tab.PARTY
 var _tab_buttons: Dictionary = {}
 var _panels: Dictionary[Tab, HudPanel] = {}
 
 func _ready() -> void:
-	_register_panel(Tab.STATS, stats_panel)
 	_register_panel(Tab.PARTY, party_panel)
 	_register_panel(Tab.INVENTORY, inventory_panel)
 	_register_panel(Tab.QUESTS, quests_panel)
@@ -86,7 +82,6 @@ func _focus_current_tab() -> void:
 
 func _setup_tab_buttons() -> void:
 	_tab_buttons = {
-		Tab.STATS: stats_button,
 		Tab.PARTY: party_button,
 		Tab.INVENTORY: inventory_button,
 		Tab.QUESTS: quests_button,
