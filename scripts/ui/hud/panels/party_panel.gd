@@ -7,6 +7,15 @@ class_name PartyPanel
 
 var _selected_id: StringName = &""
 
+var _stat_hero_id: StringName = &""
+var _available_points := 0
+var _temp_allocations := {
+	"attack": 0,
+	"magic": 0,
+	"defense": 0,
+	"resist": 0,
+}
+
 # ---- HudPanel contract ----
 
 func refresh() -> void:
