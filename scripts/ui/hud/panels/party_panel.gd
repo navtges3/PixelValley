@@ -27,11 +27,9 @@ func refresh() -> void:
 	_clear_focus_registry()
 	for list: VBoxContainer in [active_list, reserve_list, detail_list]:
 		clear_children(list)
-
 	var active := party.get_active_members()
 	for i: int in active.size():
 		active_list.add_child(_active_row(party, active[i], i, active.size()))
-
 	var reserve_count := 0
 	for hero: Hero in party.members:
 		if hero not in active:
@@ -39,7 +37,6 @@ func refresh() -> void:
 			reserve_count += 1
 	if reserve_count == 0:
 		reserve_list.add_child(HudStyle.label("No reserve members", HudStyle.COLOR_SUBTEXT, 12, true))
-
 	_build_detail(party, party.get_member_by_id(_selected_id))
 
 # Add moves a hero from reserve to active (and Remove the reverse), so when the
@@ -109,6 +106,10 @@ func _reserve_row(party: Party, hero: Hero) -> HBoxContainer:
 func _build_detail(party: Party, hero: Hero) -> void:
 	if hero == null:
 		return
+	if _stat_hero_id != hero.hero_id:
+		_stat_hero_id = hero.hero_id
+		_reset_pending_allocations()
+	_available_points = hero.skill_points - _pending_total()
 	_add_detail_label("%s the %s, Lv %d" % [hero.name, hero.get_class_name(), hero.level],
 		HudStyle.COLOR_HEADER, 14)
 	_add_detail_label("HP %d/%d  ATK %d  MAG %d  DEF %d  RES %d  INIT %d" % [
@@ -193,3 +194,9 @@ func _promote_to_leader(party: Party, hero: Hero) -> bool:
 func _select(hero_id: StringName) -> void:
 	_selected_id = hero_id
 	request_refresh()
+
+func _reset_pending_allocations() -> void:
+	_temp_allocations["attack"] = 0
+	_temp_allocations["magic"] = 0
+	_temp_allocations["defense"] = 0
+	_temp_allocations["resist"] = 0
