@@ -56,7 +56,7 @@ func save_hero() -> void:
 	save_party()
 
 func save_party() -> void:
-	var party := GameState.get_party()
+	var party := GameState.party
 	if party == null:
 		push_error("SaveManager: cannot save without a Party.")
 		return

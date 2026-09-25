@@ -218,7 +218,7 @@ func _has_reached_main_quest(quest_id: int) -> bool:
 	)
 
 func _has_delivery_items(npc_id: StringName) -> bool:
-	var party := GameState.get_party()
+	var party := GameState.party
 	if party == null:
 		return false
 	for quest: Quest in _get_sorted_active_quests():
@@ -234,7 +234,7 @@ func _has_delivery_items(npc_id: StringName) -> bool:
 	return false
 
 func _deliver_items(npc_id: StringName) -> bool:
-	var party := GameState.get_party()
+	var party := GameState.party
 	if party == null:
 		return false
 	for quest: Quest in _get_sorted_active_quests():

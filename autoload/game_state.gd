@@ -51,9 +51,6 @@ func set_player_location(scene: ScreenManager.ScreenName, entrance_id: String = 
 	player_location["scene"] = scene
 	player_location["entrance_id"] = entrance_id
 
-func get_party() -> Party:
-	return party
-
 func set_quest_manager(new_manager: QuestManager) -> void:
 	if quest_manager == new_manager:
 		return

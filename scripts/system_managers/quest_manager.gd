@@ -180,7 +180,7 @@ func turn_in_quest(quest: Quest) -> Array[RewardEntry]:
 		_set_tracked_quest_id(-1)
 	quest.completed = true
 	completed_quests.append(quest)
-	var rewards: Array[RewardEntry] = RewardService.grant(quest.reward, GameState.get_party())
+	var rewards: Array[RewardEntry] = RewardService.grant(quest.reward, GameState.party)
 	_apply_location_unlocks(quest)
 	for next_id: int in quest.next_quests:
 		unlock_quest_by_id(next_id)
