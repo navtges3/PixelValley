@@ -42,6 +42,10 @@ func refresh() -> void:
 		reserve_list.add_child(HudStyle.label("No reserve members", HudStyle.COLOR_SUBTEXT, 12, true))
 	_build_detail(party, party.get_member_by_id(_selected_id))
 
+func on_tab_opened() -> void:
+	_reset_pending_allocations()
+	refresh()
+
 # Add moves a hero from reserve to active (and Remove the reverse), so when the
 # remembered control is gone, land on the same hero's select button.
 func _get_focus_fallback(lost_key: String) -> Control:
@@ -225,6 +229,46 @@ func _add_equipment_section(party: Party, hero: Hero) -> void:
 		if stashed == null:
 			continue
 		detail_list.add_child(_stash_row(party, hero, weapon_id, stashed))
+
+func _pending_total() -> int:
+	var total := 0
+	for stat: String in _temp_allocations:
+		total += _temp_allocations[stat]
+	return total
+
+func _on_increase(stat: String) -> void:
+	if _available_points <= 0:
+		return
+	_temp_allocations[stat] += 1
+	_available_points -= 1
+	request_refresh()
+
+func _on_decrease(stat: String) -> void:
+	if _temp_allocations[stat] <= 0:
+		return
+	_temp_allocations[stat] -= 1
+	_available_points += 1
+	request_refresh()
+
+func _confirm_stat_allocation(hero: Hero) -> bool:
+	if _pending_total() <= 0:
+		return false
+	for stat: String in _temp_allocations:
+		var increase: int = _temp_allocations[stat]
+		if increase <= 0:
+			continue
+		match stat:
+			"attack":
+				hero.attack += increase
+			"magic":
+				hero.magic += increase
+			"defense":
+				hero.defense += increase
+			"resist":
+				hero.resist += increase
+	hero.skill_points = _available_points
+	_reset_pending_allocations()
+	return true
 
 func _stash_row(party: Party, hero: Hero, weapon_id: String, stashed: Weapon) -> HBoxContainer:
 	var row := HBoxContainer.new()
