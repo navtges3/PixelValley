@@ -105,7 +105,6 @@ layout_mode = 2
 size_flags_vertical = 3
 
 [node name="PartyPanel" parent="Panel/MarginContainer/VBox/MarginContainer/ContentArea" unique_id=459256884 instance=ExtResource("9_11vu1")]
-visible = false
 layout_mode = 1
 
 [node name="InventoryPanel" parent="Panel/MarginContainer/VBox/MarginContainer/ContentArea" unique_id=1848494753 instance=ExtResource("4_au6ik")]
