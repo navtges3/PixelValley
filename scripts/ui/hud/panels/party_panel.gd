@@ -138,6 +138,37 @@ func _add_identity_row(hero: Hero) -> void:
 	row.add_child(level_label)
 	detail_list.add_child(row)
 
+func _add_stat_section(hero: Hero) -> void:
+	var separator := HSeparator.new()
+	detail_list.add_child(separator)
+	var header := HudStyle.label("Stats", HudStyle.COLOR_HEADER, 14, true)
+	detail_list.add_child(header)
+	var stats_grid := GridContainer.new()
+	stats_grid.columns = 2
+	stats_grid.add_theme_constant_override("v_separation", 6)
+	stats_grid.add_theme_constant_override("h_separation", 8)
+	detail_list.add_child(stats_grid)
+	var stat_data := [
+		["attack", "Attack", hero.attack],
+		["magic", "Magic", hero.magic],
+		["defense", "Defense", hero.defense],
+		["resist", "Resist", hero.resist],
+	]
+	for entry in stat_data:
+		var stat: String = entry[0]
+		var label_text: String = entry[1]
+		var base_value: int = entry[2]
+		stats_grid.add_child(_stat_value_label(stat, label_text, base_value))
+		stats_grid.add_child(_stat_modifier_controls(stat))
+	var skill_label := HudStyle.label("Skill Points: %d" % _available_points, HudStyle.COLOR_GOLD, 16, true)
+	skill_label.name = "SkillLabel"
+	stats_grid.add_child(skill_label)
+	var confirm_button := HudStyle.button("Confirm", _pending_total() > 0, ThemeManager.GREEN_BUTTON)
+	confirm_button.name = "ConfirmButton"
+	confirm_button.pressed.connect(_run.bind(_confirm_stat_allocation.bind(hero)))
+	_register_focus(confirm_button, "detail:stats:confirm")
+	stats_grid.add_child(confirm_button)
+
 func _stash_row(party: Party, hero: Hero, weapon_id: String, stashed: Weapon) -> HBoxContainer:
 	var row := HBoxContainer.new()
 	var can_equip := WeaponDatabase.can_class_equip(hero.hero_class, weapon_id)
