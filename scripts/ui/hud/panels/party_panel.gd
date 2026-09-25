@@ -169,6 +169,16 @@ func _add_stat_section(hero: Hero) -> void:
 	_register_focus(confirm_button, "detail:stats:confirm")
 	stats_grid.add_child(confirm_button)
 
+func _stat_value_label(stat: String, prefix: String, base_value: int) -> Label:
+	var bonus: int = _temp_allocations[stat]
+	var label: Label
+	if bonus > 0:
+		label = HudStyle.label("%s: %d (+%d)" % [prefix, base_value, bonus], Color(0.30, 0.90, 0.40), 16, true)
+	else:
+		label = HudStyle.label("%s: %d" % [prefix, base_value], HudStyle.COLOR_COMMON, 16, true)
+	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	return label
+
 func _stash_row(party: Party, hero: Hero, weapon_id: String, stashed: Weapon) -> HBoxContainer:
 	var row := HBoxContainer.new()
 	var can_equip := WeaponDatabase.can_class_equip(hero.hero_class, weapon_id)
