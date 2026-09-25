@@ -143,15 +143,11 @@ func _add_identity_row(hero: Hero) -> void:
 	detail_list.add_child(row)
 
 func _add_stat_section(hero: Hero) -> void:
-	var separator := HSeparator.new()
-	detail_list.add_child(separator)
-	var header := HudStyle.label("Stats", HudStyle.COLOR_HEADER, 14, true)
-	detail_list.add_child(header)
-	var stats_grid := GridContainer.new()
-	stats_grid.columns = 2
-	stats_grid.add_theme_constant_override("v_separation", 6)
-	stats_grid.add_theme_constant_override("h_separation", 8)
-	detail_list.add_child(stats_grid)
+	detail_list.add_child(HSeparator.new())
+	detail_list.add_child(HudStyle.label("Stats", HudStyle.COLOR_HEADER, 14, true))
+	var stats_container := VBoxContainer.new()
+	stats_container.add_theme_constant_override("separation", 3)
+	detail_list.add_child(stats_container)
 	var stat_data := [
 		["attack", "Attack", hero.attack],
 		["magic", "Magic", hero.magic],
@@ -162,40 +158,52 @@ func _add_stat_section(hero: Hero) -> void:
 		var stat: String = entry[0]
 		var label_text: String = entry[1]
 		var base_value: int = entry[2]
-		stats_grid.add_child(_stat_value_label(stat, label_text, base_value))
-		stats_grid.add_child(_stat_modifier_controls(stat))
-	var skill_label := HudStyle.label("Skill Points: %d" % _available_points, HudStyle.COLOR_GOLD, 16, true)
-	skill_label.name = "SkillLabel"
-	stats_grid.add_child(skill_label)
+		stats_container.add_child(_stat_row(stat, label_text, base_value))
+	var bottom_row := HBoxContainer.new()
+	bottom_row.add_theme_constant_override("separation", 8)
+	var skill_label := HudStyle.label("Skill Points: %d" % _available_points, HudStyle.COLOR_GOLD, 14, true)
+	skill_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	var confirm_button := HudStyle.button("Confirm", _pending_total() > 0, ThemeManager.GREEN_BUTTON)
 	confirm_button.name = "ConfirmButton"
 	confirm_button.pressed.connect(_run.bind(_confirm_stat_allocation.bind(hero)))
 	_register_focus(confirm_button, "detail:stats:confirm")
-	stats_grid.add_child(confirm_button)
+	bottom_row.add_child(skill_label)
+	bottom_row.add_child(confirm_button)
+	stats_container.add_child(bottom_row)
+
+func _stat_row(stat: String, prefix: String, base_value: int) -> HBoxContainer:
+	var row := HBoxContainer.new()
+	row.add_theme_constant_override("separation", 6)
+	var label := _stat_value_label(stat, prefix, base_value)
+	label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
+	row.add_child(label)
+	row.add_child(_stat_modifier_controls(stat))
+	return row
 
 func _stat_value_label(stat: String, prefix: String, base_value: int) -> Label:
 	var bonus: int = _temp_allocations[stat]
 	var label: Label
 	if bonus > 0:
-		label = HudStyle.label("%s: %d (+%d)" % [prefix, base_value, bonus], Color(0.30, 0.90, 0.40), 16, true)
+		label = HudStyle.label("%s: %d (+%d)" % [prefix, base_value, bonus], Color(0.30, 0.90, 0.40), 14, true)
 	else:
-		label = HudStyle.label("%s: %d" % [prefix, base_value], HudStyle.COLOR_COMMON, 16, true)
+		label = HudStyle.label("%s: %d" % [prefix, base_value], HudStyle.COLOR_COMMON, 14, true)
 	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	return label
 
-func _stat_modifier_controls(stat: String) -> VBoxContainer:
-	var controls := VBoxContainer.new()
-	controls.add_theme_constant_override("separation", 1)
-	var increase_button := HudStyle.button("+", _available_points > 0, UP_BUTTON_THEME)
-	increase_button.custom_minimum_size = Vector2(32, 16)
-	increase_button.pressed.connect(_on_increase.bind(stat))
-	_register_focus(increase_button, "detail:stats:%s:up" % stat)
+func _stat_modifier_controls(stat: String) -> HBoxContainer:
+	var controls := HBoxContainer.new()
+	controls.add_theme_constant_override("separation", 2)
 	var decrease_button := HudStyle.button("−", _temp_allocations[stat] > 0, DOWN_BUTTON_THEME)
-	decrease_button.custom_minimum_size = Vector2(32, 16)
+	decrease_button.custom_minimum_size = Vector2(28, 20)
 	decrease_button.pressed.connect(_on_decrease.bind(stat))
 	_register_focus(decrease_button, "detail:stats:%s:down" % stat)
-	controls.add_child(increase_button)
+	var increase_button := HudStyle.button("+", _available_points > 0, UP_BUTTON_THEME)
+	increase_button.custom_minimum_size = Vector2(28, 20)
+	increase_button.pressed.connect(_on_increase.bind(stat))
+	_register_focus(increase_button, "detail:stats:%s:up" % stat)
 	controls.add_child(decrease_button)
+	controls.add_child(increase_button)
 	return controls
 
 func _add_effects_section(hero: Hero) -> void:
