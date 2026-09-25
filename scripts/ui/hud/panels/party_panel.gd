@@ -179,6 +179,21 @@ func _stat_value_label(stat: String, prefix: String, base_value: int) -> Label:
 	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	return label
 
+func _stat_modifier_controls(stat: String) -> VBoxContainer:
+	var controls := VBoxContainer.new()
+	controls.add_theme_constant_override("separation", 1)
+	var increase_button := HudStyle.button("+", _available_points > 0, UP_BUTTON_THEME)
+	increase_button.custom_minimum_size = Vector2(32, 16)
+	increase_button.pressed.connect(_on_increase.bind(stat))
+	_register_focus(increase_button, "detail:stats:%s:up" % stat)
+	var decrease_button := HudStyle.button("−", _temp_allocations[stat] > 0, DOWN_BUTTON_THEME)
+	decrease_button.custom_minimum_size = Vector2(32, 16)
+	decrease_button.pressed.connect(_on_decrease.bind(stat))
+	_register_focus(decrease_button, "detail:stats:%s:down" % stat)
+	controls.add_child(increase_button)
+	controls.add_child(decrease_button)
+	return controls
+
 func _stash_row(party: Party, hero: Hero, weapon_id: String, stashed: Weapon) -> HBoxContainer:
 	var row := HBoxContainer.new()
 	var can_equip := WeaponDatabase.can_class_equip(hero.hero_class, weapon_id)
