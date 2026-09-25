@@ -32,7 +32,7 @@ func _test_grant_applies_authored_reward() -> void:
 	reward.gold = 25
 	reward.items = ["lesser_healing_potion"]
 
-	var entries := RewardService.grant(reward, hero)
+	var entries := RewardService.grant(reward, GameState.party)
 
 	_expect_equal(hero.experience, 10, "authored reward grants experience")
 	_expect_equal(GameState.party.inventory.gold, 25, "authored reward grants gold")
@@ -48,7 +48,7 @@ func _test_zero_values_are_ignored() -> void:
 	var hero := _new_hero()
 	var reward := Reward.new()
 
-	var entries := RewardService.grant(reward, hero)
+	var entries := RewardService.grant(reward, GameState.party)
 
 	_expect_equal(hero.experience, 0, "zero experience leaves the hero unchanged")
 	_expect_equal(GameState.party.inventory.gold, 0, "zero gold leaves the inventory unchanged")
@@ -57,7 +57,7 @@ func _test_zero_values_are_ignored() -> void:
 
 func _test_potion_quantity_is_granted() -> void:
 	var hero := _new_hero()
-	var entry := RewardService.grant_potion(hero, "lesser_healing_potion", 3)
+	var entry := RewardService.grant_potion(GameState.party, "lesser_healing_potion", 3)
 
 	_expect_not_null(entry, "valid potion grant returns a reward entry")
 	_expect_equal(
@@ -70,7 +70,7 @@ func _test_potion_quantity_is_granted() -> void:
 
 func _test_quest_item_is_granted() -> void:
 	var hero := _new_hero()
-	var entry := RewardService.grant_item(hero, "inn_key")
+	var entry := RewardService.grant_item(GameState.party, "inn_key")
 
 	_expect_not_null(entry, "valid quest-item grant returns a reward entry")
 	_expect_equal(
@@ -96,7 +96,7 @@ func _test_quest_item_inventory_round_trip() -> void:
 
 func _test_new_weapon_is_added_to_stash() -> void:
 	var hero := _new_hero()
-	var entry := RewardService.grant_weapon(hero, "bronze_mace")
+	var entry := RewardService.grant_weapon(GameState.party, "bronze_mace")
 
 	_expect_not_null(entry, "valid weapon grant returns a reward entry")
 	_expect_true(
@@ -111,7 +111,7 @@ func _test_duplicate_weapon_is_sold() -> void:
 	GameState.party.inventory.weapon_stash.append("bronze_mace")
 	var weapon := ItemLoader.get_item("bronze_mace") as Weapon
 
-	var entry := RewardService.grant_weapon(hero, "bronze_mace")
+	var entry := RewardService.grant_weapon(GameState.party, "bronze_mace")
 
 	_expect_not_null(entry, "duplicate weapon grant returns a reward entry")
 	_expect_equal(GameState.party.inventory.gold, weapon.value, "duplicate weapon awards its sale value")
@@ -125,7 +125,7 @@ func _test_duplicate_weapon_is_sold() -> void:
 
 func _test_random_weapon_adds_an_available_weapon() -> void:
 	var hero := _new_hero()
-	var entry := RewardService.grant_random_weapon(hero, Item.Rarity.COMMON)
+	var entry := RewardService.grant_random_party_weapon(GameState.party, Item.Rarity.COMMON)
 
 	_expect_not_null(entry, "available random weapon grant returns a reward entry")
 	_expect_equal(GameState.party.inventory.weapon_stash.size(), 1, "random weapon is added to the stash")
@@ -146,7 +146,7 @@ func _test_random_weapon_uses_fallback_when_pool_is_exhausted() -> void:
 		if not GameState.party.inventory.has_weapon_in_stash(weapon_id):
 			GameState.party.inventory.weapon_stash.append(weapon_id)
 
-	var entry := RewardService.grant_random_weapon(hero, Item.Rarity.COMMON)
+	var entry := RewardService.grant_random_party_weapon(GameState.party, Item.Rarity.COMMON)
 	var expected_gold := WeaponDatabase.get_gold_fallback_for_rarity(Item.Rarity.COMMON)
 
 	_expect_not_null(entry, "exhausted random weapon grant returns a fallback entry")
@@ -213,7 +213,7 @@ func _test_grant_loot_applies_gold_and_item_quantities() -> void:
 		"weapon_rarity": Item.Rarity.COMMON,
 	}
 
-	var entries := RewardService.grant_loot(loot, hero)
+	var entries := RewardService.grant_loot(loot, GameState.party)
 
 	_expect_equal(GameState.party.inventory.gold, 25, "loot pipeline grants authored gold")
 	_expect_equal(GameState.party.inventory.get_potion_count("lesser_healing_potion"), 3, "loot pipeline grants potion quantities")
@@ -231,7 +231,7 @@ func _test_grant_loot_skips_only_unknown_items() -> void:
 		},
 	}
 
-	var entries := RewardService.grant_loot(loot, hero)
+	var entries := RewardService.grant_loot(loot, GameState.party)
 
 	_expect_equal(GameState.party.inventory.get_potion_count("lesser_healing_potion"), 2, "valid loot is granted after an invalid ID")
 	_expect_equal(entries.size(), 1, "invalid loot does not create a presentation entry")
@@ -246,7 +246,7 @@ func _test_grant_loot_grants_multiple_weapons() -> void:
 		},
 	}
 
-	var entries := RewardService.grant_loot(loot, hero)
+	var entries := RewardService.grant_loot(loot, GameState.party)
 
 	_expect_equal(GameState.party.inventory.weapon_stash.size(), 2, "loot service grants every distinct weapon")
 	_expect_equal(entries.size(), 2, "every granted weapon is presented")
@@ -266,7 +266,7 @@ func _test_grant_loot_uses_random_weapon_fallback() -> void:
 		"weapon_rarity": Item.Rarity.COMMON,
 	}
 
-	var entries := RewardService.grant_loot(loot, hero)
+	var entries := RewardService.grant_loot(loot, GameState.party)
 	var expected_gold := WeaponDatabase.get_gold_fallback_for_rarity(Item.Rarity.COMMON)
 
 	_expect_equal(GameState.party.inventory.gold, expected_gold, "loot pipeline preserves random-weapon fallback gold")
@@ -276,7 +276,7 @@ func _test_grant_loot_uses_random_weapon_fallback() -> void:
 func _test_empty_loot_produces_no_entries() -> void:
 	var hero := _new_hero()
 
-	var entries := RewardService.grant_loot({}, hero)
+	var entries := RewardService.grant_loot({}, GameState.party)
 
 	_expect_equal(entries.size(), 0, "empty loot produces no presentation entries")
 	_expect_equal(GameState.party.inventory.gold, 0, "empty loot leaves inventory unchanged")

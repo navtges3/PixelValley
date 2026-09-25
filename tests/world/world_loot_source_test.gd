@@ -229,7 +229,7 @@ func _test_claim_grants_loot_once() -> void:
 	source.claim_finished.connect(_on_claim_finished)
 	_reset_claim_signal()
 
-	var first_result := source.try_claim(hero)
+	var first_result := source.try_claim(GameState.party)
 
 	_expect_equal(
 		first_result,
@@ -256,7 +256,7 @@ func _test_claim_grants_loot_once() -> void:
 	)
 	_expect_equal(_last_claim_rewards.size(), 2, "the result signal includes granted rewards")
 
-	var second_result := source.try_claim(hero)
+	var second_result := source.try_claim(GameState.party)
 
 	_expect_equal(
 		second_result,
@@ -300,7 +300,7 @@ func _test_claimed_state_restores_on_reentry() -> void:
 	WorldManager.reset()
 	var hero := _new_hero()
 	var first_source := _new_source("forest", "forest/reentry_chest")
-	first_source.try_claim(hero)
+	first_source.try_claim(GameState.party)
 	first_source.free()
 
 	var restored_source := _new_source("forest", "forest/reentry_chest")
@@ -336,7 +336,7 @@ func _test_inventory_and_world_state_round_trip() -> void:
 	WorldManager.reset()
 	var hero := _new_hero()
 	var source := _new_source("forest", "forest/saved_chest")
-	source.try_claim(hero)
+	source.try_claim(GameState.party)
 	var inventory_data := SaveManager._get_inventory_data(GameState.party.inventory)
 	var world_data := WorldManager.get_save_data()
 	source.free()
@@ -375,7 +375,7 @@ func _test_empty_ids_are_rejected() -> void:
 	var hero := _new_hero()
 	var source := _new_source("forest", "forest/validation_chest")
 	source.location_id = ""
-	var empty_location_result := source.try_claim(hero)
+	var empty_location_result := source.try_claim(GameState.party)
 
 	_expect_equal(
 		empty_location_result,
@@ -386,7 +386,7 @@ func _test_empty_ids_are_rejected() -> void:
 
 	source.location_id = "forest"
 	source.loot_source_id = ""
-	var empty_source_result := source.try_claim(hero)
+	var empty_source_result := source.try_claim(GameState.party)
 
 	_expect_equal(
 		empty_source_result,
