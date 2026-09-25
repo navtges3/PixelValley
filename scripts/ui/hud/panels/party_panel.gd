@@ -207,6 +207,25 @@ func _add_effects_section(hero: Hero) -> void:
 		detail_list.add_child(
 			HudStyle.label("  • %s" % effect.tooltip_text, HudStyle.COLOR_SUBTEXT, 11, true))
 
+func _add_equipment_section(party: Party, hero: Hero) -> void:
+	detail_list.add_child(HSeparator.new())
+	var weapon := hero.equipped_weapon
+	_add_detail_label("Weapon: %s" % (weapon.name if weapon != null else "None"),
+		HudStyle.COLOR_EQUIPPED if weapon != null else HudStyle.COLOR_SUBTEXT)
+	# Abilities come from the equipped weapon, so an active hero must keep one.
+	if weapon != null and hero.hero_id not in party.active_member_ids:
+		detail_list.add_child(
+			_action_button("Unequip", party.unequip_weapon.bind(hero),
+				true, ThemeManager.RED_BUTTON, "detail:unequip"))
+	if party.inventory.weapon_stash.is_empty():
+		_add_detail_label("No weapons in stash", HudStyle.COLOR_SUBTEXT)
+		return
+	for weapon_id: String in party.inventory.weapon_stash:
+		var stashed := ItemLoader.get_item(weapon_id) as Weapon
+		if stashed == null:
+			continue
+		detail_list.add_child(_stash_row(party, hero, weapon_id, stashed))
+
 func _stash_row(party: Party, hero: Hero, weapon_id: String, stashed: Weapon) -> HBoxContainer:
 	var row := HBoxContainer.new()
 	var can_equip := WeaponDatabase.can_class_equip(hero.hero_class, weapon_id)
