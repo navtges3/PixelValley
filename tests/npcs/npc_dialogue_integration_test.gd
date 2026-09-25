@@ -64,8 +64,11 @@ func _test_indicator_lifecycle_and_late_manager_binding() -> void:
 
 func _prepare_game_state() -> void:
 	GameState.reset_state()
-	GameState.hero = HeroLoader.new_hero(Hero.HeroClass.KNIGHT)
-	GameState.hero.name = "NPC Dialogue Integration Hero"
+	var party := Party.new()
+	var hero := HeroLoader.new_hero(Hero.HeroClass.KNIGHT)
+	hero.name = "NPC Dialogue Integration Hero"
+	party.add_member(hero)
+	GameState.party = party
 	GameState.village = Village.new()
 	GameState.village.name = "NPC Dialogue Integration Village"
 	GameState.village.inn = Inn.new()

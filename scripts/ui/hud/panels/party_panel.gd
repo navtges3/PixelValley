@@ -179,10 +179,7 @@ func _run(action: Callable) -> void:
 	request_refresh()
 
 func _promote_to_leader(party: Party, hero: Hero) -> bool:
-	if not party.set_leader(hero):
-		return false
-	GameState.hero = party.members[0]
-	return true
+	return party.set_leader(hero)
 
 func _select(hero_id: StringName) -> void:
 	_selected_id = hero_id

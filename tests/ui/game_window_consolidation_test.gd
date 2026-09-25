@@ -44,9 +44,6 @@ const REWARD_WINDOW_SCENE := preload(
 const DEATH_WINDOW_SCENE := preload(
 	"res://scenes/ui/windows/death_window.tscn"
 )
-const NEW_GAME_SCREEN_SCENE := preload(
-	"res://scenes/ui/screens/new_game_screen.tscn"
-)
 const QUEST_BUTTON_SCENE := preload(
 	"res://scenes/ui/components/quest_button.tscn"
 )
@@ -81,7 +78,6 @@ func run_tests() -> int:
 	_test_load_window_focus_graph()
 	_test_new_game_slot_focus_graph()
 	_test_nested_confirmation_focus()
-	_test_new_game_screen_focus_graph()
 	_test_quest_action_focus_route()
 	_test_quest_tab_shortcuts_wrap()
 	_test_required_modal_cancel_flows()
@@ -641,22 +637,6 @@ func _test_nested_confirmation_focus() -> void:
 		"cancelling overwrite restores the selected save slot"
 	)
 	new_game_window.free()
-
-func _test_new_game_screen_focus_graph() -> void:
-	var screen := NEW_GAME_SCREEN_SCENE.instantiate() as NewGameScreen
-	add_child(screen)
-	_expect_equal(
-		screen._hero_previews.size(),
-		3,
-		"character creation builds all three hero previews"
-	)
-	var first_preview: HeroPreview = screen._hero_previews[0]
-	_expect_equal(
-		first_preview.focus_neighbor_bottom,
-		first_preview.get_path_to(screen.hero_name),
-		"hero previews navigate down to the name field"
-	)
-	screen.free()
 
 func _test_quest_action_focus_route() -> void:
 	var quest_window := _spawn_window(QUEST_WINDOW_SCENE) as QuestWindow

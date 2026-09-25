@@ -5,7 +5,9 @@ const STARTING_GOLD := 50
 const STARTING_PARTY := [Hero.HeroClass.KNIGHT, Hero.HeroClass.PRINCESS]
 
 var party: Party = null
-var hero: Hero = null
+var hero: Hero:
+	get:
+		return party.get_leader() if party != null else null
 var village: Village = null
 var quest_manager: QuestManager = null
 var dialogue_state: DialogueState = DialogueState.new()
@@ -38,7 +40,6 @@ func reset_state() -> void:
 	dialogue_state.clear()
 	set_quest_manager(null)
 	party = null
-	hero = null
 	village = null
 	pre_combat_position = Vector2.ZERO
 	player_location = {
@@ -51,9 +52,6 @@ func set_player_location(scene: ScreenManager.ScreenName, entrance_id: String = 
 	player_location["entrance_id"] = entrance_id
 
 func get_party() -> Party:
-	if party == null and hero != null:
-		party = Party.new()
-		party.add_member(hero)
 	return party
 
 func set_quest_manager(new_manager: QuestManager) -> void:
@@ -101,7 +99,6 @@ func _setup_party() -> void:
 	party = Party.new()
 	for hero_class: Hero.HeroClass in STARTING_PARTY:
 		party.add_member(HeroLoader.new_hero(hero_class))
-	hero = party.members[0]
 	party.inventory.gold = STARTING_GOLD
 	party.inventory.add_potion("lesser_healing_potion", 3)
 	party.inventory.add_potion("attack_potion", 3)

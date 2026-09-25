@@ -20,8 +20,11 @@ func run_tests() -> int:
 
 func _prepare_game_state() -> void:
 	GameState.reset_state()
-	GameState.hero = HeroLoader.new_hero(Hero.HeroClass.KNIGHT)
-	GameState.hero.name = "Lifecycle Test Hero"
+	var party := Party.new()
+	var hero := HeroLoader.new_hero(Hero.HeroClass.KNIGHT)
+	hero.name = "Lifecycle Test Hero"
+	party.add_member(hero)
+	GameState.party = party
 	GameState.village = Village.new()
 	GameState.village.name = "Lifecycle Test Village"
 	GameState.village.inn = Inn.new()

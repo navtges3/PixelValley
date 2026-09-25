@@ -11,7 +11,9 @@ const WORLD_HUD = preload("res://scenes/ui/hud/world_hud.tscn")
 
 enum ScreenName {
 	NONE,
-	MAIN_MENU, NEW_GAME,
+	MAIN_MENU,
+	## Unused; kept so saved player_scene enum ints stay stable.
+	NEW_GAME,
 	VILLAGE,
 	INN, POTION_SHOP, WEAPON_SHOP,
 	VALLEY,
@@ -33,7 +35,6 @@ const WORLD_SCREENS: Array = [
 
 const SCENE_PATHS := {
 	ScreenName.MAIN_MENU: "res://scenes/ui/screens/main_menu_screen.tscn",
-	ScreenName.NEW_GAME: "res://scenes/ui/screens/new_game_screen.tscn",
 	ScreenName.VILLAGE: "res://scenes/world/locations/village.tscn",
 	ScreenName.INN: "res://scenes/world/buildings/interior/inn_interior.tscn",
 	ScreenName.POTION_SHOP: "res://scenes/world/buildings/interior/potion_shop_interior.tscn",

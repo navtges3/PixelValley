@@ -127,6 +127,11 @@ func _test_party_save_migration() -> void:
 		"legacy Party saves activate the first members"
 	)
 	_expect_equal(
+		legacy_data["leader_id"],
+		"hero_0",
+		"legacy Party saves default the leader to the first member"
+	)
+	_expect_equal(
 		(legacy_data["members"][0] as Dictionary)["hero_id"],
 		"hero_0",
 		"legacy members receive stable IDs"
@@ -140,12 +145,18 @@ func _test_party_save_migration() -> void:
 				{"hero_id": "assassin"},
 			],
 			"active_member_ids": ["missing", "knight", "knight", "assassin"],
+			"leader_id": "missing",
 		},
 	}, false)
 	_expect_equal(
 		invalid["data"]["active_member_ids"],
 		["knight", "assassin"],
 		"invalid and duplicate active IDs are removed"
+	)
+	_expect_equal(
+		invalid["data"]["leader_id"],
+		"knight",
+		"an invalid leader_id falls back to the first member"
 	)
 
 
@@ -196,6 +207,8 @@ func _test_save_data_round_trip_preserves_shared_and_equipped_items() -> void:
 	_expect_equal(restored.members.size(), 2, "Party members survive serialization")
 	_expect_equal(restored.active_member_ids, party.active_member_ids,
 		"active formation survives serialization")
+	_expect_equal(restored.leader_id, party.leader_id,
+		"leader_id survives serialization")
 	_expect_equal(restored.inventory.gold, 123, "shared gold survives serialization")
 	_expect_equal(
 		restored.inventory.get_potion_count("lesser_healing_potion"),
@@ -227,8 +240,8 @@ func _test_full_save_load_round_trip() -> void:
 	# Formation: [knight, princess]; the assassin waits in reserve with a weapon.
 	party.move_active_member(princess, -1)
 	party.remove_from_active_party(assassin)
+	party.set_leader(princess)
 	GameState.party = party
-	GameState.hero = knight
 	GameState.village = Village.new()
 	GameState.village.name = "Party Test Village"
 	GameState.village.inn = Inn.new()
@@ -247,6 +260,8 @@ func _test_full_save_load_round_trip() -> void:
 	_expect_equal(restored.members.size(), 3, "full save/load restores all Party members")
 	_expect_equal(restored.active_member_ids, party.active_member_ids,
 		"full save/load restores active formation")
+	_expect_equal(restored.leader_id, princess.hero_id,
+		"full save/load restores a non-first-member leader")
 	_expect_equal(
 		_active_order(restored),
 		[knight.hero_id, princess.hero_id],
@@ -585,28 +600,45 @@ func _test_set_leader() -> void:
 	var third := HeroLoader.new_hero(Hero.HeroClass.PRINCESS)
 	party.add_member(second)
 	party.add_member(third)
+	var members_before := party.members.duplicate()
 	var active_before := party.active_member_ids.duplicate()
 
 	_expect_true(party.set_leader(second), "a non-leader member can become leader")
-	_expect_equal(party.members[0], second, "the new leader moves to members[0]")
+	_expect_equal(party.members, members_before, "set_leader does not reorder members")
 	_expect_true(party.is_leader(second), "is_leader returns true for the new leader")
 	_expect_false(party.is_leader(leader), "is_leader returns false for the old leader")
-	_expect_equal(party.members[1], leader, "the old leader shifts down one slot")
-	_expect_equal(party.members[2], third, "later members keep their relative order")
+	_expect_equal(party.leader_id, second.hero_id, "leader_id tracks the promoted hero")
+	_expect_equal(party.get_leader(), second, "get_leader returns the promoted hero")
 	_expect_equal(
 		party.active_member_ids,
 		active_before,
 		"set_leader does not change active formation order"
 	)
 
+	_expect_false(
+		party.remove_from_active_party(second),
+		"the current leader cannot leave the active party"
+	)
+	_expect_equal(
+		party.active_member_ids,
+		active_before,
+		"a rejected leader bench leaves formation unchanged"
+	)
+
 	_expect_false(party.set_leader(second), "the current leader cannot be promoted again")
-	_expect_equal(party.members[0], second, "a rejected set_leader leaves members unchanged")
+	_expect_equal(party.members, members_before, "a rejected set_leader leaves members unchanged")
 
 	_expect_false(
 		party.set_leader(HeroLoader.new_hero(Hero.HeroClass.KNIGHT)),
 		"a hero outside the roster cannot become leader"
 	)
-	_expect_equal(party.members[0], second, "a rejected outsider leaves the leader unchanged")
+	_expect_equal(party.leader_id, second.hero_id, "a rejected outsider leaves the leader unchanged")
+
+	var fresh := Party.new()
+	var first := HeroLoader.new_hero(Hero.HeroClass.KNIGHT)
+	fresh.add_member(first)
+	_expect_true(fresh.is_leader(first), "the first recruit of a new party becomes its leader")
+	_expect_equal(fresh.leader_id, first.hero_id, "a new party defaults leader_id to its first member")
 
 
 func _test_rest_all_revives_downed_heroes() -> void:

@@ -68,6 +68,16 @@ static func _normalize(document: Dictionary) -> Dictionary:
 		active_ids = member_ids.slice(0, Party.MAX_ACTIVE_MEMBERS)
 
 	data["active_member_ids"] = active_ids
+
+	var leader_id := str(data.get("leader_id", ""))
+	if leader_id.is_empty() or leader_id not in member_ids:
+		if member_ids.is_empty():
+			data.erase("leader_id")
+		else:
+			data["leader_id"] = member_ids[0]
+	else:
+		data["leader_id"] = leader_id
+
 	normalized["schema_version"] = CURRENT_SCHEMA_VERSION
 	normalized["data"] = data
 	return normalized

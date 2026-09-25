@@ -109,7 +109,6 @@ func load_game(slot: int = 1) -> void:
 	else:
 		var hero_json := _load_json(slot, "hero.json")
 		GameState.party = _load_legacy_party(hero_json.get("data", {}))
-	GameState.hero = GameState.party.members[0] if not GameState.party.members.is_empty() else null
 
 	var village_json := _load_json(slot, "village.json")
 	GameState.village = _load_village(village_json.get("data", {}))
@@ -237,6 +236,7 @@ func _get_party_data(party: Party) -> Dictionary:
 	return {
 		"members": members,
 		"active_member_ids": party.active_member_ids.map(func(hero_id: StringName) -> String: return String(hero_id)),
+		"leader_id": String(party.leader_id),
 		"inventory": _get_inventory_data(party.inventory),
 	}
 
@@ -247,6 +247,9 @@ func _load_party(data: Dictionary) -> Party:
 		party.add_member(_load_hero(member_data))
 	if data.has("active_member_ids"):
 		party.set_active_member_ids(data.get("active_member_ids", []))
+	var leader_id := StringName(str(data.get("leader_id", "")))
+	if not leader_id.is_empty() and party.get_member_by_id(leader_id) != null:
+		party.leader_id = leader_id
 	return party
 
 func _load_legacy_party(data: Dictionary) -> Party:

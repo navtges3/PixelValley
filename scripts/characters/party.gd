@@ -7,6 +7,7 @@ signal party_changed
 
 @export var members: Array[Hero] = []
 @export var active_member_ids: Array[StringName] = []
+@export var leader_id: StringName = &""
 @export var inventory: Inventory = Inventory.new():
 	set(value):
 		inventory = value if value != null else Inventory.new()
@@ -17,6 +18,8 @@ func add_member(hero: Hero) -> bool:
 		return false
 	_assign_hero_id(hero)
 	members.append(hero)
+	if leader_id.is_empty():
+		leader_id = hero.hero_id
 	if active_member_ids.size() < MAX_ACTIVE_MEMBERS:
 		active_member_ids.append(hero.hero_id)
 	_remove_equipped_weapon_from_stash(hero)
@@ -98,15 +101,17 @@ func rest_all() -> void:
 		hero.rest()
 
 func is_leader(hero: Hero) -> bool:
-	return not members.is_empty() and members[0] == hero
+	return hero != null and hero.hero_id == leader_id
 
 func set_leader(hero: Hero) -> bool:
 	if not has_member(hero) or is_leader(hero):
 		return false
-	members.erase(hero)
-	members.insert(0, hero)
+	leader_id = hero.hero_id
 	party_changed.emit()
 	return true
+
+func get_leader() -> Hero:
+	return get_member_by_id(leader_id)
 
 func is_eligible(hero: Hero) -> bool:
 	return has_member(hero) and hero.is_alive()

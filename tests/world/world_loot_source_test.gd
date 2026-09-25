@@ -199,10 +199,8 @@ func _test_world_reward_movement_state_restores() -> void:
 
 func _test_interaction_signal_grants_once() -> void:
 	WorldManager.reset()
-	var original_hero := GameState.hero
 	var original_party := GameState.party
-	var hero := _new_hero()
-	GameState.hero = hero
+	_new_hero()
 	var source := _new_source("forest", "forest/interacted_pickup")
 
 	source.interact_area.interacted.emit()
@@ -219,7 +217,6 @@ func _test_interaction_signal_grants_once() -> void:
 		"interaction immediately disables the claimed source"
 	)
 	source.free()
-	GameState.hero = original_hero
 	GameState.party = original_party
 
 func _test_claim_grants_loot_once() -> void:

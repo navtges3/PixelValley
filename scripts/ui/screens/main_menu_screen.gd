@@ -23,7 +23,6 @@ func _exit_tree() -> void:
 	InputManager.pop_menu_focus_context(self)
 
 func _on_new_game_button_pressed() -> void:
-	# ScreenManager.go_to_screen(ScreenManager.ScreenName.NEW_GAME)
 	new_game_window.open()
 
 func _on_load_game_button_pressed() -> void:
