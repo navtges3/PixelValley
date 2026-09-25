@@ -92,7 +92,9 @@ func _spawn_party_visuals() -> void:
 	var players := battle_manager.player_party.get_members()
 	var enemies := battle_manager.enemy_party.get_members()
 	for index: int in players.size():
-		_spawn_combatant_visual(players[index], $HeroSlot, index, players.size())
+		# Active-list position 1 (the party tab's front of the list) stands
+		# closest to the enemies.
+		_spawn_combatant_visual(players[index], $HeroSlot, players.size() - 1 - index, players.size())
 	for index: int in enemies.size():
 		_spawn_combatant_visual(enemies[index], $MonsterSlot, index, enemies.size())
 
