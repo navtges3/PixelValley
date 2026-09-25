@@ -38,7 +38,7 @@ func _ready() -> void:
 func is_claimed() -> bool:
 	return WorldManager.is_loot_claimed(location_id, loot_source_id)
 
-func try_claim(recipient: Hero, party: Party = GameState.party) -> ClaimResult:
+func try_claim(party: Party = GameState.party) -> ClaimResult:
 	var empty_rewards: Array[RewardEntry] = []
 	if _claim_in_progress:
 		return ClaimResult.IN_PROGRESS
@@ -46,7 +46,7 @@ func try_claim(recipient: Hero, party: Party = GameState.party) -> ClaimResult:
 		interact_area.set_enabled(false)
 		claim_finished.emit(ClaimResult.INVALID_CONFIGURATION, empty_rewards)
 		return ClaimResult.INVALID_CONFIGURATION
-	if recipient == null or party == null:
+	if party == null:
 		claim_finished.emit(ClaimResult.NO_RECIPIENT, empty_rewards)
 		return ClaimResult.NO_RECIPIENT
 	if is_claimed():
@@ -85,11 +85,11 @@ func get_validation_errors() -> Array[String]:
 	return errors
 
 func _autosave_after_claim() -> void:
-	SaveManager.save_hero()
+	SaveManager.save_party()
 	SaveManager.save_world_state()
 
 func _on_interacted() -> void:
-	try_claim(GameState.hero, GameState.party)
+	try_claim(GameState.party)
 
 func _restore_claimed_state() -> void:
 	interact_area.set_enabled(not is_claimed())

@@ -213,6 +213,12 @@ static func _normalize_reward(raw_reward: Variant, quest_id: int, emit_warnings:
 	reward["random_weapon"] = bool(reward.get("random_weapon", false))
 	var rarity: int = int(reward.get("rarity", Item.Rarity.COMMON))
 	reward["rarity"] = rarity if rarity in Item.Rarity.values() else Item.Rarity.COMMON
+	reward["recruit_hero"] = bool(reward.get("recruit_hero", false))
+	var recruit_class: int = int(reward.get("recruit_hero_class", Hero.HeroClass.ASSASSIN))
+	reward["recruit_hero_class"] = recruit_class if recruit_class in Hero.HeroClass.values() else Hero.HeroClass.ASSASSIN
+	var mode: int = int(reward.get("recruit_level_mode", Reward.RecruitLevelMode.FIXED))
+	reward["recruit_level_mode"] = mode if mode in Reward.RecruitLevelMode.values() else Reward.RecruitLevelMode.FIXED
+	reward["recruit_level"] = maxi(int(reward.get("recruit_level", 1)), 1)
 	return reward
 
 static func _normalize_int_array(value: Variant) -> Array[int]:

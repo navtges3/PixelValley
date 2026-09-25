@@ -560,7 +560,11 @@ func _get_quest_data(quest: Quest) -> Dictionary:
 		"gold": quest.reward.gold,
 		"items": quest.reward.items.duplicate(),
 		"random_weapon": quest.reward.random_weapon,
-		"rarity": quest.reward.rarity
+		"rarity": quest.reward.rarity,
+		"recruit_hero": quest.reward.recruit_hero,
+		"recruit_hero_class": quest.reward.recruit_hero_class,
+		"recruit_level_mode": quest.reward.recruit_level_mode,
+		"recruit_level": quest.reward.recruit_level,
 	}
 	return data
 
@@ -595,5 +599,9 @@ func _load_quest(data: Dictionary) -> Quest:
 	reward.items.assign(items)
 	reward.random_weapon = reward_data.get("random_weapon", false)
 	reward.rarity = reward_data.get("rarity", Item.Rarity.COMMON)
+	reward.recruit_hero = bool(reward_data.get("recruit_hero", false))
+	reward.recruit_hero_class = reward_data.get("recruit_hero_class", Hero.HeroClass.ASSASSIN)
+	reward.recruit_level_mode = reward_data.get("recruit_level_mode", Reward.RecruitLevelMode.FIXED)
+	reward.recruit_level = reward_data.get("recruit_level", 1)
 	quest.reward = reward
 	return quest
