@@ -232,6 +232,6 @@ size_flags_horizontal = 0
 theme = ExtResource("4_6ov7a")
 text = "Confirm"
 
-[node name="Inventory" type="VBoxContainer" parent="ScrollContainer/VBox/HeroDetails" unique_id=1465797715]
+[node name="Equipment" type="VBoxContainer" parent="ScrollContainer/VBox/HeroDetails" unique_id=1465797715]
 layout_mode = 2
 size_flags_horizontal = 3

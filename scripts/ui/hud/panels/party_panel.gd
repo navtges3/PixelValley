@@ -30,7 +30,7 @@ class_name PartyPanel
 @onready var skill_label: Label = $ScrollContainer/VBox/HeroDetails/HeroStats/StatsGrid/SkillLabel
 @onready var confirm_button: Button = $ScrollContainer/VBox/HeroDetails/HeroStats/StatsGrid/ConfirmButton
 
-@onready var inventory: VBoxContainer = $ScrollContainer/VBox/HeroDetails/Inventory
+@onready var equipment: VBoxContainer = $ScrollContainer/VBox/HeroDetails/Equipment
 
 var _selected_id: StringName = &""
 
@@ -229,52 +229,55 @@ func _pending_total() -> int:
 	return total
 
 func _refresh_equipment(party: Party, hero: Hero) -> void:
-	clear_children(inventory)
-	inventory.add_theme_constant_override("separation", 6)
+	clear_children(equipment)
+	equipment.add_theme_constant_override("separation", 6)
 	# ---- Weapon ----
-	inventory.add_child(HudStyle.label("Weapon", HudStyle.COLOR_HEADER, 14, true))
+	equipment.add_child(HudStyle.label("Weapon", HudStyle.COLOR_HEADER, 14, true))
 	var weapon := hero.equipped_weapon
 	if weapon == null:
-		inventory.add_child(HudStyle.label("None", HudStyle.COLOR_SUBTEXT,
+		equipment.add_child(HudStyle.label("None", HudStyle.COLOR_SUBTEXT,
 				HudStyle.DEFAULT_FONT_SIZE, true))
 	else:
 		var weapon_label := HudStyle.label(weapon.name, HudStyle.COLOR_EQUIPPED,
 			HudStyle.DEFAULT_FONT_SIZE, true)
 		HudStyle.set_tooltip(weapon_label, weapon._to_string())
-		inventory.add_child(weapon_label)
+		equipment.add_child(weapon_label)
 		# Active party members must keep their weapon equipped.
 		if hero.hero_id not in party.active_member_ids:
-			inventory.add_child(_action_button("Unequip",party.unequip_weapon.bind(hero),
+			equipment.add_child(_action_button("Unequip",party.unequip_weapon.bind(hero),
 					true, ThemeManager.RED_BUTTON, "detail:unequip"))
-
 	# ---- Weapon Stash ----
-	inventory.add_child(HSeparator.new())
-	inventory.add_child(HudStyle.label("Weapon Stash",
-			HudStyle.COLOR_HEADER, 12, true))
-	if party.inventory.weapon_stash.is_empty():
-		inventory.add_child(HudStyle.label("No weapons in stash",
-				HudStyle.COLOR_SUBTEXT, HudStyle.DEFAULT_FONT_SIZE, true))
-	else:
-		for weapon_id: String in party.inventory.weapon_stash:
-			var stashed := ItemLoader.get_item(weapon_id) as Weapon
-			if stashed == null:
-				continue
-			inventory.add_child(_stash_row(party,
-					hero, weapon_id, stashed))
+	equipment.add_child(HSeparator.new())
+	equipment.add_child(HudStyle.label("Weapon Stash", HudStyle.COLOR_HEADER, 12, true))
+	var equipable_count := 0
+	for weapon_id: String in party.inventory.weapon_stash:
+		if not WeaponDatabase.can_class_equip(hero.hero_class, weapon_id):
+			continue
+		var stashed := ItemLoader.get_item(weapon_id) as Weapon
+		if stashed == null:
+			continue
+		equipment.add_child(_stash_row(party, hero, weapon_id, stashed))
+		equipable_count += 1
+	if equipable_count == 0:
+		var message := "No weapons in stash"
+		if not party.inventory.weapon_stash.is_empty():
+			message = "No equipable weapons"
+		equipment.add_child(HudStyle.label(message, HudStyle.COLOR_SUBTEXT,
+			HudStyle.DEFAULT_FONT_SIZE, true))
 	# ---- Active Effects ----
-	inventory.add_child(HSeparator.new())
-	inventory.add_child(HudStyle.label("Active Effects",
+	equipment.add_child(HSeparator.new())
+	equipment.add_child(HudStyle.label("Active Effects",
 			HudStyle.COLOR_HEADER, 12, true))
 	var effects: Array[EffectView] = EffectManager.get_active_effects(hero)
 	if effects.is_empty():
-		inventory.add_child(HudStyle.label("No active effects",
+		equipment.add_child(HudStyle.label("No active effects",
 				HudStyle.COLOR_SUBTEXT, HudStyle.DEFAULT_FONT_SIZE, true))
 	else:
 		for effect: EffectView in effects:
 			var effect_label := HudStyle.label("• %s" % effect.tooltip_text,
 				HudStyle.COLOR_SUBTEXT, HudStyle.DEFAULT_FONT_SIZE, true)
 			HudStyle.set_tooltip(effect_label, effect.tooltip_text)
-			inventory.add_child(effect_label)
+			equipment.add_child(effect_label)
 
 func _on_increase(stat: String) -> void:
 	if _available_points <= 0:
@@ -312,12 +315,8 @@ func _confirm_stat_allocation(hero: Hero) -> bool:
 
 func _stash_row(party: Party, hero: Hero, weapon_id: String, stashed: Weapon) -> HBoxContainer:
 	var row := HBoxContainer.new()
-	var can_equip := WeaponDatabase.can_class_equip(hero.hero_class, weapon_id)
-	var equip_btn := _action_button("Equip", party.equip_weapon.bind(hero, weapon_id), can_equip,
-		ThemeManager.GREEN_BUTTON, "detail:equip:%s" % weapon_id)
-	if not can_equip:
-		equip_btn.tooltip_text = "Cannot be equipped by a %s." % hero.get_class_name()
-	row.add_child(equip_btn)
+	row.add_child(_action_button("Equip", party.equip_weapon.bind(hero, weapon_id),
+		true, ThemeManager.GREEN_BUTTON, "detail:equip:%s" % weapon_id))
 	var lbl := HudStyle.label("• %s  [%s]" % [stashed.name, Item.rarity_to_string(stashed.rarity)],
 		HudStyle.rarity_color(stashed.rarity), HudStyle.DEFAULT_FONT_SIZE, true)
 	lbl.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -371,7 +370,5 @@ func _confirm_selected_hero() -> bool:
 	return _confirm_stat_allocation(hero)
 
 func _reset_pending_allocations() -> void:
-	_temp_allocations["attack"] = 0
-	_temp_allocations["magic"] = 0
-	_temp_allocations["defense"] = 0
-	_temp_allocations["resist"] = 0
+	for stat: String in _temp_allocations:
+		_temp_allocations[stat] = 0
