@@ -56,6 +56,7 @@ func _ready() -> void:
 	confirm_button.pressed.connect(_run.bind(_confirm_selected_hero))
 
 	_register_detail_focus()
+	_configure_stat_focus_navigation()
 
 func _register_detail_focus() -> void:
 	_register_focus(attack_up, "detail:stats:attack:up")
@@ -67,6 +68,20 @@ func _register_detail_focus() -> void:
 	_register_focus(resist_up, "detail:stats:resist:up")
 	_register_focus(resist_down, "detail:stats:resist:down")
 	_register_focus(confirm_button, "detail:stats:confirm")
+
+func _configure_stat_focus_navigation() -> void:
+	var buttons: Array[Button] = [
+		attack_up,  attack_down,
+		magic_up,   magic_down,
+		defense_up, defense_down,
+		resist_up,  resist_down,
+	]
+	for i in buttons.size():
+		var button := buttons[i]
+		if i > 0:
+			button.focus_neighbor_top = buttons[i - 1].get_path()
+		if i < buttons.size() - 1:
+			button.focus_neighbor_bottom = buttons[i + 1].get_path()
 
 # ---- HudPanel contract ----
 
