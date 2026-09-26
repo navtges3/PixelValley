@@ -1,9 +1,6 @@
 extends HudPanel
 class_name PartyPanel
 
-const UP_BUTTON_THEME := preload("res://resources/themes/buttons/specialty/up_button.tres")
-const DOWN_BUTTON_THEME := preload("res://resources/themes/buttons/specialty/down_button.tres")
-
 @onready var active_list: VBoxContainer = $ScrollContainer/VBox/ActiveList
 @onready var reserve_list: VBoxContainer = $ScrollContainer/VBox/ReserveList
 
@@ -11,10 +8,8 @@ const DOWN_BUTTON_THEME := preload("res://resources/themes/buttons/specialty/dow
 
 @onready var hp_bar: ProgressBar = $ScrollContainer/VBox/HeroDetails/HeroStats/HPBar
 @onready var hp_label: Label = $ScrollContainer/VBox/HeroDetails/HeroStats/HPBar/HPLabel
-
 @onready var nrg_bar: ProgressBar = $ScrollContainer/VBox/HeroDetails/HeroStats/NRGBar
 @onready var nrg_label: Label = $ScrollContainer/VBox/HeroDetails/HeroStats/NRGBar/NRGLabel
-
 @onready var xp_bar: ProgressBar = $ScrollContainer/VBox/HeroDetails/HeroStats/XPBar
 @onready var xp_label: Label = $ScrollContainer/VBox/HeroDetails/HeroStats/XPBar/XPLabel
 
@@ -25,13 +20,10 @@ const DOWN_BUTTON_THEME := preload("res://resources/themes/buttons/specialty/dow
 
 @onready var attack_up: Button = $ScrollContainer/VBox/HeroDetails/HeroStats/StatsGrid/AttackMod/AttackUp
 @onready var attack_down: Button = $ScrollContainer/VBox/HeroDetails/HeroStats/StatsGrid/AttackMod/AttackDown
-
 @onready var magic_up: Button = $ScrollContainer/VBox/HeroDetails/HeroStats/StatsGrid/MagicMod/MagicUp
 @onready var magic_down: Button = $ScrollContainer/VBox/HeroDetails/HeroStats/StatsGrid/MagicMod/MagicDown
-
 @onready var defense_up: Button = $ScrollContainer/VBox/HeroDetails/HeroStats/StatsGrid/DefenseMod/DefenseUp
 @onready var defense_down: Button = $ScrollContainer/VBox/HeroDetails/HeroStats/StatsGrid/DefenseMod/DefenseDown
-
 @onready var resist_up: Button = $ScrollContainer/VBox/HeroDetails/HeroStats/StatsGrid/ResistMod/ResistUp
 @onready var resist_down: Button = $ScrollContainer/VBox/HeroDetails/HeroStats/StatsGrid/ResistMod/ResistDown
 
@@ -235,6 +227,54 @@ func _pending_total() -> int:
 	for stat: String in _temp_allocations:
 		total += _temp_allocations[stat]
 	return total
+
+func _refresh_equipment(party: Party, hero: Hero) -> void:
+	clear_children(inventory)
+	inventory.add_theme_constant_override("separation", 6)
+	# ---- Weapon ----
+	inventory.add_child(HudStyle.label("Weapon", HudStyle.COLOR_HEADER, 14, true))
+	var weapon := hero.equipped_weapon
+	if weapon == null:
+		inventory.add_child(HudStyle.label("None", HudStyle.COLOR_SUBTEXT,
+				HudStyle.DEFAULT_FONT_SIZE, true))
+	else:
+		var weapon_label := HudStyle.label(weapon.name, HudStyle.COLOR_EQUIPPED,
+			HudStyle.DEFAULT_FONT_SIZE, true)
+		HudStyle.set_tooltip(weapon_label, weapon._to_string())
+		inventory.add_child(weapon_label)
+		# Active party members must keep their weapon equipped.
+		if hero.hero_id not in party.active_member_ids:
+			inventory.add_child(_action_button("Unequip",party.unequip_weapon.bind(hero),
+					true, ThemeManager.RED_BUTTON, "detail:unequip"))
+
+	# ---- Weapon Stash ----
+	inventory.add_child(HSeparator.new())
+	inventory.add_child(HudStyle.label("Weapon Stash",
+			HudStyle.COLOR_HEADER, 12, true))
+	if party.inventory.weapon_stash.is_empty():
+		inventory.add_child(HudStyle.label("No weapons in stash",
+				HudStyle.COLOR_SUBTEXT, HudStyle.DEFAULT_FONT_SIZE, true))
+	else:
+		for weapon_id: String in party.inventory.weapon_stash:
+			var stashed := ItemLoader.get_item(weapon_id) as Weapon
+			if stashed == null:
+				continue
+			inventory.add_child(_stash_row(party,
+					hero, weapon_id, stashed))
+	# ---- Active Effects ----
+	inventory.add_child(HSeparator.new())
+	inventory.add_child(HudStyle.label("Active Effects",
+			HudStyle.COLOR_HEADER, 12, true))
+	var effects: Array[EffectView] = EffectManager.get_active_effects(hero)
+	if effects.is_empty():
+		inventory.add_child(HudStyle.label("No active effects",
+				HudStyle.COLOR_SUBTEXT, HudStyle.DEFAULT_FONT_SIZE, true))
+	else:
+		for effect: EffectView in effects:
+			var effect_label := HudStyle.label("• %s" % effect.tooltip_text,
+				HudStyle.COLOR_SUBTEXT, HudStyle.DEFAULT_FONT_SIZE, true)
+			HudStyle.set_tooltip(effect_label, effect.tooltip_text)
+			inventory.add_child(effect_label)
 
 func _on_increase(stat: String) -> void:
 	if _available_points <= 0:
