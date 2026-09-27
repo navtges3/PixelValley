@@ -79,9 +79,9 @@ func _configure_stat_focus_navigation() -> void:
 	for i in buttons.size():
 		var button := buttons[i]
 		if i > 0:
-			button.focus_neighbor_top = buttons[i - 1].get_path()
+			button.focus_neighbor_top = button.get_path_to(buttons[i - 1])
 		if i < buttons.size() - 1:
-			button.focus_neighbor_bottom = buttons[i + 1].get_path()
+			button.focus_neighbor_bottom = button.get_path_to(buttons[i + 1])
 
 # ---- HudPanel contract ----
 
@@ -93,6 +93,7 @@ func refresh() -> void:
 		_selected_id = party.members[0].hero_id
 	_clear_focus_registry()
 	_register_detail_focus()
+	_configure_stat_focus_navigation()
 	clear_children(active_list)
 	clear_children(reserve_list)
 	var active := party.get_active_members()
