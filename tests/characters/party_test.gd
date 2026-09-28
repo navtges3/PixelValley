@@ -554,7 +554,8 @@ func _test_equip_returns_old_weapon_and_prevents_duplicate_assignment() -> void:
 		"a rejected duplicate equip leaves the owner unchanged"
 	)
 
-	_expect_true(party.unequip_weapon(knight), "a hero can unequip their weapon")
+	party.remove_from_active_party(knight)
+	_expect_true(party.unequip_weapon(knight), "a reserve hero can unequip their weapon")
 	_expect_null(knight.equipped_weapon, "unequipping clears the hero's weapon")
 	_expect_true(knight_default in party.inventory.weapon_stash, "the unequipped weapon returns to the shared stash")
 	_expect_false(party.unequip_weapon(knight), "a hero without a weapon cannot unequip")
