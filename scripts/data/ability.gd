@@ -93,6 +93,18 @@ func get_valid_targets(caster: Combatant, friendly_party: BattleParty = null, op
 			return result
 	return result
 
+func get_valid_targets_for_use(caster: Combatant, targets: Array[Combatant]) -> Array[Combatant]:
+	var valid_targets: Array[Combatant] = []
+	for target: Combatant in targets:
+		if target == null or not target.is_alive():
+			continue
+		if condition != null:
+			if condition.condition_subject == Condition.ConditionsSubject.TARGET:
+				if not condition.check(caster, target):
+					continue
+		valid_targets.append(target)
+	return valid_targets
+
 func is_valid_target(caster: Combatant, target: Combatant, friendly_party: BattleParty = null, opposing_party: BattleParty = null) -> bool:
 	if target == null or not target.is_alive():
 		return false
@@ -114,16 +126,15 @@ func is_valid_target(caster: Combatant, target: Combatant, friendly_party: Battl
 func use_on_targets(caster: Combatant, targets: Array[Combatant], effect_dispatcher: EffectEventDispatcher = null) -> String:
 	if caster == null or not caster.is_alive():
 		return ""
-	var living_targets: Array[Combatant] = []
-	for target: Combatant in targets:
-		if target != null and target.is_alive():
-			living_targets.append(target)
-	if living_targets.is_empty():
+	var valid_targets := get_valid_targets_for_use(caster, targets)
+	if valid_targets.is_empty():
 		return ""
-	if not is_ready_for_targets(caster, living_targets) or caster.current_nrg < self.energy_cost:
+	if not is_ready_for_targets(caster, valid_targets):
+		return ""
+	if caster.current_nrg < energy_cost:
 		return ""
 	var output := "%s used %s!\n" % [caster.get_colored_name(), self.name]
-	for target: Combatant in living_targets:
+	for target: Combatant in valid_targets:
 		if attack != null:
 			output += attack.apply_attack(caster, target)
 		for effect: Effect in target_effects:
@@ -132,11 +143,8 @@ func use_on_targets(caster: Combatant, targets: Array[Combatant], effect_dispatc
 			output += result.output
 	for effect: Effect in caster_effects:
 		var effect_copy: Effect = effect.duplicate() as Effect
-		var result := EffectManager.apply_effect(
-			effect_copy, caster, caster, 0, effect_dispatcher
-		)
+		var result := EffectManager.apply_effect(effect_copy, caster, caster, 0, effect_dispatcher)
 		output += result.output
-
 	self.current_cooldown = self.cooldown + 1
 	caster.current_nrg -= self.energy_cost
 	return output
