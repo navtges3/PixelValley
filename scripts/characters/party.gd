@@ -160,6 +160,8 @@ func equip_weapon(hero: Hero, weapon_id: String) -> bool:
 func unequip_weapon(hero: Hero) -> bool:
 	if not has_member(hero) or hero.equipped_weapon == null:
 		return false
+	if hero.hero_id in active_member_ids:
+		return false
 	var weapon_id := _get_equipped_weapon_id(hero)
 	if weapon_id.is_empty():
 		return false

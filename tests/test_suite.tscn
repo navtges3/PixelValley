@@ -42,9 +42,9 @@ script = ExtResource("4_suite")
 
 [node name="AbilityTargetingTests" parent="Combatants" unique_id=1221925205 instance=ExtResource("25_ability_targeting")]
 
-[node name="EncounterDefinitionTests" parent="Combatants" instance=ExtResource("27_encounter")]
+[node name="EncounterDefinitionTests" parent="Combatants" unique_id=515196545 instance=ExtResource("27_encounter")]
 
-[node name="EnemyAITests" parent="Combatants" instance=ExtResource("28_enemy_ai")]
+[node name="EnemyAITests" parent="Combatants" unique_id=1247615580 instance=ExtResource("28_enemy_ai")]
 
 [node name="Characters" type="Node" parent="." unique_id=881476188]
 

@@ -11,6 +11,8 @@ func run_tests() -> int:
 	_test_members_share_one_inventory()
 	_test_equip_transfers_weapon_from_shared_inventory()
 	_test_swap_returns_previous_weapon()
+	_test_active_member_cannot_unequip_weapon()
+	_test_reserve_member_can_unequip_weapon()
 	_test_equipped_weapon_cannot_be_granted_twice()
 	_test_roster_and_active_party_limits()
 	_test_active_party_membership()
@@ -75,6 +77,49 @@ func _test_equipped_weapon_cannot_be_granted_twice() -> void:
 	RewardService.grant_weapon(party, equipped_id)
 	_expect_false(equipped_id in party.inventory.weapon_stash, "duplicate reward cannot add equipped weapon")
 	_expect_equal(party.inventory.gold, weapon.value, "duplicate reward converts to gold")
+
+
+func _test_active_member_cannot_unequip_weapon() -> void:
+	var party := _new_party()
+	var hero := party.members[0]
+	var weapon_id := ItemLoader.get_item_id(hero.equipped_weapon)
+	_expect_true(
+		hero.hero_id in party.active_member_ids,
+		"test hero starts in the active party"
+	)
+	_expect_false(
+		party.unequip_weapon(hero),
+		"active party member cannot unequip"
+	)
+	_expect_equal(
+		ItemLoader.get_item_id(hero.equipped_weapon),
+		weapon_id,
+		"active hero keeps their weapon"
+	)
+	_expect_false(
+		weapon_id in party.inventory.weapon_stash,
+		"active hero weapon is not returned to the stash"
+	)
+
+
+func _test_reserve_member_can_unequip_weapon() -> void:
+	var party := _new_party()
+	var hero := HeroLoader.new_hero(Hero.HeroClass.ASSASSIN)
+	party.add_member(hero)
+	party.remove_from_active_party(hero)
+	var weapon_id := ItemLoader.get_item_id(hero.equipped_weapon)
+	_expect_true(
+		party.unequip_weapon(hero),
+		"reserve member can unequip"
+	)
+	_expect_null(
+		hero.equipped_weapon,
+		"reserve hero no longer has a weapon equipped"
+	)
+	_expect_true(
+		weapon_id in party.inventory.weapon_stash,
+		"unequipped weapon returns to shared stash"
+	)
 
 
 func _test_roster_and_active_party_limits() -> void:
