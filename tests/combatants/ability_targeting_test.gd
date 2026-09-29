@@ -11,6 +11,7 @@ func run_tests() -> int:
 	_test_defeated_combatants_excluded()
 	_test_multi_target_energy_and_cooldown_deducted_once()
 	_test_multi_target_effect_duplication()
+	_test_multi_target_target_condition_filtering()
 	_test_battle_manager_player_ability_multi_target()
 	_test_battle_manager_friendly_buff_does_not_emit_combatant_hurt()
 	return _finish_test_run("Ability targeting tests")
@@ -311,6 +312,67 @@ func _test_multi_target_effect_duplication() -> void:
 		caster.active_effects[0].effect != ally.active_effects[0].effect,
 		"effects applied to different combatants are duplicated independent instances"
 	)
+
+
+func _test_multi_target_target_condition_filtering() -> void:
+	var ability := Ability.new()
+	ability.name = "Execute Weak"
+	ability.target_type = Ability.TargetType.ENEMY_PARTY
+	ability.energy_cost = 3
+
+	var condition := Condition.new()
+	condition.condition_subject = Condition.ConditionsSubject.TARGET
+	condition.condition_type = Condition.ConditionType.HEALTH_BELOW
+	condition.value = 0.5
+	ability.condition = condition
+
+	ability.target_effects.append(_make_instant_heal_effect("target_effect", 5))
+
+	var caster := _make_hero("Caster", 20, 10)
+	var weak_enemy := _make_monster("WeakEnemy", 20)
+	var healthy_enemy := _make_monster("HealthyEnemy", 20)
+	var very_weak_enemy := _make_monster("VeryWeakEnemy", 20)
+
+	weak_enemy.current_hp = 9
+	healthy_enemy.current_hp = 20
+	very_weak_enemy.current_hp = 4
+
+	var targets: Array[Combatant] = [
+		weak_enemy,
+		healthy_enemy,
+		very_weak_enemy,
+	]
+
+	var output := ability.use_on_targets(caster, targets)
+
+	_expect_true(not output.is_empty(), "multi-target ability executes when at least one target qualifies")
+	_expect_equal(weak_enemy.current_hp, 14, "qualifying target receives the effect")
+	_expect_equal(healthy_enemy.current_hp, 20, "non-qualifying target does not receive the effect")
+	_expect_equal(very_weak_enemy.current_hp, 9, "another qualifying target receives the effect")
+	_expect_equal(caster.current_nrg, 7, "energy is deducted once for the filtered multi-target ability")
+
+	# If no target qualifies, the ability should not execute.
+	var no_match_ability := Ability.new()
+	no_match_ability.name = "Execute Healthy"
+	no_match_ability.target_type = Ability.TargetType.ENEMY_PARTY
+	no_match_ability.energy_cost = 4
+	no_match_ability.condition = condition
+	no_match_ability.target_effects.append(_make_instant_heal_effect("no_match_effect", 5))
+
+	var healthy_target_1 := _make_monster("Healthy1", 20)
+	var healthy_target_2 := _make_monster("Healthy2", 20)
+
+	var no_match_targets: Array[Combatant] = [
+		healthy_target_1,
+		healthy_target_2,
+	]
+
+	var no_match_output := no_match_ability.use_on_targets(caster, no_match_targets)
+
+	_expect_true(no_match_output.is_empty(), "multi-target ability fails when no target satisfies the condition")
+	_expect_equal(healthy_target_1.current_hp, 20, "first non-qualifying target remains unchanged")
+	_expect_equal(healthy_target_2.current_hp, 20, "second non-qualifying target remains unchanged")
+	_expect_equal(caster.current_nrg, 7, "energy is not consumed when no target qualifies")
 
 
 func _test_battle_manager_player_ability_multi_target() -> void:
