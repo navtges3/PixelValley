@@ -21,9 +21,34 @@
 [ext_resource type="PackedScene" path="res://tests/world/world_loot_source_test.tscn" id="19_world_loot"]
 [ext_resource type="PackedScene" path="res://tests/ui/acquisition_notification_test.tscn" id="20_acquisition"]
 [ext_resource type="PackedScene" path="res://tests/game/persistent_player_test.tscn" id="21_game"]
+[ext_resource type="PackedScene" path="res://tests/combatants/combatant_stats_test.tscn" id="22_combatants"]
+[ext_resource type="PackedScene" path="res://tests/combatants/battle_party_test.tscn" id="23_battle_party"]
+[ext_resource type="PackedScene" path="res://tests/combatants/battle_turn_order_test.tscn" id="24_turn_order"]
+[ext_resource type="PackedScene" path="res://tests/combatants/ability_targeting_test.tscn" id="25_ability_targeting"]
+[ext_resource type="PackedScene" path="res://tests/characters/party_test.tscn" id="26_party"]
+[ext_resource type="PackedScene" path="res://tests/combatants/encounter_definition_test.tscn" id="27_encounter"]
+[ext_resource type="PackedScene" path="res://tests/combatants/enemy_ai_test.tscn" id="28_enemy_ai"]
 
 [node name="TestSuite" type="Node" unique_id=783793299]
 script = ExtResource("4_suite")
+
+[node name="Combatants" type="Node" parent="." unique_id=765432101]
+
+[node name="CombatantStatsTests" parent="Combatants" unique_id=765432102 instance=ExtResource("22_combatants")]
+
+[node name="BattlePartyTests" parent="Combatants" unique_id=1263386570 instance=ExtResource("23_battle_party")]
+
+[node name="BattleTurnOrderTests" parent="Combatants" unique_id=169667284 instance=ExtResource("24_turn_order")]
+
+[node name="AbilityTargetingTests" parent="Combatants" unique_id=1221925205 instance=ExtResource("25_ability_targeting")]
+
+[node name="EncounterDefinitionTests" parent="Combatants" unique_id=515196545 instance=ExtResource("27_encounter")]
+
+[node name="EnemyAITests" parent="Combatants" unique_id=1247615580 instance=ExtResource("28_enemy_ai")]
+
+[node name="Characters" type="Node" parent="." unique_id=881476188]
+
+[node name="PartyTests" parent="Characters" unique_id=1696980244 instance=ExtResource("26_party")]
 
 [node name="Effects" type="Node" parent="." unique_id=1607208508]
 

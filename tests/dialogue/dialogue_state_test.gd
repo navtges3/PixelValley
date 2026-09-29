@@ -94,8 +94,11 @@ func _test_save_manager_round_trip_and_legacy_save() -> void:
 
 func _prepare_game_state() -> void:
 	GameState.reset_state()
-	GameState.hero = HeroLoader.new_hero(Hero.HeroClass.KNIGHT)
-	GameState.hero.name = "Dialogue State Test Hero"
+	var party := Party.new()
+	var hero := HeroLoader.new_hero(Hero.HeroClass.KNIGHT)
+	hero.name = "Dialogue State Test Hero"
+	party.add_member(hero)
+	GameState.party = party
 	GameState.village = Village.new()
 	GameState.village.name = "Dialogue State Test Village"
 	GameState.village.inn = Inn.new()

@@ -11,6 +11,7 @@ const REST_CD := 5
 @export var max_nrg: int = 0
 @export var current_nrg: int = 0
 
+@export var initiative: int = 0	# defines battle order
 @export var attack: int = 0		# modifies physical attacks
 @export var magic: int = 0		# modifies magical attacks
 @export var defense: int = 0	# modifies physical defense

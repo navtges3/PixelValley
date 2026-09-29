@@ -1,6 +1,8 @@
 extends BaseLocation
 class_name ValleyLocation
 
+const DEFAULT_SPAWN_ENTRANCE_ID := "village"
+
 @onready var cave_closed: StaticBody2D = $YSortedWorld/Mountains/CaveClosed
 @onready var cave_closed_collision: CollisionPolygon2D = $YSortedWorld/Mountains/CaveClosed/CollisionPolygon2D
 @onready var camp_gate_closed: StaticBody2D = $YSortedWorld/CampWalls/CampGateClosed
@@ -23,3 +25,9 @@ func _ready() -> void:
 
 func _get_screen_name() -> ScreenManager.ScreenName:
 	return ScreenManager.ScreenName.VALLEY
+
+func _apply_default_player_placement() -> void:
+	super._apply_default_player_placement()
+	if player == null or GameState.pre_combat_position != Vector2.ZERO:
+		return
+	place_player_at_entrance(DEFAULT_SPAWN_ENTRANCE_ID)

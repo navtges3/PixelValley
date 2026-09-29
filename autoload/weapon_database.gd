@@ -37,3 +37,15 @@ func get_random_unowned_weapon_id_for_class(hero_class: Hero.HeroClass, rarity: 
 
 func get_gold_fallback_for_rarity(rarity: Item.Rarity) -> int:
 	return GOLD_BY_RARITY.get(rarity, 50)
+
+func can_class_equip(hero_class: Hero.HeroClass, weapon_id: String) -> bool:
+	var in_any_class := false
+	for cls: Hero.HeroClass in CLASS_WEAPON_TABLE:
+		var rarities: Dictionary = CLASS_WEAPON_TABLE[cls]
+		for rarity: Item.Rarity in rarities:
+			var weapons: Array = rarities[rarity]
+			if weapon_id in weapons:
+				in_any_class = true
+				if cls == hero_class:
+					return true
+	return not in_any_class

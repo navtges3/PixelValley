@@ -48,6 +48,13 @@ func _expect_true(value: bool, message: String) -> void:
 	printerr("FAIL: %s" % message)
 
 
+func _expect_false(value: bool, message: String) -> void:
+	if not value:
+		return
+	_failures += 1
+	printerr("FAIL: %s" % message)
+
+
 func _expect_contains(actual: String, expected: String, message: String) -> void:
 	if actual.to_lower().contains(expected.to_lower()):
 		return

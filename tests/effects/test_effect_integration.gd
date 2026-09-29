@@ -90,9 +90,11 @@ func _test_monster_ability_preserves_source() -> void:
 
 func _test_potion_uses_hero_as_source() -> void:
 	var hero := _make_hero()
-	hero.inventory.add_potion("attack_potion")
+	var party := Party.new()
+	party.add_member(hero)
+	party.inventory.add_potion("attack_potion")
 
-	var output := hero.use_item("attack_potion")
+	var output := hero.use_item("attack_potion", null, party.inventory)
 	var active := EffectManager.find_active_effect(hero, &"power")
 
 	_expect_not_null(active, "potion effect is active")
@@ -100,7 +102,7 @@ func _test_potion_uses_hero_as_source() -> void:
 		_expect_equal(active.source, hero, "potion user is the effect source")
 		_expect_equal(active.target, hero, "potion user is the effect target")
 	_expect_equal(
-		hero.inventory.potions.has("attack_potion"),
+		party.inventory.potions.has("attack_potion"),
 		false,
 		"potion is consumed"
 	)
@@ -215,11 +217,10 @@ func _test_player_turn_effect_death_resolves_defeat_once() -> void:
 		1
 	)
 	EffectManager.apply_effect(lethal_dot, manager.monster, manager.hero)
-	manager._hero_effects_at_turn_start = EffectManager.capture_turn_start(manager.hero)
-	manager.state = BattleManager.BattleState.PLAYER_TURN
+	_prepare_active_turn(manager, manager.hero, BattleManager.BattleState.PLAYER_TURN)
 
-	manager.end_player_turn()
-	manager.end_player_turn()
+	manager._complete_active_turn()
+	manager._complete_active_turn()
 
 	_expect_equal(manager.state, BattleManager.BattleState.DEFEAT, "hero DOT death resolves defeat")
 	_expect_equal(_hero_defeated_count, 1, "defeat signal is emitted exactly once")
@@ -235,7 +236,7 @@ func _test_monster_turn_effect_death_resolves_victory_once() -> void:
 	manager.monster.gold = 100
 	manager.monster.gold_variance = 0.0
 	var starting_experience := manager.hero.experience
-	var starting_gold := manager.hero.inventory.gold
+	var starting_gold := manager.persistent_party.inventory.gold
 	var lethal_dot := _make_effect(
 		"monster_lethal_dot",
 		Effect.EffectStat.CURRENT_HP,
@@ -245,11 +246,10 @@ func _test_monster_turn_effect_death_resolves_victory_once() -> void:
 		1
 	)
 	EffectManager.apply_effect(lethal_dot, manager.hero, manager.monster)
-	manager._monster_effects_at_turn_start = EffectManager.capture_turn_start(manager.monster)
-	manager.state = BattleManager.BattleState.MONSTER_TURN
+	_prepare_active_turn(manager, manager.monster, BattleManager.BattleState.MONSTER_TURN)
 
-	manager.end_enemy_turn()
-	manager.end_enemy_turn()
+	manager._complete_active_turn()
+	manager._complete_active_turn()
 
 	_expect_equal(manager.state, BattleManager.BattleState.VICTORY, "monster DOT death resolves victory")
 	_expect_equal(_battle_won_count, 1, "victory signal is emitted exactly once")
@@ -260,7 +260,7 @@ func _test_monster_turn_effect_death_resolves_victory_once() -> void:
 		"effect victory grants experience exactly once"
 	)
 	_expect_equal(
-		manager.hero.inventory.gold,
+		manager.persistent_party.inventory.gold,
 		starting_gold + manager.monster.calculate_gold(),
 		"effect victory grants gold exactly once"
 	)
@@ -277,7 +277,7 @@ func _test_simultaneous_death_prefers_defeat_without_rewards() -> void:
 	manager.monster.gold = 100
 	manager.monster.gold_variance = 0.0
 	var starting_experience := manager.hero.experience
-	var starting_gold := manager.hero.inventory.gold
+	var starting_gold := manager.persistent_party.inventory.gold
 	var lethal_dot := _make_effect(
 		"simultaneous_hero_dot",
 		Effect.EffectStat.CURRENT_HP,
@@ -287,17 +287,16 @@ func _test_simultaneous_death_prefers_defeat_without_rewards() -> void:
 		1
 	)
 	EffectManager.apply_effect(lethal_dot, manager.monster, manager.hero)
-	manager._hero_effects_at_turn_start = EffectManager.capture_turn_start(manager.hero)
-	manager.state = BattleManager.BattleState.PLAYER_TURN
+	_prepare_active_turn(manager, manager.hero, BattleManager.BattleState.PLAYER_TURN)
 
-	manager.end_player_turn()
+	manager._complete_active_turn()
 
 	_expect_equal(manager.hero.current_hp, 0, "end-of-turn damage defeats the hero")
 	_expect_equal(manager.state, BattleManager.BattleState.DEFEAT, "simultaneous death uses defeat precedence")
 	_expect_equal(_hero_defeated_count, 1, "simultaneous death emits defeat exactly once")
 	_expect_equal(_battle_won_count, 0, "simultaneous death does not emit victory")
 	_expect_equal(manager.hero.experience, starting_experience, "simultaneous death grants no experience")
-	_expect_equal(manager.hero.inventory.gold, starting_gold, "simultaneous death grants no gold")
+	_expect_equal(	manager.persistent_party.inventory.gold, starting_gold, "simultaneous death grants no gold")
 	_expect_equal(_last_reward_entries.is_empty(), true, "simultaneous death produces no rewards")
 	_free_battle_manager(manager)
 
@@ -346,6 +345,10 @@ func _make_battle_manager() -> BattleManager:
 	var manager := BattleManager.new()
 	manager.hero = _make_hero()
 	manager.monster = _make_monster()
+	manager.player_party.add_member(manager.hero)
+	manager.persistent_party = Party.new()
+	manager.persistent_party.add_member(manager.hero)
+	manager.enemy_party.add_member(manager.monster)
 	manager.battle_log_updated.connect(_on_battle_log_updated)
 	manager.battle_won.connect(_on_battle_won)
 	manager.hero_defeated.connect(_on_hero_defeated)
@@ -353,6 +356,16 @@ func _make_battle_manager() -> BattleManager:
 	manager.monster_updated.connect(_on_monster_updated)
 	add_child(manager)
 	return manager
+
+
+func _prepare_active_turn(
+	manager: BattleManager,
+	combatant: Combatant,
+	battle_state: BattleManager.BattleState
+) -> void:
+	manager.active_combatant = combatant
+	manager.state = battle_state
+	manager._active_effects_at_turn_start = EffectManager.capture_turn_start(combatant)
 
 
 func _make_hero() -> Hero:
@@ -366,8 +379,7 @@ func _make_hero() -> Hero:
 	hero.magic = 10
 	hero.defense = 10
 	hero.resist = 10
-	hero.inventory = Inventory.new()
-	hero.inventory.equipped_weapon = Weapon.new()
+	hero.equipped_weapon = Weapon.new()
 	return hero
 
 

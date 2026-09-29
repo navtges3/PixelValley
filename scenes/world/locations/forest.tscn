@@ -6,6 +6,8 @@
 [ext_resource type="PackedScene" uid="uid://bj3yhhb5ixdj0" path="res://scenes/world/props/wood_bundle.tscn" id="5_5upft"]
 [ext_resource type="PackedScene" uid="uid://b0tdph7ofmv7r" path="res://scenes/world/trigger_zone.tscn" id="5_cfnsm"]
 [ext_resource type="Script" uid="uid://bh4ht0hpunwty" path="res://scripts/world/characters/spawn_point.gd" id="5_euhvq"]
+[ext_resource type="Resource" uid="uid://bfeyhybycab35" path="res://resources/encounters/dev_goblin_duo.tres" id="7_5upft"]
+[ext_resource type="Resource" path="res://resources/encounters/dev_forest_pack.tres" id="8_w8501"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ttkfb"]
 radius = 20.0
@@ -118,6 +120,7 @@ shape = SubResource("WorldBoundaryShape2D_cfnsm")
 [node name="SpawnPoint" type="Marker2D" parent="EnemySpawns" unique_id=1804905389 groups=["spawn_point"]]
 position = Vector2(223, 379)
 script = ExtResource("5_euhvq")
+encounter = ExtResource("7_5upft")
 
 [node name="SpawnPoint2" type="Marker2D" parent="EnemySpawns" unique_id=345326014 groups=["spawn_point"]]
 position = Vector2(454, 522)
@@ -135,6 +138,7 @@ script = ExtResource("5_euhvq")
 [node name="SpawnPoint5" type="Marker2D" parent="EnemySpawns" unique_id=298816999 groups=["spawn_point"]]
 position = Vector2(809, 398)
 script = ExtResource("5_euhvq")
+encounter = ExtResource("8_w8501")
 behavior = 2
 
 [node name="BossSpawnPoint" type="Marker2D" parent="EnemySpawns" unique_id=1100285348 groups=["spawn_point"]]

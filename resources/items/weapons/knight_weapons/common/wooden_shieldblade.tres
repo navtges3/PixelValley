@@ -8,7 +8,6 @@
 [ext_resource type="Texture2D" uid="uid://o80jcv0cctax" path="res://assets/items/weapons/sword.png" id="6_hf5da"]
 [ext_resource type="Theme" uid="uid://cgbnpl6hlm7s2" path="res://resources/themes/buttons/regular/green_button.tres" id="6_jr0cu"]
 
-
 [sub_resource type="Resource" id="Resource_mdp5g"]
 script = ExtResource("2_hf5da")
 min_damage = 1

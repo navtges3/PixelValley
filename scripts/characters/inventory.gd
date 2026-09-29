@@ -2,8 +2,9 @@ extends Resource
 class_name Inventory
 
 @export var gold: int = 0
+# Legacy save/test field. Runtime ownership is Hero.equipped_weapon.
 @export var equipped_weapon: Weapon
-@export var weapon_stash: Array[String]
+@export var weapon_stash: Array[String] = []
 @export var potions: Dictionary = {}
 @export var quest_items: Dictionary = {}
 
@@ -73,28 +74,11 @@ func remove_items(item_id: String, amount: int) -> bool:
 		return true
 	return false
 
-# ================================================
-#  Weapons
-# ================================================
-func equip_weapon(weapon_id: String) -> void:
-	if equipped_weapon:
-		var old_id := ItemLoader.get_item_id(equipped_weapon)
-		if old_id != "" and old_id not in weapon_stash:
-			weapon_stash.append(old_id)
-	equipped_weapon = ItemLoader.get_item(weapon_id) as Weapon
-	weapon_stash.erase(weapon_id)
+func add_weapon(weapon_id: String) -> bool:
+	if weapon_id.is_empty() or weapon_id in weapon_stash:
+		return false
+	weapon_stash.append(weapon_id)
+	return true
 
-func add_weapon_to_stash(weapon_id: String) -> void:
-	var equipped_id := ItemLoader.get_item_id(equipped_weapon)
-	if weapon_id not in weapon_stash and weapon_id != equipped_id:
-		weapon_stash.append(weapon_id)
-	else:
-		gold += (ItemLoader.get_item(weapon_id) as Weapon).value
-
-func has_weapon_in_stash(item_id: String) -> bool:
-	if equipped_weapon != null and ItemLoader.get_item_id(equipped_weapon) == item_id:
-		return true
-	return item_id in weapon_stash
-
-func remove_weapon_from_stash(weapon_id: String) -> void:
-	weapon_stash.erase(weapon_id)
+func has_weapon_in_stash(weapon_id: String) -> bool:
+	return weapon_id in weapon_stash

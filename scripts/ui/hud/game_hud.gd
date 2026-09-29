@@ -2,40 +2,38 @@ extends CanvasLayer
 class_name GameHUD
 
 enum Tab {
-	STATS,
+	PARTY,
 	INVENTORY,
 	QUESTS,
 	SYSTEM,
 }
 
-const PANELS_BY_TAB := {
-	Tab.STATS:     "StatsPanel",
-	Tab.INVENTORY: "InventoryPanel",
-	Tab.QUESTS:    "QuestsPanel",
-	Tab.SYSTEM:    "SystemPanel",
-}
+signal hud_closed
 
 @onready var overlay: ColorRect = $Overlay
 @onready var panel: PanelContainer = $Panel
 @onready var content_area: Control = $Panel/MarginContainer/VBox/MarginContainer/ContentArea
 
-@onready var stats_button: Button = $Panel/MarginContainer/VBox/TabBar/StatsButton
+@onready var party_button: Button = $Panel/MarginContainer/VBox/TabBar/PartyButton
 @onready var inventory_button: Button = $Panel/MarginContainer/VBox/TabBar/InventoryButton
 @onready var quests_button: Button = $Panel/MarginContainer/VBox/TabBar/QuestsButton
 @onready var system_button: Button = $Panel/MarginContainer/VBox/TabBar/SystemButton
 
-@onready var stats_panel: StatsPanel = $Panel/MarginContainer/VBox/MarginContainer/ContentArea/StatsPanel
+@onready var party_panel: PartyPanel = $Panel/MarginContainer/VBox/MarginContainer/ContentArea/PartyPanel
 @onready var inventory_panel: InventoryPanel = $Panel/MarginContainer/VBox/MarginContainer/ContentArea/InventoryPanel
 @onready var quests_panel: QuestsPanel = $Panel/MarginContainer/VBox/MarginContainer/ContentArea/QuestsPanel
 @onready var system_panel: SystemPanel = $Panel/MarginContainer/VBox/MarginContainer/ContentArea/SystemPanel
 
 var _is_open: bool = false
-var _current_tab: Tab = Tab.STATS
+var _current_tab: Tab = Tab.PARTY
 var _tab_buttons: Dictionary = {}
-
-signal hud_closed
+var _panels: Dictionary[Tab, HudPanel] = {}
 
 func _ready() -> void:
+	_register_panel(Tab.PARTY, party_panel)
+	_register_panel(Tab.INVENTORY, inventory_panel)
+	_register_panel(Tab.QUESTS, quests_panel)
+	_register_panel(Tab.SYSTEM, system_panel)
 	_setup_tab_buttons()
 	hide_hud()
 
@@ -62,12 +60,17 @@ func hide_hud() -> void:
 
 func switch_tab(tab: Tab) -> void:
 	_current_tab = tab
-	for panel_name in PANELS_BY_TAB.values():
-		content_area.get_node(panel_name).visible = false
-	content_area.get_node(PANELS_BY_TAB[tab]).visible = true
+	for panel_tab: Tab in _panels:
+		_panels[panel_tab].visible = panel_tab == tab
 	_sync_tab_buttons()
-	_refresh_current_tab()
+	_panels[tab].on_tab_opened()
 	_focus_current_tab.call_deferred()
+
+func _register_panel(tab: Tab, hud_panel: HudPanel) -> void:
+	_panels[tab] = hud_panel
+
+func _get_default_focus_target() -> Control:
+	return _panels[_current_tab].get_default_focus_target()
 
 func _focus_current_tab() -> void:
 	if not _is_open:
@@ -77,33 +80,9 @@ func _focus_current_tab() -> void:
 		target = _tab_buttons[_current_tab] as Button
 	InputManager.focus_menu_control(target)
 
-func _get_default_focus_target() -> Control:
-	match _current_tab:
-		Tab.SYSTEM:
-			return system_panel.get_default_focus_target()
-		Tab.STATS:
-			return stats_panel.get_default_focus_target()
-		Tab.INVENTORY:
-			return inventory_panel.get_default_focus_target()
-		Tab.QUESTS:
-			return quests_panel.get_default_focus_target()
-		_:
-			return null
-
-func _refresh_current_tab() -> void:
-	match _current_tab:
-		Tab.STATS:
-			stats_panel.refresh()
-		Tab.INVENTORY:
-			inventory_panel.refresh()
-		Tab.QUESTS:
-			quests_panel.refresh()
-		Tab.SYSTEM:
-			system_panel.refresh()
-
 func _setup_tab_buttons() -> void:
 	_tab_buttons = {
-		Tab.STATS: stats_button,
+		Tab.PARTY: party_button,
 		Tab.INVENTORY: inventory_button,
 		Tab.QUESTS: quests_button,
 		Tab.SYSTEM: system_button,
@@ -117,8 +96,7 @@ func _setup_tab_buttons() -> void:
 	_sync_tab_buttons()
 
 func _switch_relative_tab(direction: int) -> void:
-	var tab_count := PANELS_BY_TAB.size()
-	var next_tab: Tab = wrapi(_current_tab + direction, 0, tab_count) as Tab
+	var next_tab: Tab = wrapi(_current_tab + direction, 0, _panels.size()) as Tab
 	switch_tab(next_tab)
 
 func _sync_tab_buttons() -> void:

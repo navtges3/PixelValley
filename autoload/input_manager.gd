@@ -167,6 +167,18 @@ func begin_pointer_control(control: Control) -> bool:
 	_set_menu_navigation_mode(MenuNavigationMode.POINTER)
 	return true
 
+## Whether a control can currently hold focus for arrow-key navigation purposes.
+## Disabled buttons are still valid to navigate away from — only true
+## unfocusable states (hidden, freed, focus_mode NONE) disqualify them.
+func _has_focusable_state(control: Control) -> bool:
+	return (
+		is_instance_valid(control)
+		and not control.is_queued_for_deletion()
+		and control.is_inside_tree()
+		and control.is_visible_in_tree()
+		and control.focus_mode != Control.FOCUS_NONE
+	)
+
 func _handle_menu_direction(event: InputEvent) -> bool:
 	if event.is_echo() or not _is_menu_direction_pressed(event):
 		return false
@@ -175,10 +187,7 @@ func _handle_menu_direction(event: InputEvent) -> bool:
 		return false
 	_set_menu_navigation_mode(MenuNavigationMode.FOCUS)
 	var focus_owner: Control = get_viewport().gui_get_focus_owner()
-	if _can_receive_menu_focus(focus_owner) and _context_contains_control(
-		context,
-		focus_owner
-	):
+	if _has_focusable_state(focus_owner) and _context_contains_control(context, focus_owner):
 		return false
 	if restore_menu_focus():
 		get_viewport().set_input_as_handled()

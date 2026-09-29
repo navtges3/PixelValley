@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="EncounterDefinition" format=3]
+
+[ext_resource type="Script" uid="uid://bwul64vwrc8rn" path="res://scripts/data/encounter_definition.gd" id="1_encounter"]
+
+[resource]
+script = ExtResource("1_encounter")
+id = "dev_orc_squad"
+name = "Orc Squad"
+monster_ids = Array[int]([2, 1, 1, 1])

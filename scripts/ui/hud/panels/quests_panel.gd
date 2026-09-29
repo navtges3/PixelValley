@@ -1,10 +1,7 @@
-extends Control
+extends HudPanel
 class_name QuestsPanel
 
 const QUEST_BUTTON := preload("res://scenes/ui/components/quest_button.tscn")
-
-const COLOR_HEADER         := Color(0.95, 0.92, 0.80)
-const COLOR_OBJECTIVE_PEND := Color(0.72, 0.67, 0.57)
 
 signal quest_selected(quest_id: int)
 
@@ -33,10 +30,10 @@ func _ready() -> void:
 
 func get_default_focus_target() -> Control:
 	var last_focused: QuestButton = _buttons_by_id.get(_last_focused_quest_id)
-	if _can_receive_focus(last_focused):
+	if can_receive_focus(last_focused):
 		return last_focused
 	var selected: QuestButton = _buttons_by_id.get(_selected_quest_id)
-	if _can_receive_focus(selected):
+	if can_receive_focus(selected):
 		return selected
 	var focus_chain := _get_focus_chain()
 	if not focus_chain.is_empty():
@@ -53,7 +50,7 @@ func refresh() -> void:
 	_active_buttons.clear()
 	_completed_buttons.clear()
 	if GameState.quest_manager == null:
-		active_list.add_child(_make_label("Quest information is unavailable.", COLOR_OBJECTIVE_PEND, 11))
+		active_list.add_child(HudStyle.label("Quest information is unavailable.", HudStyle.COLOR_SUBTEXT, 11))
 		_completed_quest_count = 0
 		_sync_completed_section()
 		_refresh_track_action()
@@ -72,7 +69,7 @@ func _add_category_group(parent: VBoxContainer, quests: Array[Quest], category: 
 	if matching.is_empty():
 		return
 	matching.sort_custom(_sort_quests_by_id)
-	var header := _make_label(title, COLOR_HEADER, 13)
+	var header := HudStyle.label(title, HudStyle.COLOR_HEADER, 13)
 	parent.add_child(header)
 	for quest: Quest in matching:
 		_add_quest_button(parent, quest, state)
@@ -93,14 +90,6 @@ func _add_quest_button(parent: VBoxContainer, quest: Quest, state: QuestButton.D
 	if quest.id == _selected_quest_id:
 		button.set_pressed_no_signal(true)
 
-func _can_receive_focus(control: Control) -> bool:
-	return (
-		is_instance_valid(control)
-		and control.is_visible_in_tree()
-		and control.focus_mode != Control.FOCUS_NONE
-		and not (control is BaseButton and (control as BaseButton).disabled)
-	)
-
 func _configure_focus_graph() -> void:
 	var controls := _get_focus_chain()
 	for index: int in controls.size():
@@ -115,15 +104,15 @@ func _configure_focus_graph() -> void:
 func _get_focus_chain() -> Array[Control]:
 	var controls: Array[Control] = []
 	for button: QuestButton in _active_buttons:
-		if _can_receive_focus(button):
+		if can_receive_focus(button):
 			controls.append(button)
-	if _can_receive_focus(completed_header):
+	if can_receive_focus(completed_header):
 		controls.append(completed_header)
 	if _completed_list_expanded:
 		for button: QuestButton in _completed_buttons:
-			if _can_receive_focus(button):
+			if can_receive_focus(button):
 				controls.append(button)
-	if _can_receive_focus(track_button):
+	if can_receive_focus(track_button):
 		controls.append(track_button)
 	return controls
 
@@ -146,9 +135,10 @@ func _bind_quest_manager(manager: QuestManager) -> void:
 	_bound_manager.quest_turned_in.connect(_on_quest_turned_in)
 	_bound_manager.tracked_quest_changed.connect(_on_tracked_quest_changed)
 
+# Kept as a thin wrapper: tests call it, and the quest list needs the old
+# buttons gone immediately (focus graph + lookups are rebuilt right after).
 func _clear_container(list: VBoxContainer) -> void:
-	for child: Node in list.get_children():
-		child.free()
+	clear_children(list, true)
 
 func _disconnect_quest_manager() -> void:
 	if _bound_manager == null:
@@ -178,13 +168,6 @@ func _get_focused_quest_id() -> int:
 		if button.has_focus():
 			return quest_id
 	return -1
-
-func _make_label(txt: String, color: Color, font_size: int = 12) -> Label:
-	var lbl := Label.new()
-	lbl.text = txt
-	lbl.add_theme_color_override("font_color", color)
-	lbl.add_theme_font_size_override("font_size", font_size)
-	return lbl
 
 func _on_completed_header_toggled(expanded: bool) -> void:
 	_completed_list_expanded = expanded
@@ -240,7 +223,7 @@ func _refresh_active() -> void:
 	_add_category_group(active_list, active_quests, Quest.Category.SIDE, "Side Quests", QuestButton.DisplayState.ACTIVE)
 	_add_category_group(active_list, ready_quests, Quest.Category.SIDE, "Side Quests - Ready", QuestButton.DisplayState.READY)
 	if active_quests.is_empty() and ready_quests.is_empty():
-		active_list.add_child(_make_label("No active quests.", COLOR_OBJECTIVE_PEND, 11))
+		active_list.add_child(HudStyle.label("No active quests.", HudStyle.COLOR_SUBTEXT, 11))
 
 func _refresh_completed() -> void:
 	var quests: Array[Quest] = GameState.quest_manager.get_completed_quests()
@@ -268,11 +251,11 @@ func _refresh_track_action() -> void:
 
 func _restore_focus_after_refresh(preferred_quest_id: int) -> void:
 	var preferred_button: QuestButton = _buttons_by_id.get(preferred_quest_id)
-	if _can_receive_focus(preferred_button):
+	if can_receive_focus(preferred_button):
 		InputManager.focus_menu_control(preferred_button)
 		return
 	var fallback := get_default_focus_target()
-	if _can_receive_focus(fallback):
+	if can_receive_focus(fallback):
 		InputManager.focus_menu_control(fallback)
 
 func _sort_quests_by_id(a: Quest, b: Quest) -> bool:

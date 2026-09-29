@@ -5,6 +5,7 @@
 [ext_resource type="Theme" uid="uid://dqwm8agt87lsh" path="res://resources/themes/buttons/regular/blue_button.tres" id="3_7hl0s"]
 [ext_resource type="Theme" uid="uid://phfh7c5hwx1n" path="res://resources/themes/buttons/regular/yellow_button.tres" id="4_3cs86"]
 [ext_resource type="Theme" uid="uid://130ubmqd1h3b" path="res://resources/themes/buttons/regular/red_button.tres" id="5_bd2wy"]
+[ext_resource type="PackedScene" uid="uid://cw4dm1x3j5e12" path="res://scenes/ui/windows/new_game_window.tscn" id="6_7hl0s"]
 [ext_resource type="PackedScene" uid="uid://bxmcs3dj7nfvs" path="res://scenes/ui/windows/options_window.tscn" id="6_pqlu1"]
 [ext_resource type="PackedScene" uid="uid://bcurrites3af" path="res://scenes/ui/windows/load_window.tscn" id="7_pfh6i"]
 
@@ -84,11 +85,14 @@ size_flags_vertical = 4
 theme = ExtResource("5_bd2wy")
 text = "Exit Game"
 
+[node name="NewGameWindow" parent="." unique_id=1924150137 instance=ExtResource("6_7hl0s")]
+layout_mode = 1
+
 [node name="LoadWindow" parent="." unique_id=1918541071 instance=ExtResource("7_pfh6i")]
 layout_mode = 1
 
 [node name="OptionsWindow" parent="." unique_id=101606992 instance=ExtResource("6_pqlu1")]
-visible = false
+layout_mode = 1
 
 [connection signal="pressed" from="MarginContainer/VBoxContainer/NewGameButton" to="." method="_on_new_game_button_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/LoadGameButton" to="." method="_on_load_game_button_pressed"]

@@ -31,16 +31,28 @@ func _activate_spawn_points() -> void:
 		sp.spawn(y_sorted_world, _on_combat_initiated, _get_location_id())
 
 func _on_combat_initiated(enemy: Enemy) -> void:
+	if GameState.party == null or not GameState.party.can_fight():
+		return
 	enemy.set_physics_process(false)
 	var retreat_dir := (player.global_position - enemy.global_position) if player != null else Vector2.DOWN
 	if retreat_dir == Vector2.ZERO:
 		retreat_dir = Vector2.DOWN
 	if player != null:
 		GameState.pre_combat_position = player.global_position
-		ScreenManager.go_to_screen(ScreenManager.ScreenName.BATTLE, "", {
-			"hero": GameState.hero,
+		var battle_party := (
+			GameState.party.create_battle_party()
+			if GameState.party != null
+			else BattleParty.new()
+		)
+		var battle_data := {
+			"hero": GameState.leader,
+			"player_party": battle_party,
+			"persistent_party": GameState.party,
 			"monster_id": enemy.monster_id,
 			"spawn_point_id": enemy.spawn_point_id,
 			"location_id": _get_location_id(),
 			"flee_position": player.global_position + retreat_dir.normalized() * 96.0
-		})
+		}
+		if enemy.encounter != null:
+			battle_data["encounter"] = enemy.encounter
+		ScreenManager.go_to_screen(ScreenManager.ScreenName.BATTLE, "", battle_data)

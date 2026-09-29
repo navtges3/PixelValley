@@ -43,8 +43,8 @@ func attach_player(new_player: Player, entrance_id: String = "") -> void:
 		if not player.is_in_group("player"):
 			player.add_to_group("player")
 		player.enable_player()
-		if GameState.hero != null and GameState.hero.world_visual != null:
-			player.set_sprite_frames(GameState.hero.world_visual)
+		if GameState.leader != null and GameState.leader.world_visual != null:
+			player.set_sprite_frames(GameState.leader.world_visual)
 		if entrance_id != "":
 			place_player_at_entrance(entrance_id)
 			GameState.set_player_location(_get_screen_name(), entrance_id)
@@ -121,7 +121,7 @@ func _input(event: InputEvent) -> void:
 		else:
 			_open_hud(game_hud)
 
-func _open_hud(game_hud: GameHUD, tab: GameHUD.Tab = GameHUD.Tab.STATS) -> void:
+func _open_hud(game_hud: GameHUD, tab: GameHUD.Tab = GameHUD.Tab.PARTY) -> void:
 	if player != null:
 		player.movement_blocked = true
 	game_hud.show_hud(tab)

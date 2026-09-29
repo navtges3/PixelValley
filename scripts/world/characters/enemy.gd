@@ -7,6 +7,7 @@ enum State { IDLE, PATROL, GUARD, WANDER, CHASE, RETURN, DEAD }
 enum Behavior { PATROL, GUARD, WANDER }
 
 @export_group("Identity")
+@export var encounter: EncounterDefinition = null
 @export var monster_id: MonsterLoader.MonsterID = MonsterLoader.MonsterID.GOBLIN
 
 @export_group("Patrol")
@@ -65,6 +66,12 @@ func _ready() -> void:
 			_pick_wander_target()
 
 func _apply_visuals() -> void:
+	if encounter != null:
+		var encounter_visual := encounter.get_lead_world_visual()
+		if encounter_visual != null:
+			anim.sprite_frames = encounter_visual
+			_play_anim("idle")
+			return
 	var monster: Monster = MonsterLoader.new_monster(monster_id)
 	if monster == null or monster.world_visual == null:
 		return

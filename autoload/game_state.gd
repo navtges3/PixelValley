@@ -1,8 +1,13 @@
 extends Node
 
 const SAVE_DIR := "user://saves"
+const STARTING_GOLD := 50
+const STARTING_PARTY := [Hero.HeroClass.KNIGHT, Hero.HeroClass.PRINCESS]
 
-var hero: Hero = null
+var party: Party = null
+var leader: Hero:
+	get:
+		return party.get_leader() if party != null else null
 var village: Village = null
 var quest_manager: QuestManager = null
 var dialogue_state: DialogueState = DialogueState.new()
@@ -22,7 +27,7 @@ func _ready() -> void:
 
 func start_new_game(slot: int = 1) -> void:
 	dialogue_state.clear()
-	_setup_hero_inv()
+	_setup_party()
 	_setup_village()
 	var new_manager := QuestManager.new()
 	new_manager.new_game()
@@ -34,7 +39,7 @@ func start_new_game(slot: int = 1) -> void:
 func reset_state() -> void:
 	dialogue_state.clear()
 	set_quest_manager(null)
-	hero = null
+	party = null
 	village = null
 	pre_combat_position = Vector2.ZERO
 	player_location = {
@@ -80,14 +85,19 @@ func _setup_potion_shop() -> void:
 func _setup_weapon_shop() -> void:
 	var shop := Shop.new()
 	shop.name = "Oakshield Forge"
-	var common_weapons: Array = WeaponDatabase.CLASS_WEAPON_TABLE.get(hero.hero_class, {}).get(Item.Rarity.COMMON, [])
+	var common_weapons: Array = (WeaponDatabase.CLASS_WEAPON_TABLE.get(Hero.HeroClass.KNIGHT, {}).get(Item.Rarity.COMMON, []) + 
+		WeaponDatabase.CLASS_WEAPON_TABLE.get(Hero.HeroClass.PRINCESS, {}).get(Item.Rarity.COMMON, []) +
+		WeaponDatabase.CLASS_WEAPON_TABLE.get(Hero.HeroClass.ASSASSIN, {}).get(Item.Rarity.COMMON, []))
 	for weapon_id in common_weapons:
 		shop.add_item(weapon_id, 1)
 	village.weapon_shop = shop
 
-func _setup_hero_inv() -> void:
-	hero.inventory.potions.clear()
-	hero.inventory.add_potion("lesser_healing_potion", 3)
-	hero.inventory.add_potion("attack_potion", 3)
-	hero.inventory.add_potion("defense_potion", 3)
-	hero.inventory.add_potion("energy_potion", 3)
+func _setup_party() -> void:
+	party = Party.new()
+	for hero_class: Hero.HeroClass in STARTING_PARTY:
+		party.add_member(HeroLoader.new_hero(hero_class))
+	party.inventory.gold = STARTING_GOLD
+	party.inventory.add_potion("lesser_healing_potion", 3)
+	party.inventory.add_potion("attack_potion", 3)
+	party.inventory.add_potion("defense_potion", 3)
+	party.inventory.add_potion("energy_potion", 3)

@@ -1,4 +1,4 @@
-extends Control
+extends HudPanel
 class_name SystemPanel
 
 @onready var options_window: OptionsWindow = $OptionsWindow

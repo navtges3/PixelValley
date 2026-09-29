@@ -5,17 +5,13 @@ const ABILITY_BUTTON = preload("res://scenes/ui/components/ability_button.tscn")
 const ITEM_BUTTON = preload("res://scenes/ui/components/item_button.tscn")
 const BATTLE_CHARACTER = preload("res://scenes/ui/components/battle_character.tscn")
 const MEDITATE_TOOLTIP_TEXT := "Restore health and energy."
+const FORMATION_SPACING := 128.0
 
 @onready var battle_manager: BattleManager = $BattleManager
 
 @onready var reward_window: RewardWindow = $RewardWindow
 @onready var death_window: DeathWindow = $DeathWindow
 @onready var battle_log: RichTextLabel = $MarginContainer/BattleLog
-
-# Monster Info
-@onready var monster_health_bar: ProgressBar = $MarginContainer/VBoxContainer/MonsterHealthBar
-@onready var monster_health_bar_label: Label = $MarginContainer/VBoxContainer/MonsterHealthBar/MonsterHealthBarLabel
-@onready var monster_label: Label = $MarginContainer/VBoxContainer/MonsterLabel
 
 # Action Area
 @onready var hero_info: HeroInfo = $MarginContainer/ActionPanel/ActionArea/HeroInfo
@@ -27,13 +23,15 @@ const MEDITATE_TOOLTIP_TEXT := "Restore health and energy."
 @onready var tooltip_panel: PanelContainer = $MarginContainer/TooltipPanel
 @onready var tooltip_label: Label = $MarginContainer/TooltipPanel/TooltipLabel
 
-var hero_visual: BattleCharacter
-var monster_visual: BattleCharacter
+var combatant_visuals: Dictionary = {}
+var _active_visual: BattleCharacter
 var battle_config: Dictionary = {}
 
 var _primary_action_buttons: Array[Button] = []
 var _focused_tooltip_button: Button
 var _hovered_tooltip_button: Button
+var _targeting_ability: Ability
+var _active_target_visuals: Array[BattleCharacter] = []
 
 func _ready() -> void:
 	_primary_action_buttons = [
@@ -77,85 +75,87 @@ func _can_focus_battle_control(control: Control) -> bool:
 
 func setup(config: Dictionary) -> void:
 	battle_config = config
-	_spawn_hero()
 	battle_manager.setup_battle(config)
-	_refresh_hero_effect_icons()
+	_spawn_party_visuals()
+	if hero_info.hero == null:
+		hero_info.hero = battle_manager.hero
+	for combatant: Combatant in combatant_visuals:
+		_on_combatant_updated(combatant)
+	_set_active_visual(battle_manager.active_combatant)
+
+func _spawn_party_visuals() -> void:
+	combatant_visuals.clear()
+	for child: Node in $HeroSlot.get_children():
+		child.queue_free()
+	for child: Node in $MonsterSlot.get_children():
+		child.queue_free()
+	var players := battle_manager.player_party.get_members()
+	var enemies := battle_manager.enemy_party.get_members()
+	for index: int in players.size():
+		# Active-list position 1 (the party tab's front of the list) stands
+		# closest to the enemies.
+		_spawn_combatant_visual(players[index], $HeroSlot, players.size() - 1 - index, players.size())
+	for index: int in enemies.size():
+		_spawn_combatant_visual(enemies[index], $MonsterSlot, index, enemies.size())
+
+func _get_formation_offset(index: int, party_size: int) -> Vector2:
+	return Vector2((index - (party_size - 1) / 2.0) * FORMATION_SPACING, 0.0)
+
+func _spawn_combatant_visual(combatant: Combatant, parent: Node, index: int, party_size: int) -> void:
+	var visual := BATTLE_CHARACTER.instantiate() as BattleCharacter
+	parent.add_child(visual)
+	visual.position = _get_formation_offset(index, party_size)
+	visual.apply_visual(combatant, combatant is Monster)
+	combatant_visuals[combatant] = visual
+	if combatant is Hero:
+		_setup_hero_visual(combatant as Hero, visual)
+
+func _setup_hero_visual(hero: Hero, visual: BattleCharacter) -> void:
+	visual.configure_vfx(hero.hero_class)
+	var weapon: Weapon = hero.equipped_weapon
+	if weapon != null and weapon.sprite:
+		visual.equip_weapon(weapon.sprite, weapon.sprite_offset, weapon.tip_offset)
+
+func _on_combatant_updated(combatant: Combatant) -> void:
+	var visual := combatant_visuals.get(combatant) as BattleCharacter
+	if visual == null:
+		return
+	visual.set_effects(EffectManager.get_active_effects(combatant))
+	visual.refresh_status()
+	if combatant == hero_info.hero:
+		hero_info.refresh()
+
+func _on_active_combatant_changed(combatant: Combatant) -> void:
+	_set_active_visual(combatant)
+
+func _set_active_visual(combatant: Combatant) -> void:
+	if is_instance_valid(_active_visual):
+		_active_visual.set_active(false)
+	_active_visual = combatant_visuals.get(combatant) as BattleCharacter
+	if _active_visual != null:
+		_active_visual.set_active(true)
+
+func _on_combatant_defeated(combatant: Combatant) -> void:
+	var visual := combatant_visuals.get(combatant) as BattleCharacter
+	if visual != null:
+		visual.set_defeated()
+
+func _on_combatant_attacking(combatant: Combatant) -> void:
+	var visual := combatant_visuals.get(combatant) as BattleCharacter
+	if visual == null:
+		return
+	visual.play_attack()
+	AudioManager.play_sfx_by_id("sword_swing", 1.0, randf_range(0.9, 1.1))
+	await visual.animation_done
+
+func _on_combatant_hurt(combatant: Combatant) -> void:
+	var visual := combatant_visuals.get(combatant) as BattleCharacter
+	if visual != null:
+		visual.play_hurt()
 
 # --- Effect Icons ---
 func _on_effect_lifecycle_changed(event: EffectLifecycleEvent) -> void:
-	if event.target == battle_manager.hero:
-		_refresh_hero_effect_icons()
-	elif event.target == battle_manager.monster:
-		_refresh_monster_effect_icons()
-
-func _refresh_hero_effect_icons() -> void:
-	if not is_instance_valid(hero_visual):
-		return
-	var effects := EffectManager.get_active_effects(battle_manager.hero)
-	hero_visual.set_effects(effects)
-
-func _refresh_monster_effect_icons() -> void:
-	if not is_instance_valid(monster_visual):
-		return
-	var effects := EffectManager.get_active_effects(battle_manager.monster)
-	monster_visual.set_effects(effects)
-
-# --- Hero ---
-func _spawn_hero() -> void:
-	hero_info.hero = battle_config.hero
-	hero_visual = BATTLE_CHARACTER.instantiate()
-	$HeroSlot.add_child(hero_visual)
-	hero_visual.apply_visual(battle_config.hero)
-	_refresh_hero_effect_icons()
-	hero_visual.configure_vfx(battle_config.hero.hero_class)
-	var weapon: Weapon = battle_config.hero.inventory.equipped_weapon
-	if weapon and weapon.sprite:
-		hero_visual.equip_weapon(weapon.sprite, weapon.sprite_offset, weapon.tip_offset)
-	ability_button.text = weapon.name
-
-func _on_hero_updated(_hero_ref: Hero) -> void:
-	hero_info.refresh()
-
-func _on_hero_attacking() -> void:
-	hero_visual.play_attack()
-	AudioManager.play_sfx_by_id("sword_swing", 1.0, randf_range(0.9, 1.1))
-	await hero_visual.animation_done
-
-func _on_hero_hurt() -> void:
-	hero_visual.play_hurt()
-
-# --- Monster ---
-func _on_new_monster(monster_ref: Monster) -> void:
-	monster_label.text = monster_ref.name
-	_on_monster_updated(monster_ref)
-	_spawn_monster(monster_ref)
-
-func _spawn_monster(monster_ref: Monster) -> void:
-	for child in $MonsterSlot.get_children():
-		child.queue_free()
-	monster_visual = BATTLE_CHARACTER.instantiate()
-	$MonsterSlot.add_child(monster_visual)
-	monster_visual.apply_visual(monster_ref, true)
-	_refresh_monster_effect_icons()
-
-func _on_monster_updated(monster_ref: Monster) -> void:
-	var value: int = monster_ref.current_hp
-	var max_value: int = monster_ref.max_hp
-	monster_health_bar.max_value = max_value
-	monster_health_bar.value = value
-	monster_health_bar_label.text = "%d / %d" % [value, max_value]
-	_set_bar_color(monster_health_bar, HudBarStyle.hp_color(value, max_value))
-
-func _set_bar_color(bar: ProgressBar, color: Color) -> void:
-	HudBarStyle.apply(bar, color)
-
-func _on_monster_attacking() -> void:
-	monster_visual.play_attack()
-	AudioManager.play_sfx_by_id("sword_swing", 1.0, randf_range(0.9, 1.1))
-	await monster_visual.animation_done
-
-func _on_monster_hurt() -> void:
-	monster_visual.play_hurt()
+	_on_combatant_updated(event.target)
 
 # --- Battle Log ---
 func _on_battle_log_updated(msg: String) -> void:
@@ -221,11 +221,17 @@ func _on_flee_button_pressed() -> void:
 	ScreenManager.go_back()
 
 func _on_player_turn() -> void:
+	var actor := battle_manager.active_combatant as Hero
+	if actor == null:
+		return
+	hero_info.hero = actor
+	var weapon := actor.equipped_weapon
+	ability_button.text = weapon.name if weapon != null else "Use Ability"
 	ability_button.disabled = false
 	item_button.disabled = battle_manager.get_hero_items().is_empty()
-	if battle_manager.hero.rest_cooldown > 0:
+	if actor.rest_cooldown > 0:
 		meditate_button.disabled = true
-		meditate_button.text = "Cooldown: %d" % battle_manager.hero.rest_cooldown
+		meditate_button.text = "Cooldown: %d" % actor.rest_cooldown
 	else:
 		meditate_button.disabled = false
 		meditate_button.text = "Meditate"
@@ -233,15 +239,9 @@ func _on_player_turn() -> void:
 	_reset_action_submenu()
 	_focus_primary_action.call_deferred()
 
-func _on_monster_turn() -> void:
-	_clear_tooltip()
-	ability_button.disabled = true
-	item_button.disabled = true
-	meditate_button.disabled = true
-	flee_button.disabled = true
-
 # --- End-of-battle ---
 func _on_battle_won(entries: Array) -> void:
+	_set_active_visual(null)
 	reward_window.show_rewards("Victory!", entries)
 	AudioManager.play_sfx_by_id("levelup")
 
@@ -249,23 +249,67 @@ func _on_rewards_collected() -> void:
 	ScreenManager.go_back()
 
 func _on_hero_defeated() -> void:
+	_set_active_visual(null)
 	GameState.pre_combat_position = Vector2.ZERO
 	death_window.open()
 
 func _on_death_window_dismissed() -> void:
-	GameState.hero.rest()
+	GameState.party.rest_all()
 	ScreenManager.go_to_screen(ScreenManager.ScreenName.VILLAGE, InnInterior.ENTRANCE_ID)
 
 # --- Button Factories ---
 func _on_ability_button_pressed(ability: Ability) -> void:
 	_clear_tooltip()
+	if ability.requires_manual_target_selection():
+		_begin_target_selection(ability)
+		return
 	battle_manager.player_ability_selected(ability)
 	ability_button.button_pressed = false
 
+func _begin_target_selection(ability: Ability) -> void:
+	_targeting_ability = ability
+	option_list.visible = false
+	_set_primary_actions_disabled(true)
+	for target: Combatant in battle_manager.get_valid_targets(ability):
+		var visual := combatant_visuals.get(target) as BattleCharacter
+		if visual == null:
+			continue
+		visual.set_target_selectable(true)
+		visual.target_selected.connect(_on_target_selected)
+		_active_target_visuals.append(visual)
+	if not _active_target_visuals.is_empty():
+		InputManager.focus_menu_control_deferred(_active_target_visuals[0].target_hitbox)
+
+func _on_target_selected(target: Combatant) -> void:
+	var ability := _targeting_ability
+	_clear_target_selection_state()
+	battle_manager.player_ability_selected(ability, target)
+	ability_button.button_pressed = false
+
+func _cancel_target_selection() -> void:
+	_clear_target_selection_state()
+	option_list.visible = true
+	_focus_first_usable_option.call_deferred(ability_button)
+
+func _clear_target_selection_state() -> void:
+	for visual: BattleCharacter in _active_target_visuals:
+		if is_instance_valid(visual):
+			visual.set_target_selectable(false)
+			if visual.target_selected.is_connected(_on_target_selected):
+				visual.target_selected.disconnect(_on_target_selected)
+	_active_target_visuals.clear()
+	_targeting_ability = null
+	_set_primary_actions_disabled(false)
+
+func _set_primary_actions_disabled(value: bool) -> void:
+	for button: Button in _primary_action_buttons:
+		button.disabled = value
+
 func _create_ability_button(ability: Ability) -> AbilityButton:
 	var button := ABILITY_BUTTON.instantiate() as AbilityButton
+	var actor := battle_manager.active_combatant as Hero
 	button.ability = ability
-	button.user_energy = battle_manager.hero.current_nrg
+	button.user_energy = actor.current_nrg if actor != null else 0
 	button.ability_pressed.connect(_on_ability_button_pressed)
 	button.focus_entered.connect(_on_ability_option_focus_entered.bind(button))
 	button.focus_exited.connect(_on_ability_option_focus_exited.bind(button))
@@ -388,9 +432,11 @@ func _restore_primary_focus(preferred: Button) -> void:
 	_focus_primary_action()
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event.is_echo():
+	if event.is_echo() or not event.is_action_pressed(&"ui_cancel"):
 		return
-	if not event.is_action_pressed(&"ui_cancel"):
+	if not _active_target_visuals.is_empty():
+		_cancel_target_selection()
+		get_viewport().set_input_as_handled()
 		return
 	if not _is_action_submenu_open():
 		return

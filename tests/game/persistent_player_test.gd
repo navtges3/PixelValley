@@ -138,12 +138,8 @@ func run_async_tests() -> int:
 	_expect_true(not ScreenManager.get_world_hud().visible, "WorldHUD should be hidden at Main Menu")
 	_expect_true(_get_player_nodes().size() == 1, "Main Menu should not create a duplicate Player")
 
-	ScreenManager.go_to_screen(ScreenManager.ScreenName.NEW_GAME)
-	await _wait_for_transition()
-	var new_game_screen := Game.get_current_ui() as NewGameScreen
-	_expect_not_null(new_game_screen, "New Game screen should be active")
-	GameState.hero = HeroLoader.new_hero(Hero.HeroClass.KNIGHT)
-	new_game_screen.new_game_window._start_new_game_in_slot(1)
+	var main_menu := Game.get_current_ui() as MainMenuScreen
+	main_menu.new_game_window._start_new_game_in_slot(1)
 	await _wait_for_transition()
 	_expect_true(Game.get_current_location() is VillageLocation, "New Game should transition to Village")
 	_expect_equal(player.get_instance_id(), initial_player_id, "New Game should preserve the Player instance")

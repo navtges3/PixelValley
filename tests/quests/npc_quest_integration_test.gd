@@ -22,8 +22,11 @@ func run_tests() -> int:
 
 func _prepare_game_state() -> void:
 	GameState.reset_state()
-	GameState.hero = HeroLoader.new_hero(Hero.HeroClass.KNIGHT)
-	GameState.hero.name = "NPC Quest Test Hero"
+	var party := Party.new()
+	var hero := HeroLoader.new_hero(Hero.HeroClass.KNIGHT)
+	hero.name = "NPC Quest Test Hero"
+	party.add_member(hero)
+	GameState.party = party
 	GameState.village = Village.new()
 	GameState.village.name = "NPC Quest Test Village"
 	GameState.village.inn = Inn.new()
@@ -179,7 +182,7 @@ func _test_dialogue_lifecycle_actions() -> void:
 		"ready NPC quest displays the ready indicator"
 	)
 
-	var starting_gold := GameState.hero.inventory.gold
+	var starting_gold := GameState.party.inventory.gold
 	var ready_context := controller.build_context(&"mara", &"village")
 	var rewards := controller.handle_action(
 		_make_action(&"turn_in_quest"),
@@ -188,7 +191,7 @@ func _test_dialogue_lifecycle_actions() -> void:
 	_expect_equal(rewards.size(), 1, "turn-in returns the centralized reward result")
 	_expect_true(manager.is_quest_completed(quest.id), "dialogue turn-in completes the quest")
 	_expect_equal(
-		GameState.hero.inventory.gold,
+		GameState.party.inventory.gold,
 		starting_gold + 25,
 		"dialogue turn-in grants the reward once"
 	)
@@ -203,7 +206,7 @@ func _test_dialogue_lifecycle_actions() -> void:
 	)
 	_expect_true(repeated_rewards.is_empty(), "duplicate turn-in returns no rewards")
 	_expect_equal(
-		GameState.hero.inventory.gold,
+		GameState.party.inventory.gold,
 		starting_gold + 25,
 		"duplicate turn-in cannot grant the reward twice"
 	)
@@ -416,7 +419,7 @@ func _test_delivery_action() -> void:
 	quest.source_id = "mara"
 	quest.objectives.append(delivery)
 	manager.activate_quest(quest)
-	GameState.hero.inventory.add_potion("lesser_healing_potion", 2)
+	GameState.party.inventory.add_potion("lesser_healing_potion", 2)
 
 	var context := controller.build_context(&"alchemist", &"village")
 	_expect_true(
@@ -425,7 +428,7 @@ func _test_delivery_action() -> void:
 	)
 	controller.handle_action(_make_action(&"deliver_quest_items"), context)
 	_expect_equal(
-		GameState.hero.inventory.get_potion_count("lesser_healing_potion"),
+		GameState.party.inventory.get_potion_count("lesser_healing_potion"),
 		0,
 		"delivery removes the required inventory atomically"
 	)
@@ -579,11 +582,11 @@ func _test_authored_side_quest_chain() -> void:
 	GameState.set_quest_manager(manager)
 	var controller := NpcQuestDialogueController.new()
 	controller.set_quest_manager(manager)
-	var starting_gold := GameState.hero.inventory.gold
-	var starting_potion_count := GameState.hero.inventory.get_potion_count(
+	var starting_gold := GameState.party.inventory.gold
+	var starting_potion_count := GameState.party.inventory.get_potion_count(
 		"lesser_healing_potion"
 	)
-	var starting_weapon_count := GameState.hero.inventory.weapon_stash.size()
+	var starting_weapon_count := GameState.party.inventory.weapon_stash.size()
 
 	var quest_1010 := manager.get_quest_by_id(1010)
 	var quest_1020 := manager.get_quest_by_id(1020)
@@ -600,7 +603,7 @@ func _test_authored_side_quest_chain() -> void:
 	controller.handle_action(_make_action(&"turn_in_quest"), alchemist_turn_in)
 	_expect_true(manager.is_quest_completed(1010), "alchemist completes quest 1010")
 	_expect_equal(
-		GameState.hero.inventory.get_potion_count("lesser_healing_potion"),
+		GameState.party.inventory.get_potion_count("lesser_healing_potion"),
 		starting_potion_count + 1,
 		"alchemist grants the potion reward"
 	)
@@ -624,12 +627,12 @@ func _test_authored_side_quest_chain() -> void:
 	controller.handle_action(_make_action(&"turn_in_quest"), blacksmith_turn_in)
 	_expect_true(manager.is_quest_completed(1020), "blacksmith completes quest 1020")
 	_expect_equal(
-		GameState.hero.inventory.weapon_stash.size(),
+		GameState.party.inventory.weapon_stash.size(),
 		starting_weapon_count + 1,
 		"blacksmith grants a class-appropriate weapon"
 	)
 	_expect_equal(
-		GameState.hero.inventory.get_quest_item_count("inn_key"),
+		GameState.party.inventory.get_quest_item_count("inn_key"),
 		0,
 		"quest 1020 does not grant the brass inn key directly"
 	)
@@ -650,7 +653,7 @@ func _test_authored_side_quest_chain() -> void:
 		"Blacksmith resolves the active 1025 sequence"
 	)
 	_expect_true(manager.is_quest_active(1025), "quest 1025 accepted from blacksmith")
-	GameState.hero.inventory.add_quest_item("wood_bundle", 5)
+	GameState.party.inventory.add_quest_item("wood_bundle", 5)
 	var blacksmith_delivery := controller.build_context(&"blacksmith", &"weapon_shop_interior")
 	_expect_true(
 		bool(blacksmith_delivery[&"has_delivery_items"]),
@@ -664,7 +667,7 @@ func _test_authored_side_quest_chain() -> void:
 	)
 	controller.handle_action(_make_action(&"deliver_quest_items"), blacksmith_delivery)
 	_expect_equal(
-		GameState.hero.inventory.get_quest_item_count("wood_bundle"),
+		GameState.party.inventory.get_quest_item_count("wood_bundle"),
 		0,
 		"delivering the wood bundle removes it from inventory"
 	)
@@ -678,12 +681,12 @@ func _test_authored_side_quest_chain() -> void:
 	controller.handle_action(_make_action(&"turn_in_quest"), blacksmith_turn_in_1025)
 	_expect_true(manager.is_quest_completed(1025), "blacksmith completes quest 1025")
 	_expect_equal(
-		GameState.hero.inventory.weapon_stash.size(),
+		GameState.party.inventory.weapon_stash.size(),
 		starting_weapon_count + 2,
 		"blacksmith quest 1025 grants a second weapon"
 	)
 	_expect_equal(
-		GameState.hero.inventory.get_quest_item_count("inn_key"),
+		GameState.party.inventory.get_quest_item_count("inn_key"),
 		1,
 		"blacksmith quest 1025 grants the brass inn key"
 	)
@@ -703,7 +706,7 @@ func _test_authored_side_quest_chain() -> void:
 	)
 	controller.handle_action(_make_action(&"deliver_quest_items"), innkeeper_delivery)
 	_expect_equal(
-		GameState.hero.inventory.get_quest_item_count("inn_key"),
+		GameState.party.inventory.get_quest_item_count("inn_key"),
 		0,
 		"delivering the brass key removes it from inventory"
 	)
@@ -712,7 +715,7 @@ func _test_authored_side_quest_chain() -> void:
 	controller.handle_action(_make_action(&"turn_in_quest"), innkeeper_turn_in)
 	_expect_true(manager.is_quest_completed(1030), "innkeeper completes the quest chain")
 	_expect_equal(
-		GameState.hero.inventory.gold,
+		GameState.party.inventory.gold,
 		starting_gold + quest_1030.reward.gold,
 		"innkeeper grants the authored gold reward"
 	)

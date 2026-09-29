@@ -11,6 +11,12 @@ const COLOR_WEAPON     := Color(0.85, 0.45, 0.15)
 const COLOR_WEAPON_SOLD := Color(0.65, 0.65, 0.65)
 const COLOR_QUEST_ITEM := Color(0.75, 0.55, 0.95)
 
+static func party_member(hero_name: String, level: int) -> RewardEntry:
+	var entry := RewardEntry.new()
+	entry.display_text = "★ %s joined the party (Lv %d)" % [hero_name, level]
+	entry.color = Color(0.35, 0.85, 0.75)
+	return entry
+
 static func gold(amount: int) -> RewardEntry:
 	var entry := RewardEntry.new()
 	entry.display_text = "⬡ %d Gold" % amount

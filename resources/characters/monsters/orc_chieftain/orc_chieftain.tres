@@ -71,6 +71,7 @@ max_hp = 180
 current_hp = 180
 max_nrg = 60
 current_nrg = 60
+initiative = 3
 attack = 15
 magic = 5
 defense = 12
