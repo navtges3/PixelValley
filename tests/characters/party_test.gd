@@ -530,37 +530,28 @@ func _test_equip_returns_old_weapon_and_prevents_duplicate_assignment() -> void:
 	party.inventory.add_weapon("silent_dirk")
 
 	_expect_true(party.equip_weapon(assassin, "silent_dirk"), "a stashed weapon equips on the second hero")
-	_expect_equal(
-		ItemLoader.get_item_id(assassin.equipped_weapon),
-		"silent_dirk",
-		"the second hero owns the new weapon"
-	)
+	_expect_equal(ItemLoader.get_item_id(assassin.equipped_weapon), "silent_dirk", "the second hero owns the new weapon")
 	_expect_true(assassin_default in party.inventory.weapon_stash, "the replaced weapon returns to the shared stash")
 	_expect_false("silent_dirk" in party.inventory.weapon_stash, "the equipped weapon leaves the shared stash")
-	_expect_equal(
-		ItemLoader.get_item_id(knight.equipped_weapon),
-		knight_default,
-		"equipping on one hero does not change another hero's weapon"
-	)
+	_expect_equal(ItemLoader.get_item_id(knight.equipped_weapon),knight_default, "equipping on one hero does not change another hero's weapon")
 	_expect_true(party.has_weapon("silent_dirk"), "an equipped weapon still counts as owned")
 
-	_expect_false(
-		party.equip_weapon(second_assassin, "silent_dirk"),
-		"a weapon equipped by one hero cannot be equipped by another"
-	)
-	_expect_equal(
-		ItemLoader.get_item_id(assassin.equipped_weapon),
-		"silent_dirk",
-		"a rejected duplicate equip leaves the owner unchanged"
-	)
+	_expect_false(party.equip_weapon(second_assassin, "silent_dirk"), "a weapon equipped by one hero cannot be equipped by another")
+	_expect_equal(ItemLoader.get_item_id(assassin.equipped_weapon),"silent_dirk", "a rejected duplicate equip leaves the owner unchanged")
 
+	# Active heroes must keep their equipped weapon.
+	_expect_false(party.unequip_weapon(knight), "an active hero cannot unequip their weapon")
+	_expect_equal(ItemLoader.get_item_id(knight.equipped_weapon), knight_default, "a rejected active unequip leaves the weapon equipped")
+	_expect_false(knight_default in party.inventory.weapon_stash, "a rejected active unequip does not return the weapon to the stash")
+
+	# Reserve heroes can unequip their weapon.
 	party.remove_from_active_party(knight)
+
 	_expect_true(party.unequip_weapon(knight), "a reserve hero can unequip their weapon")
 	_expect_null(knight.equipped_weapon, "unequipping clears the hero's weapon")
 	_expect_true(knight_default in party.inventory.weapon_stash, "the unequipped weapon returns to the shared stash")
 	_expect_false(party.unequip_weapon(knight), "a hero without a weapon cannot unequip")
 	_expect_true(party.equip_weapon(knight, knight_default), "an unequipped weapon can be equipped again")
-
 
 func _test_class_locked_equip_and_unlisted_weapon() -> void:
 	var party := _new_party()
