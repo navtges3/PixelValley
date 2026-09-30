@@ -1,0 +1,77 @@
+[gd_resource type="Resource" script_class="Monster" format=3 uid="uid://bk2pt1ihgmks5"]
+
+[ext_resource type="Script" uid="uid://bo48scp6lbwrb" path="res://scripts/data/attack.gd" id="1_gds6c"]
+[ext_resource type="Script" uid="uid://b2o7w8q10stxo" path="res://scripts/data/ability.gd" id="1_hbvt8"]
+[ext_resource type="Script" uid="uid://c5deti4sb2k2j" path="res://scripts/data/effects/effect.gd" id="1_s1wlg"]
+[ext_resource type="Script" uid="uid://bd6ohffno5w7r" path="res://scripts/characters/monster.gd" id="2_s1wlg"]
+[ext_resource type="SpriteFrames" uid="uid://4ywebwliybf7" path="res://resources/characters/monsters/goblin/goblin_battle_sprite_frames.tres" id="4_objy7"]
+[ext_resource type="Script" uid="uid://cnso83bg7vodw" path="res://scripts/data/condition.gd" id="4_s0lpy"]
+[ext_resource type="Resource" uid="uid://67rh3fh1efyh" path="res://resources/effects/common/debuffs/poison.tres" id="5_ybt3w"]
+[ext_resource type="Script" uid="uid://buxlf5aagrtgf" path="res://scripts/data/drop_entry.gd" id="6_hwfsk"]
+[ext_resource type="Script" uid="uid://birbqcxvye2x5" path="res://scripts/data/drop_table.gd" id="7_ow8ye"]
+[ext_resource type="SpriteFrames" uid="uid://2sjuet18mpdk" path="res://resources/characters/monsters/goblin/goblin_world_sprite_frames.tres" id="10_jwokl"]
+
+[sub_resource type="Resource" id="Resource_gds6c"]
+script = ExtResource("1_gds6c")
+min_damage = 4
+max_damage = 8
+metadata/_custom_type_script = "uid://bo48scp6lbwrb"
+
+[sub_resource type="Resource" id="Resource_73ea7"]
+script = ExtResource("1_hbvt8")
+name = "Quick Slash"
+attack = SubResource("Resource_gds6c")
+metadata/_custom_type_script = "uid://b2o7w8q10stxo"
+
+[sub_resource type="Resource" id="Resource_s0lpy"]
+script = ExtResource("1_gds6c")
+min_damage = 2
+max_damage = 4
+metadata/_custom_type_script = "uid://bo48scp6lbwrb"
+
+[sub_resource type="Resource" id="Resource_hwfsk"]
+script = ExtResource("4_s0lpy")
+condition_type = 1
+value = 0.5
+metadata/_custom_type_script = "uid://cnso83bg7vodw"
+
+[sub_resource type="Resource" id="Resource_7icss"]
+script = ExtResource("1_hbvt8")
+name = "Desperate Jab"
+energy_cost = 3
+cooldown = 3
+attack = SubResource("Resource_s0lpy")
+target_effects = Array[ExtResource("1_s1wlg")]([ExtResource("5_ybt3w")])
+condition = SubResource("Resource_hwfsk")
+metadata/_custom_type_script = "uid://b2o7w8q10stxo"
+
+[sub_resource type="Resource" id="Resource_ieodt"]
+script = ExtResource("6_hwfsk")
+item_id = "lesser_healing_potion"
+chance = 0.25
+metadata/_custom_type_script = "uid://buxlf5aagrtgf"
+
+[sub_resource type="Resource" id="Resource_6eg2n"]
+script = ExtResource("7_ow8ye")
+entries = Array[ExtResource("6_hwfsk")]([SubResource("Resource_ieodt")])
+min_gold = 3
+max_gold = 4
+weapon_chance = 0.04
+metadata/_custom_type_script = "uid://birbqcxvye2x5"
+
+[resource]
+script = ExtResource("2_s1wlg")
+monster_id = 1
+basic_attack = SubResource("Resource_73ea7")
+conditional_abilities = Array[ExtResource("1_hbvt8")]([SubResource("Resource_7icss")])
+loot = SubResource("Resource_6eg2n")
+name = "Goblin Scout"
+max_hp = 35
+current_hp = 35
+max_nrg = 5
+current_nrg = 5
+initiative = 3
+attack = 4
+world_visual = ExtResource("10_jwokl")
+battle_visual = ExtResource("4_objy7")
+metadata/_custom_type_script = "uid://bd6ohffno5w7r"
