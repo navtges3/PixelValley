@@ -1,0 +1,75 @@
+[gd_resource type="Resource" script_class="Monster" format=3 uid="uid://7oxtv1wtujy7"]
+
+[ext_resource type="Script" uid="uid://bo48scp6lbwrb" path="res://scripts/data/attack.gd" id="1_dxouc"]
+[ext_resource type="Script" uid="uid://b2o7w8q10stxo" path="res://scripts/data/ability.gd" id="1_rmuox"]
+[ext_resource type="Script" uid="uid://c5deti4sb2k2j" path="res://scripts/data/effects/effect.gd" id="2_00o8p"]
+[ext_resource type="Script" uid="uid://bd6ohffno5w7r" path="res://scripts/characters/monster.gd" id="2_d7wfw"]
+[ext_resource type="Resource" uid="uid://w6qbmd4tfbhe" path="res://resources/effects/common/debuffs/expose.tres" id="4_00o8p"]
+[ext_resource type="SpriteFrames" uid="uid://4ywebwliybf7" path="res://resources/characters/monsters/goblin/goblin_battle_sprite_frames.tres" id="4_qpms0"]
+[ext_resource type="Script" uid="uid://buxlf5aagrtgf" path="res://scripts/data/drop_entry.gd" id="6_6bs8d"]
+[ext_resource type="SpriteFrames" uid="uid://2sjuet18mpdk" path="res://resources/characters/monsters/goblin/goblin_world_sprite_frames.tres" id="7_0ogxp"]
+[ext_resource type="Script" uid="uid://birbqcxvye2x5" path="res://scripts/data/drop_table.gd" id="7_kgjeg"]
+
+[sub_resource type="Resource" id="Resource_jwokl"]
+script = ExtResource("1_dxouc")
+min_damage = 5
+max_damage = 10
+metadata/_custom_type_script = "uid://bo48scp6lbwrb"
+
+[sub_resource type="Resource" id="Resource_objy7"]
+script = ExtResource("1_rmuox")
+name = "Crude Shot"
+attack = SubResource("Resource_jwokl")
+metadata/_custom_type_script = "uid://b2o7w8q10stxo"
+
+[sub_resource type="Resource" id="Resource_qpms0"]
+script = ExtResource("1_dxouc")
+min_damage = 3
+max_damage = 6
+metadata/_custom_type_script = "uid://bo48scp6lbwrb"
+
+[sub_resource type="Resource" id="Resource_ji1qw"]
+script = ExtResource("1_rmuox")
+name = "Crippling Shot"
+energy_cost = 4
+cooldown = 3
+attack = SubResource("Resource_qpms0")
+target_effects = Array[ExtResource("2_00o8p")]([ExtResource("4_00o8p")])
+metadata/_custom_type_script = "uid://b2o7w8q10stxo"
+
+[sub_resource type="Resource" id="Resource_kgjeg"]
+script = ExtResource("6_6bs8d")
+item_id = "lesser_healing_potion"
+chance = 0.2
+metadata/_custom_type_script = "uid://buxlf5aagrtgf"
+
+[sub_resource type="Resource" id="Resource_x4cwk"]
+script = ExtResource("6_6bs8d")
+item_id = "energy_potion"
+chance = 0.15
+metadata/_custom_type_script = "uid://buxlf5aagrtgf"
+
+[sub_resource type="Resource" id="Resource_6bs8d"]
+script = ExtResource("7_kgjeg")
+entries = Array[ExtResource("6_6bs8d")]([SubResource("Resource_kgjeg"), SubResource("Resource_x4cwk")])
+min_gold = 4
+max_gold = 6
+weapon_chance = 0.05
+metadata/_custom_type_script = "uid://birbqcxvye2x5"
+
+[resource]
+script = ExtResource("2_d7wfw")
+monster_id = 2
+basic_attack = SubResource("Resource_objy7")
+conditional_abilities = Array[ExtResource("1_rmuox")]([SubResource("Resource_ji1qw")])
+loot = SubResource("Resource_6bs8d")
+name = "Goblin Archer"
+max_hp = 35
+current_hp = 35
+max_nrg = 8
+current_nrg = 8
+initiative = 3
+attack = 5
+world_visual = ExtResource("7_0ogxp")
+battle_visual = ExtResource("4_qpms0")
+metadata/_custom_type_script = "uid://bd6ohffno5w7r"
