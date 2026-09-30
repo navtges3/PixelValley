@@ -74,10 +74,11 @@ func recover_energy(amount: int) -> void:
 	current_nrg = min(current_nrg + amount, max_nrg)
 
 func _calculate_damage(amount: int, type: Attack.AttackType) -> int:
-	var damage := amount
+	var mitigation := 0
 	match type:
 		Attack.AttackType.PHYSICAL:
-			damage = max(damage - defense, 0)
+			mitigation = defense
 		Attack.AttackType.MAGICAL:
-			damage = max(damage - resist, 0)
-	return damage
+			mitigation = resist
+	var multiplier := 100.0 / (100.0 + mitigation)
+	return max(roundi(amount * multiplier), 0)
