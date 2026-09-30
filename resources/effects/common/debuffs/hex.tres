@@ -4,13 +4,12 @@
 [ext_resource type="Script" uid="uid://c5deti4sb2k2j" path="res://scripts/data/effects/effect.gd" id="1_hex"]
 [ext_resource type="Script" uid="uid://hw30jan7sjfb" path="res://scripts/data/effects/effect_stat_change.gd" id="2_hex"]
 
-
 [sub_resource type="Resource" id="Resource_hex_apply"]
 script = ExtResource("2_hex")
 stat = 7
 operation = 1
-base_amount = 5
-amount_per_level = 3
+base_amount = 25
+amount_per_level = 15
 metadata/_custom_type_script = "uid://hw30jan7sjfb"
 
 [resource]
@@ -19,6 +18,6 @@ effect_name = "Hex"
 effect_id = &"hex"
 image = ExtResource("1_7fsbf")
 base_duration = 3
-duration_per_level = 2
+duration_per_level = 1
 stat_changes = Array[ExtResource("2_hex")]([SubResource("Resource_hex_apply")])
 metadata/_custom_type_script = "uid://c5deti4sb2k2j"

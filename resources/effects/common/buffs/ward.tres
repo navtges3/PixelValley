@@ -4,12 +4,11 @@
 [ext_resource type="Texture2D" uid="uid://bd7fev6mw4obv" path="res://assets/effects/buffs/ward.png" id="1_yyqkm"]
 [ext_resource type="Script" uid="uid://hw30jan7sjfb" path="res://scripts/data/effects/effect_stat_change.gd" id="2_gionp"]
 
-
 [sub_resource type="Resource" id="Resource_7skor"]
 script = ExtResource("2_gionp")
 stat = 7
-base_amount = 5
-amount_per_level = 3
+base_amount = 25
+amount_per_level = 15
 metadata/_custom_type_script = "uid://hw30jan7sjfb"
 
 [resource]
@@ -18,6 +17,6 @@ effect_name = "Ward"
 effect_id = &"ward"
 image = ExtResource("1_yyqkm")
 base_duration = 3
-duration_per_level = 2
+duration_per_level = 1
 stat_changes = Array[ExtResource("2_gionp")]([SubResource("Resource_7skor")])
 metadata/_custom_type_script = "uid://c5deti4sb2k2j"

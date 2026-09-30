@@ -4,7 +4,6 @@
 [ext_resource type="Script" uid="uid://c5deti4sb2k2j" path="res://scripts/data/effects/effect.gd" id="1_falter"]
 [ext_resource type="Script" uid="uid://hw30jan7sjfb" path="res://scripts/data/effects/effect_stat_change.gd" id="2_falter"]
 
-
 [sub_resource type="Resource" id="Resource_falter_apply"]
 script = ExtResource("2_falter")
 stat = 5
