@@ -1,0 +1,79 @@
+[gd_resource type="Resource" script_class="Monster" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/attack.gd" id="attack_script"]
+[ext_resource type="Script" path="res://scripts/data/ability.gd" id="ability_script"]
+[ext_resource type="Script" path="res://scripts/data/condition.gd" id="condition_script"]
+[ext_resource type="Script" path="res://scripts/data/effects/effect.gd" id="effect_script"]
+[ext_resource type="Script" path="res://scripts/data/drop_entry.gd" id="drop_entry_script"]
+[ext_resource type="Script" path="res://scripts/data/drop_table.gd" id="drop_table_script"]
+[ext_resource type="Script" path="res://scripts/characters/monster.gd" id="monster_script"]
+[ext_resource type="SpriteFrames" path="res://resources/characters/monsters/orc/orc_battle_sprite_frames.tres" id="battle_visual"]
+[ext_resource type="SpriteFrames" path="res://resources/characters/monsters/orc/orc_world_sprite_frames.tres" id="world_visual"]
+
+[sub_resource type="Resource" id="orc_archer_attack_0"]
+script = ExtResource("attack_script")
+min_damage = 8
+max_damage = 13
+metadata/_custom_type_script = "uid://bo48scp6lbwrb"
+
+[sub_resource type="Resource" id="orc_archer_attack_1"]
+script = ExtResource("attack_script")
+min_damage = 12
+max_damage = 18
+metadata/_custom_type_script = "uid://bo48scp6lbwrb"
+
+[sub_resource type="Resource" id="orc_archer_ability_0"]
+script = ExtResource("ability_script")
+name = "Aimed Shot"
+energy_cost = 0
+cooldown = 0
+target_type = 3
+attack = SubResource("orc_archer_attack_0")
+metadata/_custom_type_script = "uid://b2o7w8q10stxo"
+
+[sub_resource type="Resource" id="orc_archer_ability_1"]
+script = ExtResource("ability_script")
+name = "Piercing Volley"
+energy_cost = 7
+cooldown = 3
+target_type = 3
+attack = SubResource("orc_archer_attack_1")
+metadata/_custom_type_script = "uid://b2o7w8q10stxo"
+
+[sub_resource type="Resource" id="orc_archer_drop_0"]
+script = ExtResource("drop_entry_script")
+item_id = "attack_potion"
+chance = 0.2
+min_count = 1
+max_count = 1
+metadata/_custom_type_script = "uid://buxlf5aagrtgf"
+
+[sub_resource type="Resource" id="orc_archer_loot"]
+script = ExtResource("drop_table_script")
+entries = Array[ExtResource("drop_entry_script")]([SubResource("orc_archer_drop_0")])
+min_gold = 10
+max_gold = 15
+weapon_chance = 0.08
+weapon_rarity = 0
+metadata/_custom_type_script = "uid://birbqcxvye2x5"
+
+[resource]
+script = ExtResource("monster_script")
+monster_id = 12
+basic_attack = SubResource("orc_archer_ability_0")
+conditional_abilities = Array[ExtResource("ability_script")]([SubResource("orc_archer_ability_1")])
+loot = SubResource("orc_archer_loot")
+name = "Orc Archer"
+max_hp = 60
+current_hp = 60
+max_nrg = 24
+current_nrg = 24
+initiative = 3
+attack = 9
+magic = 0
+defense = 20
+resist = 10
+gold = 13
+world_visual = ExtResource("world_visual")
+battle_visual = ExtResource("battle_visual")
+metadata/_custom_type_script = "uid://bd6ohffno5w7r"

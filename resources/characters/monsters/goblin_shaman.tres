@@ -9,80 +9,83 @@
 [ext_resource type="Script" path="res://scripts/characters/monster.gd" id="monster_script"]
 [ext_resource type="SpriteFrames" path="res://resources/characters/monsters/goblin/goblin_battle_sprite_frames.tres" id="battle_visual"]
 [ext_resource type="SpriteFrames" path="res://resources/characters/monsters/goblin/goblin_world_sprite_frames.tres" id="world_visual"]
-[ext_resource type="Resource" path="res://resources/effects/common/debuffs/expose.tres" id="expose_effect"]
+[ext_resource type="Resource" path="res://resources/effects/common/buffs/heal.tres" id="heal_effect"]
+[ext_resource type="Resource" path="res://resources/effects/common/buffs/power.tres" id="power_effect"]
 
-[sub_resource type="Resource" id="goblin_archer_attack_0"]
-script = ExtResource("attack_script")
-min_damage = 5
-max_damage = 10
-metadata/_custom_type_script = "uid://bo48scp6lbwrb"
+[sub_resource type="Resource" id="goblin_shaman_condition_1"]
+script = ExtResource("condition_script")
+condition_type = 1
+condition_subject = 1
+value = 0.5
+metadata/_custom_type_script = "uid://cnso83bg7vodw"
 
-[sub_resource type="Resource" id="goblin_archer_attack_1"]
+[sub_resource type="Resource" id="goblin_shaman_attack_0"]
 script = ExtResource("attack_script")
 min_damage = 3
 max_damage = 6
 metadata/_custom_type_script = "uid://bo48scp6lbwrb"
 
-[sub_resource type="Resource" id="goblin_archer_ability_0"]
+[sub_resource type="Resource" id="goblin_shaman_ability_0"]
 script = ExtResource("ability_script")
-name = "Crude Shot"
+name = "Forest Bolt"
 energy_cost = 0
 cooldown = 0
 target_type = 3
-attack = SubResource("goblin_archer_attack_0")
+attack = SubResource("goblin_shaman_attack_0")
 metadata/_custom_type_script = "uid://b2o7w8q10stxo"
 
-[sub_resource type="Resource" id="goblin_archer_ability_1"]
+[sub_resource type="Resource" id="goblin_shaman_ability_1"]
 script = ExtResource("ability_script")
-name = "Crippling Shot"
+name = "Mend"
 energy_cost = 4
 cooldown = 3
-target_type = 3
-attack = SubResource("goblin_archer_attack_1")
-target_effects = Array[ExtResource("effect_script")]([ExtResource("expose_effect")])
+target_type = 1
+target_effects = Array[ExtResource("effect_script")]([ExtResource("heal_effect")])
+condition = SubResource("goblin_shaman_condition_1")
 metadata/_custom_type_script = "uid://b2o7w8q10stxo"
 
-[sub_resource type="Resource" id="goblin_archer_drop_0"]
-script = ExtResource("drop_entry_script")
-item_id = "lesser_healing_potion"
-chance = 0.2
-min_count = 1
-max_count = 1
-metadata/_custom_type_script = "uid://buxlf5aagrtgf"
+[sub_resource type="Resource" id="goblin_shaman_ability_2"]
+script = ExtResource("ability_script")
+name = "War Chant"
+energy_cost = 4
+cooldown = 4
+target_type = 2
+target_effects = Array[ExtResource("effect_script")]([ExtResource("power_effect")])
+metadata/_custom_type_script = "uid://b2o7w8q10stxo"
 
-[sub_resource type="Resource" id="goblin_archer_drop_1"]
+[sub_resource type="Resource" id="goblin_shaman_drop_0"]
 script = ExtResource("drop_entry_script")
 item_id = "energy_potion"
-chance = 0.15
+chance = 0.25
 min_count = 1
 max_count = 1
 metadata/_custom_type_script = "uid://buxlf5aagrtgf"
 
-[sub_resource type="Resource" id="goblin_archer_loot"]
+[sub_resource type="Resource" id="goblin_shaman_loot"]
 script = ExtResource("drop_table_script")
-entries = Array[ExtResource("drop_entry_script")]([SubResource("goblin_archer_drop_0"), SubResource("goblin_archer_drop_1")])
+entries = Array[ExtResource("drop_entry_script")]([SubResource("goblin_shaman_drop_0")])
 min_gold = 4
-max_gold = 6
-weapon_chance = 0.05
+max_gold = 7
+weapon_chance = 0.03
 weapon_rarity = 0
 metadata/_custom_type_script = "uid://birbqcxvye2x5"
 
 [resource]
 script = ExtResource("monster_script")
-monster_id = 2
-basic_attack = SubResource("goblin_archer_ability_0")
-conditional_abilities = Array[ExtResource("ability_script")]([SubResource("goblin_archer_ability_1")])
-loot = SubResource("goblin_archer_loot")
-name = "Goblin Archer"
-max_hp = 35
-current_hp = 35
-max_nrg = 8
-current_nrg = 8
+monster_id = 4
+basic_attack = SubResource("goblin_shaman_ability_0")
+conditional_abilities = Array[ExtResource("ability_script")]([SubResource("goblin_shaman_ability_1"), SubResource("goblin_shaman_ability_2")])
+loot = SubResource("goblin_shaman_loot")
+name = "Goblin Shaman"
+max_hp = 30
+current_hp = 30
+max_nrg = 14
+current_nrg = 14
 initiative = 3
-attack = 5
-magic = 0
+attack = 1
+magic = 5
 defense = 5
-resist = 0
+resist = 15
 gold = 5
 world_visual = ExtResource("world_visual")
 battle_visual = ExtResource("battle_visual")

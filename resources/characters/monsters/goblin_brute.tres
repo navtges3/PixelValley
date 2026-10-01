@@ -9,81 +9,74 @@
 [ext_resource type="Script" path="res://scripts/characters/monster.gd" id="monster_script"]
 [ext_resource type="SpriteFrames" path="res://resources/characters/monsters/goblin/goblin_battle_sprite_frames.tres" id="battle_visual"]
 [ext_resource type="SpriteFrames" path="res://resources/characters/monsters/goblin/goblin_world_sprite_frames.tres" id="world_visual"]
-[ext_resource type="Resource" path="res://resources/effects/common/debuffs/expose.tres" id="expose_effect"]
+[ext_resource type="Resource" path="res://resources/effects/common/buffs/fortify.tres" id="fortify_effect"]
 
-[sub_resource type="Resource" id="goblin_archer_attack_0"]
+[sub_resource type="Resource" id="goblin_brute_condition_1"]
+script = ExtResource("condition_script")
+condition_type = 1
+condition_subject = 0
+value = 0.4
+metadata/_custom_type_script = "uid://cnso83bg7vodw"
+
+[sub_resource type="Resource" id="goblin_brute_attack_0"]
 script = ExtResource("attack_script")
-min_damage = 5
-max_damage = 10
+min_damage = 7
+max_damage = 12
 metadata/_custom_type_script = "uid://bo48scp6lbwrb"
 
-[sub_resource type="Resource" id="goblin_archer_attack_1"]
-script = ExtResource("attack_script")
-min_damage = 3
-max_damage = 6
-metadata/_custom_type_script = "uid://bo48scp6lbwrb"
-
-[sub_resource type="Resource" id="goblin_archer_ability_0"]
+[sub_resource type="Resource" id="goblin_brute_ability_0"]
 script = ExtResource("ability_script")
-name = "Crude Shot"
+name = "Club Smash"
 energy_cost = 0
 cooldown = 0
 target_type = 3
-attack = SubResource("goblin_archer_attack_0")
+attack = SubResource("goblin_brute_attack_0")
 metadata/_custom_type_script = "uid://b2o7w8q10stxo"
 
-[sub_resource type="Resource" id="goblin_archer_ability_1"]
+[sub_resource type="Resource" id="goblin_brute_ability_1"]
 script = ExtResource("ability_script")
-name = "Crippling Shot"
-energy_cost = 4
-cooldown = 3
-target_type = 3
-attack = SubResource("goblin_archer_attack_1")
-target_effects = Array[ExtResource("effect_script")]([ExtResource("expose_effect")])
+name = "Brace"
+energy_cost = 3
+cooldown = 4
+target_type = 0
+caster_effects = Array[ExtResource("effect_script")]([ExtResource("fortify_effect")])
+condition = SubResource("goblin_brute_condition_1")
 metadata/_custom_type_script = "uid://b2o7w8q10stxo"
 
-[sub_resource type="Resource" id="goblin_archer_drop_0"]
+[sub_resource type="Resource" id="goblin_brute_drop_0"]
 script = ExtResource("drop_entry_script")
 item_id = "lesser_healing_potion"
-chance = 0.2
+chance = 0.3
 min_count = 1
 max_count = 1
 metadata/_custom_type_script = "uid://buxlf5aagrtgf"
 
-[sub_resource type="Resource" id="goblin_archer_drop_1"]
-script = ExtResource("drop_entry_script")
-item_id = "energy_potion"
-chance = 0.15
-min_count = 1
-max_count = 1
-metadata/_custom_type_script = "uid://buxlf5aagrtgf"
-
-[sub_resource type="Resource" id="goblin_archer_loot"]
+[sub_resource type="Resource" id="goblin_brute_loot"]
 script = ExtResource("drop_table_script")
-entries = Array[ExtResource("drop_entry_script")]([SubResource("goblin_archer_drop_0"), SubResource("goblin_archer_drop_1")])
-min_gold = 4
-max_gold = 6
+entries = Array[ExtResource("drop_entry_script")]([SubResource("goblin_brute_drop_0")])
+min_gold = 5
+max_gold = 7
 weapon_chance = 0.05
 weapon_rarity = 0
 metadata/_custom_type_script = "uid://birbqcxvye2x5"
 
 [resource]
 script = ExtResource("monster_script")
-monster_id = 2
-basic_attack = SubResource("goblin_archer_ability_0")
-conditional_abilities = Array[ExtResource("ability_script")]([SubResource("goblin_archer_ability_1")])
-loot = SubResource("goblin_archer_loot")
-name = "Goblin Archer"
-max_hp = 35
-current_hp = 35
-max_nrg = 8
-current_nrg = 8
+monster_id = 3
+basic_attack = SubResource("goblin_brute_ability_0")
+conditional_abilities = Array[ExtResource("ability_script")]([SubResource("goblin_brute_ability_1")])
+loot = SubResource("goblin_brute_loot")
+name = "Goblin Brute"
+max_hp = 70
+current_hp = 70
+max_nrg = 5
+current_nrg = 5
 initiative = 3
-attack = 5
+attack = 4
 magic = 0
-defense = 5
-resist = 0
-gold = 5
+defense = 25
+resist = 10
+gold = 6
 world_visual = ExtResource("world_visual")
 battle_visual = ExtResource("battle_visual")
 metadata/_custom_type_script = "uid://bd6ohffno5w7r"

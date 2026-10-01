@@ -1,0 +1,79 @@
+[gd_resource type="Resource" script_class="Monster" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/attack.gd" id="attack_script"]
+[ext_resource type="Script" path="res://scripts/data/ability.gd" id="ability_script"]
+[ext_resource type="Script" path="res://scripts/data/condition.gd" id="condition_script"]
+[ext_resource type="Script" path="res://scripts/data/effects/effect.gd" id="effect_script"]
+[ext_resource type="Script" path="res://scripts/data/drop_entry.gd" id="drop_entry_script"]
+[ext_resource type="Script" path="res://scripts/data/drop_table.gd" id="drop_table_script"]
+[ext_resource type="Script" path="res://scripts/characters/monster.gd" id="monster_script"]
+[ext_resource type="SpriteFrames" path="res://resources/characters/monsters/ogre/ogre_battle_sprite_frames.tres" id="battle_visual"]
+[ext_resource type="SpriteFrames" path="res://resources/characters/monsters/ogre/ogre_world_sprite_frames.tres" id="world_visual"]
+
+[sub_resource type="Resource" id="ogre_brute_attack_0"]
+script = ExtResource("attack_script")
+min_damage = 16
+max_damage = 28
+metadata/_custom_type_script = "uid://bo48scp6lbwrb"
+
+[sub_resource type="Resource" id="ogre_brute_attack_1"]
+script = ExtResource("attack_script")
+min_damage = 22
+max_damage = 34
+metadata/_custom_type_script = "uid://bo48scp6lbwrb"
+
+[sub_resource type="Resource" id="ogre_brute_ability_0"]
+script = ExtResource("ability_script")
+name = "Heavy Smash"
+energy_cost = 0
+cooldown = 0
+target_type = 3
+attack = SubResource("ogre_brute_attack_0")
+metadata/_custom_type_script = "uid://b2o7w8q10stxo"
+
+[sub_resource type="Resource" id="ogre_brute_ability_1"]
+script = ExtResource("ability_script")
+name = "Overhead Slam"
+energy_cost = 10
+cooldown = 3
+target_type = 3
+attack = SubResource("ogre_brute_attack_1")
+metadata/_custom_type_script = "uid://b2o7w8q10stxo"
+
+[sub_resource type="Resource" id="ogre_brute_drop_0"]
+script = ExtResource("drop_entry_script")
+item_id = "stonehide_tonic"
+chance = 0.25
+min_count = 1
+max_count = 1
+metadata/_custom_type_script = "uid://buxlf5aagrtgf"
+
+[sub_resource type="Resource" id="ogre_brute_loot"]
+script = ExtResource("drop_table_script")
+entries = Array[ExtResource("drop_entry_script")]([SubResource("ogre_brute_drop_0")])
+min_gold = 17
+max_gold = 26
+weapon_chance = 0.09
+weapon_rarity = 1
+metadata/_custom_type_script = "uid://birbqcxvye2x5"
+
+[resource]
+script = ExtResource("monster_script")
+monster_id = 18
+basic_attack = SubResource("ogre_brute_ability_0")
+conditional_abilities = Array[ExtResource("ability_script")]([SubResource("ogre_brute_ability_1")])
+loot = SubResource("ogre_brute_loot")
+name = "Ogre Brute"
+max_hp = 110
+current_hp = 110
+max_nrg = 35
+current_nrg = 35
+initiative = 3
+attack = 14
+magic = 0
+defense = 40
+resist = 20
+gold = 22
+world_visual = ExtResource("world_visual")
+battle_visual = ExtResource("battle_visual")
+metadata/_custom_type_script = "uid://bd6ohffno5w7r"

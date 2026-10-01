@@ -1,0 +1,82 @@
+[gd_resource type="Resource" script_class="Monster" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/attack.gd" id="attack_script"]
+[ext_resource type="Script" path="res://scripts/data/ability.gd" id="ability_script"]
+[ext_resource type="Script" path="res://scripts/data/condition.gd" id="condition_script"]
+[ext_resource type="Script" path="res://scripts/data/effects/effect.gd" id="effect_script"]
+[ext_resource type="Script" path="res://scripts/data/drop_entry.gd" id="drop_entry_script"]
+[ext_resource type="Script" path="res://scripts/data/drop_table.gd" id="drop_table_script"]
+[ext_resource type="Script" path="res://scripts/characters/monster.gd" id="monster_script"]
+[ext_resource type="SpriteFrames" path="res://resources/characters/monsters/orc/orc_battle_sprite_frames.tres" id="battle_visual"]
+[ext_resource type="SpriteFrames" path="res://resources/characters/monsters/orc/orc_world_sprite_frames.tres" id="world_visual"]
+[ext_resource type="Resource" path="res://resources/effects/common/buffs/fortify.tres" id="fortify_effect"]
+
+[sub_resource type="Resource" id="orc_grunt_condition_1"]
+script = ExtResource("condition_script")
+condition_type = 1
+condition_subject = 0
+value = 0.4
+metadata/_custom_type_script = "uid://cnso83bg7vodw"
+
+[sub_resource type="Resource" id="orc_grunt_attack_0"]
+script = ExtResource("attack_script")
+min_damage = 6
+max_damage = 10
+metadata/_custom_type_script = "uid://bo48scp6lbwrb"
+
+[sub_resource type="Resource" id="orc_grunt_ability_0"]
+script = ExtResource("ability_script")
+name = "Shield Bash"
+energy_cost = 0
+cooldown = 0
+target_type = 3
+attack = SubResource("orc_grunt_attack_0")
+metadata/_custom_type_script = "uid://b2o7w8q10stxo"
+
+[sub_resource type="Resource" id="orc_grunt_ability_1"]
+script = ExtResource("ability_script")
+name = "Hunker Down"
+energy_cost = 5
+cooldown = 4
+target_type = 0
+caster_effects = Array[ExtResource("effect_script")]([ExtResource("fortify_effect")])
+condition = SubResource("orc_grunt_condition_1")
+metadata/_custom_type_script = "uid://b2o7w8q10stxo"
+
+[sub_resource type="Resource" id="orc_grunt_drop_0"]
+script = ExtResource("drop_entry_script")
+item_id = "greater_healing_potion"
+chance = 0.2
+min_count = 1
+max_count = 1
+metadata/_custom_type_script = "uid://buxlf5aagrtgf"
+
+[sub_resource type="Resource" id="orc_grunt_loot"]
+script = ExtResource("drop_table_script")
+entries = Array[ExtResource("drop_entry_script")]([SubResource("orc_grunt_drop_0")])
+min_gold = 9
+max_gold = 14
+weapon_chance = 0.07
+weapon_rarity = 0
+metadata/_custom_type_script = "uid://birbqcxvye2x5"
+
+[resource]
+script = ExtResource("monster_script")
+monster_id = 11
+basic_attack = SubResource("orc_grunt_ability_0")
+conditional_abilities = Array[ExtResource("ability_script")]([SubResource("orc_grunt_ability_1")])
+loot = SubResource("orc_grunt_loot")
+name = "Orc Grunt"
+max_hp = 100
+current_hp = 100
+max_nrg = 20
+current_nrg = 20
+initiative = 3
+attack = 6
+magic = 0
+defense = 55
+resist = 20
+gold = 12
+world_visual = ExtResource("world_visual")
+battle_visual = ExtResource("battle_visual")
+metadata/_custom_type_script = "uid://bd6ohffno5w7r"

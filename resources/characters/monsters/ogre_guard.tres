@@ -1,0 +1,91 @@
+[gd_resource type="Resource" script_class="Monster" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/attack.gd" id="attack_script"]
+[ext_resource type="Script" path="res://scripts/data/ability.gd" id="ability_script"]
+[ext_resource type="Script" path="res://scripts/data/condition.gd" id="condition_script"]
+[ext_resource type="Script" path="res://scripts/data/effects/effect.gd" id="effect_script"]
+[ext_resource type="Script" path="res://scripts/data/drop_entry.gd" id="drop_entry_script"]
+[ext_resource type="Script" path="res://scripts/data/drop_table.gd" id="drop_table_script"]
+[ext_resource type="Script" path="res://scripts/characters/monster.gd" id="monster_script"]
+[ext_resource type="SpriteFrames" path="res://resources/characters/monsters/ogre/ogre_battle_sprite_frames.tres" id="battle_visual"]
+[ext_resource type="SpriteFrames" path="res://resources/characters/monsters/ogre/ogre_world_sprite_frames.tres" id="world_visual"]
+[ext_resource type="Resource" path="res://resources/effects/common/buffs/fortify.tres" id="fortify_effect"]
+[ext_resource type="Resource" path="res://resources/effects/common/buffs/ward.tres" id="ward_effect"]
+
+[sub_resource type="Resource" id="ogre_guard_condition_1"]
+script = ExtResource("condition_script")
+condition_type = 1
+condition_subject = 0
+value = 0.5
+metadata/_custom_type_script = "uid://cnso83bg7vodw"
+
+[sub_resource type="Resource" id="ogre_guard_attack_0"]
+script = ExtResource("attack_script")
+min_damage = 10
+max_damage = 18
+metadata/_custom_type_script = "uid://bo48scp6lbwrb"
+
+[sub_resource type="Resource" id="ogre_guard_ability_0"]
+script = ExtResource("ability_script")
+name = "Club Sweep"
+energy_cost = 0
+cooldown = 0
+target_type = 3
+attack = SubResource("ogre_guard_attack_0")
+metadata/_custom_type_script = "uid://b2o7w8q10stxo"
+
+[sub_resource type="Resource" id="ogre_guard_ability_1"]
+script = ExtResource("ability_script")
+name = "Guard Stance"
+energy_cost = 8
+cooldown = 4
+target_type = 0
+caster_effects = Array[ExtResource("effect_script")]([ExtResource("fortify_effect"), ExtResource("ward_effect")])
+condition = SubResource("ogre_guard_condition_1")
+metadata/_custom_type_script = "uid://b2o7w8q10stxo"
+
+[sub_resource type="Resource" id="ogre_guard_drop_0"]
+script = ExtResource("drop_entry_script")
+item_id = "stonehide_tonic"
+chance = 0.3
+min_count = 1
+max_count = 1
+metadata/_custom_type_script = "uid://buxlf5aagrtgf"
+
+[sub_resource type="Resource" id="ogre_guard_drop_1"]
+script = ExtResource("drop_entry_script")
+item_id = "resist_potion"
+chance = 0.2
+min_count = 1
+max_count = 1
+metadata/_custom_type_script = "uid://buxlf5aagrtgf"
+
+[sub_resource type="Resource" id="ogre_guard_loot"]
+script = ExtResource("drop_table_script")
+entries = Array[ExtResource("drop_entry_script")]([SubResource("ogre_guard_drop_0"), SubResource("ogre_guard_drop_1")])
+min_gold = 16
+max_gold = 24
+weapon_chance = 0.1
+weapon_rarity = 1
+metadata/_custom_type_script = "uid://birbqcxvye2x5"
+
+[resource]
+script = ExtResource("monster_script")
+monster_id = 19
+basic_attack = SubResource("ogre_guard_ability_0")
+conditional_abilities = Array[ExtResource("ability_script")]([SubResource("ogre_guard_ability_1")])
+loot = SubResource("ogre_guard_loot")
+name = "Ogre Guard"
+max_hp = 140
+current_hp = 140
+max_nrg = 30
+current_nrg = 30
+initiative = 3
+attack = 7
+magic = 0
+defense = 90
+resist = 40
+gold = 20
+world_visual = ExtResource("world_visual")
+battle_visual = ExtResource("battle_visual")
+metadata/_custom_type_script = "uid://bd6ohffno5w7r"

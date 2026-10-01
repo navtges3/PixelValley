@@ -1,0 +1,84 @@
+[gd_resource type="Resource" script_class="Monster" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/attack.gd" id="attack_script"]
+[ext_resource type="Script" path="res://scripts/data/ability.gd" id="ability_script"]
+[ext_resource type="Script" path="res://scripts/data/condition.gd" id="condition_script"]
+[ext_resource type="Script" path="res://scripts/data/effects/effect.gd" id="effect_script"]
+[ext_resource type="Script" path="res://scripts/data/drop_entry.gd" id="drop_entry_script"]
+[ext_resource type="Script" path="res://scripts/data/drop_table.gd" id="drop_table_script"]
+[ext_resource type="Script" path="res://scripts/characters/monster.gd" id="monster_script"]
+[ext_resource type="SpriteFrames" path="res://resources/characters/monsters/orc/orc_battle_sprite_frames.tres" id="battle_visual"]
+[ext_resource type="SpriteFrames" path="res://resources/characters/monsters/orc/orc_world_sprite_frames.tres" id="world_visual"]
+[ext_resource type="Resource" path="res://resources/effects/common/buffs/power.tres" id="power_effect"]
+[ext_resource type="Resource" path="res://resources/effects/common/debuffs/weaken.tres" id="weaken_effect"]
+
+[sub_resource type="Resource" id="orc_shaman_attack_0"]
+script = ExtResource("attack_script")
+min_damage = 5
+max_damage = 9
+metadata/_custom_type_script = "uid://bo48scp6lbwrb"
+
+[sub_resource type="Resource" id="orc_shaman_ability_0"]
+script = ExtResource("ability_script")
+name = "War Magic Bolt"
+energy_cost = 0
+cooldown = 0
+target_type = 3
+attack = SubResource("orc_shaman_attack_0")
+metadata/_custom_type_script = "uid://b2o7w8q10stxo"
+
+[sub_resource type="Resource" id="orc_shaman_ability_1"]
+script = ExtResource("ability_script")
+name = "Weaken Foe"
+energy_cost = 6
+cooldown = 3
+target_type = 3
+target_effects = Array[ExtResource("effect_script")]([ExtResource("weaken_effect")])
+metadata/_custom_type_script = "uid://b2o7w8q10stxo"
+
+[sub_resource type="Resource" id="orc_shaman_ability_2"]
+script = ExtResource("ability_script")
+name = "Camp Blessing"
+energy_cost = 10
+cooldown = 4
+target_type = 2
+target_effects = Array[ExtResource("effect_script")]([ExtResource("power_effect")])
+metadata/_custom_type_script = "uid://b2o7w8q10stxo"
+
+[sub_resource type="Resource" id="orc_shaman_drop_0"]
+script = ExtResource("drop_entry_script")
+item_id = "magic_potion"
+chance = 0.2
+min_count = 1
+max_count = 1
+metadata/_custom_type_script = "uid://buxlf5aagrtgf"
+
+[sub_resource type="Resource" id="orc_shaman_loot"]
+script = ExtResource("drop_table_script")
+entries = Array[ExtResource("drop_entry_script")]([SubResource("orc_shaman_drop_0")])
+min_gold = 11
+max_gold = 16
+weapon_chance = 0.06
+weapon_rarity = 0
+metadata/_custom_type_script = "uid://birbqcxvye2x5"
+
+[resource]
+script = ExtResource("monster_script")
+monster_id = 14
+basic_attack = SubResource("orc_shaman_ability_0")
+conditional_abilities = Array[ExtResource("ability_script")]([SubResource("orc_shaman_ability_1"), SubResource("orc_shaman_ability_2")])
+loot = SubResource("orc_shaman_loot")
+name = "Orc Shaman"
+max_hp = 55
+current_hp = 55
+max_nrg = 32
+current_nrg = 32
+initiative = 3
+attack = 2
+magic = 10
+defense = 20
+resist = 45
+gold = 14
+world_visual = ExtResource("world_visual")
+battle_visual = ExtResource("battle_visual")
+metadata/_custom_type_script = "uid://bd6ohffno5w7r"
