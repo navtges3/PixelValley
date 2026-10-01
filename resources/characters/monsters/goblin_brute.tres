@@ -1,22 +1,15 @@
-[gd_resource type="Resource" script_class="Monster" format=3]
+[gd_resource type="Resource" script_class="Monster" format=3 uid="uid://coci42p1nu2ds"]
 
-[ext_resource type="Script" path="res://scripts/data/attack.gd" id="attack_script"]
-[ext_resource type="Script" path="res://scripts/data/ability.gd" id="ability_script"]
-[ext_resource type="Script" path="res://scripts/data/condition.gd" id="condition_script"]
-[ext_resource type="Script" path="res://scripts/data/effects/effect.gd" id="effect_script"]
-[ext_resource type="Script" path="res://scripts/data/drop_entry.gd" id="drop_entry_script"]
-[ext_resource type="Script" path="res://scripts/data/drop_table.gd" id="drop_table_script"]
-[ext_resource type="Script" path="res://scripts/characters/monster.gd" id="monster_script"]
-[ext_resource type="SpriteFrames" path="res://resources/characters/monsters/goblin/goblin_battle_sprite_frames.tres" id="battle_visual"]
-[ext_resource type="SpriteFrames" path="res://resources/characters/monsters/goblin/goblin_world_sprite_frames.tres" id="world_visual"]
-[ext_resource type="Resource" path="res://resources/effects/common/buffs/fortify.tres" id="fortify_effect"]
-
-[sub_resource type="Resource" id="goblin_brute_condition_1"]
-script = ExtResource("condition_script")
-condition_type = 1
-condition_subject = 0
-value = 0.4
-metadata/_custom_type_script = "uid://cnso83bg7vodw"
+[ext_resource type="Script" uid="uid://b2o7w8q10stxo" path="res://scripts/data/ability.gd" id="ability_script"]
+[ext_resource type="Script" uid="uid://bo48scp6lbwrb" path="res://scripts/data/attack.gd" id="attack_script"]
+[ext_resource type="SpriteFrames" uid="uid://4ywebwliybf7" path="res://resources/characters/monsters/goblin/goblin_battle_sprite_frames.tres" id="battle_visual"]
+[ext_resource type="Script" uid="uid://cnso83bg7vodw" path="res://scripts/data/condition.gd" id="condition_script"]
+[ext_resource type="Script" uid="uid://buxlf5aagrtgf" path="res://scripts/data/drop_entry.gd" id="drop_entry_script"]
+[ext_resource type="Script" uid="uid://birbqcxvye2x5" path="res://scripts/data/drop_table.gd" id="drop_table_script"]
+[ext_resource type="Script" uid="uid://c5deti4sb2k2j" path="res://scripts/data/effects/effect.gd" id="effect_script"]
+[ext_resource type="Resource" uid="uid://biyt6u2pxfvqp" path="res://resources/effects/common/buffs/fortify.tres" id="fortify_effect"]
+[ext_resource type="Script" uid="uid://bd6ohffno5w7r" path="res://scripts/characters/monster.gd" id="monster_script"]
+[ext_resource type="SpriteFrames" uid="uid://2sjuet18mpdk" path="res://resources/characters/monsters/goblin/goblin_world_sprite_frames.tres" id="world_visual"]
 
 [sub_resource type="Resource" id="goblin_brute_attack_0"]
 script = ExtResource("attack_script")
@@ -27,11 +20,14 @@ metadata/_custom_type_script = "uid://bo48scp6lbwrb"
 [sub_resource type="Resource" id="goblin_brute_ability_0"]
 script = ExtResource("ability_script")
 name = "Club Smash"
-energy_cost = 0
-cooldown = 0
-target_type = 3
 attack = SubResource("goblin_brute_attack_0")
 metadata/_custom_type_script = "uid://b2o7w8q10stxo"
+
+[sub_resource type="Resource" id="goblin_brute_condition_1"]
+script = ExtResource("condition_script")
+condition_type = 1
+value = 0.4
+metadata/_custom_type_script = "uid://cnso83bg7vodw"
 
 [sub_resource type="Resource" id="goblin_brute_ability_1"]
 script = ExtResource("ability_script")
@@ -47,8 +43,6 @@ metadata/_custom_type_script = "uid://b2o7w8q10stxo"
 script = ExtResource("drop_entry_script")
 item_id = "lesser_healing_potion"
 chance = 0.3
-min_count = 1
-max_count = 1
 metadata/_custom_type_script = "uid://buxlf5aagrtgf"
 
 [sub_resource type="Resource" id="goblin_brute_loot"]
@@ -57,7 +51,6 @@ entries = Array[ExtResource("drop_entry_script")]([SubResource("goblin_brute_dro
 min_gold = 5
 max_gold = 7
 weapon_chance = 0.05
-weapon_rarity = 0
 metadata/_custom_type_script = "uid://birbqcxvye2x5"
 
 [resource]
@@ -65,6 +58,7 @@ script = ExtResource("monster_script")
 monster_id = 3
 basic_attack = SubResource("goblin_brute_ability_0")
 conditional_abilities = Array[ExtResource("ability_script")]([SubResource("goblin_brute_ability_1")])
+gold = 6
 loot = SubResource("goblin_brute_loot")
 name = "Goblin Brute"
 max_hp = 70
@@ -73,10 +67,8 @@ max_nrg = 5
 current_nrg = 5
 initiative = 3
 attack = 4
-magic = 0
 defense = 25
 resist = 10
-gold = 6
 world_visual = ExtResource("world_visual")
 battle_visual = ExtResource("battle_visual")
 metadata/_custom_type_script = "uid://bd6ohffno5w7r"

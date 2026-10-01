@@ -1,25 +1,20 @@
 extends Node
 
 enum MonsterID {
-	GOBLIN,
 	GOBLIN_SCOUT, GOBLIN_ARCHER, GOBLIN_BRUTE, GOBLIN_SHAMAN, FOREST_GOBLIN,
-	ORC,
+	ORC_GRUNT, ORC_ARCHER, ORC_BERSERKER, ORC_SHAMAN, ORC_SPEARMAN, ORC_CAPTAIN, ORC_SHIELDBEARER,
 	ORC_CHIEFTAIN,
-	OGRE,
+	OGRE_BRUTE, OGRE_GUARD, OGRE_SHAMAN, CAVE_TROLL, CAVE_BEAST, STONE_GOLEM,
 	OGRE_WARLORD,
 	OGRE_KING,
-	ORC_GRUNT, ORC_ARCHER, ORC_BERSERKER, ORC_SHAMAN, ORC_SPEARMAN, ORC_CAPTAIN, ORC_SHIELDBEARER,
-	OGRE_BRUTE, OGRE_GUARD, OGRE_SHAMAN, CAVE_TROLL, CAVE_BEAST, STONE_GOLEM,
 }
 
 var monster_paths: Dictionary = {
-	MonsterID.GOBLIN: "res://resources/characters/monsters/goblin/goblin.tres",
 	MonsterID.GOBLIN_SCOUT: "res://resources/characters/monsters/goblin_scout.tres",
 	MonsterID.GOBLIN_ARCHER: "res://resources/characters/monsters/goblin_archer.tres",
 	MonsterID.GOBLIN_BRUTE: "res://resources/characters/monsters/goblin_brute.tres",
 	MonsterID.GOBLIN_SHAMAN: "res://resources/characters/monsters/goblin_shaman.tres",
 	MonsterID.FOREST_GOBLIN: "res://resources/characters/monsters/forest_goblin.tres",
-	MonsterID.ORC: "res://resources/characters/monsters/orc/orc.tres",
 	MonsterID.ORC_GRUNT: "res://resources/characters/monsters/orc_grunt.tres",
 	MonsterID.ORC_ARCHER: "res://resources/characters/monsters/orc_archer.tres",
 	MonsterID.ORC_BERSERKER: "res://resources/characters/monsters/orc_berserker.tres",
@@ -28,7 +23,6 @@ var monster_paths: Dictionary = {
 	MonsterID.ORC_CAPTAIN: "res://resources/characters/monsters/orc_captain.tres",
 	MonsterID.ORC_SHIELDBEARER: "res://resources/characters/monsters/orc_shieldbearer.tres",
 	MonsterID.ORC_CHIEFTAIN: "res://resources/characters/monsters/orc_chieftain/orc_chieftain.tres",
-	MonsterID.OGRE: "res://resources/characters/monsters/ogre/ogre.tres",
 	MonsterID.OGRE_BRUTE: "res://resources/characters/monsters/ogre_brute.tres",
 	MonsterID.OGRE_GUARD: "res://resources/characters/monsters/ogre_guard.tres",
 	MonsterID.OGRE_SHAMAN: "res://resources/characters/monsters/ogre_shaman.tres",
