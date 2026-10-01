@@ -70,36 +70,36 @@ shape = SubResource("WorldBoundaryShape2D_2ei2r")
 [node name="SpawnPoint" type="Marker2D" parent="EnemySpawns" unique_id=1804905389 groups=["spawn_point"]]
 position = Vector2(293, 497)
 script = ExtResource("6_xe7xg")
-monster_id = 3
+monster_id = 13
 
 [node name="SpawnPoint2" type="Marker2D" parent="EnemySpawns" unique_id=345326014 groups=["spawn_point"]]
 position = Vector2(692, 580)
 script = ExtResource("6_xe7xg")
-monster_id = 3
+monster_id = 13
 
 [node name="SpawnPoint3" type="Marker2D" parent="EnemySpawns" unique_id=1164514806 groups=["spawn_point"]]
 position = Vector2(997, 327)
 script = ExtResource("6_xe7xg")
-monster_id = 3
+monster_id = 13
 
 [node name="SpawnPoint4" type="Marker2D" parent="EnemySpawns" unique_id=2105180426 groups=["spawn_point"]]
 position = Vector2(1012, 0)
 script = ExtResource("6_xe7xg")
-monster_id = 3
+monster_id = 13
 
 [node name="SpawnPoint5" type="Marker2D" parent="EnemySpawns" unique_id=298816999 groups=["spawn_point"]]
 position = Vector2(592, -118)
 script = ExtResource("6_xe7xg")
-monster_id = 3
+monster_id = 13
 
 [node name="BossSpawnPoint" type="Marker2D" parent="EnemySpawns" unique_id=1100285348 groups=["spawn_point"]]
 position = Vector2(176, -64)
 script = ExtResource("6_xe7xg")
-monster_id = 4
+monster_id = 19
 quest_id = 430
 
 [node name="BossSpawnPoint2" type="Marker2D" parent="EnemySpawns" unique_id=138004234 groups=["spawn_point"]]
 position = Vector2(176, -134)
 script = ExtResource("6_xe7xg")
-monster_id = 5
+monster_id = 20
 quest_id = 440

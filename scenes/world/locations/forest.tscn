@@ -144,6 +144,6 @@ behavior = 2
 [node name="BossSpawnPoint" type="Marker2D" parent="EnemySpawns" unique_id=1100285348 groups=["spawn_point"]]
 position = Vector2(1163, 122)
 script = ExtResource("5_euhvq")
-monster_id = 1
+monster_id = 10
 quest_id = 230
 behavior = 1

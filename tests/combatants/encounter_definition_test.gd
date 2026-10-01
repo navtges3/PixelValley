@@ -41,14 +41,14 @@ func _test_multi_monster_encounter_counts_and_types() -> void:
 	encounter_mixed.monster_ids = [
 		MonsterLoader.MonsterID.GOBLIN_SCOUT,
 		MonsterLoader.MonsterID.ORC_GRUNT,
-		MonsterLoader.MonsterID.ORC_GRUNT_CHIEFTAIN,
+		MonsterLoader.MonsterID.ORC_CHIEFTAIN,
 	]
 	var party_mixed := encounter_mixed.create_enemy_party()
 	_expect_equal(party_mixed.get_members().size(), 3, "mixed encounter creates 3 members")
 	var members := party_mixed.get_members()
 	_expect_equal((members[0] as Monster).monster_id, MonsterLoader.MonsterID.GOBLIN_SCOUT, "first member is goblin")
 	_expect_equal((members[1] as Monster).monster_id, MonsterLoader.MonsterID.ORC_GRUNT, "second member is orc")
-	_expect_equal((members[2] as Monster).monster_id, MonsterLoader.MonsterID.ORC_GRUNT_CHIEFTAIN, "third member is orc chieftain")
+	_expect_equal((members[2] as Monster).monster_id, MonsterLoader.MonsterID.ORC_CHIEFTAIN, "third member is orc chieftain")
 
 
 func _test_capacity_limit_clamping() -> void:
