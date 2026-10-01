@@ -6,4 +6,4 @@
 script = ExtResource("1_encounter")
 id = "dev_forest_pack"
 name = "Forest Pack"
-monster_ids = Array[int]([0, 0, 1])
+monster_ids = Array[int]([0, 1, 4])

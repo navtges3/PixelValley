@@ -4,7 +4,7 @@ class_name SpawnPoint
 const ENEMY_SCENE := preload("res://scenes/world/characters/enemy.tscn")
 
 @export var encounter: EncounterDefinition = null
-@export var monster_id: MonsterLoader.MonsterID = MonsterLoader.MonsterID.GOBLIN
+@export var monster_id: MonsterLoader.MonsterID = MonsterLoader.MonsterID.GOBLIN_SCOUT
 @export var spawn_count: int = 1
 @export var use_existing_children: bool = false
 @export var spawn_offset: Vector2 = Vector2(16, 0)

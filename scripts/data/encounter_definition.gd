@@ -29,7 +29,7 @@ func get_lead_monster_id() -> MonsterLoader.MonsterID:
 	if not monster_templates.is_empty() and monster_templates[0] != null:
 		return monster_templates[0].monster_id                                                                                           
 	push_warning("EncounterDefinition '%s': get_lead_monster_id called on an empty encounter." % id)
-	return MonsterLoader.MonsterID.GOBLIN
+	return MonsterLoader.MonsterID.GOBLIN_SCOUT
 
 func get_lead_world_visual() -> SpriteFrames:
 	if not monster_templates.is_empty() and monster_templates[0] != null:

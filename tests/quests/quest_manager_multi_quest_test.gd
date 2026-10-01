@@ -50,9 +50,9 @@ func _test_concurrent_quests_and_save_load() -> void:
 	manager.reconnect_signals()
 	_connect_manager_counters(manager)
 
-	var quick_quest := _make_kill_quest(QUICK_QUEST_ID, MonsterLoader.MonsterID.GOBLIN, 1, "forest")
-	var long_quest := _make_kill_quest(LONG_QUEST_ID, MonsterLoader.MonsterID.GOBLIN, 3, "forest")
-	var unrelated_quest := _make_kill_quest(UNRELATED_QUEST_ID, MonsterLoader.MonsterID.ORC, 1, "orc_war_camp")
+	var quick_quest := _make_kill_quest(QUICK_QUEST_ID, MonsterLoader.MonsterID.GOBLIN_SCOUT, 1, "forest")
+	var long_quest := _make_kill_quest(LONG_QUEST_ID, MonsterLoader.MonsterID.GOBLIN_SCOUT, 3, "forest")
+	var unrelated_quest := _make_kill_quest(UNRELATED_QUEST_ID, MonsterLoader.MonsterID.ORC_GRUNT, 1, "orc_war_camp")
 	quick_quest.category = Quest.Category.SIDE
 	quick_quest.source_type = Quest.SourceType.QUEST_BOARD
 	quick_quest.source_id = "valley_board"
@@ -60,7 +60,7 @@ func _test_concurrent_quests_and_save_load() -> void:
 	manager.activate_quest(long_quest)
 	manager.activate_quest(unrelated_quest)
 
-	_emit_kill(MonsterLoader.MonsterID.GOBLIN, "forest")
+	_emit_kill(MonsterLoader.MonsterID.GOBLIN_SCOUT, "forest")
 	_expect_equal(_get_kill_progress(quick_quest), 1, "one kill progresses the first matching quest")
 	_expect_equal(_get_kill_progress(long_quest), 1, "one kill progresses the second matching quest")
 	_expect_equal(_get_kill_progress(unrelated_quest), 0, "one kill does not progress an unrelated quest")
@@ -71,7 +71,7 @@ func _test_concurrent_quests_and_save_load() -> void:
 	_expect_true(quick_quest in manager.ready_quests, "completed objectives move the quick quest to ready")
 	_expect_true(quick_quest not in manager.active_quests, "ready quest stops receiving progress")
 
-	_emit_kill(MonsterLoader.MonsterID.GOBLIN, "forest")
+	_emit_kill(MonsterLoader.MonsterID.GOBLIN_SCOUT, "forest")
 	_expect_equal(_progress_counts.get(QUICK_QUEST_ID, 0), 1, "completed quest does not emit duplicate progress")
 	_expect_equal(_ready_counts.get(QUICK_QUEST_ID, 0), 1, "completed quest does not emit duplicate readiness")
 	_expect_equal(_get_kill_progress(long_quest), 2, "other active quest keeps progressing")
@@ -104,13 +104,13 @@ func _test_concurrent_quests_and_save_load() -> void:
 	_expect_equal(_get_kill_progress(loaded_unrelated), 0, "save/load preserves unrelated quest progress")
 
 	var stale_progress_count: int = _progress_counts.get(LONG_QUEST_ID, 0)
-	_emit_kill(MonsterLoader.MonsterID.GOBLIN, "forest")
+	_emit_kill(MonsterLoader.MonsterID.GOBLIN_SCOUT, "forest")
 	_expect_equal(_get_kill_progress(loaded_long), 3, "loaded active quest continues progressing")
 	_expect_equal(_progress_counts.get(LONG_QUEST_ID, 0), stale_progress_count + 1, "only the loaded manager emits progress")
 	_expect_equal(_ready_counts.get(LONG_QUEST_ID, 0), 1, "loaded quest emits readiness once")
 	_expect_true(loaded_long in loaded_manager.ready_quests, "loaded quest moves to ready after its final kill")
 
-	_emit_kill(MonsterLoader.MonsterID.GOBLIN, "forest")
+	_emit_kill(MonsterLoader.MonsterID.GOBLIN_SCOUT, "forest")
 	_expect_equal(_progress_counts.get(LONG_QUEST_ID, 0), stale_progress_count + 1, "loaded completed quest emits no duplicate progress")
 	_expect_equal(_ready_counts.get(LONG_QUEST_ID, 0), 1, "loaded completed quest emits no duplicate readiness")
 
@@ -130,27 +130,27 @@ func _test_main_quest_progression() -> void:
 	if first_objective == null:
 		return
 	var previous_progress: int = first_objective.current_amount
-	_emit_kill(MonsterLoader.MonsterID.GOBLIN, "forest")
+	_emit_kill(MonsterLoader.MonsterID.GOBLIN_SCOUT, "forest")
 	_expect_equal(first_objective.current_amount, previous_progress + 1, "main quest still progresses from its normal kill event")
 
 func _test_kill_objective_contract_and_save_hooks() -> void:
 	var objective := KillQuestObjective.new()
-	objective.monster_id = MonsterLoader.MonsterID.GOBLIN
+	objective.monster_id = MonsterLoader.MonsterID.GOBLIN_SCOUT
 	objective.target_amount = 2
 	objective.location_id = "forest"
 
 	_expect_true(not objective.apply_event(GameplayEvent.new()), "kill objective ignores unrelated gameplay event types")
 	_expect_true(
-		not objective.apply_event(MonsterKilledEvent.new(MonsterLoader.MonsterID.ORC, "forest")),
+		not objective.apply_event(MonsterKilledEvent.new(MonsterLoader.MonsterID.ORC_GRUNT, "forest")),
 		"kill objective ignores a different monster"
 	)
 	_expect_true(
-		not objective.apply_event(MonsterKilledEvent.new(MonsterLoader.MonsterID.GOBLIN, "orc_war_camp")),
+		not objective.apply_event(MonsterKilledEvent.new(MonsterLoader.MonsterID.GOBLIN_SCOUT, "orc_war_camp")),
 		"kill objective ignores a different required location"
 	)
 	_expect_equal(objective.current_amount, 0, "ignored events do not change objective progress")
 	_expect_true(
-		objective.apply_event(MonsterKilledEvent.new(MonsterLoader.MonsterID.GOBLIN, "forest")),
+		objective.apply_event(MonsterKilledEvent.new(MonsterLoader.MonsterID.GOBLIN_SCOUT, "forest")),
 		"matching kill event changes objective progress"
 	)
 	_expect_equal(objective.current_amount, 1, "matching kill event increments progress once")
@@ -187,9 +187,9 @@ func _test_multi_objective_event_routing() -> void:
 	manager.reconnect_signals()
 	_connect_manager_counters(manager)
 
-	var quest := _make_kill_quest(301, MonsterLoader.MonsterID.GOBLIN, 1, "forest")
+	var quest := _make_kill_quest(301, MonsterLoader.MonsterID.GOBLIN_SCOUT, 1, "forest")
 	var orc_objective := KillQuestObjective.new()
-	orc_objective.monster_id = MonsterLoader.MonsterID.ORC
+	orc_objective.monster_id = MonsterLoader.MonsterID.ORC_GRUNT
 	orc_objective.target_amount = 1
 	orc_objective.location_id = "orc_war_camp"
 	quest.objectives.append(orc_objective)
@@ -197,13 +197,13 @@ func _test_multi_objective_event_routing() -> void:
 
 	GameState.gameplay_event.emit(GameplayEvent.new())
 	_expect_equal(_progress_counts.get(301, 0), 0, "unrelated event emits no quest progress signal")
-	_emit_kill(MonsterLoader.MonsterID.GOBLIN, "forest")
+	_emit_kill(MonsterLoader.MonsterID.GOBLIN_SCOUT, "forest")
 	_expect_equal(_get_kill_progress(quest), 1, "first matching objective progresses")
 	_expect_equal(orc_objective.current_amount, 0, "unrelated objective in the same quest is ignored")
 	_expect_true(quest in manager.active_quests, "multi-objective quest remains active until every objective is complete")
 	_expect_equal(_progress_counts.get(301, 0), 1, "one event emits one progress signal for the affected quest")
 
-	_emit_kill(MonsterLoader.MonsterID.ORC, "orc_war_camp")
+	_emit_kill(MonsterLoader.MonsterID.ORC_GRUNT, "orc_war_camp")
 	_expect_equal(orc_objective.current_amount, 1, "second objective progresses from its matching event")
 	_expect_true(quest in manager.ready_quests, "multi-objective quest becomes ready after all objectives complete")
 	_expect_equal(_ready_counts.get(301, 0), 1, "multi-objective quest emits readiness once")
@@ -211,14 +211,14 @@ func _test_multi_objective_event_routing() -> void:
 func _test_quest_metadata_defaults_and_queries() -> void:
 	var manager := QuestManager.new()
 
-	var main_quest := _make_kill_quest(201, MonsterLoader.MonsterID.GOBLIN, 1, "forest")
+	var main_quest := _make_kill_quest(201, MonsterLoader.MonsterID.GOBLIN_SCOUT, 1, "forest")
 
-	var board_side_quest := _make_kill_quest(202, MonsterLoader.MonsterID.GOBLIN, 1, "forest")
+	var board_side_quest := _make_kill_quest(202, MonsterLoader.MonsterID.GOBLIN_SCOUT, 1, "forest")
 	board_side_quest.category = Quest.Category.SIDE
 	board_side_quest.source_type = Quest.SourceType.QUEST_BOARD
 	board_side_quest.source_id = "valley_board"
 
-	var npc_side_quest := _make_kill_quest(203, MonsterLoader.MonsterID.ORC, 1, "orc_war_camp")
+	var npc_side_quest := _make_kill_quest(203, MonsterLoader.MonsterID.ORC_GRUNT, 1, "orc_war_camp")
 	npc_side_quest.category = Quest.Category.SIDE
 	npc_side_quest.source_type = Quest.SourceType.NPC
 	npc_side_quest.source_id = "npc_blacksmith"

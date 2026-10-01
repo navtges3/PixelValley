@@ -71,7 +71,7 @@ metadata/_custom_type_script = "uid://birbqcxvye2x5"
 
 [resource]
 script = ExtResource("monster_script")
-monster_id = 23
+monster_id = 18
 basic_attack = SubResource("stone_golem_ability_0")
 conditional_abilities = Array[ExtResource("ability_script")]([SubResource("stone_golem_ability_1")])
 loot = SubResource("stone_golem_loot")

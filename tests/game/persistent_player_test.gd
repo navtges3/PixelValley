@@ -83,7 +83,7 @@ func run_async_tests() -> int:
 	GameState.pre_combat_position = battle_pos
 	var battle_data := {
 		"hero": HeroLoader.new_hero(Hero.HeroClass.KNIGHT),
-		"monster_id": MonsterLoader.MonsterID.GOBLIN,
+		"monster_id": MonsterLoader.MonsterID.GOBLIN_SCOUT,
 	}
 	ScreenManager.go_to_screen(ScreenManager.ScreenName.BATTLE, "", {
 		"hero": battle_data["hero"],

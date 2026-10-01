@@ -7,10 +7,11 @@ const HERO_RESOURCES := [
 ]
 
 const MONSTER_RESOURCES := [
-	"res://resources/characters/monsters/goblin/goblin.tres",
-	"res://resources/characters/monsters/orc/orc.tres",
+	"res://resources/characters/monsters/goblin_scout.tres",
+	"res://resources/characters/monsters/goblin_brute.tres",
+	"res://resources/characters/monsters/orc_grunt.tres",
 	"res://resources/characters/monsters/orc_chieftain/orc_chieftain.tres",
-	"res://resources/characters/monsters/ogre/ogre.tres",
+	"res://resources/characters/monsters/ogre_brute.tres",
 	"res://resources/characters/monsters/ogre_warlord/ogre_warlord.tres",
 	"res://resources/characters/monsters/ogre_king/ogre_king.tres",
 ]

@@ -8,7 +8,7 @@ enum Behavior { PATROL, GUARD, WANDER }
 
 @export_group("Identity")
 @export var encounter: EncounterDefinition = null
-@export var monster_id: MonsterLoader.MonsterID = MonsterLoader.MonsterID.GOBLIN
+@export var monster_id: MonsterLoader.MonsterID = MonsterLoader.MonsterID.GOBLIN_SCOUT
 
 @export_group("Patrol")
 @export var patrol_speed: float = 40.0

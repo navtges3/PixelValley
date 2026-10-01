@@ -44,7 +44,7 @@ func _test_legacy_save_migrates_with_safe_defaults() -> void:
 				"description": "Created before quest save versioning.",
 				"completed": false,
 				"objectives": [{
-					"monster_id": MonsterLoader.MonsterID.GOBLIN,
+					"monster_id": MonsterLoader.MonsterID.GOBLIN_SCOUT,
 					"target_amount": 5,
 					"current_amount": 3,
 				}],
@@ -123,7 +123,7 @@ func _test_current_save_preserves_all_quest_state() -> void:
 				"final_quest": false,
 				"objectives": [{
 					"type": "kill",
-					"monster_id": MonsterLoader.MonsterID.ORC,
+					"monster_id": MonsterLoader.MonsterID.ORC_GRUNT,
 					"target_amount": 2,
 					"current_amount": 2,
 					"location_id": "orc_war_camp",
@@ -205,7 +205,7 @@ func _test_tracking_state_defaults_and_validation() -> void:
 
 func _make_saved_quest(quest_id: int) -> Quest:
 	var objective := KillQuestObjective.new()
-	objective.monster_id = MonsterLoader.MonsterID.GOBLIN
+	objective.monster_id = MonsterLoader.MonsterID.GOBLIN_SCOUT
 	objective.target_amount = 3
 	objective.current_amount = 1
 	objective.location_id = "forest"

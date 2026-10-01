@@ -115,7 +115,7 @@ func _test_grant_victory_rewards_no_op_without_hero_members() -> void:
 	var party := Party.new()
 	manager.persistent_party = party
 
-	var monster := MonsterLoader.new_monster(MonsterLoader.MonsterID.GOBLIN)
+	var monster := MonsterLoader.new_monster(MonsterLoader.MonsterID.GOBLIN_SCOUT)
 	monster.gold = 25
 	manager.monster = monster
 

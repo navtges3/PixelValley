@@ -6,4 +6,4 @@
 script = ExtResource("1_encounter")
 id = "dev_orc_squad"
 name = "Orc Squad"
-monster_ids = Array[int]([2, 1, 1, 1])
+monster_ids = Array[int]([5, 6, 7, 9])

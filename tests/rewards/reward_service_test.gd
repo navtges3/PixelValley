@@ -284,7 +284,7 @@ func _test_empty_loot_produces_no_entries() -> void:
 
 func _test_battle_rewards_use_generalized_loot_pipeline() -> void:
 	var hero := _new_hero()
-	var monster := MonsterLoader.new_monster(MonsterLoader.MonsterID.GOBLIN)
+	var monster := MonsterLoader.new_monster(MonsterLoader.MonsterID.GOBLIN_SCOUT)
 	var table := DropTable.new()
 	table.entries = [
 		_new_drop_entry("lesser_healing_potion", 3),
@@ -314,7 +314,7 @@ func _test_battle_rewards_use_generalized_loot_pipeline() -> void:
 
 func _test_battle_rewards_split_experience_across_party() -> void:
 	var party := _new_party_with_heroes()
-	var monster := MonsterLoader.new_monster(MonsterLoader.MonsterID.GOBLIN)
+	var monster := MonsterLoader.new_monster(MonsterLoader.MonsterID.GOBLIN_SCOUT)
 	monster.max_hp = 30
 	var expected_xp: int = monster.calculate_experience()
 	var manager := BattleManager.new()

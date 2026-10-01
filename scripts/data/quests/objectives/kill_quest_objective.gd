@@ -47,7 +47,7 @@ func get_save_data() -> Dictionary:
 	}
 
 func load_save_data(data: Dictionary) -> void:
-	monster_id = data.get("monster_id", MonsterLoader.MonsterID.GOBLIN)
+	monster_id = data.get("monster_id", MonsterLoader.MonsterID.GOBLIN_SCOUT)
 	target_amount = maxi(int(data.get("target_amount", 1)), 1)
 	current_amount = clampi(int(data.get("current_amount", 0)), 0, target_amount)
 	location_id = str(data.get("location_id", ""))

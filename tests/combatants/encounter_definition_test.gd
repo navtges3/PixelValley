@@ -25,7 +25,7 @@ func _test_empty_encounter_returns_empty_party() -> void:
 
 func _test_single_monster_encounter() -> void:
 	var encounter := EncounterDefinition.new()
-	encounter.monster_ids = [MonsterLoader.MonsterID.GOBLIN]
+	encounter.monster_ids = [MonsterLoader.MonsterID.GOBLIN_SCOUT]
 	var party := encounter.create_enemy_party()
 	_expect_equal(party.get_members().size(), 1, "single monster encounter creates 1-member party")
 	_expect_true(party.has_living_members(), "single monster is alive")
@@ -33,33 +33,33 @@ func _test_single_monster_encounter() -> void:
 
 func _test_multi_monster_encounter_counts_and_types() -> void:
 	var encounter_duo := EncounterDefinition.new()
-	encounter_duo.monster_ids = [MonsterLoader.MonsterID.GOBLIN, MonsterLoader.MonsterID.GOBLIN]
+	encounter_duo.monster_ids = [MonsterLoader.MonsterID.GOBLIN_SCOUT, MonsterLoader.MonsterID.GOBLIN_SCOUT]
 	var party_duo := encounter_duo.create_enemy_party()
 	_expect_equal(party_duo.get_members().size(), 2, "duo encounter creates 2 members")
 
 	var encounter_mixed := EncounterDefinition.new()
 	encounter_mixed.monster_ids = [
-		MonsterLoader.MonsterID.GOBLIN,
-		MonsterLoader.MonsterID.ORC,
-		MonsterLoader.MonsterID.ORC_CHIEFTAIN,
+		MonsterLoader.MonsterID.GOBLIN_SCOUT,
+		MonsterLoader.MonsterID.ORC_GRUNT,
+		MonsterLoader.MonsterID.ORC_GRUNT_CHIEFTAIN,
 	]
 	var party_mixed := encounter_mixed.create_enemy_party()
 	_expect_equal(party_mixed.get_members().size(), 3, "mixed encounter creates 3 members")
 	var members := party_mixed.get_members()
-	_expect_equal((members[0] as Monster).monster_id, MonsterLoader.MonsterID.GOBLIN, "first member is goblin")
-	_expect_equal((members[1] as Monster).monster_id, MonsterLoader.MonsterID.ORC, "second member is orc")
-	_expect_equal((members[2] as Monster).monster_id, MonsterLoader.MonsterID.ORC_CHIEFTAIN, "third member is orc chieftain")
+	_expect_equal((members[0] as Monster).monster_id, MonsterLoader.MonsterID.GOBLIN_SCOUT, "first member is goblin")
+	_expect_equal((members[1] as Monster).monster_id, MonsterLoader.MonsterID.ORC_GRUNT, "second member is orc")
+	_expect_equal((members[2] as Monster).monster_id, MonsterLoader.MonsterID.ORC_GRUNT_CHIEFTAIN, "third member is orc chieftain")
 
 
 func _test_capacity_limit_clamping() -> void:
 	var encounter := EncounterDefinition.new()
 	encounter.monster_ids = [
-		MonsterLoader.MonsterID.GOBLIN,
-		MonsterLoader.MonsterID.GOBLIN,
-		MonsterLoader.MonsterID.GOBLIN,
-		MonsterLoader.MonsterID.GOBLIN,
-		MonsterLoader.MonsterID.GOBLIN,
-		MonsterLoader.MonsterID.GOBLIN,
+		MonsterLoader.MonsterID.GOBLIN_SCOUT,
+		MonsterLoader.MonsterID.GOBLIN_SCOUT,
+		MonsterLoader.MonsterID.GOBLIN_SCOUT,
+		MonsterLoader.MonsterID.GOBLIN_SCOUT,
+		MonsterLoader.MonsterID.GOBLIN_SCOUT,
+		MonsterLoader.MonsterID.GOBLIN_SCOUT,
 	]
 	var party := encounter.create_enemy_party()
 	_expect_equal(party.get_members().size(), EncounterDefinition.MAX_ENEMIES, "party size clamped to MAX_ENEMIES")
@@ -67,7 +67,7 @@ func _test_capacity_limit_clamping() -> void:
 
 func _test_duplicate_monsters_are_distinct_instances() -> void:
 	var encounter := EncounterDefinition.new()
-	encounter.monster_ids = [MonsterLoader.MonsterID.GOBLIN, MonsterLoader.MonsterID.GOBLIN]
+	encounter.monster_ids = [MonsterLoader.MonsterID.GOBLIN_SCOUT, MonsterLoader.MonsterID.GOBLIN_SCOUT]
 	var party := encounter.create_enemy_party()
 	var m1 := party.get_members()[0] as Monster
 	var m2 := party.get_members()[1] as Monster
@@ -79,8 +79,8 @@ func _test_duplicate_monsters_are_distinct_instances() -> void:
 
 func _test_lead_monster_id_and_world_visual() -> void:
 	var encounter := EncounterDefinition.new()
-	encounter.monster_ids = [MonsterLoader.MonsterID.ORC, MonsterLoader.MonsterID.GOBLIN]
-	_expect_equal(encounter.get_lead_monster_id(), MonsterLoader.MonsterID.ORC, "lead monster ID is first monster")
+	encounter.monster_ids = [MonsterLoader.MonsterID.ORC_GRUNT, MonsterLoader.MonsterID.GOBLIN_SCOUT]
+	_expect_equal(encounter.get_lead_monster_id(), MonsterLoader.MonsterID.ORC_GRUNT, "lead monster ID is first monster")
 	var visual := encounter.get_lead_world_visual()
 	_expect_not_null(visual, "lead monster world visual is available")
 
@@ -93,9 +93,9 @@ func _test_battle_manager_setup_battle_with_encounter() -> void:
 
 	var encounter := EncounterDefinition.new()
 	encounter.monster_ids = [
-		MonsterLoader.MonsterID.GOBLIN,
-		MonsterLoader.MonsterID.ORC,
-		MonsterLoader.MonsterID.GOBLIN,
+		MonsterLoader.MonsterID.GOBLIN_SCOUT,
+		MonsterLoader.MonsterID.ORC_GRUNT,
+		MonsterLoader.MonsterID.GOBLIN_SCOUT,
 	]
 	manager.setup_battle({
 		"hero": hero,
@@ -116,16 +116,16 @@ func _test_battle_manager_setup_battle_legacy_fallback() -> void:
 	manager.setup_battle({
 		"hero": hero,
 		"persistent_party": party,
-		"monster_id": MonsterLoader.MonsterID.ORC,
+		"monster_id": MonsterLoader.MonsterID.ORC_GRUNT,
 	})
 	_expect_equal(manager.enemy_party.get_members().size(), 1, "BattleManager creates 1 enemy on legacy fallback")
-	_expect_equal((manager.enemy_party.get_members()[0] as Monster).monster_id, MonsterLoader.MonsterID.ORC, "legacy monster is ORC")
+	_expect_equal((manager.enemy_party.get_members()[0] as Monster).monster_id, MonsterLoader.MonsterID.ORC_GRUNT, "legacy monster is ORC")
 
 
 func _test_spawn_point_assigns_encounter_to_enemy() -> void:
 	var spawner := SpawnPoint.new()
 	var encounter := EncounterDefinition.new()
-	encounter.monster_ids = [MonsterLoader.MonsterID.ORC, MonsterLoader.MonsterID.GOBLIN]
+	encounter.monster_ids = [MonsterLoader.MonsterID.ORC_GRUNT, MonsterLoader.MonsterID.GOBLIN_SCOUT]
 	spawner.encounter = encounter
 
 	var parent_node := Node2D.new()
@@ -137,7 +137,7 @@ func _test_spawn_point_assigns_encounter_to_enemy() -> void:
 	_expect_equal(spawner.spawned_enemies.size(), 1, "SpawnPoint spawned 1 enemy for encounter")
 	var enemy := spawner.spawned_enemies[0]
 	_expect_equal(enemy.encounter, encounter, "Enemy has encounter assigned")
-	_expect_equal(enemy.monster_id, MonsterLoader.MonsterID.ORC, "Enemy monster_id matches lead monster")
+	_expect_equal(enemy.monster_id, MonsterLoader.MonsterID.ORC_GRUNT, "Enemy monster_id matches lead monster")
 
 	# parent_node.queue_free() also frees spawner and its spawned enemies transitively.
 	parent_node.queue_free()
@@ -154,7 +154,7 @@ func _test_world_spawner_defeat_tracking_integration() -> void:
 	var party := Party.new()
 	party.add_member(hero)
 	var encounter := EncounterDefinition.new()
-	encounter.monster_ids = [MonsterLoader.MonsterID.GOBLIN, MonsterLoader.MonsterID.GOBLIN]
+	encounter.monster_ids = [MonsterLoader.MonsterID.GOBLIN_SCOUT, MonsterLoader.MonsterID.GOBLIN_SCOUT]
 	manager.setup_battle({
 		"hero": hero,
 		"persistent_party": party,

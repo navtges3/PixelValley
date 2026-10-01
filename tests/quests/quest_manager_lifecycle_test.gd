@@ -189,7 +189,7 @@ func _test_duplicate_quest_id_cannot_be_activated() -> void:
 
 func _make_side_quest(quest_id: int) -> Quest:
 	var objective := KillQuestObjective.new()
-	objective.monster_id = MonsterLoader.MonsterID.GOBLIN
+	objective.monster_id = MonsterLoader.MonsterID.GOBLIN_SCOUT
 	objective.target_amount = 2
 	objective.location_id = "forest"
 	var quest := Quest.new()
