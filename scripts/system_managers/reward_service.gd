@@ -48,6 +48,16 @@ static func grant_party_member(party: Party, hero_class: Hero.HeroClass, level: 
 static func grant_random_party_weapon(party: Party, rarity: Item.Rarity) -> RewardEntry:
 	if party == null:
 		return null
+	var weapon_id := _pick_random_party_weapon_id(party, rarity)
+	if weapon_id.is_empty():
+		var gold := WeaponDatabase.get_gold_fallback_for_rarity(rarity)
+		party.inventory.gold += gold
+		return RewardEntry.weapon_fallback(gold)
+	return grant_weapon(party, weapon_id)
+
+static func _pick_random_party_weapon_id(party: Party, rarity: Item.Rarity) -> String:
+	if party == null:
+		return ""
 	var candidates: Array[String] = []
 	var seen: Dictionary = {}
 	for member: Hero in party.members:
@@ -59,10 +69,88 @@ static func grant_random_party_weapon(party: Party, rarity: Item.Rarity) -> Rewa
 			if not party.has_weapon(weapon_id) and not candidates.has(weapon_id):
 				candidates.append(weapon_id)
 	if candidates.is_empty():
-		var gold := WeaponDatabase.get_gold_fallback_for_rarity(rarity)
-		party.inventory.gold += gold
-		return RewardEntry.weapon_fallback(gold)
-	return grant_weapon(party, candidates.pick_random())
+		return ""
+	return candidates.pick_random()
+
+static func grant_battle_rewards(
+	monsters: Array[Monster],
+	recipients: Array[Hero],
+	party: Party
+) -> Array[RewardEntry]:
+	var entries: Array[RewardEntry] = []
+	if party == null:
+		push_warning("RewardService: battle reward party is required")
+		return entries
+
+	var total_xp := 0
+	var total_gold := 0
+	var combined_items: Dictionary[String, int] = {}
+	var authored_weapon_ids: Array[String] = []
+	var random_weapon_rarities: Array[Item.Rarity] = []
+	for monster: Monster in monsters:
+		total_xp += monster.calculate_experience()
+		total_gold += monster.calculate_gold()
+		var loot := monster.roll_loot()
+		total_gold += int(loot.get("gold", 0))
+		var items: Dictionary = loot.get("items", {})
+		for item_id: String in items:
+			var amount := int(items[item_id])
+			var item: Item = ItemLoader.get_item(item_id)
+			if item is Weapon:
+				if amount <= 0:
+					continue
+				if amount > 1:
+					push_warning("RewardService: weapon '%s' quantity was limited to one" % item_id)
+				authored_weapon_ids.append(item_id)
+			else:
+				combined_items[item_id] = int(combined_items.get(item_id, 0)) + amount
+		if bool(loot.get("random_weapon", false)):
+			var rarity: Item.Rarity = loot.get("weapon_rarity", Item.Rarity.COMMON)
+			random_weapon_rarities.append(rarity)
+
+	if total_xp > 0:
+		for recipient: Hero in recipients:
+			recipient.gain_experience(total_xp)
+		_append_entry(entries, RewardEntry.experience(total_xp))
+
+	var weapon_entries: Array[RewardEntry] = []
+	for weapon_id: String in authored_weapon_ids:
+		total_gold += _grant_battle_weapon(party, weapon_id, weapon_entries)
+	for rarity: Item.Rarity in random_weapon_rarities:
+		var weapon_id := _pick_random_party_weapon_id(party, rarity)
+		if weapon_id.is_empty():
+			total_gold += WeaponDatabase.get_gold_fallback_for_rarity(rarity)
+		else:
+			total_gold += _grant_battle_weapon(party, weapon_id, weapon_entries)
+
+	var item_entries: Array[RewardEntry] = []
+	for item_id: String in combined_items:
+		if ItemLoader.get_item(item_id) == null:
+			push_warning("RewardService: unknown item id '%s'" % item_id)
+			continue
+		_append_entry(item_entries, grant_item(party, item_id, combined_items[item_id]))
+
+	_append_entry(entries, grant_gold(party, total_gold))
+	for entry: RewardEntry in item_entries:
+		_append_entry(entries, entry)
+	for entry: RewardEntry in weapon_entries:
+		_append_entry(entries, entry)
+	return entries
+
+static func _grant_battle_weapon(
+	party: Party,
+	weapon_id: String,
+	weapon_entries: Array[RewardEntry]
+) -> int:
+	var weapon := ItemLoader.get_item(weapon_id) as Weapon
+	if weapon == null:
+		push_warning("RewardService: unknown weapon id '%s'" % weapon_id)
+		return 0
+	if party.has_weapon(weapon_id):
+		return weapon.value
+	party.inventory.add_weapon(weapon_id)
+	_append_entry(weapon_entries, RewardEntry.weapon(weapon_id))
+	return 0
 
 static func grant_gold(party: Party, amount: int) -> RewardEntry:
 	if party == null or amount <= 0:

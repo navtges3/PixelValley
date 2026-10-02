@@ -364,21 +364,13 @@ func _grant_victory_rewards() -> Array[RewardEntry]:
 	var enemies := enemy_party.get_members()
 	if enemies.is_empty() and monster != null:
 		enemies.append(monster)
-	var total_experience := 0
+	var monsters: Array[Monster] = []
 	for combatant: Combatant in enemies:
 		var enemy := combatant as Monster
 		if enemy == null:
 			continue
-		total_experience += enemy.calculate_experience()
-		var gold := RewardService.grant_gold(reward_party, enemy.calculate_gold())
-		if gold != null:
-			entries.append(gold)
-		entries.append_array(RewardService.grant_loot(enemy.roll_loot(), reward_party))
-	for member: Hero in recipients:
-		var xp_entry := RewardService.grant_experience(member, total_experience)
-		if xp_entry != null:
-			entries.append(xp_entry)
-	return entries
+		monsters.append(enemy)
+	return RewardService.grant_battle_rewards(monsters, recipients, reward_party)
 
 func _get_reward_recipients() -> Array[Hero]:
 	var recipients: Array[Hero] = []

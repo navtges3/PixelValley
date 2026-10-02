@@ -22,6 +22,10 @@ func run_tests() -> int:
 	_test_empty_loot_produces_no_entries()
 	_test_battle_rewards_use_generalized_loot_pipeline()
 	_test_battle_rewards_split_experience_across_party()
+	_test_battle_rewards_aggregate_multiple_monsters()
+	_test_battle_rewards_merge_duplicate_potions()
+	_test_battle_rewards_sell_duplicate_weapons_without_entry()
+	_test_battle_rewards_skip_zero_experience_and_gold_entries()
 	return _finish_test_run("Reward service tests")
 
 
@@ -308,7 +312,7 @@ func _test_battle_rewards_use_generalized_loot_pipeline() -> void:
 	_expect_equal(GameState.party.inventory.get_potion_count("lesser_healing_potion"), 3, "battle preserves potion loot")
 	_expect_equal(GameState.party.inventory.get_quest_item_count("inn_key"), 2, "battle grants generalized item loot")
 	_expect_true(GameState.party.inventory.has_weapon_in_stash("bronze_mace"), "battle preserves authored weapon loot")
-	_expect_equal(entries.size(), 6, "battle reports experience, gold, and every loot item")
+	_expect_equal(entries.size(), 5, "battle reports one XP, gold, and each distinct loot item")
 	manager.free()
 
 
@@ -343,8 +347,8 @@ func _test_battle_rewards_split_experience_across_party() -> void:
 
 	_expect_equal(
 		xp_entries.size(),
-		party.members.size(),
-		"victory rewards include one XP entry per party member"
+		1,
+		"victory rewards include one total XP entry"
 	)
 	for entry: RewardEntry in xp_entries:
 		_expect_contains(
@@ -352,6 +356,138 @@ func _test_battle_rewards_split_experience_across_party() -> void:
 			"%d Experience" % expected_xp,
 			"XP entry reflects full monster XP amount"
 		)
+	manager.free()
+
+
+func _test_battle_rewards_aggregate_multiple_monsters() -> void:
+	var first_hero := _new_hero()
+	var party: Party = GameState.party
+	var second_hero := HeroLoader.new_hero(Hero.HeroClass.ASSASSIN)
+	second_hero.level = 1
+	second_hero.experience = 0
+	party.add_member(second_hero)
+	var first_monster := Monster.new()
+	first_monster.max_hp = 10
+	first_monster.gold = 10
+	first_monster.gold_variance = 0.0
+	var first_table := DropTable.new()
+	first_table.min_gold = 3
+	first_table.max_gold = 3
+	first_monster.loot = first_table
+	var second_monster := Monster.new()
+	second_monster.max_hp = 20
+	second_monster.gold = 15
+	second_monster.gold_variance = 0.0
+	var second_table := DropTable.new()
+	second_table.min_gold = 4
+	second_table.max_gold = 4
+	second_monster.loot = second_table
+	var manager := BattleManager.new()
+	manager.persistent_party = party
+	manager.player_party.add_member(first_hero)
+	manager.player_party.add_member(second_hero)
+	manager.enemy_party.add_member(first_monster)
+	manager.enemy_party.add_member(second_monster)
+
+	var total_xp: int = first_monster.calculate_experience() + second_monster.calculate_experience()
+	var total_gold: int = (
+		first_monster.gold + 3
+		+ second_monster.gold + 4
+	)
+	var entries := manager._grant_victory_rewards()
+	var xp_entries: Array[RewardEntry] = []
+	var gold_entries: Array[RewardEntry] = []
+	for entry: RewardEntry in entries:
+		if entry.color == RewardEntry.COLOR_XP:
+			xp_entries.append(entry)
+		elif entry.color == RewardEntry.COLOR_GOLD:
+			gold_entries.append(entry)
+
+	_expect_equal(xp_entries.size(), 1, "multiple monsters produce one XP entry")
+	_expect_equal(xp_entries[0].display_text, RewardEntry.experience(total_xp).display_text, "XP entry uses summed monster XP")
+	_expect_equal(gold_entries.size(), 1, "multiple monsters produce one gold entry")
+	_expect_equal(gold_entries[0].display_text, RewardEntry.gold(total_gold).display_text, "gold entry uses monster and loot gold totals")
+	_expect_equal(party.inventory.gold, total_gold, "summed monster and loot gold reaches party inventory")
+	_expect_equal(first_hero.experience, total_xp, "first hero receives the total XP")
+	_expect_equal(second_hero.experience, total_xp, "second hero receives the total XP")
+	manager.free()
+
+
+func _test_battle_rewards_merge_duplicate_potions() -> void:
+	var hero := _new_hero()
+	var party: Party = GameState.party
+	var first_monster := Monster.new()
+	var first_table := DropTable.new()
+	first_table.entries = [_new_drop_entry("lesser_healing_potion", 2)]
+	first_monster.loot = first_table
+	var second_monster := Monster.new()
+	var second_table := DropTable.new()
+	second_table.entries = [_new_drop_entry("lesser_healing_potion", 3)]
+	second_monster.loot = second_table
+	var manager := BattleManager.new()
+	manager.persistent_party = party
+	manager.player_party.add_member(hero)
+	manager.enemy_party.add_member(first_monster)
+	manager.enemy_party.add_member(second_monster)
+
+	var entries := manager._grant_victory_rewards()
+	var potion_entries: Array[RewardEntry] = []
+	for entry: RewardEntry in entries:
+		if entry.color == RewardEntry.COLOR_POTION:
+			potion_entries.append(entry)
+
+	_expect_equal(potion_entries.size(), 1, "matching potion drops produce one entry")
+	_expect_contains(potion_entries[0].display_text, "5x", "potion entry combines both monster drops")
+	_expect_equal(party.inventory.get_potion_count("lesser_healing_potion"), 5, "combined potion quantity reaches inventory")
+	manager.free()
+
+
+func _test_battle_rewards_sell_duplicate_weapons_without_entry() -> void:
+	var hero := _new_hero()
+	var party: Party = GameState.party
+	var first_monster := Monster.new()
+	var first_table := DropTable.new()
+	first_table.entries = [_new_drop_entry("bronze_mace")]
+	first_monster.loot = first_table
+	var second_monster := Monster.new()
+	var second_table := DropTable.new()
+	second_table.entries = [_new_drop_entry("bronze_mace")]
+	second_monster.loot = second_table
+	var manager := BattleManager.new()
+	manager.persistent_party = party
+	manager.player_party.add_member(hero)
+	manager.enemy_party.add_member(first_monster)
+	manager.enemy_party.add_member(second_monster)
+	var weapon := ItemLoader.get_item("bronze_mace") as Weapon
+
+	var entries := manager._grant_victory_rewards()
+	var weapon_entries: Array[RewardEntry] = []
+	for entry: RewardEntry in entries:
+		if entry.color == RewardEntry.COLOR_WEAPON:
+			weapon_entries.append(entry)
+
+	_expect_equal(party.inventory.weapon_stash.count("bronze_mace"), 1, "duplicate weapon drops add to stash once")
+	_expect_equal(weapon_entries.size(), 1, "duplicate weapon drops produce one weapon entry")
+	_expect_equal(party.inventory.gold, weapon.value, "duplicate weapon sale value is included in gold")
+	manager.free()
+
+
+func _test_battle_rewards_skip_zero_experience_and_gold_entries() -> void:
+	var hero := _new_hero()
+	var party: Party = GameState.party
+	var monster := Monster.new()
+	monster.max_hp = 0
+	monster.gold = 0
+	var manager := BattleManager.new()
+	manager.persistent_party = party
+	manager.player_party.add_member(hero)
+	manager.enemy_party.add_member(monster)
+
+	var entries := manager._grant_victory_rewards()
+
+	_expect_equal(entries.size(), 0, "zero XP and gold produce no empty reward entries")
+	_expect_equal(hero.experience, 0, "zero XP leaves the hero unchanged")
+	_expect_equal(party.inventory.gold, 0, "zero gold leaves inventory unchanged")
 	manager.free()
 
 
