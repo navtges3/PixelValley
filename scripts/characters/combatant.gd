@@ -46,8 +46,8 @@ func meditate() -> void:
 	var base_hp := 8
 	var base_nrg := 5
 	var magic_scale := 1.3
-	var defense_scale := 1.5
-	var resist_scale := 1.5
+	var defense_scale := 0.1
+	var resist_scale := 0.1
 	self.rest_cooldown = REST_CD
 	self.heal(int(base_hp + (defense * defense_scale) + (resist * resist_scale)))
 	self.recover_energy(int(base_nrg + (magic * magic_scale)))
@@ -74,11 +74,10 @@ func recover_energy(amount: int) -> void:
 	current_nrg = min(current_nrg + amount, max_nrg)
 
 func _calculate_damage(amount: int, type: Attack.AttackType) -> int:
-	var mitigation := 0
+	var damage := float(amount)
 	match type:
 		Attack.AttackType.PHYSICAL:
-			mitigation = defense
+			damage *= 100.0 / (100.0 + defense)
 		Attack.AttackType.MAGICAL:
-			mitigation = resist
-	var multiplier := 100.0 / (100.0 + mitigation)
-	return max(roundi(amount * multiplier), 0)
+			damage *= 100.0 / (100.0 + resist)
+	return max(int(round(damage)), 0)

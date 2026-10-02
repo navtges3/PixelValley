@@ -21,6 +21,7 @@ func run_tests() -> int:
 	_begin_test_run()
 	_test_default_initiative()
 	_test_resource_initiative_values()
+	_test_damage_formula_uses_percentage_mitigation()
 	return _finish_test_run("Combatant stat tests")
 
 
@@ -38,3 +39,14 @@ func _test_resource_initiative_values() -> void:
 				combatant.initiative > 0,
 				"%s defines a positive initiative" % resource_path
 			)
+
+
+func _test_damage_formula_uses_percentage_mitigation() -> void:
+	var target := Combatant.new()
+	target.defense = 100
+	target.resist = 100
+
+	_expect_equal(target._calculate_damage(100, Attack.AttackType.PHYSICAL), 50, "100 defense halves physical damage")
+	_expect_equal(target._calculate_damage(100, Attack.AttackType.MAGICAL), 50, "100 resist halves magical damage")
+	_expect_equal(target._calculate_damage(4, Attack.AttackType.PHYSICAL), 2, "rounded damage uses percentage mitigation")
+	_expect_equal(target._calculate_damage(0, Attack.AttackType.PHYSICAL), 0, "zero-damage attacks do not deal negative damage")
