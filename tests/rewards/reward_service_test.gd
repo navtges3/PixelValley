@@ -26,6 +26,8 @@ func run_tests() -> int:
 	_test_battle_rewards_merge_duplicate_potions()
 	_test_battle_rewards_sell_duplicate_weapons_without_entry()
 	_test_battle_rewards_skip_zero_experience_and_gold_entries()
+	_test_battle_rewards_fold_random_weapon_fallback_into_gold()
+	_test_battle_rewards_entry_order()
 	return _finish_test_run("Reward service tests")
 
 
@@ -488,6 +490,80 @@ func _test_battle_rewards_skip_zero_experience_and_gold_entries() -> void:
 	_expect_equal(entries.size(), 0, "zero XP and gold produce no empty reward entries")
 	_expect_equal(hero.experience, 0, "zero XP leaves the hero unchanged")
 	_expect_equal(party.inventory.gold, 0, "zero gold leaves inventory unchanged")
+	manager.free()
+
+
+func _test_battle_rewards_fold_random_weapon_fallback_into_gold() -> void:
+	var hero := _new_hero()
+	var party: Party = GameState.party
+	var rarity := Item.Rarity.COMMON
+	var common_weapons: Array = WeaponDatabase.CLASS_WEAPON_TABLE.get(
+		hero.hero_class,
+		{}
+	).get(rarity, [])
+	for weapon_id: String in common_weapons:
+		party.inventory.weapon_stash.append(weapon_id)
+
+	var monster := MonsterLoader.new_monster(MonsterLoader.MonsterID.GOBLIN_SCOUT)
+	monster.max_hp = 20
+	monster.gold = 13
+	monster.gold_variance = 0.0
+	var table := DropTable.new()
+	table.weapon_chance = 1.0
+	table.weapon_rarity = rarity
+	monster.loot = table
+	var manager := BattleManager.new()
+	manager.persistent_party = party
+	manager.player_party.add_member(hero)
+	manager.monster = monster
+
+	var entries := manager._grant_victory_rewards()
+	var gold_entries: Array[RewardEntry] = []
+	for entry: RewardEntry in entries:
+		if entry.color == RewardEntry.COLOR_GOLD:
+			gold_entries.append(entry)
+		_expect_true(
+			entry.color != RewardEntry.COLOR_WEAPON
+			and entry.color != RewardEntry.COLOR_WEAPON_SOLD,
+			"exhausted random weapon pool produces no weapon entry"
+		)
+
+	var expected_gold := monster.gold + WeaponDatabase.get_gold_fallback_for_rarity(rarity)
+	_expect_equal(gold_entries.size(), 1, "random weapon fallback is combined into one gold entry")
+	_expect_equal(gold_entries[0].display_text, RewardEntry.gold(expected_gold).display_text, "gold entry includes random weapon fallback value")
+	_expect_equal(party.inventory.gold, expected_gold, "party inventory receives monster and fallback gold")
+	manager.free()
+
+
+func _test_battle_rewards_entry_order() -> void:
+	var hero := _new_hero()
+	var monster := MonsterLoader.new_monster(MonsterLoader.MonsterID.GOBLIN_SCOUT)
+	monster.max_hp = 20
+	monster.gold = 12
+	monster.gold_variance = 0.0
+	var table := DropTable.new()
+	table.entries = [
+		_new_drop_entry("lesser_healing_potion"),
+		_new_drop_entry("bronze_mace"),
+	]
+	monster.loot = table
+	var manager := BattleManager.new()
+	manager.persistent_party = GameState.party
+	manager.player_party.add_member(hero)
+	manager.monster = monster
+
+	var entries := manager._grant_victory_rewards()
+	var actual_colors: Array[Color] = []
+	for entry: RewardEntry in entries:
+		actual_colors.append(entry.color)
+	var expected_colors: Array[Color] = [
+		RewardEntry.COLOR_XP,
+		RewardEntry.COLOR_GOLD,
+		RewardEntry.COLOR_POTION,
+		RewardEntry.COLOR_WEAPON,
+	]
+
+	_expect_equal(actual_colors, expected_colors, "battle reward entries are ordered XP, gold, potion, weapon")
 	manager.free()
 
 

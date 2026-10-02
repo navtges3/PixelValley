@@ -26,14 +26,6 @@ static func grant_party_experience(party: Party, amount: int) -> RewardEntry:
 		member.gain_experience(amount)
 	return RewardEntry.experience(amount)
 
-# Battle XP only goes to whoever fought, so this stays hero-scoped —
-# it's the hero's own stat, not something living in party inventory.
-static func grant_experience(hero: Hero, amount: int) -> RewardEntry:
-	if hero == null or amount <= 0:
-		return null
-	hero.gain_experience(amount)
-	return RewardEntry.experience(amount)
-
 static func grant_party_member(party: Party, hero_class: Hero.HeroClass, level: int = 1) -> RewardEntry:
 	if party == null:
 		return null
