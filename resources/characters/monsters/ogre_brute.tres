@@ -60,6 +60,7 @@ metadata/_custom_type_script = "uid://birbqcxvye2x5"
 [resource]
 script = ExtResource("monster_script")
 monster_id = 13
+targeting_behavior = 0
 basic_attack = SubResource("ogre_brute_ability_0")
 conditional_abilities = Array[ExtResource("ability_script")]([SubResource("ogre_brute_ability_1")])
 loot = SubResource("ogre_brute_loot")

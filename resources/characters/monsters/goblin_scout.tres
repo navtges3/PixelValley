@@ -70,6 +70,7 @@ metadata/_custom_type_script = "uid://birbqcxvye2x5"
 [resource]
 script = ExtResource("monster_script")
 monster_id = 0
+targeting_behavior = 2
 basic_attack = SubResource("goblin_scout_ability_0")
 conditional_abilities = Array[ExtResource("ability_script")]([SubResource("goblin_scout_ability_1")])
 loot = SubResource("goblin_scout_loot")

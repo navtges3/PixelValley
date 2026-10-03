@@ -62,6 +62,7 @@ metadata/_custom_type_script = "uid://b2o7w8q10stxo"
 [resource]
 script = ExtResource("8_7yyue")
 monster_id = 19
+targeting_behavior = 0
 basic_attack = SubResource("Resource_crushing_blow_ability")
 conditional_abilities = Array[ExtResource("12_ability")]([SubResource("Resource_co4bm"), SubResource("Resource_kbsnj")])
 gold = 50

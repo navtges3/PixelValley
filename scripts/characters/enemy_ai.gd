@@ -4,8 +4,6 @@ class_name EnemyAI
 # Chooses an ability and a valid target for a Monster's turn.
 # Ability order matches the old behavior: conditional_abilities first, then basic_attack
 
-const LOW_HP_RATIO := 0.5
-
 class Decision:
 	var ability: Ability
 	var target: Combatant # null for SELF / PARTY / ENEMY_PARTY

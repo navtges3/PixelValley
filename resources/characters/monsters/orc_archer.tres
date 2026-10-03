@@ -60,6 +60,7 @@ metadata/_custom_type_script = "uid://birbqcxvye2x5"
 [resource]
 script = ExtResource("monster_script")
 monster_id = 6
+targeting_behavior = 1
 basic_attack = SubResource("orc_archer_ability_0")
 conditional_abilities = Array[ExtResource("ability_script")]([SubResource("orc_archer_ability_1")])
 loot = SubResource("orc_archer_loot")

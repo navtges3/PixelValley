@@ -4,12 +4,16 @@ extends TestCase
 func run_tests() -> int:
 	_begin_test_run()
 	_test_never_targets_defeated()
+	_test_front_prefers_first_valid_target()
+	_test_rear_prefers_last_valid_target()
 	_test_prefers_low_hp()
 	_test_multiple_wounded_prefers_lowest_ratio()
 	_test_low_hp_tie_uses_party_order()
-	_test_low_hp_boundary_is_inclusive()
+	_test_low_hp_selects_lowest_ratio()
+	_test_high_threat_falls_back_to_front()
 	_test_healthy_party_uses_random_fallback()
 	_test_seeded_repeatability()
+	_test_targeting_behavior_applies_after_condition_filter()
 	_test_caster_condition()
 	_test_conditional_ability_ordering()
 	_test_insufficient_energy_skips_ability()
@@ -128,21 +132,24 @@ func _test_low_hp_tie_uses_party_order() -> void:
 		_expect_equal(decision.target, first, "low-HP ties use party order")
 
 
-func _test_low_hp_boundary_is_inclusive() -> void:
+func _test_low_hp_selects_lowest_ratio() -> void:
 	var actor := _make_monster("Enemy", 20)
 	actor.targeting_behavior = Monster.TargetingBehavior.LOW_HP
-	var boundary := _make_hero("Boundary", 20)
-	boundary.current_hp = 10
-	var healthy := _make_hero("Healthy", 20)
+	var slightly_wounded := _make_hero("Slightly Wounded", 20)
+	slightly_wounded.current_hp = 16
+	var half_health := _make_hero("Half Health", 20)
+	half_health.current_hp = 10
+	var badly_wounded := _make_hero("Badly Wounded", 20)
+	badly_wounded.current_hp = 6
 
 	var decision := EnemyAI.new(1).choose_action(
 		actor,
 		_make_party([actor]),
-		_make_party([boundary, healthy]),
+		_make_party([slightly_wounded, half_health, badly_wounded]),
 	)
-	_expect_not_null(decision, "boundary target produces a decision")
+	_expect_not_null(decision, "low-HP targeting produces a decision")
 	if decision != null:
-		_expect_equal(decision.target, boundary, "exactly half health remains a valid low-HP target")
+		_expect_equal(decision.target, badly_wounded, "LOW_HP selects the lowest HP ratio regardless of threshold")
 
 
 func _test_high_threat_falls_back_to_front() -> void:
@@ -205,6 +212,36 @@ func _test_seeded_repeatability() -> void:
 				second_decision.target,
 				"same seed produces the same target sequence",
 			)
+
+
+func _test_targeting_behavior_applies_after_condition_filter() -> void:
+	var actor := _make_monster("Enemy", 20)
+	actor.targeting_behavior = Monster.TargetingBehavior.FRONT
+	var ability := Ability.new()
+	ability.name = "Conditioned Strike"
+	ability.target_type = Ability.TargetType.ENEMY
+	ability.condition = _make_health_condition(Condition.ConditionsSubject.TARGET)
+	ability.condition.value = 0.5
+	actor.conditional_abilities = [ability]
+
+	var front_target := _make_hero("Front Target", 20)
+	front_target.current_hp = 16
+	var wounded_target := _make_hero("Wounded Target", 20)
+	wounded_target.current_hp = 8
+	var injured_target := _make_hero("Injured Target", 20)
+	injured_target.current_hp = 6
+	var opposition := _make_party([front_target, wounded_target, injured_target])
+
+	var decision := EnemyAI.new(1).choose_action(actor, _make_party([actor]), opposition)
+	_expect_not_null(decision, "filtered targets still honor the selected targeting behavior")
+	if decision != null:
+		_expect_equal(decision.target, wounded_target, "condition filter narrows valid targets before front selection")
+
+	actor.targeting_behavior = Monster.TargetingBehavior.REAR
+	decision = EnemyAI.new(1).choose_action(actor, _make_party([actor]), opposition)
+	_expect_not_null(decision, "rear targeting keeps working after condition filtering")
+	if decision != null:
+		_expect_equal(decision.target, injured_target, "rear targeting selects the last valid target after filtering")
 
 
 func _test_caster_condition() -> void:
