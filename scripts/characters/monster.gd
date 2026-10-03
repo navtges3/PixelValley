@@ -1,9 +1,18 @@
 extends Combatant
 class_name Monster
 
+enum TargetingBehavior {
+	FRONT, REAR,
+	LOW_HP, HIGH_THREAT,
+	RANDOM,
+}
+
+# HIGH_THREAT requires battle-level threat tracking; this will be implemented separately.
+
 const HEALTH_WEIGHT := 0.5
 
 @export var monster_id: MonsterLoader.MonsterID
+@export var targeting_behavior: TargetingBehavior = TargetingBehavior.FRONT
 @export var basic_attack: Ability
 @export var conditional_abilities: Array[Ability]
 @export var gold: int

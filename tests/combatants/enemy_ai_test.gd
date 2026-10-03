@@ -45,8 +45,39 @@ func _test_never_targets_defeated() -> void:
 			)
 
 
+func _test_front_prefers_first_valid_target() -> void:
+	var actor := _make_monster("Enemy", 20)
+	actor.targeting_behavior = Monster.TargetingBehavior.FRONT
+	var first := _make_hero("First", 20)
+	var second := _make_hero("Second", 20)
+	var decision := EnemyAI.new(1).choose_action(
+		actor,
+		_make_party([actor]),
+		_make_party([first, second]),
+	)
+	_expect_not_null(decision, "front targeting produces a decision")
+	if decision != null:
+		_expect_equal(decision.target, first, "front targeting selects the first valid target")
+
+
+func _test_rear_prefers_last_valid_target() -> void:
+	var actor := _make_monster("Enemy", 20)
+	actor.targeting_behavior = Monster.TargetingBehavior.REAR
+	var first := _make_hero("First", 20)
+	var second := _make_hero("Second", 20)
+	var decision := EnemyAI.new(1).choose_action(
+		actor,
+		_make_party([actor]),
+		_make_party([first, second]),
+	)
+	_expect_not_null(decision, "rear targeting produces a decision")
+	if decision != null:
+		_expect_equal(decision.target, second, "rear targeting selects the last valid target")
+
+
 func _test_prefers_low_hp() -> void:
 	var actor := _make_monster("Enemy", 20)
+	actor.targeting_behavior = Monster.TargetingBehavior.LOW_HP
 	var healthy := _make_hero("Healthy", 20)
 	var wounded := _make_hero("Wounded", 20)
 	wounded.current_hp = 4
@@ -56,13 +87,14 @@ func _test_prefers_low_hp() -> void:
 		_make_party([actor]),
 		_make_party([healthy, wounded]),
 	)
-	_expect_not_null(decision, "wounded opposition produces a decision")
+	_expect_not_null(decision, "low-HP targeting produces a decision")
 	if decision != null:
-		_expect_equal(decision.target, wounded, "lowest-HP opposition is preferred")
+		_expect_equal(decision.target, wounded, "lowest-HP target is preferred")
 
 
 func _test_multiple_wounded_prefers_lowest_ratio() -> void:
 	var actor := _make_monster("Enemy", 20)
+	actor.targeting_behavior = Monster.TargetingBehavior.LOW_HP
 	var wounded_eight := _make_hero("Wounded Eight", 20)
 	wounded_eight.current_hp = 8
 	var wounded_four := _make_hero("Wounded Four", 20)
@@ -73,13 +105,14 @@ func _test_multiple_wounded_prefers_lowest_ratio() -> void:
 		_make_party([actor]),
 		_make_party([wounded_eight, wounded_four]),
 	)
-	_expect_not_null(decision, "wounded opposition produces a decision")
+	_expect_not_null(decision, "low-HP targeting produces a decision")
 	if decision != null:
-		_expect_equal(decision.target, wounded_four, "lowest wounded ratio is preferred")
+		_expect_equal(decision.target, wounded_four, "lowest ratio is preferred")
 
 
 func _test_low_hp_tie_uses_party_order() -> void:
 	var actor := _make_monster("Enemy", 20)
+	actor.targeting_behavior = Monster.TargetingBehavior.LOW_HP
 	var first := _make_hero("First", 20)
 	first.current_hp = 4
 	var second := _make_hero("Second", 20)
@@ -90,13 +123,14 @@ func _test_low_hp_tie_uses_party_order() -> void:
 		_make_party([actor]),
 		_make_party([first, second]),
 	)
-	_expect_not_null(decision, "tied wounded opposition produces a decision")
+	_expect_not_null(decision, "tied low-HP targets produce a decision")
 	if decision != null:
 		_expect_equal(decision.target, first, "low-HP ties use party order")
 
 
 func _test_low_hp_boundary_is_inclusive() -> void:
 	var actor := _make_monster("Enemy", 20)
+	actor.targeting_behavior = Monster.TargetingBehavior.LOW_HP
 	var boundary := _make_hero("Boundary", 20)
 	boundary.current_hp = 10
 	var healthy := _make_hero("Healthy", 20)
@@ -106,13 +140,29 @@ func _test_low_hp_boundary_is_inclusive() -> void:
 		_make_party([actor]),
 		_make_party([boundary, healthy]),
 	)
-	_expect_not_null(decision, "boundary opposition produces a decision")
+	_expect_not_null(decision, "boundary target produces a decision")
 	if decision != null:
-		_expect_equal(decision.target, boundary, "exactly half health is low HP")
+		_expect_equal(decision.target, boundary, "exactly half health remains a valid low-HP target")
+
+
+func _test_high_threat_falls_back_to_front() -> void:
+	var actor := _make_monster("Enemy", 20)
+	actor.targeting_behavior = Monster.TargetingBehavior.HIGH_THREAT
+	var first := _make_hero("First", 20)
+	var second := _make_hero("Second", 20)
+	var decision := EnemyAI.new(1).choose_action(
+		actor,
+		_make_party([actor]),
+		_make_party([first, second]),
+	)
+	_expect_not_null(decision, "front fallback produces a decision")
+	if decision != null:
+		_expect_equal(decision.target, first, "high-threat falls back to the front target")
 
 
 func _test_healthy_party_uses_random_fallback() -> void:
 	var actor := _make_monster("Enemy", 20)
+	actor.targeting_behavior = Monster.TargetingBehavior.RANDOM
 	var heroes := [
 		_make_hero("Hero A", 20),
 		_make_hero("Hero B", 20),
@@ -123,16 +173,17 @@ func _test_healthy_party_uses_random_fallback() -> void:
 
 	for iteration in 100:
 		var decision := ai.choose_action(actor, _make_party([actor]), _make_party(heroes))
-		_expect_not_null(decision, "healthy opposition produces a random decision")
+		_expect_not_null(decision, "random targeting produces a decision")
 		if decision != null:
 			chosen[decision.target] = true
 
 	for hero: Hero in heroes:
-		_expect_true(chosen.has(hero), "seeded fallback eventually chooses %s" % hero.name)
+		_expect_true(chosen.has(hero), "seeded random targeting eventually chooses %s" % hero.name)
 
 
 func _test_seeded_repeatability() -> void:
 	var actor := _make_monster("Enemy", 20)
+	actor.targeting_behavior = Monster.TargetingBehavior.RANDOM
 	var heroes := [
 		_make_hero("Hero A", 20),
 		_make_hero("Hero B", 20),
@@ -345,6 +396,7 @@ func _test_battle_manager_resolves_ai_target() -> void:
 	var hero_b := _make_hero("Hero B", 20)
 	hero_b.current_hp = 4
 	var monster := _make_monster("Enemy", 20)
+	monster.targeting_behavior = Monster.TargetingBehavior.LOW_HP
 	monster.basic_attack.attack = _make_attack(1, 1)
 	var manager := BattleManager.new()
 	manager.player_party = _make_party([hero_a, hero_b])

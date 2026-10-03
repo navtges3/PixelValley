@@ -58,13 +58,20 @@ func _pick_hostile_target(ability: Ability, actor: Monster, valid: Array[Combata
 	var eligible := _filter_ready(ability, actor, valid)
 	if eligible.is_empty():
 		return null
-	var wounded: Array[Combatant] = []
-	for candidate: Combatant in eligible:
-		if _hp_ratio(candidate) <= LOW_HP_RATIO:
-			wounded.append(candidate)
-	if not wounded.is_empty():
-		return _lowest_hp_ratio(wounded)
-	return eligible[_rng.randi_range(0, eligible.size() - 1)]
+	match actor.targeting_behavior:
+		Monster.TargetingBehavior.FRONT:
+			return eligible.front()
+		Monster.TargetingBehavior.REAR:
+			return eligible[-1]
+		Monster.TargetingBehavior.LOW_HP:
+			return _lowest_hp_ratio(eligible)
+		Monster.TargetingBehavior.HIGH_THREAT:
+			# TODO: HIGH_THREAT requires battle-level threat tracking; use deterministic fallback until it is implemented.
+			return eligible.front()
+		Monster.TargetingBehavior.RANDOM:
+			return eligible[_rng.randi_range(0, eligible.size() - 1)]
+		_:
+			return eligible.front()
 
 func _pick_support_target(ability: Ability, actor: Monster, valid: Array[Combatant]) -> Combatant:
 	var injured: Array[Combatant] = []
