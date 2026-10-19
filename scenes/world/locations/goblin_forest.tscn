@@ -1,0 +1,31 @@
+[gd_scene format=3 uid="uid://dkyxegxn8u672"]
+
+[ext_resource type="TileSet" uid="uid://4cg7ba3d6vqd" path="res://resources/world/tile_set.tres" id="1_37p5g"]
+
+[node name="GoblinForest" type="Node2D" unique_id=1137595740]
+
+[node name="Ground" type="Node2D" parent="." unique_id=1918096931]
+z_index = -10
+
+[node name="Grass" type="TileMapLayer" parent="Ground" unique_id=1292536515 groups=["camera_bounds"]]
+tile_set = ExtResource("1_37p5g")
+
+[node name="ForestFloor" type="TileMapLayer" parent="Ground" unique_id=1300765501]
+tile_set = ExtResource("1_37p5g")
+
+[node name="Water" type="TileMapLayer" parent="Ground" unique_id=674247428]
+tile_set = ExtResource("1_37p5g")
+
+[node name="Paths" type="TileMapLayer" parent="Ground" unique_id=1172941838]
+tile_set = ExtResource("1_37p5g")
+
+[node name="YSortedWorld" type="Node2D" parent="." unique_id=1477583462]
+y_sort_enabled = true
+
+[node name="Props" type="Node2D" parent="YSortedWorld" unique_id=223741484]
+y_sort_enabled = true
+
+[node name="Foreground" type="Node2D" parent="." unique_id=575118093]
+z_index = 10
+
+[node name="TriggerZones" type="Node2D" parent="." unique_id=860650955]
