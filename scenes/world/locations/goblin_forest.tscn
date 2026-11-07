@@ -1,9 +1,15 @@
 [gd_scene format=4 uid="uid://dkyxegxn8u672"]
 
+[ext_resource type="Script" uid="uid://015hp8m1ijl1" path="res://scripts/world/locations/goblin_forest.gd" id="1_0rvfd"]
 [ext_resource type="TileSet" uid="uid://4cg7ba3d6vqd" path="res://resources/world/tile_set.tres" id="1_37p5g"]
+[ext_resource type="Script" uid="uid://beamurjnromjv" path="res://scripts/world/locations/region_manager.gd" id="1_hgqr0"]
 [ext_resource type="TileSet" uid="uid://ca0rdl8iyjnxp" path="res://resources/world/tree_tile_set.tres" id="2_e3jvi"]
 
 [node name="GoblinForest" type="Node2D" unique_id=1137595740]
+script = ExtResource("1_0rvfd")
+
+[node name="RegionManager" type="Node" parent="." unique_id=673499175]
+script = ExtResource("1_hgqr0")
 
 [node name="Ground" type="Node2D" parent="." unique_id=1918096931]
 z_index = -10
