@@ -16,6 +16,7 @@ signal world_rewards_opened
 signal world_rewards_closed
 
 @onready var game_hud: GameHUD = $GameHud
+@onready var location_title: Control = $LocationTitle
 @onready var hero_hud: HeroHUD = $HeroHUD
 @onready var tracked_quest_hud: TrackedQuestHUD = $TrackedQuestHUD
 
@@ -68,6 +69,9 @@ func show_world_rewards(win_title: String, rewards: Array[RewardEntry]) -> bool:
 	reward_window.show_rewards(win_title, rewards)
 	world_rewards_opened.emit()
 	return true
+
+func show_location_name(display_name: String) -> void:
+	pass
 
 func open_game_hud(tab: GameHUD.Tab = GameHUD.Tab.PARTY) -> void:
 	game_hud.show_hud(tab)

@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://duuabkmnp6dr8"]
 
 [ext_resource type="Script" uid="uid://dsk1g6kwbqp8r" path="res://scripts/ui/hud/world_hud.gd" id="1_worldh"]
+[ext_resource type="PackedScene" uid="uid://cu0cw882w1uc4" path="res://scenes/ui/hud/components/location_title.tscn" id="2_auh8q"]
 [ext_resource type="PackedScene" uid="uid://ivm8a60yb0vx" path="res://scenes/ui/hud/hero_hud.tscn" id="2_heroh"]
 [ext_resource type="PackedScene" uid="uid://dub7dt66aucti" path="res://scenes/ui/hud/game_hud.tscn" id="2_iek5v"]
 [ext_resource type="PackedScene" uid="uid://rjw2hl0qx6n0" path="res://scenes/ui/hud/tracked_quest_hud.tscn" id="4_iek5v"]
@@ -12,8 +13,14 @@
 layer = 10
 script = ExtResource("1_worldh")
 
-[node name="GameHud" parent="." unique_id=956269644 instance=ExtResource("2_iek5v")]
-layer = 20
+[node name="LocationTitle" parent="." unique_id=737624085 instance=ExtResource("2_auh8q")]
+visible = false
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -20.0
+offset_right = 20.0
+grow_horizontal = 2
 
 [node name="HeroHUD" parent="." unique_id=1370001325 instance=ExtResource("2_heroh")]
 offset_left = 8.0
@@ -22,6 +29,9 @@ offset_right = 204.0
 offset_bottom = 118.0
 
 [node name="TrackedQuestHUD" parent="." unique_id=1938955935 instance=ExtResource("4_iek5v")]
+
+[node name="GameHud" parent="." unique_id=956269644 instance=ExtResource("2_iek5v")]
+layer = 20
 
 [node name="AcquisitionLayer" type="CanvasLayer" parent="." unique_id=4506451]
 layer = 15

@@ -10,3 +10,11 @@ signal player_exited_region(region: LocationRegion)
 
 @export_group("Display")
 @export var show_notification: bool = true
+
+func _on_body_entered(body: Node2D) -> void:
+	if body.is_in_group("player"):
+		player_entered_region.emit(self)
+
+func _on_body_exited(body: Node2D) -> void:
+	if body.is_in_group("player"):
+		player_exited_region.emit(self)

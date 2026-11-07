@@ -10,3 +10,6 @@ script = ExtResource("1_84px7")
 [node name="DebugLabel" type="Label" parent="." unique_id=813897163]
 offset_right = 40.0
 offset_bottom = 23.0
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="body_exited" from="." to="." method="_on_body_exited"]
