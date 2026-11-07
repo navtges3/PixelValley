@@ -14,13 +14,6 @@ layer = 10
 script = ExtResource("1_worldh")
 
 [node name="LocationTitle" parent="." unique_id=737624085 instance=ExtResource("2_auh8q")]
-visible = false
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -20.0
-offset_right = 20.0
-grow_horizontal = 2
 
 [node name="HeroHUD" parent="." unique_id=1370001325 instance=ExtResource("2_heroh")]
 offset_left = 8.0
