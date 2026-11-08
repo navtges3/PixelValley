@@ -58,6 +58,7 @@ func show_all() -> void:
 	for child in get_children():
 		if child is Control:
 			child.visible = true
+	location_title.hide()
 	tracked_quest_hud.refresh()
 
 func show_world_rewards(win_title: String, rewards: Array[RewardEntry]) -> bool:

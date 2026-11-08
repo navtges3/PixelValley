@@ -14,45 +14,59 @@ script = ExtResource("1_hgqr0")
 
 [node name="ForestEntrance" parent="RegionManager" unique_id=1283227556 instance=ExtResource("3_5uqel")]
 position = Vector2(384, 384)
+region_id = &"forest_entrance"
+display_name = "Forest Entrance"
 
-[node name="CollisionPolygon2D2" type="CollisionPolygon2D" parent="RegionManager/ForestEntrance" unique_id=1837630318]
-polygon = PackedVector2Array(-192, -256, -159.93793, -288.00003, 255.51488, -288.00003, 288, -256, 384, -256, 480, -160, 480, -128, 512, -96, 512, 128, 384, 256, 288, 256, 224, 320, 64, 320, 32, 352, -32, 352, -64, 320, -192, 320, -288, 224, -384, 224, -448, 160, -448, -160, -416, -192, -416, -224, -384, -256)
+[node name="CollisionPolygon2D" parent="RegionManager/ForestEntrance" index="0" unique_id=1783920823]
+polygon = PackedVector2Array(-448, -160, -416, -224, -384, -256, -160, -288, 256, -288, 384, -256, 512, -96, 512, 128, 384, 256, 224, 320, 32, 352, -32, 352, -192, 320, -288, 224, -384, 224, -448, 160)
 
 [node name="HuntingCamp" parent="RegionManager" unique_id=651299886 instance=ExtResource("3_5uqel")]
 position = Vector2(-384, -384)
+region_id = &"hunting_camp"
+display_name = "Hunting Camp"
 
-[node name="CollisionPolygon2D2" type="CollisionPolygon2D" parent="RegionManager/HuntingCamp" unique_id=1780931281]
-polygon = PackedVector2Array(-416, -224, -416, 0, -384, 192, -288, 288, -160, 352, 192, 352, 352, 256, 448, 160, 448, -192, 416, -256, 320, -352, 192, -448, -160, -448, -288, -384, -384, -288)
+[node name="CollisionPolygon2D" parent="RegionManager/HuntingCamp" index="0" unique_id=1783920823]
+polygon = PackedVector2Array(-416, 0, -416, -224, -384, -288, -288, -384, -160, -448, 192, -448, 320, -352, 416, -256, 448, -192, 448, 160, 352, 256, 192, 352, -160, 352, -288, 288, -384, 192)
 
 [node name="GoblinLookout" parent="RegionManager" unique_id=271197801 instance=ExtResource("3_5uqel")]
 position = Vector2(512, -1279)
+region_id = &"goblin_lookout"
+display_name = "Goblin Lookout"
 
-[node name="CollisionPolygon2D2" type="CollisionPolygon2D" parent="RegionManager/GoblinLookout" unique_id=341641792]
-polygon = PackedVector2Array(-320, -161, -320, 287, -256, 447, -224, 479, 0, 479, 32, 447, 64, 383, 64, 319, 320, 319, 448, 255, 480, 223, 480, -161, 384, -257, -192, -257, -288, -193)
+[node name="CollisionPolygon2D" parent="RegionManager/GoblinLookout" index="0" unique_id=1783920823]
+polygon = PackedVector2Array(-320, -161, -320, 287, -288, 383, -256, 447, -224, 479, 0, 479, 32, 447, 64, 383, 64, 319, 320, 319, 448, 255, 480, 223, 480, -161, 384, -257, -192, -257, -288, -193)
 
 [node name="GoblinStronghold" parent="RegionManager" unique_id=714468011 instance=ExtResource("3_5uqel")]
 position = Vector2(768, -2048)
+region_id = &"goblin_stronghold"
+display_name = "Goblin Stronghold"
 
-[node name="CollisionPolygon2D2" type="CollisionPolygon2D" parent="RegionManager/GoblinStronghold" unique_id=376085868]
-polygon = PackedVector2Array(-896, -64, -864, -192, -832, -224, -768, -256, -544, -288, -128, -416, 160, -416, 256, -352, 320, -288, 352, -224, 384, -96, 384, 192, 320, 288, 256, 352, 128, 416, -96, 416, -192, 320, -736, 320, -768, 288, -864, 160, -896, 64)
+[node name="CollisionPolygon2D" parent="RegionManager/GoblinStronghold" index="0" unique_id=1783920823]
+polygon = PackedVector2Array(-96, 416, 128, 416, 256, 352, 320, 288, 384, 192, 384, -96, 352, -224, 320, -288, 256, -352, 160, -416, -128, -416, -288, -288, -544, -288, -768, -256, -832, -224, -864, -192, -896, -64, -896, 64, -864, 160, -768, 288, -736, 320, -192, 320)
 
 [node name="DeepForest" parent="RegionManager" unique_id=320417686 instance=ExtResource("3_5uqel")]
 position = Vector2(-1664, -768)
+region_id = &"deep_forest"
+display_name = "Deep Forest"
 
-[node name="CollisionPolygon2D2" type="CollisionPolygon2D" parent="RegionManager/DeepForest" unique_id=1508354098]
-polygon = PackedVector2Array(-256, -384, 352, -384, 416, -320, 416, -160, 448, -128, 480, 32, 480, 320, 416, 384, -160, 384, -352, 224, -352, -288)
+[node name="CollisionPolygon2D" parent="RegionManager/DeepForest" index="0" unique_id=1783920823]
+polygon = PackedVector2Array(480, 320, 480, 32, 448, -128, 416, -160, 416, -320, 352, -384, -256, -384, -352, -288, -352, 224, -160, 384, 416, 384)
 
 [node name="HuntingGrounds" parent="RegionManager" unique_id=1684878136 instance=ExtResource("3_5uqel")]
 position = Vector2(-512, -1280)
+region_id = &"hunting_grounds"
+display_name = "Hunting Grounds"
 
-[node name="CollisionPolygon2D2" type="CollisionPolygon2D" parent="RegionManager/HuntingGrounds" unique_id=1534843366]
-polygon = PackedVector2Array(-416, 224, -416, -224, -320, -320, 352, -320, 448, -224, 448, 192, 352, 288, -352, 288)
+[node name="CollisionPolygon2D" parent="RegionManager/HuntingGrounds" index="0" unique_id=1783920823]
+polygon = PackedVector2Array(-416, -224, -320, -320, 352, -320, 448, -224, 448, 192, 352, 288, -352, 288, -416, 224)
 
 [node name="LostShrine" parent="RegionManager" unique_id=1861022733 instance=ExtResource("3_5uqel")]
 position = Vector2(-1408, -1920)
+region_id = &"lost_shrine"
+display_name = "Lost Shrine"
 
-[node name="CollisionPolygon2D2" type="CollisionPolygon2D" parent="RegionManager/LostShrine" unique_id=738629138]
-polygon = PackedVector2Array(-160, 256, 128, 256, 224, 160, 320, 0, 352, 0, 416, -64, 416, -224, 384, -288, 320, -352, 256, -384, -64, -384, -256, -320, -320, -256, -352, -128, -352, 64, -320, 128, -224, 224)
+[node name="CollisionPolygon2D" parent="RegionManager/LostShrine" index="0" unique_id=1783920823]
+polygon = PackedVector2Array(416, -64, 416, -224, 384, -288, 320, -352, 256, -384, -64, -384, -96, -352, -160, -352, -192, -320, -256, -320, -320, -256, -352, -128, -352, 64, -320, 128, -224, 224, -160, 256, 128, 256, 224, 160, 256, 96, 352, 0)
 
 [node name="Ground" type="Node2D" parent="." unique_id=1918096931]
 z_index = -10
@@ -85,3 +99,11 @@ tile_set = ExtResource("2_e3jvi")
 z_index = 10
 
 [node name="TriggerZones" type="Node2D" parent="." unique_id=860650955]
+
+[editable path="RegionManager/ForestEntrance"]
+[editable path="RegionManager/HuntingCamp"]
+[editable path="RegionManager/GoblinLookout"]
+[editable path="RegionManager/GoblinStronghold"]
+[editable path="RegionManager/DeepForest"]
+[editable path="RegionManager/HuntingGrounds"]
+[editable path="RegionManager/LostShrine"]

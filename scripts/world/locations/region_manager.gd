@@ -30,7 +30,7 @@ func get_active_region() -> LocationRegion:
 func get_active_region_id() -> StringName:
 	if _active_region == null:
 		return &""
-	return _active_region.display_name
+	return _active_region.region_id
 
 func _on_region_entered(region: LocationRegion) -> void:
 	if not _overlapping_regions.has(region):
