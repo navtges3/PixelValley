@@ -5,7 +5,7 @@
 [node name="LocationRegion" type="Area2D" unique_id=1283227556]
 script = ExtResource("1_84px7")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=65247695]
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="." unique_id=1783920823]
 
 [node name="DebugLabel" type="Label" parent="." unique_id=813897163]
 offset_right = 40.0
