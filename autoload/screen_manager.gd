@@ -40,7 +40,7 @@ const SCENE_PATHS := {
 	ScreenName.POTION_SHOP: "res://scenes/world/buildings/interior/potion_shop_interior.tscn",
 	ScreenName.WEAPON_SHOP: "res://scenes/world/buildings/interior/weapon_shop_interior.tscn",
 	ScreenName.VALLEY: "res://scenes/world/locations/valley.tscn",
-	ScreenName.FOREST: "res://scenes/world/locations/forest.tscn",
+	ScreenName.FOREST: "res://scenes/world/locations/goblin_forest.tscn",
 	ScreenName.WAR_CAMP: "res://scenes/world/locations/war_camp.tscn",
 	ScreenName.CAVE: "res://scenes/world/locations/cave.tscn",
 	ScreenName.BATTLE: "res://scenes/ui/screens/battle_screen.tscn",
