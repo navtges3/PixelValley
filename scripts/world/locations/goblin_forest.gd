@@ -27,11 +27,10 @@ func _on_player_attached() -> void:
 		region_manager.refresh_player_region(player)
 
 func _on_active_region_changed(_prev_region: LocationRegion, new_region: LocationRegion) -> void:
+	_update_spawn_zones(new_region)
 	if new_region == null:
 		return
-	if world_hud == null:
-		return
-	if new_region.show_notification:
+	if world_hud != null and new_region.show_notification:
 		world_hud.show_location_name(new_region.display_name)
 
 func _update_spawn_zones(region: LocationRegion) -> void:
@@ -39,7 +38,7 @@ func _update_spawn_zones(region: LocationRegion) -> void:
 	for zone in _spawn_zones:
 		if zone.config == null:
 			continue
-		if zone.config.region == active_region_id:
+		if zone.config.region_id == active_region_id:
 			zone.activate()
 		else:
 			zone.deactivate()
