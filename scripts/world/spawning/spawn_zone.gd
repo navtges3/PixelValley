@@ -56,7 +56,7 @@ func set_player(player: Node2D) -> void:
 func activate() -> void:
 	if _active:
 		return
-	print("Zone '%s' activated." % config.region_id)
+
 	_active = true
 
 	for enemy in _get_living_enemies():
@@ -166,12 +166,12 @@ func _spawn_enemy(entry: SpawnEntry, marker: Marker2D) -> bool:
 		return false
 
 	enemy.position = world_parent.to_local(marker.global_position)
-	world_parent.add_child(enemy)
+	world_parent.add_child.call_deferred(enemy)
 
 	_enemies.append(enemy)
 	enemy.tree_exiting.connect(_on_enemy_tree_exiting.bind(enemy), CONNECT_ONE_SHOT)
 
-	enemy.set_world_active(_active)
+	enemy.set_world_active.call_deferred(_active)
 
 	return true
 
@@ -196,7 +196,6 @@ func _on_spawn_timer_timeout() -> void:
 	var batch_size := randi_range(config.min_spawn_count, config.max_spawn_count)
 	batch_size = mini(batch_size, capacity)
 	_spawn_batch(batch_size)
-
 	if get_available_capacity() > 0:
 		_schedule_replenishment()
 

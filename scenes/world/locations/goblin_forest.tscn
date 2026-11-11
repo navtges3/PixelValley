@@ -18,6 +18,7 @@ metadata/_custom_type_script = "uid://clqf4dd07ll3k"
 script = ExtResource("8_obtaj")
 zone_id = &"forest_entrance_zone"
 region_id = &"forest_entrance"
+spawn_interval = 10.0
 enemy_pool = Array[ExtResource("7_0so8b")]([SubResource("Resource_0so8b")])
 metadata/_custom_type_script = "uid://76syajf8x8p8"
 
@@ -25,6 +26,7 @@ metadata/_custom_type_script = "uid://76syajf8x8p8"
 script = ExtResource("8_obtaj")
 zone_id = &"hunting_camp_zone"
 region_id = &"hunting_camp"
+spawn_interval = 10.0
 enemy_pool = Array[ExtResource("7_0so8b")]([SubResource("Resource_0so8b")])
 metadata/_custom_type_script = "uid://76syajf8x8p8"
 
