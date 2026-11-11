@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://7c1xhvu46jx1" path="res://scripts/world/spawning/spawn_zone.gd" id="1_xjese"]
 
-[node name="SpawnZone" type="Node2D" unique_id=1519518171]
+[node name="SpawnZone" type="Node2D" unique_id=1519518171 groups=["spawn_zone"]]
 script = ExtResource("1_xjese")
 
 [node name="SpawnTimer" type="Timer" parent="." unique_id=595156102]

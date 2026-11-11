@@ -62,6 +62,7 @@ spawn_point=""
 camera_bounds="Add to TileMapLayer that represents the ground"
 npc=""
 world_loot_source=""
+spawn_zone="Global group used for all spawn zones"
 
 [gui]
 
