@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="SpawnZoneConfig" format=3 uid="uid://bjtvsnhc856c8"]
+
+[ext_resource type="Script" uid="uid://clqf4dd07ll3k" path="res://scripts/world/spawning/spawn_entry.gd" id="1_m0tdy"]
+[ext_resource type="Script" uid="uid://76syajf8x8p8" path="res://scripts/world/spawning/spawn_zone_config.gd" id="2_2vjyr"]
+
+[sub_resource type="Resource" id="Resource_m0tdy"]
+script = ExtResource("1_m0tdy")
+metadata/_custom_type_script = "uid://clqf4dd07ll3k"
+
+[resource]
+script = ExtResource("2_2vjyr")
+zone_id = &"test_goblin_zone"
+region_id = &"forest_entrance"
+spawn_interval = 10.0
+enemy_pool = Array[ExtResource("1_m0tdy")]([SubResource("Resource_m0tdy")])
+metadata/_custom_type_script = "uid://76syajf8x8p8"
