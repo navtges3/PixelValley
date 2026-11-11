@@ -53,5 +53,23 @@ func validate_config() -> bool:
 	if enemy_pool.is_empty():
 		push_warning("SpawnZoneConfig: enemy_pool cannot be empty.")
 		valid = false
+	
+	var has_valid_weight := false
+	
+	for entry in enemy_pool:
+		if entry == null:
+			push_warning("SpawnZoneConfig: Enemy pool contains a null entry.")
+			valid = false
+			continue
+		
+		if entry.weight < 0:
+			push_warning("SpawnZoneConfig: Enemy weights cannot be negative.")
+			valid = false
+		elif entry.weight > 0:
+			has_valid_weight = true
+	
+	if not has_valid_weight:
+		push_warning("SpawnZoneConfig: Enemy pool must contain an entry with positive weight.")
+		valid = false
 
 	return valid

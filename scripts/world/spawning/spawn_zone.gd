@@ -13,6 +13,7 @@ var _enemies: Array[Enemy] = []
 var _initialized := false
 var _active := false
 var _remaining_time := 0.0
+var _player: Node2D
 
 
 func _ready() -> void:
@@ -24,9 +25,7 @@ func _ready() -> void:
 		return
 
 	if not config.validate_config():
-		push_error(
-			"SpawnZone '%s': Invalid configuration." % config.zone_id
-		)
+		push_error("SpawnZone '%s': Invalid configuration." % config.zone_id)
 
 
 # --------------------------------------------------
@@ -46,6 +45,10 @@ func initialize() -> void:
 
 	if get_available_capacity() > 0:
 		_schedule_replenishment()
+
+
+func set_player(player: Node2D) -> void:
+	_player = player
 
 
 func activate() -> void:
@@ -236,6 +239,11 @@ func _get_available_marker() -> Marker2D:
 
 
 func _is_marker_available(marker: Marker2D) -> bool:
+	if is_instance_valid(_player):
+		if marker.global_position.distance_to(_player.global_position) \
+		< config.minimum_player_distance:
+			return false
+	
 	for enemy in _get_living_enemies():
 		if enemy.global_position.distance_to(marker.global_position) \
 		< config.marker_occupancy_radius:
