@@ -29,6 +29,8 @@ var wander_bounds: Rect2 = Rect2(0, 0, 0, 0)
 var _wander_target: Vector2 = Vector2.ZERO
 
 var spawn_point_id: String = ""
+var spawn_zone_id: StringName = &""
+var spawn_instance_id: StringName = &""
 
 var _state: State = State.PATROL
 var _origin: Vector2 = Vector2.ZERO
@@ -227,3 +229,11 @@ func on_combat_ended(win: bool) -> void:
 	else:
 		_player_ref = null
 		_resume_roam()
+
+func set_world_active(active: bool) -> void:
+	set_physics_process(active)
+	if is_node_ready():
+		detection_area.set_deferred("monitoring", active)
+		detection_area.set_deferred("monitorable", active)
+	if not active and _state == State.CHASE:
+		_begin_return()

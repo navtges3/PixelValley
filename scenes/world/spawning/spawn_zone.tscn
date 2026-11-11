@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://bqe58kuiwse5b"]
+
+[ext_resource type="Script" uid="uid://7c1xhvu46jx1" path="res://scripts/world/spawning/spawn_zone.gd" id="1_xjese"]
+
+[node name="SpawnZone" type="Node2D" unique_id=1519518171]
+script = ExtResource("1_xjese")
+
+[node name="SpawnTimer" type="Timer" parent="." unique_id=595156102]
+
+[node name="SpawnPositions" type="Node2D" parent="." unique_id=1551429703]
+
+[node name="Marker2D" type="Marker2D" parent="SpawnPositions" unique_id=207877048]
+
+[node name="Marker2D2" type="Marker2D" parent="SpawnPositions" unique_id=1280521580]
+
+[node name="Marker2D3" type="Marker2D" parent="SpawnPositions" unique_id=1875395154]
+
+[node name="Marker2D4" type="Marker2D" parent="SpawnPositions" unique_id=760109214]
