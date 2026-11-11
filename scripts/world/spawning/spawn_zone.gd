@@ -15,6 +15,8 @@ var _active := false
 var _remaining_time := 0.0
 var _player: Node2D
 
+signal enemy_combat_initiated(enemy: Enemy)
+
 
 func _ready() -> void:
 	spawn_timer.one_shot = true
@@ -148,21 +150,22 @@ func _spawn_enemy(entry: SpawnEntry, marker: Marker2D) -> bool:
 	enemy.patrol_range = entry.patrol_range
 	enemy.idle_wait_time = entry.idle_wait_time
 	enemy.wander_bounds = entry.wander_bounds
-
-	enemy.global_position = marker.global_position
+	
+	enemy.combat_initiated.connect(_on_enemy_combat_initiated)
 
 	# Dynamic identity is separate from fixed SpawnPoint identity.
 	enemy.spawn_zone_id = config.zone_id
 	enemy.spawn_instance_id = StringName("%s_%s" % [config.zone_id, str(get_instance_id()) + "_" + str(Time.get_ticks_usec())])
 
 	# Spawn beside this node in the world/Y-sort parent.
-	var world_parent := get_parent()
+	var world_parent := get_parent() as Node2D
 
 	if world_parent == null:
 		enemy.queue_free()
-		push_error("SpawnZone: No world parent available.")
+		push_error("SpawnZone: No Node2D world parent available.")
 		return false
 
+	enemy.position = world_parent.to_local(marker.global_position)
 	world_parent.add_child(enemy)
 
 	_enemies.append(enemy)
@@ -298,3 +301,9 @@ func _get_living_enemies() -> Array[Enemy]:
 
 func _prune_enemies() -> void:
 	_get_living_enemies()
+
+# --------------------------------------------------
+# COMBAT PASSTHROUGH
+# --------------------------------------------------
+func _on_enemy_combat_initiated(enemy: Enemy) -> void:
+	enemy_combat_initiated.emit(enemy)
