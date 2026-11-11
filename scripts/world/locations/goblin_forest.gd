@@ -33,3 +33,13 @@ func _on_active_region_changed(_prev_region: LocationRegion, new_region: Locatio
 		return
 	if new_region.show_notification:
 		world_hud.show_location_name(new_region.display_name)
+
+func _update_spawn_zones(region: LocationRegion) -> void:
+	var active_region_id: StringName = region.region_id if region != null else &""
+	for zone in _spawn_zones:
+		if zone.config == null:
+			continue
+		if zone.config.region == active_region_id:
+			zone.activate()
+		else:
+			zone.deactivate()

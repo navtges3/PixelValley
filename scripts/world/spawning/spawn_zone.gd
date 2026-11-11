@@ -56,7 +56,7 @@ func set_player(player: Node2D) -> void:
 func activate() -> void:
 	if _active:
 		return
-
+	print("Zone '%s' activated." % config.region_id)
 	_active = true
 
 	for enemy in _get_living_enemies():
