@@ -2,6 +2,17 @@
 
 [ext_resource type="Script" uid="uid://hsy1hdclfewm" path="res://scripts/ui/hud/components/location_title.gd" id="1_4ikjc"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4ikjc"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0.1, 0.1, 0.1, 0.6)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
 [node name="LocationTitle" type="Control" unique_id=737624085]
 layout_mode = 3
 anchors_preset = 15
@@ -21,10 +32,22 @@ offset_bottom = 80.0
 
 [node name="PanelContainer" type="PanelContainer" parent="CenterContainer" unique_id=1264810806]
 layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_4ikjc")
 
 [node name="MarginContainer" type="MarginContainer" parent="CenterContainer/PanelContainer" unique_id=1088851914]
 layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 4
 
 [node name="Label" type="Label" parent="CenterContainer/PanelContainer/MarginContainer" unique_id=1805876785]
 layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(0.7931022, 0.66700196, 0, 1)
+theme_override_font_sizes/font_size = 32
 text = "New Location"
+horizontal_alignment = 1
+vertical_alignment = 1
