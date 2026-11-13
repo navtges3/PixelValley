@@ -63,6 +63,9 @@ camera_bounds="Add to TileMapLayer that represents the ground"
 npc=""
 world_loot_source=""
 spawn_zone="Global group used for all spawn zones"
+navigation_walkable="Defines terrain characters can traverse"
+navigation_blocked="Defines permanent environmental obstacles"
+navigation_obstacle="Defines dynamic obstacles that characters should avoid"
 
 [gui]
 
