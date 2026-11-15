@@ -201,20 +201,23 @@ func _process_chase(delta: float) -> void:
 	_update_walk_anim()
 
 func _begin_return() -> void:
-	character_navigation.stop()
-	_state = State.RETURN
 	_player_ref = null
+	character_navigation.stop()
+	
+	if character_navigation.set_destination(_origin):
+		_state = State.RETURN
+	else:
+		push_warning("Enemy could not find a return path to its origin.")
+		_state = State.GUARD
 
 func _process_return() -> void:
-	var to_origin: Vector2 = _origin - global_position
-	
-	if to_origin.length() < 4.0:
-		global_position = _origin
+	if character_navigation.is_navigation_finished():
 		velocity = Vector2.ZERO
 		_next_behavior()
 		return
 	
-	velocity = to_origin.normalized() * patrol_speed
+	velocity = character_navigation.get_desired_velocity(patrol_speed)
+	
 	move_and_slide()
 	_update_walk_anim()
 
