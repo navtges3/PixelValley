@@ -39,8 +39,9 @@ var _idle_timer: float = 0.0
 var _chase_timer: float = 0.0
 var _player_ref: Node2D = null
 
-@onready var detection_area: Area2D = $DetectionArea
 @onready var anim: AnimatedSprite2D = $AnimatedSprite2D
+@onready var detection_area: Area2D = $DetectionArea
+@onready var character_navigation: CharacterNavigation = $CharacterNavigation
 
 func _ready() -> void:
 	_origin = global_position
@@ -60,7 +61,7 @@ func _ready() -> void:
 	
 	match behavior:
 		Behavior.PATROL:
-			_state = State.PATROL
+			_begin_patrol()
 		Behavior.GUARD:
 			_state = State.GUARD
 		Behavior.WANDER:
@@ -98,33 +99,38 @@ func _process_idle(delta: float) -> void:
 	if _idle_timer <= 0.0:
 		match behavior:
 			Behavior.PATROL:
-				_state = State.PATROL
+				_begin_patrol()
 			Behavior.WANDER:
 				_pick_wander_target()
 				_state = State.WANDER
 			_: _state = State.PATROL
 
-func _process_patrol(_delta: float) -> void:
+func _process_guard() -> void:
+	velocity = Vector2.ZERO
+	_play_anim("idle")
+	move_and_slide()
+
+func _begin_patrol() -> void:
 	var target_x: float = _origin.x + _patrol_dir * patrol_range
-	var diff: float = target_x - global_position.x
+	var target_position := Vector2(target_x, _origin.y)
 	
-	if abs(diff) < 2.0:
-		# reached the waypoint - flip and idle briefly
+	if character_navigation.set_destination(target_position):
+		_state = State.PATROL
+	else:
+		push_warning("Enemy could not find a patrol path.")
+		_state = State.GUARD
+
+func _process_patrol(_delta: float) -> void:
+	if character_navigation.is_navigation_finished():
 		_patrol_dir = -_patrol_dir
 		_idle_timer = idle_wait_time
 		_state = State.IDLE
 		velocity = Vector2.ZERO
 	else:
-		velocity.x = sign(diff) * patrol_speed
-		velocity.y = 0.0
+		velocity = character_navigation.get_desired_velocity(patrol_speed)
 	
 	move_and_slide()
 	_update_walk_anim()
-
-func _process_guard() -> void:
-	velocity = Vector2.ZERO
-	_play_anim("idle")
-	move_and_slide()
 
 func _process_wander(_delta: float) -> void:
 	var diff: Vector2 = _wander_target - global_position
@@ -167,6 +173,10 @@ func _process_chase(delta: float) -> void:
 	move_and_slide()
 	_update_walk_anim()
 
+func _begin_return() -> void:
+	_state = State.RETURN
+	_player_ref = null
+
 func _process_return() -> void:
 	var to_origin: Vector2 = _origin - global_position
 	
@@ -179,10 +189,6 @@ func _process_return() -> void:
 	velocity = to_origin.normalized() * patrol_speed
 	move_and_slide()
 	_update_walk_anim()
-
-func _begin_return() -> void:
-	_state = State.RETURN
-	_player_ref = null
 
 func _resume_roam() -> void:
 	match behavior:
