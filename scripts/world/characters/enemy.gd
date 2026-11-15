@@ -44,6 +44,7 @@ var _player_ref: Node2D = null
 @onready var anim: AnimatedSprite2D = $AnimatedSprite2D
 @onready var detection_area: Area2D = $DetectionArea
 @onready var character_navigation: CharacterNavigation = $CharacterNavigation
+@onready var character_avoidance: CharacterAvoidance = $CharacterAvoidance
 
 func _ready() -> void:
 	_origin = global_position
@@ -124,7 +125,7 @@ func _process_patrol(_delta: float) -> void:
 		_state = State.IDLE
 		velocity = Vector2.ZERO
 	else:
-		velocity = character_navigation.get_desired_velocity(patrol_speed)
+		velocity = _get_movement_velocity(patrol_speed)
 	
 	move_and_slide()
 	_update_walk_anim()
@@ -162,7 +163,7 @@ func _process_wander(_delta: float) -> void:
 		_idle_timer = idle_wait_time
 		_state = State.IDLE
 	else:
-		velocity = character_navigation.get_desired_velocity(patrol_speed)
+		velocity = _get_movement_velocity(patrol_speed)
 	
 	move_and_slide()
 	_update_walk_anim()
@@ -197,7 +198,7 @@ func _process_chase(delta: float) -> void:
 		_chase_repath_timer = chase_repath_interval
 	
 	# Follow the current path, or remain stationary if no path exists.
-	velocity = character_navigation.get_desired_velocity(chase_speed)
+	velocity = _get_movement_velocity(chase_speed)
 	
 	move_and_slide()
 	_update_walk_anim()
@@ -218,7 +219,7 @@ func _process_return() -> void:
 		_next_behavior()
 		return
 	
-	velocity = character_navigation.get_desired_velocity(patrol_speed)
+	velocity = _get_movement_velocity(patrol_speed)
 	
 	move_and_slide()
 	_update_walk_anim()
@@ -270,3 +271,9 @@ func set_world_active(active: bool) -> void:
 		detection_area.set_deferred("monitorable", active)
 	if not active and _state == State.CHASE:
 		_begin_return()
+
+func _get_movement_velocity(move_speed: float) -> Vector2:
+	var desired_velocity := character_navigation.get_desired_velocity(move_speed)
+	var avoidance_velocity := character_avoidance.get_avoidance_velocity(desired_velocity)
+	
+	return (desired_velocity + avoidance_velocity).limit_length(move_speed)

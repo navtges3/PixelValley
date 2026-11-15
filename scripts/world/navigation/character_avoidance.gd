@@ -41,30 +41,52 @@ func get_nearby_obstacles() -> Array[CharacterBody2D]:
 	return nearby
 
 
-func get_avoidance_velocity(move_speed: float) -> Vector2:
-	if _character == null:
+
+func get_avoidance_velocity(desired_velocity: Vector2) -> Vector2:
+	if _character == null or desired_velocity.is_zero_approx():
 		return Vector2.ZERO
-	
+
+	var desired_direction := desired_velocity.normalized()
 	var avoidance_direction := Vector2.ZERO
-	
+
 	for obstacle in get_nearby_obstacles():
 		var offset := _character.global_position - obstacle.global_position
 		var distance_squared := offset.length_squared()
-		
+		var distance: float
+
 		if distance_squared <= 0.001:
-			continue
-		
-		var distance := sqrt(distance_squared)
-		
+			offset = Vector2.RIGHT
+
+			if _character.get_instance_id() > obstacle.get_instance_id():
+				offset = Vector2.LEFT
+
+			distance = 0.0
+		else:
+			distance = sqrt(distance_squared)
+
 		if distance >= preferred_distance:
 			continue
-		
-		# The closer the obstacle, the stronger the avoidance.
+
 		var urgency := 1.0 - (distance / preferred_distance)
-		
-		avoidance_direction += offset.normalized() * urgency
-	
+
+		# Calculate a consistent sidestep direction for both enemies.
+		var sidestep_direction := desired_direction.rotated(PI / 2.0)
+
+		if _character.get_instance_id() > obstacle.get_instance_id():
+			sidestep_direction *= -1.0
+
+		var separation_direction := offset.normalized()
+
+		# Favor sidestepping while maintaining separation.
+		var steering_direction := separation_direction * 0.25 + sidestep_direction * 0.75
+
+		avoidance_direction += steering_direction * urgency
+
 	if avoidance_direction.is_zero_approx():
 		return Vector2.ZERO
-	
-	return avoidance_direction.normalized() * move_speed * avoidance_strength
+
+	return (
+		avoidance_direction.normalized()
+		* desired_velocity.length()
+		* avoidance_strength
+	)
