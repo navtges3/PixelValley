@@ -66,6 +66,7 @@ spawn_zone="Global group used for all spawn zones"
 navigation_walkable="Defines terrain characters can traverse"
 navigation_blocked="Defines permanent environmental obstacles"
 navigation_obstacle="Defines dynamic obstacles that characters should avoid"
+world_navigation="Defines the world nagivation system"
 
 [gui]
 

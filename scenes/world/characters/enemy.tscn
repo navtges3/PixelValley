@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://cgpdwrbt7m6l0" path="res://scripts/world/characters/enemy.gd" id="1_xdryk"]
 [ext_resource type="SpriteFrames" uid="uid://dp6xg6vwbi7yo" path="res://resources/characters/monsters/ogre_king/ogre_king_world_sprite_frames.tres" id="2_yu5fk"]
+[ext_resource type="Script" uid="uid://ccvlf3j5h4lcx" path="res://scripts/world/navigation/character_navigation.gd" id="3_c81u4"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_yu5fk"]
 radius = 5.0
@@ -18,3 +19,6 @@ offset = Vector2(0, -10)
 shape = SubResource("CircleShape2D_yu5fk")
 
 [node name="DetectionArea" type="Area2D" parent="." unique_id=783883924]
+
+[node name="CharacterNavigation" type="Node" parent="." unique_id=1763780848]
+script = ExtResource("3_c81u4")

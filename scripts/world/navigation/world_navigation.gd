@@ -20,6 +20,7 @@ var navigation_grid := AStarGrid2D.new()
 
 
 func _ready() -> void:
+	add_to_group("world_navigation")
 	_build_navigation_grid()
 
 

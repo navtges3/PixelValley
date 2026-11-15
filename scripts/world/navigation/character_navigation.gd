@@ -16,6 +16,13 @@ func _ready() -> void:
 	
 	if _character == null:
 		push_error("CharacterNavigation must be a child of CharacterBody2D")
+		return
+	
+	if world_navigation == null:
+		world_navigation = get_tree().get_first_node_in_group("world_navigation") as WorldNavigation
+	
+	if world_navigation == null:
+		push_error("CharacterNavigation could not find WorldNavigation.")
 
 
 func set_destination(target_position: Vector2) -> bool:
