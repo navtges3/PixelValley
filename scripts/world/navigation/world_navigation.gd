@@ -4,6 +4,11 @@ class_name WorldNavigation
 
 
 @export var floor_layer: TileMapLayer
+@export var debug_draw_navigation := false:
+	set(value):
+		debug_draw_navigation = value
+		z_index = 100 if value else 0
+		queue_redraw()
 
 const CELL_SIZE := Vector2(32, 32)
 
@@ -43,6 +48,9 @@ func _build_navigation_grid() -> void:
 	# Apply permanent obstacles last.
 	# Blocked terrain always takes priority.
 	_apply_tilemap_group(BLOCKED_GROUP, true)
+	
+	z_index = 100 if debug_draw_navigation else 0
+	queue_redraw()
 
 
 func _apply_tilemap_group(group_name: String, is_blocked: bool) -> void:
@@ -88,3 +96,40 @@ func get_navigation_path(start_position: Vector2, target_position: Vector2) -> P
 func _world_to_grid_cell(world_position: Vector2) -> Vector2i:
 	var local_position := floor_layer.to_local(world_position)
 	return floor_layer.local_to_map(local_position)
+
+func _draw() -> void:
+	if not debug_draw_navigation or floor_layer == null:
+		return
+	
+	var walkable_color := Color(0.1, 0.85, 0.25, 0.25)
+	var blocked_color := Color(0.95, 0.15, 0.15, 0.35)
+	var grid_color := Color(1.0, 1.0, 1.0, 0.25)
+	
+	for x in range(navigation_grid.region.position.x, navigation_grid.region.end.x):
+		for y in range(navigation_grid.region.position.y, navigation_grid.region.end.y):
+			var cell := Vector2i(x, y)
+			var center := floor_layer.map_to_local(cell)
+			var half_size := CELL_SIZE / 2.0
+			
+			# Calculate the four corners of this tile.
+			var corners := [
+				center + Vector2(-half_size.x, -half_size.y),
+				center + Vector2(half_size.x, -half_size.y),
+				center + Vector2(half_size.x, half_size.y),
+				center + Vector2(-half_size.x, half_size.y)
+			]
+			
+			# Convert floor-layer coordinates into WorldNavigation coordinates.
+			var polygon := PackedVector2Array()
+			
+			for corner in corners:
+				polygon.append(to_local(floor_layer.to_global(corner)))
+			
+			var fill_color := blocked_color if navigation_grid.is_point_solid(cell) else walkable_color
+			
+			draw_colored_polygon(polygon, fill_color)
+			
+			# Draw a subtle outline around each cell
+			var outline := polygon.duplicate()
+			outline.append(polygon[0])
+			draw_polyline(outline, grid_color, 1.0)
