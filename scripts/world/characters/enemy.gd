@@ -59,14 +59,13 @@ func _ready() -> void:
 	
 	detection_area.collision_mask = detection_collision_mask
 	
+	_next_behavior()
+
+func _next_behavior() -> void:
 	match behavior:
-		Behavior.PATROL:
-			_begin_patrol()
-		Behavior.GUARD:
-			_state = State.GUARD
-		Behavior.WANDER:
-			_state = State.WANDER
-			_pick_wander_target()
+		Behavior.GUARD: _state = State.GUARD
+		Behavior.PATROL: _begin_patrol()
+		Behavior.WANDER: _begin_wander()
 
 func _apply_visuals() -> void:
 	if encounter != null:
@@ -97,13 +96,7 @@ func _process_idle(delta: float) -> void:
 	move_and_slide()
 	_idle_timer -= delta
 	if _idle_timer <= 0.0:
-		match behavior:
-			Behavior.PATROL:
-				_begin_patrol()
-			Behavior.WANDER:
-				_pick_wander_target()
-				_state = State.WANDER
-			_: _state = State.PATROL
+		_next_behavior()
 
 func _process_guard() -> void:
 	velocity = Vector2.ZERO
@@ -132,15 +125,40 @@ func _process_patrol(_delta: float) -> void:
 	move_and_slide()
 	_update_walk_anim()
 
-func _process_wander(_delta: float) -> void:
-	var diff: Vector2 = _wander_target - global_position
+func _begin_wander() -> void:
+	if wander_bounds.size == Vector2.ZERO:
+		_state = State.GUARD
+		return
 	
-	if diff.length() < 4.0:
+	# Try several random positions in case one is blocked.
+	for attempt in range(5):
+		_wander_target = Vector2(
+			randf_range(
+				wander_bounds.position.x,
+				wander_bounds.position.x + wander_bounds.size.x
+			),
+			randf_range(
+				wander_bounds.position.y,
+				wander_bounds.position.y + wander_bounds.size.y
+			)
+		)
+		
+		print("Attempting position: ", _wander_target)
+		
+		if character_navigation.set_destination(_wander_target):
+			_state = State.WANDER
+			return
+	
+	push_warning("Enemy could not find a valid wander destination.")
+	_state = State.GUARD
+
+func _process_wander(_delta: float) -> void:
+	if character_navigation.is_navigation_finished():
 		velocity = Vector2.ZERO
 		_idle_timer = idle_wait_time
 		_state = State.IDLE
 	else:
-		velocity = diff.normalized() * patrol_speed
+		velocity = character_navigation.get_desired_velocity(patrol_speed)
 	
 	move_and_slide()
 	_update_walk_anim()
@@ -183,20 +201,12 @@ func _process_return() -> void:
 	if to_origin.length() < 4.0:
 		global_position = _origin
 		velocity = Vector2.ZERO
-		_resume_roam()
+		_next_behavior()
 		return
 	
 	velocity = to_origin.normalized() * patrol_speed
 	move_and_slide()
 	_update_walk_anim()
-
-func _resume_roam() -> void:
-	match behavior:
-		Behavior.GUARD: _state = State.GUARD
-		Behavior.WANDER:
-			_pick_wander_target()
-			_state = State.WANDER
-		_: _state = State.PATROL
 
 func _on_body_entered(body: Node2D) -> void:
 	if not body.is_in_group("player"):
@@ -234,7 +244,7 @@ func on_combat_ended(win: bool) -> void:
 		queue_free()
 	else:
 		_player_ref = null
-		_resume_roam()
+		_next_behavior()
 
 func set_world_active(active: bool) -> void:
 	set_physics_process(active)

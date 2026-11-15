@@ -6,17 +6,15 @@
 [ext_resource type="TileSet" uid="uid://ca0rdl8iyjnxp" path="res://resources/world/tree_tile_set.tres" id="2_e3jvi"]
 [ext_resource type="PackedScene" uid="uid://ce2mc0r4tn7ka" path="res://scenes/world/locations/components/location_region.tscn" id="3_5uqel"]
 [ext_resource type="Script" uid="uid://bkq10sqlpf4wg" path="res://scripts/world/navigation/world_navigation.gd" id="4_obtaj"]
-[ext_resource type="Script" uid="uid://dmyh0gyynkk45" path="res://scripts/world/navigation/navigation_path_test.gd" id="5_4gpbu"]
 [ext_resource type="PackedScene" uid="uid://bqe58kuiwse5b" path="res://scenes/world/spawning/spawn_zone.tscn" id="6_lnwk1"]
 [ext_resource type="PackedScene" uid="uid://b0tdph7ofmv7r" path="res://scenes/world/trigger_zone.tscn" id="6_vm5r7"]
 [ext_resource type="Script" uid="uid://clqf4dd07ll3k" path="res://scripts/world/spawning/spawn_entry.gd" id="7_0so8b"]
 [ext_resource type="Script" uid="uid://76syajf8x8p8" path="res://scripts/world/spawning/spawn_zone_config.gd" id="8_obtaj"]
-[ext_resource type="Texture2D" uid="uid://lygp75a7owqn" path="res://assets/characters/npcs/weapon_shopkeep.png" id="12_4nvfp"]
-[ext_resource type="Script" uid="uid://cubtcmi8u8kf0" path="res://scripts/world/navigation/navigation_test_character.gd" id="12_vu2ud"]
-[ext_resource type="Script" uid="uid://ccvlf3j5h4lcx" path="res://scripts/world/navigation/character_navigation.gd" id="13_vu2ud"]
 
 [sub_resource type="Resource" id="Resource_0so8b"]
 script = ExtResource("7_0so8b")
+behavior = 2
+wander_bounds = Rect2(-32, -32, 64, 64)
 metadata/_custom_type_script = "uid://clqf4dd07ll3k"
 
 [sub_resource type="Resource" id="Resource_4gpbu"]
@@ -128,18 +126,6 @@ script = ExtResource("4_obtaj")
 floor_layer = NodePath("../Ground/ForestFloor")
 debug_draw_navigation = true
 
-[node name="NavigationPathTest" type="Node2D" parent="." unique_id=1323553566 node_paths=PackedStringArray("world_navigation", "start_marker", "target_marker")]
-script = ExtResource("5_4gpbu")
-world_navigation = NodePath("../WorldNavigation")
-start_marker = NodePath("StartMarker")
-target_marker = NodePath("TargetMarker")
-
-[node name="StartMarker" type="Marker2D" parent="NavigationPathTest" unique_id=1223540761]
-position = Vector2(224, 384)
-
-[node name="TargetMarker" type="Marker2D" parent="NavigationPathTest" unique_id=510940026]
-position = Vector2(448, 616)
-
 [node name="Ground" type="Node2D" parent="." unique_id=1918096931]
 z_index = -10
 
@@ -210,18 +196,6 @@ screen_target = 7
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="TriggerZones/ExitTriggerZone" unique_id=103532995]
 shape = SubResource("RectangleShape2D_5uqel")
-
-[node name="NavigationTestCharacter" type="CharacterBody2D" parent="." unique_id=1672708506 node_paths=PackedStringArray("target")]
-position = Vector2(448, 256)
-script = ExtResource("12_vu2ud")
-target = NodePath("../NavigationPathTest/TargetMarker")
-
-[node name="Sprite2D" type="Sprite2D" parent="NavigationTestCharacter" unique_id=2026792601]
-texture = ExtResource("12_4nvfp")
-
-[node name="CharacterNavigation" type="Node" parent="NavigationTestCharacter" unique_id=894686759 node_paths=PackedStringArray("world_navigation")]
-script = ExtResource("13_vu2ud")
-world_navigation = NodePath("../../WorldNavigation")
 
 [editable path="RegionManager/ForestEntrance"]
 [editable path="RegionManager/HuntingCamp"]
