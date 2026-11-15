@@ -13,7 +13,6 @@
 
 [sub_resource type="Resource" id="Resource_0so8b"]
 script = ExtResource("7_0so8b")
-behavior = 2
 wander_bounds = Rect2(-32, -32, 64, 64)
 metadata/_custom_type_script = "uid://clqf4dd07ll3k"
 

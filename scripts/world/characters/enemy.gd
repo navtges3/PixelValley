@@ -48,6 +48,8 @@ var _player_ref: Node2D = null
 func _ready() -> void:
 	_origin = global_position
 	add_to_group("enemies")
+	add_to_group("navigation_obstacle")
+	
 	_apply_visuals()
 	
 	detection_area.body_entered.connect(_on_body_entered)
