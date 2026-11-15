@@ -23,6 +23,7 @@ enum Behavior { PATROL, GUARD, WANDER }
 @export var chase_speed: float = 70.0
 @export var chase_duration: float = 3.0
 @export var combat_radius: float = 16.0
+@export var chase_repath_interval: float = 0.4
 
 var behavior: Behavior = Behavior.PATROL
 var wander_bounds: Rect2 = Rect2(0, 0, 0, 0)
@@ -37,6 +38,7 @@ var _origin: Vector2 = Vector2.ZERO
 var _patrol_dir: int = 1
 var _idle_timer: float = 0.0
 var _chase_timer: float = 0.0
+var _chase_repath_timer: float = 0.0
 var _player_ref: Node2D = null
 
 @onready var anim: AnimatedSprite2D = $AnimatedSprite2D
@@ -170,20 +172,36 @@ func _process_chase(delta: float) -> void:
 	
 	var to_player: Vector2 = _player_ref.global_position - global_position
 	
+	# Combat takes priority over movement.
 	if to_player.length() <= combat_radius:
+		character_navigation.stop()
+		velocity = Vector2.ZERO
+		move_and_slide()
+		_update_walk_anim()
 		combat_initiated.emit(self)
 		return
 	
+	# Preserve the existing chase duration.
 	_chase_timer -= delta
 	if _chase_timer <= 0.0:
 		_begin_return()
 		return
 	
-	velocity = to_player.normalized() * chase_speed
+	# Periodically recalculate the path toward the player's current position.
+	_chase_repath_timer -= delta
+	
+	if _chase_repath_timer <= 0.0:
+		character_navigation.set_destination(_player_ref.global_position)
+		_chase_repath_timer = chase_repath_interval
+	
+	# Follow the current path, or remain stationary if no path exists.
+	velocity = character_navigation.get_desired_velocity(chase_speed)
+	
 	move_and_slide()
 	_update_walk_anim()
 
 func _begin_return() -> void:
+	character_navigation.stop()
 	_state = State.RETURN
 	_player_ref = null
 
@@ -207,6 +225,8 @@ func _on_body_entered(body: Node2D) -> void:
 		return
 	_player_ref = body
 	_chase_timer = chase_duration
+	_chase_repath_timer = 0.0
+	character_navigation.stop()
 	_state = State.CHASE
 
 func _on_body_exited(body: Node2D) -> void:
