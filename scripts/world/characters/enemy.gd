@@ -132,7 +132,7 @@ func _begin_wander() -> void:
 	
 	# Try several random positions in case one is blocked.
 	for attempt in range(5):
-		_wander_target = Vector2(
+		var random_offset = Vector2(
 			randf_range(
 				wander_bounds.position.x,
 				wander_bounds.position.x + wander_bounds.size.x
@@ -143,7 +143,7 @@ func _begin_wander() -> void:
 			)
 		)
 		
-		print("Attempting position: ", _wander_target)
+		_wander_target = _origin + random_offset
 		
 		if character_navigation.set_destination(_wander_target):
 			_state = State.WANDER
@@ -162,14 +162,6 @@ func _process_wander(_delta: float) -> void:
 	
 	move_and_slide()
 	_update_walk_anim()
-
-func _pick_wander_target() -> void:
-	if wander_bounds.size == Vector2.ZERO:
-		_state = State.GUARD
-	_wander_target = Vector2(
-		randf_range(wander_bounds.position.x, wander_bounds.position.x + wander_bounds.size.x),
-		randf_range(wander_bounds.position.y, wander_bounds.position.y + wander_bounds.size.y)
-	)
 
 func _process_chase(delta: float) -> void:
 	if _player_ref == null:
