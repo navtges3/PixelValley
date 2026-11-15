@@ -69,18 +69,10 @@ func get_avoidance_velocity(desired_velocity: Vector2) -> Vector2:
 
 		var urgency := 1.0 - (distance / preferred_distance)
 
-		# Calculate a consistent sidestep direction for both enemies.
-		var sidestep_direction := desired_direction.rotated(PI / 2.0)
+		# Moving left steps up; moving right steps down.
+		var sidestep_direction := Vector2(desired_direction.y, -desired_direction.x)
 
-		if _character.get_instance_id() > obstacle.get_instance_id():
-			sidestep_direction *= -1.0
-
-		var separation_direction := offset.normalized()
-
-		# Favor sidestepping while maintaining separation.
-		var steering_direction := separation_direction * 0.25 + sidestep_direction * 0.75
-
-		avoidance_direction += steering_direction * urgency
+		avoidance_direction += sidestep_direction * urgency
 
 	if avoidance_direction.is_zero_approx():
 		return Vector2.ZERO
