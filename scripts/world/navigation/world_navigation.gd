@@ -98,6 +98,19 @@ func _world_to_grid_cell(world_position: Vector2) -> Vector2i:
 	var local_position := floor_layer.to_local(world_position)
 	return floor_layer.local_to_map(local_position)
 
+
+func is_position_walkable(world_position: Vector2) -> bool:
+	if floor_layer == null:
+		return false
+	
+	var cell := _world_to_grid_cell(world_position)
+	
+	if not navigation_grid.region.has_point(cell):
+		return false
+	
+	return not navigation_grid.is_point_solid(cell)
+
+
 func _draw() -> void:
 	if not debug_draw_navigation or floor_layer == null:
 		return

@@ -7,6 +7,7 @@ class_name CharacterAvoidance
 @export var avoidance_strength: float = 1.0
 
 var _character: CharacterBody2D
+var _world_navigation: WorldNavigation
 
 
 func _ready() -> void:
@@ -14,6 +15,12 @@ func _ready() -> void:
 	
 	if _character == null:
 		push_error("CharacterAvoidance must be a child of CharacterBody2D.")
+		return
+	
+	_world_navigation = get_tree().get_first_node_in_group("world_navigation") as WorldNavigation
+	
+	if _world_navigation == null:
+		push_error("CharacterAvoidance could not find WorldNavigation.")
 
 
 func get_nearby_obstacles() -> Array[CharacterBody2D]:
@@ -39,7 +46,6 @@ func get_nearby_obstacles() -> Array[CharacterBody2D]:
 			nearby.append(obstacle)
 		
 	return nearby
-
 
 
 func get_avoidance_velocity(desired_velocity: Vector2) -> Vector2:
