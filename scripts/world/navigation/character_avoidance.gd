@@ -49,7 +49,8 @@ func get_nearby_obstacles() -> Array[CharacterBody2D]:
 
 
 func get_avoidance_velocity(desired_velocity: Vector2) -> Vector2:
-	if _character == null or desired_velocity.is_zero_approx():
+	if (_character == null or _world_navigation == null or
+		desired_velocity.is_zero_approx()):
 		return Vector2.ZERO
 
 	var desired_direction := desired_velocity.normalized()

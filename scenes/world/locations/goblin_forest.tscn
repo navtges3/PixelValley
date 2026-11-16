@@ -123,7 +123,6 @@ polygon = PackedVector2Array(416, -64, 416, -224, 384, -288, 320, -352, 256, -38
 [node name="WorldNavigation" type="Node2D" parent="." unique_id=1375058985 node_paths=PackedStringArray("floor_layer")]
 script = ExtResource("4_obtaj")
 floor_layer = NodePath("../Ground/ForestFloor")
-debug_draw_navigation = true
 
 [node name="Ground" type="Node2D" parent="." unique_id=1918096931]
 z_index = -10
