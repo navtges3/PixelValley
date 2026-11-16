@@ -55,6 +55,7 @@ func get_avoidance_velocity(desired_velocity: Vector2) -> Vector2:
 
 	var desired_direction := desired_velocity.normalized()
 	var avoidance_direction := Vector2.ZERO
+	var should_yield := false
 
 	for obstacle in get_nearby_obstacles():
 		var offset := _character.global_position - obstacle.global_position
@@ -77,19 +78,30 @@ func get_avoidance_velocity(desired_velocity: Vector2) -> Vector2:
 		var urgency := 1.0 - (distance / preferred_distance)
 
 		var sidestep_direction := Vector2(desired_direction.y, -desired_direction.x)
-		var sidestep_position := (_character.global_position + sidestep_direction * preferred_distance)
-		
-		if not _world_navigation.is_position_walkable(sidestep_position):
-			sidestep_direction *= -1.0
-		
-		if _world_navigation.is_position_walkable(_character.global_position + sidestep_direction * preferred_distance):
+		var sidestep_position := _character.global_position + sidestep_direction * preferred_distance
+
+		if _world_navigation.is_position_walkable(sidestep_position):
 			avoidance_direction += sidestep_direction * urgency
+			continue
 
-	if avoidance_direction.is_zero_approx():
-		return Vector2.ZERO
+		sidestep_direction *= -1.0
+		sidestep_position = _character.global_position + sidestep_direction * preferred_distance
 
-	return (
-		avoidance_direction.normalized()
-		* desired_velocity.length()
-		* avoidance_strength
-	)
+		if _world_navigation.is_position_walkable(sidestep_position):
+			avoidance_direction += sidestep_direction * urgency
+			continue
+
+		if _character.get_instance_id() < obstacle.get_instance_id():
+			should_yield = true
+
+	if not avoidance_direction.is_zero_approx():
+		return (
+			avoidance_direction.normalized()
+			* desired_velocity.length()
+			* avoidance_strength
+		)
+	
+	if should_yield:
+		return -desired_velocity
+	
+	return Vector2.ZERO
