@@ -75,10 +75,14 @@ func get_avoidance_velocity(desired_velocity: Vector2) -> Vector2:
 
 		var urgency := 1.0 - (distance / preferred_distance)
 
-		# Moving left steps up; moving right steps down.
 		var sidestep_direction := Vector2(desired_direction.y, -desired_direction.x)
-
-		avoidance_direction += sidestep_direction * urgency
+		var sidestep_position := (_character.global_position + sidestep_direction * preferred_distance)
+		
+		if not _world_navigation.is_position_walkable(sidestep_position):
+			sidestep_direction *= -1.0
+		
+		if _world_navigation.is_position_walkable(_character.global_position + sidestep_direction * preferred_distance):
+			avoidance_direction += sidestep_direction * urgency
 
 	if avoidance_direction.is_zero_approx():
 		return Vector2.ZERO
