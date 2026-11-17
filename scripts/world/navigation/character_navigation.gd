@@ -13,6 +13,7 @@ var _character: CharacterBody2D
 var _path := PackedVector2Array()
 var _path_index: int = 0
 var _has_destination: bool = false
+var _destination_position: Vector2 = Vector2.ZERO
 var _progress_timer: float = 0.0
 var _last_progress_position: Vector2 = Vector2.ZERO
 var _is_stuck: bool = false
@@ -38,6 +39,7 @@ func set_destination(target_position: Vector2) -> bool:
 	if world_navigation == null or _character == null:
 		return false
 	
+	_destination_position = target_position
 	_path = world_navigation.get_navigation_path(_character.global_position, target_position)
 	
 	_path_index = 0
@@ -47,10 +49,17 @@ func set_destination(target_position: Vector2) -> bool:
 	return _has_destination
 
 
+func recalculate_path() -> bool:
+	if not _has_destination or _character == null:
+		return false
+	return set_destination(_destination_position)
+
+
 func stop() -> void:
 	_path.clear()
 	_path_index = 0
 	_has_destination = false
+	_destination_position = Vector2.ZERO
 	_reset_stuck_detection()
 
 
