@@ -94,6 +94,9 @@ func _physics_process(delta: float) -> void:
 		State.CHASE:  _process_chase(delta)
 		State.RETURN: _process_return()
 		State.DEAD: pass
+	
+	if character_navigation.update_stuck_detection(delta):
+		print("Navigation stuck detected: ", name)
 
 func _process_idle(delta: float) -> void:
 	velocity = Vector2.ZERO
