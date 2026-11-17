@@ -43,6 +43,7 @@ func set_destination(target_position: Vector2) -> bool:
 	_path_index = 0
 	_has_destination = not _path.is_empty()
 	
+	_reset_stuck_detection()
 	return _has_destination
 
 
@@ -99,5 +100,8 @@ func update_stuck_detection(delta: float) -> bool:
 
 
 func _reset_stuck_detection() -> void:
-	_last_progress_position = _character.global_position
+	_progress_timer = 0.0
 	_is_stuck = false
+
+	if _character != null:
+		_last_progress_position = _character.global_position
