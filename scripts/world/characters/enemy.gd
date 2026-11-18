@@ -101,17 +101,18 @@ func _physics_process(delta: float) -> void:
 	
 	if is_inside_tree() and is_physics_processing():
 		var is_stuck := character_navigation.update_stuck_detection(delta)
+
 		if is_stuck:
 			if character_navigation.attempt_path_recovery():
 				if debug_navigation_recovery:
 					print("Navigation recovery attempted: ", name)
-			elif(character_navigation.has_exhausted_recovery_attempts()
+			elif (character_navigation.has_exhausted_recovery_attempts()
 					and not _has_reported_recovery_exhaustion):
 				if debug_navigation_recovery:
 					print("Navigation recovery exhausted: ", name)
 				_has_reported_recovery_exhaustion = true
-			else:
-				_has_reported_recovery_exhaustion = false
+		else:
+			_has_reported_recovery_exhaustion = false
 
 func _process_idle(delta: float) -> void:
 	velocity = Vector2.ZERO
