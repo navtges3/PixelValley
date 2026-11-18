@@ -9,14 +9,22 @@ class_name CharacterNavigation
 @export var stuck_check_interval: float = 1.0
 @export var minimum_progress_distance: float = 2.0
 
+@export_group("Automatic Recovery")
+@export var max_recovery_attempts: int = 3
+@export var recovery_cooldown: float = 1.5
+
 var _character: CharacterBody2D
 var _path := PackedVector2Array()
 var _path_index: int = 0
 var _has_destination: bool = false
 var _destination_position: Vector2 = Vector2.ZERO
+
 var _progress_timer: float = 0.0
 var _last_progress_position: Vector2 = Vector2.ZERO
 var _is_stuck: bool = false
+
+var _recovery_attempts: int = 0
+var _recovery_cooldown_timer: float = 0.0
 
 
 func _ready() -> void:
@@ -53,6 +61,24 @@ func recalculate_path() -> bool:
 	if not _has_destination or _character == null:
 		return false
 	return set_destination(_destination_position)
+
+
+func attempt_path_recovery() -> bool:
+	if not _has_destination or _character == null:
+		return false
+	if _recovery_attempts >= max_recovery_attempts:
+		return false
+	if _recovery_cooldown_timer > 0.0:
+		return false
+	
+	_recovery_attempts += 1
+	_recovery_cooldown_timer = recovery_cooldown
+	
+	return recalculate_path()
+
+
+func has_exhausted_recovery_attempts() -> bool:
+	return _recovery_attempts >= max_recovery_attempts
 
 
 func stop() -> void:
@@ -92,6 +118,7 @@ func get_desired_velocity(move_speed: float) -> Vector2:
 
 
 func update_stuck_detection(delta: float) -> bool:
+	_recovery_cooldown_timer = maxf(_recovery_cooldown_timer - delta, 0.0)
 	if not _has_destination or _character == null:
 		_reset_stuck_detection()
 		return false
@@ -103,8 +130,13 @@ func update_stuck_detection(delta: float) -> bool:
 	
 	var distance_moved := _character.global_position.distance_to(_last_progress_position)
 	_is_stuck = distance_moved < minimum_progress_distance
+	
+	if not _is_stuck:
+		_recovery_attempts = 0
+		
 	_last_progress_position = _character.global_position
 	_progress_timer = 0.0
+	
 	return _is_stuck
 
 

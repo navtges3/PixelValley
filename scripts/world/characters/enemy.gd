@@ -25,6 +25,9 @@ enum Behavior { PATROL, GUARD, WANDER }
 @export var combat_radius: float = 16.0
 @export var chase_repath_interval: float = 0.4
 
+@export_group("Navigation Debug")
+@export var debug_navigation_recovery: bool = false
+
 var behavior: Behavior = Behavior.PATROL
 var wander_bounds: Rect2 = Rect2(0, 0, 0, 0)
 var _wander_target: Vector2 = Vector2.ZERO
@@ -40,6 +43,7 @@ var _idle_timer: float = 0.0
 var _chase_timer: float = 0.0
 var _chase_repath_timer: float = 0.0
 var _player_ref: Node2D = null
+var _has_reported_recovery_exhaustion: bool = false
 
 @onready var anim: AnimatedSprite2D = $AnimatedSprite2D
 @onready var detection_area: Area2D = $DetectionArea
@@ -96,8 +100,18 @@ func _physics_process(delta: float) -> void:
 		State.DEAD: pass
 	
 	if is_inside_tree() and is_physics_processing():
-		if character_navigation.update_stuck_detection(delta):
-			print("Navigation stuck detected: ", name)
+		var is_stuck := character_navigation.update_stuck_detection(delta)
+		if is_stuck:
+			if character_navigation.attempt_path_recovery():
+				if debug_navigation_recovery:
+					print("Navigation recovery attempted: ", name)
+			elif(character_navigation.has_exhausted_recovery_attempts()
+					and not _has_reported_recovery_exhaustion):
+				if debug_navigation_recovery:
+					print("Navigation recovery exhausted: ", name)
+				_has_reported_recovery_exhaustion = true
+			else:
+				_has_reported_recovery_exhaustion = false
 
 func _process_idle(delta: float) -> void:
 	velocity = Vector2.ZERO
