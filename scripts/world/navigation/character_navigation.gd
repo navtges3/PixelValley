@@ -18,7 +18,6 @@ var _path := PackedVector2Array()
 var _path_index: int = 0
 var _has_destination: bool = false
 var _destination_position: Vector2 = Vector2.ZERO
-var _last_path_start_position: Vector2 = Vector2.ZERO
 
 var _progress_timer: float = 0.0
 var _last_progress_position: Vector2 = Vector2.ZERO
