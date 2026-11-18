@@ -107,7 +107,6 @@ func get_desired_velocity(move_speed: float) -> Vector2:
 	if not _has_destination or _character == null:
 		return Vector2.ZERO
 	
-	# Skip waypoints that have already been reached.
 	while _path_index < _path.size():
 		var waypoint := _path[_path_index]
 		
@@ -116,7 +115,6 @@ func get_desired_velocity(move_speed: float) -> Vector2:
 		
 		_path_index += 1
 	
-	# All waypoints have been reached.
 	if _path_index >= _path.size():
 		stop()
 		return Vector2.ZERO

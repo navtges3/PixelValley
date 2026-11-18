@@ -35,25 +35,17 @@ func _build_navigation_grid() -> void:
 		push_error("WorldNavigation: Floor layer reference is missing.")
 		return
 
-	# Establish grid boundaries using the forest floor.
 	navigation_grid.region = floor_layer.get_used_rect()
 	navigation_grid.cell_size = CELL_SIZE
 
-	# Prevent diagonal movement through blocked corners.
 	navigation_grid.diagonal_mode = AStarGrid2D.DIAGONAL_MODE_ONLY_IF_NO_OBSTACLES
 	navigation_grid.update()
 
-	# Start with every cell blocked.
-	# Walkable layers will explicitly enable their occupied cells.
 	for x in range(navigation_grid.region.position.x, navigation_grid.region.end.x):
 		for y in range(navigation_grid.region.position.y, navigation_grid.region.end.y):
 			navigation_grid.set_point_solid(Vector2i(x, y), true)
 
-	# Apply walkable terrain first.
 	_apply_tilemap_group(WALKABLE_GROUP, false)
-
-	# Apply permanent obstacles last.
-	# Blocked terrain always takes priority.
 	_apply_tilemap_group(BLOCKED_GROUP, true)
 	
 	z_index = 100 if debug_draw_navigation else 0
@@ -64,11 +56,9 @@ func _apply_tilemap_group(group_name: String, is_blocked: bool) -> void:
 	for node in get_tree().get_nodes_in_group(group_name):
 		var layer := node as TileMapLayer
 
-		# This initial implementation rasterizes TileMapLayers.
 		if layer == null:
 			continue
 
-		# Only process nodes belonging to this world scene.
 		if not get_parent().is_ancestor_of(layer):
 			continue
 
@@ -161,7 +151,7 @@ func update_obstacle(obstacle: CharacterBody2D) -> void:
 	register_obstacle(obstacle)
 
 
-func get_nearby_obstacle(world_position: Vector2, detection_radius: float) -> Array[CharacterBody2D]:
+func get_nearby_obstacles(world_position: Vector2, detection_radius: float) -> Array[CharacterBody2D]:
 	var nearby_obstacles: Array[CharacterBody2D] = []
 	
 	if detection_radius < 0.0 or spatial_cell_size <= 0.0:
@@ -219,7 +209,6 @@ func _draw() -> void:
 			var center := floor_layer.map_to_local(cell)
 			var half_size := CELL_SIZE / 2.0
 			
-			# Calculate the four corners of this tile.
 			var corners := [
 				center + Vector2(-half_size.x, -half_size.y),
 				center + Vector2(half_size.x, -half_size.y),
@@ -227,7 +216,6 @@ func _draw() -> void:
 				center + Vector2(-half_size.x, half_size.y)
 			]
 			
-			# Convert floor-layer coordinates into WorldNavigation coordinates.
 			var polygon := PackedVector2Array()
 			
 			for corner in corners:
@@ -237,7 +225,6 @@ func _draw() -> void:
 			
 			draw_colored_polygon(polygon, fill_color)
 			
-			# Draw a subtle outline around each cell
 			var outline := polygon.duplicate()
 			outline.append(polygon[0])
 			draw_polyline(outline, grid_color, 1.0)

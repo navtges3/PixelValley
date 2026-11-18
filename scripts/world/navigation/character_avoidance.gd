@@ -29,7 +29,7 @@ func get_nearby_obstacles() -> Array[CharacterBody2D]:
 	if _character == null or _world_navigation == null:
 		return nearby_obstacles
 	
-	var candidates := _world_navigation.get_nearby_obstacle(_character.global_position, detection_radius)
+	var candidates := _world_navigation.get_nearby_obstacles(_character.global_position, detection_radius)
 	
 	for obstacle in candidates:
 		if obstacle == _character:

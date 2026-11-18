@@ -170,17 +170,12 @@ func _begin_wander() -> void:
 		_state = State.GUARD
 		return
 	
-	# Try several random positions in case one is blocked.
 	for attempt in range(5):
 		var random_offset = Vector2(
-			randf_range(
-				wander_bounds.position.x,
-				wander_bounds.position.x + wander_bounds.size.x
-			),
-			randf_range(
-				wander_bounds.position.y,
-				wander_bounds.position.y + wander_bounds.size.y
-			)
+			randf_range(wander_bounds.position.x,
+				wander_bounds.position.x + wander_bounds.size.x),
+			randf_range(wander_bounds.position.y,
+				wander_bounds.position.y + wander_bounds.size.y)
 		)
 		
 		_wander_target = _origin + random_offset
@@ -210,7 +205,6 @@ func _process_chase(delta: float) -> void:
 	
 	var to_player: Vector2 = _player_ref.global_position - global_position
 	
-	# Combat takes priority over movement.
 	if to_player.length() <= combat_radius:
 		character_navigation.stop()
 		velocity = Vector2.ZERO
@@ -219,20 +213,17 @@ func _process_chase(delta: float) -> void:
 		combat_initiated.emit(self)
 		return
 	
-	# Preserve the existing chase duration.
 	_chase_timer -= delta
 	if _chase_timer <= 0.0:
 		_begin_return()
 		return
 	
-	# Periodically recalculate the path toward the player's current position.
 	_chase_repath_timer -= delta
 	
 	if _chase_repath_timer <= 0.0:
 		character_navigation.set_destination_if_changed(_player_ref.global_position, chase_repath_distance)
 		_chase_repath_timer = chase_repath_interval
 	
-	# Follow the current path, or remain stationary if no path exists.
 	velocity = _get_movement_velocity(chase_speed)
 	
 	move_and_slide()
