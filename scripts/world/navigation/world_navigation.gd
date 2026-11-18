@@ -10,6 +10,9 @@ class_name WorldNavigation
 		z_index = 100 if value else 0
 		queue_redraw()
 
+@export_group("Dynamic Spatial Grid")
+@export var spatial_cell_size: float = 32.0
+
 const CELL_SIZE := Vector2(32, 32)
 
 const WALKABLE_GROUP := "navigation_walkable"
@@ -17,6 +20,9 @@ const BLOCKED_GROUP := "navigation_blocked"
 const OBSTACLE_GROUP := "navigation_obstacle"
 
 var navigation_grid := AStarGrid2D.new()
+
+var _spatial_grid: Dictionary = {}
+var _obstacle_cells: Dictionary = {}
 
 
 func _ready() -> void:

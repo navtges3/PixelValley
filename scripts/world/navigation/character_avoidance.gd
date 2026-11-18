@@ -39,7 +39,7 @@ func get_nearby_obstacles() -> Array[CharacterBody2D]:
 		_refresh_nearby_obstacles()
 		_obstacle_refresh_timer = obstacle_refresh_interval
 	
-	for i in range(_nearby_obstacles.size() -1, -1, -1):
+	for i in range(_nearby_obstacles.size() - 1, -1, -1):
 		var obstacle := _nearby_obstacles[i]
 		if not is_instance_valid(obstacle) or obstacle.is_queued_for_deletion():
 			_nearby_obstacles.remove_at(i)
