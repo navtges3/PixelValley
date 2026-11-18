@@ -18,6 +18,7 @@ var _path := PackedVector2Array()
 var _path_index: int = 0
 var _has_destination: bool = false
 var _destination_position: Vector2 = Vector2.ZERO
+var _last_path_start_position: Vector2 = Vector2.ZERO
 
 var _progress_timer: float = 0.0
 var _last_progress_position: Vector2 = Vector2.ZERO
@@ -55,6 +56,16 @@ func set_destination(target_position: Vector2) -> bool:
 	
 	_reset_stuck_detection()
 	return _has_destination
+
+
+func set_destination_if_changed(target_position: Vector2, minimum_change: float) -> bool:
+	if minimum_change > 0.0 and _has_destination:
+		var minimum_change_squared := minimum_change * minimum_change
+		var distance_squared := _destination_position.distance_squared_to(target_position)
+		
+		if distance_squared < minimum_change_squared:
+			return true
+	return set_destination(target_position)
 
 
 func recalculate_path() -> bool:

@@ -24,6 +24,7 @@ enum Behavior { PATROL, GUARD, WANDER }
 @export var chase_duration: float = 3.0
 @export var combat_radius: float = 16.0
 @export var chase_repath_interval: float = 0.4
+@export var chase_repath_distance: float = 16.0
 
 @export_group("Navigation Debug")
 @export var debug_navigation_recovery: bool = false
@@ -228,7 +229,7 @@ func _process_chase(delta: float) -> void:
 	_chase_repath_timer -= delta
 	
 	if _chase_repath_timer <= 0.0:
-		character_navigation.set_destination(_player_ref.global_position)
+		character_navigation.set_destination_if_changed(_player_ref.global_position, chase_repath_distance)
 		_chase_repath_timer = chase_repath_interval
 	
 	# Follow the current path, or remain stationary if no path exists.
