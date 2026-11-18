@@ -45,6 +45,8 @@ var _chase_repath_timer: float = 0.0
 var _player_ref: Node2D = null
 var _has_reported_recovery_exhaustion: bool = false
 
+var _world_navigation: WorldNavigation
+
 @onready var anim: AnimatedSprite2D = $AnimatedSprite2D
 @onready var detection_area: Area2D = $DetectionArea
 @onready var character_navigation: CharacterNavigation = $CharacterNavigation
@@ -54,6 +56,10 @@ func _ready() -> void:
 	_origin = global_position
 	add_to_group("enemies")
 	add_to_group("navigation_obstacle")
+	
+	_world_navigation = get_tree().get_first_node_in_group("world_navigation") as WorldNavigation
+	if _world_navigation != null:
+		_world_navigation.register_obstacle(self)
 	
 	_apply_visuals()
 	
@@ -69,6 +75,12 @@ func _ready() -> void:
 	detection_area.collision_mask = detection_collision_mask
 	
 	_next_behavior()
+
+
+func _exit_tree() -> void:
+	if is_instance_valid(_world_navigation):
+		_world_navigation.unregister_obstacle(self)
+
 
 func _next_behavior() -> void:
 	match behavior:
@@ -98,6 +110,9 @@ func _physics_process(delta: float) -> void:
 		State.CHASE:  _process_chase(delta)
 		State.RETURN: _process_return()
 		State.DEAD: pass
+	
+	if is_instance_valid(_world_navigation):
+		_world_navigation.update_obstacle(self)
 	
 	if is_inside_tree() and is_physics_processing():
 		var is_stuck := character_navigation.update_stuck_detection(delta)

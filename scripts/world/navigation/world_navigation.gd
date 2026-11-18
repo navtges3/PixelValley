@@ -10,9 +10,6 @@ class_name WorldNavigation
 		z_index = 100 if value else 0
 		queue_redraw()
 
-@export_group("Dynamic Spatial Grid")
-@export var spatial_cell_size: float = 32.0
-
 const CELL_SIZE := Vector2(32, 32)
 
 const WALKABLE_GROUP := "navigation_walkable"
@@ -20,6 +17,9 @@ const BLOCKED_GROUP := "navigation_blocked"
 const OBSTACLE_GROUP := "navigation_obstacle"
 
 var navigation_grid := AStarGrid2D.new()
+
+@export_group("Dynamic Spatial Grid")
+@export var spatial_cell_size: float = 16.0
 
 var _spatial_grid: Dictionary = {}
 var _obstacle_cells: Dictionary = {}
@@ -103,6 +103,94 @@ func get_navigation_path(start_position: Vector2, target_position: Vector2) -> P
 func _world_to_grid_cell(world_position: Vector2) -> Vector2i:
 	var local_position := floor_layer.to_local(world_position)
 	return floor_layer.local_to_map(local_position)
+
+
+func _world_to_spatial_cell(world_position: Vector2) -> Vector2i:
+	return Vector2i(
+		floori(world_position.x / spatial_cell_size),
+		floori(world_position.y / spatial_cell_size)
+	)
+
+
+func register_obstacle(obstacle: CharacterBody2D) -> void:
+	if not is_instance_valid(obstacle):
+		return
+	
+	var cell := _world_to_spatial_cell(obstacle.global_position)
+	
+	if not _spatial_grid.has(cell):
+		_spatial_grid[cell] = []
+	
+	if not _spatial_grid[cell].has(obstacle):
+		_spatial_grid[cell].append(obstacle)
+	
+	_obstacle_cells[obstacle] = cell
+
+
+func unregister_obstacle(obstacle: CharacterBody2D) -> void:
+	if not _obstacle_cells.has(obstacle):
+		return
+
+	var cell: Vector2i = _obstacle_cells[obstacle]
+
+	if _spatial_grid.has(cell):
+		_spatial_grid[cell].erase(obstacle)
+
+		if _spatial_grid[cell].is_empty():
+			_spatial_grid.erase(cell)
+
+	_obstacle_cells.erase(obstacle)
+
+
+func update_obstacle(obstacle: CharacterBody2D) -> void:
+	if not is_instance_valid(obstacle):
+		return
+	
+	var new_cell := _world_to_spatial_cell(obstacle.global_position)
+	
+	if not _obstacle_cells.has(obstacle):
+		register_obstacle(obstacle)
+		return
+	
+	var old_cell: Vector2i = _obstacle_cells[obstacle]
+	
+	if old_cell == new_cell:
+		return
+	
+	unregister_obstacle(obstacle)
+	register_obstacle(obstacle)
+
+
+func get_nearby_obstacle(world_position: Vector2, detection_radius: float) -> Array[CharacterBody2D]:
+	var nearby_obstacles: Array[CharacterBody2D] = []
+	
+	if detection_radius < 0.0 or spatial_cell_size <= 0.0:
+		return nearby_obstacles
+	
+	var search_offset := Vector2.ONE * detection_radius
+	var min_cell := _world_to_spatial_cell(world_position - search_offset)
+	var max_cell := _world_to_spatial_cell(world_position + search_offset)
+	var detection_radius_squared := detection_radius * detection_radius
+	
+	for x in range(min_cell.x, max_cell.x + 1):
+		for y in range(min_cell.y, max_cell.y + 1):
+			var cell := Vector2i(x, y)
+			
+			if not _spatial_grid.has(cell):
+				continue
+			
+			for obstacle in _spatial_grid[cell]:
+				if not is_instance_valid(obstacle):
+					continue
+				if obstacle.is_queued_for_deletion():
+					continue
+				
+				var distance_squared := world_position.distance_squared_to(obstacle.global_position)
+				
+				if distance_squared <= detection_radius_squared:
+					nearby_obstacles.append(obstacle)
+	
+	return nearby_obstacles
 
 
 func is_position_walkable(world_position: Vector2) -> bool:
