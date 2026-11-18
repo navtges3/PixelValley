@@ -6,8 +6,14 @@ class_name CharacterAvoidance
 @export var preferred_distance: float = 20.0
 @export var avoidance_strength: float = 1.0
 
+@export_group("Obstacle Detection")
+@export var obstacle_refresh_interval: float = 0.1
+
 var _character: CharacterBody2D
 var _world_navigation: WorldNavigation
+
+var _obstacle_refresh_timer: float = 0.0
+var _nearby_obstacles: Array[CharacterBody2D] = []
 
 
 func _ready() -> void:
@@ -24,10 +30,28 @@ func _ready() -> void:
 
 
 func get_nearby_obstacles() -> Array[CharacterBody2D]:
-	var nearby: Array[CharacterBody2D] = []
+	if _character == null:
+		return []
+	
+	_obstacle_refresh_timer -= get_physics_process_delta_time()
+	
+	if _obstacle_refresh_timer <= 0.0:
+		_refresh_nearby_obstacles()
+		_obstacle_refresh_timer = obstacle_refresh_interval
+	
+	for i in range(_nearby_obstacles.size() -1, -1, -1):
+		var obstacle := _nearby_obstacles[i]
+		if not is_instance_valid(obstacle) or obstacle.is_queued_for_deletion():
+			_nearby_obstacles.remove_at(i)
+	
+	return _nearby_obstacles
+
+
+func _refresh_nearby_obstacles() -> void:
+	_nearby_obstacles.clear()
 	
 	if _character == null:
-		return nearby
+		return
 	
 	var detection_radius_squared := detection_radius * detection_radius
 	
@@ -43,9 +67,7 @@ func get_nearby_obstacles() -> Array[CharacterBody2D]:
 		var distance_squared := _character.global_position.distance_squared_to(obstacle.global_position)
 		
 		if distance_squared <= detection_radius_squared:
-			nearby.append(obstacle)
-		
-	return nearby
+			_nearby_obstacles.append(obstacle)
 
 
 func get_avoidance_velocity(desired_velocity: Vector2) -> Vector2:
