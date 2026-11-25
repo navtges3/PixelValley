@@ -27,6 +27,8 @@ signal enemy_combat_initiated(enemy: Enemy)
 func _ready() -> void:
 	spawn_timer.one_shot = true
 	spawn_timer.timeout.connect(_on_spawn_timer_timeout)
+	
+	_collect_sources(self)
 
 	if config == null:
 		push_error("SpawnZone: Missing configuration Resource.")
@@ -34,72 +36,8 @@ func _ready() -> void:
 
 	if not config.validate_config():
 		push_error("SpawnZone '%s': Invalid configuration." % config.zone_id)
-
-
-# --------------------------------------------------
-# SPAWN SOURCE
-# --------------------------------------------------
-
-func _collect_sources(node: Node) -> void:
-	for child in node.get_children():
-		if child is WanderSpawnArea:
-			_wander_areas.append(child as WanderSpawnArea)
-		elif child is PatrolSpawnRoute:
-			var route := child as PatrolSpawnRoute
-			if route.is_valid():
-				_patrol_routes.append(route)
-			else:
-				push_warning("SpawnZone: route '%s' needs at least 2 points." % route.name)
-		elif child is GuardSpawnPost:
-			_guard_posts.append(child as GuardSpawnPost)
-		_collect_sources(child)
-
-
-func _validate_sources() -> void:
-	var total_capacity := 0
-	for behavior in [Enemy.Behavior.WANDER, Enemy.Behavior.PATROL, Enemy.Behavior.GUARD]:
-		for source in _get_sources(behavior):
-			total_capacity += _get_source_capacity(source)
 	
-	for entry in config.enemy_pool:
-		if entry != null and _get_sources(entry.behavior).is_empty():
-			push_warning("SpawnZone '%s': pool has a %s entry but the zone has no matching source." \
-					% [config.zone_id, Enemy.Behavior.keys()[entry.behavior]])
-	
-	if config.max_alive > total_capacity:
-		push_warning("SpawnZone '%s': max_alive (%d) exceeds total source capacity (%d)." \
-				% [config.zone_id, config.max_alive, total_capacity])
-
-
-func _get_sources(behavior: Enemy.Behavior) -> Array:
-	match behavior:
-		Enemy.Behavior.WANDER: return _wander_areas
-		Enemy.Behavior.PATROL: return _patrol_routes
-		Enemy.Behavior.GUARD: return _guard_posts
-	return []
-
-
-func _get_source_capacity(source: Node) -> int:
-	if source is WanderSpawnArea:
-		return (source as WanderSpawnArea).max_enemies
-	if source is PatrolSpawnRoute:
-		return (source as PatrolSpawnRoute).max_enemies
-	return GuardSpawnPost.MAX_ENEMIES
-
-
-func _get_source_occupancy(source: Node) -> int:
-	var count := 0
-	for enemy in _get_living_enemies():
-		if _enemy_sources.get(enemy) == source:
-			count += 1
-	return count
-
-
-func _has_free_source(behavior: Enemy.Behavior) -> bool:
-	for source in _get_sources(behavior):
-		if _get_source_occupancy(source) < _get_source_capacity(source):
-			return true
-	return false
+	_validate_sources()
 
 
 # --------------------------------------------------
@@ -176,6 +114,72 @@ func get_is_initialized() -> bool:
 
 func is_active() -> bool:
 	return _active
+
+
+# --------------------------------------------------
+# SPAWN SOURCE
+# --------------------------------------------------
+
+func _collect_sources(node: Node) -> void:
+	for child in node.get_children():
+		if child is WanderSpawnArea:
+			_wander_areas.append(child as WanderSpawnArea)
+		elif child is PatrolSpawnRoute:
+			var route := child as PatrolSpawnRoute
+			if route.is_valid():
+				_patrol_routes.append(route)
+			else:
+				push_warning("SpawnZone: route '%s' needs at least 2 points." % route.name)
+		elif child is GuardSpawnPost:
+			_guard_posts.append(child as GuardSpawnPost)
+		_collect_sources(child)
+
+
+func _validate_sources() -> void:
+	var total_capacity := 0
+	for behavior in [Enemy.Behavior.WANDER, Enemy.Behavior.PATROL, Enemy.Behavior.GUARD]:
+		for source in _get_sources(behavior):
+			total_capacity += _get_source_capacity(source)
+	
+	for entry in config.enemy_pool:
+		if entry != null and _get_sources(entry.behavior).is_empty():
+			push_warning("SpawnZone '%s': pool has a %s entry but the zone has no matching source." \
+					% [config.zone_id, Enemy.Behavior.keys()[entry.behavior]])
+	
+	if config.max_alive > total_capacity:
+		push_warning("SpawnZone '%s': max_alive (%d) exceeds total source capacity (%d)." \
+				% [config.zone_id, config.max_alive, total_capacity])
+
+
+func _get_sources(behavior: Enemy.Behavior) -> Array:
+	match behavior:
+		Enemy.Behavior.WANDER: return _wander_areas
+		Enemy.Behavior.PATROL: return _patrol_routes
+		Enemy.Behavior.GUARD: return _guard_posts
+	return []
+
+
+func _get_source_capacity(source: Node) -> int:
+	if source is WanderSpawnArea:
+		return (source as WanderSpawnArea).max_enemies
+	if source is PatrolSpawnRoute:
+		return (source as PatrolSpawnRoute).max_enemies
+	return GuardSpawnPost.MAX_ENEMIES
+
+
+func _get_source_occupancy(source: Node) -> int:
+	var count := 0
+	for enemy in _get_living_enemies():
+		if _enemy_sources.get(enemy) == source:
+			count += 1
+	return count
+
+
+func _has_free_source(behavior: Enemy.Behavior) -> bool:
+	for source in _get_sources(behavior):
+		if _get_source_occupancy(source) < _get_source_capacity(source):
+			return true
+	return false
 
 
 # --------------------------------------------------
