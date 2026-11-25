@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://ci2ukham56yiw"]
+
+[ext_resource type="Script" uid="uid://b4m3bt745lkw5" path="res://scripts/world/spawning/patrol_spawn_route.gd" id="1_g55qx"]
+
+[sub_resource type="Curve2D" id="Curve2D_6x5i6"]
+
+[node name="PatrolSpawnRoute" type="Path2D" unique_id=1150402879]
+curve = SubResource("Curve2D_6x5i6")
+script = ExtResource("1_g55qx")

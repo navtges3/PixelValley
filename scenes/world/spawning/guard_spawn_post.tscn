@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://84o654gtsb4v"]
+
+[ext_resource type="Script" uid="uid://dfgyxje1b4gfv" path="res://scripts/world/spawning/guard_spawn_post.gd" id="1_hkimn"]
+
+[node name="GuardSpawnPost" type="Marker2D" unique_id=1099902398]
+script = ExtResource("1_hkimn")
