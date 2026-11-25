@@ -3,11 +3,17 @@ extends Node2D
 class_name SpawnZone
 
 const ENEMY_SCENE: PackedScene = preload("res://scenes/world/characters/enemy.tscn")
+const POSITION_ATTEMPTS := 5
 
 @export var config: SpawnZoneConfig
 
 @onready var spawn_timer: Timer = $SpawnTimer
-@onready var spawn_positions: Node2D = $SpawnPositions
+
+var _wander_areas: Array[WanderSpawnArea] = []
+var _patrol_routes: Array[PatrolSpawnRoute] = []
+var _guard_posts: Array[GuardSpawnPost] = []
+
+var _enemy_sources: Dictionary = {}
 
 var _enemies: Array[Enemy] = []
 var _initialized := false
@@ -28,6 +34,72 @@ func _ready() -> void:
 
 	if not config.validate_config():
 		push_error("SpawnZone '%s': Invalid configuration." % config.zone_id)
+
+
+# --------------------------------------------------
+# SPAWN SOURCE
+# --------------------------------------------------
+
+func _collect_sources(node: Node) -> void:
+	for child in node.get_children():
+		if child is WanderSpawnArea:
+			_wander_areas.append(child as WanderSpawnArea)
+		elif child is PatrolSpawnRoute:
+			var route := child as PatrolSpawnRoute
+			if route.is_valid():
+				_patrol_routes.append(route)
+			else:
+				push_warning("SpawnZone: route '%s' needs at least 2 points." % route.name)
+		elif child is GuardSpawnPost:
+			_guard_posts.append(child as GuardSpawnPost)
+		_collect_sources(child)
+
+
+func _validate_sources() -> void:
+	var total_capacity := 0
+	for behavior in [Enemy.Behavior.WANDER, Enemy.Behavior.PATROL, Enemy.Behavior.GUARD]:
+		for source in _get_sources(behavior):
+			total_capacity += _get_source_capacity(source)
+	
+	for entry in config.enemy_pool:
+		if entry != null and _get_sources(entry.behavior).is_empty():
+			push_warning("SpawnZone '%s': pool has a %s entry but the zone has no matching source." \
+					% [config.zone_id, Enemy.Behavior.keys()[entry.behavior]])
+	
+	if config.max_alive > total_capacity:
+		push_warning("SpawnZone '%s': max_alive (%d) exceeds total source capacity (%d)." \
+				% [config.zone_id, config.max_alive, total_capacity])
+
+
+func _get_sources(behavior: Enemy.Behavior) -> Array:
+	match behavior:
+		Enemy.Behavior.WANDER: return _wander_areas
+		Enemy.Behavior.PATROL: return _patrol_routes
+		Enemy.Behavior.GUARD: return _guard_posts
+	return []
+
+
+func _get_source_capacity(source: Node) -> int:
+	if source is WanderSpawnArea:
+		return (source as WanderSpawnArea).max_enemies
+	if source is PatrolSpawnRoute:
+		return (source as PatrolSpawnRoute).max_enemies
+	return GuardSpawnPost.MAX_ENEMIES
+
+
+func _get_source_occupancy(source: Node) -> int:
+	var count := 0
+	for enemy in _get_living_enemies():
+		if _enemy_sources.get(enemy) == source:
+			count += 1
+	return count
+
+
+func _has_free_source(behavior: Enemy.Behavior) -> bool:
+	for source in _get_sources(behavior):
+		if _get_source_occupancy(source) < _get_source_capacity(source):
+			return true
+	return false
 
 
 # --------------------------------------------------
@@ -119,23 +191,21 @@ func _spawn_batch(requested_count: int) -> int:
 	var spawned := 0
 
 	for i in range(spawn_count):
-		var marker := _get_available_marker()
-
-		if marker == null:
-			break
-
 		var entry := _select_enemy_entry()
-
 		if entry == null:
 			break
 
-		if _spawn_enemy(entry, marker):
+		var location := _pick_spawn_location(entry.behavior)
+		if location.is_empty():
+			break
+
+		if _spawn_enemy(entry, location["source"], location["position"]):
 			spawned += 1
 
 	return spawned
 
 
-func _spawn_enemy(entry: SpawnEntry, marker: Marker2D) -> bool:
+func _spawn_enemy(entry: SpawnEntry, source: Node, spawn_pos: Vector2) -> bool:
 	var enemy := ENEMY_SCENE.instantiate() as Enemy
 
 	if enemy == null:
@@ -165,12 +235,13 @@ func _spawn_enemy(entry: SpawnEntry, marker: Marker2D) -> bool:
 		push_error("SpawnZone: No Node2D world parent available.")
 		return false
 
-	enemy.position = world_parent.to_local(marker.global_position)
+	enemy.position = world_parent.to_local(spawn_pos)
 	world_parent.add_child.call_deferred(enemy)
 
 	_enemies.append(enemy)
+	_enemy_sources[enemy] = source
+	
 	enemy.tree_exiting.connect(_on_enemy_tree_exiting.bind(enemy), CONNECT_ONE_SHOT)
-
 	enemy.set_world_active.call_deferred(_active)
 
 	return true
@@ -178,6 +249,7 @@ func _spawn_enemy(entry: SpawnEntry, marker: Marker2D) -> bool:
 
 func _on_enemy_tree_exiting(enemy: Enemy) -> void:
 	_enemies.erase(enemy)
+	_enemy_sources.erase(enemy)
 
 	if _active and get_available_capacity() > 0:
 		_schedule_replenishment()
@@ -221,36 +293,37 @@ func _schedule_replenishment() -> void:
 # SPAWN POSITION SELECTION
 # --------------------------------------------------
 
-func _get_available_marker() -> Marker2D:
-	var candidates: Array[Marker2D] = []
+# Returns {} when nothing is available, else {"source": Node, "position": Vector2}
+func _pick_spawn_location(behavior: Enemy.Behavior) -> Dictionary:
+	var sources := _get_sources(behavior).duplicate()
+	sources.shuffle()
 
-	for child in spawn_positions.get_children():
-		if not child is Marker2D:
+	for source in sources:
+		if _get_source_occupancy(source) >= _get_source_capacity(source):
 			continue
-
-		var marker := child as Marker2D
-
-		if _is_marker_available(marker):
-			candidates.append(marker)
-
-	if candidates.is_empty():
-		return null
-
-	candidates.shuffle()
-	return candidates[0]
+		for attempt in POSITION_ATTEMPTS:
+			var spawn_pos := _get_spawn_position(source)
+			if _is_position_valid(spawn_pos):
+				return {"source": source, "position": spawn_pos}
+	return {}
 
 
-func _is_marker_available(marker: Marker2D) -> bool:
+func _get_spawn_position(source: Node) -> Vector2:
+	if source is WanderSpawnArea:
+		return (source as WanderSpawnArea).get_random_point()
+	if source is PatrolSpawnRoute:
+		var route := source as PatrolSpawnRoute
+		return route.get_waypoints()[route.get_start_index()]
+	return (source as GuardSpawnPost).get_spawn_position()
+
+
+func _is_position_valid(pos: Vector2) -> bool:
 	if is_instance_valid(_player):
-		if marker.global_position.distance_to(_player.global_position) \
-		< config.minimum_player_distance:
+		if pos.distance_to(_player.global_position) < config.minimum_player_distance:
 			return false
-	
 	for enemy in _get_living_enemies():
-		if enemy.global_position.distance_to(marker.global_position) \
-		< config.marker_occupancy_radius:
+		if enemy.global_position.distance_to(pos) < config.marker_occupancy_radius:
 			return false
-
 	return true
 
 
@@ -259,27 +332,25 @@ func _is_marker_available(marker: Marker2D) -> bool:
 # --------------------------------------------------
 
 func _select_enemy_entry() -> SpawnEntry:
+	var candidates: Array[SpawnEntry] = []
 	var total_weight := 0
 
 	for entry in config.enemy_pool:
-		if entry != null:
-			total_weight += maxi(0, entry.weight)
+		if entry == null or entry.weight <= 0:
+			continue
+		if not _has_free_source(entry.behavior):
+			continue
+		candidates.append(entry)
+		total_weight += entry.weight
 
 	if total_weight <= 0:
-		push_warning("SpawnZone: Enemy pool has no valid weights.")
 		return null
 
 	var roll := randi_range(1, total_weight)
-
-	for entry in config.enemy_pool:
-		if entry == null:
-			continue
-
-		roll -= maxi(0, entry.weight)
-
+	for entry in candidates:
+		roll -= entry.weight
 		if roll <= 0:
 			return entry
-
 	return null
 
 
