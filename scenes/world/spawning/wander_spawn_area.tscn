@@ -2,7 +2,12 @@
 
 [ext_resource type="Script" uid="uid://bkg6gyivbw7jt" path="res://scripts/world/spawning/wander_spawn_area.gd" id="1_0sm42"]
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1ja1a"]
+resource_local_to_scene = true
+size = Vector2(64, 64)
+
 [node name="WanderSpawnArea" type="Area2D" unique_id=1113252729]
 script = ExtResource("1_0sm42")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1027895996]
+shape = SubResource("RectangleShape2D_1ja1a")

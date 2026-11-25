@@ -20,4 +20,6 @@ func get_waypoints() -> PackedVector2Array:
 
 
 func get_start_index() -> int:
+	if not is_valid():
+		return 0
 	return randi() % maxi(1, curve.point_count)
