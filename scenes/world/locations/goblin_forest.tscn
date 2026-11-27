@@ -10,10 +10,23 @@
 [ext_resource type="PackedScene" uid="uid://b0tdph7ofmv7r" path="res://scenes/world/trigger_zone.tscn" id="6_vm5r7"]
 [ext_resource type="Script" uid="uid://clqf4dd07ll3k" path="res://scripts/world/spawning/spawn_entry.gd" id="7_0so8b"]
 [ext_resource type="Script" uid="uid://76syajf8x8p8" path="res://scripts/world/spawning/spawn_zone_config.gd" id="8_obtaj"]
+[ext_resource type="PackedScene" uid="uid://r1vioj5g1257" path="res://scenes/world/spawning/wander_spawn_area.tscn" id="10_4nvfp"]
+[ext_resource type="PackedScene" uid="uid://ci2ukham56yiw" path="res://scenes/world/spawning/patrol_spawn_route.tscn" id="11_vu2ud"]
+[ext_resource type="PackedScene" uid="uid://84o654gtsb4v" path="res://scenes/world/spawning/guard_spawn_post.tscn" id="12_3ads4"]
+
+[sub_resource type="Resource" id="Resource_4nvfp"]
+script = ExtResource("7_0so8b")
+behavior = 2
+metadata/_custom_type_script = "uid://clqf4dd07ll3k"
 
 [sub_resource type="Resource" id="Resource_0so8b"]
 script = ExtResource("7_0so8b")
 wander_bounds = Rect2(-32, -32, 64, 64)
+metadata/_custom_type_script = "uid://clqf4dd07ll3k"
+
+[sub_resource type="Resource" id="Resource_vu2ud"]
+script = ExtResource("7_0so8b")
+behavior = 1
 metadata/_custom_type_script = "uid://clqf4dd07ll3k"
 
 [sub_resource type="Resource" id="Resource_4gpbu"]
@@ -21,16 +34,12 @@ script = ExtResource("8_obtaj")
 zone_id = &"forest_entrance_zone"
 region_id = &"forest_entrance"
 spawn_interval = 10.0
-enemy_pool = Array[ExtResource("7_0so8b")]([SubResource("Resource_0so8b")])
+enemy_pool = Array[ExtResource("7_0so8b")]([SubResource("Resource_4nvfp"), SubResource("Resource_0so8b"), SubResource("Resource_vu2ud")])
 metadata/_custom_type_script = "uid://76syajf8x8p8"
 
-[sub_resource type="Resource" id="Resource_obtaj"]
-script = ExtResource("8_obtaj")
-zone_id = &"hunting_camp_zone"
-region_id = &"hunting_camp"
-spawn_interval = 10.0
-enemy_pool = Array[ExtResource("7_0so8b")]([SubResource("Resource_0so8b")])
-metadata/_custom_type_script = "uid://76syajf8x8p8"
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4nvfp"]
+resource_local_to_scene = true
+size = Vector2(528, 208)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5uqel"]
 size = Vector2(32, 128)
@@ -154,33 +163,19 @@ tile_set = ExtResource("2_e3jvi")
 position = Vector2(448, 384)
 config = SubResource("Resource_4gpbu")
 
-[node name="Marker2D" parent="YSortedWorld/EntranceSpawnZone/SpawnPositions" parent_id_path=PackedInt32Array(1519518171, 1551429703) index="0" unique_id=207877048]
-position = Vector2(192, -128)
+[node name="WanderSpawnArea" parent="YSortedWorld/EntranceSpawnZone/Spawns" parent_id_path=PackedInt32Array(1519518171, 1551429703) index="0" unique_id=1113252729 instance=ExtResource("10_4nvfp")]
+position = Vector2(0, -192)
+max_enemies = 5
 
-[node name="Marker2D2" parent="YSortedWorld/EntranceSpawnZone/SpawnPositions" parent_id_path=PackedInt32Array(1519518171, 1551429703) index="1" unique_id=1280521580]
-position = Vector2(128, 64)
+[node name="CollisionShape2D" parent="YSortedWorld/EntranceSpawnZone/Spawns/WanderSpawnArea" index="0" unique_id=1027895996]
+position = Vector2(48, 48)
+shape = SubResource("RectangleShape2D_4nvfp")
 
-[node name="Marker2D3" parent="YSortedWorld/EntranceSpawnZone/SpawnPositions" parent_id_path=PackedInt32Array(1519518171, 1551429703) index="2" unique_id=1875395154]
-position = Vector2(-256, -128)
+[node name="PatrolSpawnRoute" parent="YSortedWorld/EntranceSpawnZone/Spawns" parent_id_path=PackedInt32Array(1519518171, 1551429703) index="1" unique_id=1150402879 instance=ExtResource("11_vu2ud")]
+max_enemies = 3
 
-[node name="Marker2D4" parent="YSortedWorld/EntranceSpawnZone/SpawnPositions" parent_id_path=PackedInt32Array(1519518171, 1551429703) index="3" unique_id=760109214]
-position = Vector2(-226, 97)
-
-[node name="CampSpawnZone" parent="YSortedWorld" unique_id=306659721 instance=ExtResource("6_lnwk1")]
-position = Vector2(-344, -400)
-config = SubResource("Resource_obtaj")
-
-[node name="Marker2D" parent="YSortedWorld/CampSpawnZone/SpawnPositions" parent_id_path=PackedInt32Array(306659721, 1551429703) index="0" unique_id=207877048]
-position = Vector2(192, -128)
-
-[node name="Marker2D2" parent="YSortedWorld/CampSpawnZone/SpawnPositions" parent_id_path=PackedInt32Array(306659721, 1551429703) index="1" unique_id=1280521580]
-position = Vector2(128, 64)
-
-[node name="Marker2D3" parent="YSortedWorld/CampSpawnZone/SpawnPositions" parent_id_path=PackedInt32Array(306659721, 1551429703) index="2" unique_id=1875395154]
-position = Vector2(-256, -128)
-
-[node name="Marker2D4" parent="YSortedWorld/CampSpawnZone/SpawnPositions" parent_id_path=PackedInt32Array(306659721, 1551429703) index="3" unique_id=760109214]
-position = Vector2(-226, 97)
+[node name="GuardSpawnPost" parent="YSortedWorld/EntranceSpawnZone/Spawns" parent_id_path=PackedInt32Array(1519518171, 1551429703) index="2" unique_id=1099902398 instance=ExtResource("12_3ads4")]
+position = Vector2(256, 128)
 
 [node name="Foreground" type="Node2D" parent="." unique_id=575118093]
 z_index = 10
@@ -203,4 +198,4 @@ shape = SubResource("RectangleShape2D_5uqel")
 [editable path="RegionManager/HuntingGrounds"]
 [editable path="RegionManager/LostShrine"]
 [editable path="YSortedWorld/EntranceSpawnZone"]
-[editable path="YSortedWorld/CampSpawnZone"]
+[editable path="YSortedWorld/EntranceSpawnZone/Spawns/WanderSpawnArea"]
