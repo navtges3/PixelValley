@@ -38,6 +38,7 @@ var patrol_route: PatrolSpawnRoute = null
 var patrol_waypoints: PackedVector2Array = PackedVector2Array()
 var patrol_waypoint_index: int = 0
 var patrol_direction: int = 1
+var last_visited_patrol_waypoint: int = -1
 
 var wander_bounds: Rect2 = Rect2(0, 0, 0, 0)
 var _wander_target: Vector2 = Vector2.ZERO
@@ -155,6 +156,8 @@ func _process_guard() -> void:
 func _begin_patrol() -> void:
 	if is_instance_valid(patrol_route) and patrol_waypoints.size() >= 2:
 		patrol_waypoint_index = clampi(patrol_waypoint_index, 0, patrol_waypoints.size() -1)
+		if last_visited_patrol_waypoint < 0:
+			last_visited_patrol_waypoint = patrol_waypoint_index
 		if character_navigation.set_destination(patrol_waypoints[patrol_waypoint_index]):
 			_state = State.PATROL
 		else:
@@ -174,6 +177,7 @@ func _begin_patrol() -> void:
 func _process_patrol(_delta: float) -> void:
 	if character_navigation.is_navigation_finished():
 		if is_instance_valid(patrol_route) and patrol_waypoints.size() >= 2:
+			last_visited_patrol_waypoint = patrol_waypoint_index
 			_advance_patrol_waypoint()
 			_idle_timer = patrol_waypoint_wait_time
 		else:
@@ -268,7 +272,14 @@ func _begin_return() -> void:
 	_player_ref = null
 	character_navigation.stop()
 	
-	if character_navigation.set_destination(_origin):
+	var return_position := _origin
+	
+	if (is_instance_valid(patrol_route)
+			and last_visited_patrol_waypoint >= 0
+			and last_visited_patrol_waypoint < patrol_waypoints.size()):
+		return_position = patrol_waypoints[last_visited_patrol_waypoint]
+	
+	if character_navigation.set_destination(return_position):
 		_state = State.RETURN
 	else:
 		push_warning("Enemy could not find a return path to its origin.")

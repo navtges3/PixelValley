@@ -41,7 +41,7 @@ metadata/_custom_type_script = "uid://76syajf8x8p8"
 resource_local_to_scene = true
 size = Vector2(528, 208)
 
-[sub_resource type="Curve2D" id="Curve2D_4nvfp"]
+[sub_resource type="Curve2D" id="Curve2D_vu2ud"]
 resource_local_to_scene = true
 _data = {
 "points": PackedVector2Array(0, 0, 0, 0, -320, 64, 0, 0, 0, 0, -256, 64, 0, 0, 0, 0, -128, 128, 0, 0, 0, 0, -64, 256, 0, 0, 0, 0, 64, 256, 0, 0, 0, 0, 128, 192, 0, 0, 0, 0, 192, 192)
@@ -172,14 +172,13 @@ config = SubResource("Resource_4gpbu")
 
 [node name="WanderSpawnArea" parent="YSortedWorld/EntranceSpawnZone/Spawns" parent_id_path=PackedInt32Array(1519518171, 1551429703) index="0" unique_id=1113252729 instance=ExtResource("10_4nvfp")]
 position = Vector2(0, -192)
-max_enemies = 5
 
 [node name="CollisionShape2D" parent="YSortedWorld/EntranceSpawnZone/Spawns/WanderSpawnArea" index="0" unique_id=1027895996]
 position = Vector2(48, 48)
 shape = SubResource("RectangleShape2D_4nvfp")
 
 [node name="PatrolSpawnRoute" parent="YSortedWorld/EntranceSpawnZone/Spawns" parent_id_path=PackedInt32Array(1519518171, 1551429703) index="1" unique_id=1150402879 instance=ExtResource("11_vu2ud")]
-curve = SubResource("Curve2D_4nvfp")
+curve = SubResource("Curve2D_vu2ud")
 max_enemies = 3
 
 [node name="GuardSpawnPost" parent="YSortedWorld/EntranceSpawnZone/Spawns" parent_id_path=PackedInt32Array(1519518171, 1551429703) index="2" unique_id=1099902398 instance=ExtResource("12_3ads4")]
