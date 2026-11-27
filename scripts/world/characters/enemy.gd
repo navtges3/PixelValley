@@ -14,6 +14,7 @@ enum Behavior { PATROL, GUARD, WANDER }
 @export var patrol_speed: float = 40.0
 @export var patrol_range: float = 48.0
 @export var idle_wait_time: float = 1.5
+@export var patrol_waypoint_wait_time: float = 0.25
 
 @export_group("Detection")
 @export var detection_radius: float = 80.0
@@ -174,9 +175,10 @@ func _process_patrol(_delta: float) -> void:
 	if character_navigation.is_navigation_finished():
 		if is_instance_valid(patrol_route) and patrol_waypoints.size() >= 2:
 			_advance_patrol_waypoint()
+			_idle_timer = patrol_waypoint_wait_time
 		else:
 			_patrol_dir *= -1
-		_idle_timer = idle_wait_time
+			_idle_timer = idle_wait_time
 		_state = State.IDLE
 		return
 	velocity = _get_movement_velocity(patrol_speed)
