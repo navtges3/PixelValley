@@ -95,6 +95,10 @@ func _world_to_grid_cell(world_position: Vector2) -> Vector2i:
 	return floor_layer.local_to_map(local_position)
 
 
+func get_navigation_cell(world_position: Vector2) -> Vector2i:
+	return _world_to_grid_cell(world_position)
+
+
 func _world_to_spatial_cell(world_position: Vector2) -> Vector2i:
 	return Vector2i(
 		floori(world_position.x / spatial_cell_size),
