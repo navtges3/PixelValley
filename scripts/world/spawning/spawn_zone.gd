@@ -322,12 +322,20 @@ func _schedule_replenishment() -> void:
 func _pick_spawn_location(behavior: Enemy.Behavior) -> Dictionary:
 	var sources := _get_sources(behavior).duplicate()
 	sources.shuffle()
-
 	for source in sources:
 		if _get_source_occupancy(source) >= _get_source_capacity(source):
 			continue
+		var patrol_waypoints := PackedVector2Array()
+		if source is PatrolSpawnRoute:
+			patrol_waypoints = (source as PatrolSpawnRoute).get_waypoints()
+			if patrol_waypoints.size() < 2:
+				continue
 		for attempt in POSITION_ATTEMPTS:
-			var spawn_pos := _get_spawn_position(source)
+			var spawn_pos: Vector2
+			if source is PatrolSpawnRoute:
+				spawn_pos = patrol_waypoints[randi_range(0, patrol_waypoints.size() - 1)]
+			else:
+				spawn_pos = _get_spawn_position(source)
 			if _is_position_valid(spawn_pos):
 				return {"source": source, "position": spawn_pos}
 	return {}
@@ -336,9 +344,6 @@ func _pick_spawn_location(behavior: Enemy.Behavior) -> Dictionary:
 func _get_spawn_position(source: Node) -> Vector2:
 	if source is WanderSpawnArea:
 		return (source as WanderSpawnArea).get_random_point()
-	if source is PatrolSpawnRoute:
-		var route := source as PatrolSpawnRoute
-		return route.get_waypoints()[route.get_start_index()]
 	return (source as GuardSpawnPost).get_spawn_position()
 
 
