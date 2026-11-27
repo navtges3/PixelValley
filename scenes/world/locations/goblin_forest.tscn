@@ -41,6 +41,13 @@ metadata/_custom_type_script = "uid://76syajf8x8p8"
 resource_local_to_scene = true
 size = Vector2(528, 208)
 
+[sub_resource type="Curve2D" id="Curve2D_4nvfp"]
+resource_local_to_scene = true
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, -320, 64, 0, 0, 0, 0, -256, 64, 0, 0, 0, 0, -128, 128, 0, 0, 0, 0, -64, 256, 0, 0, 0, 0, 64, 256, 0, 0, 0, 0, 128, 192, 0, 0, 0, 0, 192, 192)
+}
+point_count = 7
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5uqel"]
 size = Vector2(32, 128)
 
@@ -172,6 +179,7 @@ position = Vector2(48, 48)
 shape = SubResource("RectangleShape2D_4nvfp")
 
 [node name="PatrolSpawnRoute" parent="YSortedWorld/EntranceSpawnZone/Spawns" parent_id_path=PackedInt32Array(1519518171, 1551429703) index="1" unique_id=1150402879 instance=ExtResource("11_vu2ud")]
+curve = SubResource("Curve2D_4nvfp")
 max_enemies = 3
 
 [node name="GuardSpawnPost" parent="YSortedWorld/EntranceSpawnZone/Spawns" parent_id_path=PackedInt32Array(1519518171, 1551429703) index="2" unique_id=1099902398 instance=ExtResource("12_3ads4")]
