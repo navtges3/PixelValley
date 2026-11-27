@@ -12,14 +12,15 @@ func is_valid() -> bool:
 
 func get_waypoints() -> PackedVector2Array:
 	var points := PackedVector2Array()
-	if curve == null:
+	if not is_valid():
 		return points
-	for i in curve.point_count:
-		points.append(to_global(curve.get_point_position(i)))
+	for point in curve.get_baked_points():
+		points.append(to_global(point))
 	return points
 
 
 func get_start_index() -> int:
-	if not is_valid():
+	var waypoint_count := curve.get_baked_points().size()
+	if waypoint_count == 0:
 		return 0
-	return randi() % maxi(1, curve.point_count)
+	return randi_range(0, waypoint_count - 1)

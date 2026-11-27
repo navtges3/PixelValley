@@ -225,6 +225,27 @@ func _spawn_enemy(entry: SpawnEntry, source: Node, spawn_pos: Vector2) -> bool:
 	enemy.idle_wait_time = entry.idle_wait_time
 	enemy.wander_bounds = entry.wander_bounds
 	
+	if entry.behavior == Enemy.Behavior.WANDER and source is WanderSpawnArea:
+		enemy.wander_area = source as WanderSpawnArea
+	
+	elif entry.behavior == Enemy.Behavior.PATROL and source is PatrolSpawnRoute:
+		var route := source as PatrolSpawnRoute
+		enemy.patrol_route = route
+		enemy.patrol_waypoints = route.get_waypoints()
+		
+		var closest_index := 0
+		var closest_distance := INF
+		for i in range(enemy.patrol_waypoints.size()):
+			var distance := spawn_pos.distance_squared_to(enemy.patrol_waypoints[i])
+			if distance < closest_distance:
+				closest_distance = distance
+				closest_index = i
+		
+		enemy.patrol_waypoint_index = closest_index
+		
+		if not route.loop:
+			enemy.patrol_direction = -1 if randf() < 0.5 else 1
+	
 	enemy.combat_initiated.connect(_on_enemy_combat_initiated)
 
 	# Dynamic identity is separate from fixed SpawnPoint identity.

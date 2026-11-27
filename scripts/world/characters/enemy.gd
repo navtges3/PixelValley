@@ -30,6 +30,14 @@ enum Behavior { PATROL, GUARD, WANDER }
 @export var debug_navigation_recovery: bool = false
 
 var behavior: Behavior = Behavior.PATROL
+
+var wander_area: WanderSpawnArea = null
+var patrol_route: PatrolSpawnRoute = null
+
+var patrol_waypoints: PackedVector2Array = PackedVector2Array()
+var patrol_waypoint_index: int = 0
+var patrol_direction: int = 0
+
 var wander_bounds: Rect2 = Rect2(0, 0, 0, 0)
 var _wander_target: Vector2 = Vector2.ZERO
 
@@ -144,6 +152,15 @@ func _process_guard() -> void:
 	move_and_slide()
 
 func _begin_patrol() -> void:
+	if is_instance_valid(patrol_route) and patrol_waypoints.size() >= 2:
+		patrol_waypoint_index = clampi(patrol_waypoint_index, 0, patrol_waypoint_index -1)
+		if character_navigation.set_destination(patrol_waypoints[patrol_waypoint_index]):
+			_state = State.PATROL
+		else:
+			push_warning("Enemy could not find a ptrol route path.")
+			_state = State.GUARD
+		return
+	
 	var target_x: float = _origin.x + _patrol_dir * patrol_range
 	var target_position := Vector2(target_x, _origin.y)
 	
