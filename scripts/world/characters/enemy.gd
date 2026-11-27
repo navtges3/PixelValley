@@ -172,15 +172,31 @@ func _begin_patrol() -> void:
 
 func _process_patrol(_delta: float) -> void:
 	if character_navigation.is_navigation_finished():
-		_patrol_dir = -_patrol_dir
+		if is_instance_valid(patrol_route) and patrol_waypoints.size() >= 2:
+			_advance_patrol_waypoint()
+		else:
+			_patrol_dir *= -1
 		_idle_timer = idle_wait_time
 		_state = State.IDLE
-		velocity = Vector2.ZERO
-	else:
-		velocity = _get_movement_velocity(patrol_speed)
-	
+		return
+	velocity = _get_movement_velocity(patrol_speed)
 	move_and_slide()
-	_update_walk_anim()
+
+func _advance_patrol_waypoint() -> void:
+	if patrol_waypoints.size() < 2:
+		return
+	
+	if is_instance_valid(patrol_route) and patrol_route.loop:
+		patrol_waypoint_index = (patrol_waypoint_index + 1) % patrol_waypoints.size()
+		return
+	
+	var next_index := patrol_waypoint_index + patrol_direction
+	
+	if next_index < 0 or next_index >= patrol_waypoints.size():
+		patrol_direction *= -1
+		next_index = patrol_waypoint_index + patrol_direction
+	
+	patrol_waypoint_index = next_index
 
 func _begin_wander() -> void:
 	if wander_bounds.size == Vector2.ZERO:
