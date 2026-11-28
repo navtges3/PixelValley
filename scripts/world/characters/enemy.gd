@@ -187,6 +187,7 @@ func _process_patrol(_delta: float) -> void:
 		return
 	velocity = _get_movement_velocity(patrol_speed)
 	move_and_slide()
+	_update_walk_anim()
 
 func _advance_patrol_waypoint() -> void:
 	if patrol_waypoints.size() < 2:
